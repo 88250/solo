@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: B3log Solo GAE POM.
+    Version: 2.0.0.6, May 11, 2012
+    Author: Liang Ding
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>solo-gae</artifactId>
+    <packaging>war</packaging>
+    <name>B3log Solo (GAE)</name>
+    <description>
+        B3log Solo Google App Engine war.
+    </description>
+
+    <parent>
+        <groupId>org.b3log</groupId>
+        <artifactId>solo-war</artifactId>
+        <version>0.4.5</version>
+    </parent>
+    
+    <properties>
+        <maven-gae-plugin.version>0.9.2</maven-gae-plugin.version>    
+        <gae.dev_sever.port>8080</gae.dev_sever.port>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke</artifactId>
+            <exclusions>
+                <!-- Javamail for local -->
+                <exclusion>
+                    <artifactId>mail</artifactId>
+                    <groupId>javax.mail</groupId>
+                </exclusion>
+                <!-- Freemarker for local-->
+                <exclusion>
+                    <artifactId>freemarker</artifactId>
+                    <groupId>org.freemarker</groupId>
+                </exclusion>
+                <!-- Database Connections Pool for local-->
+                <exclusion>
+                    <groupId>com.jolbox</groupId>
+                    <artifactId>bonecp</artifactId>
+                </exclusion>
+                <!-- Container provided -->
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-gae</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker-gae</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+    </dependencies>
+    
+    <build>
+        <resources>
+            <resource>
+                <directory>../src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        
+        <plugins>
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <configuration>
+                    <header>../../src/main/resources/etc/header.txt</header>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>net.kindleit</groupId>
+                <artifactId>maven-gae-plugin</artifactId>
+                <version>${maven-gae-plugin.version}</version>
+                <configuration>
+                    <serverId>appengine.google.com</serverId>
+                    <sdkDir>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</sdkDir>
+                    <appDir>${project.build.directory}/${project.build.finalName}</appDir>
+                    <port>${gae.dev_sever.port}</port>
+                    <passIn>true</passIn>
+                    <!-- TODO: http://code.google.com/p/googleappengine/issues/detail?id=6928#c7 -->
+                    <jvmFlags>
+                        <jvmFlag>-Dappengine.user.timezone=UTC</jvmFlag>
+                    </jvmFlags>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.b3log.latke</groupId>
+                <artifactId>maven-min-plugin</artifactId>
+                <configuration>
+                    <cssSourceDir>${basedir}/../src/main/webapp/css</cssSourceDir>
+                    <jsSourceDir>${basedir}/../src/main/webapp/js</jsSourceDir>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+
+        <finalName>b3log-solo-gae</finalName>
+    </build>
+</project>
+

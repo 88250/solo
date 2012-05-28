@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: B3log Solo (MySQL) standard Servlet container POM.
+    Version: 1.0.0.2, May 11, 2012
+    Author: Liang Ding
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>solo-mysql</artifactId>
+    <packaging>war</packaging>
+    <name>B3log Solo (MySQL)</name>
+    <description>
+        B3log Solo (MySQL) standard Servlet container war.
+    </description>
+
+    <parent>
+        <groupId>org.b3log</groupId>
+        <artifactId>solo-war</artifactId>
+        <version>0.4.5</version>
+    </parent>
+    
+    <properties>
+        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>solo-core</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-mysql</artifactId>
+        </dependency>
+    </dependencies>
+    
+    <build>
+        <resources>
+            <resource>
+                <directory>../src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        
+        <plugins>
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <configuration>
+                    <header>../../src/main/resources/etc/header.txt</header>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.b3log.latke</groupId>
+                <artifactId>maven-min-plugin</artifactId>
+                <configuration>
+                    <cssSourceDir>${basedir}/../src/main/webapp/css</cssSourceDir>
+                    <jsSourceDir>${basedir}/../src/main/webapp/js</jsSourceDir>
+                </configuration>
+            </plugin>
+            
+        </plugins>
+        
+        <finalName>b3log-solo-mysql</finalName>
+    </build>
+</project>
+
