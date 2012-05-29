@@ -15,7 +15,6 @@
  */
 package org.b3log.solo;
 
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
@@ -24,9 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeDatabase;
-import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
@@ -56,7 +52,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.7.0, May 16, 2011
+ * @version 1.0.7.1, May 29, 2011
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -90,14 +86,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         // Default to skin "classic", loads from preference later
         Skins.setDirectoryForTemplateLoading("classic");
-
-        if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()
-            && RuntimeDatabase.SLEEPYCAT == Latkes.getRuntimeDatabase()) {
-            final String repositoryPath = ResourceBundle.getBundle("local").getString("repositoryPath");
-
-            Latkes.setRepositoryPath(repositoryPath);
-            LOGGER.log(Level.INFO, "Sets repository[path={0}]", repositoryPath);
-        }
 
         final PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
 
