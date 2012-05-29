@@ -39,7 +39,6 @@
                 <li><a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Apps.png" alt=""/>${page.pageTitle}</a></li>
                 </#list>           
                 <li><a rel="alternate" href="${servePath}/blog-articles-rss.do"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/RSS.png" alt="" />RSS Feed</a></li>
-                <!--<li><a href="mailto:b3log-solo@googlecode.com"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Mail.png" alt="" />E-Mail</a></li>-->
             </ul>
             <ul id="head-tags">
                 <#if 0 != mostUsedTags?size>

@@ -20,14 +20,14 @@
             <div class="wrap">
                 <div class="content">
                     <div class="logo">
-                        <a href="http://b3log-solo.googlecode.com" target="_blank">
+                        <a href="http://b3log.org" target="_blank">
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
                     <div class="main">
                         <h2>
                             <span>${welcomeToSoloLabel}</span>
-                            <a target="_blank" href="http://b3log-solo.googlecode.com">
+                            <a target="_blank" href="http://b3log.org">
                                 ${b3logLabel}
                                 <span class="solo">&nbsp;Solo</span>
                             </a>
@@ -90,7 +90,7 @@
                                 <span class="clear"></span>
                             </div>
                         </div>
-                        <a href="http://b3log-solo.googlecode.com" target="_blank">
+                        <a href="http://b3log.org" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
                         </a>
                     </div>
@@ -102,7 +102,7 @@
                 <div class="footer">
                     &copy; ${year}
                     Powered by
-                    <a href="http://b3log-solo.googlecode.com" target="_blank">
+                    <a href="http://b3log.org" target="_blank">
                         ${b3logLabel}&nbsp;
                         <span class="solo">Solo</span></a>,
                     ver ${version}

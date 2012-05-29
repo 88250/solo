@@ -18,13 +18,13 @@
             <div class="wrap">
                 <div class="content">
                     <div class="logo">
-                        <a href="http://b3log-solo.googlecode.com" target="_blank">
+                        <a href="http://b3log.org" target="_blank">
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
                     <div class="main">
                         <h2>403 Forbidden!</h2>
-                        <a href="http://b3log-solo.googlecode.com" target="_blank">
+                        <a href="http://b3log.org" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
                         </a>
                     </div>
@@ -36,7 +36,7 @@
             <div class="footer">
                 &copy; 2012
                 Powered by
-                <a href="http://b3log-solo.googlecode.com" target="_blank">
+                <a href="http://b3log.org" target="_blank">
                     <span style="color: orange;">B</span><span style="color: blue;"><sup>3</sup></span><span style="color: green;">L</span><span style="color: red;">O</span><span style="color: blue;">G</span>
                     <span class="solo">Solo</span>
                 </a>

@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <version>0.4.5</version>
     <name>B3log Solo</name>
-    <url>http://b3log-solo.googlecode.com</url>
+    <url>https://github.com/b3log/b3log-solo</url>
     <description>
         B3log Solo is a blogging program, which could run on Google App Engine
         or a standard Servlet container.
@@ -77,7 +77,7 @@
                 <role>Initial Committer</role>
             </roles>
             <organization>B3log</organization>
-            <organizationUrl>http://www.b3log.org</organizationUrl>
+            <organizationUrl>http://b3log.org</organizationUrl>
             <timezone>+8</timezone>
         </developer>
 
@@ -90,7 +90,7 @@
                 <role>Committer</role>
             </roles>
             <organization>B3log</organization>
-            <organizationUrl>http://www.b3log.org</organizationUrl>
+            <organizationUrl>http://b3log.org</organizationUrl>
             <timezone>+8</timezone>
         </developer>
         
@@ -103,7 +103,7 @@
                 <role>Committer</role>
             </roles>
             <organization>B3log</organization>
-            <organizationUrl>http://www.b3log.org</organizationUrl>
+            <organizationUrl>http://b3log.org</organizationUrl>
             <timezone>+8</timezone>
         </developer>
         
@@ -116,14 +116,14 @@
                 <role>Committer</role>
             </roles>
             <organization>B3log</organization>
-            <organizationUrl>http://www.b3log.org</organizationUrl>
+            <organizationUrl>http://b3log.org</organizationUrl>
             <timezone>+8</timezone>
         </developer>
     </developers>
 
     <issueManagement>
-        <system>Google Code Issues</system>
-        <url>http://code.google.com/p/b3log-solo/issues/list</url>
+        <system>GitHub Issues</system>
+        <url>https://github.com/b3log/b3log-solo/issues</url>
     </issueManagement>
 
     <mailingLists>
@@ -135,9 +135,7 @@
     </mailingLists>
 
     <scm>
-        <connection>scm:svn:http://b3log-solo.googlecode.com/svn/trunk/b3log-solo</connection>
-        <developerConnection>scm:svn:https://b3log-solo.googlecode.com/svn/trunk/b3log-solo</developerConnection>
-        <url>http://code.google.com/p/b3log-solo/source/browse/#svn/trunk/b3log-solo</url>
+        <url>https://github.com/b3log/b3log-solo</url>
     </scm>
 
     <reporting>

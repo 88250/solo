@@ -109,7 +109,7 @@ public final class UpgradeProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             renderer.setContent("Upgrade failed [" + e.getMessage() + "], please contact the B3log Solo developers or reports this "
-                                + "issue directly (https://code.google.com/p/b3log-solo/issues/entry) ");
+                                + "issue directly (https://github.com/b3log/b3log-solo/issues/new) ");
         }
     }
 

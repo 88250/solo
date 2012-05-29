@@ -25,7 +25,7 @@
         <div id="tipMsg"></div>
         <div id="allPanel">
             <div id="top">
-                <a href="http://b3log-solo.googlecode.com" target="_blank" class="hover">
+                <a href="http://b3log.org" target="_blank" class="hover">
                     B3log Solo
                 </a>
                
@@ -138,7 +138,7 @@
             </div>
             <div class="footer">
                 Powered by
-                <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
+                <a href="http://b3log.org" target="_blank" class="logo">
                     ${b3logLabel}&nbsp;
                     <span style="color: orangered; font-weight: bold;">Solo</span></a>, ver ${version}
             </div>

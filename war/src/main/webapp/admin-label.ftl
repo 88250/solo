@@ -11,7 +11,7 @@
         "localeString": "${localeString}",
         "version": "${version}",
         "miniPostfix": "${miniPostfix}",
-        "reportIssueLabel": "please report this issue on http://code.google.com/p/b3log-solo/issues/list",
+        "reportIssueLabel": "please report this issue on https://github.com/b3log/b3log-solo/issues/new",
         "noDataLabel": "${noDataLabel}",
         "resetBlogHostLabel": "${resetBlogHostLabel}",
         "linkDescriptionLabel": "${linkDescriptionLabel}",
