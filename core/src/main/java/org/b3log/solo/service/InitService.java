@@ -211,7 +211,7 @@ public final class InitService {
         // XXX: no i18n
         article.put(Article.ARTICLE_TITLE, "Hello World!");
         final String content = "Welcome to <a style=\"text-decoration: none;\" target=\"_blank\" "
-                               + "href=\"http://b3log-solo.googlecode.com\">"
+                               + "href=\"https://github.com/b3log/b3log-solo\">"
                                + "<span style=\"color: orange;\">B</span>"
                                + "<span style=\"font-size: 9px; color: blue;\">"
                                + "<sup>3</sup></span><span style=\"color: green;\">L</span>"

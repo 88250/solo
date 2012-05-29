@@ -64,7 +64,7 @@
 </style>
 <div id="showTop"></div>
 <div id="top">
-    <a href="http://b3log-solo.googlecode.com" target="_blank" class="hover">
+    <a href="https://github.com/b3log/b3log-solo" target="_blank" class="hover">
         B3log Solo
     </a>
     &nbsp;${onlineVisitor1Label}${onlineVisitorCnt}

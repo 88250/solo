@@ -5,7 +5,7 @@
             <script type="text/javascript">function switch_delayer() { location.reload();}</script>${mobileLabel} <a id="switch-link" onclick="wptouch_switch_confirmation('normal');" href="javascript:void(0)"></a>		</div>
     </center>
     <p><span style="color: gray;">&copy; ${year}</span> - <a href="${servePath}">${blogTitle}</a></p>
-    <p>Powered by <a href="http://b3log-solo.googlecode.com" target="_blank" class="logo">
+    <p>Powered by <a href="http://b3log.org" target="_blank" class="logo">
             ${b3logLabel}</a>,
         Theme by <a rel="friend" href="http://dx.b3log.org" target="_blank">dx</a> &lt
         <a rel="friend" href="http://www.bravenewcode.com/products/wptouch-pro">WPtouch</a>.</p>
