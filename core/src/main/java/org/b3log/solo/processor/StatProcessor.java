@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
@@ -130,20 +131,20 @@ public final class StatProcessor {
                 }
 
                 final int hitCount = cachedPage.optInt(PageCaches.CACHED_HIT_COUNT);
-                if (2 > hitCount) {
+                if (2 > hitCount && RuntimeEnv.GAE == Latkes.getRuntimeEnv()) {
                     // Skips for view count tiny-changes, reduces Datastore Write Quota for Solo GAE version
                     continue;
                 }
 
                 final String articleId = cachedPage.optString(AbstractCacheablePageAction.CACHED_OID);
 
-                LOGGER.log(Level.FINER, "Updating article[id={0}, title={1}] view count",
-                           new Object[]{articleId, cachedPage.optString(AbstractCacheablePageAction.CACHED_TITLE)});
-
                 final JSONObject article = articleRepository.get(articleId);
                 if (null == article) {
                     continue;
                 }
+
+                LOGGER.log(Level.FINER, "Updating article[id={0}, title={1}] view count",
+                           new Object[]{articleId, cachedPage.optString(AbstractCacheablePageAction.CACHED_TITLE)});
 
                 final int oldViewCount = article.optInt(Article.ARTICLE_VIEW_COUNT);
                 final int viewCount = oldViewCount + hitCount;
@@ -155,8 +156,7 @@ public final class StatProcessor {
                 cachedPage.put(PageCaches.CACHED_HIT_COUNT, 0);
 
                 LOGGER.log(Level.FINER, "Updating article[id={0}, title={1}] view count from [{2}] to [{3}]",
-                           new Object[]{articleId, cachedPage.optString(
-                            AbstractCacheablePageAction.CACHED_TITLE), oldViewCount, viewCount});
+                           new Object[]{articleId, article.optString(Article.ARTICLE_TITLE), oldViewCount, viewCount});
             }
 
             transaction.commit();
