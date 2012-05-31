@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * <p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, May 16, 2012
+ * @version 1.0.1.5, May 31, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -151,6 +151,8 @@ public final class StatProcessor {
 
                 article.put(Article.ARTICLE_VIEW_COUNT, viewCount);
 
+                article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random()); // Updates random value
+                
                 articleRepository.update(articleId, article);
 
                 cachedPage.put(PageCaches.CACHED_HIT_COUNT, 0);
