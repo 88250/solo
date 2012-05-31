@@ -35,6 +35,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.Pagination;
@@ -192,7 +193,7 @@ public final class IndexProcessor {
      * can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI) {
-        final String pageNumString = requestURI.substring((Latkes.getContextPath() + '/').length());
+        final String pageNumString = StringUtils.substringAfter(requestURI, "/");
 
         return Requests.getCurrentPageNum(pageNumString);
     }
