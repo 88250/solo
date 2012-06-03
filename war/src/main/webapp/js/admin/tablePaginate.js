@@ -71,8 +71,6 @@ $.extend(TablePaginate.prototype, {
     initCommentsDialog: function () {
         var that = this;
         $("#" + this.id + "Comments").dialog({
-            width: 700,
-            height:500,
             "modal": true,
             "hideFooter": true,
             "close": function () {

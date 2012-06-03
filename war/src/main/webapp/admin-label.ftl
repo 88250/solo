@@ -4,6 +4,7 @@
       "servePath": "${servePath}"
     };
     var Label = {
+        "skinDirName": "classic",
         "editorType": "${editorType}",
         "userRole": "${userRole}",
         "PAGE_SIZE": "${articleListDisplayCount}",
@@ -81,7 +82,22 @@
         "linkEmptyLabel": "${linkEmptyLabel}",
         "openMethodLabel": "${openMethodLabel}",
         "typeLabel": "${typeLabel}",
-        "markdownHelpLabel": "${markdownHelpLabel}"
+        "markdownHelpLabel": "${markdownHelpLabel}",
+        "em00Label": "${em00Label}",
+        "em01Label": "${em01Label}",
+        "em02Label": "${em02Label}",
+        "em03Label": "${em03Label}",
+        "em04Label": "${em04Label}",
+        "em05Label": "${em05Label}",
+        "em06Label": "${em06Label}",
+        "em07Label": "${em07Label}",
+        "em08Label": "${em08Label}",
+        "em09Label": "${em09Label}",
+        "em10Label": "${em10Label}",
+        "em11Label": "${em11Label}",
+        "em12Label": "${em12Label}",
+        "em13Label": "${em13Label}",
+        "em14Label": "${em14Label}"
     };    
     
     admin.init();
