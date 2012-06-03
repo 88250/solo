@@ -483,6 +483,7 @@ button#submitArticle {
     width: 100%;
     z-index: 90;
 }
+
 .dialog-panel {
     display: none;
     moz-user-select: none;
