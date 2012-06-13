@@ -19,4 +19,4 @@ Join B3log Team: http://code.google.com/p/b3log-solo/wiki/join_us
 平等，自由，奔放
 Equality, Freedom, Passion
 
-;-)
+;-）
