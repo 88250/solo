@@ -1,5 +1,4 @@
-/war/mysql/target/
+﻿/war/mysql/target/
 /core/target/
 /war/gae/target/
 /war/target/
-/war/sleepycat/target/
