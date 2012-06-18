@@ -206,7 +206,6 @@ sup {
 
 /* start header */
 .header {
-    position: fixed;
     width: 100%;
     background-color: #FDFDFD;
     z-index: 1;
@@ -259,6 +258,8 @@ sup {
     background-color: #2C2C2C;
     box-shadow: 0 2px 2px #D5D5D5, 0 3px 3px -3px #D5D5D5 inset;
     height: 29px;
+    top: 0;
+    width: 100%;
 }
 
 .nav ul {

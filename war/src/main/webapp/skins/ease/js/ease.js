@@ -18,7 +18,7 @@
  * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0, Jun 2, 2012
+ * @version 1.0.1.1, Jun 18, 2012
  */
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
@@ -131,7 +131,6 @@ var getNextPage = function () {
 
 var ease = {
     $header: $(".header"),
-    $banner: $(".header").find(".banner"),
     headerH: $(".header").height(),
     $body: $(".body"),
     $nav: $(".nav"),
@@ -157,7 +156,6 @@ var ease = {
         Util.init();
         Util.replaceSideEm($(".recent-comments-content"));
         Util.buildTags("tagsSide");
-        this.$body.css("paddingTop", this.headerH + "px");
     },
     
     initArchives: function () {
@@ -205,7 +203,7 @@ var ease = {
         for (var m = 0; m < $items.length; m++) {
             for (var n = 0; n < 3; n++) {
                 if (m >= $items.length) {
-                     break;
+                    break;
                 }
                 
                 $items[m].style.left = (n * 318) + "px";
@@ -238,17 +236,12 @@ var ease = {
             var y = $(window).scrollTop();
         
             // header event
-            if (y >= _it.headerH && _it.$banner.css("display") === "block" && 
-                $("body").height() - $(window).height() > _it.headerH * 2) {
-                _it.$header.css("top", "0");
-                _it.$banner.css("display", "none");
-                _it.$body.css("paddingTop", _it.$nav.height() + "px");
-            }
-        
-            if (y < _it.headerH && _it.$banner.css("display") === "none") {
-                _it.$header.css("top", "auto");
-                _it.$banner.css("display", "block");
-                _it.$body.css("paddingTop", _it.headerH + "px");
+            if (y >= _it.headerH + $("#top").height()) {
+                _it.$nav.css("position", "fixed");
+                _it.$body.css("marginTop", "58px");
+            } else {
+                _it.$nav.css("position" ,"inherit");
+                _it.$body.css("marginTop", "0");
             }
             
             // go top icon show or hide
