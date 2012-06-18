@@ -12,12 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
- /*
- * skin ease style
- *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.1, Jun 2, 2012
+*/
+/*
+* skin ease style
+*
+* @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+* @version 1.0.1.2, Jun 18, 2012
 */
 /* start base */
 html, body, div, ul, li {
@@ -106,11 +106,21 @@ sup {
 
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
 .em10, .em11, .em12, .em13, .em14 {
-    background-image: url("../../ease/images/emotions/emotions-classic.png");
+    cursor: pointer;
+    background-image: url("../../ease/images/emotions/emotions-ease.png");
     float: left;
     height: 24px;
     margin-right: 5px;
     width: 24px;
+    transition: all .2s ease-out;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+}
+
+#emotions span:hover {
+    transform: scale(1.2) rotate(360deg);
+    -webkit-transform: scale(1.2) rotate(360deg);
+    -moz-transform: scale(1.2) rotate(360deg);
 }
 
 .em01 {
@@ -123,7 +133,7 @@ sup {
     background-position: -72px 0;
 }
 .em04 {
-    background-position: -96px 0;
+    background-position: -96px 1px;
 }
 .em05 {
     background-position: 0 -24px;
@@ -246,7 +256,7 @@ sup {
 }
 
 .nav {
-    background-color: #FFF;
+    background-color: #2C2C2C;
     box-shadow: 0 2px 2px #D5D5D5, 0 3px 3px -3px #D5D5D5 inset;
     height: 29px;
 }
@@ -262,15 +272,26 @@ sup {
 
 .nav a {
     display: block;
+    color: #C9C9C9;
     float: left;
     font-size: 14px;
     line-height: 29px;
     margin-right: 30px;
     text-shadow: 0 0 1px #D5D5D5;
+    text-decoration: none;
+    transition: all .2s ease-out;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+}
+
+.nav a:hover {
+    transform: scale(1.2) rotate(360deg);
+    -webkit-transform: scale(1.1) rotate(360deg);
+    -moz-transform: rotate(360deg);
 }
 
 .nav a.current  {    
-    color: #00b4d2;
+    color: #FFF;
     font-weight: 700;
     text-shadow: 0px 0px 3px #D5D5D5;
 }

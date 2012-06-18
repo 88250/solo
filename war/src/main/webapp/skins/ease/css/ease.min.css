@@ -15,11 +15,12 @@ sup{font-size:10px;font-weight:normal;-webkit-text-size-adjust:none;}
 .ft-gray:visited{color:#9a9a9a;}
 .ft-gray:hover{color:#676767;text-decoration:none;}
 .logo{padding:0 5px;text-shadow:0 0 1px #D5D5D5;}
-.em00,.em01,.em02,.em03,.em04,.em05,.em06,.em07,.em08,.em09,.em10,.em11,.em12,.em13,.em14{background-image:url(../../ease/images/emotions/emotions-classic.png);float:left;height:24px;margin-right:5px;width:24px;}
+.em00,.em01,.em02,.em03,.em04,.em05,.em06,.em07,.em08,.em09,.em10,.em11,.em12,.em13,.em14{cursor:pointer;background-image:url(../../ease/images/emotions/emotions-ease.png);float:left;height:24px;margin-right:5px;width:24px;transition:all .2s ease-out;-webkit-transition:all .2s ease-out;-moz-transition:all .2s ease-out;}
+#emotions span:hover{transform:scale(1.2) rotate(360deg);-webkit-transform:scale(1.2) rotate(360deg);-moz-transform:scale(1.2) rotate(360deg);}
 .em01{background-position:-24px 0;}
 .em02{background-position:-48px 0;}
 .em03{background-position:-72px 0;}
-.em04{background-position:-96px 0;}
+.em04{background-position:-96px 1px;}
 .em05{background-position:0 -24px;}
 .em06{background-position:-24px -24px;}
 .em07{background-position:-48px -24px;}
@@ -42,11 +43,12 @@ sup{font-size:10px;font-weight:normal;-webkit-text-size-adjust:none;}
 #search:focus{background-color:#FDFDFD;width:196px;}
 .banner{margin-bottom:20px;}
 .banner .notice{float:left;margin:20px 0 0 50px;}
-.nav{background-color:#FFF;box-shadow:0 2px 2px #D5D5D5, 0 3px 3px -3px #D5D5D5 inset;height:29px;}
+.nav{background-color:#2C2C2C;box-shadow:0 2px 2px #D5D5D5, 0 3px 3px -3px #D5D5D5 inset;height:29px;}
 .nav ul{list-style:none;float:left;}
 .nav li{float:left;}
-.nav a{display:block;float:left;font-size:14px;line-height:29px;margin-right:30px;text-shadow:0 0 1px #D5D5D5;}
-.nav a.current{color:#00b4d2;font-weight:700;text-shadow:0 0 3px #D5D5D5;}
+.nav a{display:block;color:#C9C9C9;float:left;font-size:14px;line-height:29px;margin-right:30px;text-shadow:0 0 1px #D5D5D5;text-decoration:none;transition:all .2s ease-out;-webkit-transition:all .2s ease-out;-moz-transition:all .2s ease-out;}
+.nav a:hover{transform:scale(1.2) rotate(360deg);-webkit-transform:scale(1.1) rotate(360deg);-moz-transform:rotate(360deg);}
+.nav a.current{color:#FFF;font-weight:700;text-shadow:0 0 3px #D5D5D5;}
 .nav img{margin-left:3px;}
 .footer{background-color:#FDFDFD;border-top:2px solid #D5D5D5;font-size:11px;padding:12px 0;-webkit-text-size-adjust:none;}
 #goTop{background:url(/skins/ease/images/icons.png) no-repeat scroll 5px -51px #D5D5D5;border-radius:2px 2px 0 0;cursor:pointer;font-size:11px;height:21px;line-height:21px;padding:0 10px 0 23px;position:absolute;right:50px;display:none;}

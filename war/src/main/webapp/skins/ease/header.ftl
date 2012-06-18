@@ -19,27 +19,27 @@
         <div class="wrapper">
             <ul>
                 <li>
-                    <a rel="nofollow" class="ft-gray" href="${servePath}/">${indexLabel}</a>
+                    <a rel="nofollow" href="${servePath}/">${indexLabel}</a>
                 </li>  
                 <#list pageNavigations as page>
                 <li>
-                    <a class="ft-gray" href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>
+                    <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>
                 </li>
                 </#list>  
                 <li>
-                    <a class="ft-gray" href="${servePath}/dynamic.html">${dynamicLabel}</a>
+                    <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
                 </li>
                 <li>
-                    <a class="ft-gray" href="${servePath}/tags.html">${allTagsLabel}</a>  
+                    <a href="${servePath}/tags.html">${allTagsLabel}</a>  
                 </li>
                 <li>
-                    <a class="ft-gray" href="${servePath}/archives.html">${archiveLabel}</a>
+                    <a href="${servePath}/archives.html">${archiveLabel}</a>
                 </li>
                 <li>
-                    <a class="ft-gray" href="${servePath}/links.html">${linkLabel}</a>
+                    <a href="${servePath}/links.html">${linkLabel}</a>
                 </li>
                 <li>
-                    <a rel="alternate" class="ft-gray" href="${servePath}/blog-articles-feed.do">Atom<img src="${staticServePath}/images/feed.png" alt="Atom"/></a>
+                    <a rel="alternate" href="${servePath}/blog-articles-feed.do">Atom<img src="${staticServePath}/images/feed.png" alt="Atom"/></a>
                 </li>
             </ul>
             <form target="_blank" method="get" action="http://www.google.com/search">
