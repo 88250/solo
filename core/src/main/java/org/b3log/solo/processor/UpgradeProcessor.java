@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.9, Apr 29, 2012
+ * @version 1.1.1.0, Jun 19, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -99,8 +99,8 @@ public final class UpgradeProcessor {
                 return;
             }
 
-            if ("0.4.1".equals(version)) {
-                v041ToV045();
+            if ("0.4.5".equals(version)) {
+                v045ToV046();
             } else {
                 final String msg = "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers";
                 LOGGER.warning(msg);
@@ -114,54 +114,25 @@ public final class UpgradeProcessor {
     }
 
     /**
-     * Upgrades from version 041 to version 045.
+     * Upgrades from version 045 to version 046.
      *
-     * <p>
-     * Model:
-     *   <ul>
-     *     <li>
-     *       Adds a property(named {@value Article#ARTICLE_EDITOR_TYPE}) to entity {@link Article}
-     *     </li>
-     *     <li>
-     *       Adds a property(named {@value Page#PAGE_EDITOR_TYPE}) to entity {@link Page}
-     *     </li>
-     *     <li>
-     *       Adds a property(named {@value Preference#EDITOR_TYPE}) to entity {@link Preference}
-     *     </li>
-     *   </ul>
-     * </p>
      * @throws Exception upgrade fails
      */
-    private void v041ToV045() throws Exception {
-        LOGGER.info("Upgrading from version 041 to version 045....");
+    private void v045ToV046() throws Exception {
+        LOGGER.info("Upgrading from version 045 to version 046....");
 
         articleRepository.setCacheEnabled(false);
 
         Transaction transaction = null;
         try {
-            upgradeArticles();
-
             transaction = userRepository.beginTransaction();
-
-            // Upgrades page model
-            final JSONObject result = pageRepository.get(new Query());
-            final JSONArray pages = result.getJSONArray(Keys.RESULTS);
-            for (int i = 0; i < pages.length(); i++) {
-                final JSONObject page = pages.getJSONObject(i);
-
-                page.put(Page.PAGE_EDITOR_TYPE, "tinyMCE");
-
-                pageRepository.update(page.getString(Keys.OBJECT_ID), page);
-            }
-
-            LOGGER.log(Level.FINEST, "Updated pages");
 
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
             preference.put(Preference.COMMENTABLE, Preference.Default.DEFAULT_COMMENTABLE);
             preference.put(Preference.EDITOR_TYPE, Preference.Default.DEFAULT_EDITOR_TYPE);
-            preference.put(Preference.VERSION, "0.4.5");
+            preference.put(Preference.VERSION, "0.4.6");
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
 
@@ -174,12 +145,12 @@ public final class UpgradeProcessor {
             }
 
             LOGGER.log(Level.SEVERE, "Upgrade failed.", e);
-            throw new Exception("Upgrade failed from version 041 to version 045");
+            throw new Exception("Upgrade failed from version 045 to version 046");
         } finally {
             articleRepository.setCacheEnabled(true);
         }
 
-        LOGGER.info("Upgraded from version 041 to version 045 successfully :-)");
+        LOGGER.info("Upgraded from version 045 to version 046 successfully :-)");
     }
 
     /**
