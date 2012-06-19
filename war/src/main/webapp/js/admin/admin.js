@@ -17,7 +17,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.8, May 4, 2012
+ * @version 1.0.1.9, Jun 19, 2012
  */
 
 var Admin = function () {
@@ -85,7 +85,7 @@ $.extend(Admin.prototype, {
      * 根据当前 hash 设置当前 tab
      */
     setCurByHash: function () {
-        var tags = this.analyseHash();
+        var tags = admin.analyseHash();
         var tab = tags.hashList[1], 
         subTab = tags.hashList[2];
         
