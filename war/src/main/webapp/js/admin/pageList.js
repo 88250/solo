@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, May 4, 2012
+ * @version 1.0.2.0, Jun 20, 2012
  */
 
 /* page-list 相关操作 */
@@ -97,7 +97,7 @@ admin.pageList = {
             if (admin.pageList.type === "page") {
                 $("#pagePagePanel").slideDown();
                 
-                // 使用 CodeMirror 编辑器时，当编辑器初识之前，元素为 display:none 时，行号显示不正常
+                // 使用 CodeMirror 编辑器时，当编辑器初始之前，元素为 display:none 时，行号显示不正常
                 if (Label.editorType === "CodeMirror-Markdown" && admin.editorPage.getContent() === "") {
                     admin.editorPage.setContent("");
                 }
