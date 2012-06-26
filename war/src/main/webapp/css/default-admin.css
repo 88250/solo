@@ -18,7 +18,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.3.8, Jun 3, 2012
+ * @version 1.0.3.9, Jun 26, 2012
 */
 
 /* start resset */
@@ -79,22 +79,29 @@ button.selected {
 #tabsPanel>div {
     padding-bottom: 36px;
 }
-#tipMsg, #loadMsg {
-    background-color: #E5E7EB;
-    border-radius: 3px;
+
+.tip {
     font-weight: bold;
-    left: 48%;
     margin: 0 auto;
     overflow: hidden;
     padding: 2px 0;
     position: fixed;
     text-align: center;
-    top: 3px;
+    top: 5px;
+    width: 100%;
     z-index: 2;
 }
-#tipMsg {
+
+.tip-msg {
     top: 33px;
 }
+
+#tipMsg, #loadMsg { 
+    background-color: #E5E7EB;
+    border-radius: 3px;
+    padding: 2px 0;
+}
+
 .footer {
     bottom: 12px;
     position: absolute;

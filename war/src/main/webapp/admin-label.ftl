@@ -98,7 +98,18 @@
         "em11Label": "${em11Label}",
         "em12Label": "${em12Label}",
         "em13Label": "${em13Label}",
-        "em14Label": "${em14Label}"
+        "em14Label": "${em14Label}",
+        "paramSettingsLabel": "${paramSettingsLabel}",
+        "nonNegativeIntegerOnlyLabel": "${nonNegativeIntegerOnlyLabel}",
+        "indexTagDisplayCntLabel": "${indexTagDisplayCntLabel}",
+        "indexRecentCommentDisplayCntLabel": "${indexRecentCommentDisplayCntLabel}",
+        "indexMostCommentArticleDisplayCntLabel": "${indexMostCommentArticleDisplayCntLabel}",
+        "indexMostViewArticleDisplayCntLabel": "${indexMostViewArticleDisplayCntLabel}",
+        "pageSizeLabel": "${pageSizeLabel}",
+        "windowSizeLabel": "${windowSizeLabel}",
+        "randomArticlesDisplayCntLabel": "${randomArticlesDisplayCntLabel}",
+        "relevantArticlesDisplayCount": "${relevantArticlesDisplayCount}",
+        "externalRelevantArticlesDisplayCount": "${externalRelevantArticlesDisplayCount}"
     };    
     
     admin.init();

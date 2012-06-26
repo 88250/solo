@@ -21,8 +21,8 @@
         </#if>
     </head>
     <body onhashchange="admin.setCurByHash();">
-        <div id="loadMsg">${loadingLabel}</div>
-        <div id="tipMsg"></div>
+        <div class="tip"><span id="loadMsg">${loadingLabel}</span></div>
+        <div class="tip"><span id="tipMsg"></span></div>
         <div id="allPanel">
             <div id="top">
                 <a href="http://b3log.org" target="_blank" class="hover">
