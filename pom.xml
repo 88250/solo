@@ -34,7 +34,7 @@
         <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
         <gae.version>1.6.5</gae.version>
         
-        <freemarker-gae.version>2.3.18</freemarker-gae.version>
+        <freemarker-gae.version>2.3.19</freemarker-gae.version>
         <jsoup.version>1.5.2</jsoup.version>
         <markdownpapers-core.version>1.2.7</markdownpapers-core.version>
 <!--        <com.google.api.client.version>1.2.1-alpha</com.google.api.client.version>-->

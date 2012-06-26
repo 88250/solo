@@ -108,8 +108,8 @@
         "pageSizeLabel": "${pageSizeLabel}",
         "windowSizeLabel": "${windowSizeLabel}",
         "randomArticlesDisplayCntLabel": "${randomArticlesDisplayCntLabel}",
-        "relevantArticlesDisplayCount": "${relevantArticlesDisplayCount}",
-        "externalRelevantArticlesDisplayCount": "${externalRelevantArticlesDisplayCount}"
+        "relevantArticlesDisplayCntLabel": "${relevantArticlesDisplayCntLabel}",
+        "externalRelevantArticlesDisplayCntLabel": "${externalRelevantArticlesDisplayCntLabel}"
     };    
     
     admin.init();
