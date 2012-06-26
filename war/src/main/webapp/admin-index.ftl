@@ -22,7 +22,7 @@
     </head>
     <body onhashchange="admin.setCurByHash();">
         <div class="tip"><span id="loadMsg">${loadingLabel}</span></div>
-        <div class="tip"><span id="tipMsg"></span></div>
+        <div class="tip tip-msg"><span id="tipMsg"></span></div>
         <div id="allPanel">
             <div id="top">
                 <a href="http://b3log.org" target="_blank" class="hover">
