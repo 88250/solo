@@ -26,6 +26,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -131,7 +132,7 @@ public final class SitemapProcessor {
 
         // XXX: query all articles?
         final Query query = new Query().setCurrentPageNum(1).
-                addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
                 addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
 
         // Closes cache avoid Java heap space out of memory while caching 

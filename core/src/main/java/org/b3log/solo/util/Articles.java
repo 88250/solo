@@ -27,10 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -261,7 +258,8 @@ public final class Articles {
         final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
         sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        final Query query = new Query().addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true);
+        final Query query = new Query().setFilter(
+                new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
         final JSONObject result = articleRepository.get(query);
         final JSONArray articles = result.getJSONArray(Keys.RESULTS);
 

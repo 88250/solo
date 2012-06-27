@@ -29,6 +29,7 @@ import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -125,7 +126,7 @@ public final class FeedProcessor {
 
             final Query query = new Query().setCurrentPageNum(1).
                     setPageSize(ENTRY_OUTPUT_CNT).
-                    addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                    setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
                     addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
                     setPageCount(1);
 
@@ -335,7 +336,7 @@ public final class FeedProcessor {
 
             final Query query = new Query().setCurrentPageNum(1).
                     setPageSize(ENTRY_OUTPUT_CNT).
-                    addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                    setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
                     addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
                     setPageCount(1);
 

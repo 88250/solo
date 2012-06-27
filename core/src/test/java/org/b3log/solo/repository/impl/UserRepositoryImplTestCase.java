@@ -19,6 +19,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
@@ -82,9 +83,8 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertEquals("test", admin.optString(User.USER_NAME));
 
         final JSONObject result =
-                userRepository.get(new Query().addFilter(User.USER_NAME,
-                                                         FilterOperator.EQUAL,
-                                                         "test1"));
+                userRepository.get(new Query().setFilter(
+                new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, "test1")));
 
         final JSONArray users = result.getJSONArray(Keys.RESULTS);
         Assert.assertEquals(users.length(), 1);

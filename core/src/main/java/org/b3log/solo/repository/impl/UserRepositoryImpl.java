@@ -19,10 +19,7 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.*;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -48,7 +45,8 @@ public final class UserRepositoryImpl extends AbstractRepository implements User
     @Override
     public JSONObject getByEmail(final String email) throws RepositoryException {
         final Query query = new Query().setPageCount(1);
-        query.addFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim());
+        query.setFilter(
+                new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -62,7 +60,8 @@ public final class UserRepositoryImpl extends AbstractRepository implements User
 
     @Override
     public JSONObject getAdmin() throws RepositoryException {
-        final Query query = new Query().addFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE).setPageCount(1);
+        final Query query = new Query().setFilter(
+                new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)).setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
