@@ -17,7 +17,7 @@
 * skin ease style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.2, Jun 18, 2012
+* @version 1.0.1.3, Jun 27, 2012
 */
 /* start base */
 html, body, div, ul, li {
@@ -189,7 +189,7 @@ sup {
 .translate-ico:hover {
     border-color: #9a9a9a;
     box-shadow: 0 0 1px #808080;
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
 }
 /* end ico */
 
@@ -207,7 +207,7 @@ sup {
 /* start header */
 .header {
     width: 100%;
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     z-index: 1;
 }
 
@@ -241,7 +241,7 @@ sup {
 }
 
 #search:focus {
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     width: 196px;
 }
 
@@ -272,29 +272,28 @@ sup {
 }
 
 .nav a {
-    display: block;
     color: #C9C9C9;
+    display: block;
     float: left;
     font-size: 14px;
-    line-height: 29px;
-    margin-right: 30px;
-    text-shadow: 0 0 1px #D5D5D5;
-    text-decoration: none;
-    transition: all .2s ease-out;
-    -webkit-transition: all .2s ease-out;
-    -moz-transition: all .2s ease-out;
-}
-
-.nav a:hover {
-    transform: scale(1.2) rotate(360deg);
-    -webkit-transform: scale(1.1) rotate(360deg);
-    -moz-transform: rotate(360deg);
-}
-
-.nav a.current  {    
-    color: #FFF;
     font-weight: 700;
-    text-shadow: 0px 0px 3px #D5D5D5;
+    line-height: 29px;
+    margin-right: 20px;
+    padding: 0 10px;
+    text-decoration: none;
+    transition: color .4s ease, background-color .8s ease;
+    -webkit-transition: color .4s ease, background-color .8s ease;
+    -moz-transition: color .4s ease, background-color .8s ease;
+}
+.nav a:hover {
+    color: #FFF;
+    background-color: #535353;
+}
+
+.nav a.current {    
+    background-color: #FFF;
+    box-shadow: 0 -1px 1px rgba(0, 0, 0, 0.1) inset, 0 1px 1px rgba(0, 0, 0, 0.1) inset;
+    color: #808080;
 }
 
 .nav img {
@@ -304,7 +303,7 @@ sup {
 
 /* start footer */
 .footer {
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     border-top: 2px solid #D5D5D5;
     font-size: 11px;
     padding: 12px 0;
@@ -342,7 +341,7 @@ sup {
 .article:hover {
     border-bottom-color: #D5D5D5;
     box-shadow: 0 0 1px #f6f6f6 inset;
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
 }
 
 .article-body {
@@ -381,7 +380,7 @@ sup {
 }
 
 .article-next {
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     box-shadow: 0 0 3px #D5D5D5 inset;
     cursor: pointer;
     font-size: 14px;
@@ -396,7 +395,7 @@ sup {
 
 /* start article */
 .article-relative {
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     box-shadow: 0 0 2px #D5D5D5;
     float: left;
     margin: 20px 0;
@@ -448,7 +447,7 @@ sup {
 }
 
 .comment-body-ref {
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     box-shadow: 0 0 2px #D5D5D5;
     display: block;
     left: 140px;
@@ -485,7 +484,7 @@ sup {
 .form input[type="text"], 
 .form input[type="password"], 
 .form textarea {
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     border-width: 0;
     box-shadow: 0 0 2px #BCBCBC;
     font-family: Verdana,arial,\5fae\8f6f\96c5\9ed1;
@@ -526,7 +525,7 @@ sup {
 }
 
 .form img {
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     box-shadow: 0 0 2px #D5D5D5;
     cursor: pointer;
     height: 24px;
@@ -543,7 +542,7 @@ sup {
 #tags a {
     margin: 3px 6px;
     padding: 3px 12px;
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     box-shadow: 0 0 2px #D5D5D5;
     float: left;
 }
@@ -586,7 +585,7 @@ sup {
 }
 
 .archives > div {
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     box-shadow: 0 0 2px #D5D5D5;
     padding-bottom: 20px;
     line-height: 20px;
@@ -620,7 +619,7 @@ sup {
 }
 
 .dynamic .module {
-    background-color: #FDFDFD;
+    background-color: #FCFCFC;
     box-shadow: 0 0 2px #D5D5D5;
     float: left;
     line-height: 20px;
