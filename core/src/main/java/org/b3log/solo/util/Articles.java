@@ -132,6 +132,27 @@ public final class Articles {
     }
 
     /**
+     * Gets time of the recent updated article.
+     * 
+     * @return time of the recent updated article, returns {@code 0} if not found
+     * @throws ServiceException service exception
+     */
+    public long getRecentArticleTime() throws ServiceException {
+        try {
+            final List<JSONObject> recentArticles = articleRepository.getRecentArticles(1);
+            if (recentArticles.isEmpty()) {
+                return 0;
+            }
+
+            final JSONObject recentArticle = recentArticles.get(0);
+            return ((Date) recentArticle.get(Article.ARTICLE_UPDATE_DATE)).getTime();
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ServiceException("Gets recent article time failed");
+        }
+    }
+
+    /**
      * Gets the specified article's author. 
      * 
      * <p>
