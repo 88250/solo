@@ -22,11 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.Cache;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.util.CollectionUtils;
@@ -79,7 +75,7 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
     public List<JSONObject> getComments(final String onId, final int currentPageNum, final int pageSize)
             throws RepositoryException {
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                addFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId).
+                setFilter(new PropertyFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId)).
                 setCurrentPageNum(currentPageNum).
                 setPageSize(pageSize).
                 setPageCount(1);

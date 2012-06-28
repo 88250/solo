@@ -770,6 +770,7 @@ public final class ArticleProcessor {
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
+        // See PermalinkFiler#dispatchToArticleOrPageProcessor()
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);

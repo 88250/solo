@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Preference console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Mar 28, 2012
+ * @version 1.0.0.3, Jun 20, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -213,7 +213,7 @@ public final class PreferenceConsole {
             final JSONArray signs = new JSONArray();
 
             final JSONArray allSigns = // includes the empty sign(id=0)
-                            new JSONArray(preference.getString(Preference.SIGNS));
+                    new JSONArray(preference.getString(Preference.SIGNS));
             for (int i = 1; i < allSigns.length(); i++) { // excludes the empty sign
                 signs.put(allSigns.getJSONObject(i));
             }
@@ -241,13 +241,17 @@ public final class PreferenceConsole {
      * {
      *     "sc": boolean,
      *     "preference": {
-     *         "recentArticleDisplayCount": int,
+     *         "mostViewArticleDisplayCount": int,
+     *         "recentCommentDisplayCount": int,
      *         "mostUsedTagDisplayCount": int,
      *         "articleListDisplayCount": int,
      *         "articleListPaginationWindowSize": int,
+     *         "mostCommentArticleDisplayCount": int,
+     *         "externalRelevantArticlesDisplayCount": int,
+     *         "relevantArticlesDisplayCount": int,
+     *         "randomArticlesDisplayCount": int,
      *         "blogTitle": "",
      *         "blogSubtitle": "",
-     *         "mostCommentArticleDisplayCount": int,
      *         "blogHost": "",
      *         "localeString": "",
      *         "timeZoneId": "",
@@ -259,9 +263,6 @@ public final class PreferenceConsole {
      *         }, ....]",
      *         "noticeBoard": "",
      *         "htmlHead": "",
-     *         "externalRelevantArticlesDisplayCount": int,
-     *         "relevantArticlesDisplayCount": int,
-     *         "randomArticlesDisplayCount": int,
      *         "adminEmail": "",
      *         "metaKeywords": "",
      *         "metaDescription": "",
@@ -326,22 +327,23 @@ public final class PreferenceConsole {
      * <pre>
      * {
      *     "preference": {
-     *         "recentArticleDisplayCount": int,
+     *         "mostViewArticleDisplayCount": int,
+     *         "recentCommentDisplayCount": int,
      *         "mostUsedTagDisplayCount": int,
      *         "articleListDisplayCount": int,
-     *         "articleListPaginationWindowSize": int
+     *         "articleListPaginationWindowSize": int,
+     *         "mostCommentArticleDisplayCount": int,
+     *         "externalRelevantArticlesDisplayCount": int,
+     *         "relevantArticlesDisplayCount": int,
+     *         "randomArticlesDisplayCount": int,
      *         "blogTitle": "",
      *         "blogSubtitle": "",
-     *         "mostCommentArticleDisplayCount": int,
      *         "skinDirName": "",
      *         "blogHost": "",
      *         "localeString": "",
      *         "timeZoneId": "",
      *         "noticeBoard": "",
      *         "htmlHead": "",
-     *         "externalRelevantArticlesDisplayCount": int,
-     *         "relevantArticlesDisplayCount": int,
-     *         "randomArticlesDisplayCount": int,
      *         "metaKeywords": "",
      *         "metaDescription": "",
      *         "enableArticleUpdateHint": boolean,
@@ -376,20 +378,125 @@ public final class PreferenceConsole {
 
             final JSONObject preference = requestJSONObject.getJSONObject(Preference.PREFERENCE);
 
-            preferenceMgmtService.updatePreference(preference);
-
             final JSONObject ret = new JSONObject();
+            renderer.setJSONObject(ret);
+
+            if (isInvalid(preference, ret)) {
+                return;
+            }
+
+            preferenceMgmtService.updatePreference(preference);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
-
-            renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
+        }
+    }
+
+    /**
+     * Checks whether the specified preference is invalid and sets the specified response object.
+     * 
+     * @param preference the specified preference
+     * @param responseObject the specified response object
+     * @return {@code true} if the specified preference is invalid, returns {@code false} otherwise
+     */
+    private boolean isInvalid(final JSONObject preference, final JSONObject responseObject) {
+        responseObject.put(Keys.STATUS_CODE, false);
+
+        final StringBuilder errMsgBuilder = new StringBuilder('[' + langPropsService.get("paramSettingsLabel"));
+        errMsgBuilder.append(" - ");
+
+        String input = preference.optString(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT);
+        if (!isNonNegativeInteger(input)) {
+            errMsgBuilder.append(langPropsService.get("externalRelevantArticlesDisplayCntLabel")).append("]  ").append(langPropsService.get(
+                    "nonNegativeIntegerOnlyLabel"));
+            responseObject.put(Keys.MSG, errMsgBuilder.toString());
+            return true;
+        }
+
+        input = preference.optString(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
+        if (!isNonNegativeInteger(input)) {
+            errMsgBuilder.append(langPropsService.get("relevantArticlesDisplayCntLabel")).append("]  ").append(langPropsService.get(
+                    "nonNegativeIntegerOnlyLabel"));
+            responseObject.put(Keys.MSG, errMsgBuilder.toString());
+            return true;
+        }
+
+        input = preference.optString(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
+        if (!isNonNegativeInteger(input)) {
+            errMsgBuilder.append(langPropsService.get("randomArticlesDisplayCntLabel")).append("]  ").append(langPropsService.get(
+                    "nonNegativeIntegerOnlyLabel"));
+            responseObject.put(Keys.MSG, errMsgBuilder.toString());
+            return true;
+        }
+
+        input = preference.optString(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
+        if (!isNonNegativeInteger(input)) {
+            errMsgBuilder.append(langPropsService.get("indexMostCommentArticleDisplayCntLabel")).append("]  ").append(langPropsService.get(
+                    "nonNegativeIntegerOnlyLabel"));
+            responseObject.put(Keys.MSG, errMsgBuilder.toString());
+            return true;
+        }
+
+        input = preference.optString(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
+        if (!isNonNegativeInteger(input)) {
+            errMsgBuilder.append(langPropsService.get("indexMostViewArticleDisplayCntLabel")).append("]  ").append(langPropsService.get(
+                    "nonNegativeIntegerOnlyLabel"));
+            responseObject.put(Keys.MSG, errMsgBuilder.toString());
+            return true;
+        }
+
+        input = preference.optString(Preference.RECENT_COMMENT_DISPLAY_CNT);
+        if (!isNonNegativeInteger(input)) {
+            errMsgBuilder.append(langPropsService.get("indexRecentCommentDisplayCntLabel")).append("]  ").append(langPropsService.get(
+                    "nonNegativeIntegerOnlyLabel"));
+            responseObject.put(Keys.MSG, errMsgBuilder.toString());
+            return true;
+        }
+
+        input = preference.optString(Preference.MOST_USED_TAG_DISPLAY_CNT);
+        if (!isNonNegativeInteger(input)) {
+            errMsgBuilder.append(langPropsService.get("indexTagDisplayCntLabel")).append("]  ").append(langPropsService.get(
+                    "nonNegativeIntegerOnlyLabel"));
+            responseObject.put(Keys.MSG, errMsgBuilder.toString());
+            return true;
+        }
+
+        input = preference.optString(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+        if (!isNonNegativeInteger(input)) {
+            errMsgBuilder.append(langPropsService.get("pageSizeLabel")).append("]  ").append(langPropsService.get(
+                    "nonNegativeIntegerOnlyLabel"));
+            responseObject.put(Keys.MSG, errMsgBuilder.toString());
+            return true;
+        }
+
+        input = preference.optString(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+        if (!isNonNegativeInteger(input)) {
+            errMsgBuilder.append(langPropsService.get("windowSizeLabel")).append("]  ").append(langPropsService.get(
+                    "nonNegativeIntegerOnlyLabel"));
+            responseObject.put(Keys.MSG, errMsgBuilder.toString());
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks whether the specified input is a non-negative integer.
+     * 
+     * @param input the specified input
+     * @return {@code true} if it is, returns {@code false} otherwise
+     */
+    private boolean isNonNegativeInteger(final String input) {
+        try {
+            return 0 <= Integer.valueOf(input);
+        } catch (final Exception e) {
+            return false;
         }
     }
 }

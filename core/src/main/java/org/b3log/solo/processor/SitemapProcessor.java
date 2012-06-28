@@ -26,6 +26,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -53,7 +54,7 @@ import org.json.JSONObject;
  * Site map (sitemap) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, May 7, 2012
+ * @version 1.0.0.4, Jun 11, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -100,7 +101,7 @@ public final class SitemapProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             addArticles(sitemap, preference);
-            addPages(sitemap, preference);
+            addNavigations(sitemap, preference);
             addTags(sitemap, preference);
             addArchives(sitemap, preference);
 
@@ -113,7 +114,6 @@ public final class SitemapProcessor {
 
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-                return;
             } catch (final IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -132,7 +132,7 @@ public final class SitemapProcessor {
 
         // XXX: query all articles?
         final Query query = new Query().setCurrentPageNum(1).
-                addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true).
+                setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
                 addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
 
         // Closes cache avoid Java heap space out of memory while caching 
@@ -160,13 +160,13 @@ public final class SitemapProcessor {
     }
 
     /**
-     * Adds pages into the specified sitemap.
+     * Adds navigations into the specified sitemap.
      * 
      * @param sitemap the specified sitemap
      * @param preference the specified preference
      * @throws Exception exception 
      */
-    private void addPages(final Sitemap sitemap, final JSONObject preference) throws Exception {
+    private void addNavigations(final Sitemap sitemap, final JSONObject preference) throws Exception {
         final String host = preference.getString(Preference.BLOG_HOST);
 
         final JSONObject result = pageRepository.get(new Query());
@@ -176,7 +176,13 @@ public final class SitemapProcessor {
             final String permalink = page.getString(Page.PAGE_PERMALINK);
 
             final URL url = new URL();
-            url.setLoc("http://" + host + permalink);
+            // The navigation maybe a page or a link
+            // Just filters for user mistakes tolerance
+            if (!permalink.contains("://")) {
+                url.setLoc("http://" + host + permalink);
+            } else {
+                url.setLoc(permalink);
+            }
 
             sitemap.addURL(url);
         }

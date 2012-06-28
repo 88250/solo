@@ -28,7 +28,10 @@ import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -38,7 +41,7 @@ import org.json.JSONObject;
  * Error processor.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, May 18, 2012
+ * @version 1.0.0.1, Jun 20, 2012
  * @since 0.4.5
  */
 @RequestProcessor
@@ -60,6 +63,10 @@ public final class ErrorProcessor {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+    /**
+     * User service.
+     */
+    private static UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Shows the user template page.
@@ -90,6 +97,8 @@ public final class ErrorProcessor {
 
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
+
+            dataModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

@@ -110,7 +110,8 @@ public final class PageProcessor {
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));
-
+            
+            // See PermalinkFiler#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
             if (null == page) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
