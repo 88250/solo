@@ -102,7 +102,6 @@ public final class TagQueryService {
     }
 
     /**
-     >>>>>>> origin/0.4.6
      * Gets all tags.
      *
      * @return for example,

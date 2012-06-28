@@ -131,7 +131,7 @@ public final class Articles {
         return true;
     }
 
-    /*
+    /**
      * Gets time of the recent updated article.
      * 
      * @return time of the recent updated article, returns {@code 0} if not found
