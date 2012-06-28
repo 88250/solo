@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /**
  * 403, 500, article-pwd, init, login and kill-browser page style.
  *
@@ -226,6 +227,8 @@ input:focus {
     margin-top: 18px;
 }
 =======
+=======
+>>>>>>> origin/0.4.6
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
  *
@@ -476,5 +479,8 @@ input:focus {
     font-weight: bold;
     margin-top: 18px;
 }
+<<<<<<< HEAD
+>>>>>>> origin/0.4.6
+=======
 >>>>>>> origin/0.4.6
 /* end init and login */

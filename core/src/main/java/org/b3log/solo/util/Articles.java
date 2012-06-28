@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/0.4.6
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
  *
@@ -28,10 +31,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
+<<<<<<< HEAD
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
+=======
+import org.b3log.latke.repository.*;
+>>>>>>> origin/0.4.6
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -136,6 +143,7 @@ public final class Articles {
     }
 
     /**
+<<<<<<< HEAD
      * Gets the specified article's author. 
      * 
      * <p>
@@ -436,6 +444,26 @@ public final class Articles {
         }
 
         return true;
+=======
+     * Gets time of the recent updated article.
+     * 
+     * @return time of the recent updated article, returns {@code 0} if not found
+     * @throws ServiceException service exception
+     */
+    public long getRecentArticleTime() throws ServiceException {
+        try {
+            final List<JSONObject> recentArticles = articleRepository.getRecentArticles(1);
+            if (recentArticles.isEmpty()) {
+                return 0;
+            }
+
+            final JSONObject recentArticle = recentArticles.get(0);
+            return ((Date) recentArticle.get(Article.ARTICLE_UPDATE_DATE)).getTime();
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ServiceException("Gets recent article time failed");
+        }
+>>>>>>> origin/0.4.6
     }
 
     /**
@@ -608,4 +636,7 @@ public final class Articles {
         }
     }
 }
+<<<<<<< HEAD
+>>>>>>> origin/0.4.6
+=======
 >>>>>>> origin/0.4.6

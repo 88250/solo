@@ -1,0 +1,97 @@
+/*
+ * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.b3log.solo.processor;
+
+import org.b3log.latke.Latkes;
+import org.b3log.latke.annotation.RequestProcessing;
+import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
+import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.TagQueryService;
+import org.b3log.solo.util.Articles;
+import org.json.JSONObject;
+
+/**
+ * Blog processor.
+ *
+ * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @version 1.0.0.0, Jun 28, 2012
+ * @since 0.4.6
+ */
+@RequestProcessor
+public final class BlogProcessor {
+
+    /**
+     * Article utilities.
+     */
+    private Articles articleUtils = Articles.getInstance();
+    /**
+     * Tag query service.
+     */
+    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    /**
+     * Preference query service.
+     */
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    /**
+     * Statistic repository.
+     */
+    private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
+
+    /**
+     * Gets blog information.
+     * 
+     * <ul>
+     *   <li>Time of the recent updated article</li>
+     *   <li>Article count</li>
+     *   <li>Comment count</li>
+     *   <li>Tag count</li>
+     *   <li>Serve path</li>
+     *   <li>Static serve path</li>
+     *   <li>Solo version</li>
+     *   <li>Runtime environment (GAE/LOCAL)</li>
+     *   <li>Locale</li>
+     * </ul>
+     * 
+     * @param context the specified context
+     * @throws Exception exception 
+     */
+    @RequestProcessing(value = "/blog/info", method = HTTPRequestMethod.GET)
+    public void getRecentArticleTime(final HTTPRequestContext context) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+
+        jsonObject.put("recentArticleTime", articleUtils.getRecentArticleTime());
+        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
+        jsonObject.put("articleCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
+        jsonObject.put("commentCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
+        jsonObject.put("tagCount", tagQueryService.getTagCount());
+        jsonObject.put("servePath", Latkes.getServePath());
+        jsonObject.put("staticServePath", Latkes.getStaticServePath());
+        jsonObject.put("version", SoloServletListener.VERSION);
+        jsonObject.put("runtimeEnv", Latkes.getRuntimeEnv());
+        jsonObject.put("locale", Latkes.getLocale());
+    }
+}

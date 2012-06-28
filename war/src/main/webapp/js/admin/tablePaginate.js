@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
  *
@@ -112,6 +113,8 @@ $.extend(TablePaginate.prototype, {
         this.currentPage = currentPage;
     }
 =======
+=======
+>>>>>>> origin/0.4.6
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
  *
@@ -225,5 +228,8 @@ $.extend(TablePaginate.prototype, {
         });
         this.currentPage = currentPage;
     }
+<<<<<<< HEAD
+>>>>>>> origin/0.4.6
+=======
 >>>>>>> origin/0.4.6
 });

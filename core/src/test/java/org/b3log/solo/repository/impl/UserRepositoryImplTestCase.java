@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
  *
@@ -102,6 +103,8 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
     }
 }
 =======
+=======
+>>>>>>> origin/0.4.6
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
  *
@@ -204,4 +207,7 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertEquals(found.getString(User.USER_PASSWORD), "pass1");
     }
 }
+<<<<<<< HEAD
+>>>>>>> origin/0.4.6
+=======
 >>>>>>> origin/0.4.6
