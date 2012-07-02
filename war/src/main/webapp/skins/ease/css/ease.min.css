@@ -43,7 +43,7 @@ sup{font-size:10px;font-weight:normal;-webkit-text-size-adjust:none;}
 #search:focus{background-color:#FCFCFC;width:196px;}
 .banner{margin-bottom:20px;}
 .banner .notice{float:left;margin:20px 0 0 50px;}
-.nav{background-color:#2C2C2C;box-shadow:0 2px 2px #D5D5D5, 0 3px 3px -3px #D5D5D5 inset;height:29px;top:0;width:100%;}
+.nav{background-color:#2C2C2C;box-shadow:0 2px 2px #D5D5D5, 0 3px 3px -3px #D5D5D5 inset;height:29px;top:0;width:100%;z-index:1;}
 .nav ul{list-style:none;float:left;}
 .nav li{float:left;}
 .nav a{color:#C9C9C9;display:block;float:left;font-size:14px;font-weight:700;line-height:29px;margin-right:20px;padding:0 10px;text-decoration:none;transition:color .4s ease, background-color .8s ease;-webkit-transition:color .4s ease, background-color .8s ease;-moz-transition:color .4s ease, background-color .8s ease;}
@@ -107,4 +107,4 @@ sup{font-size:10px;font-weight:normal;-webkit-text-size-adjust:none;}
 .dynamic .side-tags{width:186px;}
 .dynamic .side-tags li{float:left;margin:0 5px;}
 .links li{float:left;margin:0 20px 10px;width:273px;}
-.other-main{display:inline-block;margin:50px 20px 0;width:950px;z-index:-1;}
+.other-main{display:inline-block;margin:50px 20px 0;width:950px;}

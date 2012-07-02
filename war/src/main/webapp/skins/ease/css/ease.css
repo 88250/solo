@@ -260,6 +260,7 @@ sup {
     height: 29px;
     top: 0;
     width: 100%;
+    z-index: 1;
 }
 
 .nav ul {
@@ -663,6 +664,5 @@ sup {
     display: inline-block;
     margin: 50px 20px 0;
     width: 950px;
-    z-index: -1;
 }
 /* end not list */
