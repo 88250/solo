@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.0, Jun 19, 2012
+ * @version 1.1.1.1, Jul 2, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -130,8 +130,6 @@ public final class UpgradeProcessor {
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
-            preference.put(Preference.COMMENTABLE, Preference.Default.DEFAULT_COMMENTABLE);
-            preference.put(Preference.EDITOR_TYPE, Preference.Default.DEFAULT_EDITOR_TYPE);
             preference.put(Preference.VERSION, "0.4.6");
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
