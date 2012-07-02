@@ -107,4 +107,4 @@ sup{font-size:10px;font-weight:normal;-webkit-text-size-adjust:none;}
 .dynamic .side-tags{width:186px;}
 .dynamic .side-tags li{float:left;margin:0 5px;}
 .links li{float:left;margin:0 20px 10px;width:273px;}
-.other-main{display:inline-block;margin:50px 20px 0;width:950px;}
+.other-main{display:inline-block;margin:50px 20px 0;width:950px;z-index:-1;}
