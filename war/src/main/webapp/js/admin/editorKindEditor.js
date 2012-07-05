@@ -56,8 +56,6 @@ admin.editors.KindEditor = {
                     "clearhtml", "source", "preview"
                     ],
                     afterCreate: function () {
-                        // TODO: chrome bug
-                        window.onhashchange = admin.setCurByHash;
                         if (typeof(conf.fun) === "function") {
                             conf.fun();
                         }
