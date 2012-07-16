@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Mar 31, 2012
+ * @version 1.0.1.0, Jul 16, 2012
  * @since 0.3.1
  */
 public final class PageCacheFilter implements Filter {
@@ -132,7 +132,7 @@ public final class PageCacheFilter implements Filter {
             request.setAttribute(Keys.PAGE_CACHE_KEY, pageCacheKey);
         }
 
-        final JSONObject cachedPageContentObject = PageCaches.get(pageCacheKey, httpServletRequest);
+        final JSONObject cachedPageContentObject = PageCaches.get(pageCacheKey, httpServletRequest, (HttpServletResponse) response);
 
         if (null == cachedPageContentObject) {
             LOGGER.log(Level.FINER, "Page cache miss for request URI[{0}]", requestURI);
@@ -187,7 +187,7 @@ public final class PageCacheFilter implements Filter {
             LOGGER.log(Level.FINEST, "Cached value[key={0}, type={1}, title={2}]",
                        new Object[]{pageCacheKey, cachedType, cachedTitle});
 
-            statistics.incBlogViewCount((HttpServletRequest) request);
+            statistics.incBlogViewCount((HttpServletRequest) request, (HttpServletResponse) response);
 
             final long endimeMillis = System.currentTimeMillis();
             final String dateString = DateFormatUtils.format(endimeMillis, "yyyy/MM/dd HH:mm:ss");
