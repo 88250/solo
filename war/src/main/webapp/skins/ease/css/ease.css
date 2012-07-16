@@ -99,6 +99,10 @@ sup {
     text-decoration: none;
 }
 
+.fn-mgtb10 {
+    margin: 10px 0;
+}
+
 .logo {
     padding: 0 5px;
     text-shadow: 0 0 1px #D5D5D5;
@@ -349,6 +353,7 @@ sup {
     line-height: 145%;
     overflow: hidden;
     word-wrap: break-word;
+    margin-bottom: 10px;
 }
 
 .article-body ol, .article-body ul {
@@ -399,7 +404,7 @@ sup {
     background-color: #FCFCFC;
     box-shadow: 0 0 2px #D5D5D5;
     float: left;
-    margin: 20px 0;
+    margin: 10px 0;
     padding: 0 20px 10px;
     width: 365px;
 }
@@ -474,6 +479,9 @@ sup {
 
 .form {
     padding: 0 70px 20px;
+}
+
+.body > .form {
     float: left;
 }
 

@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.0, May 22, 2012
+ * @version 1.0.3.1, Jul 5, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -418,7 +418,7 @@ $.extend(Page.prototype, {
             type: "POST",
             success: function(result, textStatus){
                 var randomArticles = result.randomArticles;
-                if (0 === randomArticles.length) {
+                if (!randomArticles || 0 === randomArticles.length) {
                     $("#randomArticles").remove();
                     return;
                 }
@@ -450,7 +450,7 @@ $.extend(Page.prototype, {
             type: "GET",
             success: function(data, textStatus){
                 var articles = data.relevantArticles;
-                if (0 === articles.length) {
+                if (!articles || 0 === articles.length) {
                     $("#relevantArticles").remove();
                     return;
                 }
@@ -494,7 +494,7 @@ $.extend(Page.prototype, {
                 },
                 success: function(data, textStatus){
                     var articles = data.articles;
-                    if (0 === articles.length) {
+                    if (!articles || 0 === articles.length) {
                         $("#externalRelevantArticles").remove();
                         return;
                     }

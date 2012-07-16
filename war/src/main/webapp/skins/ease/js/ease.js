@@ -88,7 +88,6 @@ var getNextPage = function () {
                 '</div>' +
                 '<div id="content' + article.oId + '" class="none"></div>' +
                 '</div>' +
-                '<div class="article-info">' +
                 '<div class="right ft-gray">';
                 if (article.hasUpdated) {
                     articlesHTML += Util.toDate(article.articleUpdateDate, 'yy-MM-dd HH:mm');
@@ -113,7 +112,6 @@ var getNextPage = function () {
                 
                 articlesHTML += '</div>' +
             '<div class="clear"></div>' +
-            '</div>' +
             '</li>';
             }
         

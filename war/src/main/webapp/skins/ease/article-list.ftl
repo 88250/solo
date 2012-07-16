@@ -33,24 +33,22 @@
             </div>
             <div id="content${article.oId}" class="none"></div>
         </div>
-        <div class="article-info">
-            <div class="right ft-gray">
-                <#if article.hasUpdated>
-                ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
-                <#else>
-                ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
-                </#if>
-                <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
-            </div>
-            <div class="left ft-gray">
-                ${tag1Label}
-                <#list article.articleTags?split(",") as articleTag>
-                <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
-                    ${articleTag}</a><#if articleTag_has_next>, </#if>
-                </#list>
-            </div>
-            <div class="clear"></div>
+        <div class="right ft-gray">
+            <#if article.hasUpdated>
+            ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
+            <#else>
+            ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
+            </#if>
+            <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
         </div>
+        <div class="left ft-gray">
+            ${tag1Label}
+            <#list article.articleTags?split(",") as articleTag>
+            <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                ${articleTag}</a><#if articleTag_has_next>, </#if>
+            </#list>
+        </div>
+        <div class="clear"></div>
     </li>
     </#list>
 </ul>

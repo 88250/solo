@@ -47,24 +47,22 @@
                     </p>
                     </#if>
                 </div>
-                <div class="article-info">
-                    <div class="right ft-gray">
-                            <#if article.hasUpdated>
-                            ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
-                            <#else>
-                            ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
-                            </#if>
-                        <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
-                    </div>
-                    <div class="left ft-gray">
-                        ${tag1Label}
-                        <#list article.articleTags?split(",") as articleTag>
-                        <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
-                        </#list>
-                    </div>
-                    <div class="clear"></div>
+                <div class="right ft-gray">
+                    <#if article.hasUpdated>
+                    ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
+                    <#else>
+                    ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
+                    </#if>
+                    <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                 </div>
-                <div>
+                <div class="left ft-gray">
+                    ${tag1Label}
+                    <#list article.articleTags?split(",") as articleTag>
+                    <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
+                    </#list>
+                </div>
+                <div class="clear"></div>
+                <div class="fn-mgtb10">
                     <#if 0 != relevantArticlesDisplayCount>
                     <div id="relevantArticles" class="article-relative"></div>
                     </#if>
@@ -73,21 +71,19 @@
                     </#if>
                     <div class="clear"></div>
                 </div>
-                <div>
-                    <#if nextArticlePermalink??>
-                    <div class="left">
-                        <span class="ft-gray">&lt;</span>
-                        <a href="${servePath}${nextArticlePermalink}">${nextArticleTitle}</a>
-                    </div>
-                    </#if>                            
-                    <#if previousArticlePermalink??>
-                    <div class="right">
-                        <a href="${servePath}${previousArticlePermalink}">${previousArticleTitle}</a> 
-                        <span class="ft-gray">&gt;</span>
-                    </div>
-                    </#if>
-                    <div class="clear"></div>
+                <#if nextArticlePermalink??>
+                <div class="left">
+                    <span class="ft-gray">&lt;</span>
+                    <a href="${servePath}${nextArticlePermalink}">${nextArticleTitle}</a>
                 </div>
+                </#if>                            
+                <#if previousArticlePermalink??>
+                <div class="right">
+                    <a href="${servePath}${previousArticlePermalink}">${previousArticleTitle}</a> 
+                    <span class="ft-gray">&gt;</span>
+                </div>
+                </#if>
+                <div class="clear"></div>
             </div>
             <@comments commentList=articleComments article=article></@comments>
         </div>
