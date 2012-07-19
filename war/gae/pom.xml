@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo GAE POM.
-    Version: 2.0.0.7, Jun 19, 2012
+    Version: 2.0.0.8, Jul 19, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -23,7 +23,7 @@
     </parent>
     
     <properties>
-        <maven-gae-plugin.version>0.9.2</maven-gae-plugin.version>    
+        <maven-gae-plugin.version>0.9.4</maven-gae-plugin.version>    
         <gae.dev_sever.port>8080</gae.dev_sever.port>
     </properties>
 
