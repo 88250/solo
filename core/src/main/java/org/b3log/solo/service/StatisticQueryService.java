@@ -19,59 +19,40 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
+import org.b3log.solo.model.Statistic;
+import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.json.JSONObject;
 
 /**
- * Preference query service.
+ * Statistic query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 31, 2011
- * @since 0.4.0
+ * @version 1.0.0.0, Jul 18, 2012
+ * @since 0.5.0
  */
-public final class PreferenceQueryService {
+public final class StatisticQueryService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PreferenceQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StatisticQueryService.class.getName());
     /**
-     * Preference repository.
+     * Statistic repository.
      */
-    private PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
+    private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
 
     /**
-     * Gets the reply notification template.
+     * Gets the statistic.
      * 
-     * @return reply notification template, returns {@code null} if not found
-     * @throws ServiceException service exception
-     */
-    public JSONObject getReplyNotificationTemplate() throws ServiceException {
-        try {
-            return preferenceRepository.get(Preference.REPLY_NOTIFICATION_TEMPLATE);
-        } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Updates reply notification template failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * Gets the user preference.
-     * 
-     * <p>
-     *   <b>Note</b>: Invoking the method will not load skin.
-     * </p>
-     *
-     * @return user preference, returns {@code null} if not found
+     * @return statistic, returns {@code null} if not found
      * @throws ServiceException if repository exception
      */
-    public JSONObject getPreference() throws ServiceException {
+    public JSONObject getStatistic() throws ServiceException {
         try {
-            final JSONObject ret = preferenceRepository.get(Preference.PREFERENCE);
+            final JSONObject ret = statisticRepository.get(Statistic.STATISTIC);
             if (null == ret) {
-                LOGGER.log(Level.WARNING, "Can not load preference from datastore");
+                LOGGER.log(Level.WARNING, "Can not load statistic from repository");
                 return null;
             }
 
@@ -83,18 +64,18 @@ public final class PreferenceQueryService {
     }
 
     /**
-     * Gets the {@link PreferenceQueryService} singleton.
+     * Gets the {@link StatisticQueryService} singleton.
      *
      * @return the singleton
      */
-    public static PreferenceQueryService getInstance() {
+    public static StatisticQueryService getInstance() {
         return SingletonHolder.SINGLETON;
     }
 
     /**
      * Private constructor.
      */
-    private PreferenceQueryService() {
+    private StatisticQueryService() {
     }
 
     /**
@@ -108,8 +89,7 @@ public final class PreferenceQueryService {
         /**
          * Singleton.
          */
-        private static final PreferenceQueryService SINGLETON =
-                new PreferenceQueryService();
+        private static final StatisticQueryService SINGLETON = new StatisticQueryService();
 
         /**
          * Private default constructor.

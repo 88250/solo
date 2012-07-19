@@ -23,9 +23,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Statistic;
-import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
-import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Articles;
 import org.json.JSONObject;
@@ -34,7 +32,7 @@ import org.json.JSONObject;
  * Blog processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jun 28, 2012
+ * @version 1.0.0.1, Jul 18, 2012
  * @since 0.4.6
  */
 @RequestProcessor
@@ -49,13 +47,9 @@ public final class BlogProcessor {
      */
     private TagQueryService tagQueryService = TagQueryService.getInstance();
     /**
-     * Preference query service.
+     * Statistic query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
-    /**
-     * Statistic repository.
-     */
-    private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
+    private StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
 
     /**
      * Gets blog information.
@@ -84,7 +78,7 @@ public final class BlogProcessor {
         renderer.setJSONObject(jsonObject);
 
         jsonObject.put("recentArticleTime", articleUtils.getRecentArticleTime());
-        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
+        final JSONObject statistic = statisticQueryService.getStatistic();
         jsonObject.put("articleCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
         jsonObject.put("commentCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
         jsonObject.put("tagCount", tagQueryService.getTagCount());

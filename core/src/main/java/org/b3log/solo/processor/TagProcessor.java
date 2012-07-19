@@ -25,8 +25,6 @@ import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Users;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Tags;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.util.CollectionUtils;
 import java.net.URLDecoder;
 import java.util.Collections;
 import org.b3log.latke.model.Pagination;
@@ -35,9 +33,6 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.util.comparator.Comparators;
-import org.json.JSONArray;
-import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.LangPropsService;
@@ -65,7 +60,7 @@ import static org.b3log.latke.action.AbstractCacheablePageAction.*;
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.8, Dec 23, 2011
+ * @version 1.1.0.9, Jul 18, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -75,10 +70,6 @@ public final class TagProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagProcessor.class.getName());
-    /**
-     * Tag repository.
-     */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
     /**
      * Filler.
      */
@@ -293,11 +284,7 @@ public final class TagProcessor {
             request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
             request.setAttribute(CACHED_LINK, "/tags.html");
 
-            final Query query = new Query().setPageCount(1);
-            final JSONObject result = tagRepository.get(query);
-            final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);
-
-            final List<JSONObject> tags = CollectionUtils.jsonArrayToList(tagArray);
+            final List<JSONObject> tags = tagQueryService.getTags();
             tagUtils.removeForUnpublishedArticles(tags);
             Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
 
