@@ -10,7 +10,7 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="body">
+        <div class="wrapper">
             <#if 0 != links?size>
             <ul class="other-main links">
                 <#list links as link>

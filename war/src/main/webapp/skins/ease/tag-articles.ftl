@@ -10,7 +10,7 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="body">
+        <div class="wrapper">
             <h2>
                 <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}">
                     ${tag1Label}

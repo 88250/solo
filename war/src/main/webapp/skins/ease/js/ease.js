@@ -115,7 +115,7 @@ var getNextPage = function () {
             '</li>';
             }
         
-            $(".body>ul").append(articlesHTML);
+            $("body>.wrapper>ul").append(articlesHTML);
             
             // 最后一页处理
             if (pagination.paginationPageCount === currentPage) {
@@ -130,7 +130,7 @@ var getNextPage = function () {
 var ease = {
     $header: $(".header"),
     headerH: $(".header").height(),
-    $body: $(".body"),
+    $body: $("body > .wrapper"),
     $nav: $(".nav"),
     getCurrentPage: function () {
         var $next = $(".article-next");

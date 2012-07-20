@@ -17,7 +17,7 @@
 * skin ease style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.4, Jul 2, 2012
+* @version 1.0.1.5, Jul 20, 2012
 */
 /* start base */
 html, body, div, ul, li {
@@ -199,11 +199,7 @@ sup {
 
 /* start frame */
 .wrapper {
-    margin: 0 50px;
-}
-
-.body {
-    margin: 0 auto 50px;
+    margin: 0 auto;
     width: 990px;
 }
 /* end frame */
@@ -313,6 +309,7 @@ sup {
     font-size: 11px;
     padding: 12px 0;
     -webkit-text-size-adjust: none;
+    margin-top: 50px;
 }
 
 #goTop {
@@ -334,7 +331,7 @@ sup {
 /* end footer*/
 
 /* start article list */
-.body > ul {
+.wrapper > ul {
     list-style: none;
 }
 
@@ -481,7 +478,7 @@ sup {
     padding: 0 70px 20px;
 }
 
-.body > .form {
+.wrapper > .form {
     float: left;
 }
 

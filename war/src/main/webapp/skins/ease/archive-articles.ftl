@@ -10,7 +10,7 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="body">
+        <div class="wrapper">
             <h2>${archive1Label}
                 <#if "en" == localeString?substring(0, 2)>
                 ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})

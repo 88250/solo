@@ -11,7 +11,7 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="body">
+        <div class="wrapper">
             <div class="article-body article">
                 ${page.pageContent}
             </div>
