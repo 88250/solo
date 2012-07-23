@@ -35,8 +35,7 @@ sup{font-size:10px;font-weight:normal;-webkit-text-size-adjust:none;}
 #search,.translate-ico{background-image:url(/skins/ease/images/icons.png);}
 .translate-ico{background-position:1px -125px;background-repeat:no-repeat;border:1px solid #D5D5D5;border-radius:3px;cursor:pointer;float:right;height:16px;margin:-3px 0 0 15px;padding:1px;width:16px;}
 .translate-ico:hover{border-color:#9a9a9a;box-shadow:0 0 1px #808080;background-color:#FCFCFC;}
-.wrapper{margin:0 50px;}
-.body{margin:0 auto 50px;width:990px;}
+.wrapper{margin:0 auto;width:990px;}
 .header{width:100%;background-color:#FCFCFC;z-index:1;}
 .header .title{border-bottom:1px solid #808080;font-size:26px;font-weight:normal;}
 .header .sub-title{font-size:11px;}
@@ -51,10 +50,10 @@ sup{font-size:10px;font-weight:normal;-webkit-text-size-adjust:none;}
 .nav a:hover{color:#FFF;background-color:#535353;}
 .nav a.current{background-color:#FFF;box-shadow:0 -1px 1px rgba(0,0,0,0.1) inset, 0 1px 1px rgba(0,0,0,0.1) inset;color:#808080;}
 .nav img{margin-left:3px;}
-.footer{background-color:#FCFCFC;border-top:2px solid #D5D5D5;font-size:11px;padding:12px 0;-webkit-text-size-adjust:none;}
+.footer{background-color:#FCFCFC;border-top:2px solid #D5D5D5;font-size:11px;padding:12px 0;-webkit-text-size-adjust:none;margin-top:50px;}
 #goTop{background:url(/skins/ease/images/icons.png) no-repeat scroll 5px -51px #D5D5D5;border-radius:2px 2px 0 0;cursor:pointer;font-size:11px;height:21px;line-height:21px;padding:0 10px 0 23px;position:absolute;right:50px;display:none;}
 #goTop:hover{background-color:#D5D5D5;}
-.body > ul{list-style:none;}
+.wrapper > ul{list-style:none;}
 .article{border-bottom:1px solid #f6f6f6;padding:20px 70px;}
 .article:hover{border-bottom-color:#D5D5D5;box-shadow:0 0 1px #f6f6f6 inset;background-color:#FCFCFC;}
 .article-body{line-height:145%;overflow:hidden;word-wrap:break-word;margin-bottom:10px;}
@@ -79,7 +78,7 @@ sup{font-size:10px;font-weight:normal;-webkit-text-size-adjust:none;}
 .comment-body-ref > .comment-header{border:0 none;float:right;height:48px;width:48px;padding:0;}
 .comment-body-ref > .comment-panel{margin:0 20px 0 0;min-height:48px;width:756px;}
 .form{padding:0 70px 20px;}
-.body > .form{float:left;}
+.wrapper > .form{float:left;}
 .form th{text-align:right;white-space:nowrap;}
 .form input[type=text],.form input[type=password],.form textarea{background-color:#FCFCFC;border-width:0;box-shadow:0 0 2px #BCBCBC;font-family:Verdana,arial,\5fae\8f6f\96c5\9ed1;font-size:12px;margin:0 5px 10px 0;outline:medium none;padding:0 3px;height:28px;line-height:28px;width:260px;}
 .form input:focus,.form textarea:focus{box-shadow:0 0 4px #D5D5D5;}
