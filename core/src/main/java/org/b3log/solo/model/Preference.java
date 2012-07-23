@@ -194,7 +194,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.1.0.6, Mar 28, 2012
+     * @version 1.1.0.7, Jun 12, 2012
      * @since 0.3.1
      */
     public static final class Default {
@@ -238,7 +238,7 @@ public final class Preference {
         /**
          * Default skin directory name.
          */
-        public static final String DEFAULT_SKIN_DIR_NAME = "classic";
+        public static final String DEFAULT_SKIN_DIR_NAME = "ease";
         /**
          * Default language.
          */

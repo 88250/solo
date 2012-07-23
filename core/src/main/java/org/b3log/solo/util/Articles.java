@@ -27,10 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -132,6 +129,27 @@ public final class Articles {
         }
 
         return true;
+    }
+
+    /**
+     * Gets time of the recent updated article.
+     * 
+     * @return time of the recent updated article, returns {@code 0} if not found
+     * @throws ServiceException service exception
+     */
+    public long getRecentArticleTime() throws ServiceException {
+        try {
+            final List<JSONObject> recentArticles = articleRepository.getRecentArticles(1);
+            if (recentArticles.isEmpty()) {
+                return 0;
+            }
+
+            final JSONObject recentArticle = recentArticles.get(0);
+            return ((Date) recentArticle.get(Article.ARTICLE_UPDATE_DATE)).getTime();
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            throw new ServiceException("Gets recent article time failed");
+        }
     }
 
     /**
@@ -261,7 +279,8 @@ public final class Articles {
         final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
         sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        final Query query = new Query().addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true);
+        final Query query = new Query().setFilter(
+                new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
         final JSONObject result = articleRepository.get(query);
         final JSONArray articles = result.getJSONArray(Keys.RESULTS);
 

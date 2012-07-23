@@ -17,7 +17,7 @@
  * table and paginate util
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.7, Nov 8, 2011
+ * @version 1.0.0.8, Jun 11, 2012
  */
 
 var TablePaginate = function (id) {
@@ -50,9 +50,12 @@ $.extend(TablePaginate.prototype, {
     initPagination: function () {
         var id = this.id;
         $("#" + id + "Pagination").paginate({
-            "bind": function(currentPage) {
-                admin.setHashByPage(currentPage);
-                return true;
+            "bind": function(currentPage, errorMessage) {
+                if (errorMessage) {
+                    $("#tipMsg").text(errorMessage);
+                } else {
+                    admin.setHashByPage(currentPage);
+                }
             },
             "currentPage": 1,
             "errorMessage": Label.inputErrorLabel,
@@ -71,8 +74,6 @@ $.extend(TablePaginate.prototype, {
     initCommentsDialog: function () {
         var that = this;
         $("#" + this.id + "Comments").dialog({
-            width: 700,
-            height:500,
             "modal": true,
             "hideFooter": true,
             "close": function () {
@@ -88,8 +89,8 @@ $.extend(TablePaginate.prototype, {
     updateTablePagination: function (data, currentPage, pageInfo) {
         currentPage = parseInt(currentPage);
         if (currentPage > pageInfo.paginationPageCount && currentPage > 1) {
-            $("#tipMsg").text(Label.pageLabel + ":" + currentPage + " " + Label.noDataLable);
-             $("#loadMsg").text("");
+            $("#tipMsg").text(Label.pageLabel + currentPage + Label.notFoundLabel);
+            $("#loadMsg").text("");
             return;
         }
         $("#" + this.id + "Table").table("update", {

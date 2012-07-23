@@ -39,9 +39,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.*;
 import org.b3log.latke.util.freemarker.Templates;
@@ -54,17 +52,16 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
-import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
+import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
@@ -75,7 +72,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.5.9, May 22, 2012
+ * @version 1.0.6.0, Jul 18, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -117,9 +114,9 @@ public final class Filler {
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
     /**
-     * Statistic repository.
+     * Statistic query service.
      */
-    private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
+    private StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
     /**
      * User repository.
      */
@@ -149,12 +146,12 @@ public final class Filler {
             final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-            final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
+            final JSONObject statistic = statisticQueryService.getStatistic();
             final int publishedArticleCnt = statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) publishedArticleCnt / (double) pageSize);
 
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(pageCount).
-                    addFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED).
+                    setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED)).
                     addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).
                     index(Article.ARTICLE_PERMALINK);
 
@@ -669,10 +666,10 @@ public final class Filler {
         Stopwatchs.start("Fill Statistic");
         try {
             LOGGER.finer("Filling statistic....");
-            final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
+            final JSONObject statistic = statisticQueryService.getStatistic();
 
             dataModel.put(Statistic.STATISTIC, statistic);
-        } catch (final RepositoryException e) {
+        } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Fills statistic failed", e);
             throw new ServiceException(e);
         } finally {

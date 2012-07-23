@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
@@ -258,7 +258,8 @@ public final class ArticleQueryService {
                     setPageSize(pageSize).
                     addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING).
                     addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING).
-                    addFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished);
+                    setFilter(
+                    new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
 
             int articleCount = statistics.getBlogArticleCount();
             if (!articleIsPublished) {
@@ -335,7 +336,8 @@ public final class ArticleQueryService {
 
             final List<JSONObject> ret = new ArrayList<JSONObject>();
 
-            final Query query = new Query().addFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds).
+            final Query query = new Query().setFilter(
+                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     setPageCount(1).index(Article.ARTICLE_PERMALINK);
             result = articleRepository.get(query);
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
@@ -389,7 +391,8 @@ public final class ArticleQueryService {
 
             final List<JSONObject> ret = new ArrayList<JSONObject>();
 
-            final Query query = new Query().addFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds).
+            final Query query = new Query().setFilter(
+                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     setPageCount(1).index(Article.ARTICLE_PERMALINK);
             result = articleRepository.get(query);
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);

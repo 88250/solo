@@ -33,7 +33,7 @@ import org.json.JSONObject;
  * Tag query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 11, 2011
+ * @version 1.0.0.3, Jun 28, 2012
  * @since 0.4.0
  */
 public final class TagQueryService {
@@ -41,8 +41,7 @@ public final class TagQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(TagQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagQueryService.class.getName());
     /**
      * Tag repository.
      */
@@ -65,8 +64,7 @@ public final class TagQueryService {
      * </pre>, returns {@code null} if not found
      * @throws ServiceException service exception
      */
-    public JSONObject getTagByTitle(final String tagTitle)
-            throws ServiceException {
+    public JSONObject getTagByTitle(final String tagTitle) throws ServiceException {
         try {
             final JSONObject ret = new JSONObject();
 
@@ -83,6 +81,22 @@ public final class TagQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Gets an article failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the count of tags.
+     * 
+     * @return count of tags
+     * @throws ServiceException service exception
+     */
+    public long getTagCount() throws ServiceException {
+        try {
+            return tagRepository.count();
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets tags failed", e);
+
             throw new ServiceException(e);
         }
     }

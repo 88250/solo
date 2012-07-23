@@ -2,14 +2,8 @@
 <html>
     <head>
         <meta charset="utf-8" />
+        <meta name="robots" content="none" />
         <title>${blogTitle} - 404 Not Found!</title>
-        <meta name="keywords" content="GAE 博客,GAE blog,b3log,init" />
-        <meta name="description" content="An open source blog with Java. Java 开源博客" />
-        <meta name="author" content="B3log Team" />
-        <meta name="generator" content="B3log" />
-        <meta name="copyright" content="B3log" />
-        <meta name="revised" content="B3log, ${year}" />
-        <meta http-equiv="Window-target" content="_top" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
     </head>
@@ -24,6 +18,8 @@
                     </div>
                     <div class="main">
                         <h2>404 Not Found!</h2>
+                        <img class="img-404" alt="404: not found"  title="404: not found" src="${staticServePath}/images/404.png" />
+                        <div class="a-404"><a href="${servePath}">Index</a></div>
                         <a href="http://b3log.org" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
                         </a>
@@ -34,7 +30,7 @@
         </div>
         <div class="footerWrapper">
             <div class="footer">
-                &copy; 2012
+                &copy; ${year}
                 Powered by
                 <a href="http://b3log.org" target="_blank">
                     <span style="color: orange;">B</span><span style="color: blue;"><sup>3</sup></span><span style="color: green;">L</span><span style="color: red;">O</span><span style="color: blue;">G</span>

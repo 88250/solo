@@ -42,9 +42,8 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
-import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
@@ -54,7 +53,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.1.0.8, Mar 4, 2012
+ * @version 1.1.0.9, Jul 18, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -65,9 +64,9 @@ public final class LoginProcessor {
      */
     private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
     /**
-     * User repository.
+     * User query service.
      */
-    private static UserRepository userRepository = UserRepositoryImpl.getInstance();
+    private static UserQueryService userQueryService = UserQueryService.getInstance();
     /**
      * Language service.
      */
@@ -154,7 +153,7 @@ public final class LoginProcessor {
 
             LOGGER.log(Level.INFO, "Login[email={0}]", userEmail);
 
-            final JSONObject user = userRepository.getByEmail(userEmail);
+            final JSONObject user = userQueryService.getUserByEmail(userEmail);
             if (null == user) {
                 LOGGER.log(Level.WARNING, "Not found user[email={0}", userEmail);
                 return;
@@ -225,7 +224,7 @@ public final class LoginProcessor {
                     break;
                 }
 
-                final JSONObject user = userRepository.getByEmail(userEmail.toLowerCase().trim());
+                final JSONObject user = userQueryService.getUserByEmail(userEmail.toLowerCase().trim());
                 if (null == user) {
                     break;
                 }

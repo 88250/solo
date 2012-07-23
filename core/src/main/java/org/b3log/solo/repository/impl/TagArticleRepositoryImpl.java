@@ -21,11 +21,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -50,7 +46,8 @@ public final class TagArticleRepositoryImpl extends AbstractRepository implement
 
     @Override
     public List<JSONObject> getByArticleId(final String articleId) throws RepositoryException {
-        final Query query = new Query().addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId).
+        final Query query = new Query().setFilter(
+                new PropertyFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId)).
                 setPageCount(1);
 
         final JSONObject result = get(query);
@@ -62,7 +59,8 @@ public final class TagArticleRepositoryImpl extends AbstractRepository implement
     @Override
     public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)
             throws RepositoryException {
-        final Query query = new Query().addFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId).
+        final Query query = new Query().setFilter(
+                new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).
                 addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setCurrentPageNum(currentPageNum).
                 setPageSize(pageSize).

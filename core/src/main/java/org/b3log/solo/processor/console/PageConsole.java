@@ -35,13 +35,15 @@ import org.b3log.solo.service.PageQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
 import org.b3log.latke.util.Requests;
+import org.b3log.solo.model.Page;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Plugin console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2011
+ * @version 1.0.0.1, Jun 20, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -419,6 +421,19 @@ public final class PageConsole {
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
             final JSONObject result = pageQueryService.getPages(requestJSONObject);
+            
+            final JSONArray pages = result.optJSONArray(Page.PAGES);
+            
+            // Site-internal URLs process
+            for (int i = 0; i < pages.length(); i++) {
+                final JSONObject page  = pages.getJSONObject(i);
+                
+                if ("page".equals(page.optString(Page.PAGE_TYPE))) {
+                    final String permalink = page.optString(Page.PAGE_PERMALINK);
+                    page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + permalink);
+                }
+            }
+            
             result.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(result);

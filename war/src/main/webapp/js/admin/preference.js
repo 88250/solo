@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, May 3, 2012
+ * @version 1.0.1.5, Jun 26, 2012
  */
 
 /* preference 相关操作 */
@@ -125,13 +125,60 @@ admin.preference = {
         });
     },
     
+    /* 
+     * @description 参数校验
+     */
+    validate: function () {
+        if (!/^\d+$/.test($("#mostUsedTagDisplayCount").val())) {
+            $("#tipMsg").text("[" + Label.paramSettingsLabel + " - " + Label.indexTagDisplayCntLabel + "] " + Label.nonNegativeIntegerOnlyLabel);
+            $("#mostUsedTagDisplayCount").focus();
+            return false;
+        } else if (!/^\d+$/.test($("#recentCommentDisplayCount").val())) {
+            $("#tipMsg").text("[" + Label.paramSettingsLabel + " - " + Label.indexRecentCommentDisplayCntLabel + "] " + Label.nonNegativeIntegerOnlyLabel);
+            $("#recentCommentDisplayCount").focus();
+            return false;
+        } else if (!/^\d+$/.test($("#mostCommentArticleDisplayCount").val())) {
+            $("#tipMsg").text("[" + Label.paramSettingsLabel + " - " + Label.indexMostCommentArticleDisplayCntLabel + "] " + Label.nonNegativeIntegerOnlyLabel);
+            $("#mostCommentArticleDisplayCount").focus();
+            return false;
+        } else if (!/^\d+$/.test($("#mostViewArticleDisplayCount").val())) {
+            $("#tipMsg").text("[" + Label.paramSettingsLabel + " - " + Label.indexMostViewArticleDisplayCntLabel + "] " + Label.nonNegativeIntegerOnlyLabel);
+            $("#mostViewArticleDisplayCount").focus();
+            return false;
+        } else if (!/^\d+$/.test($("#articleListDisplayCount").val())) {
+            $("#tipMsg").text("[" + Label.paramSettingsLabel + " - " + Label.pageSizeLabel + "] " + Label.nonNegativeIntegerOnlyLabel);
+            $("#articleListDisplayCount").focus();
+            return false;
+        } else if (!/^\d+$/.test($("#articleListPaginationWindowSize").val())) {
+            $("#tipMsg").text("[" + Label.paramSettingsLabel + " - " + Label.windowSizeLabel + "] " + Label.nonNegativeIntegerOnlyLabel);
+            $("#articleListPaginationWindowSize").focus();
+            return false;
+        } else if (!/^\d+$/.test($("#randomArticlesDisplayCount").val())) {
+            $("#tipMsg").text("[" + Label.paramSettingsLabel + " - " + Label.randomArticlesDisplayCntLabel + "] " + Label.nonNegativeIntegerOnlyLabel);
+            $("#randomArticlesDisplayCount").focus();
+            return false;
+        } else if (!/^\d+$/.test($("#relevantArticlesDisplayCount").val())) {
+            $("#tipMsg").text("[" + Label.paramSettingsLabel + " - " + Label.relevantArticlesDisplayCntLabel + "] " + Label.nonNegativeIntegerOnlyLabel);
+            $("#relevantArticlesDisplayCount").focus();
+            return false;
+        } else if (!/^\d+$/.test($("#externalRelevantArticlesDisplayCount").val())) {
+            $("#tipMsg").text("[" + Label.paramSettingsLabel + " - " + Label.externalRelevantArticlesDisplayCntLabel + "] " + Label.nonNegativeIntegerOnlyLabel);
+            $("#externalRelevantArticlesDisplayCount").focus();
+            return false;
+        }
+        return true;
+    },
+    
     /*
-     * 更新
+     * @description 更新
      */
     update: function () {
-        $("#loadMsg").text(Label.loadingLabel);
-        $("#tipMsg").text("");
+        if (!admin.preference.validate()) {
+            return;
+        }
 
+        $("#tipMsg").text("");
+        $("#loadMsg").text(Label.loadingLabel);
         var signs = [{
             "oId": 0,
             "signHTML": ""

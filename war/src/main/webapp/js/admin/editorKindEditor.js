@@ -17,7 +17,7 @@
  * @fileoverview KindEditor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, May 2, 2012
+ * @version 1.0.0.2, Jun 19, 2012
  */
 admin.editors.KindEditor = {
     /*

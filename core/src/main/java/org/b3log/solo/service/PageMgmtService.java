@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Page management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Feb 25, 2012
+ * @version 1.0.0.7, Jun 8, 2012
  * @since 0.4.0
  */
 public final class PageMgmtService {
@@ -149,7 +149,7 @@ public final class PageMgmtService {
 
             // Editor type
             final JSONObject preference = preferenceQueryService.getPreference();
-            page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+            newPage.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
 
             pageRepository.update(pageId, newPage);
 

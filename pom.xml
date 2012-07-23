@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.1.9, May 29, 2012
+    Version: 2.0.2.1, Jun 27, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -11,7 +11,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>solo</artifactId>
     <packaging>pom</packaging>
-    <version>0.4.5</version>
+    <version>0.4.6</version>
     <name>B3log Solo</name>
     <url>https://github.com/b3log/b3log-solo</url>
     <description>
@@ -28,13 +28,13 @@
     <!-- Properties -->
     <properties>
         <servlet.version>2.5</servlet.version>
-        <org.b3log.solo.version>0.4.5</org.b3log.solo.version>
+        <org.b3log.solo.version>0.4.6</org.b3log.solo.version>
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
         <org.b3log.latke-gae.version>0.5.0-SNAPSHOT</org.b3log.latke-gae.version>
         <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
-        <gae.version>1.6.5</gae.version>
+        <gae.version>1.7.0</gae.version>
         
-        <freemarker-gae.version>2.3.18</freemarker-gae.version>
+        <freemarker-gae.version>2.3.19</freemarker-gae.version>
         <jsoup.version>1.5.2</jsoup.version>
         <markdownpapers-core.version>1.2.7</markdownpapers-core.version>
 <!--        <com.google.api.client.version>1.2.1-alpha</com.google.api.client.version>-->

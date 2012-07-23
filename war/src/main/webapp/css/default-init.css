@@ -1,8 +1,24 @@
-/**
- * 403, 500, article-pwd, init, login and kill-browser page style.
+/*
+ * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.0, May 11, 2012
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
+/**
+* 403, 404, 500, article-pwd, init, login and kill-browser page style.
+*
+* @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+* @version 1.0.1.1, Jun 13, 2012
 */
 html {
     height: 100%;
@@ -168,26 +184,34 @@ input:focus {
 }
 /* end article-pwd */
 
-/* start error */
-
-.error {
-    height: auto; 
-    margin: 60px 0pt;
+/* start 403/404/500 */
+.img-404, .img-403, .img-500 {
+    box-shadow: 0 0 5px #E6E5D9;
+    margin: 20px 0 0 45px;
+    padding: 5px;
 }
 
-.error ul {
-    width: 50%;
-    margin: 12px 0 0 12px;
-    float: left;
+.a-404, .a-403, .a-500 {
+    margin: 20px 50px 0 0 ;
+    text-align: right;
 }
 
-.error .img-forbidden {
-    margin: 38px 10px 0 0;
-    width: 96px;
-    height: 96px;
-    float: right;
+.img-403 {
+    margin: 20px 0 0 60px;
 }
-/* end 500 */
+
+.a-403 {
+    margin: 20px 75px 0 0 ;
+}
+
+.img-500 {
+    margin: 25px 0 0 25px;
+}
+
+.a-500 {
+    margin: 25px 35px 0 0 ;
+}
+/* end 403/404/500 */
 
 /* start login */
 .login table {

@@ -19,6 +19,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
@@ -81,18 +82,14 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertNotNull(admin);
         Assert.assertEquals("test", admin.optString(User.USER_NAME));
 
-        final JSONObject result =
-                userRepository.get(new Query().addFilter(User.USER_NAME,
-                                                         FilterOperator.EQUAL,
-                                                         "test1"));
+        final JSONObject result = userRepository.get(new Query().setFilter(
+                new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, "test1")));
 
         final JSONArray users = result.getJSONArray(Keys.RESULTS);
         Assert.assertEquals(users.length(), 1);
-        Assert.assertEquals(users.getJSONObject(0).getString(User.USER_EMAIL),
-                            "test1@gmail.com");
+        Assert.assertEquals(users.getJSONObject(0).getString(User.USER_EMAIL), "test1@gmail.com");
 
-        final JSONObject notFound =
-                userRepository.getByEmail("not.found@gmail.com");
+        final JSONObject notFound = userRepository.getByEmail("not.found@gmail.com");
         Assert.assertNull(notFound);
 
         final JSONObject found = userRepository.getByEmail("test1@gmail.com");

@@ -79,9 +79,7 @@ public final class Tags {
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
-    public void removeForUnpublishedArticles(
-            final List<JSONObject> tags) throws JSONException,
-                                                RepositoryException {
+    public void removeForUnpublishedArticles(final List<JSONObject> tags) throws JSONException, RepositoryException {
         final Iterator<JSONObject> iterator = tags.iterator();
         while (iterator.hasNext()) {
             final JSONObject tag = iterator.next();

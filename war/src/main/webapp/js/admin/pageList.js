@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, May 4, 2012
+ * @version 1.0.2.1, Jun 20, 2012
  */
 
 /* page-list 相关操作 */
@@ -97,7 +97,7 @@ admin.pageList = {
             if (admin.pageList.type === "page") {
                 $("#pagePagePanel").slideDown();
                 
-                // 使用 CodeMirror 编辑器时，当编辑器初识之前，元素为 display:none 时，行号显示不正常
+                // 使用 CodeMirror 编辑器时，当编辑器初始之前，元素为 display:none 时，行号显示不正常
                 if (Label.editorType === "CodeMirror-Markdown" && admin.editorPage.getContent() === "") {
                     admin.editorPage.setContent("");
                 }
@@ -151,14 +151,14 @@ admin.pageList = {
                                     </div>';
                     }
                             
-                    pageData[i].pageTitle = "<a class='no-underline' href='" + latkeConfig.servePath + pages[i].pagePermalink + "' target='_blank'>" +
+                    pageData[i].pageTitle = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>" +
                     pages[i].pageTitle + "</a>";
-                    pageData[i].pagePermalink = "<a class='no-underline' href='" + latkeConfig.servePath + pages[i].pagePermalink + "' target='_blank'>"
+                    pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                     + pages[i].pagePermalink + "</a>";
                     pageData[i].pageTarget = pages[i].pageOpenTarget;
                     pageData[i].pageType = pages[i].pageType ;
                     pageData[i].comments = pages[i].pageCommentCount;
-                    pageData[i].expendRow = "<span><a href='" + latkeConfig.servePath + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
+                    pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.get('" + pages[i].oId + "')\">" + Label.updateLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "')\">" + Label.removeLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + pages[i].oId + "', 'page')\">" + Label.commentLabel + "</a></span>";

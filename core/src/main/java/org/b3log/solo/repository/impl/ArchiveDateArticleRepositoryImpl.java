@@ -16,12 +16,8 @@
 package org.b3log.solo.repository.impl;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.*;
 import org.b3log.solo.model.Article;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.json.JSONArray;
@@ -45,8 +41,8 @@ public final class ArchiveDateArticleRepositoryImpl extends AbstractRepository i
     @Override
     public JSONObject getByArchiveDateId(final String archiveDateId, final int currentPageNum, final int pageSize)
             throws RepositoryException {
-        final Query query = new Query().addFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
-                                                  FilterOperator.EQUAL, archiveDateId).
+        final Query query = new Query().setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID,
+                                                                     FilterOperator.EQUAL, archiveDateId)).
                 addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID,
                         SortDirection.DESCENDING).
                 setCurrentPageNum(currentPageNum).
@@ -59,7 +55,7 @@ public final class ArchiveDateArticleRepositoryImpl extends AbstractRepository i
     @Override
     public JSONObject getByArticleId(final String articleId) throws RepositoryException {
         final Query query = new Query();
-        query.addFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId);
+        query.setFilter(new PropertyFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
