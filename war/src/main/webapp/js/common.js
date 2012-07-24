@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Jul 16, 2012
+ * @version 1.0.2.2, Jul 23, 2012
  */
 
 /**
@@ -44,7 +44,7 @@ var Util = {
         if ($.browser.msie) {
             // kill IE6 and IE7
             if ($.browser.version === "6.0" || $.browser.version === "7.0") {
-                window.location = "/kill-browser.html";
+                window.location = latkeConfig.servePath + "/kill-browser.html";
                 return;
             }
             
@@ -53,7 +53,7 @@ var Util = {
                 var path = external.twGetRunPath();
                 if(path && path.toLowerCase().indexOf("360se") > -1 && 
                     window.location.href.indexOf("admin-index") > -1) {
-                    window.location = "/kill-browser.html";
+                    window.location = latkeConfig.servePath + "/kill-browser.html";
                     return; 
                 }
             }
