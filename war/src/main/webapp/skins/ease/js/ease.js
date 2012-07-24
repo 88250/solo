@@ -18,7 +18,7 @@
  * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.1, Jun 18, 2012
+ * @version 1.0.1.2, Jul 24, 2012
  */
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
@@ -162,6 +162,7 @@ var ease = {
             return;
         }
         
+        $(".footer").css("marginTop", "30px");
         var years = [],
         $archiveList = $archives.find("span").each(function () {
             var year = $(this).data("year"),
@@ -204,7 +205,7 @@ var ease = {
                     break;
                 }
                 
-                $items[m].style.left = (n * 318) + "px";
+                $items[m].style.left = (n * 310) + "px";
                 
                 if (line > 0) {
                     if ($items[m - 3].style.top !== "") {

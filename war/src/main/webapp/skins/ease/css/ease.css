@@ -17,7 +17,7 @@
 * skin ease style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.5, Jul 20, 2012
+* @version 1.0.1.6, Jul 24, 2012
 */
 /* start base */
 html, body, div, ul, li {
@@ -337,7 +337,7 @@ sup {
 
 .article {
     border-bottom: 1px solid #f6f6f6;
-    padding: 20px 70px 20px;
+    padding: 30px 50px;
 }
 
 .article:hover {
@@ -403,7 +403,7 @@ sup {
     float: left;
     margin: 10px 0;
     padding: 0 20px 10px;
-    width: 365px;
+    width: 385px;
 }
 
 .article-relative:hover {
@@ -420,14 +420,14 @@ sup {
 }
 
 #externalRelevantArticles {
-    width: 297px;
+    width: 357px;
     margin-top: 0;
 }
 /* end article*/
 
 /* start comment */
 #comments {
-    padding: 20px 70px 20px;
+    padding: 20px 50px;
     position: relative;
 }
 
@@ -443,17 +443,17 @@ sup {
 .comment-panel {
     float: left;
     line-height: 16px;
-    margin: 0 10px 20px;
+    margin: 0 0 20px 10px;
     min-height: 64px;
     overflow: hidden;
-    width: 760px;
+    width: 814px;
 }
 
 .comment-body-ref {
     background-color: #FCFCFC;
     box-shadow: 0 0 2px #D5D5D5;
     display: block;
-    left: 140px;
+    left: 127px;
     padding: 10px;
     opacity: 0.9;
     filter: alpha(opacity=90);
@@ -471,11 +471,19 @@ sup {
 .comment-body-ref > .comment-panel { 
     margin: 0 20px 0 0;
     min-height: 48px;
-    width: 756px;
+    width: 725px;
+}
+
+.comment-body-ref > .comment-panel > .right {
+    display: none;
+}
+
+#replyForm {
+    margin-left: 25px;
 }
 
 .form {
-    padding: 0 70px 20px;
+    padding: 0 50px 20px;
 }
 
 .wrapper > .form {
@@ -522,7 +530,7 @@ sup {
     height: 28px;
     line-height: 28px;
     padding: 0 12px;
-    color: #A7A7A7;
+    color: #808080;
 }
 
 .form button:hover {
@@ -540,6 +548,11 @@ sup {
 /* end comment */
 
 /* start tags */
+#tags.other-main {
+    margin: 47px 44px 0;
+    width: 902px;
+}
+
 #tags li {
     float: left;
     height: 38px;
@@ -596,7 +609,7 @@ sup {
     padding-bottom: 20px;
     line-height: 20px;
     margin: 20px;
-    width: 276px;
+    width: 270px;
     position: absolute;
     top: 0;
 }
@@ -611,7 +624,7 @@ sup {
 
 .archives a {
     display: block;
-    margin-left: 80px;
+    margin-left: 77px;
 }
 /* end archives */
 
@@ -631,7 +644,7 @@ sup {
     line-height: 20px;
     margin: 20px;
     padding: 10px 20px 20px;
-    width: 393px;
+    width: 385px;
 }
 
 .dynamic .module:hover {
@@ -647,27 +660,37 @@ sup {
 }
 
 .dynamic .side-tags {
-    width: 186px;
+    width: 170px;
 }
 
 .dynamic .side-tags li {
     float: left;
     margin: 0 5px;
 }
+
+.dynamic .side-most-comment, 
+.dynamic .side-most-view {
+    margin-bottom: 0;
+}
 /* end dynamic */
 
 /* start links */
+.other-main.links {
+    margin-top: 45px;
+}
+
 .links li {
     float: left;
-    margin: 0 20px 10px;
-    width: 273px;
+    line-height: 22px;
+    margin: 0 20px;
+    width: 270px;
 }
 /* end links */
 
 /* start not list */
 .other-main {
     display: inline-block;
-    margin: 50px 20px 0;
-    width: 950px;
+    margin: 30px 30px 0;
+    width: 930px;
 }
 /* end not list */
