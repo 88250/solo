@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * <p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Jul 23, 2012
+ * @version 1.0.1.7, Jul 24, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -78,7 +78,7 @@ public final class StatProcessor {
     /**
      * Flush size.
      */
-    private static final int FLUSH_SIZE = 50;
+    private static final int FLUSH_SIZE = 30;
 
     /**
      * Online visitor count refresher.
@@ -123,7 +123,7 @@ public final class StatProcessor {
             final Set<String> keys = PageCaches.getKeys();
             final List<String> keyList = new ArrayList<String>(keys);
 
-            final int size = keys.size() > FLUSH_SIZE ? FLUSH_SIZE : keys.size(); // Flush 20 articles at most
+            final int size = keys.size() > FLUSH_SIZE ? FLUSH_SIZE : keys.size(); // Flush FLUSH_SIZE articles at most
             final List<Integer> idx = CollectionUtils.getRandomIntegers(0, keys.size(), size);
 
             final Set<String> cachedPageKeys = new HashSet<String>();
