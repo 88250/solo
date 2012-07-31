@@ -10,7 +10,7 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="body dynamic">
+        <div class="wrapper dynamic">
             <div class="other-main">
                 <#if 0 != recentComments?size>
                 <div class="module side-comments">

@@ -79,8 +79,6 @@ admin.editors.tinyMCE = {
                     relative_urls: false,
                     remove_script_host: false,
                     oninit : function () {
-                        // TODO: chrome bug
-                        window.onhashchange = admin.setCurByHash;
                         if (typeof(conf.fun) === "function") {
                             conf.fun();
                         }

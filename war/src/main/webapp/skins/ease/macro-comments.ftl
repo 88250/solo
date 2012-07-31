@@ -11,7 +11,7 @@
                 <#else>
                 <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                 </#if>
-                <#if comment.isReply>&nbsp;@
+                <#if comment.isReply>@
                 <a href="${servePath}${article.permalink}#${comment.commentOriginalCommentId}"
                    onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 20);"
                    onmouseout="page.hideComment('${comment.commentOriginalCommentId}')">${comment.commentOriginalCommentName}</a>
@@ -140,7 +140,7 @@
     }
 
     var replyTo = function (id) {
-        var commentFormHTML = "<table class='form comment-reply' id='replyForm'>";
+        var commentFormHTML = "<table class='form' id='replyForm'>";
         page.addReplyForm(id, commentFormHTML);
         $("#replyForm label").each(function () {
             $this = $(this);

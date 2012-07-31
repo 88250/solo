@@ -18,7 +18,7 @@
  * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.1, Jun 18, 2012
+ * @version 1.0.1.2, Jul 24, 2012
  */
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
@@ -88,7 +88,6 @@ var getNextPage = function () {
                 '</div>' +
                 '<div id="content' + article.oId + '" class="none"></div>' +
                 '</div>' +
-                '<div class="article-info">' +
                 '<div class="right ft-gray">';
                 if (article.hasUpdated) {
                     articlesHTML += Util.toDate(article.articleUpdateDate, 'yy-MM-dd HH:mm');
@@ -113,11 +112,10 @@ var getNextPage = function () {
                 
                 articlesHTML += '</div>' +
             '<div class="clear"></div>' +
-            '</div>' +
             '</li>';
             }
         
-            $(".body>ul").append(articlesHTML);
+            $("body>.wrapper>ul").append(articlesHTML);
             
             // 最后一页处理
             if (pagination.paginationPageCount === currentPage) {
@@ -132,7 +130,7 @@ var getNextPage = function () {
 var ease = {
     $header: $(".header"),
     headerH: $(".header").height(),
-    $body: $(".body"),
+    $body: $("body > .wrapper"),
     $nav: $(".nav"),
     getCurrentPage: function () {
         var $next = $(".article-next");
@@ -164,6 +162,7 @@ var ease = {
             return;
         }
         
+        $(".footer").css("marginTop", "30px");
         var years = [],
         $archiveList = $archives.find("span").each(function () {
             var year = $(this).data("year"),
@@ -206,7 +205,7 @@ var ease = {
                     break;
                 }
                 
-                $items[m].style.left = (n * 318) + "px";
+                $items[m].style.left = (n * 310) + "px";
                 
                 if (line > 0) {
                     if ($items[m - 3].style.top !== "") {

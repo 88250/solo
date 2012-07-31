@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, May 16, 2012
+ * @version 1.0.2.2, Jul 23, 2012
  */
 
 /**
@@ -44,7 +44,7 @@ var Util = {
         if ($.browser.msie) {
             // kill IE6 and IE7
             if ($.browser.version === "6.0" || $.browser.version === "7.0") {
-                window.location = "/kill-browser.html";
+                window.location = latkeConfig.servePath + "/kill-browser.html";
                 return;
             }
             
@@ -53,7 +53,7 @@ var Util = {
                 var path = external.twGetRunPath();
                 if(path && path.toLowerCase().indexOf("360se") > -1 && 
                     window.location.href.indexOf("admin-index") > -1) {
-                    window.location = "/kill-browser.html";
+                    window.location = latkeConfig.servePath + "/kill-browser.html";
                     return; 
                 }
             }
@@ -277,7 +277,7 @@ if (!Cookie) {
             for(var i=0;i < ca.length;i++) {
                 var c = ca[i];
                 while (c.charAt(0)==' ') c = c.substring(1,c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+                if (c.indexOf(nameEQ) == 0) return decodeURIComponent(c.substring(nameEQ.length,c.length));
             }
             return "";
         },
@@ -293,7 +293,7 @@ if (!Cookie) {
         /**
          * @description 创建 Cookie
          * @param {String} name 每条 Cookie 唯一的 key
-         * @param {String} value 每条 Cookie 对应的值
+         * @param {String} value 每条 Cookie 对应的值，将被 UTF-8 编码
          * @param {Int} days Cookie 保存时间
          */
         createCookie: function (name, value, days) {
@@ -303,7 +303,7 @@ if (!Cookie) {
                 date.setTime(date.getTime()+(days*24*60*60*1000));
                 expires = "; expires="+date.toGMTString();
             }
-            document.cookie = name+"="+value+expires+"; path=/";
+            document.cookie = name+"="+encodeURIComponent(value)+expires+"; path=/";
         }
     };
 }
