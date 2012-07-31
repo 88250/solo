@@ -11,19 +11,22 @@ KindEditor.plugin('media', function(K) {
 	var self = this, name = 'media', lang = self.lang(name + '.'),
 		allowMediaUpload = K.undef(self.allowMediaUpload, true),
 		allowFileManager = K.undef(self.allowFileManager, false),
+		formatUploadUrl = K.undef(self.formatUploadUrl, true),
+		extraParams = K.undef(self.extraFileUploadParams, {}),
+		filePostName = K.undef(self.filePostName, 'imgFile'),
 		uploadJson = K.undef(self.uploadJson, self.basePath + 'php/upload_json.php');
 	self.plugin.media = {
 		edit : function() {
 			var html = [
-				'<div style="padding:10px 20px;">',
+				'<div style="padding:20px;">',
 				//url
 				'<div class="ke-dialog-row">',
 				'<label for="keUrl" style="width:60px;">' + lang.url + '</label>',
 				'<input class="ke-input-text" type="text" id="keUrl" name="url" value="" style="width:160px;" /> &nbsp;',
-				/*'<input type="button" class="ke-upload-button" value="' + lang.upload + '" /> &nbsp;',
+				'<input type="button" class="ke-upload-button" value="' + lang.upload + '" /> &nbsp;',
 				'<span class="ke-button-common ke-button-outer">',
 				'<input type="button" class="ke-button-common ke-button" name="viewServer" value="' + lang.viewServer + '" />',
-				'</span>',*/
+				'</span>',
 				'</div>',
 				//width
 				'<div class="ke-dialog-row">',
@@ -89,18 +92,22 @@ KindEditor.plugin('media', function(K) {
 			autostartBox = K('[name="autostart"]', div);
 			urlBox.val('http://');
 
-			/*if (allowMediaUpload) {
+			if (allowMediaUpload) {
 				var uploadbutton = K.uploadbutton({
 					button : K('.ke-upload-button', div)[0],
-					fieldName : 'imgFile',
+					fieldName : filePostName,
+					extraParams : extraParams,
 					url : K.addParam(uploadJson, 'dir=media'),
 					afterUpload : function(data) {
 						dialog.hideLoading();
 						if (data.error === 0) {
-							var url = K.formatUrl(data.url, 'absolute');
+							var url = data.url;
+							if (formatUploadUrl) {
+								url = K.formatUrl(url, 'absolute');
+							}
 							urlBox.val(url);
 							if (self.afterUpload) {
-								self.afterUpload.call(self, url);
+								self.afterUpload.call(self, url, data, name);
 							}
 							alert(self.lang('uploadSuccess'));
 						} else {
@@ -116,10 +123,9 @@ KindEditor.plugin('media', function(K) {
 					dialog.showLoading(self.lang('uploadLoading'));
 					uploadbutton.submit();
 				});
-			} else {*/
+			} else {
 				K('.ke-upload-button', div).hide();
-				urlBox.width(250);
-			//}
+			}
 
 			if (allowFileManager) {
 				viewServerBtn.click(function(e) {
@@ -130,6 +136,9 @@ KindEditor.plugin('media', function(K) {
 							clickFn : function(url, title) {
 								if (self.dialogs.length > 1) {
 									K('[name="url"]', div).val(url);
+									if (self.afterSelectFile) {
+										self.afterSelectFile.call(self, url);
+									}
 									self.hideDialog();
 								}
 							}
