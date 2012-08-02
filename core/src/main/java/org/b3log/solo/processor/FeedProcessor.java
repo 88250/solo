@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.0, May 10, 2012
+ * @version 1.1.0.1, Aug 2, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -212,7 +212,13 @@ public final class FeedProcessor {
 
         final Feed feed = new Feed();
         try {
-            final String tagTitle = tagRepository.get(tagId).getString(Tag.TAG_TITLE);
+            final JSONObject tag = tagRepository.get(tagId);
+            if (null == tag) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            final String tagTitle = tag.getString(Tag.TAG_TITLE);
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -283,8 +289,7 @@ public final class FeedProcessor {
                 for (int j = 0; j < tagStrings.length; j++) {
                     final Category catetory = new Category();
                     entry.addCatetory(catetory);
-                    final String tag = tagStrings[j];
-                    catetory.setTerm(tag);
+                    catetory.setTerm(tagStrings[j]);
                 }
             }
 
@@ -421,7 +426,13 @@ public final class FeedProcessor {
 
         final Channel channel = new Channel();
         try {
-            final String tagTitle = tagRepository.get(tagId).getString(Tag.TAG_TITLE);
+            final JSONObject tag = tagRepository.get(tagId);
+            if (null == tag) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
+
+            final String tagTitle = tag.getString(Tag.TAG_TITLE);
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -497,8 +508,7 @@ public final class FeedProcessor {
                 for (int j = 0; j < tagStrings.length; j++) {
                     final org.b3log.solo.model.feed.rss.Category catetory = new org.b3log.solo.model.feed.rss.Category();
                     item.addCatetory(catetory);
-                    final String tag = tagStrings[j];
-                    catetory.setTerm(tag);
+                    catetory.setTerm(tagStrings[j]);
                 }
             }
 
