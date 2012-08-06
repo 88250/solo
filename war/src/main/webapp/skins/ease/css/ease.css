@@ -26,9 +26,19 @@ html, body, div, ul, li {
 }
 
 body {
-    font-family: Verdana,arial,\5fae\8f6f\96c5\9ed1;
+    font-family: Verdana,arial,'\5fae\8f6f\96c5\9ed1';
     font-size: 12px;
     background-color: #FCFCFC;
+}
+
+::selection {
+    background-color: #D5D5D5;
+    color: #FCFCFC;
+}
+
+::-moz-selection {
+    background-color: #D5D5D5;
+    color: #FCFCFC;
 }
 
 a {
