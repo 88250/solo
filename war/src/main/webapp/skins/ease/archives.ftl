@@ -10,24 +10,26 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="wrapper">
-            <#if 0 != archiveDates?size>
-            <div class="other-main archives">
-                <#list archiveDates as archiveDate>
-                <span data-year="${archiveDate.archiveDateYear}">
-                    <#if "en" == localeString?substring(0, 2)>
-                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                       title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
-                        ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
-                    <#else>
-                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                       title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
-                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
-                    </#if>
-                </span>
-                </#list>
+        <div class="main">
+            <div class="wrapper">
+                <#if 0 != archiveDates?size>
+                <div class="other-main archives">
+                    <#list archiveDates as archiveDate>
+                    <span data-year="${archiveDate.archiveDateYear}">
+                        <#if "en" == localeString?substring(0, 2)>
+                        <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                           title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
+                            ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
+                        <#else>
+                        <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                           title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
+                            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
+                        </#if>
+                    </span>
+                    </#list>
+                </div>
+                </#if>
             </div>
-            </#if>
         </div>
         <#include "footer.ftl">
     </body>

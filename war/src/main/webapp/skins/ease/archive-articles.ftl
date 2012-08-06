@@ -10,16 +10,18 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="wrapper">
-            <h2>${archive1Label}
-                <#if "en" == localeString?substring(0, 2)>
-                ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
-                <#else>
-                ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
-                </#if>
-            </h2>
-            <#include "article-list.ftl">
-        </div>
+        <div class="main">
+            <div class="wrapper">
+                <h2>${archive1Label}
+                    <#if "en" == localeString?substring(0, 2)>
+                    ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
+                    <#else>
+                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
+                    </#if>
+                </h2>
+                <#include "article-list.ftl">
+            </div>
+        </div> 
         <#include "footer.ftl">
     </body>
 </html>

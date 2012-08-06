@@ -10,15 +10,17 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="wrapper">
-            <h2>
-                <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}">
-                    ${tag1Label}
-                    ${tag.tagTitle}
-                    (${tag.tagPublishedRefCount})
-                </a>
-            </h2>
-            <#include "article-list.ftl">
+        <div class="main">
+            <div class="wrapper">
+                <h2>
+                    <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}">
+                        ${tag1Label}
+                        ${tag.tagTitle}
+                        (${tag.tagPublishedRefCount})
+                    </a>
+                </h2>
+                <#include "article-list.ftl">
+            </div>
         </div>
         <#include "footer.ftl">
     </body>

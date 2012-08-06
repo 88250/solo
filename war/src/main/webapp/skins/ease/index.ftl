@@ -10,8 +10,10 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="wrapper">
+        <div class="main">
+            <div class="wrapper">
             <#include "article-list.ftl">
+        </div>
         </div>
         <#include "footer.ftl">
     </body>

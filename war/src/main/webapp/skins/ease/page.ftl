@@ -11,11 +11,13 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="wrapper">
-            <div class="article-body article">
-                ${page.pageContent}
+        <div class="main">
+            <div class="wrapper">
+                <div class="article-body article">
+                    ${page.pageContent}
+                </div>
+                <@comments commentList=pageComments article=page></@comments>
             </div>
-            <@comments commentList=pageComments article=page></@comments>
         </div>
         <#include "footer.ftl">
         <@comment_script oId=page.oId></@comment_script>
