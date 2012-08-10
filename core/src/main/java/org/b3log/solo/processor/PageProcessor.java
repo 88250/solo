@@ -39,7 +39,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
-import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.service.PageQueryService;
@@ -109,7 +109,7 @@ public final class PageProcessor {
                     dataModel);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.PAGE));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.PAGE));
             
             // See PermalinkFiler#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
@@ -119,9 +119,9 @@ public final class PageProcessor {
             }
 
             final String pageId = page.getString(Keys.OBJECT_ID);
-            request.setAttribute(CACHED_OID, pageId);
-            request.setAttribute(CACHED_TITLE, page.getString(Page.PAGE_TITLE));
-            request.setAttribute(CACHED_LINK, page.getString(Page.PAGE_PERMALINK));
+            request.setAttribute(PageCaches.CACHED_OID, pageId);
+            request.setAttribute(PageCaches.CACHED_TITLE, page.getString(Page.PAGE_TITLE));
+            request.setAttribute(PageCaches.CACHED_LINK, page.getString(Page.PAGE_PERMALINK));
 
             page.put(Common.COMMENTABLE, page.getBoolean(Page.PAGE_COMMENTABLE));
             page.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));

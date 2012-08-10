@@ -21,13 +21,13 @@ import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.DoNothingRenderer;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
 import org.json.JSONObject;
@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * Cache processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, May 11, 2012
+ * @version 1.1.0.2, Aug 9, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -70,7 +70,7 @@ public final class CacheProcessor {
         }
 
         try {
-            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final String all = requestJSONObject.optString("all");
 
             if (Strings.isEmptyOrNull(all)) { // Just clears single page cache

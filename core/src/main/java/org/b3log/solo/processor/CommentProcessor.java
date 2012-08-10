@@ -23,13 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Comment processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.6, Mar 28, 2012
+ * @version 1.1.0.7, Aug 9, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -99,7 +99,7 @@ public final class CommentProcessor {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
 
-        final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(httpServletRequest, httpServletResponse);
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
         final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);
@@ -179,7 +179,7 @@ public final class CommentProcessor {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
 
-        final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(httpServletRequest, httpServletResponse);
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
         final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);

@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.event.Event;
@@ -231,7 +230,7 @@ public final class AdminConsole {
             final ViewLoadEventData data = new ViewLoadEventData();
             data.setViewName(hostTemplateName);
             data.setDataModel(dataModel);
-            eventManager.fireEventSynchronously(new Event<ViewLoadEventData>(AbstractAction.FREEMARKER_ACTION, data));
+            eventManager.fireEventSynchronously(new Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));
             if (Strings.isEmptyOrNull((String) dataModel.get(Plugin.PLUGINS))) {
                 // There is no plugin for this template, fill ${plugins} with blank.
                 dataModel.put(Plugin.PLUGINS, "");

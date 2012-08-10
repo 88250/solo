@@ -19,14 +19,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractAction;
-import org.b3log.latke.action.ActionException;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.mail.MailService;
@@ -63,8 +60,7 @@ import org.json.JSONObject;
  * @version 1.0.0.9, Dec 29, 2011
  * @since 0.3.1
  */
-public final class AddArticleCommentFromSymphonyAction
-        extends AbstractAction {
+public final class AddArticleCommentFromSymphonyAction {
 
     /**
      * Default serial version uid.
@@ -118,13 +114,6 @@ public final class AddArticleCommentFromSymphonyAction
      */
     private static EventManager eventManager = EventManager.getInstance();
 
-    @Override
-    protected Map<?, ?> doFreeMarkerAction(final HttpServletRequest request,
-                                           final HttpServletResponse response)
-            throws ActionException {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
     /**
      * Adds a comment to an article.
      *
@@ -150,13 +139,10 @@ public final class AddArticleCommentFromSymphonyAction
      *     "sc": true
      * }
      * </pre>
-     * @throws ActionException action exception
      */
-    @Override
     public JSONObject doAjaxAction(final JSONObject requestJSONObject,
                                    final HttpServletRequest request,
-                                   final HttpServletResponse response)
-            throws ActionException {
+                                   final HttpServletResponse response) {
         final JSONObject ret = new JSONObject();
         final Transaction transaction = commentRepository.beginTransaction();
 
@@ -275,7 +261,6 @@ public final class AddArticleCommentFromSymphonyAction
                 transaction.rollback();
             }
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            throw new ActionException(e);
         }
 
         return ret;

@@ -31,7 +31,6 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
@@ -72,7 +71,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.0, Jul 18, 2012
+ * @version 1.0.6.1, Aug 9, 2012
  * @since 0.3.1
  */
 public final class Filler {
@@ -438,7 +437,7 @@ public final class Filler {
                 final ViewLoadEventData data = new ViewLoadEventData();
                 data.setViewName("footer.ftl");
                 data.setDataModel(dataModel);
-                EventManager.getInstance().fireEventSynchronously(new Event<ViewLoadEventData>(AbstractAction.FREEMARKER_ACTION, data));
+                EventManager.getInstance().fireEventSynchronously(new Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));
                 if (Strings.isEmptyOrNull((String) dataModel.get(Plugin.PLUGINS))) {
                     // There is no plugin for this template, fill ${plugins} with blank.
                     dataModel.put(Plugin.PLUGINS, "");

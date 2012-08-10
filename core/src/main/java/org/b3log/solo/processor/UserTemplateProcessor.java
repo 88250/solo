@@ -24,9 +24,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -120,10 +120,10 @@ public final class UserTemplateProcessor {
             Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
                                 (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            request.setAttribute(AbstractCacheablePageAction.CACHED_OID, "No id");
-            request.setAttribute(AbstractCacheablePageAction.CACHED_TITLE, requestURI);
-            request.setAttribute(AbstractCacheablePageAction.CACHED_TYPE, langs.get(PageTypes.USER_TEMPLATE_PAGE));
-            request.setAttribute(AbstractCacheablePageAction.CACHED_LINK, requestURI);
+            request.setAttribute(PageCaches.CACHED_OID, "No id");
+            request.setAttribute(PageCaches.CACHED_TITLE, requestURI);
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.USER_TEMPLATE_PAGE));
+            request.setAttribute(PageCaches.CACHED_LINK, requestURI);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

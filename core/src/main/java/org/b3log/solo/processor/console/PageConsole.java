@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
@@ -43,7 +42,7 @@ import org.json.JSONObject;
  * Plugin console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jun 20, 2012
+ * @version 1.0.0.2, Aug 9, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -129,7 +128,7 @@ public final class PageConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
             pageMgmtService.updatePage(requestJSONObject);
 
@@ -239,7 +238,7 @@ public final class PageConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
             final String pageId = pageMgmtService.addPage(requestJSONObject);
 
@@ -295,7 +294,7 @@ public final class PageConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
             final String direction = requestJSONObject.getString(Common.DIRECTION);
 

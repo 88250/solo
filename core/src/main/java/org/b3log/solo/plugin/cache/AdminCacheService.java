@@ -27,7 +27,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Pagination;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.util.Users;
-import static org.b3log.latke.action.AbstractCacheablePageAction.*;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.cache.PageCaches;
@@ -207,7 +206,7 @@ public final class AdminCacheService {
                     // Do a copy for properties removing and retrieving
                     cachedPage = new JSONObject(cachedPage,
                                                 JSONObject.getNames(cachedPage));
-                    cachedPage.remove(CACHED_CONTENT);
+                    cachedPage.remove(PageCaches.CACHED_CONTENT);
                     pages.add(cachedPage);
                 }
             }

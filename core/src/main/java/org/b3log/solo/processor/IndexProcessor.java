@@ -48,7 +48,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
-import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.latke.cache.PageCaches;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 
 /**
@@ -102,11 +102,11 @@ public final class IndexProcessor {
                                 (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(CACHED_OID, "No id");
-            request.setAttribute(CACHED_TITLE, langs.get(PageTypes.INDEX_ARTICLES) + "  [" + langs.get("pageNumLabel") + "="
+            request.setAttribute(PageCaches.CACHED_OID, "No id");
+            request.setAttribute(PageCaches.CACHED_TITLE, langs.get(PageTypes.INDEX_ARTICLES) + "  [" + langs.get("pageNumLabel") + "="
                                                + currentPageNum + "]");
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.INDEX_ARTICLES));
-            request.setAttribute(CACHED_LINK, requestURI);
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.INDEX_ARTICLES));
+            request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
             filler.fillIndexArticles(dataModel, currentPageNum, preference);
 
@@ -170,10 +170,10 @@ public final class IndexProcessor {
             Keys.fillServer(dataModel);
             filler.fillMinified(dataModel);
 
-            request.setAttribute(CACHED_OID, "No id");
-            request.setAttribute(CACHED_TITLE, "Kill Browser Page");
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.KILL_BROWSER_PAGE));
-            request.setAttribute(CACHED_LINK, request.getRequestURI());
+            request.setAttribute(PageCaches.CACHED_OID, "No id");
+            request.setAttribute(PageCaches.CACHED_TITLE, "Kill Browser Page");
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.KILL_BROWSER_PAGE));
+            request.setAttribute(PageCaches.CACHED_LINK, request.getRequestURI());
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -228,7 +228,7 @@ public final class IndexProcessor {
                 template.process(getDataModel(), stringWriter);
 
                 final String pageContent = stringWriter.toString();
-                context.getRequest().setAttribute(CACHED_CONTENT, pageContent);
+                context.getRequest().setAttribute(PageCaches.CACHED_CONTENT, pageContent);
 
                 writer.write(pageContent);
                 writer.flush();
