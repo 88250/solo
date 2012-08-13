@@ -252,7 +252,7 @@ public final class InitService {
                 + "to delete them."));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-        comment.put(Comment.COMMENT_THUMBNAIL_URL, "http://secure.gravatar.com/avatar/59a5e8209c780307dbe9c9ba728073f5??s=60&d=" + Latkes.getServePath() + "/images/default-user-thumbnail.png");
+        comment.put(Comment.COMMENT_THUMBNAIL_URL, "http://secure.gravatar.com/avatar/59a5e8209c780307dbe9c9ba728073f5??s=60&r=G");
         comment.put(Comment.COMMENT_DATE, date);
         comment.put(Comment.COMMENT_ON_ID, articleId);
         comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
