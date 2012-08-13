@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.RepositoryException;
@@ -454,7 +455,7 @@ public final class CommentMgmtService {
         final int size = 60;
         final URL gravatarURL =
                   new URL("http://secure.gravatar.com/avatar/" + hashedEmail + "?s="
-                          + size + "&r=G");
+                          + size + "&d=" + Latkes.getServePath() + "/images/default-user-thumbnail.png");
 
         try {
             final HTTPRequest request = new HTTPRequest();
@@ -475,7 +476,8 @@ public final class CommentMgmtService {
 
                 if (!defaultFileLengthMatched) {
                     thumbnailURL = "http://secure.gravatar.com/avatar/"
-                                   + hashedEmail + "?s=" + size + "&r=G";
+                                   + hashedEmail + "?s=" + size  + "&d=" 
+                            + Latkes.getServePath() + "/images/default-user-thumbnail.png";
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
                     LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
                                thumbnailURL);
