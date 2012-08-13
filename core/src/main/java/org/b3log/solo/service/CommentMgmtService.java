@@ -453,7 +453,7 @@ public final class CommentMgmtService {
         final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
         final int size = 60;
         final URL gravatarURL =
-                  new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
+                  new URL("http://secure.gravatar.com/avatar/" + hashedEmail + "?s="
                           + size + "&r=G");
 
         try {
@@ -474,7 +474,7 @@ public final class CommentMgmtService {
                 }
 
                 if (!defaultFileLengthMatched) {
-                    thumbnailURL = "http://www.gravatar.com/avatar/"
+                    thumbnailURL = "http://secure.gravatar.com/avatar/"
                                    + hashedEmail + "?s=" + size + "&r=G";
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
                     LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
