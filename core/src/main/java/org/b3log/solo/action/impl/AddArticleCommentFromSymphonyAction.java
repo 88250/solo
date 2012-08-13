@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.mail.MailService;
@@ -299,8 +300,8 @@ public final class AddArticleCommentFromSymphonyAction {
         final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
         final int size = 60;
         final URL gravatarURL =
-                new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
-                        + size + "&r=G");
+                new URL("http://secure.gravatar.com/avatar/" + hashedEmail + "?s="
+                          + size + "&d=" + Latkes.getServePath() + "/images/default-user-thumbnail.png");
         try {
             final HTTPRequest request = new HTTPRequest();
             request.setURL(gravatarURL);
@@ -319,8 +320,8 @@ public final class AddArticleCommentFromSymphonyAction {
                 }
 
                 if (!defaultFileLengthMatched) {
-                    thumbnailURL = "http://www.gravatar.com/avatar/"
-                                   + hashedEmail + "?s=" + size + "&r=G";
+                    thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s="
+                          + size + "&d=" + Latkes.getServePath() + "/images/default-user-thumbnail.png";
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
                     LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
                                thumbnailURL);
