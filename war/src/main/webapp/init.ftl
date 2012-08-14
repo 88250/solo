@@ -21,7 +21,7 @@
                 <div class="content">
                     <div class="logo">
                         <a href="http://b3log.org" target="_blank">
-                            <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
+                            <img onerror="checkStatic();" border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
                     <div class="main">
@@ -190,6 +190,10 @@
                         }
                     });
                 }
+            };
+            
+            var checkStatic = function () {
+                alert("${staticErrorLabel}");
             };
         </script>
     </body>
