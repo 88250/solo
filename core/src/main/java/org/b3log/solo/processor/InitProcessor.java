@@ -87,7 +87,7 @@ public final class InitProcessor {
 
             return;
         }
-
+        
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         renderer.setTemplateName("init.ftl");
         context.setRenderer(renderer);
