@@ -20,7 +20,6 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
@@ -28,6 +27,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.service.PreferenceMgmtService;
@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Preference console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jun 20, 2012
+ * @version 1.0.0.4, Aug 9, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -154,7 +154,7 @@ public final class PreferenceConsole {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
             final JSONObject replyNotificationTemplate = requestJSONObject.getJSONObject(Preference.REPLY_NOTIFICATION_TEMPLATE);
 
@@ -374,7 +374,7 @@ public final class PreferenceConsole {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
             final JSONObject preference = requestJSONObject.getJSONObject(Preference.PREFERENCE);
 

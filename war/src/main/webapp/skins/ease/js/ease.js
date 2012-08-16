@@ -18,7 +18,7 @@
  * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.2, Jul 24, 2012
+ * @version 1.0.1.3, Aug 6, 2012
  */
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
@@ -55,9 +55,13 @@ var getNextPage = function () {
             
             // append articles
             for (var i = 0; i < result.rslts.articles.length; i++) {
-                var article = result.rslts.articles[i];
+                var article = result.rslts.articles[i],
+                lastClass = "";
+                if (result.rslts.articles.length - 1 === i) {
+                    lastClass = " article-last";
+                }
                 
-                articlesHTML += '<li class="article">' + 
+                articlesHTML += '<li class="article' + lastClass + '">' + 
                 '<div class="article-title">' +
                 '<h2>' +
                 '<a rel="bookmark" class="ft-gray" href="' + latkeConfig.servePath + article.articlePermalink + '">' +
@@ -114,8 +118,9 @@ var getNextPage = function () {
             '<div class="clear"></div>' +
             '</li>';
             }
-        
-            $("body>.wrapper>ul").append(articlesHTML);
+            
+            $(".article-last").removeClass("article-last");
+            $(".main>.wrapper>ul").append(articlesHTML);
             
             // 最后一页处理
             if (pagination.paginationPageCount === currentPage) {
@@ -129,8 +134,8 @@ var getNextPage = function () {
 
 var ease = {
     $header: $(".header"),
-    headerH: $(".header").height(),
-    $body: $("body > .wrapper"),
+    headerH: 103,
+    $body: $(".main > .wrapper"),
     $nav: $(".nav"),
     getCurrentPage: function () {
         var $next = $(".article-next");
@@ -232,12 +237,16 @@ var ease = {
     scrollEvent: function () {
         var _it = this;
         $(window).scroll(function () {
-            var y = $(window).scrollTop();
+            var y = $(window).scrollTop(),
+            topH = 0;
+            if ($("#top").css("display") === "block") {
+                topH = $("#top").height();
+            }
         
             // header event
-            if (y >= _it.headerH + $("#top").height()) {
+            if (y >= _it.headerH + topH) {
                 _it.$nav.css("position", "fixed");
-                _it.$body.css("marginTop", "58px");
+                _it.$body.css("marginTop", "55px");
             } else {
                 _it.$nav.css("position" ,"inherit");
                 _it.$body.css("marginTop", "0");

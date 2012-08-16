@@ -19,7 +19,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.action.AbstractCacheablePageAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.cache.PageCaches;
@@ -138,13 +137,13 @@ public final class StatProcessor {
                 }
 
                 final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-                if (!cachedPage.optString(AbstractCacheablePageAction.CACHED_TYPE).
+                if (!cachedPage.optString(PageCaches.CACHED_TYPE).
                         equals(langs.get(PageTypes.ARTICLE))) { // Cached is not an article page
                     continue;
                 }
 
                 final int hitCount = cachedPage.optInt(PageCaches.CACHED_HIT_COUNT);
-                final String articleId = cachedPage.optString(AbstractCacheablePageAction.CACHED_OID);
+                final String articleId = cachedPage.optString(PageCaches.CACHED_OID);
 
                 final JSONObject article = articleRepository.get(articleId);
                 if (null == article) {
@@ -152,7 +151,7 @@ public final class StatProcessor {
                 }
 
                 LOGGER.log(Level.FINER, "Updating article[id={0}, title={1}] view count",
-                           new Object[]{articleId, cachedPage.optString(AbstractCacheablePageAction.CACHED_TITLE)});
+                           new Object[]{articleId, cachedPage.optString(PageCaches.CACHED_TITLE)});
 
                 final int oldViewCount = article.optInt(Article.ARTICLE_VIEW_COUNT);
                 final int viewCount = oldViewCount + hitCount;

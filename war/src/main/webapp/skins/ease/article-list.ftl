@@ -1,6 +1,6 @@
 <ul>
     <#list articles as article>
-    <li class="article">
+    <li class="article<#if !article_has_next> article-last</#if>">
         <div class="article-title">
             <h2>
                 <a rel="bookmark" class="ft-gray" href="${servePath}${article.articlePermalink}">

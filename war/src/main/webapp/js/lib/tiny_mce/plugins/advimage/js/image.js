@@ -19,11 +19,14 @@ var ImageDialog = {
         TinyMCE_EditableSelects.init();
 
         if (n.nodeName == 'IMG') {
-            if (n.parentNode.nodeName.toLowerCase() === "a" && n.parentNode.attributes.rel.value === "group") {
+            if (n.parentNode.nodeName.toLowerCase() === "a" && n.parentNode.attributes["class"] && n.parentNode.attributes["class"].value === "fancybox") {
                 nl.isFancybox.checked = true;
+                nl.groupName.value = n.parentNode.attributes["data-fancybox-group"].value;
             } else {
                 nl.isFancybox.checked = false;
+                nl.groupName.value = "";
             }
+            
             nl.src.value = dom.getAttrib(n, 'src');
             nl.width.value = dom.getAttrib(n, 'width');
             nl.height.value = dom.getAttrib(n, 'height');
@@ -128,7 +131,8 @@ var ImageDialog = {
             fancyboxArgs = {
                 title : nl.title.value,
                 href : nl.src.value.replace(/ /g, '%20'),
-                rel: "group"
+                "class": "fancybox",
+                "data-fancybox-group": nl.groupName.value
             }
         }
 
@@ -184,7 +188,7 @@ var ImageDialog = {
 
         if (el && el.nodeName == 'IMG') {
             ed.dom.setAttribs(el, args)
-            if (el.parentNode.nodeName.toLowerCase() === "a" && el.parentNode.attributes.rel.value === "group") {
+            if (el.parentNode.nodeName.toLowerCase() === "a" && el.parentNode.attributes["class"] && el.parentNode.attributes["class"].value === "fancybox") {
                 if (nl.isFancybox.checked) {
                     ed.dom.setAttribs(el.parentNode, fancyboxArgs);
                 } else {
@@ -192,7 +196,7 @@ var ImageDialog = {
                 }
             } else {
                 if (nl.isFancybox.checked) {
-                    el.outerHTML = "<a rel='group' href='" + nl.src.value.replace(/ /g, '%20')
+                    el.outerHTML = "<a class='fancybox' data-fancybox-group='" + nl.groupName.value + "' href='" + nl.src.value.replace(/ /g, '%20')
                     + "' title='" + nl.title.value + "'>" + el.outerHTML + "</a>";
                 }       
             }
@@ -500,6 +504,14 @@ var ImageDialog = {
             tinyMCEPopup.dom.setHTML('prev', '<img id="previewImg" src="' + u + '" border="0" onload="ImageDialog.updateImageData(this);" onerror="ImageDialog.resetImageData();" />');
         else
             tinyMCEPopup.dom.setHTML('prev', '<img id="previewImg" src="' + u + '" border="0" onload="ImageDialog.updateImageData(this, 1);" />');
+    },
+    
+    setGroupName: function (it) {
+        var groupName = document.getElementById("groupName");
+        
+        if (it.checked && groupName.value === "") {
+            groupName.value = "group";
+        }
     }
 };
 

@@ -4,7 +4,7 @@
       "servePath": "${servePath}"
     };
     var Label = {
-        "skinDirName": "ease",
+        "skinDirName": "${skinDirName}",
         "editorType": "${editorType}",
         "userRole": "${userRole}",
         "PAGE_SIZE": "${articleListDisplayCount}",

@@ -17,7 +17,7 @@
 * skin ease style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.7, Jul 25, 2012
+* @version 1.0.1.8, Aug 6, 2012
 */
 /* start base */
 html, body, div, ul, li {
@@ -26,8 +26,19 @@ html, body, div, ul, li {
 }
 
 body {
-    font-family: Verdana,arial,\5fae\8f6f\96c5\9ed1;
+    font-family: Verdana,arial,'\5fae\8f6f\96c5\9ed1';
     font-size: 12px;
+    background-color: #FCFCFC;
+}
+
+::selection {
+    background-color: #D5D5D5;
+    color: #FCFCFC;
+}
+
+::-moz-selection {
+    background-color: #D5D5D5;
+    color: #FCFCFC;
 }
 
 a {
@@ -202,12 +213,16 @@ sup {
     margin: 0 auto;
     width: 990px;
 }
+
+.main {
+    background-color: #FFF;
+    padding-bottom: 50px;
+}
 /* end frame */
 
 /* start header */
 .header {
     width: 100%;
-    background-color: #FCFCFC;
     z-index: 1;
 }
 
@@ -241,8 +256,7 @@ sup {
 }
 
 #search:focus {
-    background-color: #FCFCFC;
-    width: 196px;
+    width: 150px;
 }
 
 .banner {
@@ -304,17 +318,17 @@ sup {
 
 /* start footer */
 .footer {
-    background-color: #FCFCFC;
-    border-top: 2px solid #D5D5D5;
+    border-top: 1px solid #D5D5D5;
+    box-shadow: 0 -1px 1px #D5D5D5;
     font-size: 11px;
     padding: 12px 0;
     -webkit-text-size-adjust: none;
-    margin-top: 50px;
 }
 
 #goTop {
     background: url("/skins/ease/images/icons.png") no-repeat scroll 5px -51px #D5D5D5;
     border-radius: 2px 2px 0 0;
+    box-shadow: 0 0 3px #D5D5D5;
     cursor: pointer;
     font-size: 11px;
     height: 21px;
@@ -326,7 +340,8 @@ sup {
 }
 
 #goTop:hover {
-    background-color: #D5D5D5;
+    background-color: #c8c8c8;
+    box-shadow: 0 0 3px #c8c8c8;
 }
 /* end footer*/
 
@@ -335,13 +350,18 @@ sup {
     list-style: none;
 }
 
+.main > .wrapper > h2 {
+    margin: 0;
+    padding: 14px 0;
+}
+
 .article {
     border-bottom: 1px solid #f6f6f6;
     padding: 30px 50px;
 }
 
 .article:hover {
-    border-bottom-color: #D5D5D5;
+    border-bottom-color: #ddd;
     box-shadow: 0 0 1px #f6f6f6 inset;
     background-color: #FCFCFC;
 }
@@ -380,6 +400,10 @@ sup {
 
 .article-title span {
     cursor: pointer;
+}
+
+.article-last:hover {
+    border-bottom: 1px solid #f6f6f6;
 }
 
 .article-next {

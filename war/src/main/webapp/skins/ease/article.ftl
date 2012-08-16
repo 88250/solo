@@ -11,81 +11,83 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="wrapper">
-            <div class="article">
-                <div class="article-title">
-                    <h2>
-                        <a class="ft-gray" href="${servePath}${article.articlePermalink}">
-                            ${article.articleTitle}
-                        </a>
+        <div class="main">
+            <div class="wrapper">
+                <div class="article">
+                    <div class="article-title">
+                        <h2>
+                            <a class="ft-gray" href="${servePath}${article.articlePermalink}">
+                                ${article.articleTitle}
+                            </a>
+                            <#if article.hasUpdated>
+                            <sup>
+                                ${updatedLabel}
+                            </sup>
+                            </#if>
+                            <#if article.articlePutTop>
+                            <sup>
+                                ${topArticleLabel}
+                            </sup>
+                            </#if>
+                        </h2>
+                        <div class="right">
+                            <a rel="nofollow" class="ft-gray" href="${servePath}${article.articlePermalink}#comments">
+                                ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
+                            </a>&nbsp;&nbsp;
+                            <a rel="nofollow" class="ft-gray" href="${servePath}${article.articlePermalink}">
+                                ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
+                            </a>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="article-body">
+                        ${article.articleContent}
+                        <#if "" != article.articleSign.signHTML?trim>
+                        <p>
+                            ${article.articleSign.signHTML}
+                        </p>
+                        </#if>
+                    </div>
+                    <div class="right ft-gray">
                         <#if article.hasUpdated>
-                        <sup>
-                            ${updatedLabel}
-                        </sup>
+                        ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
+                        <#else>
+                        ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
                         </#if>
-                        <#if article.articlePutTop>
-                        <sup>
-                            ${topArticleLabel}
-                        </sup>
-                        </#if>
-                    </h2>
-                    <div class="right">
-                        <a rel="nofollow" class="ft-gray" href="${servePath}${article.articlePermalink}#comments">
-                            ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
-                        </a>&nbsp;&nbsp;
-                        <a rel="nofollow" class="ft-gray" href="${servePath}${article.articlePermalink}">
-                            ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
-                        </a>
+                        <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
+                    </div>
+                    <div class="left ft-gray">
+                        ${tag1Label}
+                        <#list article.articleTags?split(",") as articleTag>
+                        <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
+                        </#list>
                     </div>
                     <div class="clear"></div>
-                </div>
-                <div class="article-body">
-                    ${article.articleContent}
-                    <#if "" != article.articleSign.signHTML?trim>
-                    <p>
-                        ${article.articleSign.signHTML}
-                    </p>
-                    </#if>
-                </div>
-                <div class="right ft-gray">
-                    <#if article.hasUpdated>
-                    ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
-                    <#else>
-                    ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
-                    </#if>
-                    <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
-                </div>
-                <div class="left ft-gray">
-                    ${tag1Label}
-                    <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
-                    </#list>
-                </div>
-                <div class="clear"></div>
-                <div class="fn-mgtb10">
-                    <#if 0 != relevantArticlesDisplayCount>
-                    <div id="relevantArticles" class="article-relative"></div>
-                    </#if>
-                    <#if 0 != randomArticlesDisplayCount>
-                    <div id="randomArticles" class="article-relative"></div>
+                    <div class="fn-mgtb10">
+                        <#if 0 != relevantArticlesDisplayCount>
+                        <div id="relevantArticles" class="article-relative"></div>
+                        </#if>
+                        <#if 0 != randomArticlesDisplayCount>
+                        <div id="randomArticles" class="article-relative"></div>
+                        </#if>
+                        <div class="clear"></div>
+                    </div>
+                    <#if nextArticlePermalink??>
+                    <div class="left">
+                        <span class="ft-gray">&lt;</span>
+                        <a href="${servePath}${nextArticlePermalink}">${nextArticleTitle}</a>
+                    </div>
+                    </#if>                            
+                    <#if previousArticlePermalink??>
+                    <div class="right">
+                        <a href="${servePath}${previousArticlePermalink}">${previousArticleTitle}</a> 
+                        <span class="ft-gray">&gt;</span>
+                    </div>
                     </#if>
                     <div class="clear"></div>
                 </div>
-                <#if nextArticlePermalink??>
-                <div class="left">
-                    <span class="ft-gray">&lt;</span>
-                    <a href="${servePath}${nextArticlePermalink}">${nextArticleTitle}</a>
-                </div>
-                </#if>                            
-                <#if previousArticlePermalink??>
-                <div class="right">
-                    <a href="${servePath}${previousArticlePermalink}">${previousArticleTitle}</a> 
-                    <span class="ft-gray">&gt;</span>
-                </div>
-                </#if>
-                <div class="clear"></div>
+                <@comments commentList=articleComments article=article></@comments>
             </div>
-            <@comments commentList=articleComments article=article></@comments>
         </div>
         <#include "footer.ftl">
         <@comment_script oId=article.oId>

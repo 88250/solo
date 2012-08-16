@@ -64,7 +64,7 @@ import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
-import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.servlet.URIPatternMode;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
@@ -589,13 +589,13 @@ public final class ArticleProcessor {
             final JSONObject author = result.getJSONObject(User.USER);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.AUTHOR_ARTICLES));
-            request.setAttribute(CACHED_OID, "No id");
-            request.setAttribute(CACHED_TITLE,
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.AUTHOR_ARTICLES));
+            request.setAttribute(PageCaches.CACHED_OID, "No id");
+            request.setAttribute(PageCaches.CACHED_TITLE,
                                  langs.get(PageTypes.AUTHOR_ARTICLES) + "  ["
                                  + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
                                  + langs.get("authorLabel") + "=" + author.getString(User.USER_NAME) + "]");
-            request.setAttribute(CACHED_LINK, requestURI);
+            request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
             final String authorEmail = author.getString(User.USER_EMAIL);
             final List<JSONObject> articles = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
@@ -720,10 +720,10 @@ public final class ArticleProcessor {
             filler.fillSide(request, dataModel, preference);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES));
-            request.setAttribute(CACHED_OID, archiveDateId);
-            request.setAttribute(CACHED_TITLE, cachedTitle + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
-            request.setAttribute(CACHED_LINK, requestURI);
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES));
+            request.setAttribute(PageCaches.CACHED_OID, archiveDateId);
+            request.setAttribute(PageCaches.CACHED_TITLE, cachedTitle + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
+            request.setAttribute(PageCaches.CACHED_LINK, requestURI);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -799,11 +799,11 @@ public final class ArticleProcessor {
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ARTICLE));
-            request.setAttribute(CACHED_OID, articleId);
-            request.setAttribute(CACHED_TITLE, article.getString(Article.ARTICLE_TITLE));
-            request.setAttribute(CACHED_LINK, article.getString(Article.ARTICLE_PERMALINK));
-            request.setAttribute(CACHED_PWD, article.optString(Article.ARTICLE_VIEW_PWD));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.ARTICLE));
+            request.setAttribute(PageCaches.CACHED_OID, articleId);
+            request.setAttribute(PageCaches.CACHED_TITLE, article.getString(Article.ARTICLE_TITLE));
+            request.setAttribute(PageCaches.CACHED_LINK, article.getString(Article.ARTICLE_PERMALINK));
+            request.setAttribute(PageCaches.CACHED_PWD, article.optString(Article.ARTICLE_VIEW_PWD));
 
             // For <meta name="description" content="${article.articleAbstract}"/>
             final String metaDescription = Jsoup.parse(article.optString(Article.ARTICLE_ABSTRACT)).text();

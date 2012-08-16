@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.Role;
@@ -34,6 +33,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Mar 29, 2012
+ * @version 1.0.0.4, Aug 9, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -87,7 +87,7 @@ public final class InitProcessor {
 
             return;
         }
-
+        
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         renderer.setTemplateName("init.ftl");
         context.setRenderer(renderer);
@@ -136,7 +136,7 @@ public final class InitProcessor {
         renderer.setJSONObject(ret);
 
         try {
-            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
             final String userName = requestJSONObject.optString(User.USER_NAME);
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL);

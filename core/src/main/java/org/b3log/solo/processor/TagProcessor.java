@@ -54,7 +54,7 @@ import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
-import static org.b3log.latke.action.AbstractCacheablePageAction.*;
+import org.b3log.latke.cache.PageCaches;
 
 /**
  * Tag processor.
@@ -150,15 +150,15 @@ public final class TagProcessor {
             final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-            request.setAttribute(CACHED_OID, tagId);
+            request.setAttribute(PageCaches.CACHED_OID, tagId);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(CACHED_TITLE,
+            request.setAttribute(PageCaches.CACHED_TITLE,
                                  langs.get(PageTypes.TAG_ARTICLES) + "  ["
                                  + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
                                  + langs.get("tagLabel") + "=" + tagTitle + "]");
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
-            request.setAttribute(CACHED_LINK, requestURI);
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
+            request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByTag(
                     tagId, currentPageNum, pageSize);
@@ -278,11 +278,11 @@ public final class TagProcessor {
                                 (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                                 dataModel);
 
-            request.setAttribute(CACHED_OID, "No id");
+            request.setAttribute(PageCaches.CACHED_OID, "No id");
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
-            request.setAttribute(CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
-            request.setAttribute(CACHED_LINK, "/tags.html");
+            request.setAttribute(PageCaches.CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
+            request.setAttribute(PageCaches.CACHED_LINK, "/tags.html");
 
             final List<JSONObject> tags = tagQueryService.getTags();
             tagUtils.removeForUnpublishedArticles(tags);

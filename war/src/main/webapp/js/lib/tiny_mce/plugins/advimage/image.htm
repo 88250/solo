@@ -51,7 +51,11 @@
                             <tr>
                                 <td class="column1"><label id="isFancyboxlabel" for="isFancybox">{#advimage_dlg.isFancybox}</label></td> 
                                 <td colspan="2">
-                                    <input style="width: auto;" id="isFancybox" name="isFancybox" type="checkbox" checked="checked" />
+                                    <input style="width: auto;vertical-align: middle;" id="isFancybox" name="isFancybox" type="checkbox" checked="checked" onclick="ImageDialog.setGroupName(this)" />
+                                    <span style="float: right; margin-right: 40px;">
+                                        <label id="groupNamelabel" for="groupName">{#advimage_dlg.groupName}</label>
+                                        <input style="width: auto;" id="groupName" name="groupName" type="input" value="group" />
+                                    </span>
                                 </td>
                             </tr>
                         </table>

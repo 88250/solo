@@ -18,12 +18,12 @@ package org.b3log.solo.service;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.RepositoryException;
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Feb 3, 2012
+ * @version 1.0.0.3, Aug 12, 2012
  * @since 0.3.5
  */
 public final class CommentMgmtService {
@@ -397,7 +397,7 @@ public final class CommentMgmtService {
             throws JSONException, RepositoryException {
         final JSONObject page = pageRepository.get(pageId);
         final JSONObject newPage =
-                         new JSONObject(page, JSONObject.getNames(page));
+                new JSONObject(page, JSONObject.getNames(page));
         final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
         newPage.put(Page.PAGE_COMMENT_COUNT, commentCnt + 1);
         pageRepository.update(pageId, newPage);
@@ -432,7 +432,7 @@ public final class CommentMgmtService {
             throws JSONException, RepositoryException {
         final JSONObject page = pageRepository.get(pageId);
         final JSONObject newPage =
-                         new JSONObject(page, JSONObject.getNames(page));
+                new JSONObject(page, JSONObject.getNames(page));
         final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
         newPage.put(Page.PAGE_COMMENT_COUNT, commentCnt - 1);
         pageRepository.update(pageId, newPage);
@@ -440,67 +440,39 @@ public final class CommentMgmtService {
 
     /**
      * Sets commenter thumbnail URL for the specified comment.
+     * 
+     * <p>
+     * Try to set thumbnail URL using Gravatar service.
+     * </p>
      *
      * @param comment the specified comment
      * @throws Exception exception
      */
-    public static void setCommentThumbnailURL(final JSONObject comment)
-            throws Exception {
+    public static void setCommentThumbnailURL(final JSONObject comment) throws Exception {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
-        String thumbnailURL = null;
 
-        // Try to set thumbnail URL using Gravatar service
         final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
-        final int size = 60;
-        final URL gravatarURL =
-                  new URL("http://www.gravatar.com/avatar/" + hashedEmail + "?s="
-                          + size + "&r=G");
+        String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=60&d="
+                              + Latkes.getStaticServePath() + "/images/default-user-thumbnail.png";
 
+        final URL gravatarURL = new URL(thumbnailURL);
+
+        int statusCode = HttpServletResponse.SC_OK;
         try {
             final HTTPRequest request = new HTTPRequest();
             request.setURL(gravatarURL);
             final HTTPResponse response = urlFetchService.fetch(request);
-            final int statusCode = response.getResponseCode();
 
-            if (HttpServletResponse.SC_OK == statusCode) {
-                final List<HTTPHeader> headers = response.getHeaders();
-                boolean defaultFileLengthMatched = false;
-                for (final HTTPHeader httpHeader : headers) {
-                    if ("Content-Length".equalsIgnoreCase(httpHeader.getName())) {
-                        if (httpHeader.getValue().equals("2147")) {
-                            defaultFileLengthMatched = true;
-                        }
-                    }
-                }
-
-                if (!defaultFileLengthMatched) {
-                    thumbnailURL = "http://www.gravatar.com/avatar/"
-                                   + hashedEmail + "?s=" + size + "&r=G";
-                    comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
-                               thumbnailURL);
-
-                    return;
-                }
-            } else {
-                LOGGER.log(Level.WARNING,
-                           "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
-                           new Object[]{commentEmail, statusCode});
-            }
+            statusCode = response.getResponseCode();
         } catch (final IOException e) {
-            LOGGER.warning(e.getMessage());
-            LOGGER.log(Level.WARNING,
-                       "Can not fetch thumbnail from Gravatar[commentEmail={0}]",
-                       commentEmail);
+            LOGGER.log(Level.WARNING, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
+        } finally {
+            if (HttpServletResponse.SC_OK != statusCode) {
+                thumbnailURL = Latkes.getStaticServePath() + "/images/" + DEFAULT_USER_THUMBNAIL;
+            }
         }
 
-        if (null == thumbnailURL) {
-            LOGGER.log(Level.WARNING,
-                       "Not supported yet for comment thumbnail for email[{0}]",
-                       commentEmail);
-            thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
-            comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-        }
+        comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
     }
 
     /**
@@ -530,7 +502,7 @@ public final class CommentMgmtService {
          * Singleton.
          */
         private static final CommentMgmtService SINGLETON =
-                                                new CommentMgmtService();
+                new CommentMgmtService();
 
         /**
          * Private default constructor.

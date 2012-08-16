@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.action.AbstractAction;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.User;
@@ -35,6 +34,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.1.0.9, Jul 18, 2012
+ * @version 1.1.1.0, Aug 9, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -143,7 +143,7 @@ public final class LoginProcessor {
             final String loginFailLabel = langPropsService.get("loginFailLabel");
             jsonObject.put(Keys.MSG, loginFailLabel);
 
-            final JSONObject requestJSONObject = AbstractAction.parseRequestJSONObject(request, context.getResponse());
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
             final String userPwd = requestJSONObject.getString(User.USER_PASSWORD);
 

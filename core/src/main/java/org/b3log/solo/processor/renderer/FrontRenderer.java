@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
-import org.b3log.latke.action.AbstractCacheablePageAction;
+import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
@@ -81,7 +81,7 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
             return;
         }
 
-        final String pageContent = (String) request.getAttribute(AbstractCacheablePageAction.CACHED_CONTENT);
+        final String pageContent = (String) request.getAttribute(PageCaches.CACHED_CONTENT);
         String output = html;
         if (null != pageContent) {
             // Adds the top bar HTML content for output

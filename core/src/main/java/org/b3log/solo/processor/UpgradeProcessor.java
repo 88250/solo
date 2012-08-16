@@ -37,7 +37,7 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.1, Jul 2, 2012
+ * @version 1.1.1.2, Aug 16, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -99,8 +99,8 @@ public final class UpgradeProcessor {
                 return;
             }
 
-            if ("0.4.5".equals(version)) {
-                v045ToV046();
+            if ("0.4.6".equals(version)) {
+                v046ToV050();
             } else {
                 final String msg = "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers";
                 LOGGER.warning(msg);
@@ -114,12 +114,12 @@ public final class UpgradeProcessor {
     }
 
     /**
-     * Upgrades from version 045 to version 046.
+     * Upgrades from version 046 to version 050.
      *
      * @throws Exception upgrade fails
      */
-    private void v045ToV046() throws Exception {
-        LOGGER.info("Upgrading from version 045 to version 046....");
+    private void v046ToV050() throws Exception {
+        LOGGER.info("Upgrading from version 046 to version 050....");
 
         articleRepository.setCacheEnabled(false);
 
@@ -130,7 +130,7 @@ public final class UpgradeProcessor {
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
-            preference.put(Preference.VERSION, "0.4.6");
+            preference.put(Preference.VERSION, "0.5.0");
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
 
@@ -143,12 +143,12 @@ public final class UpgradeProcessor {
             }
 
             LOGGER.log(Level.SEVERE, "Upgrade failed.", e);
-            throw new Exception("Upgrade failed from version 045 to version 046");
+            throw new Exception("Upgrade failed from version 046 to version 050");
         } finally {
             articleRepository.setCacheEnabled(true);
         }
 
-        LOGGER.info("Upgraded from version 045 to version 046 successfully :-)");
+        LOGGER.info("Upgraded from version 046 to version 050 successfully :-)");
     }
 
     /**
