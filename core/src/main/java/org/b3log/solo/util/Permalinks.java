@@ -30,7 +30,7 @@ import org.b3log.solo.repository.impl.PageRepositoryImpl;
  * Permalink utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.7, May 11, 2012
+ * @version 1.1.0.8, Aug 22, 2012
  * @since 0.3.1
  */
 public final class Permalinks {
@@ -52,12 +52,7 @@ public final class Permalinks {
      */
     public static final String[] RESERVED_LINKS = new String[]{
         "/",
-        "/archives/",
         "/article",
-        "/console/",
-        "/500.html",
-        "/403.html",
-        "/404.html",
         "/tags.html",
         "/tags",
         "/page",
@@ -67,7 +62,6 @@ public final class Permalinks {
         "/tag-articles-rss.do",
         "/get-random-articles.do",
         "/article-random-double-gen.do",
-        "/upgrade/checker.do",
         "/captcha.do",
         "/kill-browser.html",
         "/add-article-comment.do",
@@ -77,10 +71,6 @@ public final class Permalinks {
         "/sitemap.xml",
         "/login",
         "/logout",
-        "/_ah/", // For local dev server
-        "/skins/",
-        "/images/",
-        "/styles/",
         "/get-article-content",
         "/admin-index.do",
         "/admin-article.do",
@@ -100,7 +90,6 @@ public final class Permalinks {
         "/rm-all-data.do",
         "/init",
         "/clear-cache.do",
-        "/apis/metaweblog"
     };
 
     /**
