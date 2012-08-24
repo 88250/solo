@@ -69,7 +69,7 @@
             </div>
             <div class="footerWrapper">
                 <div class="footer">
-                    &copy; ${year} - <a href="http://${blogHost}">${blogTitle}</a><br/>
+                    &copy; ${year} - <a href="${blogHost}">${blogTitle}</a><br/>
                     Powered by
                     <a href="http://b3log.org" target="_blank">
                         ${b3logLabel}&nbsp;
@@ -96,16 +96,16 @@
                     return;
                 } 
                 
-                var requestJSONObject = {
-                    "userEmail": $("#userEmail").val(),
-                    "userPassword": $("#userPassword").val()
-                };
+                var requestJSONObject = '{'
+                    + '"userEmail": ' + $("#userEmail").val() + ','
+                    + '"userPassword": ' + $("#userPassword").val() 
+                + '}';
                 
                 $.ajax({
                     url: "${servePath}/login",
                     type: "POST",
                     contentType: "application/json",
-                    data: JSON.stringify(requestJSONObject),
+                    data: requestJSONObject,
                     error: function(){
                         // alert("Login error!");
                     },
