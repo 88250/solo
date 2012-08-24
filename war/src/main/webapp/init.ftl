@@ -110,11 +110,19 @@
             </div>
         </div>
         <script type="text/javascript">
-            $("#userPasswordConfirm").keypress(function (event) {
-                if (event.keyCode === 13) {
-                    getUserInfo();
-                }
-            });
+            (function () {
+                $("input").keypress(function (event) {
+                    if (event.keyCode === 13) {
+                        event.preventDefault();
+                    }
+                });
+                
+                $("#userPasswordConfirm").keypress(function (event) {
+                    if (event.keyCode === 13) {
+                        getUserInfo();
+                    }
+                });
+            })();
             
             var validate = function () {
                 var userName = $("#userName").val().replace(/(^\s*)|(\s*$)/g, "");
