@@ -67,7 +67,7 @@
     <a href="https://github.com/b3log/b3log-solo" target="_blank" class="hover">
         B3log Solo
     </a>
-    &nbsp;${onlineVisitor1Label}${onlineVisitorCnt}
+    <span class="left">&nbsp;${onlineVisitor1Label}${onlineVisitorCnt}</span>
     <span class="right" id="admin">
         <#if isLoggedIn>
         <span>${userName}</span>

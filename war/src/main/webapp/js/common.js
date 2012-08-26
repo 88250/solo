@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Jul 23, 2012
+ * @version 1.0.2.3, Aug 24, 2012
  */
 
 /**
@@ -164,17 +164,11 @@ var Util = {
      * @description topbar 清除缓存按钮事件
      */
     clearCache: function (all) {
-        var data = {};
+        var data = '';
         if (all === "all") {
-            data = {
-                "all": "all",
-                "URI": ""
-            };
+            data = '{"all": "all", "URI": ""}';
         } else {
-            data = {
-                "all": "",
-                "URI": window.location.pathname
-            };
+            data = '{"all": "all", "URI": "' + window.location.pathname + '"}';
         }
         
         $.ajax({
@@ -182,7 +176,7 @@ var Util = {
             url: latkeConfig.servePath + "/clear-cache.do",
             cache: false,
             contentType: "application/json",
-            data: JSON.stringify(data),
+            data: data,
             success: function(result){
                 window.location.reload();
             }

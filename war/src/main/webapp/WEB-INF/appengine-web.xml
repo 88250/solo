@@ -20,7 +20,7 @@
     Description: Web deployment descriptor on GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/appconfig.html
                  for more details.
-    Version: 1.0.3.8, Aug 16, 2012
+    Version: 1.0.3.9, Aug 22, 2012
     Author: Liang Ding
 -->
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
@@ -96,6 +96,10 @@
         <include path="/plugins/**/*.html" />
         <include path="/plugins/**.htm" />
         <include path="/plugins/**/*.htm" />
+        
+        <include path="/CHANGE_LOGS.html" />
+        <include path="/README.txt" />
+        <include path="/LICENSE.txt" />
         
     </static-files>
     

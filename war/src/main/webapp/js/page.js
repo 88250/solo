@@ -391,19 +391,22 @@ $.extend(Page.prototype, {
         var $top = $("#top #admin");
         if ($top.length === 1) {
             if ($top.find("a").length > 2) {
-                if (Cookie.readCookie("commentName") === "") {
-                    Cookie.createCookie("commentName", $top.find("span").text(), 365); 
-                }
-
-                if (Cookie.readCookie("commentURL") === "") {
-                    Cookie.createCookie("commentURL", window.location.host, 365);
-                }
+                Cookie.createCookie("commentName", $top.find("span").text(), 365); 
+                Cookie.createCookie("commentURL", window.location.host, 365);
             }
         }
         
         $("#commentEmail").val(Cookie.readCookie("commentEmail"));
         $("#commentURL").val(Cookie.readCookie("commentURL"));
         $("#commentName").val(Cookie.readCookie("commentName"));
+        
+        // if no JSON, add it.
+        try {
+            JSON
+        } catch (e) {
+            document.write("<script src=\"" + latkeConfig.staticServePath + "/js/lib/json2.js\"><\/script>");
+        }
+            
     },
 
     /*
@@ -428,7 +431,7 @@ $.extend(Page.prototype, {
                     var article = randomArticles[i];
                     var title = article.articleTitle;
                     var randomArticleLiHtml = "<li>" + "<a rel='nofollow' title='" + title + "' href='" + 
-                        article.articlePermalink +"'>" +  title + "</a></li>";
+                    article.articlePermalink +"'>" +  title + "</a></li>";
                     listHtml += randomArticleLiHtml;
                 }
                 
