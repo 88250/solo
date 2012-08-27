@@ -29,64 +29,19 @@
     <static-files>
         <!-- Uses the STANDARD Ant Path Pattern to configure these paths!  -->
          
+		
         <include path="/favicon.ico" />
         <include path="/favicon.png" />
         <include path="/robots.txt" />
         
-        <include path="/js/**.js" />
-        <include path="/js/**/*.js" />
-        <include path="/js/**.css" />
-        <include path="/js/**/*.css" />
-        <include path="/js/**.htm" />
-        <include path="/js/**/*.htm" />
-        <include path="/js/**.html" />
-        <include path="/js/**/*.html" />
-        <include path="/js/**.gif" />
-        <include path="/js/**/*.gif" />
-        <include path="/js/**.png" />
-        <include path="/js/**/*.png" />
-        <include path="/js/**.jpg" />
-        <include path="/js/**/*.jpg" />
-        
-        <include path="/skins/**.css" />
-        <include path="/skins/**/*.css" />
-        <include path="/skins/**.js" />
-        <include path="/skins/**/*.js" />
-        <include path="/skins/**.png" />
-        <include path="/skins/**/*.png" />
-        <include path="/skins/**.jpg" />
-        <include path="/skins/**/*.jpg" />
-        <include path="/skins/**.swf" />
-        <include path="/skins/**/*.swf" />
-        <include path="/skins/**.gif" />
-        <include path="/skins/**/*.gif" />
-        
-        <include path="/css/**.css" />
-        <include path="/css/**/*.css" />
-        
-        <include path="/images/**.png" />
-        <include path="/images/**/*.png" />
-        <include path="/images/**.jpg" />
-        <include path="/images/**/*.jpg" />
-        <include path="/images/**.gif" />
-        <include path="/images/**/*.gif" />
-        
-        <include path="/plugins/**.css" />
-        <include path="/plugins/**/*.css" />
-        <include path="/plugins/**.js" />
-        <include path="/plugins/**/*.js" />
-        <include path="/plugins/**.png" />
-        <include path="/plugins/**/*.png" />
-        <include path="/plugins/**.jpg" />
-        <include path="/plugins/**/*.jpg" />
-        <include path="/plugins/**.swf" />
-        <include path="/plugins/**/*.swf" />
-        <include path="/plugins/**.gif" />
-        <include path="/plugins/**/*.gif" />
-        <include path="/plugins/**.html" />
-        <include path="/plugins/**/*.html" />
-        <include path="/plugins/**.htm" />
-        <include path="/plugins/**/*.htm" />
-        
+<!--        <include path="/**.js" /> -->
+        <include path="/**.css" />
+        <include path="/**.htm" />
+        <include path="/**.html" />
+        <include path="/**.gif" />
+        <include path="/**.png" />
+        <include path="/**.jpg" />
+        <include path="/**.swf" />
+
     </static-files>
 </du-web-app>
