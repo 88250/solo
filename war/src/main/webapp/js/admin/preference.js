@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Jun 26, 2012
+ * @version 1.0.1.6, Aug 26, 2012
  */
 
 /* preference 相关操作 */
@@ -82,16 +82,15 @@ admin.preference = {
                 var skins = eval('(' + preference.skins + ')');
                 var skinsHTML = "";
                 for (var i = 0; i < skins.length; i++) {
+                    var selectedClass = "";
                     if (skins[i].skinName === preference.skinName
                         && skins[i].skinDirName === preference.skinDirName ) {
-                        skinsHTML += "<div title='" + skins[i].skinDirName
-                        + "' class='left skinItem selected'><img class='skinPreview' src='skins/"
-                        + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
-                    } else {
-                        skinsHTML += "<div title='" + skins[i].skinDirName
-                        + "' class='left skinItem'><img class='skinPreview' src='skins/"
-                        + skins[i].skinDirName + "/preview.png'/><div>" + skins[i].skinName + "</div></div>"
-                    }
+                        selectedClass += " selected";
+                    } 
+                    skinsHTML += "<div title='" + skins[i].skinDirName
+                        + "' class='left skinItem" + selectedClass + "'><img class='skinPreview' src='" 
+                        + latkeConfig.staticServePath + "/skins/" + skins[i].skinDirName 
+                        + "/preview.png'/><div>" + skins[i].skinName + "</div></div>";
                 }
                 $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
 
