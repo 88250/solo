@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo GAE POM.
-    Version: 2.0.0.9, Aug 16, 2012
+    Version: 2.0.1.0, Aug 27, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -46,6 +46,10 @@
                 <exclusion>
                     <groupId>com.jolbox</groupId>
                     <artifactId>bonecp</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>c3p0</groupId>
+                    <artifactId>c3p0</artifactId>
                 </exclusion>
                 <!-- Container provided -->
                 <exclusion>
