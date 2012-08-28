@@ -155,7 +155,7 @@ public final class LoginProcessor {
 
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
             if (null == user) {
-                LOGGER.log(Level.WARNING, "Not found user[email={0}", userEmail);
+                LOGGER.log(Level.WARNING, "Not found user[email={0}]", userEmail);
                 return;
             }
 

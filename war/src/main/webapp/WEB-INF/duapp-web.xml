@@ -26,22 +26,11 @@
 <du-web-app xmlns="http://bae.baidu.com/java/1.0">
     <sessions-enabled>true</sessions-enabled>
     
+    <system-properties>
+        <property name="java.util.logging.level" value="FINEST"/>
+    </system-properties>
+    
     <static-files>
-        <!-- Uses the STANDARD Ant Path Pattern to configure these paths!  -->
-         
-		
-        <include path="/favicon.ico" />
-        <include path="/favicon.png" />
-        <include path="/robots.txt" />
-        
-<!--        <include path="/**.js" /> -->
-        <include path="/**.css" />
-        <include path="/**.htm" />
-        <include path="/**.html" />
-        <include path="/**.gif" />
-        <include path="/**.png" />
-        <include path="/**.jpg" />
-        <include path="/**.swf" />
-
+        <exclude path="/**.html" />
     </static-files>
 </du-web-app>
