@@ -18,7 +18,7 @@
 * 403, 404, 500, article-pwd, init, login and kill-browser page style.
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.1, Jun 13, 2012
+* @version 1.0.1.2, Aug 27, 2012
 */
 html {
     height: 100%;
@@ -57,7 +57,7 @@ input {
     border: 1px solid #E5E5E5;
     box-shadow: 1px 1px 2px rgba(200, 200, 200, 0.2) inset;
     color: #4D505D;
-    font-family: Helvetica,Arial,sans-serif,\5fae\8f6f\96c5\9ed1;
+    font-family: Helvetica,Arial,'sans-serif','\5fae\8f6f\96c5\9ed1';
     font-size: 20px;
     font-weight: 200;
     height: 28px;

@@ -143,7 +143,7 @@
                     <span style="color: orangered; font-weight: bold;">Solo</span></a>, ver ${version}
             </div>
         </div>
-        <script src="${staticServePath}/js/common.js"></script>
+        <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
         <script src="${staticServePath}/js/admin/editor.js"></script>
