@@ -41,6 +41,7 @@ admin.editors.tinyMCE = {
                     mode : "exact",
                     elements : conf.id,
                     theme : "advanced",
+                    plugins: "media",
 
                     // Theme options
                     theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,undo,redo,|,bullist,numlist",
