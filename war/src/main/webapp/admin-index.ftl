@@ -10,15 +10,6 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirror/codemirror.css?${staticResourceVersion}" />
         </#if>
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
-        <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
-        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
-        <#if "tinyMCE" == editorType>
-        <script src="${staticServePath}/js/lib/tiny_mce/tiny_mce.js"></script>
-        <#elseif "KindEditor" == editorType>
-        <script src="${staticServePath}/js/lib/KindEditor/kindeditor-min.js"></script>
-        <#else>
-        <script src="${staticServePath}/js/lib/CodeMirror/codemirror.js"></script>
-        </#if>
     </head>
     <body onhashchange="admin.setCurByHash();">
         <div class="tip"><span id="loadMsg">${loadingLabel}</span></div>
@@ -143,6 +134,15 @@
                     <span style="color: orangered; font-weight: bold;">Solo</span></a>, ver ${version}
             </div>
         </div>
+        <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
+        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
+        <#if "tinyMCE" == editorType>
+        <script src="${servePath}/js/lib/tiny_mce/tiny_mce.js"></script>
+        <#elseif "KindEditor" == editorType>
+        <script src="${staticServePath}/js/lib/KindEditor/kindeditor-min.js"></script>
+        <#else>
+        <script src="${staticServePath}/js/lib/CodeMirror/codemirror.js"></script>
+        </#if>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
