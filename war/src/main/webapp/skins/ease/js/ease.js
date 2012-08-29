@@ -18,7 +18,7 @@
  * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.3, Aug 6, 2012
+ * @version 1.0.1.4, Aug 29, 2012
  */
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
@@ -39,7 +39,7 @@ var getNextPage = function () {
     }
     
     $.ajax({
-        url: latkeConfig.staticServePath + path + currentPage,
+        url: latkeConfig.servePath + path + currentPage,
         type: "GET",
         beforeSend: function () {
             $more.css("background",
