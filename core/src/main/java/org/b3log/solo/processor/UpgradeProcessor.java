@@ -18,17 +18,16 @@ package org.b3log.solo.processor;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.taskqueue.TaskQueueService;
 import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
@@ -87,6 +86,14 @@ public final class UpgradeProcessor {
      * Mail Service.
      */
     private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
+    /**
+     * Whether the email has been sent.
+     */
+    private boolean sent = false;
+    /**
+     * Language service.
+     */
+    private static LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Checks upgrade.
@@ -118,10 +125,12 @@ public final class UpgradeProcessor {
             if ("0.4.6".equals(version)) {
                 v046ToV050();
             } else {
-                final String msg = "Your B3log Solo is too old to upgrade, please contact the B3log Solo's developers";
-                LOGGER.warning(msg);
-                notifyUserByEmail();
-                responseConflict();
+                LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.4.6; Actually: {0}", version);
+                if(!sent){
+                    notifyUserByEmail();
+                    sent = true;
+                }
+                renderer.setContent(langPropsService.get("skipVersionAlert"));
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -218,17 +227,6 @@ public final class UpgradeProcessor {
     }
 
     /**
-     * Response Conflict with status code 409.
-     */
-    private void responseConflict() {
-        final JSONRenderer jRenderer = new JSONRenderer();
-        final JSONObject ret = new JSONObject();
-        ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_CONFLICT);
-        jRenderer.setJSONObject(ret);
-        LOGGER.warning("a status code - 409 refer to 'conflict' responsed");
-    }
-
-    /**
      * Send an email to the user who upgrades B3log Solo with a discontinuous version.
      * 
      * @throws ServiceException ServiceException
@@ -240,10 +238,9 @@ public final class UpgradeProcessor {
         final MailService.Message message = new MailService.Message();
         message.setFrom(adminEmail);
         message.addRecipient(adminEmail);
-        message.setSubject("Better not to skip more than one version to upgrade b3log");
-        message.setHtmlBody("Hey, sorry for any inconvenience caused. "
-                + "If your B3log Solo is too old to upgrade, developers in B3log are more than welcome to help, thank you.");
+        message.setSubject(langPropsService.get("skipVersionMailSubject"));
+        message.setHtmlBody(langPropsService.get("skipVersionMailBody"));
         MAIL_SVC.send(message);
-        LOGGER.warning("Better not to skip more than one version to upgrade b3log");
+        LOGGER.info("Send an email to the user who upgrades B3log Solo with a discontinuous version.");
     }
 }
