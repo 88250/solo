@@ -71,7 +71,7 @@ import org.json.XML;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Feb 29, 2012
+ * @version 1.0.0.7, Aug 29, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -505,7 +505,7 @@ public final class MetaWeblogAPI {
         stringBuilder.append("<struct>");
 
         stringBuilder.append("<member><name>dateCreated</name>").
-                append("<value><dateTime.iso8601>").append(articleTitle).
+                append("<value><dateTime.iso8601>").
                 append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(
                 createDate)).append("</dateTime.iso8601></value></member>");
 
@@ -558,7 +558,7 @@ public final class MetaWeblogAPI {
             stringBuilder.append("<value><struct>");
 
             stringBuilder.append("<member><name>dateCreated</name>").
-                    append("<value><dateTime.iso8601>").append(articleTitle).
+                    append("<value><dateTime.iso8601>").
                     append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(
                     createDate)).append("</dateTime.iso8601></value></member>");
 
