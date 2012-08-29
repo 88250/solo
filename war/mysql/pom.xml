@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo (MySQL) standard Servlet container POM.
-    Version: 1.0.0.4, Aug 16, 2012
+    Version: 1.0.0.5, Aug 29, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -54,15 +54,6 @@
                 <artifactId>maven-license-plugin</artifactId>
                 <configuration>
                     <header>../../src/main/resources/etc/header.txt</header>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.b3log.latke</groupId>
-                <artifactId>maven-min-plugin</artifactId>
-                <configuration>
-                    <cssSourceDir>${basedir}/../src/main/webapp/css</cssSourceDir>
-                    <jsSourceDir>${basedir}/../src/main/webapp/js</jsSourceDir>
                 </configuration>
             </plugin>
             
