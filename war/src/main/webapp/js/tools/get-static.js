@@ -72,8 +72,13 @@ skins = getAllFiles("../../skins");
     }
     
     for (var i = 0; i < skins.length; i++) {
-        mkdirsSync(path.dirname(skins[i].replace("../..", "static")));
-        fs.writeFileSync(skins[i].replace("../..", "static"), fs.readFileSync(skins[i]), "UTF-8");
+        if (path.basename(skins[i]) === "ease-ie8.css" || path.basename(skins[i]) === "ease.css" 
+            || path.basename(skins[i]) === "ease.js") {
+            
+        } else {
+            mkdirsSync(path.dirname(skins[i].replace("../..", "static")));
+            fs.writeFileSync(skins[i].replace("../..", "static"), fs.readFileSync(skins[i]), "UTF-8");
+        }
     }
     
     fs.writeFileSync("static/favicon.ico", fs.readFileSync("../../favicon.ico"), "UTF-8");
