@@ -16,54 +16,85 @@
 package org.b3log.solo.model;
 
 /**
- * This class defines all page types language configuration keys.
+ * This enumeration defines all page types language configuration keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, May 22, 2012
+ * @version 2.0.0.0, Aug 28, 2012
  * @since 0.3.1
  */
-public final class PageTypes {
+public enum PageTypes {
 
     /**
-     * Key of article label.
+     * Article.
      */
-    public static final String ARTICLE = "articleLabel";
+    ARTICLE("articleLabel", "Article"),
     /**
-     * Key of tag article label.
+     * Tag articles.
      */
-    public static final String TAG_ARTICLES = "tagArticlesLabel";
+    TAG_ARTICLES("tagArticlesLabel", "TagArticles"),
     /**
-     * Key of archive date articles label.
+     * Date articles.
      */
-    public static final String DATE_ARTICLES = "dateArticlesLabel";
+    DATE_ARTICLES("dateArticlesLabel", "DateArticles"),
     /**
-     * Key of index articles label.
+     * Index.
      */
-    public static final String INDEX_ARTICLES = "indexArticleLabel";
+    INDEX("indexArticleLabel", "Index"),
     /**
-     * Key of all tags label.
+     * Tags.
      */
-    public static final String ALL_TAGS = "allTagsLabel";
+    TAGS("allTagsLabel", "Tags"),
     /**
-     * Key of author articles label.
+     * Author articles.
      */
-    public static final String AUTHOR_ARTICLES = "authorArticlesLabel";
+    AUTHOR_ARTICLES("authorArticlesLabel", "AuthorArticles"),
     /**
-     * Key of customized page label.
+     * Page.
      */
-    public static final String PAGE = "customizedPageLabel";
+    PAGE("customizedPageLabel", "Page"),
     /**
-     * Key of kill browser page label.
+     * Kill browser page.
      */
-    public static final String KILL_BROWSER_PAGE = "killBrowserPageLabel";
+    KILL_BROWSER("killBrowserPageLabel", "KillBrowser"),
     /**
-     * Key of user template page label.
+     * User template.
      */
-    public static final String USER_TEMPLATE_PAGE = "userTemplatePageLabel";
+    USER_TEMPLATE("userTemplatePageLabel", "UserTemplate");
+    /**
+     * Language label.
+     */
+    private final String langLabel;
+    /**
+     * Type name.
+     */
+    private final String typeName;
+    
+    /**
+     * Gets the language label.
+     * 
+     * @return language label
+     */
+    public String getLangeLabel() {
+        return langLabel;
+    }
+    
+    /**
+     * Gets the type name.
+     * 
+     * @return type name
+     */
+    public String getTypeName() {
+        return typeName;
+    }
 
     /**
-     * Private default constructor.
+     * Constructs a page type with the specified language label and type name.
+     * 
+     * @param langLabel the specified language label
+     * @param typeName the specified type name
      */
-    private PageTypes() {
+    private PageTypes(final String langLabel, final String typeName) {
+        this.langLabel = langLabel;
+        this.typeName = typeName;
     }
 }

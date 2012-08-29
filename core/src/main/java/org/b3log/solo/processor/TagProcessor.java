@@ -154,10 +154,10 @@ public final class TagProcessor {
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(PageCaches.CACHED_TITLE,
-                                 langs.get(PageTypes.TAG_ARTICLES) + "  ["
+                                 langs.get(PageTypes.TAG_ARTICLES.getLangeLabel()) + "  ["
                                  + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
                                  + langs.get("tagLabel") + "=" + tagTitle + "]");
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByTag(
@@ -200,6 +200,7 @@ public final class TagProcessor {
             dataModel.put(Keys.OBJECT_ID, tagId);
             dataModel.put(Tag.TAG, tag);
 
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.TAG_ARTICLES);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
@@ -280,8 +281,8 @@ public final class TagProcessor {
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(PageCaches.CACHED_TITLE, langs.get(PageTypes.ALL_TAGS));
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.ALL_TAGS));
+            request.setAttribute(PageCaches.CACHED_TITLE, langs.get(PageTypes.TAGS.getLangeLabel()));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.TAGS.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, "/tags.html");
 
             final List<JSONObject> tags = tagQueryService.getTags();
@@ -290,6 +291,7 @@ public final class TagProcessor {
 
             dataModel.put(Tag.TAGS, tags);
 
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.TAGS);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);

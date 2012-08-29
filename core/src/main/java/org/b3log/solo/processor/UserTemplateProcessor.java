@@ -102,7 +102,7 @@ public final class UserTemplateProcessor {
         if (null == template) {
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
@@ -114,6 +114,7 @@ public final class UserTemplateProcessor {
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
 
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.USER_TEMPLATE);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillUserTemplate(template, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
@@ -122,7 +123,7 @@ public final class UserTemplateProcessor {
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             request.setAttribute(PageCaches.CACHED_TITLE, requestURI);
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.USER_TEMPLATE_PAGE));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.USER_TEMPLATE.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

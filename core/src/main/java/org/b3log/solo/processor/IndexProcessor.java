@@ -103,9 +103,9 @@ public final class IndexProcessor {
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(PageCaches.CACHED_OID, "No id");
-            request.setAttribute(PageCaches.CACHED_TITLE, langs.get(PageTypes.INDEX_ARTICLES) + "  [" + langs.get("pageNumLabel") + "="
-                                               + currentPageNum + "]");
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.INDEX_ARTICLES));
+            request.setAttribute(PageCaches.CACHED_TITLE, langs.get(PageTypes.INDEX.getLangeLabel())
+                                                          + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.INDEX.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
             filler.fillIndexArticles(dataModel, currentPageNum, preference);
@@ -121,6 +121,8 @@ public final class IndexProcessor {
                     LOGGER.severe(ex.getMessage());
                 }
             }
+
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.INDEX);
 
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
@@ -169,10 +171,12 @@ public final class IndexProcessor {
             filler.fillBlogFooter(dataModel, preference);
             Keys.fillServer(dataModel);
             filler.fillMinified(dataModel);
+            
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.KILL_BROWSER);
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             request.setAttribute(PageCaches.CACHED_TITLE, "Kill Browser Page");
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.KILL_BROWSER_PAGE));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.KILL_BROWSER.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, request.getRequestURI());
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

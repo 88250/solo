@@ -138,7 +138,7 @@ public final class StatProcessor {
 
                 final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
                 if (!cachedPage.optString(PageCaches.CACHED_TYPE).
-                        equals(langs.get(PageTypes.ARTICLE))) { // Cached is not an article page
+                        equals(langs.get(PageTypes.ARTICLE.getLangeLabel()))) { // Cached is not an article page
                     continue;
                 }
 

@@ -109,8 +109,8 @@ public final class PageProcessor {
                     dataModel);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.PAGE));
-            
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.PAGE.getLangeLabel()));
+
             // See PermalinkFiler#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
             if (null == page) {
@@ -139,6 +139,7 @@ public final class PageProcessor {
                 Stopwatchs.end();
             }
 
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.PAGE);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
@@ -147,7 +148,6 @@ public final class PageProcessor {
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
             } catch (final IOException ex) {
                 LOGGER.severe(ex.getMessage());
             }

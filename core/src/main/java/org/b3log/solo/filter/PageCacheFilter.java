@@ -144,7 +144,7 @@ public final class PageCacheFilter implements Filter {
 
         try {
             // If cached an article that has view password, dispatches the password form
-            if (langPropsService.get(PageTypes.ARTICLE).equals(cachedType)
+            if (langPropsService.get(PageTypes.ARTICLE.getLangeLabel()).equals(cachedType)
                 && cachedPageContentObject.has(PageCaches.CACHED_PWD)) {
                 JSONObject article = new JSONObject();
 
