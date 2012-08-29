@@ -52,6 +52,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
+import org.jsoup.Jsoup;
 
 /**
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> 
@@ -80,13 +81,11 @@ public final class MetaWeblogAPI {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(MetaWeblogAPI.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MetaWeblogAPI.class.getName());
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Tag query service.
      */
@@ -94,18 +93,15 @@ public final class MetaWeblogAPI {
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService =
-            ArticleQueryService.getInstance();
+    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
     /**
      * Article management service.
      */
-    private ArticleMgmtService articleMgmtService =
-            ArticleMgmtService.getInstance();
+    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * User query service.
      */
@@ -125,13 +121,11 @@ public final class MetaWeblogAPI {
     /**
      * Method name: "metaWeblog.getCategories".
      */
-    private static final String METHOD_GET_CATEGORIES =
-            "metaWeblog.getCategories";
+    private static final String METHOD_GET_CATEGORIES = "metaWeblog.getCategories";
     /**
      * Method name: "metaWeblog.getRecentPosts".
      */
-    private static final String METHOD_GET_RECENT_POSTS =
-            "metaWeblog.getRecentPosts";
+    private static final String METHOD_GET_RECENT_POSTS = "metaWeblog.getRecentPosts";
     /**
      * Method name: "metaWeblog.newPost".
      */
@@ -264,15 +258,13 @@ public final class MetaWeblogAPI {
                         "</boolean></value></param></params></methodResponse>");
                 responseContent = stringBuilder.toString();
             } else {
-                throw new UnsupportedOperationException("Unsupported method[name="
-                                                        + methodName + "]");
+                throw new UnsupportedOperationException("Unsupported method[name=" + methodName + "]");
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             responseContent = "";
-            final StringBuilder stringBuilder =
-                    new StringBuilder(
+            final StringBuilder stringBuilder = new StringBuilder(
                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><fault><value><struct>").append(
                     "<member><name>faultCode</name><value><int>500</int></value></member>").
                     append("<member><name>faultString</name><value><string>").
@@ -368,10 +360,12 @@ public final class MetaWeblogAPI {
             } else if ("description".equals(name)) {
                 final String content = member.getJSONObject("value").getString("string");
                 ret.put(Article.ARTICLE_CONTENT, content);
-                if (content.length() > ARTICLE_ABSTRACT_LENGTH) {
-                    ret.put(Article.ARTICLE_ABSTRACT, content.substring(0, ARTICLE_ABSTRACT_LENGTH));
+
+                final String plainTextContent = Jsoup.parse(content).text();
+                if (plainTextContent.length() > ARTICLE_ABSTRACT_LENGTH) {
+                    ret.put(Article.ARTICLE_ABSTRACT, plainTextContent.substring(0, ARTICLE_ABSTRACT_LENGTH));
                 } else {
-                    ret.put(Article.ARTICLE_ABSTRACT, content);
+                    ret.put(Article.ARTICLE_ABSTRACT, plainTextContent);
                 }
             } else if ("categories".equals(name)) {
                 final StringBuilder tagBuilder = new StringBuilder();
