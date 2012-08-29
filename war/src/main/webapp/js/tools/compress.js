@@ -1,5 +1,6 @@
 var fs = require("fs"),
 exec = require("child_process").exec;
+/*
 // b3log js compress
 exec("uglifyjs ../../js/common.js > ../../js/common.min.js", function (error, stdout, stderr) {
         if (error !== null) {
@@ -48,7 +49,7 @@ for (var i = 0; i < b3logCsses.length; i++) {
             console.log(error);
         } 	
     });
-}
+}*/
 
 // skin js compress
 var jsPaths = ["ease"];

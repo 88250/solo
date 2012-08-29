@@ -123,7 +123,10 @@
                 <artifactId>maven-min-plugin</artifactId>
                 <configuration>
                     <cssSourceDir>${basedir}/../src/main/webapp/css</cssSourceDir>
+                    <cssTargetDir>${basedir}/../src/main/webapp/css</cssTargetDir>
+
                     <jsSourceDir>${basedir}/../src/main/webapp/js</jsSourceDir>
+                    <jsTargetDir>${basedir}/../src/main/webapp/js</jsTargetDir>
                 </configuration>
             </plugin>
             
