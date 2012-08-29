@@ -66,7 +66,7 @@ import org.b3log.solo.repository.impl.UserRepositoryImpl;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Feb 23, 2012
+ * @version 1.0.1.2, Aug 29, 2012
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -427,7 +427,7 @@ public final class ArticleMgmtService {
             final String permalink = getPermalinkForAddArticle(article);
             article.put(Article.ARTICLE_PERMALINK, permalink);
             // Step 9: Add article sign id
-            final String signId = article.optString(Article.ARTICLE_SIGN_ID, "0");
+            final String signId = article.optString(Article.ARTICLE_SIGN_ID, "1");
             article.put(Article.ARTICLE_SIGN_ID, signId);
             // Step 10: Set had been published status
             article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
