@@ -60,7 +60,7 @@ sup{font-size:10px;font-weight:normal;-webkit-text-size-adjust:none;}
 .main>.wrapper>h2{margin:0;padding:14px 0;}
 .article{border-bottom:1px solid #f6f6f6;padding:30px 50px;}
 .article:hover{border-bottom-color:#ddd;box-shadow:0 0 1px #f6f6f6 inset;background-color:#FCFCFC;}
-.article-body{line-height:145%;overflow:hidden;word-wrap:break-word;margin-bottom:10px;}
+.article-body{line-height:145%;overflow:hidden;word-wrap:break-word;margin-bottom:10px;font-size:14px;}
 .article-body ol,.article-body ul{margin-left:40px;}
 .article-body a{color:#808080;text-decoration:underline;}
 .article-body a:vidited{color:#9a9a9a;}
