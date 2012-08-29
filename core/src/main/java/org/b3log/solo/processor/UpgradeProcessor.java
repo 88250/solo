@@ -15,14 +15,20 @@
  */
 package org.b3log.solo.processor;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.annotation.RequestProcessing;
 import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.mail.MailService;
+import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.taskqueue.TaskQueueService;
 import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
@@ -30,7 +36,9 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.repository.impl.*;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -71,10 +79,18 @@ public final class UpgradeProcessor {
      * Step for article updating.
      */
     private static final int STEP = 50;
+    /**
+     * Preference Query Service.
+     */
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    /**
+     * Mail Service.
+     */
+    private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
 
     /**
      * Checks upgrade.
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/upgrade/checker.do", method = HTTPRequestMethod.GET)
@@ -102,14 +118,15 @@ public final class UpgradeProcessor {
             if ("0.4.6".equals(version)) {
                 v046ToV050();
             } else {
-                final String msg = "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers";
+                final String msg = "Your B3log Solo is too old to upgrade, please contact the B3log Solo's developers";
                 LOGGER.warning(msg);
-                renderer.setContent(msg);
+                notifyUserByEmail();
+                responseConflict();
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             renderer.setContent("Upgrade failed [" + e.getMessage() + "], please contact the B3log Solo developers or reports this "
-                                + "issue directly (https://github.com/b3log/b3log-solo/issues/new) ");
+                    + "issue directly (https://github.com/b3log/b3log-solo/issues/new) ");
         }
     }
 
@@ -153,7 +170,7 @@ public final class UpgradeProcessor {
 
     /**
      * Upgrades articles.
-     * 
+     *
      * @throws Exception exception
      */
     private void upgradeArticles() throws Exception {
@@ -198,5 +215,35 @@ public final class UpgradeProcessor {
 
             throw e;
         }
+    }
+
+    /**
+     * Response Conflict with status code 409.
+     */
+    private void responseConflict() {
+        final JSONRenderer jRenderer = new JSONRenderer();
+        final JSONObject ret = new JSONObject();
+        ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_CONFLICT);
+        jRenderer.setJSONObject(ret);
+        LOGGER.warning("a status code - 409 refer to 'conflict' responsed");
+    }
+
+    /**
+     * Send an email to the user who upgrades B3log Solo with a discontinuous version.
+     * 
+     * @throws ServiceException ServiceException
+     * @throws JSONException JSONException
+     * @throws IOException IOException
+     */
+    private void notifyUserByEmail() throws ServiceException, JSONException, IOException {
+        final String adminEmail = preferenceQueryService.getPreference().getString(Preference.ADMIN_EMAIL);
+        final MailService.Message message = new MailService.Message();
+        message.setFrom(adminEmail);
+        message.addRecipient(adminEmail);
+        message.setSubject("Better not to skip more than one version to upgrade b3log");
+        message.setHtmlBody("Hey, sorry for any inconvenience caused. "
+                + "If your B3log Solo is too old to upgrade, developers in B3log are more than welcome to help, thank you.");
+        MAIL_SVC.send(message);
+        LOGGER.warning("Better not to skip more than one version to upgrade b3log");
     }
 }
