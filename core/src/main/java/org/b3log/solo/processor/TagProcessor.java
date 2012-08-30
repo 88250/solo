@@ -55,12 +55,13 @@ import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.util.Strings;
 
 /**
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.9, Jul 18, 2012
+ * @version 1.1.1.0, Aug 30, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -316,6 +317,10 @@ public final class TagProcessor {
      * can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI, final String tagTitle) {
+        if (Strings.isEmptyOrNull(tagTitle)) {
+            return -1;
+        }
+        
         final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/tags/" + tagTitle + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
