@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, May 3, 2012
+ * @version 1.0.1.3, Aug 30, 2012
  */
 
 /* user-list 相关操作 */
@@ -289,9 +289,9 @@ admin.userList = {
         if (!status) {
             status = "";
         }
-
-        if ($("#userName" + status).val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text(Label.nameEmptyLabel);
+        var userName = $("#userName" + status).val().replace(/(^\s*)|(\s*$)/g, "");
+        if (2 > userName.length || userName.length > 20) {
+            $("#tipMsg").text(Label.nameTooLongLabel);
             $("#userName" + status).focus();
         }else if ($("#userEmail" + status).val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.mailCannotEmptyLabel);

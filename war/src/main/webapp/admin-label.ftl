@@ -56,7 +56,6 @@
         "commentEmailLabel": "${commentEmailLabel}",
         "administratorLabel": "${administratorLabel}",
         "duplicatedEmailLabel": "${duplicatedEmailLabel}",
-        "nameEmptyLabel": "${nameEmptyLabel}",
         "mailInvalidLabel": "${mailInvalidLabel}",
         "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
         "noSettingLabel": "${noSettingLabel}",
@@ -109,7 +108,8 @@
         "windowSizeLabel": "${windowSizeLabel}",
         "randomArticlesDisplayCntLabel": "${randomArticlesDisplayCntLabel}",
         "relevantArticlesDisplayCntLabel": "${relevantArticlesDisplayCntLabel}",
-        "externalRelevantArticlesDisplayCntLabel": "${externalRelevantArticlesDisplayCntLabel}"
+        "externalRelevantArticlesDisplayCntLabel": "${externalRelevantArticlesDisplayCntLabel}",
+        "nameTooLongLabel": "${nameTooLongLabel}"
     };    
     
     admin.init();
