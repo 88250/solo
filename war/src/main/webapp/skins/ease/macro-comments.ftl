@@ -7,7 +7,7 @@
         <div class="comment-panel">
             <div class="left">
                 <#if "http://" == comment.commentURL>
-                ${comment.commentName}
+                <a>${comment.commentName}</a>
                 <#else>
                 <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                 </#if>
