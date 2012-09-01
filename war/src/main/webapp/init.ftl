@@ -110,6 +110,7 @@
             </div>
         </div>
         <script type="text/javascript">
+         
             (function () {
                 $("input").keypress(function (event) {
                     if (event.keyCode === 13) {
@@ -122,6 +123,13 @@
                         getUserInfo();
                     }
                 });
+                
+                // if no JSON, add it.
+                try {
+                    JSON
+                } catch (e) {
+                    document.write("<script src=\"${staticServePath}/js/lib/json2.js\"><\/script>");
+                }
             })();
             
             var validate = function () {
@@ -181,17 +189,16 @@
             };
             
             var initSys = function () {
-                var requestJSONObject = '{'
-                    + '"userName": ' + $("#userName").val() + ','
-                    + '"userEmail": ' + $("#userEmail").val() + ','
-                    + '"userPassword": ' + $("#userPassword").val()
-                    + '}';
+                var requestJSONObject = {
+                    "userEmail": $("#userEmail").val(),
+                    "userPassword":  $("#userPassword").val() 
+                };
                 
                 if(confirm("${confirmInitLabel}")){
                     $.ajax({
                         url: "${contextPath}/init",
                         type: "POST",
-                        data: requestJSONObject,
+                        data: JSON.stringify(requestJSONObject),
                         success: function(result, textStatus){
                             if (!result.sc) {
                                 alert(result.msg);
