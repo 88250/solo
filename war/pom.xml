@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo WAR POM.
-    Version: 2.0.1.3, Aug 29, 2012
+    Version: 2.0.1.4, Sep 4, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -24,6 +24,7 @@
 
     <modules>
         <module>gae</module>
+	<module>bae</module>
         <module>mysql</module>
     </modules>
 

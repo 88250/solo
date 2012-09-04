@@ -23,6 +23,8 @@
     </parent>
     
     <properties>
+        <!-- JDBC Drivers -->
+        <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
         <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 
@@ -35,6 +37,12 @@
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-repository-mysql</artifactId>
+        </dependency>
+        
+        <dependency>         
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
         </dependency>
     </dependencies>
     

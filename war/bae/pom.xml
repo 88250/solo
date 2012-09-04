@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: B3log Solo BAE POM.
+    Version: 1.0.0.0, Sep 4, 2012
+    Author: Liang Ding
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>solo-bae</artifactId>
+    <packaging>war</packaging>
+    <name>B3log Solo (BAE)</name>
+    <description>
+        B3log Solo Baidu App Engine war.
+    </description>
+
+    <parent>
+        <groupId>org.b3log</groupId>
+        <artifactId>solo-war</artifactId>
+        <version>0.5.0</version>
+    </parent>
+    
+    <properties>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke</artifactId>
+            <exclusions>
+                <!-- Javamail for local -->
+                <exclusion>
+                    <artifactId>mail</artifactId>
+                    <groupId>javax.mail</groupId>
+                </exclusion>
+                <!-- Database Connections Pool for local-->
+                <exclusion>
+                    <groupId>com.jolbox</groupId>
+                    <artifactId>bonecp</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>c3p0</groupId>
+                    <artifactId>c3p0</artifactId>
+                </exclusion>
+                <!-- Container provided -->
+                <exclusion>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-bae</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-mysql</artifactId>
+            <exclusions>
+                <!-- Database Connections Pool for local-->
+                <exclusion>
+                    <groupId>com.jolbox</groupId>
+                    <artifactId>bonecp</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+    </dependencies>
+    
+    <build>
+        <resources>
+            <resource>
+                <directory>../src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        
+        <plugins>
+            <plugin>
+                <groupId>com.mycila.maven-license-plugin</groupId>
+                <artifactId>maven-license-plugin</artifactId>
+                <configuration>
+                    <header>../../src/main/resources/etc/header.txt</header>
+                </configuration>
+            </plugin>
+        </plugins>
+
+        <finalName>b3log-solo-bae</finalName>
+    </build>
+</project>
+
