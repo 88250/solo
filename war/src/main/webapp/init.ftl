@@ -21,7 +21,7 @@
                 <div class="content">
                     <div class="logo">
                         <a href="http://b3log.org" target="_blank">
-                            <img onerror="checkStatic();" border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
+                            <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
                     <div class="main">
@@ -191,22 +191,22 @@
                 }
             };
             
-            var checkStatic = function () {
-                alert("${staticErrorLabel}");
-            };
-            
             (function () {
-                $("input").keypress(function (event) {
-                    if (event.keyCode === 13) {
-                        event.preventDefault();
-                    }
-                });
+                try {
+                    $("input").keypress(function (event) {
+                        if (event.keyCode === 13) {
+                            event.preventDefault();
+                        }
+                    });
                 
-                $("#userPasswordConfirm").keypress(function (event) {
-                    if (event.keyCode === 13) {
-                        getUserInfo();
-                    }
-                });
+                    $("#userPasswordConfirm").keypress(function (event) {
+                        if (event.keyCode === 13) {
+                            getUserInfo();
+                        }
+                    });
+                } catch (e) {
+                    alert("${staticErrorLabel}");
+                }
             })();
         </script>
     </body>
