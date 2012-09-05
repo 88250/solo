@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo GAE POM.
-    Version: 2.0.1.1, Aug 29, 2012
+    Version: 2.0.2.0, Sep 5, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -116,6 +116,29 @@
                         <jvmFlag>-Dappengine.user.timezone=UTC</jvmFlag>
                     </jvmFlags>
                 </configuration>
+            </plugin>
+            
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>              
+                        </configuration>            
+                    </execution>
+                </executions>
             </plugin>
             
         </plugins>

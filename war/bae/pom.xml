@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo BAE POM.
-    Version: 1.0.0.0, Sep 4, 2012
+    Version: 1.0.1.0, Sep 5, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -95,6 +95,30 @@
                     <header>../../src/main/resources/etc/header.txt</header>
                 </configuration>
             </plugin>
+            
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>              
+                        </configuration>            
+                    </execution>
+                </executions>
+            </plugin>
+            
         </plugins>
 
         <finalName>b3log-solo-bae</finalName>
