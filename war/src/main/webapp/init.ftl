@@ -205,7 +205,7 @@
                         }
                     });
                 } catch (e) {
-                    alert("${staticErrorLabel}");
+                    document.body.innerHTML = "${staticErrorLabel}";
                 }
             })();
         </script>
