@@ -34,6 +34,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
@@ -58,7 +59,7 @@ import org.b3log.solo.util.Comments;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Aug 27, 2012
+ * @version 1.0.1.2, Sep 6, 2012
  * @since 0.4.0
  */
 public final class InitService {
@@ -111,6 +112,10 @@ public final class InitService {
      * Initialized time zone id.
      */
     private static final String INIT_TIME_ZONE_ID = "Asia/Shanghai";
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Initializes B3log Solo.
@@ -138,6 +143,7 @@ public final class InitService {
      *     "userName": "",
      *     "userEmail": "",
      *     "userPassword": ""，
+     *     "locale": ""
      * }
      * </pre>
      * @throws ServiceException service exception
@@ -190,7 +196,7 @@ public final class InitService {
 
         final Transaction transaction = userRepository.beginTransaction();
         try {
-            helloWorld();
+            helloWorld(requestJSONObject.getString(Keys.LOCALE));
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -202,25 +208,16 @@ public final class InitService {
     }
 
     /**
-     * Publishes the first article "Hello World" and the first comment.
+     * Publishes the first article "Hello World" and the first comment with the specified locale.
      *
+     * @param locale the specified locale
      * @throws Exception exception
      */
-    private void helloWorld() throws Exception {
+    private void helloWorld(final String locale) throws Exception {
         final JSONObject article = new JSONObject();
 
-        // XXX: no i18n
-        article.put(Article.ARTICLE_TITLE, "Hello World!");
-        final String content = "Welcome to <a style=\"text-decoration: none;\" target=\"_blank\" "
-                               + "href=\"https://github.com/b3log/b3log-solo\">"
-                               + "<span style=\"color: orange;\">B</span>"
-                               + "<span style=\"font-size: 9px; color: blue;\">"
-                               + "<sup>3</sup></span><span style=\"color: green;\">L</span>"
-                               + "<span style=\"color: red;\">O</span>"
-                               + "<span style=\"color: blue;\">G</span> "
-                               + " <span style=\"color: orangered; font-weight: bold;\">Solo</span>"
-                               + "</a>. This is your first post. Edit or delete it, "
-                               + "then start blogging!";
+        article.put(Article.ARTICLE_TITLE, langPropsService.get("helloWorld.title"));
+        final String content = langPropsService.get("helloWorld.content");
         article.put(Article.ARTICLE_ABSTRACT, content);
         article.put(Article.ARTICLE_CONTENT, content);
         article.put(Article.ARTICLE_TAGS_REF, "B3log");
@@ -247,10 +244,7 @@ public final class InitService {
         comment.put(Comment.COMMENT_NAME, "88250");
         comment.put(Comment.COMMENT_EMAIL, "dl88250@gmail.com");
         comment.put(Comment.COMMENT_URL, "http://88250.b3log.org");
-        comment.put(Comment.COMMENT_CONTENT, StringEscapeUtils.escapeHtml(
-                "Hi, this is a comment. To delete a comment, just log in and "
-                + "view the post's comments. There you will have the option "
-                + "to delete them."));
+        comment.put(Comment.COMMENT_CONTENT, StringEscapeUtils.escapeHtml(langPropsService.get("helloWorld.comment.content")));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
         comment.put(Comment.COMMENT_THUMBNAIL_URL, "http://secure.gravatar.com/avatar/59a5e8209c780307dbe9c9ba728073f5??s=60&r=G");

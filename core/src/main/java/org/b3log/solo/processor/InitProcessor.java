@@ -16,6 +16,7 @@
 package org.b3log.solo.processor;
 
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,7 +49,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 9, 2012
+ * @version 1.0.0.5, Sep 6, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -87,7 +88,7 @@ public final class InitProcessor {
 
             return;
         }
-        
+
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         renderer.setTemplateName("init.ftl");
         context.setRenderer(renderer);
@@ -150,6 +151,9 @@ public final class InitProcessor {
 
                 return;
             }
+
+            final Locale locale = Locales.getLocale(request);
+            requestJSONObject.put(Keys.LOCALE, locale.toString());
 
             initService.init(requestJSONObject);
 
