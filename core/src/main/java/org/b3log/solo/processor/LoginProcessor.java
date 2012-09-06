@@ -53,7 +53,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.1.1.0, Aug 9, 2012
+ * @version 1.1.1.1, Sep 6, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -111,6 +111,7 @@ public final class LoginProcessor {
         dataModel.put(Preference.BLOG_HOST, preference.getString(Preference.BLOG_HOST));
 
         Keys.fillServer(dataModel);
+        Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
     }
 

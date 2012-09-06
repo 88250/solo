@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Aug 10, 2012
+ * @version 1.0.0.6, Sep 6, 2012
  * @since 0.4.1
  */
 @RequestProcessor
@@ -124,8 +124,9 @@ public final class AdminConsole {
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
             dataModel.put(Preference.EDITOR_TYPE, preference.getString(Preference.EDITOR_TYPE));
             dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
-            
+
             Keys.fillServer(dataModel);
+            Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Admin index render failed", e);
@@ -165,8 +166,9 @@ public final class AdminConsole {
         final Map<String, String> langs = langPropsService.getAll(locale);
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.putAll(langs);
-        
+
         Keys.fillServer(dataModel);
+        Keys.fillRuntime(dataModel);
 
         dataModel.put(Preference.LOCALE_STRING, locale.toString());
 

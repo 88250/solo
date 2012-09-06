@@ -75,7 +75,7 @@ import org.b3log.solo.service.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.4, May 21, 2012
+ * @version 1.1.2.5, Sep 6, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -179,6 +179,7 @@ public final class ArticleProcessor {
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         Keys.fillServer(dataModel);
+        Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
     }
 

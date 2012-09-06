@@ -55,7 +55,7 @@ import org.b3log.solo.processor.renderer.ConsoleRenderer;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.8, May 17, 2012
+ * @version 1.1.0.9, Sep 6, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -170,6 +170,7 @@ public final class IndexProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
             filler.fillBlogFooter(dataModel, preference);
             Keys.fillServer(dataModel);
+            Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
             
             dataModel.put(Keys.PAGE_TYPE, PageTypes.KILL_BROWSER);
