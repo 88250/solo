@@ -13,12 +13,60 @@
         <meta http-equiv="Window-target" content="_top" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
+        <style>
+            *,html,body {
+                margin: 0;
+                padding: 0;
+            }
+
+            html {
+                height: 100%;
+            }
+
+            body {
+                background-color: #F3F1E5;
+                color: #4D505D;
+                font-family: \5fae\8f6f\96c5\9ed1;
+                font-size: small;
+                height: 100%;
+            }
+
+            .wrapper {
+                height: 400px;
+                min-height: 100%;
+                position: relative;
+            }
+
+            .contentError {
+                background-color: #FFFFFF;
+                border: 1px solid #E6E5D9;
+                height: 300px;
+                margin: 0 auto;
+                padding: 50px;
+                position: relative;
+                top: 60px;
+                width: 600px;
+            }
+
+            .footerWrapper {
+                background-color: #FFFFFF;
+                border-top: 1px solid #E6E5D9;
+                bottom: 0;
+                padding: 12px 0;
+                position: absolute;
+                text-align: center;
+                width: 100%;
+            }
+
+            .footerWrapper a {
+                text-decoration: none;
+            }
+        </style>
     </head>
     <body>
         <div class="wrapper">
             <div class="wrap">
-                <div class="content">
+                <div class="content" id="main">
                     <div class="logo">
                         <a href="http://b3log.org" target="_blank">
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
@@ -109,6 +157,7 @@
                 </div>
             </div>
         </div>
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
         <script type="text/javascript">            
             var validate = function () {
                 var userName = $("#userName").val().replace(/(^\s*)|(\s*$)/g, "");
@@ -205,7 +254,8 @@
                         }
                     });
                 } catch (e) {
-                    document.body.innerHTML = "${staticErrorLabel}";
+                    document.getElementById("main").innerHTML = "${staticErrorLabel}";
+                    document.getElementById("main").className = "contentError";
                 }
             })();
         </script>
