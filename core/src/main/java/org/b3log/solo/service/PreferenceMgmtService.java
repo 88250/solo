@@ -28,6 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
@@ -142,7 +143,7 @@ public final class PreferenceMgmtService {
             final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
             LOGGER.log(Level.FINER, "Skin path[{0}]", skinPath);
             Templates.CACHE.clear();
-            
+
             preference.put(Skin.SKINS, skinArray.toString());
 
             final String timeZoneId = preference.getString(TIME_ZONE_ID);
@@ -156,8 +157,14 @@ public final class PreferenceMgmtService {
 
             if (!preference.has(PAGE_CACHE_ENABLED)) {
                 preference.put(PAGE_CACHE_ENABLED, oldPreference.getBoolean(PAGE_CACHE_ENABLED));
+            } else {
+                if (RuntimeEnv.BAE == Latkes.getRuntimeEnv()) {
+                    // XXX: Ignores user's setting, uses default
+                    // https://github.com/b3log/b3log-solo/issues/73
+                    preference.put(PAGE_CACHE_ENABLED, Default.DEFAULT_PAGE_CACHE_ENABLED);
+                }
             }
-            
+
             final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
             Templates.enableCache(pageCacheEnabled);
 
