@@ -19,7 +19,9 @@
                     <div class="main">
                         <h2>404 Not Found!</h2>
                         <img class="img-404" alt="404: not found"  title="404: not found" src="${staticServePath}/images/404.png" />
-                        <div class="a-404"><a href="${servePath}">Index</a></div>
+                        <div class="a-404"><a href="${servePath}">Index</a> |
+                            <a href="${loginURL}">Login</a>
+                        </div>
                         <a href="http://b3log.org" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
                         </a>
