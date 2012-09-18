@@ -196,7 +196,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.1.0.7, Jun 12, 2012
+     * @version 1.1.0.8, Sep 18, 2012
      * @since 0.3.1
      */
     public static final class Default {
@@ -232,11 +232,11 @@ public final class Preference {
         /**
          * Default blog title.
          */
-        public static final String DEFAULT_BLOG_TITLE = "Solo 示例";
+        public static final String DEFAULT_BLOG_TITLE = "B3log Solo 示例";
         /**
          * Default blog subtitle.
          */
-        public static final String DEFAULT_BLOG_SUBTITLE = "GAE 开源博客";
+        public static final String DEFAULT_BLOG_SUBTITLE = "Java 开源博客";
         /**
          * Default skin directory name.
          */
