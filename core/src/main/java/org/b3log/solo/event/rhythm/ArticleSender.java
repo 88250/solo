@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending article to B3log Rhythm.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.9, May 4, 2012
+ * @version 1.0.2.0, Sep 20, 2012
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -115,7 +116,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
             requestJSONObject.put(Article.ARTICLE, article);
             requestJSONObject.put(Common.BLOG_VERSION, SoloServletListener.VERSION);
-            requestJSONObject.put(Common.BLOG, "B3log Solo");
+            requestJSONObject.put(Common.BLOG, "B3log Solo (" + Latkes.getRuntimeEnv().name() + ')');
             requestJSONObject.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
