@@ -19,7 +19,6 @@ import freemarker.template.Template;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,7 +39,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
@@ -55,7 +53,7 @@ import org.json.JSONObject;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.9, Sep 6, 2012
+ * @version 1.1.1.0, Oct 11, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -109,19 +107,6 @@ public final class IndexProcessor {
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
             filler.fillIndexArticles(dataModel, currentPageNum, preference);
-
-            @SuppressWarnings("unchecked")
-            final List<JSONObject> articles = (List<JSONObject>) dataModel.get(Article.ARTICLES);
-            if (articles.isEmpty()) {
-                try {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                    return;
-                } catch (final IOException ex) {
-                    LOGGER.severe(ex.getMessage());
-                }
-            }
-
             dataModel.put(Keys.PAGE_TYPE, PageTypes.INDEX);
 
             filler.fillSide(request, dataModel, preference);

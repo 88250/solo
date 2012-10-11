@@ -52,6 +52,6 @@
     </li>
     </#list>
 </ul>
-<#if paginationCurrentPageNum != paginationPageCount>
+<#if paginationCurrentPageNum != paginationPageCount && 0 != paginationPageCount>
 <div class="article-next ft-gray" onclick="getNextPage()" data-page="${paginationCurrentPageNum}">${moreLabel}</div>
 </#if>
