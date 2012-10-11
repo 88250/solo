@@ -17,19 +17,19 @@ package org.b3log.solo.processor;
 
 import java.io.IOException;
 import java.util.logging.Level;
-import org.b3log.solo.util.Users;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.annotation.RequestProcessing;
-import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
 /**

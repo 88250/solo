@@ -15,20 +15,10 @@
  */
 package org.b3log.solo.processor;
 
-import org.b3log.latke.Keys;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.processor.renderer.FrontRenderer;
-import org.b3log.solo.processor.util.Filler;
-import org.b3log.latke.util.Requests;
-import org.b3log.latke.service.ServiceException;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.latke.util.Locales;
 import freemarker.template.Template;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.service.LangPropsService;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -36,20 +26,30 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.annotation.RequestProcessing;
-import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.URIPatternMode;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.processor.renderer.ConsoleRenderer;
+import org.b3log.solo.processor.renderer.FrontRenderer;
+import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
-import org.b3log.latke.cache.PageCaches;
-import org.b3log.solo.processor.renderer.ConsoleRenderer;
 
 /**
  * Index processor.

@@ -15,18 +15,22 @@
  */
 package org.b3log.solo.processor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.annotation.RequestProcessing;
-import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;

@@ -15,15 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.processor.renderer.FrontRenderer;
-import org.b3log.solo.processor.util.Filler;
-import org.b3log.solo.service.CommentQueryService;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.solo.model.Page;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -31,19 +22,28 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.annotation.RequestProcessing;
-import org.b3log.latke.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.solo.model.PageTypes;
-import org.b3log.solo.util.Skins;
-import org.json.JSONObject;
-import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Page;
+import org.b3log.solo.model.PageTypes;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.processor.renderer.FrontRenderer;
+import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.PageQueryService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Markdowns;
+import org.b3log.solo.util.Skins;
+import org.json.JSONObject;
 
 /**
  * Page processor.
