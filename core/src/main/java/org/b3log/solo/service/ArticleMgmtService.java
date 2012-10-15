@@ -16,10 +16,8 @@
 package org.b3log.solo.service;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import org.b3log.solo.util.Articles;
-import org.b3log.latke.event.EventException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -28,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
@@ -36,37 +35,38 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.util.Tags;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
+import static org.b3log.solo.model.Article.*;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
+import org.b3log.solo.repository.impl.UserRepositoryImpl;
+import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
+import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import static org.b3log.solo.model.Article.*;
-import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
 
 /**
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Feb 23, 2012
+ * @version 1.0.1.3, Oct 12, 2012
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -272,7 +272,7 @@ public final class ArticleMgmtService {
             article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
 
             final boolean publishNewArticle = !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED)
-                                              && article.getBoolean(ARTICLE_IS_PUBLISHED);
+                    && article.getBoolean(ARTICLE_IS_PUBLISHED);
             // Set statistic
             if (publishNewArticle) {
                 // This article is updated from unpublished to published
@@ -350,7 +350,9 @@ public final class ArticleMgmtService {
      *         "postToCommunity": boolean, // optional, default is true
      *         "articleSignId": "" // optional, default is "0",
      *         "articleCommentable": boolean,
-     *         "articleViewPwd": ""
+     *         "articleViewPwd": "",
+     *         "articleEditorType": "" // optional, preference specified if not exists this key
+     *         "oId": "" // optional, generate it if not exists this key
      *     }
      * }
      * </pre>
@@ -392,11 +394,13 @@ public final class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public String addArticleInternal(final JSONObject article) throws ServiceException {
-        final String ret = Ids.genTimeMillisId();
+        String ret = article.optString(Keys.OBJECT_ID);
+        if (Strings.isEmptyOrNull(ret)) {
+            ret = Ids.genTimeMillisId();
+            article.put(Keys.OBJECT_ID, ret);
+        }
 
         try {
-            article.put(Keys.OBJECT_ID, ret);
-
             // Step 1: Add tags
             final String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
@@ -427,7 +431,7 @@ public final class ArticleMgmtService {
             final String permalink = getPermalinkForAddArticle(article);
             article.put(Article.ARTICLE_PERMALINK, permalink);
             // Step 9: Add article sign id
-            final String signId = article.optString(Article.ARTICLE_SIGN_ID, "0");
+            final String signId = article.optString(Article.ARTICLE_SIGN_ID, "1");
             article.put(Article.ARTICLE_SIGN_ID, signId);
             // Step 10: Set had been published status
             article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
@@ -449,7 +453,9 @@ public final class ArticleMgmtService {
             }
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
             // Step 14: Set editor type
-            article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+            if (!article.has(Article.ARTICLE_EDITOR_TYPE)) {
+                article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+            }
             // Step 15: Add article
             articleRepository.add(article);
 
@@ -574,10 +580,10 @@ public final class ArticleMgmtService {
                 }
                 tagRepository.update(tagId, tag);
                 LOGGER.log(Level.FINEST,
-                           "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
-                           new Object[]{tag.getString(Tag.TAG_TITLE),
-                                        tag.getInt(Tag.TAG_REFERENCE_COUNT),
-                                        tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT), articleId});
+                        "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
+                        new Object[]{tag.getString(Tag.TAG_TITLE),
+                            tag.getInt(Tag.TAG_REFERENCE_COUNT),
+                            tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT), articleId});
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Decs tag references count of article[id" + articleId + "] failed", e);
@@ -610,7 +616,7 @@ public final class ArticleMgmtService {
                 archiveDateRepository.remove(archiveDateId);
             } else {
                 final JSONObject newArchiveDate = new JSONObject(archiveDate,
-                                                                 CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
+                        CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
                 newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, archiveDateArticleCnt);
                 newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, archiveDatePublishedArticleCnt);
                 archiveDateRepository.update(archiveDateId, newArchiveDate);
@@ -742,8 +748,8 @@ public final class ArticleMgmtService {
         }
 
         removeTagArticleRelations(oldArticleId, 0 == tagIdsDropped.length
-                                                ? new String[]{"l0y0l"}
-                                                : tagIdsDropped);
+                ? new String[]{"l0y0l"}
+                : tagIdsDropped);
 
         tagStrings = new String[tagsNeedToAdd.size()];
         for (int i = 0; i < tagStrings.length; i++) {
@@ -821,7 +827,7 @@ public final class ArticleMgmtService {
             String tagId;
             if (null == tag) {
                 LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
-                           new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                        new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_COUNT, 1);
@@ -836,9 +842,9 @@ public final class ArticleMgmtService {
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
-                           new Object[]{tag.optString(Tag.TAG_TITLE),
-                                        tag.optString(Keys.OBJECT_ID),
-                                        article.optString(Article.ARTICLE_TITLE)});
+                        new Object[]{tag.optString(Tag.TAG_TITLE),
+                            tag.optString(Keys.OBJECT_ID),
+                            article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 tagTmp.put(Tag.TAG_TITLE, tagTitle);
@@ -934,11 +940,11 @@ public final class ArticleMgmtService {
         }
 
         final JSONObject newArchiveDate = new JSONObject(archiveDate,
-                                                         CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
+                CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
         newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT) + 1);
         if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
             newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                               archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
+                    archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
         }
         archiveDateRepository.update(archiveDate.optString(Keys.OBJECT_ID), newArchiveDate);
 
@@ -1059,7 +1065,7 @@ public final class ArticleMgmtService {
                 archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
         final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                        archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) - 1);
+                archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) - 1);
         archiveDateRepository.update(archiveDateId, archiveDate);
     }
 
@@ -1077,7 +1083,7 @@ public final class ArticleMgmtService {
         final String archiveDateId = archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
         final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                        archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
+                archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
         archiveDateRepository.update(archiveDateId, archiveDate);
     }
 

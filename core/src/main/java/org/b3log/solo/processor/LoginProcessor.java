@@ -25,14 +25,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.annotation.RequestProcessing;
-import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.1.1.0, Aug 9, 2012
+ * @version 1.1.1.1, Sep 6, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -111,6 +111,7 @@ public final class LoginProcessor {
         dataModel.put(Preference.BLOG_HOST, preference.getString(Preference.BLOG_HOST));
 
         Keys.fillServer(dataModel);
+        Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
     }
 
@@ -155,7 +156,7 @@ public final class LoginProcessor {
 
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
             if (null == user) {
-                LOGGER.log(Level.WARNING, "Not found user[email={0}", userEmail);
+                LOGGER.log(Level.WARNING, "Not found user[email={0}]", userEmail);
                 return;
             }
 

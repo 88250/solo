@@ -22,6 +22,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Preference;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -31,7 +32,7 @@ import org.testng.annotations.Test;
  * {@link ArticleMgmtService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Feb 25, 2012
+ * @version 1.0.0.5, Sep 11, 2012
  */
 @Test(suiteName = "service")
 public class ArticleMgmtServiceTestCase extends AbstractTestCase {
@@ -49,7 +50,8 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
         requestJSONObject.put(User.USER_NAME, "Admin");
         requestJSONObject.put(User.USER_PASSWORD, "pass");
-
+        requestJSONObject.put(Keys.LOCALE, Preference.Default.DEFAULT_LANGUAGE);
+        
         initService.init(requestJSONObject);
 
         final UserQueryService userQueryService = getUserQueryService();

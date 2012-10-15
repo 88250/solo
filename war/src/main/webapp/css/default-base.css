@@ -18,7 +18,7 @@
  * base style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.1, Mar 28, 2012
+ * @version 1.0.2.2, Aug 27, 2012
 */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dd, dl, ol {
     margin: 0;
@@ -27,7 +27,7 @@ html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dd, dl, ol {
 body {
     background-color: #FFF;
     color: #000;
-    font-family: Helvetica,Arial,sans-serif,\5fae\8f6f\96c5\9ed1;
+    font-family: elvetica,Arial,'sans-serif','\5fae\8f6f\96c5\9ed1';
     font-size: small;
 }
 
@@ -102,15 +102,15 @@ button:hover,.button:hover {
 }
 
 .marginLeft12 {
-    margin-left: 12px !important;;
+    margin-left: 12px !important;
 }
 
 .marginLeft6 {
-    margin-left: 6px !important;;
+    margin-left: 6px !important;
 }
 
 .marginRight12 {
-    margin-right: 12px !important;;
+    margin-right: 12px !important;
 }
 
 .f-bold {

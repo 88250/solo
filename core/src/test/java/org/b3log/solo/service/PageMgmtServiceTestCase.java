@@ -15,9 +15,11 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.model.Preference;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -26,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link PageMgmtService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Feb 25, 2012
+ * @version 1.0.0.2, Sep 11, 2012
  */
 @Test(suiteName = "service")
 public class PageMgmtServiceTestCase extends AbstractTestCase {
@@ -44,6 +46,7 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
         requestJSONObject.put(User.USER_NAME, "Admin");
         requestJSONObject.put(User.USER_PASSWORD, "pass");
+        requestJSONObject.put(Keys.LOCALE, Preference.Default.DEFAULT_LANGUAGE);
 
         initService.init(requestJSONObject);
 

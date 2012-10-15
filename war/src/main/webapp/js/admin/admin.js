@@ -17,7 +17,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.9, Jun 19, 2012
+ * @version 1.0.2.0, Aug 30, 2012
  */
 
 var Admin = function () {
@@ -27,7 +27,7 @@ var Admin = function () {
     '#user-list', '#plugin-list', '#others'];
     // 多用户时，一般用户不能使用的功能
     this.adTools = ['link-list', 'preference', 'file-list', 'page-list',
-    'user-list', 'plugin-list'];
+    'user-list', 'plugin-list', 'others'];
 };
 
 $.extend(Admin.prototype, {    
@@ -221,13 +221,6 @@ $.extend(Admin.prototype, {
                 $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
             }
         });
-    /*if (subNav.className === "none") {
-            $(it).find(".ico-arrow-down")[0].className = "ico-arrow-up";
-            subNav.className = "collapsed";
-        } else {
-            $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
-            subNav.className = "none";
-        }*/
     },
     
     /*
@@ -239,7 +232,6 @@ $.extend(Admin.prototype, {
             for (var i = 0; i < this.adTools.length; i++) {
                 $("#tabs").tabs("remove", this.adTools[i]);
             }
-            $("#tabs>ul>li").last().remove();
         } else {
             // 当前 tab 属于 Tools 时，设其展开
             for (var j = 0; j < this.tools.length; j++) {

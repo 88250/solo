@@ -15,14 +15,19 @@
  */
 package org.b3log.solo.processor;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.annotation.RequestProcessing;
-import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.mail.MailService;
+import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.taskqueue.TaskQueueService;
 import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
@@ -30,14 +35,17 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.repository.impl.*;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.2, Aug 16, 2012
+ * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
+ * @version 1.1.1.3, Aug 30, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -71,10 +79,26 @@ public final class UpgradeProcessor {
      * Step for article updating.
      */
     private static final int STEP = 50;
+    /**
+     * Preference Query Service.
+     */
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    /**
+     * Mail Service.
+     */
+    private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
+    /**
+     * Whether the email has been sent.
+     */
+    private boolean sent = false;
+    /**
+     * Language service.
+     */
+    private static LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
      * Checks upgrade.
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/upgrade/checker.do", method = HTTPRequestMethod.GET)
@@ -102,14 +126,17 @@ public final class UpgradeProcessor {
             if ("0.4.6".equals(version)) {
                 v046ToV050();
             } else {
-                final String msg = "Your B3log Solo is too old to upgrader, please contact the B3log Solo developers";
-                LOGGER.warning(msg);
-                renderer.setContent(msg);
+                LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.4.6; Actually: {0}", version);
+                if(!sent){
+                    notifyUserByEmail();
+                    sent = true;
+                }
+                renderer.setContent(langPropsService.get("skipVersionAlert"));
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             renderer.setContent("Upgrade failed [" + e.getMessage() + "], please contact the B3log Solo developers or reports this "
-                                + "issue directly (https://github.com/b3log/b3log-solo/issues/new) ");
+                    + "issue directly (https://github.com/b3log/b3log-solo/issues/new) ");
         }
     }
 
@@ -153,7 +180,7 @@ public final class UpgradeProcessor {
 
     /**
      * Upgrades articles.
-     * 
+     *
      * @throws Exception exception
      */
     private void upgradeArticles() throws Exception {
@@ -198,5 +225,23 @@ public final class UpgradeProcessor {
 
             throw e;
         }
+    }
+
+    /**
+     * Send an email to the user who upgrades B3log Solo with a discontinuous version.
+     * 
+     * @throws ServiceException ServiceException
+     * @throws JSONException JSONException
+     * @throws IOException IOException
+     */
+    private void notifyUserByEmail() throws ServiceException, JSONException, IOException {
+        final String adminEmail = preferenceQueryService.getPreference().getString(Preference.ADMIN_EMAIL);
+        final MailService.Message message = new MailService.Message();
+        message.setFrom(adminEmail);
+        message.addRecipient(adminEmail);
+        message.setSubject(langPropsService.get("skipVersionMailSubject"));
+        message.setHtmlBody(langPropsService.get("skipVersionMailBody"));
+        MAIL_SVC.send(message);
+        LOGGER.info("Send an email to the user who upgrades B3log Solo with a discontinuous version.");
     }
 }

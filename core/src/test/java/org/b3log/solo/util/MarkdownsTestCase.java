@@ -17,6 +17,7 @@ package org.b3log.solo.util;
 
 import java.io.FileInputStream;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.List;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.util.Stopwatchs;
@@ -28,7 +29,7 @@ import org.testng.Assert;
  * {@link org.b3log.solo.util.Markdowns} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Apr 28, 2012
+ * @version 1.0.0.1, Sep 11, 2012
  * @since 0.4.5
  */
 public final class MarkdownsTestCase {
@@ -52,11 +53,12 @@ public final class MarkdownsTestCase {
 
         System.out.println(MarkdownsTestCase.class.getResource("/"));
         final URL testFile = MarkdownsTestCase.class.getResource("/markdown_syntax.text");
-        System.out.println(testFile.getFile());
+        final String path = URLDecoder.decode(testFile.getPath(), "UTF-8");
+        System.out.println(path);
 
         final StringBuilder markdownTextBuilder = new StringBuilder();
         @SuppressWarnings("unchecked")
-        final List<String> lines = IOUtils.readLines(new FileInputStream(testFile.getFile()));
+        final List<String> lines = IOUtils.readLines(new FileInputStream(path));
         
         for (final String line : lines) {
             markdownTextBuilder.append(line).append(Strings.LINE_SEPARATOR);

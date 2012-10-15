@@ -44,8 +44,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.annotation.RequestProcessing;
-import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
@@ -66,6 +64,8 @@ import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.servlet.URIPatternMode;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
@@ -75,7 +75,7 @@ import org.b3log.solo.service.*;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.4, May 21, 2012
+ * @version 1.1.2.5, Sep 6, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -179,6 +179,7 @@ public final class ArticleProcessor {
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         Keys.fillServer(dataModel);
+        Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
     }
 
@@ -589,10 +590,10 @@ public final class ArticleProcessor {
             final JSONObject author = result.getJSONObject(User.USER);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.AUTHOR_ARTICLES));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.AUTHOR_ARTICLES.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             request.setAttribute(PageCaches.CACHED_TITLE,
-                                 langs.get(PageTypes.AUTHOR_ARTICLES) + "  ["
+                                 langs.get(PageTypes.AUTHOR_ARTICLES.getLangeLabel()) + "  ["
                                  + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
                                  + langs.get("authorLabel") + "=" + author.getString(User.USER_NAME) + "]");
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
@@ -623,6 +624,7 @@ public final class ArticleProcessor {
 
             final Map<String, Object> dataModel = renderer.getDataModel();
             prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author, preference);
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.AUTHOR_ARTICLES);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
@@ -716,11 +718,12 @@ public final class ArticleProcessor {
                                                                   pageCount, archiveDateString,
                                                                   archiveDate);
 
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.DATE_ARTICLES);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_OID, archiveDateId);
             request.setAttribute(PageCaches.CACHED_TITLE, cachedTitle + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
@@ -799,7 +802,7 @@ public final class ArticleProcessor {
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.ARTICLE));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.ARTICLE.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_OID, articleId);
             request.setAttribute(PageCaches.CACHED_TITLE, article.getString(Article.ARTICLE_TITLE));
             request.setAttribute(PageCaches.CACHED_LINK, article.getString(Article.ARTICLE_PERMALINK));
@@ -826,7 +829,10 @@ public final class ArticleProcessor {
 
             prepareShowArticle(preference, dataModel, article);
 
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.ARTICLE);
+
             filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogFooter(dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
                                 (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
@@ -1161,7 +1167,5 @@ public final class ArticleProcessor {
                       preference.getInt(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
         dataModel.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT, preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT));
         dataModel.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT));
-
-        filler.fillBlogFooter(dataModel, preference);
     }
 }

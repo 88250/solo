@@ -18,6 +18,8 @@ package org.b3log.solo.model;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeEnv;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -25,7 +27,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.6, May 4, 2012
+ * @version 1.1.0.7, Sep 10, 2012
  * @since 0.3.1
  */
 public final class Preference {
@@ -194,7 +196,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.1.0.7, Jun 12, 2012
+     * @version 1.1.0.8, Sep 18, 2012
      * @since 0.3.1
      */
     public static final class Default {
@@ -230,11 +232,11 @@ public final class Preference {
         /**
          * Default blog title.
          */
-        public static final String DEFAULT_BLOG_TITLE = "Solo 示例";
+        public static final String DEFAULT_BLOG_TITLE = "B3log Solo 示例";
         /**
          * Default blog subtitle.
          */
-        public static final String DEFAULT_BLOG_SUBTITLE = "GAE 开源博客";
+        public static final String DEFAULT_BLOG_SUBTITLE = "Java 开源博客";
         /**
          * Default skin directory name.
          */
@@ -296,7 +298,7 @@ public final class Preference {
         /**
          * Default page cache enabled.
          */
-        public static final boolean DEFAULT_PAGE_CACHE_ENABLED = true;
+        public static final boolean DEFAULT_PAGE_CACHE_ENABLED;
         /**
          * Default allow visit draft via permalink.
          */
@@ -356,6 +358,12 @@ public final class Preference {
                                               + "${postTitle}</a>] received an reply: <p>${replier}"
                                               + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
                 DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
+                
+                if (RuntimeEnv.BAE == Latkes.getRuntimeEnv()) {
+                    DEFAULT_PAGE_CACHE_ENABLED = false; // https://github.com/b3log/b3log-solo/issues/73
+                } else {
+                    DEFAULT_PAGE_CACHE_ENABLED = true;
+                }
             } catch (final Exception e) {
                 LOGGER.log(Level.SEVERE, "Creates sign error!", e);
                 throw new IllegalStateException(e);

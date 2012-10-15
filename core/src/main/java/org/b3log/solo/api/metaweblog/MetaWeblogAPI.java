@@ -30,13 +30,13 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.annotation.RequestProcessing;
-import org.b3log.latke.annotation.RequestProcessor;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextXMLRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
@@ -52,6 +52,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
+import org.jsoup.Jsoup;
 
 /**
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> 
@@ -71,7 +72,7 @@ import org.json.XML;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Feb 29, 2012
+ * @version 1.0.0.7, Aug 29, 2012
  * @since 0.4.0
  */
 @RequestProcessor
@@ -80,13 +81,11 @@ public final class MetaWeblogAPI {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(MetaWeblogAPI.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MetaWeblogAPI.class.getName());
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService =
-            PreferenceQueryService.getInstance();
+    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
      * Tag query service.
      */
@@ -94,18 +93,15 @@ public final class MetaWeblogAPI {
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService =
-            ArticleQueryService.getInstance();
+    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
     /**
      * Article management service.
      */
-    private ArticleMgmtService articleMgmtService =
-            ArticleMgmtService.getInstance();
+    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository =
-            ArticleRepositoryImpl.getInstance();
+    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
     /**
      * User query service.
      */
@@ -125,13 +121,11 @@ public final class MetaWeblogAPI {
     /**
      * Method name: "metaWeblog.getCategories".
      */
-    private static final String METHOD_GET_CATEGORIES =
-            "metaWeblog.getCategories";
+    private static final String METHOD_GET_CATEGORIES = "metaWeblog.getCategories";
     /**
      * Method name: "metaWeblog.getRecentPosts".
      */
-    private static final String METHOD_GET_RECENT_POSTS =
-            "metaWeblog.getRecentPosts";
+    private static final String METHOD_GET_RECENT_POSTS = "metaWeblog.getRecentPosts";
     /**
      * Method name: "metaWeblog.newPost".
      */
@@ -264,15 +258,13 @@ public final class MetaWeblogAPI {
                         "</boolean></value></param></params></methodResponse>");
                 responseContent = stringBuilder.toString();
             } else {
-                throw new UnsupportedOperationException("Unsupported method[name="
-                                                        + methodName + "]");
+                throw new UnsupportedOperationException("Unsupported method[name=" + methodName + "]");
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             responseContent = "";
-            final StringBuilder stringBuilder =
-                    new StringBuilder(
+            final StringBuilder stringBuilder = new StringBuilder(
                     "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><fault><value><struct>").append(
                     "<member><name>faultCode</name><value><int>500</int></value></member>").
                     append("<member><name>faultString</name><value><string>").
@@ -368,10 +360,12 @@ public final class MetaWeblogAPI {
             } else if ("description".equals(name)) {
                 final String content = member.getJSONObject("value").getString("string");
                 ret.put(Article.ARTICLE_CONTENT, content);
-                if (content.length() > ARTICLE_ABSTRACT_LENGTH) {
-                    ret.put(Article.ARTICLE_ABSTRACT, content.substring(0, ARTICLE_ABSTRACT_LENGTH));
+
+                final String plainTextContent = Jsoup.parse(content).text();
+                if (plainTextContent.length() > ARTICLE_ABSTRACT_LENGTH) {
+                    ret.put(Article.ARTICLE_ABSTRACT, plainTextContent.substring(0, ARTICLE_ABSTRACT_LENGTH));
                 } else {
-                    ret.put(Article.ARTICLE_ABSTRACT, content);
+                    ret.put(Article.ARTICLE_ABSTRACT, plainTextContent);
                 }
             } else if ("categories".equals(name)) {
                 final StringBuilder tagBuilder = new StringBuilder();
@@ -505,7 +499,7 @@ public final class MetaWeblogAPI {
         stringBuilder.append("<struct>");
 
         stringBuilder.append("<member><name>dateCreated</name>").
-                append("<value><dateTime.iso8601>").append(articleTitle).
+                append("<value><dateTime.iso8601>").
                 append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(
                 createDate)).append("</dateTime.iso8601></value></member>");
 
@@ -558,7 +552,7 @@ public final class MetaWeblogAPI {
             stringBuilder.append("<value><struct>");
 
             stringBuilder.append("<member><name>dateCreated</name>").
-                    append("<value><dateTime.iso8601>").append(articleTitle).
+                    append("<value><dateTime.iso8601>").
                     append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(
                     createDate)).append("</dateTime.iso8601></value></member>");
 

@@ -23,11 +23,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.b3log.latke.Keys;
-import org.b3log.latke.annotation.RequestProcessing;
-import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Article;
@@ -41,7 +43,7 @@ import org.json.JSONObject;
  * Comment processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.7, Aug 9, 2012
+ * @version 1.1.0.8, Sep 10, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -81,7 +83,7 @@ public final class CommentProcessor {
      * including a request json object, for example,
      * <pre>
      * {
-     *     "captcha": "",
+     *     "captcha": "", // optional if on BAE 
      *     "oId": pageId,
      *     "commentName": "",
      *     "commentEmail": "",
@@ -113,18 +115,21 @@ public final class CommentProcessor {
             return;
         }
 
-        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-        final HttpSession session = httpServletRequest.getSession(false);
-        if (null != session) {
-            final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-            if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
-                jsonObject.put(Keys.STATUS_CODE, false);
-                jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
+        if (RuntimeEnv.BAE != Latkes.getRuntimeEnv()) {
+            final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
-                return;
+            final HttpSession session = httpServletRequest.getSession(false);
+            if (null != session) {
+                final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+                if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
+                    jsonObject.put(Keys.STATUS_CODE, false);
+                    jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
+
+                    return;
+                }
+
+                session.removeAttribute(CaptchaProcessor.CAPTCHA);
             }
-
-            session.removeAttribute(CaptchaProcessor.CAPTCHA);
         }
 
         try {
@@ -193,20 +198,23 @@ public final class CommentProcessor {
             return;
         }
 
-        final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-        final HttpSession session = httpServletRequest.getSession(false);
-        if (null != session) {
-            final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-            if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
-                jsonObject.put(Keys.STATUS_CODE, false);
-                jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
+        if (RuntimeEnv.BAE != Latkes.getRuntimeEnv()) {
+            final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
-                return;
+            final HttpSession session = httpServletRequest.getSession(false);
+            if (null != session) {
+                final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+                if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
+                    jsonObject.put(Keys.STATUS_CODE, false);
+                    jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
+
+                    return;
+                }
+
+                session.removeAttribute(CaptchaProcessor.CAPTCHA);
             }
-
-            session.removeAttribute(CaptchaProcessor.CAPTCHA);
         }
-
+        
         try {
             final JSONObject addResult = commentMgmtService.addArticleComment(requestJSONObject);
 

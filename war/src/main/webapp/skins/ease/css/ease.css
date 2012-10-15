@@ -371,6 +371,7 @@ sup {
     overflow: hidden;
     word-wrap: break-word;
     margin-bottom: 10px;
+    font-size: 14px;
 }
 
 .article-body ol, .article-body ul {

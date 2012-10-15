@@ -15,47 +15,45 @@
  */
 package org.b3log.solo.processor;
 
-import org.b3log.latke.Keys;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.processor.renderer.FrontRenderer;
-import org.b3log.solo.processor.util.Filler;
-import org.b3log.latke.util.Requests;
-import org.b3log.latke.service.ServiceException;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.latke.util.Locales;
 import freemarker.template.Template;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.service.LangPropsService;
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.annotation.RequestProcessing;
-import org.b3log.latke.annotation.RequestProcessor;
+import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.URIPatternMode;
-import org.b3log.solo.model.Article;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.PageTypes;
+import org.b3log.solo.model.Preference;
+import org.b3log.solo.processor.renderer.ConsoleRenderer;
+import org.b3log.solo.processor.renderer.FrontRenderer;
+import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
-import org.b3log.latke.cache.PageCaches;
-import org.b3log.solo.processor.renderer.ConsoleRenderer;
 
 /**
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.8, May 17, 2012
+ * @version 1.1.1.0, Oct 11, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -103,24 +101,13 @@ public final class IndexProcessor {
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             request.setAttribute(PageCaches.CACHED_OID, "No id");
-            request.setAttribute(PageCaches.CACHED_TITLE, langs.get(PageTypes.INDEX_ARTICLES) + "  [" + langs.get("pageNumLabel") + "="
-                                               + currentPageNum + "]");
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.INDEX_ARTICLES));
+            request.setAttribute(PageCaches.CACHED_TITLE, langs.get(PageTypes.INDEX.getLangeLabel())
+                                                          + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.INDEX.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
             filler.fillIndexArticles(dataModel, currentPageNum, preference);
-
-            @SuppressWarnings("unchecked")
-            final List<JSONObject> articles = (List<JSONObject>) dataModel.get(Article.ARTICLES);
-            if (articles.isEmpty()) {
-                try {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                    return;
-                } catch (final IOException ex) {
-                    LOGGER.severe(ex.getMessage());
-                }
-            }
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.INDEX);
 
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
@@ -168,11 +155,14 @@ public final class IndexProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
             filler.fillBlogFooter(dataModel, preference);
             Keys.fillServer(dataModel);
+            Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
+            
+            dataModel.put(Keys.PAGE_TYPE, PageTypes.KILL_BROWSER);
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             request.setAttribute(PageCaches.CACHED_TITLE, "Kill Browser Page");
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.KILL_BROWSER_PAGE));
+            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.KILL_BROWSER.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, request.getRequestURI());
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

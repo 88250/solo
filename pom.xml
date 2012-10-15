@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.2.2, Aug 16, 2012
+    Version: 2.0.2.4, Sep 20, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -31,13 +31,14 @@
         <org.b3log.solo.version>0.5.0</org.b3log.solo.version>
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
         <org.b3log.latke-gae.version>0.5.0-SNAPSHOT</org.b3log.latke-gae.version>
+        <org.b3log.latke-bae.version>0.5.0-SNAPSHOT</org.b3log.latke-bae.version>
         <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
-        <gae.version>1.7.0</gae.version>
+        <gae.version>1.7.2</gae.version>
         
         <freemarker-gae.version>2.3.19</freemarker-gae.version>
         <jsoup.version>1.5.2</jsoup.version>
         <markdownpapers-core.version>1.2.7</markdownpapers-core.version>
-<!--        <com.google.api.client.version>1.2.1-alpha</com.google.api.client.version>-->
+        <!--        <com.google.api.client.version>1.2.1-alpha</com.google.api.client.version>-->
         <!-- maven plugin -->
         <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
         <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
@@ -167,6 +168,12 @@
                 <artifactId>latke-gae</artifactId>
                 <version>${org.b3log.latke-gae.version}</version>
             </dependency>
+            
+            <dependency>
+                <groupId>org.b3log</groupId>
+                <artifactId>latke-bae</artifactId>
+                <version>${org.b3log.latke-bae.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.b3log</groupId>
@@ -194,7 +201,7 @@
                 <scope>runtime</scope>
             </dependency>
 
-<!--            <dependency>
+            <!--            <dependency>
                 <groupId>com.google.api.client</groupId>
                 <artifactId>google-api-client</artifactId>
                 <version>${com.google.api.client.version}</version>

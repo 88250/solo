@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo WAR POM.
-    Version: 2.0.1.2, Aug 16, 2012
+    Version: 2.0.1.4, Sep 4, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -24,6 +24,7 @@
 
     <modules>
         <module>gae</module>
+	<module>bae</module>
         <module>mysql</module>
     </modules>
 
@@ -59,6 +60,8 @@
                 <groupId>org.b3log.latke</groupId>
                 <artifactId>maven-min-plugin</artifactId>
                 <version>${maven-min-plugin.version}</version>
+                <inherited>false</inherited>
+                
                 <configuration>
                     <suffix>.min</suffix> <!-- Common#MINI_POSTFIX_VALUE -->
                     <adminJSs>
@@ -83,6 +86,12 @@
                         <param>main.js</param>
                         <param>about.js</param>
                     </adminJSs>
+                    
+                    <cssSourceDir>${basedir}/src/main/webapp/css</cssSourceDir>
+                    <cssTargetDir>${basedir}/src/main/webapp/css</cssTargetDir>
+
+                    <jsSourceDir>${basedir}/src/main/webapp/js</jsSourceDir>
+                    <jsTargetDir>${basedir}/src/main/webapp/js</jsTargetDir>
                 </configuration>
                 <executions>
                     <execution>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo GAE POM.
-    Version: 2.0.0.9, Aug 16, 2012
+    Version: 2.0.2.0, Sep 5, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -46,6 +46,10 @@
                 <exclusion>
                     <groupId>com.jolbox</groupId>
                     <artifactId>bonecp</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>c3p0</groupId>
+                    <artifactId>c3p0</artifactId>
                 </exclusion>
                 <!-- Container provided -->
                 <exclusion>
@@ -115,12 +119,26 @@
             </plugin>
             
             <plugin>
-                <groupId>org.b3log.latke</groupId>
-                <artifactId>maven-min-plugin</artifactId>
-                <configuration>
-                    <cssSourceDir>${basedir}/../src/main/webapp/css</cssSourceDir>
-                    <jsSourceDir>${basedir}/../src/main/webapp/js</jsSourceDir>
-                </configuration>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+                            <resources>          
+                                <resource>
+                                    <directory>src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>              
+                        </configuration>            
+                    </execution>
+                </executions>
             </plugin>
             
         </plugins>

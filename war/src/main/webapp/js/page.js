@@ -417,7 +417,7 @@ $.extend(Page.prototype, {
         var randomArticles1Label = this.tips.randomArticles1Label;
         // getRandomArticles
         $.ajax({
-            url: latkeConfig.staticServePath + "/get-random-articles.do",
+            url: latkeConfig.servePath + "/get-random-articles.do",
             type: "POST",
             success: function(result, textStatus){
                 var randomArticles = result.randomArticles;
@@ -449,7 +449,7 @@ $.extend(Page.prototype, {
      */
     loadRelevantArticles: function (id, headTitle) {
         $.ajax({
-            url: latkeConfig.staticServePath + "/article/id/" + id + "/relevant/articles",
+            url: latkeConfig.servePath + "/article/id/" + id + "/relevant/articles",
             type: "GET",
             success: function(data, textStatus){
                 var articles = data.relevantArticles;
