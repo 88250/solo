@@ -90,8 +90,6 @@ public final class StatProcessor {
      */
     @RequestProcessing(value = "/console/stat/onlineVisitorRefresh", method = HTTPRequestMethod.GET)
     public void onlineVisitorCountRefresher(final HTTPRequestContext context) {
-        LOGGER.log(Level.INFO, "Refreshes online visitor count");
-
         context.setRenderer(new DoNothingRenderer());
 
         Statistics.removeExpiredOnlineVisitor();
