@@ -85,7 +85,7 @@ public final class Statistics {
      */
     public static void onlineVisitorCount(final HttpServletRequest request) {
         ONLINE_VISITORS.put(request.getRemoteAddr(), System.currentTimeMillis());
-        LOGGER.log(Level.INFO, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+        LOGGER.log(Level.FINER, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**
@@ -104,7 +104,7 @@ public final class Statistics {
             }
         }
 
-        LOGGER.log(Level.INFO, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+        LOGGER.log(Level.FINER, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**

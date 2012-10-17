@@ -39,11 +39,11 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
 /**
- * Article console request processing.
+ * Article receiver (from B3log Symphony).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 9, 2012
- * @since 0.4.0
+ * @version 1.0.0.1, Oct 12, 2012
+ * @since 0.5.5
  */
 @RequestProcessor
 public final class ArticleReceiver {
