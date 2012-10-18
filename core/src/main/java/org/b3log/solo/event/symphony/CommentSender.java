@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
@@ -31,7 +32,6 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
@@ -81,7 +81,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, ArticleSender.class.getName()});
         try {
-            final JSONObject orginalComment = data.getJSONObject(Comment.COMMENT);
+            final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -100,16 +100,20 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject comment = new JSONObject();
-            comment.put("commentAuthorName", orginalComment.getString(Comment.COMMENT_NAME));
-            comment.put("commentAuthorEmail", orginalComment.getString(Comment.COMMENT_EMAIL));
-            comment.put(Comment.COMMENT_CONTENT, orginalComment.getString(Comment.COMMENT_CONTENT));
-            comment.put("articleId", orginalComment.getString(Comment.COMMENT_ON_ID));
+            comment.put("commentId", originalComment.optString(Keys.OBJECT_ID));
+            comment.put("commentAuthorName", originalComment.getString(Comment.COMMENT_NAME));
+            comment.put("commentAuthorEmail", originalComment.getString(Comment.COMMENT_EMAIL));
+            comment.put(Comment.COMMENT_CONTENT, originalComment.getString(Comment.COMMENT_CONTENT));
+            comment.put("articleId", originalComment.getString(Comment.COMMENT_ON_ID));
 
             requestJSONObject.put(Comment.COMMENT, comment);
-            requestJSONObject.put(Common.BLOG_VERSION, SoloServletListener.VERSION);
-            requestJSONObject.put("runtimeEnv", Latkes.getRuntimeEnv().name());
-            requestJSONObject.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
-            requestJSONObject.put(Preference.BLOG_HOST, blogHost);
+            requestJSONObject.put("clientVersion", SoloServletListener.VERSION);
+            requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());
+            requestJSONObject.put("clientnName", "B3log Solo");
+            requestJSONObject.put("clientHost", blogHost);
+            requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
+            requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
+            
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
 
             urlFetchService.fetchAsync(httpRequest);
