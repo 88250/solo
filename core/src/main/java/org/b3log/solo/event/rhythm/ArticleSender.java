@@ -59,13 +59,17 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
+     * B3log Rhythm address.
+     */
+    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
+    /**
      * URL of adding article to Rhythm.
      */
     private static final URL ADD_ARTICLE_URL;
 
     static {
         try {
-            ADD_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_ADDRESS + "/add-article.do");
+            ADD_ARTICLE_URL = new URL(B3LOG_RHYTHM_ADDRESS + "/add-article.do");
         } catch (final MalformedURLException e) {
             LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm add article] error!");
             throw new IllegalStateException(e);
@@ -76,7 +80,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(), data, ArticleSender.class.getName()});
+                new Object[]{event.getType(), data, ArticleSender.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
@@ -93,7 +97,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             final String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase();
             if (blogHost.contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-                           new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
+                        new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
                 return;
             }
 

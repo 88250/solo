@@ -13,7 +13,6 @@
         <meta http-equiv="Window-target" content="_top" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
-        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
     </head>
     <body>
         <div class="wrapper">
@@ -77,20 +76,24 @@
                     ver ${version}
                 </div>
             </div>
-        </div>
+        </div>       
+        <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
         <script type="text/javascript">
             (function () {
-                $("#userPassword").keypress(function (event) {
-                    if (13 === event.keyCode) { // Enter pressed
-                        login();
-                    }                
-                });
-                $("#userEmail").keypress(function (event) {
-                    if (13 === event.keyCode) { // Enter pressed
-                        login();
-                    }                
-                });
                 $("#userEmail").focus(); 
+                
+                $("#userPassword, #userEmail").keypress(function (event) {
+                    if (13 === event.keyCode) { // Enter pressed
+                        login();
+                    }                
+                });
+                
+                // if no JSON, add it.
+                try {
+                    JSON
+                } catch (e) {
+                    document.write("<script src=\"${staticServePath}/js/lib/json2.js\"><\/script>");
+                }
             })();
             
             var login = function () {
@@ -106,16 +109,16 @@
                     return;
                 } 
                 
-                var requestJSONObject = '{'
-                    + '"userEmail": ' + $("#userEmail").val() + ','
-                    + '"userPassword": ' + $("#userPassword").val() 
-                    + '}';
+                var requestJSONObject = {
+                    "userEmail": $("#userEmail").val(),
+                    "userPassword": $("#userPassword").val() 
+                };
                 
                 $.ajax({
                     url: "${servePath}/login",
                     type: "POST",
                     contentType: "application/json",
-                    data: requestJSONObject,
+                    data: JSON.stringify(requestJSONObject),
                     error: function(){
                         // alert("Login error!");
                     },
