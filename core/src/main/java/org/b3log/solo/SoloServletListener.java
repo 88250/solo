@@ -39,6 +39,7 @@ import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.event.rhythm.ArticleSender;
+import org.b3log.solo.event.symphony.CommentSender;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
@@ -233,9 +234,11 @@ public final class SoloServletListener extends AbstractServletListener {
             eventManager.registerListener(new PageCommentReplyNotifier());
             eventManager.registerListener(new AddArticleGoogleBlogSearchPinger());
             eventManager.registerListener(new UpdateArticleGoogleBlogSearchPinger());
-            eventManager.registerListener(new ArticleSender());
             eventManager.registerListener(new PluginRefresher());
             eventManager.registerListener(new ViewLoadEventHandler());
+            // Sync
+            eventManager.registerListener(new ArticleSender());
+            eventManager.registerListener(new CommentSender());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
             throw new IllegalStateException(e);

@@ -17,10 +17,8 @@ package org.b3log.solo.event.symphony;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
@@ -32,7 +30,6 @@ import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.event.rhythm.ArticleSender;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
@@ -63,7 +60,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     /**
      * B3log Symphony address.
      */
-    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:80";
+    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:8080";
     /**
      * URL of adding comment to Symphony.
      */
@@ -92,21 +89,21 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase();
-            if (blogHost.contains("localhost")) {
-                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this comment[id={0}] to Symphony",
-                        new Object[]{orginalComment.getString(Keys.OBJECT_ID)});
-                return;
-            }
+//            if (blogHost.contains("localhost")) {
+//                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this comment[id={0}] to Symphony",
+//                        new Object[]{orginalComment.getString(Keys.OBJECT_ID)});
+//                return;
+//            }
 
             final HTTPRequest httpRequest = new HTTPRequest();
             httpRequest.setURL(ADD_COMMENT_URL);
             httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject comment = new JSONObject();
-            comment.put("commentAuthorName", comment.getString(Comment.COMMENT_NAME));
-            comment.put("commentAuthorEmail", comment.getString(Comment.COMMENT_EMAIL));
-            comment.put(Comment.COMMENT_CONTENT, comment.getString(Comment.COMMENT_CONTENT));
-            comment.put("articleId", comment.getString(Comment.COMMENT_ON_ID));
+            comment.put("commentAuthorName", orginalComment.getString(Comment.COMMENT_NAME));
+            comment.put("commentAuthorEmail", orginalComment.getString(Comment.COMMENT_EMAIL));
+            comment.put(Comment.COMMENT_CONTENT, orginalComment.getString(Comment.COMMENT_CONTENT));
+            comment.put("articleId", orginalComment.getString(Comment.COMMENT_ON_ID));
 
             requestJSONObject.put(Comment.COMMENT, comment);
             requestJSONObject.put(Common.BLOG_VERSION, SoloServletListener.VERSION);
@@ -117,19 +114,19 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
 
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Sends an article to Rhythm error: {0}", e.getMessage());
+            LOGGER.log(Level.SEVERE, "Sends a comment to Symphony error: {0}", e.getMessage());
         }
 
-        LOGGER.log(Level.FINER, "Sent an article to Rhythm");
+        LOGGER.log(Level.FINER, "Sent a comment to Symphony");
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     * Gets the event type {@linkplain EventTypes#ADD_COMMENT_TO_ARTICLE}.
      * 
      * @return event type
      */
     @Override
     public String getEventType() {
-        return EventTypes.ADD_ARTICLE;
+        return EventTypes.ADD_COMMENT_TO_ARTICLE;
     }
 }
