@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.event.rhythm;
+package org.b3log.solo.event.symphony;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -31,25 +31,27 @@ import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
+import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for sending article to B3log Rhythm.
+ * This listener is responsible for sending comment to B3log Symphony.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Sep 20, 2012
- * @since 0.3.1
+ * @version 1.0.0.0, Oct 18, 2012
+ * @since 0.5.5
  */
-public final class ArticleSender extends AbstractEventListener<JSONObject> {
+public final class CommentSender extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleSender.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentSender.class.getName());
     /**
      * URL fetch service.
      */
@@ -59,19 +61,19 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
     /**
-     * B3log Rhythm address.
+     * B3log Symphony address.
      */
-    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
+    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:80";
     /**
-     * URL of adding article to Rhythm.
+     * URL of adding comment to Symphony.
      */
-    private static final URL ADD_ARTICLE_URL;
+    private static final URL ADD_COMMENT_URL;
 
     static {
         try {
-            ADD_ARTICLE_URL = new URL(B3LOG_RHYTHM_ADDRESS + "/add-article.do");
+            ADD_COMMENT_URL = new URL(B3LOG_SYMPHONY_ADDRESS + "/solo/comment");
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm add article] error!");
+            LOGGER.log(Level.SEVERE, "Creates remote service address[symphony add comment] error!");
             throw new IllegalStateException(e);
         }
     }
@@ -82,12 +84,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 new Object[]{event.getType(), data, ArticleSender.class.getName()});
         try {
-            final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
-            if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                LOGGER.log(Level.FINER, "Ignores post article[title={0}] to Rhythm", originalArticle.getString(Article.ARTICLE_TITLE));
-
-                return;
-            }
+            final JSONObject orginalComment = data.getJSONObject(Comment.COMMENT);
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -96,31 +93,24 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
             final String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase();
             if (blogHost.contains("localhost")) {
-                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-                        new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
+                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this comment[id={0}] to Symphony",
+                        new Object[]{orginalComment.getString(Keys.OBJECT_ID)});
                 return;
             }
 
             final HTTPRequest httpRequest = new HTTPRequest();
-            httpRequest.setURL(ADD_ARTICLE_URL);
-            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
+            httpRequest.setURL(ADD_COMMENT_URL);
+            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
-            final JSONObject article = new JSONObject();
-            article.put(Keys.OBJECT_ID, originalArticle.getString(Keys.OBJECT_ID));
-            article.put(Article.ARTICLE_TITLE, originalArticle.getString(Article.ARTICLE_TITLE));
-            article.put(Article.ARTICLE_PERMALINK, originalArticle.getString(Article.ARTICLE_PERMALINK));
-            article.put(Article.ARTICLE_TAGS_REF, originalArticle.getString(Article.ARTICLE_TAGS_REF));
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, originalArticle.getString(Article.ARTICLE_AUTHOR_EMAIL));
-            article.put(Article.ARTICLE_CONTENT, originalArticle.getString(Article.ARTICLE_CONTENT));
-            article.put(Article.ARTICLE_CREATE_DATE, ((Date) originalArticle.get(Article.ARTICLE_CREATE_DATE)).getTime());
-            article.put(Common.POST_TO_COMMUNITY, originalArticle.getBoolean(Common.POST_TO_COMMUNITY));
+            final JSONObject comment = new JSONObject();
+            comment.put("commentAuthorName", comment.getString(Comment.COMMENT_NAME));
+            comment.put("commentAuthorEmail", comment.getString(Comment.COMMENT_EMAIL));
+            comment.put(Comment.COMMENT_CONTENT, comment.getString(Comment.COMMENT_CONTENT));
+            comment.put("articleId", comment.getString(Comment.COMMENT_ON_ID));
 
-            // Removes this property avoid to persist
-            originalArticle.remove(Common.POST_TO_COMMUNITY);
-
-            requestJSONObject.put(Article.ARTICLE, article);
+            requestJSONObject.put(Comment.COMMENT, comment);
             requestJSONObject.put(Common.BLOG_VERSION, SoloServletListener.VERSION);
-            requestJSONObject.put(Common.BLOG, "B3log Solo (" + Latkes.getRuntimeEnv().name() + ')');
+            requestJSONObject.put("runtimeEnv", Latkes.getRuntimeEnv().name());
             requestJSONObject.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));

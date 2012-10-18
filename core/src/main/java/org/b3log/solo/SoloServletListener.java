@@ -25,22 +25,22 @@ import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.plugin.PluginManager;
+import org.b3log.latke.plugin.ViewLoadEventHandler;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
+import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
+import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.model.Preference;
-import org.b3log.latke.plugin.ViewLoadEventHandler;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
-import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.model.Skin;
-import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -69,10 +69,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * JSONO print indent factor.
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
-    /**
-     * B3log Rhythm address.
-     */
-    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
     /**
      * Enter escape.
      */
