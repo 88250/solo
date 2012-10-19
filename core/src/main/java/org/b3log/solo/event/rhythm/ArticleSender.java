@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending article to B3log Rhythm.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Sep 20, 2012
+ * @version 1.0.2.1, Oct 18, 2012
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -61,7 +61,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     /**
      * B3log Rhythm address.
      */
-    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
+    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:11000";
     /**
      * URL of adding article to Rhythm.
      */
@@ -80,7 +80,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleSender.class.getName()});
+                   new Object[]{event.getType(), data, ArticleSender.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
@@ -95,11 +95,11 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase();
-            if (blogHost.contains("localhost")) {
-                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-                        new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
-                return;
-            }
+//            if (blogHost.contains("localhost")) {
+//                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
+//                           new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
+//                return;
+//            }
 
             final HTTPRequest httpRequest = new HTTPRequest();
             httpRequest.setURL(ADD_ARTICLE_URL);
@@ -120,9 +120,13 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
             requestJSONObject.put(Article.ARTICLE, article);
             requestJSONObject.put(Common.BLOG_VERSION, SoloServletListener.VERSION);
-            requestJSONObject.put(Common.BLOG, "B3log Solo (" + Latkes.getRuntimeEnv().name() + ')');
+            requestJSONObject.put(Common.BLOG, "B3log Solo");
             requestJSONObject.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
             requestJSONObject.put(Preference.BLOG_HOST, blogHost);
+            requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
+            requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
+            requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());
+
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
 
             urlFetchService.fetchAsync(httpRequest);
