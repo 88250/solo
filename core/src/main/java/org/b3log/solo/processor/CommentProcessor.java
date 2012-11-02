@@ -201,8 +201,6 @@ public final class CommentProcessor {
             return;
         }
 
-
-
         final HttpSession session = httpServletRequest.getSession(false);
         if (null == session) {
             jsonObject.put(Keys.STATUS_CODE, false);
