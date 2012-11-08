@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending article to B3log Rhythm.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Oct 18, 2012
+ * @version 1.0.2.2, Nov 2, 2012
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -61,7 +61,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     /**
      * B3log Rhythm address.
      */
-    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:11000";
+    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
     /**
      * URL of adding article to Rhythm.
      */

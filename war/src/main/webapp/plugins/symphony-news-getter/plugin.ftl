@@ -19,7 +19,7 @@
             "url(${staticServePath}/images/loader.gif) no-repeat scroll center center transparent");
             
             $.ajax({
-                url: "http://symphony.b3log.org:80/get-news",
+                url: "http://localhost:8080/apis/news",
                 type: "GET",
                 dataType:"jsonp",
                 jsonp: "callback",
@@ -37,7 +37,7 @@
                         var article = articles[i];
                         var articleLiHtml = "<li>"
                             + "<a target='_blank' href='" + article.articlePermalink + "'>"
-                            +  article.articleTitle + "</a>&nbsp; <span class='date'>" + $.bowknot.getDate(article.articleCreateDate, 1); + "</span></li>"
+                            +  article.articleTitle + "</a>&nbsp; <span class='date'>" + $.bowknot.getDate(article.articleCreateTime, 1); + "</span></li>"
                         listHTML += articleLiHtml
                     }
                     listHTML += "</ul>";
