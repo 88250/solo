@@ -20,11 +20,11 @@
                 <a href="#tools/preference/setting">${paramSettingsLabel}</a>
             </div>
         </li>
-        <!--li>
+        <li>
             <div id="tabPreference_solo">
-                <a href="#tools/preference/solo">Solo</a>
+                <a href="#tools/preference/solo">B3log</a>
             </div>
-        </li-->
+        </li>
     </ul>
 </div>
 <div id="tabPreferencePanel" class="sub-tabs-main">
