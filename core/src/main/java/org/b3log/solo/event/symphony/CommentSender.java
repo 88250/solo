@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending comment to B3log Symphony.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 18, 2012
+ * @version 1.0.0.1, Nov 16, 2012
  * @since 0.5.5
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -60,7 +60,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     /**
      * B3log Symphony address.
      */
-    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:8080";
+    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:80";
     /**
      * URL of adding comment to Symphony.
      */
