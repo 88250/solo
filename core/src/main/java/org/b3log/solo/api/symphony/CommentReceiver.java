@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 17, 2012
+ * @version 1.0.0.2, Nov 19, 2012
  * @since 0.5.5
  */
 @RequestProcessor
@@ -130,6 +130,7 @@ public final class CommentReceiver {
      *     "comment": {
      *         "userB3Key": "",
      *         "oId": "",
+     *         "commentSymphonyArticleId": "",
      *         "commentOnArticleId": "",
      *         "commentAuthorName": "",
      *         "commentAuthorEmail": "",
@@ -177,12 +178,15 @@ public final class CommentReceiver {
             final String commentName = symphonyCmt.getString("commentAuthorName");
             final String commentEmail = symphonyCmt.getString("commentAuthorEmail").trim().toLowerCase();
             final String commentURL = "http://" + symphonyCmt.optString("commentAuthorURL");
-            final String commentContent = symphonyCmt.getString(Comment.COMMENT_CONTENT);
+            final String commentId = symphonyCmt.optString(Keys.OBJECT_ID);
+            String commentContent = symphonyCmt.getString(Comment.COMMENT_CONTENT);
+            commentContent += "<br/><p><i>该评论同步自 <a href='http://symphony.b3log.org/article/"
+                    + symphonyCmt.optString("commentSymphonyArticleId") + "#" + commentId + "'>B3log 社区</a></i></p>";
             final String originalCommentId = symphonyCmt.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
             JSONObject originalComment = null;
-            final String commentId = symphonyCmt.optString(Keys.OBJECT_ID);
+
             comment.put(Keys.OBJECT_ID, commentId);
             comment.put(Comment.COMMENT_NAME, commentName);
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
@@ -209,7 +213,7 @@ public final class CommentReceiver {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             }
-            
+
             setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL, comment.getString(Comment.COMMENT_THUMBNAIL_URL));
             // Sets comment on article....

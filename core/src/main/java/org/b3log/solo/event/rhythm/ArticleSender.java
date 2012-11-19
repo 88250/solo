@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending article to B3log Rhythm.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Nov 2, 2012
+ * @version 1.0.2.3, Nov 19, 2012
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -95,11 +95,11 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase();
-//            if (blogHost.contains("localhost")) {
-//                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-//                           new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
-//                return;
-//            }
+            if (blogHost.contains("localhost")) {
+                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
+                        new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
+                return;
+            }
 
             final HTTPRequest httpRequest = new HTTPRequest();
             httpRequest.setURL(ADD_ARTICLE_URL);
