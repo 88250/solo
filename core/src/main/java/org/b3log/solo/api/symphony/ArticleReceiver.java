@@ -42,7 +42,7 @@ import org.jsoup.Jsoup;
  * Article receiver (from B3log Symphony).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Oct 12, 2012
+ * @version 1.0.0.2, Nov 19, 2012
  * @since 0.5.5
  */
 @RequestProcessor
@@ -131,8 +131,12 @@ public final class ArticleReceiver {
             article.put(Common.POST_TO_COMMUNITY, false);
             article.put(Article.ARTICLE_COMMENTABLE, true);
             article.put(Article.ARTICLE_VIEW_PWD, "");
+            String content = article.getString(Article.ARTICLE_CONTENT);
+            final String articleId = article.getString(Keys.OBJECT_ID);
+            content += "<br/><p><i>该文章同步自 <a href='http://symphony.b3log.org/article/" + articleId + "'>B3log 社区</a></i></p>";
+            article.put(Article.ARTICLE_CONTENT, content);
 
-            final String articleId = articleMgmtService.addArticle(requestJSONObject);
+            articleMgmtService.addArticle(requestJSONObject);
 
             ret.put(Keys.OBJECT_ID, articleId);
             ret.put(Keys.MSG, "add article succ");

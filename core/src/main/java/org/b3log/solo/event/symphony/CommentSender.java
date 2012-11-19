@@ -89,11 +89,11 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase();
-//            if (blogHost.contains("localhost")) {
-//                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this comment[id={0}] to Symphony",
-//                        new Object[]{orginalComment.getString(Keys.OBJECT_ID)});
-//                return;
-//            }
+            if (blogHost.contains("localhost")) {
+                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this comment[id={0}] to Symphony",
+                        new Object[]{originalComment.getString(Keys.OBJECT_ID)});
+                return;
+            }
 
             final HTTPRequest httpRequest = new HTTPRequest();
             httpRequest.setURL(ADD_COMMENT_URL);
