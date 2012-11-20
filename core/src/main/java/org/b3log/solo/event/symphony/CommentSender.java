@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending comment to B3log Symphony.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Nov 16, 2012
+ * @version 1.0.0.2, Nov 20, 2012
  * @since 0.5.5
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -109,7 +109,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Comment.COMMENT, comment);
             requestJSONObject.put("clientVersion", SoloServletListener.VERSION);
             requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());
-            requestJSONObject.put("clientnName", "B3log Solo");
+            requestJSONObject.put("clientName", "B3log Solo");
             requestJSONObject.put("clientHost", blogHost);
             requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
             requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
