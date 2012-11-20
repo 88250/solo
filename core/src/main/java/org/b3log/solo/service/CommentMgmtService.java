@@ -246,6 +246,7 @@ public final class CommentMgmtService {
             final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
             String commentContent = requestJSONObject.getString(Comment.COMMENT_CONTENT).replaceAll("\\n", SoloServletListener.ENTER_ESC);
+            final String contentNoEsc = commentContent;
             commentContent = StringEscapeUtils.escapeHtml(commentContent);
             final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
@@ -305,6 +306,7 @@ public final class CommentMgmtService {
             // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
+            comment.put(Comment.COMMENT_CONTENT, contentNoEsc);
             eventData.put(Article.ARTICLE, article);
             eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
 
