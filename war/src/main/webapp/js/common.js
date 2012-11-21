@@ -19,7 +19,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Aug 24, 2012
+ * @version 1.0.2.4, Nov 13, 2012
  */
 
 /**
@@ -234,23 +234,27 @@ var Util = {
      * @returns {String} 格式化后的时间
      */
     toDate: function (time, format) {
-        var dateTime = new Date(time),
-        formatDate;
-        var year = dateTime.getFullYear(),
-        month = dateTime.getMonth() + 1,
-        date = dateTime.getDate(),
-        hour = dateTime.getHours() + 1,
-        minute = dateTime.getMinutes() + 1;
-        
-        switch (format) {
-            case "yy-MM-dd HH:mm":
-                formatDate = year.toString().substr(2) + "-" + month + "-" + date + " " + hour + ":" + minute;
-                break;
-            default:
-                break;
-        }
-        
-        return formatDate;
+        var dateTime = new Date(time);
+        var o = { 
+            "M+" : dateTime.getMonth()+1, //month 
+            "d+" : dateTime.getDate(), //day 
+            "H+" : dateTime.getHours(), //hour 
+            "m+" : dateTime.getMinutes(), //minute 
+            "s+" : dateTime.getSeconds(), //second 
+            "q+" : Math.floor((dateTime.getMonth()+3)/3), //quarter 
+            "S" : dateTime.getMilliseconds() //millisecond 
+        } 
+
+        if(/(y+)/.test(format)) { 
+            format = format.replace(RegExp.$1, (dateTime.getFullYear()+"").substr(4 - RegExp.$1.length)); 
+        } 
+
+        for(var k in o) { 
+            if(new RegExp("("+ k +")").test(format)) { 
+                format = format.replace(RegExp.$1, RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length)); 
+            } 
+        } 
+        return format; 
     }
 };
 

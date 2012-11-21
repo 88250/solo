@@ -19,7 +19,7 @@
             "url(${staticServePath}/images/loader.gif) no-repeat scroll center center transparent");
             
             $.ajax({
-                url: "http://localhost:8080/apis/news",
+                url: "http://symphony.b3log.org/apis/news",
                 type: "GET",
                 dataType:"jsonp",
                 jsonp: "callback",

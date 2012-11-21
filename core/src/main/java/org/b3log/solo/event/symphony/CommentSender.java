@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending comment to B3log Symphony.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Oct 18, 2012
+ * @version 1.0.0.2, Nov 20, 2012
  * @since 0.5.5
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -60,7 +60,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     /**
      * B3log Symphony address.
      */
-    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:8080";
+    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:80";
     /**
      * URL of adding comment to Symphony.
      */
@@ -89,11 +89,11 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase();
-//            if (blogHost.contains("localhost")) {
-//                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this comment[id={0}] to Symphony",
-//                        new Object[]{orginalComment.getString(Keys.OBJECT_ID)});
-//                return;
-//            }
+            if (blogHost.contains("localhost")) {
+                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this comment[id={0}] to Symphony",
+                        new Object[]{originalComment.getString(Keys.OBJECT_ID)});
+                return;
+            }
 
             final HTTPRequest httpRequest = new HTTPRequest();
             httpRequest.setURL(ADD_COMMENT_URL);
@@ -109,7 +109,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Comment.COMMENT, comment);
             requestJSONObject.put("clientVersion", SoloServletListener.VERSION);
             requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());
-            requestJSONObject.put("clientnName", "B3log Solo");
+            requestJSONObject.put("clientName", "B3log Solo");
             requestJSONObject.put("clientHost", blogHost);
             requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
             requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
