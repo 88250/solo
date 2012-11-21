@@ -45,7 +45,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.1.1.3, Aug 30, 2012
+ * @version 1.1.1.4, Nov 21, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -123,10 +123,10 @@ public final class UpgradeProcessor {
                 return;
             }
 
-            if ("0.4.6".equals(version)) {
-                v046ToV050();
+            if ("0.5.0".equals(version)) {
+                v050ToV055();
             } else {
-                LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.4.6; Actually: {0}", version);
+                LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.5.0; Actually: {0}", version);
                 if(!sent){
                     notifyUserByEmail();
                     sent = true;
@@ -141,12 +141,12 @@ public final class UpgradeProcessor {
     }
 
     /**
-     * Upgrades from version 046 to version 050.
+     * Upgrades from version 050 to version 055.
      *
      * @throws Exception upgrade fails
      */
-    private void v046ToV050() throws Exception {
-        LOGGER.info("Upgrading from version 046 to version 050....");
+    private void v050ToV055() throws Exception {
+        LOGGER.info("Upgrading from version 050 to version 055....");
 
         articleRepository.setCacheEnabled(false);
 
@@ -157,25 +157,25 @@ public final class UpgradeProcessor {
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
-            preference.put(Preference.VERSION, "0.5.0");
+            preference.put(Preference.VERSION, "0.5.5");
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
 
-            LOGGER.log(Level.FINEST, "Updated preference");
-
             transaction.commit();
+            
+            LOGGER.log(Level.FINEST, "Updated preference");
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
 
             LOGGER.log(Level.SEVERE, "Upgrade failed.", e);
-            throw new Exception("Upgrade failed from version 046 to version 050");
+            throw new Exception("Upgrade failed from version 050 to version 055");
         } finally {
             articleRepository.setCacheEnabled(true);
         }
 
-        LOGGER.info("Upgraded from version 046 to version 050 successfully :-)");
+        LOGGER.info("Upgraded from version 050 to version 055 successfully :-)");
     }
 
     /**
