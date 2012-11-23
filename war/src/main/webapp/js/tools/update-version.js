@@ -1,7 +1,7 @@
 var version = "",
 newVersion = "";
 
-process.argv.forEach(function (val, index, array) {  
+process.argv.forEach(function (val, index) {  
     if (index === 2) {
         version = val;
     }
@@ -11,12 +11,32 @@ process.argv.forEach(function (val, index, array) {
     }
 });  
 
-var fs = require("fs");
-var skins = ["ease", "mobile"];
+var fs = require("fs"),
+path = require('path');
+var getPropertiesFiles = function (root) {
+    var res = [],
+    files = fs.readdirSync(root);
+    
+    files.forEach(function (file) {
+        var pathname = root + '/' + file,
+        stat = fs.lstatSync(pathname);
+        
+        if (!stat.isDirectory()) {
+            if (path.basename(pathname) === "skin.properties") {
+                res.push(pathname);
+            }
+        } else {
+            res = res.concat(getPropertiesFiles(pathname));
+        }
+    });
+    return res;
+};
 
-for (var i = 0; i < skins.length; i++) {
-    var fileName = "../../skins/" + skins[i] + "/skin.properties";
+(function () {
+    var skins = getPropertiesFiles("../../skins");
 
-    var file = fs.readFileSync(fileName, "UTF-8");
-    fs.writeFileSync(fileName, file.replace("forSolo=" + version, "forSolo=" + newVersion), "UTF-8");
-}
+    for (var i = 0; i < skins.length; i++) {
+        var file = fs.readFileSync(skins[i], "UTF-8");
+        fs.writeFileSync(skins[i], file.replace("forSolo=" + version, "forSolo=" + newVersion), "UTF-8");
+    }
+})();
