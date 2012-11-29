@@ -502,7 +502,7 @@ admin.editors.KindEditor = {
                     langType : language,
                     resizeType: 0, 
                     items: ["bold", "italic", "underline", "strikethrough", "|", "undo", "redo", "|", 
-                    "insertunorderedlist", "insertorderedlist",
+                    "insertunorderedlist", "insertorderedlist", "|", "source"
                     ]
                 });
             } catch (e) {
@@ -601,8 +601,7 @@ admin.editors.CodeMirror = {
             "<div class='clear'></div>" + 
             "<div class='markdown-preview-main none'></div>" +
             "<div class='markdown-help-main'>" + Label.markdownHelpLabel + "</div>"
-            "</div>" + 
-        "<div class='clear'></div>";
+            + "</div><div class='clear'></div>";
         } 
         $("#" + conf.id).after(previewHTML);
         
