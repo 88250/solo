@@ -39,7 +39,7 @@ admin.editors.KindEditor = {
                     langType : language,
                     resizeType: 0, 
                     items: ["bold", "italic", "underline", "strikethrough", "|", "undo", "redo", "|", 
-                    "insertunorderedlist", "insertorderedlist",
+                    "insertunorderedlist", "insertorderedlist", "|", "source"
                     ]
                 });
             } catch (e) {

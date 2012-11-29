@@ -41,8 +41,7 @@ admin.editors.CodeMirror = {
             "<div class='clear'></div>" + 
             "<div class='markdown-preview-main none'></div>" +
             "<div class='markdown-help-main'>" + Label.markdownHelpLabel + "</div>"
-            "</div>" + 
-        "<div class='clear'></div>";
+            + "</div><div class='clear'></div>";
         } 
         $("#" + conf.id).after(previewHTML);
         

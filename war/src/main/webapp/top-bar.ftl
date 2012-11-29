@@ -68,7 +68,7 @@
         B3log Solo
     </a>
     <span class="left">&nbsp;${onlineVisitor1Label}${onlineVisitorCnt}</span>
-    <span class="right" id="admin">
+    <span class="right" id="admin" data-login="${isLoggedIn?string}">
         <#if isLoggedIn>
         <span>${userName}</span>
             <#if isAdmin>

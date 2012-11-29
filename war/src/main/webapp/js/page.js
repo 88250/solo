@@ -99,7 +99,7 @@ $.extend(Page.prototype, {
         } else if (2 > commenterContent.length || commenterContent.length > 500) {
             $("#commentErrorTip" + state).html(this.tips.commentContentCannotEmptyLabel);
             $("#comment" + state).focus();
-        } else if ($("#commentValidate" + state).val().replace(/\s/g, "") === "") {
+        } else if (!$("#admin").data("login") && $("#commentValidate" + state).val().replace(/\s/g, "") === "") {
             $("#commentErrorTip" + state).html(this.tips.captchaCannotEmptyLabel);
             $("#commentValidate" + state).focus();
         } else {
@@ -369,6 +369,11 @@ $.extend(Page.prototype, {
      */
     load: function (obj) {
         var that = this;
+        // if login, remove captcha
+        if ($("#admin").data("login")) {
+            $("#commentValidate").parent().parent().hide();
+        }
+        
         // emotions
         that.insertEmotions();
         
