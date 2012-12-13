@@ -163,7 +163,7 @@ public final class CommentMgmtService {
                     ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                 } else {
                     LOGGER.log(Level.WARNING, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
-                               new String[]{originalCommentId, commentName, commentContent});
+                            new String[]{originalCommentId, commentName, commentContent});
                 }
             }
             setCommentThumbnailURL(comment);
@@ -276,7 +276,7 @@ public final class CommentMgmtService {
                     ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                 } else {
                     LOGGER.log(Level.WARNING, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
-                               new String[]{originalCommentId, commentName, commentContent});
+                            new String[]{originalCommentId, commentName, commentContent});
                 }
             }
             CommentMgmtService.setCommentThumbnailURL(comment);
@@ -455,7 +455,7 @@ public final class CommentMgmtService {
 
         final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
         String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=60&d="
-                              + Latkes.getStaticServePath() + "/images/default-user-thumbnail.png";
+                + Latkes.getStaticServePath() + "/images/default-user-thumbnail.png";
 
         final URL gravatarURL = new URL(thumbnailURL);
 
