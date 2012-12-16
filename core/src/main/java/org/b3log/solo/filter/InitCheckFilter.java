@@ -15,9 +15,9 @@
  */
 package org.b3log.solo.filter;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -73,6 +73,13 @@ public final class InitCheckFilter implements Filter {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.FINEST, "Request[URI={0}]", requestURI);
+        
+        if (requestURI.startsWith("/latke/remote")) {
+            // If requests Latke Remote APIs, skips this filter 
+            chain.doFilter(request, response);
+            
+            return;
+        }
 
         try {
             if (SoloServletListener.isInited()) {
