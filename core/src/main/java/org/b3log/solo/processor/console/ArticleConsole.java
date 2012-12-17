@@ -82,7 +82,7 @@ public final class ArticleConsole {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Gets an article by the specified request json object.
+     * Markdowns.
      *
      * <p>
      * Renders the response with a json object, for example,
