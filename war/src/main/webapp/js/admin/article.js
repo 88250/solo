@@ -223,7 +223,8 @@ admin.article = {
                     "articleIsPublished": articleIsPublished,
                     "articleSignId": signId,
                     "articleCommentable": $("#articleCommentable").prop("checked"),
-                    "articleViewPwd": $("#viewPwd").val()
+                    "articleViewPwd": $("#viewPwd").val(),
+                    "postToCommunity": $("#postToCommunity").prop("checked")
                 }
             };
             

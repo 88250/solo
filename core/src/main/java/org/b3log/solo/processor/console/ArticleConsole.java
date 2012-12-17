@@ -525,7 +525,8 @@ public final class ArticleConsole {
      *         "articleIsPublished": boolean,
      *         "articleSignId": "" // optional
      *         "articleCommentable": boolean,
-     *         "articleViewPwd": ""
+     *         "articleViewPwd": "",
+     *         "postToCommunity": boolean
      *     }
      * }
      * </pre>
@@ -564,7 +565,7 @@ public final class ArticleConsole {
             if (!article.has(Article.ARTICLE_SIGN_ID)) {
                 article.put(Article.ARTICLE_SIGN_ID, "0");
             }
-
+            
             articleMgmtService.updateArticle(requestJSONObject);
 
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));

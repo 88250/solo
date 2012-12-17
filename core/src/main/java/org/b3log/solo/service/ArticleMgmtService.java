@@ -291,7 +291,12 @@ public final class ArticleMgmtService {
             }
 
             // Update
+            final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
+            article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
+            
             articleRepository.update(articleId, article);
+            
+            article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
 
             if (publishNewArticle) {
                 // Fire add article event
