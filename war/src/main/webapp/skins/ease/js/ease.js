@@ -293,6 +293,15 @@ var ease = {
         $(".article-body").each(function () {
             this.innerHTML = Util.replaceEmString($(this).html());
         });
+    },
+    
+    /**
+     * @description 纠正评论滚动位置偏差
+     */
+    scrollToCmt: function () {
+        if ($(window.location.hash).length == 1) {
+            $(window).scrollTop($(window.location.hash).offset().top - 60);
+        }    
     }
 };
     
