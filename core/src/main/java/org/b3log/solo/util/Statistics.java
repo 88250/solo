@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.0, Jul 16, 2012
+ * @version 1.0.2.1, Dec 21, 2012
  * @since 0.3.1
  */
 public final class Statistics {
@@ -84,7 +84,11 @@ public final class Statistics {
      * @param request the specified request
      */
     public static void onlineVisitorCount(final HttpServletRequest request) {
-        ONLINE_VISITORS.put(request.getRemoteAddr(), System.currentTimeMillis());
+        final String remoteAddr = Requests.getRemoteAddr(request);
+        
+        LOGGER.log(Level.FINER, "Current request [IP={0}]", remoteAddr);
+        
+        ONLINE_VISITORS.put(remoteAddr, System.currentTimeMillis());
         LOGGER.log(Level.FINER, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
