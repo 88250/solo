@@ -133,7 +133,8 @@ public final class ArticleReceiver {
             article.put(Article.ARTICLE_VIEW_PWD, "");
             String content = article.getString(Article.ARTICLE_CONTENT);
             final String articleId = article.getString(Keys.OBJECT_ID);
-            content += "<br/><p><i>该文章同步自 <a href='http://symphony.b3log.org/article/" + articleId + "'>B3log 社区</a></i></p>";
+            content += "<br/><p><i>该文章同步自 <a href='http://symphony.b3log.org/article/" 
+                    + articleId + "'>B3log 社区</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
             articleMgmtService.addArticle(requestJSONObject);
