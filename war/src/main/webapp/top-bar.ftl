@@ -1,7 +1,7 @@
 <style type="text/css">
     #top {
+        background-color: #FFF;
         background-image: linear-gradient(top,#FFFFFF,#E5E5E5);
-        background-image: -moz-linear-gradient(top,#FFFFFF,#E5E5E5);
         background-image: -ms-linear-gradient(top,#FFFFFF,#E5E5E5);
         background-image: -o-linear-gradient(top,#FFFFFF,#E5E5E5);
         background-image: -webkit-gradient(linear,left top,left bottom,from(#FFFFFF),to(#E5E5E5));

@@ -18,7 +18,7 @@
  * admin style
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.4.0, Aug 27, 2012
+ * @version 1.0.4.1, Dec 24, 2012
 */
 
 /* start resset */
@@ -112,8 +112,8 @@ button.selected {
 
 /* start top-nav */
 #top {
+    background-color: #666;
     background-image: linear-gradient(top,#666666,#7F7F7F);
-    background-image: -moz-linear-gradient(top,#666666,#7F7F7F);
     background-image: -ms-linear-gradient(top,#666666,#7F7F7F);
     background-image: -o-linear-gradient(top,#666666,#7F7F7F);
     background-image: -webkit-gradient(linear,left top,left bottom,from(#666666),to(#7F7F7F));
@@ -281,9 +281,8 @@ button.selected {
     min-height: 160px;
 }
 .module-header {
-    background-color: #f1f1f1;
+    background-color: #f9f9f9;
     background-image: linear-gradient(top,#f9f9f9,#ececec);
-    background-image: -moz-linear-gradient(top,#f9f9f9,#ececec);
     background-image: -ms-linear-gradient(top,#f9f9f9,#ececec);
     background-image: -o-linear-gradient(top,#f9f9f9,#ececec);
     background-image: -webkit-gradient(linear,left top,left bottom,from(#f9f9f9),to(#ececec));
@@ -320,7 +319,8 @@ button.selected {
 
 /* start article */
 .markdown-preivew {
-    background-image: -moz-linear-gradient(top,#FFFFFF,#F3F3F3);
+    background-color: #fff;
+    background-image: linear-gradient(top,#FFFFFF,#F3F3F3);
     background-image: -ms-linear-gradient(top,#FFFFFF,#F3F3F3);
     background-image: -o-linear-gradient(top,#FFFFFF,#F3F3F3);
     background-image: -webkit-gradient(linear,left top,left bottom,from(#FFFFFF),to(#F3F3F3));
