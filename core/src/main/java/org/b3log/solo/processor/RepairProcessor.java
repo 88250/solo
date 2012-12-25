@@ -46,6 +46,7 @@ import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
+import org.b3log.solo.repository.impl.PluginRepositoryImpl;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
@@ -64,7 +65,7 @@ import org.json.JSONObject;
  * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.7, Jul 18, 2012
+ * @version 1.1.0.8, Dec 25, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -349,6 +350,7 @@ public final class RepairProcessor {
             remove(TagArticleRepositoryImpl.getInstance());
             remove(TagRepositoryImpl.getInstance());
             remove(UserRepositoryImpl.getInstance());
+            remove(PluginRepositoryImpl.getInstance());
 
             succeed = true;
         } catch (final Exception e) {
