@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.1, Jul 5, 2012
+ * @version 1.0.3.2, Dec 26, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -435,7 +435,7 @@ $.extend(Page.prototype, {
                 for (var i = 0; i < randomArticles.length; i++) {
                     var article = randomArticles[i];
                     var title = article.articleTitle;
-                    var randomArticleLiHtml = "<li>" + "<a rel='nofollow' title='" + title + "' href='" + 
+                    var randomArticleLiHtml = "<li>" + "<a rel='nofollow' title='" + title + "' href='" + latkeConfig.servePath +
                     article.articlePermalink +"'>" +  title + "</a></li>";
                     listHtml += randomArticleLiHtml;
                 }
@@ -467,7 +467,7 @@ $.extend(Page.prototype, {
                     var article = articles[i];
                     var title = article.articleTitle;
                     var articleLiHtml = "<li>"
-                    + "<a rel='nofollow' title='" + title + "' href='" + article.articlePermalink + "'>"
+                    + "<a rel='nofollow' title='" + title + "' href='" + latkeConfig.servePath + article.articlePermalink + "'>"
                     +  title + "</a></li>"
                     listHtml += articleLiHtml
                 }
