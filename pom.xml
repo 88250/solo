@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.2.5, Nov 21, 2012
+    Version: 2.0.2.6, Dec 27, 2012
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -33,6 +33,7 @@
         <org.b3log.latke-gae.version>0.5.0-SNAPSHOT</org.b3log.latke-gae.version>
         <org.b3log.latke-bae.version>0.5.0-SNAPSHOT</org.b3log.latke-bae.version>
         <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
+        <org.b3log.latke-repository-h2.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-h2.version>
         <gae.version>1.7.2</gae.version>
         
         <freemarker-gae.version>2.3.19</freemarker-gae.version>
@@ -180,6 +181,12 @@
                 <artifactId>latke-repository-mysql</artifactId>
                 <version>${org.b3log.latke-repository-mysql.version}</version>
             </dependency>
+            
+            <dependency>
+                <groupId>org.b3log</groupId>
+                <artifactId>latke-repository-h2</artifactId>
+                <version>${org.b3log.latke-repository-h2.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.testng</groupId>
@@ -291,7 +298,7 @@
             
         </plugins>
 
-		 <pluginManagement>
+        <pluginManagement>
             <plugins>
                 <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
                 <plugin>
