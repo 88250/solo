@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.service.ServiceException;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -35,25 +34,21 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
-import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
-import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
+import static org.b3log.solo.model.Preference.*;
+import org.b3log.solo.model.Preference.Default;
+import org.b3log.solo.repository.*;
+import org.b3log.solo.repository.impl.*;
+import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import static org.b3log.solo.model.Preference.*;
-import org.b3log.solo.repository.*;
-import org.b3log.solo.repository.impl.*;
-import org.b3log.solo.util.Comments;
 
 /**
  * B3log Solo initialization service.
