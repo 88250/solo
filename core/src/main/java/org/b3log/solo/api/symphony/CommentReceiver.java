@@ -27,8 +27,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.mail.MailService;
-import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -65,7 +63,7 @@ import org.json.JSONObject;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 19, 2012
+ * @version 1.0.0.3, Dec 27, 2012
  * @since 0.5.5
  */
 @RequestProcessor
@@ -99,10 +97,6 @@ public final class CommentReceiver {
      * Default user thumbnail.
      */
     private static final String DEFAULT_USER_THUMBNAIL = "default-user-thumbnail.png";
-    /**
-     * Mail service.
-     */
-    private static MailService mailService = MailServiceFactory.getMailService();
     /**
      * URL fetch service.
      */
@@ -180,8 +174,8 @@ public final class CommentReceiver {
             final String commentURL = "http://" + symphonyCmt.optString("commentAuthorURL");
             final String commentId = symphonyCmt.optString(Keys.OBJECT_ID);
             String commentContent = symphonyCmt.getString(Comment.COMMENT_CONTENT);
-            commentContent += "<br/><p><i>该评论同步自 <a href='http://symphony.b3log.org/article/"
-                    + symphonyCmt.optString("commentSymphonyArticleId") + "#" + commentId + "'>B3log 社区</a></i></p>";
+            commentContent += "<br/><p style='font-size: 12px;'><i>该评论同步自 <a href='http://symphony.b3log.org/article/"
+                    + symphonyCmt.optString("commentSymphonyArticleId") + "#" + commentId + "' target='_blank'>B3log 社区</a></i></p>";
             final String originalCommentId = symphonyCmt.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
@@ -315,27 +309,21 @@ public final class CommentReceiver {
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s="
                             + size + "&d=" + Latkes.getServePath() + "/images/default-user-thumbnail.png";
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
-                            thumbnailURL);
+                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]", thumbnailURL);
 
                     return;
                 }
             } else {
-                LOGGER.log(Level.WARNING,
-                        "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
+                LOGGER.log(Level.WARNING, "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
                         new Object[]{commentEmail, statusCode});
             }
         } catch (final IOException e) {
             LOGGER.warning(e.getMessage());
-            LOGGER.log(Level.WARNING,
-                    "Can not fetch thumbnail from Gravatar[commentEmail={0}]",
-                    commentEmail);
+            LOGGER.log(Level.WARNING, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
         }
 
         if (null == thumbnailURL) {
-            LOGGER.log(Level.WARNING,
-                    "Not supported yet for comment thumbnail for email[{0}]",
-                    commentEmail);
+            LOGGER.log(Level.WARNING, "Not supported yet for comment thumbnail for email[{0}]", commentEmail);
             thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
         }
