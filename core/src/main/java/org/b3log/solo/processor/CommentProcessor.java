@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * Comment processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.9, Nov 2, 2012
+ * @version 1.1.0.10, Dec 29, 2012
  * @since 0.3.1
  */
 @RequestProcessor
@@ -82,20 +82,19 @@ public final class CommentProcessor {
      * including a request json object, for example,
      * <pre>
      * {
-     *     "captcha": "", // optional if on BAE 
+     *     "captcha": "",
      *     "oId": pageId,
      *     "commentName": "",
      *     "commentEmail": "",
      *     "commentURL": "",
      *     "commentContent": "",
-     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment
-     *                                    // is an reply
+     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      * }
      * </pre>
      * @throws ServletException servlet exception
      * @throws IOException io exception
      */
-    @RequestProcessing(value = {"/add-page-comment.do"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/add-page-comment.do", method = HTTPRequestMethod.POST)
     public void addPageComment(final HTTPRequestContext context) throws ServletException, IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
@@ -175,8 +174,7 @@ public final class CommentProcessor {
      *     "commentEmail": "",
      *     "commentURL": "",
      *     "commentContent": "",
-     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment
-     *                                    // is an reply
+     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      * }
      * </pre>
      * @throws ServletException servlet exception

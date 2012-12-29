@@ -16,6 +16,10 @@
 package org.b3log.solo.processor;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.Random;
@@ -26,6 +30,8 @@ import java.util.zip.ZipFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.image.Image;
 import org.b3log.latke.image.ImageService;
 import org.b3log.latke.image.ImageServiceFactory;
@@ -35,6 +41,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.PNGRenderer;
 import org.b3log.solo.SoloServletListener;
+import org.h2.util.IOUtils;
 
 /**
  * Captcha processor.
@@ -120,8 +127,17 @@ public final class CaptchaProcessor {
         try {
             captchas = new Image[CAPTCHA_COUNT];
 
-            final URL captchaURL = SoloServletListener.class.getClassLoader().getResource("captcha_static.zip");
-            final ZipFile zipFile = new ZipFile(captchaURL.getFile());
+            ZipFile zipFile;
+            if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()) {
+                final InputStream inputStream = SoloServletListener.class.getClassLoader().getResourceAsStream("captcha_static.zip");
+                final File file = File.createTempFile("b3log_captcha_static", null);
+                final OutputStream outputStream = new FileOutputStream(file);
+                IOUtils.copyAndClose(inputStream, outputStream);
+                zipFile = new ZipFile(file);
+            } else {
+                final URL captchaURL = SoloServletListener.class.getClassLoader().getResource("captcha_static.zip");
+                zipFile = new ZipFile(captchaURL.getFile());
+            }
 
             final Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
