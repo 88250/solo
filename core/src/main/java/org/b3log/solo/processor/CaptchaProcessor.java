@@ -30,6 +30,7 @@ import java.util.zip.ZipFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.image.Image;
@@ -41,7 +42,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.PNGRenderer;
 import org.b3log.solo.SoloServletListener;
-import org.h2.util.IOUtils;
 
 /**
  * Captcha processor.
@@ -52,7 +52,7 @@ import org.h2.util.IOUtils;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Sep 18, 2012
+ * @version 1.1.0.3, Jan 4, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -132,8 +132,11 @@ public final class CaptchaProcessor {
                 final InputStream inputStream = SoloServletListener.class.getClassLoader().getResourceAsStream("captcha_static.zip");
                 final File file = File.createTempFile("b3log_captcha_static", null);
                 final OutputStream outputStream = new FileOutputStream(file);
-                IOUtils.copyAndClose(inputStream, outputStream);
+                IOUtils.copy(inputStream, outputStream);
                 zipFile = new ZipFile(file);
+                
+                IOUtils.closeQuietly(inputStream);
+                IOUtils.closeQuietly(outputStream);
             } else {
                 final URL captchaURL = SoloServletListener.class.getClassLoader().getResource("captcha_static.zip");
                 zipFile = new ZipFile(captchaURL.getFile());
