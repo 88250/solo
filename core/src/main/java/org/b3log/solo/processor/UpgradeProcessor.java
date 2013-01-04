@@ -190,6 +190,8 @@ public final class UpgradeProcessor {
             final JSONObject user = users.getJSONObject(i);
             final String oldPwd = user.optString(User.USER_PASSWORD);
             user.put(User.USER_PASSWORD, MD5.hash(oldPwd));
+            
+            userRepository.update(user.optString(Keys.OBJECT_ID), user);
 
             LOGGER.log(Level.INFO, "Hashed user[name={0}] password.", user.optString(User.USER_NAME));
         }
