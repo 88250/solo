@@ -24,6 +24,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.MD5;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -33,7 +34,7 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Feb 23, 2011
+ * @version 1.0.0.3, Jan 4, 2013
  * @since 0.4.0
  */
 public final class UserMgmtService {
@@ -61,7 +62,7 @@ public final class UserMgmtService {
      *     "oId": "",
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassword": "",
+     *     "userPassword": "", // Unhashed
      *     "userRole": ""
      * }
      * </pre>
@@ -91,7 +92,7 @@ public final class UserMgmtService {
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
             oldUser.put(User.USER_EMAIL, userNewEmail);
             oldUser.put(User.USER_NAME, userName);
-            oldUser.put(User.USER_PASSWORD, userPassword);
+            oldUser.put(User.USER_PASSWORD, MD5.hash(userPassword));
             // Unchanges the default role
 
             userRepository.update(oldUserId, oldUser);
@@ -114,7 +115,7 @@ public final class UserMgmtService {
      * {
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassword": "",
+     *     "userPassword": "", // Unhashed
      *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead,
      *                       if not speciffied
      * }
@@ -142,7 +143,7 @@ public final class UserMgmtService {
             user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-            user.put(User.USER_PASSWORD, userPassword);
+            user.put(User.USER_PASSWORD, MD5.hash(userPassword));
             final String roleName = requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE);
             user.put(User.USER_ROLE, roleName);
             user.put(UserExt.USER_ARTICLE_COUNT, 0);

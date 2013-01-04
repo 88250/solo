@@ -53,7 +53,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.1.1.1, Sep 6, 2012
+ * @version 1.1.1.2, Jan 4, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -160,7 +160,7 @@ public final class LoginProcessor {
                 return;
             }
 
-            if (userPwd.equals(user.getString(User.USER_PASSWORD))) {
+            if (MD5.hash(userPwd).equals(user.getString(User.USER_PASSWORD))) {
                 Sessions.login(request, context.getResponse(), user);
 
                 LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);

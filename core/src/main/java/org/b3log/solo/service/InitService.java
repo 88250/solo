@@ -36,6 +36,7 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Ids;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, Sep 6, 2012
+ * @version 1.0.1.3, Jan 4, 2013
  * @since 0.4.0
  */
 public final class InitService {
@@ -137,7 +138,7 @@ public final class InitService {
      * {
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassword": ""，
+     *     "userPassword": "", // Unhashed
      *     "locale": ""
      * }
      * </pre>
@@ -392,7 +393,7 @@ public final class InitService {
      * {
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassowrd": ""
+     *     "userPassowrd": "" // Unhashed
      * }
      * </pre>
      * @throws Exception exception
@@ -404,7 +405,7 @@ public final class InitService {
         admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
         admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-        admin.put(User.USER_PASSWORD, requestJSONObject.getString(User.USER_PASSWORD));
+        admin.put(User.USER_PASSWORD, MD5.hash(requestJSONObject.getString(User.USER_PASSWORD)));
         admin.put(UserExt.USER_ARTICLE_COUNT, 0);
         admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
 
