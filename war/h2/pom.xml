@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo (H2) standard Servlet container POM.
-    Version: 1.0.0.0, Dec 27, 2012
+    Version: 1.0.0.1, Jan 4, 2013
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -29,6 +29,23 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke</artifactId>
+            
+            <exclusions>
+                <!-- Database Connections Pool for local-->
+                <exclusion>
+                    <groupId>com.jolbox</groupId>
+                    <artifactId>bonecp</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>c3p0</groupId>
+                    <artifactId>c3p0</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
