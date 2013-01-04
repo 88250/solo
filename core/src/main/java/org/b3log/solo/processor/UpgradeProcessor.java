@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -29,8 +30,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
-import org.b3log.latke.taskqueue.TaskQueueService;
-import org.b3log.latke.taskqueue.TaskQueueServiceFactory;
+import org.b3log.latke.util.MD5;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.1.1.4, Nov 21, 2012
+ * @version 1.1.1.5, Jan 4, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -71,10 +71,6 @@ public final class UpgradeProcessor {
      * Preference repository.
      */
     private PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
-    /**
-     * Task queue service.
-     */
-    private TaskQueueService taskQueueService = TaskQueueServiceFactory.getTaskQueueService();
     /**
      * Step for article updating.
      */
@@ -127,7 +123,7 @@ public final class UpgradeProcessor {
                 v050ToV055();
             } else {
                 LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.5.0; Actually: {0}", version);
-                if(!sent){
+                if (!sent) {
                     notifyUserByEmail();
                     sent = true;
                 }
@@ -162,7 +158,7 @@ public final class UpgradeProcessor {
             preferenceRepository.update(Preference.PREFERENCE, preference);
 
             transaction.commit();
-            
+
             LOGGER.log(Level.FINEST, "Updated preference");
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -176,6 +172,27 @@ public final class UpgradeProcessor {
         }
 
         LOGGER.info("Upgraded from version 050 to version 055 successfully :-)");
+    }
+
+    /**
+     * Upgrades users.
+     * 
+     * <p>
+     * Password hashing.
+     * </p>
+     * 
+     * @throws Exception exception
+     */
+    private void upgradeUsers() throws Exception {
+        final JSONArray users = userRepository.get(new Query()).getJSONArray(Keys.RESULTS);
+
+        for (int i = 0; i < users.length(); i++) {
+            final JSONObject user = users.getJSONObject(i);
+            final String oldPwd = user.optString(User.USER_PASSWORD);
+            user.put(User.USER_PASSWORD, MD5.hash(oldPwd));
+
+            LOGGER.log(Level.INFO, "Hashed user[name={0}] password.", user.optString(User.USER_NAME));
+        }
     }
 
     /**
