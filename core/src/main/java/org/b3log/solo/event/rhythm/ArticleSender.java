@@ -94,7 +94,11 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
-            final String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase();
+            /*
+             * Use configured host if Preference.BLOG_HOST is empty.
+             */
+            final String perferHost = preference.getString(Preference.BLOG_HOST);
+            final String blogHost = perferHost!=null&&!"".equals(perferHost)?perferHost.toLowerCase():Latkes.getServePath();
             if (blogHost.contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
                         new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
