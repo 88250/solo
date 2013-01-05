@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 27, 2012
+ * @version 1.0.0.4, Jan 4, 2013
  * @since 0.5.5
  */
 @RequestProcessor
@@ -174,7 +174,7 @@ public final class CommentReceiver {
             final String commentURL = "http://" + symphonyCmt.optString("commentAuthorURL");
             final String commentId = symphonyCmt.optString(Keys.OBJECT_ID);
             String commentContent = symphonyCmt.getString(Comment.COMMENT_CONTENT);
-            commentContent += "<br/><p style='font-size: 12px;'><i>该评论同步自 <a href='http://symphony.b3log.org/article/"
+            commentContent += "<br/><br/><p style='font-size: 12px;'><i>该评论同步自 <a href='http://symphony.b3log.org/article/"
                     + symphonyCmt.optString("commentSymphonyArticleId") + "#" + commentId + "' target='_blank'>B3log 社区</a></i></p>";
             final String originalCommentId = symphonyCmt.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment

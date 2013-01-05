@@ -42,7 +42,7 @@ import org.jsoup.Jsoup;
  * Article receiver (from B3log Symphony).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Dec 27, 2012
+ * @version 1.0.0.4, Jan 4, 2013
  * @since 0.5.5
  */
 @RequestProcessor
@@ -133,7 +133,7 @@ public final class ArticleReceiver {
             article.put(Article.ARTICLE_VIEW_PWD, "");
             String content = article.getString(Article.ARTICLE_CONTENT);
             final String articleId = article.getString(Keys.OBJECT_ID);
-            content += "<br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://symphony.b3log.org/article/" 
+            content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://symphony.b3log.org/article/" 
                     + articleId + "' target='_blank>B3log 社区</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
