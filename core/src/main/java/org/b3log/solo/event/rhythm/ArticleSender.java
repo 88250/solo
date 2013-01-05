@@ -29,6 +29,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
@@ -41,7 +42,8 @@ import org.json.JSONObject;
  * This listener is responsible for sending article to B3log Rhythm.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Nov 19, 2012
+ * @author ArmstrongCN
+ * @version 1.0.2.4, Jan 4, 2013
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -80,7 +82,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(), data, ArticleSender.class.getName()});
+                new Object[]{event.getType(), data, ArticleSender.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
@@ -94,11 +96,9 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
-            /*
-             * Use configured host if Preference.BLOG_HOST is empty.
-             */
+            // Use configured host if Preference.BLOG_HOST is empty.
             final String perferHost = preference.getString(Preference.BLOG_HOST);
-            final String blogHost = perferHost!=null&&!"".equals(perferHost)?perferHost.toLowerCase():Latkes.getServePath();
+            final String blogHost = !Strings.isEmptyOrNull(perferHost) ? perferHost.toLowerCase() : Latkes.getServePath().toLowerCase();
             if (blogHost.contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
                         new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
