@@ -410,9 +410,8 @@ sup {
 }
 
 .article-next {
-    border: 1px solid #F6F6F6;
-    border-top-width: 0;
-    background-color: #FFFFFF;
+    border: 1px solid #eee;
+    background-color: #F9F9F9;
     cursor: pointer;
     font-size: 14px;
     line-height: 36px;
