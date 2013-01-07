@@ -271,6 +271,8 @@ sup {
 .nav {
     background-color: #2C2C2C;
     box-shadow: 0 2px 2px #D5D5D5, 0 3px 3px -3px #D5D5D5 inset;
+    border-top: 1px solid #e2e2e2;
+    border-bottom: 1px solid #e2e2e2;
     height: 29px;
     top: 0;
     width: 100%;
@@ -408,8 +410,9 @@ sup {
 }
 
 .article-next {
-    background-color: #FCFCFC;
-    box-shadow: 0 0 3px #D5D5D5 inset;
+    border: 1px solid #eaeaea;
+    border-top-width: 0;
+    background-color: #FFFFFF;
     cursor: pointer;
     font-size: 14px;
     line-height: 36px;
@@ -417,7 +420,7 @@ sup {
 }
 
 .article-next:hover {
-    box-shadow: 0 0 3px #D5D5D5, 0 0 3px #D5D5D5 inset;
+    background-color: #FCFCFC;
 }
 /* end article list */
 
@@ -483,6 +486,7 @@ sup {
     opacity: 0.9;
     filter: alpha(opacity=90);
     position: absolute;
+    border: 1px solid #e2e2e2;
 }
 
 .comment-body-ref > .comment-header {
@@ -717,5 +721,24 @@ sup {
     display: inline-block;
     margin: 30px 30px 0;
     width: 930px;
+}
+
+#tags a,
+.archives > div,
+.dynamic .module,
+.form input[type="text"], 
+.form input[type="password"], 
+.form textarea,
+.article-relative {
+    border: 1px solid #f2f2f2;
+}
+
+#tags a:hover,
+.archives>div:hover,
+.dynamic .module:hover,
+.form input:focus, 
+.form textarea:focus,
+.article-relative:hover {
+    border: 1px solid #e2e2e2;
 }
 /* end not list */
