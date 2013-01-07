@@ -69,7 +69,7 @@ sup{font-size:10px;font-weight:normal;-webkit-text-size-adjust:none;}
 .article-title h2{display:inline;}
 .article-title span{cursor:pointer;}
 .article-last:hover{border-bottom:1px solid #f6f6f6;}
-.article-next{border:1px solid #eaeaea;border-top-width:0;background-color:#FFFFFF;cursor:pointer;font-size:14px;line-height:36px;text-align:center;}
+.article-next{border:1px solid #F6F6F6;border-top-width:0;background-color:#FFFFFF;cursor:pointer;font-size:14px;line-height:36px;text-align:center;}
 .article-next:hover{background-color:#FCFCFC;}
 .article-relative{background-color:#FCFCFC;box-shadow:0 0 2px #D5D5D5;float:left;margin:10px 0;padding:0 20px 10px;width:385px;}
 .article-relative:hover{background-color:#fff;box-shadow:0 0 4px #D5D5D5;}
