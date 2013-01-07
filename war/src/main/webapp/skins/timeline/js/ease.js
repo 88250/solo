@@ -94,9 +94,9 @@ var getNextPage = function () {
                 '</div>' +
                 '<div class="right ft-gray">';
                 if (article.hasUpdated) {
-                    articlesHTML += Util.toDate(article.articleUpdateTime, 'yy-MM-dd HH:mm');
+                    articlesHTML += Util.toDate(article.articleUpdateDate, 'yy-MM-dd HH:mm');
                 } else {
-                    articlesHTML +=  Util.toDate(article.articleCreateTime, 'yy-MM-dd HH:mm');
+                    articlesHTML +=  Util.toDate(article.articleCreateDate, 'yy-MM-dd HH:mm');
                 }
             
                 articlesHTML += ' <a href="' + latkeConfig.servePath + '/authors/' + article.authorId + '">' + article.authorName + '</a>' +

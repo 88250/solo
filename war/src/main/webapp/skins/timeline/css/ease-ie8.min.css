@@ -1,0 +1,7 @@
+.nav{border-top:1px solid #e2e2e2;border-bottom:1px solid #e2e2e2;}
+.article-next{border:1px solid #e2e2e2;border-top-color:#fefefe;}
+.article-next:hover{background-color:#f2f2f2;border:1px solid #e2e2e2;}
+.comment-body-ref{border:1px solid #e2e2e2;}
+#tags a,.archives>div,.dynamic .module,.form input[type="text"],.form input[type="password"],.form textarea,.article-relative{border:1px solid #f2f2f2;}
+#tags a:hover,.archives>div:hover,.dynamic .module:hover,.form input:focus,.form textarea:focus,.article-relative:hover{border:1px solid #e2e2e2;}
+.article-relative{width:363px;}
