@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.util;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
@@ -33,6 +30,7 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
@@ -47,7 +45,7 @@ import org.json.JSONObject;
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, May 6, 2012
+ * @version 1.0.2.9, Jan 8, 2013
  * @since 0.3.1
  */
 public final class Articles {
@@ -68,26 +66,6 @@ public final class Articles {
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
-
-    /**
-     * Builds article view password form parameters with the specified article.
-     * 
-     * @param article the specified article
-     * @return parameters string, for example,
-     * <pre>
-     * "?articleId=xxx&articleTitle=xxx&articlePermalink=xxx&articleAbstract=xxx"
-     * </pre>
-     * @throws UnsupportedEncodingException if can not encode the arguments 
-     */
-    public String buildArticleViewPwdFormParameters(final JSONObject article) throws UnsupportedEncodingException {
-        final StringBuilder parametersBuilder =
-                new StringBuilder("?articleId=").append(article.optString(Keys.OBJECT_ID)).
-                append("&articleTitle=").append(URLEncoder.encode(article.optString(Article.ARTICLE_TITLE), "UTF-8")).
-                append("&articlePermalink=").append(URLEncoder.encode(article.optString(Article.ARTICLE_PERMALINK), "UTF-8")).
-                append("&articleAbstract=").append(URLEncoder.encode(article.optString(Article.ARTICLE_ABSTRACT, " "), "UTF-8"));
-
-        return parametersBuilder.toString();
-    }
 
     /**
      * Checks whether need password to view the specified article with the specified request.
@@ -178,8 +156,8 @@ public final class Articles {
 
             if (null == ret) {
                 LOGGER.log(Level.WARNING,
-                           "Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
-                           article.getString(Keys.OBJECT_ID));
+                        "Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
+                        article.getString(Keys.OBJECT_ID));
                 // This author may be deleted by admin, use admin as the author
                 // of this article
                 ret = userRepository.getAdmin();

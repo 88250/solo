@@ -15,10 +15,10 @@
  */
 package org.b3log.solo.filter;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * Page cache filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, Jul 16, 2012
+ * @version 1.0.1.1, Jan 8, 2013
  * @since 0.3.1
  */
 public final class PageCacheFilter implements Filter {
@@ -145,7 +145,7 @@ public final class PageCacheFilter implements Filter {
         try {
             // If cached an article that has view password, dispatches the password form
             if (langPropsService.get(PageTypes.ARTICLE.getLangeLabel()).equals(cachedType)
-                && cachedPageContentObject.has(PageCaches.CACHED_PWD)) {
+                    && cachedPageContentObject.has(PageCaches.CACHED_PWD)) {
                 JSONObject article = new JSONObject();
 
                 final String articleId = cachedPageContentObject.optString(PageCaches.CACHED_OID);
@@ -159,7 +159,7 @@ public final class PageCacheFilter implements Filter {
                     final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
                     try {
                         httpServletResponse.sendRedirect(Latkes.getServePath()
-                                                         + "/console/article-pwd" + articles.buildArticleViewPwdFormParameters(article));
+                                + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
                         return;
                     } catch (final Exception e) {
                         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -184,7 +184,7 @@ public final class PageCacheFilter implements Filter {
 
             final String cachedTitle = cachedPageContentObject.getString(PageCaches.CACHED_TITLE);
             LOGGER.log(Level.FINEST, "Cached value[key={0}, type={1}, title={2}]",
-                       new Object[]{pageCacheKey, cachedType, cachedTitle});
+                    new Object[]{pageCacheKey, cachedType, cachedTitle});
 
             statistics.incBlogViewCount((HttpServletRequest) request, (HttpServletResponse) response);
 

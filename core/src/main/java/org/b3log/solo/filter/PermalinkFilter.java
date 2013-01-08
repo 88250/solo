@@ -15,9 +15,9 @@
  */
 package org.b3log.solo.filter;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Article/Page permalink filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, May 17, 2012
+ * @version 1.0.1.7, Jan 8, 2013
  * @since 0.3.1
  * @see org.b3log.solo.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.HTTPRequestContext, 
  * javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse) 
@@ -129,7 +129,7 @@ public final class PermalinkFilter implements Filter {
         if (null != article && articles.needViewPwd(httpServletRequest, article)) {
             try {
                 httpServletResponse.sendRedirect(Latkes.getServePath()
-                                                 + "/console/article-pwd" + articles.buildArticleViewPwdFormParameters(article));
+                        + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
                 return;
             } catch (final Exception e) {
                 httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -153,7 +153,7 @@ public final class PermalinkFilter implements Filter {
      * @see HTTPRequestDispatcher#dispatch(org.b3log.latke.servlet.HTTPRequestContext) 
      */
     private void dispatchToArticleOrPageProcessor(final ServletRequest request, final ServletResponse response,
-                                                  final JSONObject article, final JSONObject page)
+            final JSONObject article, final JSONObject page)
             throws ServletException, IOException {
         final HTTPRequestContext context = new HTTPRequestContext();
         context.setRequest((HttpServletRequest) request);
