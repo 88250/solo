@@ -15,26 +15,17 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.solo.repository.ArchiveDateArticleRepository;
-import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
-import java.util.Set;
-import org.b3log.solo.model.Sign;
-import org.b3log.solo.model.Tag;
-import java.util.Date;
-import org.b3log.latke.model.User;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.util.Articles;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.model.Pagination;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.CollectionUtils;
@@ -42,25 +33,31 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
+import static org.b3log.solo.model.Article.*;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Sign;
+import org.b3log.solo.model.Tag;
+import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
+import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
+import org.b3log.solo.util.Articles;
+import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import static org.b3log.solo.model.Article.*;
-import org.b3log.solo.util.Markdowns;
 
 /**
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.0, May 10, 2012
+ * @version 1.0.1.1, Jan 8, 2013
  * @since 0.3.5
  */
 public final class ArticleQueryService {
@@ -288,6 +285,7 @@ public final class ArticleQueryService {
                 article.put(Common.AUTHOR_NAME, authorName);
 
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
+                article.put(ARTICLE_UPDATE_TIME, ((Date) article.get(ARTICLE_UPDATE_DATE)).getTime());
 
                 // Markdown to HTML for content and abstract
                 markdown(article);
@@ -636,7 +634,7 @@ public final class ArticleQueryService {
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Gets articles by author email failed[authorEmail="
-                                     + authorEmail + ", currentPageNum=" + currentPageNum + ", pageSize=" + pageSize + "]", e);
+                    + authorEmail + ", currentPageNum=" + currentPageNum + ", pageSize=" + pageSize + "]", e);
 
             throw new ServiceException(e);
         }
