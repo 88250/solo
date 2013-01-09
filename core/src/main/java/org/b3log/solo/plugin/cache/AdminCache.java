@@ -15,7 +15,9 @@
  */
 package org.b3log.solo.plugin.cache;
 
+
 import org.b3log.latke.plugin.AbstractPlugin;
+
 
 /**
  * Admin cache plugin.

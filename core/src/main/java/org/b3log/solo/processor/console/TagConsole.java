@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
+
 /**
  * Tag console request processing.
  *
@@ -49,20 +51,23 @@ public final class TagConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(TagConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagConsole.class.getName());
+
     /**
      * Tag query service.
      */
     private TagQueryService tagQueryService = TagQueryService.getInstance();
+
     /**
      * Tag management service.
      */
     private TagMgmtService tagMgmtService = TagMgmtService.getInstance();
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Language service.
      */
@@ -91,9 +96,9 @@ public final class TagConsole {
      */
     @RequestProcessing(value = "/console/tags", method = HTTPRequestMethod.GET)
     public void getTags(final HttpServletRequest request,
-                        final HttpServletResponse response,
-                        final HTTPRequestContext context)
-            throws IOException {
+        final HttpServletResponse response,
+        final HTTPRequestContext context)
+        throws IOException {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -101,9 +106,11 @@ public final class TagConsole {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         try {
@@ -139,11 +146,11 @@ public final class TagConsole {
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/console/tag/unused",
-                       method = HTTPRequestMethod.GET)
+        method = HTTPRequestMethod.GET)
     public void getUnusedTags(final HttpServletRequest request,
-                              final HttpServletResponse response,
-                              final HTTPRequestContext context)
-            throws IOException {
+        final HttpServletResponse response,
+        final HTTPRequestContext context)
+        throws IOException {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -151,9 +158,11 @@ public final class TagConsole {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         final List<JSONObject> unusedTags = new ArrayList<JSONObject>();
@@ -166,6 +175,7 @@ public final class TagConsole {
             for (int i = 0; i < tags.size(); i++) {
                 final JSONObject tag = tags.get(i);
                 final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+
                 if (0 == tagRefCnt) {
                     unusedTags.add(tag);
                 }
@@ -197,20 +207,22 @@ public final class TagConsole {
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/console/tag/unused",
-                       method = HTTPRequestMethod.DELETE)
+        method = HTTPRequestMethod.DELETE)
     public void removeUnusedTags(final HttpServletRequest request,
-                                 final HttpServletResponse response,
-                                 final HTTPRequestContext context)
-            throws IOException {
+        final HttpServletResponse response,
+        final HTTPRequestContext context)
+        throws IOException {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         try {

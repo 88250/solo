@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.filter;
 
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -47,6 +48,7 @@ import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * Page cache filter.
  *
@@ -60,26 +62,29 @@ public final class PageCacheFilter implements Filter {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PageCacheFilter.class.getName());
+
     /**
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Article utilities.
      */
     private Articles articles = Articles.getInstance();
 
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {
-    }
+    public void init(final FilterConfig filterConfig) throws ServletException {}
 
     /**
      * Try to write response from cache.
@@ -92,16 +97,19 @@ public final class PageCacheFilter implements Filter {
      */
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
         final long startTimeMillis = System.currentTimeMillis();
+
         request.setAttribute(Keys.HttpRequest.START_TIME_MILLIS, startTimeMillis);
 
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
+
         LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
 
         if (StaticResources.isStatic(httpServletRequest)) {
             final String path = httpServletRequest.getServletPath() + httpServletRequest.getPathInfo();
+
             LOGGER.log(Level.FINEST, "Requests a static resource, forwards to servlet[path={0}]", path);
             request.getRequestDispatcher(path).forward(request, response);
 
@@ -116,6 +124,7 @@ public final class PageCacheFilter implements Filter {
         }
 
         final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+
         if ("mobile".equals(skinDirName)) {
             // Mobile request, bypasses page caching
             chain.doFilter(request, response);
@@ -125,6 +134,7 @@ public final class PageCacheFilter implements Filter {
 
         String pageCacheKey;
         final String queryString = httpServletRequest.getQueryString();
+
         pageCacheKey = (String) request.getAttribute(Keys.PAGE_CACHE_KEY);
         if (Strings.isEmptyOrNull(pageCacheKey)) {
             pageCacheKey = PageCaches.getPageCacheKey(requestURI, queryString);
@@ -145,7 +155,7 @@ public final class PageCacheFilter implements Filter {
         try {
             // If cached an article that has view password, dispatches the password form
             if (langPropsService.get(PageTypes.ARTICLE.getLangeLabel()).equals(cachedType)
-                    && cachedPageContentObject.has(PageCaches.CACHED_PWD)) {
+                && cachedPageContentObject.has(PageCaches.CACHED_PWD)) {
                 JSONObject article = new JSONObject();
 
                 final String articleId = cachedPageContentObject.optString(PageCaches.CACHED_OID);
@@ -157,9 +167,10 @@ public final class PageCacheFilter implements Filter {
                     article = articleRepository.get(articleId); // Loads the article entity
 
                     final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+
                     try {
-                        httpServletResponse.sendRedirect(Latkes.getServePath()
-                                + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
+                        httpServletResponse.sendRedirect(
+                            Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
                         return;
                     } catch (final Exception e) {
                         httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -179,18 +190,19 @@ public final class PageCacheFilter implements Filter {
             final PrintWriter writer = response.getWriter();
             String cachedPageContent = cachedPageContentObject.getString(PageCaches.CACHED_CONTENT);
             final String topBarHTML = TopBars.getTopBarHTML((HttpServletRequest) request, (HttpServletResponse) response);
+
             cachedPageContent = cachedPageContent.replace(Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
 
-
             final String cachedTitle = cachedPageContentObject.getString(PageCaches.CACHED_TITLE);
-            LOGGER.log(Level.FINEST, "Cached value[key={0}, type={1}, title={2}]",
-                    new Object[]{pageCacheKey, cachedType, cachedTitle});
+
+            LOGGER.log(Level.FINEST, "Cached value[key={0}, type={1}, title={2}]", new Object[] {pageCacheKey, cachedType, cachedTitle});
 
             statistics.incBlogViewCount((HttpServletRequest) request, (HttpServletResponse) response);
 
             final long endimeMillis = System.currentTimeMillis();
             final String dateString = DateFormatUtils.format(endimeMillis, "yyyy/MM/dd HH:mm:ss");
             final String msg = String.format("<!-- Cached by B3log Solo(%1$d ms), %2$s -->", endimeMillis - startTimeMillis, dateString);
+
             LOGGER.finer(msg);
             cachedPageContent += Strings.LINE_SEPARATOR + msg;
             writer.write(cachedPageContent);
@@ -209,6 +221,5 @@ public final class PageCacheFilter implements Filter {
     }
 
     @Override
-    public void destroy() {
-    }
+    public void destroy() {}
 }

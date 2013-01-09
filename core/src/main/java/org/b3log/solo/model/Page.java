@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model;
 
+
 /**
  * This class defines all page model relevant keys.
  *
@@ -28,38 +29,47 @@ public final class Page {
      * Page.
      */
     public static final String PAGE = "page";
+
     /**
      * Pages.
      */
     public static final String PAGES = "pages";
+
     /**
      * Key of title.
      */
     public static final String PAGE_TITLE = "pageTitle";
+
     /**
      * Key of content.
      */
     public static final String PAGE_CONTENT = "pageContent";
+
     /**
      * Key of order.
      */
     public static final String PAGE_ORDER = "pageOrder";
+
     /**
      * Key of comment count.
      */
     public static final String PAGE_COMMENT_COUNT = "pageCommentCount";
+
     /**
      * Key of permalink.
      */
     public static final String PAGE_PERMALINK = "pagePermalink";
+
     /**
      * Key of comments.
      */
     public static final String PAGE_COMMENTS_REF = "pageComments";
+
     /**
      * Key of comment-able.
      */
     public static final String PAGE_COMMENTABLE = "pageCommentable";
+
     /**
      * Key of page type.
      * 
@@ -74,6 +84,7 @@ public final class Page {
      * </p>
      */
     public static final String PAGE_TYPE = "pageType";
+
     /**
      * Key of open target.
      * 
@@ -95,6 +106,7 @@ public final class Page {
      * </p>
      */
     public static final String PAGE_OPEN_TARGET = "pageOpenTarget";
+
     /**
      * Key of page editor type.
      * 
@@ -105,6 +117,5 @@ public final class Page {
     /**
      * Private default constructor.
      */
-    private Page() {
-    }
+    private Page() {}
 }

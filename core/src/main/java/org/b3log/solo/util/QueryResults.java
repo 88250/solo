@@ -15,10 +15,12 @@
  */
 package org.b3log.solo.util;
 
+
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Pagination;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 
 /**
  * Query result utilities.
@@ -59,10 +61,12 @@ public final class QueryResults {
     public static JSONObject defaultResults() {
         final JSONObject ret = new JSONObject();
         final JSONObject pagination = new JSONObject();
+
         ret.put(Pagination.PAGINATION, pagination);
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, 0);
 
         final JSONArray results = new JSONArray();
+
         ret.put(Keys.RESULTS, results);
 
         return ret;
@@ -71,6 +75,5 @@ public final class QueryResults {
     /**
      * Private constructor.
      */
-    private QueryResults() {
-    }
+    private QueryResults() {}
 }

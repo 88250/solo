@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.util;
 
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,7 @@ import org.b3log.solo.repository.impl.PluginRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Plugin utilities.
  *
@@ -39,13 +41,12 @@ public final class Plugins {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(Plugins.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Plugins.class.getName());
+
     /**
      * Plugin repository.
      */
-    private static final PluginRepositoryImpl PLUGIN_REPOS =
-            PluginRepositoryImpl.getInstance();
+    private static final PluginRepositoryImpl PLUGIN_REPOS = PluginRepositoryImpl.getInstance();
 
     /**
      * Updates datastore plugin descriptions with the specified plugins.
@@ -54,11 +55,10 @@ public final class Plugins {
      * @throws Exception exception 
      */
     public static void refresh(final List<AbstractPlugin> plugins)
-            throws Exception {
+        throws Exception {
         final JSONObject result = PLUGIN_REPOS.get(new Query());
         final JSONArray pluginArray = result.getJSONArray(Keys.RESULTS);
-        final List<JSONObject> persistedPlugins =
-                CollectionUtils.jsonArrayToList(pluginArray);
+        final List<JSONObject> persistedPlugins = CollectionUtils.jsonArrayToList(pluginArray);
 
         // Disables plugin repository cache to avoid remove all cache
         PLUGIN_REPOS.setCacheEnabled(false);
@@ -72,8 +72,8 @@ public final class Plugins {
                 PLUGIN_REPOS.remove(descId);
 
                 if (null != plugin) {
-                    final String status =
-                            oldPluginDesc.getString(Plugin.PLUGIN_STATUS);
+                    final String status = oldPluginDesc.getString(Plugin.PLUGIN_STATUS);
+
                     plugin.setStatus(PluginStatus.valueOf(status));
                 }
             }
@@ -81,6 +81,7 @@ public final class Plugins {
             // Adds these plugins into datastore
             for (final AbstractPlugin plugin : plugins) {
                 final JSONObject pluginDesc = plugin.toJSONObject();
+
                 PLUGIN_REPOS.add(pluginDesc);
 
                 LOGGER.log(Level.FINEST, "Refreshed plugin[{0}]", pluginDesc);
@@ -101,7 +102,7 @@ public final class Plugins {
      * @return a plugin, returns {@code null} if not found
      */
     private static AbstractPlugin get(final List<AbstractPlugin> plugins,
-                                      final String id) {
+        final String id) {
         if (null == id) {
             throw new IllegalArgumentException("id must not be null");
         }
@@ -118,6 +119,5 @@ public final class Plugins {
     /**
      * Private default constructor.
      */
-    private Plugins() {
-    }
+    private Plugins() {}
 }

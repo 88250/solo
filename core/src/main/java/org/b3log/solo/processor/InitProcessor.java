@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
@@ -45,6 +46,7 @@ import org.b3log.solo.service.InitService;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 
+
 /**
  * B3log Solo initialization service.
  *
@@ -59,14 +61,17 @@ public final class InitProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InitProcessor.class.getName());
+
     /**
      * Initialization service.
      */
     private InitService initService = InitService.getInstance();
+
     /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+
     /**
      * Language service.
      */
@@ -82,7 +87,7 @@ public final class InitProcessor {
      */
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.GET)
     public void showInit(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         if (SoloServletListener.isInited()) {
             response.sendRedirect("/");
 
@@ -90,12 +95,14 @@ public final class InitProcessor {
         }
 
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+
         renderer.setTemplateName("init.ftl");
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+
         dataModel.putAll(langs);
 
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
@@ -124,7 +131,7 @@ public final class InitProcessor {
      */
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.POST)
     public void initB3logSolo(final HTTPRequestContext context, final HttpServletRequest request,
-                              final HttpServletResponse response) throws Exception {
+        final HttpServletResponse response) throws Exception {
         if (SoloServletListener.isInited()) {
             response.sendRedirect("/");
 
@@ -132,9 +139,11 @@ public final class InitProcessor {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = QueryResults.defaultResult();
+
         renderer.setJSONObject(ret);
 
         try {
@@ -144,9 +153,7 @@ public final class InitProcessor {
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL);
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
 
-            if (Strings.isEmptyOrNull(userName)
-                || Strings.isEmptyOrNull(userEmail)
-                || Strings.isEmptyOrNull(userPassword)
+            if (Strings.isEmptyOrNull(userName) || Strings.isEmptyOrNull(userEmail) || Strings.isEmptyOrNull(userPassword)
                 || !Strings.isEmail(userEmail)) {
                 ret.put(Keys.MSG, "Init failed, please check your input");
 
@@ -154,12 +161,14 @@ public final class InitProcessor {
             }
 
             final Locale locale = Locales.getLocale(request);
+
             requestJSONObject.put(Keys.LOCALE, locale.toString());
 
             initService.init(requestJSONObject);
 
             // If initialized, login the admin
             final JSONObject admin = new JSONObject();
+
             admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
             admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);

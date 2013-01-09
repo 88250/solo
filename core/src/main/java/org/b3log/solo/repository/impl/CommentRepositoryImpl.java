@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
+
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
@@ -31,6 +32,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Comment repository.
  *
@@ -44,14 +46,17 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentRepositoryImpl.class.getName());
+
     /**
      * Singleton.
      */
     private static final CommentRepositoryImpl SINGLETON = new CommentRepositoryImpl(Comment.COMMENT);
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * Recent comments query results cache key.
      */
@@ -63,22 +68,20 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
 
         for (final JSONObject comment : comments) {
             final String commentId = comment.optString(Keys.OBJECT_ID);
+
             remove(commentId);
         }
 
-        LOGGER.log(Level.FINER, "Removed comments[onId={0}, removedCnt={1}]", new Object[]{onId, comments.size()});
+        LOGGER.log(Level.FINER, "Removed comments[onId={0}, removedCnt={1}]", new Object[] {onId, comments.size()});
 
         return comments.size();
     }
 
     @Override
     public List<JSONObject> getComments(final String onId, final int currentPageNum, final int pageSize)
-            throws RepositoryException {
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setFilter(new PropertyFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId)).
-                setCurrentPageNum(currentPageNum).
-                setPageSize(pageSize).
-                setPageCount(1);
+        throws RepositoryException {
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setFilter(new PropertyFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId)).setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(
+            1);
 
         final JSONObject result = get(query);
 
@@ -93,14 +96,14 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
         if (isCacheEnabled()) {
             final Cache<String, Serializable> cache = getCache();
             final Object ret = cache.get(RECENT_CMTS_CACHE_KEY);
+
             if (null != ret) {
                 return (List<JSONObject>) ret;
             }
         }
 
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setCurrentPageNum(1).
-                setPageSize(num).setPageCount(1);
+        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(num).setPageCount(
+            1);
 
         List<JSONObject> ret;
         final JSONObject result = get(query);
@@ -114,6 +117,7 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
 
         if (isCacheEnabled()) {
             final Cache<String, Serializable> cache = getCache();
+
             cache.put(RECENT_CMTS_CACHE_KEY, (Serializable) ret);
         }
 
@@ -129,9 +133,11 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
     private void removeForUnpublishedArticles(final List<JSONObject> comments) throws RepositoryException {
         LOGGER.finer("Removing unpublished articles' comments....");
         final Iterator<JSONObject> iterator = comments.iterator();
+
         while (iterator.hasNext()) {
             final JSONObject comment = iterator.next();
             final String commentOnType = comment.optString(Comment.COMMENT_ON_TYPE);
+
             if (Article.ARTICLE.equals(commentOnType)) {
                 final String articleId = comment.optString(Comment.COMMENT_ON_ID);
 

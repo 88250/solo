@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.util;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * User utilities.
  *
@@ -51,14 +53,17 @@ public final class Users {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Users.class.getName());
+
     /**
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
+
     /**
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+
     /**
      * Article repository.
      */
@@ -74,8 +79,7 @@ public final class Users {
         final Query query = new Query().setPageCount(1);
 
         try {
-            final JSONArray users = userRepository.get(query).
-                    getJSONArray(Keys.RESULTS);
+            final JSONArray users = userRepository.get(query).getJSONArray(Keys.RESULTS);
 
             return 1 != users.length();
         } catch (final RepositoryException e) {
@@ -99,7 +103,7 @@ public final class Users {
      * @throws Exception exception
      */
     public boolean canAccessArticle(final String articleId, final HttpServletRequest request)
-            throws Exception {
+        throws Exception {
         if (Strings.isEmptyOrNull(articleId)) {
             return false;
         }
@@ -135,6 +139,7 @@ public final class Users {
         LoginProcessor.tryLogInWithCookie(request, response);
 
         final GeneralUser currentUser = userService.getCurrentUser(request);
+
         if (null == currentUser) {
             return false;
         }
@@ -161,6 +166,7 @@ public final class Users {
      */
     public JSONObject getCurrentUser(final HttpServletRequest request) {
         final GeneralUser currentUser = userService.getCurrentUser(request);
+
         if (null == currentUser) {
             return null;
         }
@@ -207,6 +213,7 @@ public final class Users {
     private boolean existEmail(final String email, final JSONArray users) throws JSONException {
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.getJSONObject(i);
+
             if (user.getString(User.USER_EMAIL).equalsIgnoreCase(email)) {
                 return true;
             }
@@ -227,8 +234,7 @@ public final class Users {
     /**
      * Private default constructor.
      */
-    private Users() {
-    }
+    private Users() {}
 
     /**
      * Singleton holder.
@@ -246,7 +252,6 @@ public final class Users {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

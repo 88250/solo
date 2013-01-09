@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
+
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
@@ -49,6 +50,7 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
+
 /**
  * Admin console render processing.
  * 
@@ -63,22 +65,27 @@ public final class AdminConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AdminConsole.class.getName());
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+
     /**
      * Event manager.
      */
@@ -96,10 +103,12 @@ public final class AdminConsole {
 
         context.setRenderer(renderer);
         final String templateName = "admin-index.ftl";
+
         renderer.setTemplateName(templateName);
 
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final Map<String, Object> dataModel = renderer.getDataModel();
+
         dataModel.putAll(langs);
 
         final JSONObject currentUser = userUtils.getCurrentUser(request);
@@ -119,8 +128,7 @@ public final class AdminConsole {
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
-            dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE,
-                          preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
+            dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
             dataModel.put(Preference.EDITOR_TYPE, preference.getString(Preference.EDITOR_TYPE));
             dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
@@ -141,30 +149,33 @@ public final class AdminConsole {
      * @param request the specified request
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/admin-article.do",
-                                "/admin-article-list.do",
-                                "/admin-comment-list.do",
-                                "/admin-link-list.do",
-                                "/admin-page-list.do",
-                                "/admin-others.do",
-                                "/admin-draft-list.do",
-                                "/admin-user-list.do",
-                                "/admin-plugin-list.do",
-                                "/admin-main.do",
-                                "/admin-about.do"},
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = { "/admin-article.do",
+            "/admin-article-list.do",
+            "/admin-comment-list.do",
+            "/admin-link-list.do",
+            "/admin-page-list.do",
+            "/admin-others.do",
+            "/admin-draft-list.do",
+            "/admin-user-list.do",
+            "/admin-plugin-list.do",
+            "/admin-main.do",
+            "/admin-about.do"},
+        method = HTTPRequestMethod.GET)
     public void showAdminFunctions(final HttpServletRequest request, final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+
         context.setRenderer(renderer);
 
         final String requestURI = request.getRequestURI();
         final String templateName = StringUtils.substringBetween(requestURI, Latkes.getContextPath() + '/', ".") + ".ftl";
+
         LOGGER.log(Level.FINEST, "Admin function[templateName={0}]", templateName);
         renderer.setTemplateName(templateName);
 
         final Locale locale = Latkes.getLocale();
         final Map<String, String> langs = langPropsService.getAll(locale);
         final Map<String, Object> dataModel = renderer.getDataModel();
+
         dataModel.putAll(langs);
 
         Keys.fillServer(dataModel);
@@ -184,14 +195,17 @@ public final class AdminConsole {
     @RequestProcessing(value = "/admin-preference.do", method = HTTPRequestMethod.GET)
     public void showAdminPreferenceFunction(final HttpServletRequest request, final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+
         context.setRenderer(renderer);
 
         final String templateName = "admin-preference.ftl";
+
         renderer.setTemplateName(templateName);
 
         final Locale locale = Latkes.getLocale();
         final Map<String, String> langs = langPropsService.getAll(locale);
         final Map<String, Object> dataModel = renderer.getDataModel();
+
         dataModel.putAll(langs);
 
         dataModel.put(Preference.LOCALE_STRING, locale.toString());
@@ -206,9 +220,11 @@ public final class AdminConsole {
 
         final StringBuilder timeZoneIdOptions = new StringBuilder();
         final String[] availableIDs = TimeZone.getAvailableIDs();
+
         for (int i = 0; i < availableIDs.length; i++) {
             final String id = availableIDs[i];
             String option;
+
             if (id.equals(preference.optString(Preference.TIME_ZONE_ID))) {
                 option = "<option value=\"" + id + "\" selected=\"true\">" + id + "</option>";
             } else {
@@ -232,6 +248,7 @@ public final class AdminConsole {
     private void fireFreeMarkerActionEvent(final String hostTemplateName, final Map<String, Object> dataModel) {
         try {
             final ViewLoadEventData data = new ViewLoadEventData();
+
             data.setViewName(hostTemplateName);
             data.setDataModel(dataModel);
             eventManager.fireEventSynchronously(new Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));

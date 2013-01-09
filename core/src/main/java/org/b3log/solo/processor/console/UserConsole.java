@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,7 @@ import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
+
 /**
  * User console request processing.
  *
@@ -49,26 +51,22 @@ public final class UserConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserConsole.class.getName());
+
     /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * User management service.
      */
     private UserMgmtService userMgmtService = UserMgmtService.getInstance();
-    /**
-     * User URI prefix.
-     */
-    private static final String USER_URI_PREFIX = "/console/user/";
-    /**
-     * Users URI prefix.
-     */
-    private static final String USERS_URI_PREFIX = "/console/users/";
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Language service.
      */
@@ -101,15 +99,16 @@ public final class UserConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = USER_URI_PREFIX, method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.PUT)
     public void updateUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -127,6 +126,7 @@ public final class UserConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -160,15 +160,16 @@ public final class UserConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = USER_URI_PREFIX, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.POST)
     public void addUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -187,6 +188,7 @@ public final class UserConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -210,22 +212,24 @@ public final class UserConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = USER_URI_PREFIX + "*", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.DELETE)
     public void removeUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String userId = request.getRequestURI().substring((Latkes.getContextPath() + USER_URI_PREFIX).length());
+            final String userId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/user/").length());
 
             userMgmtService.removeUser(userId);
 
@@ -272,10 +276,11 @@ public final class UserConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = USERS_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/users/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
     public void getUsers(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         if (!userUtils.isAdminLoggedIn(request)) {
@@ -285,11 +290,12 @@ public final class UserConsole {
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring((Latkes.getContextPath() + USERS_URI_PREFIX).length());
+            final String path = requestURI.substring((Latkes.getContextPath() + "/console/users/").length());
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
             final JSONObject result = userQueryService.getUsers(requestJSONObject);
+
             result.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(result);
@@ -297,6 +303,7 @@ public final class UserConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -325,23 +332,24 @@ public final class UserConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = USER_URI_PREFIX + "*", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.GET)
     public void getUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final String requestURI = request.getRequestURI();
-            final String userId = requestURI.substring((Latkes.getContextPath() + USER_URI_PREFIX).length());
-
+            final String userId = requestURI.substring((Latkes.getContextPath() + "/console/user/").length());
 
             final JSONObject result = userQueryService.getUser(userId);
+
             if (null == result) {
                 renderer.setJSONObject(QueryResults.defaultResult());
 
@@ -355,6 +363,7 @@ public final class UserConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }

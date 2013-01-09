@@ -15,11 +15,13 @@
  */
 package org.b3log.solo.util;
 
+
 import java.util.Date;
 import java.util.TimeZone;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Comment;
+
 
 /**
  * Time zone utilities.
@@ -38,8 +40,10 @@ public final class TimeZones {
     public static Date getTime(final String timeZoneId) {
         final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
         final TimeZone defaultTimeZone = TimeZone.getDefault();
+
         TimeZone.setDefault(timeZone);
         final Date ret = new Date();
+
         TimeZone.setDefault(defaultTimeZone);
 
         return ret;
@@ -69,6 +73,5 @@ public final class TimeZones {
     /**
      * Private default constructor.
      */
-    private TimeZones() {
-    }
+    private TimeZones() {}
 }

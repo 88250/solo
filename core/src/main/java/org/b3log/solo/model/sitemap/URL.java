@@ -15,7 +15,9 @@
  */
 package org.b3log.solo.model.sitemap;
 
+
 import org.b3log.latke.util.Strings;
+
 
 /**
  * Sitemap URL.
@@ -30,30 +32,37 @@ public final class URL {
      * Start URL element.
      */
     private static final String START_URL_ELEMENT = "<url>";
+
     /**
      * End URL element.
      */
     private static final String END_URL_ELEMENT = "</url>";
+
     /**
      * Start loc element.
      */
     private static final String START_LOC_ELEMENT = "<loc>";
+
     /**
      * End loc element.
      */
     private static final String END_LOC_ELEMENT = "</loc>";
+
     /**
      * Start last mod element.
      */
     private static final String START_LAST_MOD_ELEMENT = "<lastmod>";
+
     /**
      * End last mod element.
      */
     private static final String END_LAST_MOD_ELEMENT = "</lastmod>";
+
     /**
      * Loc.
      */
     private String loc;
+
     /**
      * Last mod.
      */
@@ -98,6 +107,7 @@ public final class URL {
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
+
         stringBuilder.append(START_URL_ELEMENT);
 
         stringBuilder.append(START_LOC_ELEMENT);

@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model.feed.atom;
 
+
 /**
  * Category.
  *
@@ -28,10 +29,12 @@ public final class Category {
      * Term variable.
      */
     private static final String TERM_VARIABLE = "${term}";
+
     /**
      * Category element.
      */
     private static final String CATEGORY_ELEMENT = "<category term=\"" + TERM_VARIABLE + "\" />";
+
     /**
      * Term.
      */

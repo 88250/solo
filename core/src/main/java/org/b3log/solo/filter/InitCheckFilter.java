@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.filter;
 
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,6 +37,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
+
 /**
  * Checks initialization filter.
  *
@@ -49,14 +51,14 @@ public final class InitCheckFilter implements Filter {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InitCheckFilter.class.getName());
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {
-    }
+    public void init(final FilterConfig filterConfig) throws ServletException {}
 
     /**
      * If Solo has not been initialized, so redirects to /init.
@@ -69,9 +71,10 @@ public final class InitCheckFilter implements Filter {
      */
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
+
         LOGGER.log(Level.FINEST, "Request[URI={0}]", requestURI);
         
         if (requestURI.startsWith("/latke/remote")) {
@@ -88,8 +91,7 @@ public final class InitCheckFilter implements Filter {
                 return;
             }
 
-            if ("POST".equalsIgnoreCase(httpServletRequest.getMethod())
-                && (Latkes.getContextPath() + "/init").equals(requestURI)) {
+            if ("POST".equalsIgnoreCase(httpServletRequest.getMethod()) && (Latkes.getContextPath() + "/init").equals(requestURI)) {
                 // Do initailization
                 chain.doFilter(request, response);
 
@@ -98,10 +100,12 @@ public final class InitCheckFilter implements Filter {
 
             LOGGER.finer("Try to get preference to confirm whether the preference exixts");
             final JSONObject preference = preferenceQueryService.getPreference();
+
             if (null == preference) {
                 LOGGER.log(Level.WARNING, "B3log Solo has not been initialized, so redirects to /init");
 
                 final HTTPRequestContext context = new HTTPRequestContext();
+
                 context.setRequest((HttpServletRequest) request);
                 context.setResponse((HttpServletResponse) response);
 
@@ -114,12 +118,10 @@ public final class InitCheckFilter implements Filter {
                 chain.doFilter(request, response);
             }
         } catch (final ServiceException e) {
-            ((HttpServletResponse) response).sendError(
-                    HttpServletResponse.SC_NOT_FOUND);
+            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
     @Override
-    public void destroy() {
-    }
+    public void destroy() {}
 }

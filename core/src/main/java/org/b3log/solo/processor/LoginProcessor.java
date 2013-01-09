@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
@@ -46,6 +47,7 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
+
 /**
  * Login/logout processor.
  *
@@ -63,18 +65,22 @@ public final class LoginProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
+
     /**
      * User query service.
      */
     private static UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+
     /**
      * Preference query service.
      */
@@ -86,22 +92,25 @@ public final class LoginProcessor {
      * @param context the specified context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = { "/login"}, method = HTTPRequestMethod.GET)
     public void showLogin(final HTTPRequestContext context) throws Exception {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
+
         if (Strings.isEmptyOrNull(destinationURL)) {
             destinationURL = "/";
         }
 
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+
         renderer.setTemplateName("login.ftl");
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final JSONObject preference = preferenceQueryService.getPreference();
+
         dataModel.putAll(langs);
         dataModel.put(Common.GOTO, destinationURL);
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
@@ -130,18 +139,21 @@ public final class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = { "/login"}, method = HTTPRequestMethod.POST)
     public void login(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         try {
             jsonObject.put(Common.IS_LOGGED_IN, false);
             final String loginFailLabel = langPropsService.get("loginFailLabel");
+
             jsonObject.put(Keys.MSG, loginFailLabel);
 
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
@@ -155,6 +167,7 @@ public final class LoginProcessor {
             LOGGER.log(Level.INFO, "Login[email={0}]", userEmail);
 
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
+
             if (null == user) {
                 LOGGER.log(Level.WARNING, "Not found user[email={0}]", userEmail);
                 return;
@@ -184,13 +197,14 @@ public final class LoginProcessor {
      * @param context the specified context
      * @throws IOException io exception
      */
-    @RequestProcessing(value = {"/logout"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = { "/logout"}, method = HTTPRequestMethod.GET)
     public void logout(final HTTPRequestContext context) throws IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
         Sessions.logout(httpServletRequest, context.getResponse());
 
         String destinationURL = httpServletRequest.getParameter(Common.GOTO);
+
         if (Strings.isEmptyOrNull(destinationURL)) {
             destinationURL = "/";
         }
@@ -206,6 +220,7 @@ public final class LoginProcessor {
      */
     public static void tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
         final Cookie[] cookies = request.getCookies();
+
         if (null == cookies || 0 == cookies.length) {
             return;
         }
@@ -221,17 +236,20 @@ public final class LoginProcessor {
                 final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
 
                 final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
+
                 if (Strings.isEmptyOrNull(userEmail)) {
                     break;
                 }
 
                 final JSONObject user = userQueryService.getUserByEmail(userEmail.toLowerCase().trim());
+
                 if (null == user) {
                     break;
                 }
 
                 final String userPassword = user.optString(User.USER_PASSWORD);
                 final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
+
                 if (userPassword.equals(hashPassword)) {
                     Sessions.login(request, response, user);
                     LOGGER.log(Level.INFO, "Logged in with cookie[email={0}]", userEmail);
@@ -241,6 +259,7 @@ public final class LoginProcessor {
             LOGGER.log(Level.WARNING, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
 
             final Cookie cookie = new Cookie("b3log-latke", null);
+
             cookie.setMaxAge(0);
             cookie.setPath("/");
 

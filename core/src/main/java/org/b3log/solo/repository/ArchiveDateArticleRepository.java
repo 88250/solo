@@ -15,9 +15,11 @@
  */
 package org.b3log.solo.repository;
 
+
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
+
 
 /**
  * Archive date-Article repository.
@@ -51,9 +53,9 @@ public interface ArchiveDateArticleRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     JSONObject getByArchiveDateId(final String archiveDateId,
-                                  final int currentPageNum,
-                                  final int pageSize)
-            throws RepositoryException;
+        final int currentPageNum,
+        final int pageSize)
+        throws RepositoryException;
 
     /**
      * Gets an archive date-article relations by the specified article id.
@@ -69,5 +71,5 @@ public interface ArchiveDateArticleRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     JSONObject getByArticleId(final String articleId)
-            throws RepositoryException;
+        throws RepositoryException;
 }

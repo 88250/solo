@@ -37,7 +37,7 @@
     Most Checks are configurable, be sure to consult the documentation.
     To completely disable a check, just comment it out or delete it from the file.
     Finally, it is worth reading the documentation.
-    Version: 1.0.1.6, Dec 29, 2012
+    Version: 1.0.1.7, Jan 9, 2013
     Author: Liang Ding
 -->
 <!DOCTYPE module PUBLIC
@@ -113,10 +113,12 @@
         <module name="UnusedImports"/>
 
         <!-- Checks for Size Violations.                    -->
-        <!-- See http://checkstyle.sf.net/config_sizes.html -->
+        <!-- See http://checkstyle.sf.net/config_sizes  .html -->
+        <!--
         <module name="LineLength">
             <property name="max" value="140"/>
         </module>
+        -->
         <module name="MethodLength"/>
         <module name="ParameterNumber"/>
 

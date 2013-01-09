@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.event.comment;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -35,6 +36,7 @@ import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
+
 /**
  * This listener is responsible for processing article comment reply.
  *
@@ -48,14 +50,17 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleCommentReplyNotifier.class.getName());
+
     /**
      * Comment repository.
      */
     private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+
     /**
      * Mail service.
      */
     private MailService mailService = MailServiceFactory.getMailService();
+
     /**
      * Preference query service.
      */
@@ -66,9 +71,11 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
         final JSONObject eventData = event.getData();
         final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
         final JSONObject article = eventData.optJSONObject(Article.ARTICLE);
+
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), eventData, ArticleCommentReplyNotifier.class.getName()});
+            new Object[] {event.getType(), eventData, ArticleCommentReplyNotifier.class.getName()});
         final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+
         if (Strings.isEmptyOrNull(originalCommentId)) {
             LOGGER.log(Level.FINER, "This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
             return;
@@ -78,11 +85,13 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
             final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
             final JSONObject originalComment = commentRepository.get(originalCommentId);
             final String originalCommentEmail = originalComment.getString(Comment.COMMENT_EMAIL);
+
             if (originalCommentEmail.equalsIgnoreCase(commentEmail)) {
                 return;
             }
 
             final JSONObject preference = preferenceQueryService.getPreference();
+
             if (null == preference) {
                 throw new EventException("Not found preference");
             }
@@ -93,10 +102,12 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
             final String commentContent = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
             final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
             final Message message = new Message();
+
             message.setFrom(adminEmail);
             message.addRecipient(originalCommentEmail);
             final JSONObject replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
             final String mailSubject = replyNotificationTemplate.getString("subject").replace("${blogTitle}", blogTitle);
+
             message.setSubject(mailSubject);
             final String articleTitle = article.getString(Article.ARTICLE_TITLE);
             final String blogHost = preference.getString(Preference.BLOG_HOST);
@@ -104,22 +115,19 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
             final String commentName = comment.getString(Comment.COMMENT_NAME);
             final String commentURL = comment.getString(Comment.COMMENT_URL);
             String commenter;
+
             if (!"http://".equals(commentURL)) {
                 commenter = "<a target=\"_blank\" " + "href=\"" + commentURL + "\">" + commentName + "</a>";
             } else {
                 commenter = commentName;
             }
 
-            final String mailBody = replyNotificationTemplate.getString("body").
-                    replace("${postLink}", articleLink).
-                    replace("${postTitle}", articleTitle).
-                    replace("${replier}", commenter).
-                    replace("${replyURL}", "http://" + blogHost
-                    + commentSharpURL).
-                    replace("${replyContent}", commentContent);
+            final String mailBody = replyNotificationTemplate.getString("body").replace("${postLink}", articleLink).replace("${postTitle}", articleTitle).replace("${replier}", commenter).replace("${replyURL}", "http://" + blogHost + commentSharpURL).replace(
+                "${replyContent}", commentContent);
+
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.FINER, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
-                    new Object[]{mailSubject, mailBody, originalCommentEmail});
+                new Object[] {mailSubject, mailBody, originalCommentEmail});
             mailService.send(message);
 
         } catch (final Exception e) {

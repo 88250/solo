@@ -15,7 +15,9 @@
  */
 package org.b3log.solo.repository;
 
+
 import org.b3log.latke.repository.Repository;
+
 
 /**
  * Statistic repository.
@@ -23,5 +25,4 @@ import org.b3log.latke.repository.Repository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Jan 30, 2011
  */
-public interface StatisticRepository extends Repository {
-}
+public interface StatisticRepository extends Repository {}

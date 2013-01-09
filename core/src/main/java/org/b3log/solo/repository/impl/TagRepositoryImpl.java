@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 
 /**
  * Tag repository.
@@ -39,10 +41,12 @@ public final class TagRepositoryImpl extends AbstractRepository implements TagRe
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagRepositoryImpl.class.getName());
+
     /**
      * Singleton.
      */
     private static final TagRepositoryImpl SINGLETON = new TagRepositoryImpl(Tag.TAG);
+
     /**
      * Tag-Article relation repository.
      */
@@ -50,9 +54,7 @@ public final class TagRepositoryImpl extends AbstractRepository implements TagRe
 
     @Override
     public JSONObject getByTitle(final String tagTitle) throws RepositoryException {
-        final Query query = new Query().setFilter(
-                new PropertyFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, tagTitle)).
-                setPageCount(1);
+        final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, tagTitle)).setPageCount(1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -66,10 +68,8 @@ public final class TagRepositoryImpl extends AbstractRepository implements TagRe
 
     @Override
     public List<JSONObject> getMostUsedTags(final int num) throws RepositoryException {
-        final Query query = new Query().addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING).
-                setCurrentPageNum(1).
-                setPageSize(num).
-                setPageCount(1);
+        final Query query = new Query().addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(num).setPageCount(
+            1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -82,6 +82,7 @@ public final class TagRepositoryImpl extends AbstractRepository implements TagRe
         final List<JSONObject> ret = new ArrayList<JSONObject>();
 
         final List<JSONObject> tagArticleRelations = tagArticleRepository.getByArticleId(articleId);
+
         for (final JSONObject tagArticleRelation : tagArticleRelations) {
             final String tagId = tagArticleRelation.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
             final JSONObject tag = get(tagId);

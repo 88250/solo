@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import freemarker.template.Template;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,6 +50,7 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
+
 /**
  * Index processor.
  *
@@ -63,14 +65,17 @@ public final class IndexProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class.getName());
+
     /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Language service.
      */
@@ -81,9 +86,10 @@ public final class IndexProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = { "/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+
         context.setRenderer(renderer);
 
         renderer.setTemplateName("index.ftl");
@@ -92,17 +98,19 @@ public final class IndexProcessor {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final String requestURI = request.getRequestURI();
+
         try {
             final int currentPageNum = getCurrentPageNum(requestURI);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
-                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                dataModel);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+
             request.setAttribute(PageCaches.CACHED_OID, "No id");
-            request.setAttribute(PageCaches.CACHED_TITLE, langs.get(PageTypes.INDEX.getLangeLabel())
-                                                          + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
+            request.setAttribute(PageCaches.CACHED_TITLE,
+                langs.get(PageTypes.INDEX.getLangeLabel()) + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
             request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.INDEX.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
@@ -115,8 +123,10 @@ public final class IndexProcessor {
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+
             dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
             final Integer pageCount = (Integer) dataModel.get(Pagination.PAGINATION_PAGE_COUNT);
+
             if (pageCount == currentPageNum + 1) { // The next page is the last page
                 dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
             } else {
@@ -145,14 +155,17 @@ public final class IndexProcessor {
     @RequestProcessing(value = "/kill-browser.html", method = HTTPRequestMethod.GET)
     public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new KillBrowserRenderer();
+
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
+
             filler.fillBlogFooter(dataModel, preference);
             Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
@@ -205,6 +218,7 @@ public final class IndexProcessor {
         @Override
         public void render(final HTTPRequestContext context) {
             final HttpServletResponse response = context.getResponse();
+
             response.setContentType("text/html");
             response.setCharacterEncoding("UTF-8");
 
@@ -214,10 +228,12 @@ public final class IndexProcessor {
                 final PrintWriter writer = response.getWriter();
 
                 final StringWriter stringWriter = new StringWriter();
+
                 template.setOutputEncoding("UTF-8");
                 template.process(getDataModel(), stringWriter);
 
                 final String pageContent = stringWriter.toString();
+
                 context.getRequest().setAttribute(PageCaches.CACHED_CONTENT, pageContent);
 
                 writer.write(pageContent);

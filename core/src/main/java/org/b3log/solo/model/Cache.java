@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model;
 
+
 /**
  * This class defines all cache model relevant keys.
  *
@@ -27,22 +28,27 @@ public final class Cache {
      * Cache.
      */
     public static final String CACHE = "cache";
+
     /**
      * Cached count.
      */
     public static final String CACHE_CACHED_COUNT = "cacheCachedCount";
+
     /**
      * Cache hit count.
      */
     public static final String CACHE_HIT_COUNT = "cacheHitCount";
+
     /**
      * Cache hit bytes.
      */
     public static final String CACHE_HIT_BYTES = "cacheHitBytes";
+
     /**
      * Cached bytes.
      */
     public static final String CACHE_CACHED_BYTES = "cacheCachedBytes";
+
     /**
      * Cache miss count.
      */
@@ -51,6 +57,5 @@ public final class Cache {
     /**
      * Private default constructor.
      */
-    private Cache() {
-    }
+    private Cache() {}
 }

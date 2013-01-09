@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.util;
 
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileReader;
@@ -40,6 +41,7 @@ import static org.b3log.solo.model.Skin.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Skin utilities.
  *
@@ -53,6 +55,7 @@ public final class Skins {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Skins.class.getName());
+
     /**
      * Properties map.
      */
@@ -61,8 +64,7 @@ public final class Skins {
     /**
      * Private default constructor.
      */
-    private Skins() {
-    }
+    private Skins() {}
 
     /**
      * Fills the specified data model with the current skink's language 
@@ -74,17 +76,17 @@ public final class Skins {
      * @throws ServiceException service exception 
      */
     public static void fillSkinLangs(final String localeString, final String currentSkinDirName, final Map<String, Object> dataModel)
-            throws ServiceException {
+        throws ServiceException {
         Stopwatchs.start("Fill Skin Langs");
 
         try {
             final String langName = currentSkinDirName + "." + localeString;
             Map<String, String> langs = LANG_MAP.get(langName);
+
             if (null == langs) {
                 LANG_MAP.clear(); // Collect unused skin languages
 
-                LOGGER.log(Level.INFO, "Loading skin[dirName={0}, locale={1}]",
-                           new Object[]{currentSkinDirName, localeString});
+                LOGGER.log(Level.INFO, "Loading skin[dirName={0}, locale={1}]", new Object[] {currentSkinDirName, localeString});
                 langs = new HashMap<String, String>();
 
                 final String webRootPath = SoloServletListener.getWebRoot();
@@ -93,18 +95,20 @@ public final class Skins {
                 final String country = Locales.getCountry(localeString);
 
                 final Properties props = new Properties();
-                props.load(new FileReader(webRootPath + "skins" + File.separator
-                                          + currentSkinDirName + File.separator
-                                          + Keys.LANGUAGE + File.separator + Keys.LANGUAGE + '_' + language
-                                          + '_' + country + ".properties"));
+
+                props.load(
+                    new FileReader(
+                        webRootPath + "skins" + File.separator + currentSkinDirName + File.separator + Keys.LANGUAGE + File.separator
+                        + Keys.LANGUAGE + '_' + language + '_' + country + ".properties"));
                 final Set<Object> keys = props.keySet();
+
                 for (final Object key : keys) {
                     langs.put((String) key, props.getProperty((String) key));
                 }
 
                 LANG_MAP.put(langName, langs);
                 LOGGER.log(Level.INFO, "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
-                           new Object[]{currentSkinDirName, localeString, langs.size()});
+                    new Object[] {currentSkinDirName, localeString, langs.size()});
             }
 
             dataModel.putAll(langs);
@@ -134,11 +138,14 @@ public final class Skins {
         LOGGER.info("Loading skins....");
 
         final Set<String> skinDirNames = getSkinDirNames();
+
         LOGGER.log(Level.FINER, "Loaded skins[dirNames={0}]", skinDirNames);
         final JSONArray skinArray = new JSONArray();
+
         for (final String dirName : skinDirNames) {
             final JSONObject skin = new JSONObject();
             final String name = getSkinName(dirName);
+
             if (null == name) {
                 LOGGER.log(Level.WARNING, "The directory[{0}] does not contain any skin, ignored it", dirName);
                 continue;
@@ -152,16 +159,18 @@ public final class Skins {
 
         final String currentSkinDirName = preference.optString(SKIN_DIR_NAME);
         final String skinName = preference.optString(SKIN_NAME);
+
         LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
 
         if (!skinDirNames.contains(currentSkinDirName)) {
-            LOGGER.log(Level.WARNING, "Configred skin[dirName={0}] can not find, try to use "
-                                      + "default skin[dirName=ease] instead.", currentSkinDirName);
+            LOGGER.log(Level.WARNING, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName=ease] instead.",
+                currentSkinDirName);
             if (!skinDirNames.contains("ease")) {
                 LOGGER.log(Level.SEVERE, "Can not find skin[dirName=ease]");
 
-                throw new IllegalStateException("Can not find default skin[dirName=ease], please redeploy your B3log Solo and make sure "
-                                                + "contains this default skin!");
+                throw new IllegalStateException(
+                    "Can not find default skin[dirName=ease], please redeploy your B3log Solo and make sure "
+                        + "contains this default skin!");
             }
 
             preference.put(SKIN_DIR_NAME, "ease");
@@ -172,9 +181,9 @@ public final class Skins {
         }
 
         final String skinsString = skinArray.toString();
+
         if (!skinsString.equals(preference.getString(SKINS))) {
-            LOGGER.log(Level.INFO, "The skins directory has been changed, persists "
-                                   + "the change into preference");
+            LOGGER.log(Level.INFO, "The skins directory has been changed, persists " + "the change into preference");
             preference.put(SKINS, skinsString);
             PreferenceMgmtService.getInstance().updatePreference(preference);
             PageCaches.removeAll(); // Clears cache manually.
@@ -188,8 +197,8 @@ public final class Skins {
 
         setDirectoryForTemplateLoading(preference.getString(SKIN_DIR_NAME));
 
-        final String localeString = preference.getString(
-                Preference.LOCALE_STRING);
+        final String localeString = preference.getString(Preference.LOCALE_STRING);
+
         if ("zh_CN".equals(localeString)) {
             TimeZones.setTimeZone("Asia/Shanghai");
         }
@@ -208,12 +217,11 @@ public final class Skins {
     public static void setDirectoryForTemplateLoading(final String skinDirName) {
         try {
             final String webRootPath = SoloServletListener.getWebRoot();
-            final String skinPath = webRootPath + SKINS + File.separator
-                                    + skinDirName;
+            final String skinPath = webRootPath + SKINS + File.separator + skinDirName;
+
             Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
 
-            Templates.MOBILE_CFG.setDirectoryForTemplateLoading(
-                    new File(webRootPath + SKINS + File.separator + "mobile"));
+            Templates.MOBILE_CFG.setDirectoryForTemplateLoading(new File(webRootPath + SKINS + File.separator + "mobile"));
         } catch (final IOException e) {
             LOGGER.log(Level.SEVERE, "Loads skins error!", e);
             throw new IllegalStateException(e);
@@ -247,6 +255,7 @@ public final class Skins {
         });
 
         final Set<String> ret = new HashSet<String>();
+
         if (null == skinDirs) {
             LOGGER.severe("Skin directory is null");
 
@@ -255,6 +264,7 @@ public final class Skins {
 
         for (int i = 0; i < skinDirs.length; i++) {
             final File file = skinDirs[i];
+
             ret.add(file.getName());
         }
 
@@ -277,8 +287,7 @@ public final class Skins {
 
             @Override
             public boolean accept(final File pathname) {
-                return pathname.isDirectory()
-                       && pathname.getName().equals(skinDirName) ? true : false;
+                return pathname.isDirectory() && pathname.getName().equals(skinDirName) ? true : false;
             }
         });
 
@@ -289,22 +298,20 @@ public final class Skins {
         }
 
         if (1 != skinDirs.length) {
-            LOGGER.log(Level.SEVERE, "Skin directory count[{0}]",
-                       skinDirs.length);
+            LOGGER.log(Level.SEVERE, "Skin directory count[{0}]", skinDirs.length);
 
             return null;
         }
 
         try {
             final Properties ret = new Properties();
-            final String skinPropsPath = skinDirs[0].getPath() + File.separator
-                                         + "skin.properties";
+            final String skinPropsPath = skinDirs[0].getPath() + File.separator + "skin.properties";
+
             ret.load(new FileReader(skinPropsPath));
 
             return ret.getProperty("name");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Read skin configuration error[msg={0}]",
-                       e.getMessage());
+            LOGGER.log(Level.SEVERE, "Read skin configuration error[msg={0}]", e.getMessage());
 
             return null;
         }

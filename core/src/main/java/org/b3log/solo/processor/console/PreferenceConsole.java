@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -37,6 +38,7 @@ import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Preference console request processing.
  *
@@ -51,22 +53,27 @@ public final class PreferenceConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PreferenceConsole.class.getName());
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Preference management service.
      */
     private PreferenceMgmtService preferenceMgmtService = PreferenceMgmtService.getInstance();
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Preference URI prefix.
      */
@@ -95,30 +102,32 @@ public final class PreferenceConsole {
      */
     @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.GET)
     public void getReplyNotificationTemplate(final HttpServletRequest request,
-                                             final HttpServletResponse response,
-                                             final HTTPRequestContext context)
-            throws Exception {
+        final HttpServletResponse response,
+        final HTTPRequestContext context)
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final JSONObject replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
 
             final JSONObject ret = new JSONObject();
+
             renderer.setJSONObject(ret);
 
-            ret.put(Preference.REPLY_NOTIFICATION_TEMPLATE,
-                    replyNotificationTemplate);
+            ret.put(Preference.REPLY_NOTIFICATION_TEMPLATE, replyNotificationTemplate);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -142,15 +151,16 @@ public final class PreferenceConsole {
      */
     @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.PUT)
     public void updateReplyNotificationTemplate(final HttpServletRequest request,
-                                                final HttpServletResponse response,
-                                                final HTTPRequestContext context)
-            throws Exception {
+        final HttpServletResponse response,
+        final HTTPRequestContext context)
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
@@ -170,6 +180,7 @@ public final class PreferenceConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -198,13 +209,14 @@ public final class PreferenceConsole {
      */
     @RequestProcessing(value = "/console/signs/", method = HTTPRequestMethod.GET)
     public void getSigns(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
@@ -213,12 +225,14 @@ public final class PreferenceConsole {
             final JSONArray signs = new JSONArray();
 
             final JSONArray allSigns = // includes the empty sign(id=0)
-                    new JSONArray(preference.getString(Preference.SIGNS));
+                new JSONArray(preference.getString(Preference.SIGNS));
+
             for (int i = 1; i < allSigns.length(); i++) { // excludes the empty sign
                 signs.put(allSigns.getJSONObject(i));
             }
 
             final JSONObject ret = new JSONObject();
+
             renderer.setJSONObject(ret);
 
             ret.put(Sign.SIGNS, signs);
@@ -227,6 +241,7 @@ public final class PreferenceConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -288,13 +303,14 @@ public final class PreferenceConsole {
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.GET)
     public void getPreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
@@ -315,6 +331,7 @@ public final class PreferenceConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -364,13 +381,14 @@ public final class PreferenceConsole {
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.PUT)
     public void updatePreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
@@ -379,6 +397,7 @@ public final class PreferenceConsole {
             final JSONObject preference = requestJSONObject.getJSONObject(Preference.PREFERENCE);
 
             final JSONObject ret = new JSONObject();
+
             renderer.setJSONObject(ret);
 
             if (isInvalid(preference, ret)) {
@@ -393,6 +412,7 @@ public final class PreferenceConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -409,76 +429,78 @@ public final class PreferenceConsole {
         responseObject.put(Keys.STATUS_CODE, false);
 
         final StringBuilder errMsgBuilder = new StringBuilder('[' + langPropsService.get("paramSettingsLabel"));
+
         errMsgBuilder.append(" - ");
 
         String input = preference.optString(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT);
+
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("externalRelevantArticlesDisplayCntLabel")).append("]  ").append(langPropsService.get(
-                    "nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("externalRelevantArticlesDisplayCntLabel")).append("]  ").append(
+                langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("relevantArticlesDisplayCntLabel")).append("]  ").append(langPropsService.get(
-                    "nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("relevantArticlesDisplayCntLabel")).append("]  ").append(
+                langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("randomArticlesDisplayCntLabel")).append("]  ").append(langPropsService.get(
-                    "nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("randomArticlesDisplayCntLabel")).append("]  ").append(
+                langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexMostCommentArticleDisplayCntLabel")).append("]  ").append(langPropsService.get(
-                    "nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("indexMostCommentArticleDisplayCntLabel")).append("]  ").append(
+                langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexMostViewArticleDisplayCntLabel")).append("]  ").append(langPropsService.get(
-                    "nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("indexMostViewArticleDisplayCntLabel")).append("]  ").append(
+                langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Preference.RECENT_COMMENT_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexRecentCommentDisplayCntLabel")).append("]  ").append(langPropsService.get(
-                    "nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("indexRecentCommentDisplayCntLabel")).append("]  ").append(
+                langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Preference.MOST_USED_TAG_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexTagDisplayCntLabel")).append("]  ").append(langPropsService.get(
-                    "nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("indexTagDisplayCntLabel")).append("]  ").append(
+                langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Preference.ARTICLE_LIST_DISPLAY_COUNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("pageSizeLabel")).append("]  ").append(langPropsService.get(
-                    "nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("pageSizeLabel")).append("]  ").append(
+                langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("windowSizeLabel")).append("]  ").append(langPropsService.get(
-                    "nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("windowSizeLabel")).append("]  ").append(
+                langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }

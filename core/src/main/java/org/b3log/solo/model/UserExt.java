@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model;
 
+
 /**
  * This class defines ext of user model relevant keys.
  *
@@ -29,6 +30,7 @@ public final class UserExt {
      * Key of user article count.
      */
     public static final String USER_ARTICLE_COUNT = "userArticleCount";
+
     /**
      * Key of user article count.
      */
@@ -37,6 +39,5 @@ public final class UserExt {
     /**
      * Private constructor.
      */
-    private UserExt() {
-    }
+    private UserExt() {}
 }

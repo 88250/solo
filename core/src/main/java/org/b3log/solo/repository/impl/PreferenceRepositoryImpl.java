@@ -15,12 +15,14 @@
  */
 package org.b3log.solo.repository.impl;
 
+
 import java.util.logging.Logger;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.json.JSONObject;
+
 
 /**
  * Preference repository.
@@ -35,6 +37,7 @@ public final class PreferenceRepositoryImpl extends AbstractRepository implement
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PreferenceRepositoryImpl.class.getName());
+
     /**
      * Singleton.
      */

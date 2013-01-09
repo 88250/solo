@@ -15,7 +15,9 @@
  */
 package org.b3log.solo.repository;
 
+
 import org.b3log.latke.repository.Repository;
+
 
 /**
  * Plugin repository.
@@ -23,5 +25,4 @@ import org.b3log.latke.repository.Repository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Jul 21, 2011
  */
-public interface PluginRepository extends Repository {
-}
+public interface PluginRepository extends Repository {}

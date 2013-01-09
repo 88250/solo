@@ -15,9 +15,11 @@
  */
 package org.b3log.solo.util.comparator;
 
+
 import java.util.Comparator;
 import org.b3log.solo.model.Tag;
 import org.json.JSONObject;
+
 
 /**
  * Tag comparator by reference count.
@@ -26,13 +28,12 @@ import org.json.JSONObject;
  * @version 1.0.0.1, Dec 30, 2010
  */
 public final class TagRefCntComparator
-        implements Comparator<JSONObject> {
+    implements Comparator<JSONObject> {
 
     /**
      * Package default constructor.
      */
-    TagRefCntComparator() {
-    }
+    TagRefCntComparator() {}
 
     @Override
     public int compare(final JSONObject tag1, final JSONObject tag2) {

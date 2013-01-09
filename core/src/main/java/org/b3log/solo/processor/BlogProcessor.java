@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import org.b3log.latke.Latkes;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -27,6 +28,7 @@ import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Articles;
 import org.json.JSONObject;
+
 
 /**
  * Blog processor.
@@ -42,10 +44,12 @@ public final class BlogProcessor {
      * Article utilities.
      */
     private Articles articleUtils = Articles.getInstance();
+
     /**
      * Tag query service.
      */
     private TagQueryService tagQueryService = TagQueryService.getInstance();
+
     /**
      * Statistic query service.
      */
@@ -72,13 +76,16 @@ public final class BlogProcessor {
     @RequestProcessing(value = "/blog/info", method = HTTPRequestMethod.GET)
     public void getRecentArticleTime(final HTTPRequestContext context) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         jsonObject.put("recentArticleTime", articleUtils.getRecentArticleTime());
         final JSONObject statistic = statisticQueryService.getStatistic();
+
         jsonObject.put("articleCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
         jsonObject.put("commentCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
         jsonObject.put("tagCount", tagQueryService.getTagCount());

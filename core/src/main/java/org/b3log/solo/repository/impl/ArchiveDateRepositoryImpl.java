@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
+
 import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 
 /**
  * Archive date repository.
@@ -41,6 +43,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArchiveDateRepositoryImpl.class.getName());
+
     /**
      * Singleton.
      */
@@ -49,6 +52,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
     @Override
     public JSONObject getByArchiveDate(final String archiveDate) throws RepositoryException {
         long time = 0L;
+
         try {
             time = ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime();
         } catch (final ParseException e) {
@@ -57,6 +61,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
         }
 
         final Query query = new Query();
+
         query.setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_TIME, FilterOperator.EQUAL, time)).setPageCount(1);
 
         final JSONObject result = get(query);
@@ -71,8 +76,8 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
 
     @Override
     public List<JSONObject> getArchiveDates() throws RepositoryException {
-        final org.b3log.latke.repository.Query query =
-                new Query().addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).setPageCount(1);
+        final org.b3log.latke.repository.Query query = new Query().addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).setPageCount(
+            1);
         final JSONObject result = get(query);
 
         final JSONArray archiveDates = result.optJSONArray(Keys.RESULTS);
@@ -92,8 +97,10 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
      */
     private void removeForUnpublishedArticles(final List<JSONObject> archiveDates) throws RepositoryException {
         final Iterator<JSONObject> iterator = archiveDates.iterator();
+
         while (iterator.hasNext()) {
             final JSONObject archiveDate = iterator.next();
+
             if (0 == archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
                 iterator.remove();
             }

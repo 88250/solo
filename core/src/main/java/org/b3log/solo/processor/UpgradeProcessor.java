@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +41,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * Upgrader.
  *
@@ -55,38 +57,47 @@ public final class UpgradeProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UpgradeProcessor.class.getName());
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * Page repository.
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+
     /**
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
+
     /**
      * Preference repository.
      */
     private PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
+
     /**
      * Step for article updating.
      */
     private static final int STEP = 50;
+
     /**
      * Preference Query Service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Mail Service.
      */
     private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
+
     /**
      * Whether the email has been sent.
      */
     private boolean sent = false;
+
     /**
      * Language service.
      */
@@ -100,10 +111,12 @@ public final class UpgradeProcessor {
     @RequestProcessing(value = "/upgrade/checker.do", method = HTTPRequestMethod.GET)
     public void upgrade(final HTTPRequestContext context) {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
+
             if (null == preference) {
                 LOGGER.log(Level.INFO, "Not init yet");
                 renderer.setContent("Not init yet");
@@ -131,8 +144,9 @@ public final class UpgradeProcessor {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            renderer.setContent("Upgrade failed [" + e.getMessage() + "], please contact the B3log Solo developers or reports this "
-                    + "issue directly (https://github.com/b3log/b3log-solo/issues/new) ");
+            renderer.setContent(
+                "Upgrade failed [" + e.getMessage() + "], please contact the B3log Solo developers or reports this "
+                + "issue directly (https://github.com/b3log/b3log-solo/issues/new) ");
         }
     }
 
@@ -147,6 +161,7 @@ public final class UpgradeProcessor {
         articleRepository.setCacheEnabled(false);
 
         Transaction transaction = null;
+
         try {
             transaction = userRepository.beginTransaction();
 
@@ -189,6 +204,7 @@ public final class UpgradeProcessor {
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.getJSONObject(i);
             final String oldPwd = user.optString(User.USER_PASSWORD);
+
             user.put(User.USER_PASSWORD, MD5.hash(oldPwd));
             
             userRepository.update(user.optString(Keys.OBJECT_ID), user);
@@ -206,12 +222,14 @@ public final class UpgradeProcessor {
         LOGGER.log(Level.INFO, "Adds a property [articleEditorType] to each of articles");
 
         final JSONArray articles = articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
+
         if (articles.length() <= 0) {
             LOGGER.log(Level.FINEST, "No articles");
             return;
         }
 
         Transaction transaction = null;
+
         try {
             for (int i = 0; i < articles.length(); i++) {
                 if (0 == i % STEP || !transaction.isActive()) {
@@ -221,6 +239,7 @@ public final class UpgradeProcessor {
                 final JSONObject article = articles.getJSONObject(i);
 
                 final String articleId = article.optString(Keys.OBJECT_ID);
+
                 LOGGER.log(Level.INFO, "Found an article[id={0}]", articleId);
                 article.put(Article.ARTICLE_EDITOR_TYPE, "tinyMCE");
 
@@ -256,6 +275,7 @@ public final class UpgradeProcessor {
     private void notifyUserByEmail() throws ServiceException, JSONException, IOException {
         final String adminEmail = preferenceQueryService.getPreference().getString(Preference.ADMIN_EMAIL);
         final MailService.Message message = new MailService.Message();
+
         message.setFrom(adminEmail);
         message.addRecipient(adminEmail);
         message.setSubject(langPropsService.get("skipVersionMailSubject"));

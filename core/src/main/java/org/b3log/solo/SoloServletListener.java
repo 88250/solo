@@ -15,6 +15,7 @@
  */
 package org.b3log.solo;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
@@ -49,6 +50,7 @@ import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
+
 /**
  * B3log Solo servlet listener.
  *
@@ -62,14 +64,17 @@ public final class SoloServletListener extends AbstractServletListener {
      * B3log Solo version.
      */
     public static final String VERSION = "0.5.5";
+
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(SoloServletListener.class.getName());
+
     /**
      * JSONO print indent factor.
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
+
     /**
      * Enter escape.
      */
@@ -109,7 +114,7 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
-        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[] {Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
     }
 
     @Override
@@ -120,18 +125,17 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     @Override
-    public void sessionCreated(final HttpSessionEvent httpSessionEvent) {
-    }
+    public void sessionCreated(final HttpSessionEvent httpSessionEvent) {}
 
     // Note: This method will never invoked on GAE production environment
     @Override
-    public void sessionDestroyed(final HttpSessionEvent httpSessionEvent) {
-    }
+    public void sessionDestroyed(final HttpSessionEvent httpSessionEvent) {}
 
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
         final String requestURI = httpServletRequest.getRequestURI();
+
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
 
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
@@ -140,9 +144,9 @@ public final class SoloServletListener extends AbstractServletListener {
         } else {
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
-            LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]",
-                       new Object[]{session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"),
-                                    session.isNew()});
+
+            LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", new Object[] {
+                session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), session.isNew()});
             // Online visitor count
             Statistics.onlineVisitorCount(httpServletRequest);
         }
@@ -154,7 +158,7 @@ public final class SoloServletListener extends AbstractServletListener {
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         Stopwatchs.end();
 
-        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[]{Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[] {Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
         Stopwatchs.release();
 
         super.requestDestroyed(servletRequestEvent);
@@ -193,6 +197,7 @@ public final class SoloServletListener extends AbstractServletListener {
             Skins.loadSkins(preference);
 
             final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
+
             Templates.enableCache(pageCacheEnabled);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -258,7 +263,8 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
-            if (null == preference) {  // Did not initialize yet
+
+            if (null == preference) { // Did not initialize yet
                 return;
             }
 
@@ -266,8 +272,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
             String desiredView = Requests.mobileSwitchToggle(httpServletRequest);
 
-            if (desiredView == null && !Requests.mobileRequest(httpServletRequest)
-                || desiredView != null && desiredView.equals("normal")) {
+            if (desiredView == null && !Requests.mobileRequest(httpServletRequest) || desiredView != null && desiredView.equals("normal")) {
                 desiredView = preference.getString(Skin.SKIN_DIR_NAME);
             } else {
                 desiredView = "mobile";

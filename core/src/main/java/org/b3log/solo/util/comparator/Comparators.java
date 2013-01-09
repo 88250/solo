@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.util.comparator;
 
+
 /**
  * Comparators utilities.
  *
@@ -26,22 +27,20 @@ public final class Comparators {
     /**
      * Article create date comparator.
      */
-    public static final ArticleCreateDateComparator ARTICLE_CREATE_DATE_COMPARATOR =
-            new ArticleCreateDateComparator();
+    public static final ArticleCreateDateComparator ARTICLE_CREATE_DATE_COMPARATOR = new ArticleCreateDateComparator();
+
     /**
      * Article update date comparator.
      */
-    public static final ArticleUpdateDateComparator ARTICLE_UPDATE_DATE_COMPARATOR =
-            new ArticleUpdateDateComparator();
+    public static final ArticleUpdateDateComparator ARTICLE_UPDATE_DATE_COMPARATOR = new ArticleUpdateDateComparator();
+
     /**
      * Tag reference count comparator.
      */
-    public static final TagRefCntComparator TAG_REF_CNT_COMPARATOR =
-            new TagRefCntComparator();
+    public static final TagRefCntComparator TAG_REF_CNT_COMPARATOR = new TagRefCntComparator();
 
     /**
      * Private default constructor.
      */
-    private Comparators() {
-    }
+    private Comparators() {}
 }

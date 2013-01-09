@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +39,7 @@ import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * Page management service.
  *
@@ -51,26 +53,32 @@ public final class PageMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PageMgmtService.class.getName());
+
     /**
      * Page repository.
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+
     /**
      * Comment repository.
      */
     private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+
     /**
      * Statistic utilities.
      */
     private Statistics statistics = Statistics.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Permalink utilities.
      */
     private Permalinks permalinks = Permalinks.getInstance();
+
     /**
      * Preference query service.
      */
@@ -100,16 +108,19 @@ public final class PageMgmtService {
     public void updatePage(final JSONObject requestJSONObject) throws ServiceException {
 
         final Transaction transaction = pageRepository.beginTransaction();
+
         try {
             final JSONObject page = requestJSONObject.getJSONObject(Page.PAGE);
             final String pageId = page.getString(Keys.OBJECT_ID);
             final JSONObject oldPage = pageRepository.get(pageId);
             final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
+
             newPage.put(Page.PAGE_ORDER, oldPage.getInt(Page.PAGE_ORDER));
             newPage.put(Page.PAGE_COMMENT_COUNT, oldPage.getInt(Page.PAGE_COMMENT_COUNT));
             String permalink = page.optString(Page.PAGE_PERMALINK).trim();
 
             final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
+
             if (!oldPermalink.equals(permalink)) {
                 if (Strings.isEmptyOrNull(permalink)) {
                     permalink = "/pages/" + pageId + ".html";
@@ -128,8 +139,7 @@ public final class PageMgmtService {
                         throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
                     }
 
-                    if (!oldPermalink.equals(permalink)
-                        && permalinks.exist(permalink)) {
+                    if (!oldPermalink.equals(permalink) && permalinks.exist(permalink)) {
                         if (transaction.isActive()) {
                             transaction.rollback();
                         }
@@ -142,13 +152,14 @@ public final class PageMgmtService {
             // TODO: SBC case
             newPage.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));
 
-            if (!oldPage.getString(Page.PAGE_PERMALINK).equals(permalink)) {  // The permalink has been updated
+            if (!oldPage.getString(Page.PAGE_PERMALINK).equals(permalink)) { // The permalink has been updated
                 // Updates related comments' links
                 processCommentsForPageUpdate(newPage);
             }
 
             // Editor type
             final JSONObject preference = preferenceQueryService.getPreference();
+
             newPage.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
 
             pageRepository.update(pageId, newPage);
@@ -174,6 +185,7 @@ public final class PageMgmtService {
      */
     public void removePage(final String pageId) throws ServiceException {
         final Transaction transaction = pageRepository.beginTransaction();
+
         try {
             LOGGER.log(Level.FINER, "Removing a page[id={0}]", pageId);
             removePageComments(pageId);
@@ -214,13 +226,17 @@ public final class PageMgmtService {
      */
     public String addPage(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = pageRepository.beginTransaction();
+
         try {
             final JSONObject page = requestJSONObject.getJSONObject(Page.PAGE);
+
             page.put(Page.PAGE_COMMENT_COUNT, 0);
             final int maxOrder = pageRepository.getMaxOrder();
+
             page.put(Page.PAGE_ORDER, maxOrder + 1);
 
             String permalink = page.optString(Page.PAGE_PERMALINK);
+
             if (Strings.isEmptyOrNull(permalink)) {
                 permalink = "/pages/" + Ids.genTimeMillisId() + ".html";
             }
@@ -252,6 +268,7 @@ public final class PageMgmtService {
 
             // Editor type
             final JSONObject preference = preferenceQueryService.getPreference();
+
             page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
 
             final String ret = pageRepository.add(page);
@@ -287,11 +304,13 @@ public final class PageMgmtService {
     public void changeOrder(final String pageId, final String direction) throws ServiceException {
 
         final Transaction transaction = pageRepository.beginTransaction();
+
         try {
             final JSONObject srcPage = pageRepository.get(pageId);
             final int srcPageOrder = srcPage.getInt(Page.PAGE_ORDER);
 
             JSONObject targetPage = null;
+
             if ("up".equals(direction)) {
                 targetPage = pageRepository.getUpper(pageId);
             } else { // Down
@@ -350,10 +369,12 @@ public final class PageMgmtService {
         final int removedCnt = commentRepository.removeComments(pageId);
 
         int blogCommentCount = statistics.getBlogCommentCount();
+
         blogCommentCount -= removedCnt;
         statistics.setBlogCommentCount(blogCommentCount);
 
         int publishedBlogCommentCount = statistics.getPublishedBlogCommentCount();
+
         publishedBlogCommentCount -= removedCnt;
         statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
     }
@@ -389,8 +410,7 @@ public final class PageMgmtService {
     /**
      * Private constructor.
      */
-    private PageMgmtService() {
-    }
+    private PageMgmtService() {}
 
     /**
      * Singleton holder.
@@ -408,7 +428,6 @@ public final class PageMgmtService {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

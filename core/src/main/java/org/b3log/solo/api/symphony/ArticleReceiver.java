@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.api.symphony;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,7 @@ import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
+
 /**
  * Article receiver (from B3log Symphony).
  *
@@ -52,14 +54,17 @@ public final class ArticleReceiver {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleReceiver.class.getName());
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Article management service.
      */
     private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+
     /**
      * Article abstract length.
      */
@@ -98,8 +103,9 @@ public final class ArticleReceiver {
      */
     @RequestProcessing(value = "/apis/symphony/article", method = HTTPRequestMethod.PUT)
     public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -122,6 +128,7 @@ public final class ArticleReceiver {
 
             article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.getString(User.USER_EMAIL));
             final String plainTextContent = Jsoup.parse(article.optString(Article.ARTICLE_CONTENT)).text();
+
             if (plainTextContent.length() > ARTICLE_ABSTRACT_LENGTH) {
                 article.put(Article.ARTICLE_ABSTRACT, plainTextContent.substring(0, ARTICLE_ABSTRACT_LENGTH) + "....");
             } else {
@@ -133,8 +140,9 @@ public final class ArticleReceiver {
             article.put(Article.ARTICLE_VIEW_PWD, "");
             String content = article.getString(Article.ARTICLE_CONTENT);
             final String articleId = article.getString(Keys.OBJECT_ID);
-            content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://symphony.b3log.org/article/" 
-                    + articleId + "' target='_blank>B3log 社区</a></i></p>";
+
+            content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://symphony.b3log.org/article/" + articleId
+                + "' target='_blank>B3log 社区</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
             articleMgmtService.addArticle(requestJSONObject);
@@ -148,6 +156,7 @@ public final class ArticleReceiver {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }

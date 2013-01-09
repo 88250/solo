@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.event.rhythm;
 
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -38,6 +39,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
+
 /**
  * This listener is responsible for sending article to B3log Rhythm.
  * 
@@ -52,18 +54,22 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleSender.class.getName());
+
     /**
      * URL fetch service.
      */
     private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * B3log Rhythm address.
      */
     public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
+
     /**
      * URL of adding article to Rhythm.
      */
@@ -81,10 +87,12 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
+
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleSender.class.getName()});
+            new Object[] {event.getType(), data, ArticleSender.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
+
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 LOGGER.log(Level.FINER, "Ignores post article[title={0}] to Rhythm", originalArticle.getString(Article.ARTICLE_TITLE));
 
@@ -92,6 +100,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             }
 
             final JSONObject preference = preferenceQueryService.getPreference();
+
             if (null == preference) {
                 throw new EventException("Not found preference");
             }
@@ -99,17 +108,20 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             // Use configured host if Preference.BLOG_HOST is empty.
             final String perferHost = preference.getString(Preference.BLOG_HOST);
             final String blogHost = !Strings.isEmptyOrNull(perferHost) ? perferHost.toLowerCase() : Latkes.getServePath().toLowerCase();
+
             if (blogHost.contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-                        new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
+                    new Object[] {originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
                 return;
             }
 
             final HTTPRequest httpRequest = new HTTPRequest();
+
             httpRequest.setURL(ADD_ARTICLE_URL);
             httpRequest.setRequestMethod(HTTPRequestMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject();
+
             article.put(Keys.OBJECT_ID, originalArticle.getString(Keys.OBJECT_ID));
             article.put(Article.ARTICLE_TITLE, originalArticle.getString(Article.ARTICLE_TITLE));
             article.put(Article.ARTICLE_PERMALINK, originalArticle.getString(Article.ARTICLE_PERMALINK));

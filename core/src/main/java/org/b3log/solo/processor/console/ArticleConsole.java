@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +43,7 @@ import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Article console request processing.
  *
@@ -56,26 +58,22 @@ public final class ArticleConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleConsole.class.getName());
+
     /**
      * Article management service.
      */
     private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+
     /**
      * Article query service.
      */
     private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
-    /**
-     * Article URI prefix.
-     */
-    private static final String ARTICLE_URI_PREFIX = "/console/article/";
-    /**
-     * Articles URI prefix.
-     */
-    private static final String ARTICLES_URI_PREFIX = "/console/articles/";
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Language service.
      */
@@ -100,15 +98,18 @@ public final class ArticleConsole {
      */
     @RequestProcessing(value = "/console/markdown/2html", method = HTTPRequestMethod.POST)
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws IOException {
+        throws IOException {
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
         final JSONObject result = new JSONObject();
+
         renderer.setJSONObject(result);
 
         result.put(Keys.STATUS_CODE, true);
 
         final String markdownText = request.getParameter("markdownText");
+
         if (Strings.isEmptyOrNull(markdownText)) {
             result.put("html", "");
 
@@ -128,6 +129,7 @@ public final class ArticleConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -165,19 +167,20 @@ public final class ArticleConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX + "*", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/article/*", method = HTTPRequestMethod.GET)
     public void getArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + ARTICLE_URI_PREFIX).length());
+            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/").length());
 
             final JSONObject result = articleQueryService.getArticle(articleId);
 
@@ -187,6 +190,7 @@ public final class ArticleConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -230,28 +234,33 @@ public final class ArticleConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLES_URI_PREFIX + "status/*" + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/articles/status/*/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
+        method = HTTPRequestMethod.GET)
     public void getArticles(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
-            String path = request.getRequestURI().substring((Latkes.getContextPath() + ARTICLES_URI_PREFIX + "status/").length());
+            String path = request.getRequestURI().substring((Latkes.getContextPath() + "/console/articles/status/").length());
             final String status = StringUtils.substringBefore(path, "/");
+
             path = path.substring((status + "/").length());
 
             final boolean published = "published".equals(status) ? true : false;
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
+
             requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, published);
 
             final JSONArray excludes = new JSONArray();
+
             excludes.put(Article.ARTICLE_CONTENT);
             excludes.put(Article.ARTICLE_UPDATE_DATE);
             excludes.put(Article.ARTICLE_CREATE_DATE);
@@ -269,6 +278,7 @@ public final class ArticleConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -292,22 +302,24 @@ public final class ArticleConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX + "*", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/console/article/*", method = HTTPRequestMethod.DELETE)
     public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
+
         renderer.setJSONObject(ret);
 
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + ARTICLE_URI_PREFIX).length());
+            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/").length());
 
             if (!userUtils.canAccessArticle(articleId, request)) {
                 ret.put(Keys.STATUS_CODE, false);
@@ -324,6 +336,7 @@ public final class ArticleConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = new JSONObject();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
@@ -348,23 +361,24 @@ public final class ArticleConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX + "unpublish/*", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/article/unpublish/*", method = HTTPRequestMethod.PUT)
     public void cancelPublishArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
+
         renderer.setJSONObject(ret);
 
         try {
-            final String articleId = request.getRequestURI().substring(
-                    (Latkes.getContextPath() + ARTICLE_URI_PREFIX + "canceltop/").length());
+            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/unpublish/").length());
 
             if (!userUtils.canAccessArticle(articleId, request)) {
                 ret.put(Keys.STATUS_CODE, false);
@@ -381,6 +395,7 @@ public final class ArticleConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = new JSONObject();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("unPulbishFailLabel"));
@@ -405,18 +420,20 @@ public final class ArticleConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX + "canceltop/*", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/article/canceltop/*", method = HTTPRequestMethod.PUT)
     public void cancelTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
+
         renderer.setJSONObject(ret);
 
         if (!userUtils.isAdminLoggedIn(request)) {
@@ -427,8 +444,8 @@ public final class ArticleConsole {
         }
 
         try {
-            final String articleId = request.getRequestURI().substring(
-                    (Latkes.getContextPath() + ARTICLE_URI_PREFIX + "canceltop/").length());
+            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/canceltop/").length());
+
             articleMgmtService.topArticle(articleId, false);
 
             ret.put(Keys.STATUS_CODE, true);
@@ -437,6 +454,7 @@ public final class ArticleConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = new JSONObject();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("cancelTopFailLabel"));
@@ -461,18 +479,20 @@ public final class ArticleConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX + "puttop/*", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/article/puttop/*", method = HTTPRequestMethod.PUT)
     public void putTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
+
         renderer.setJSONObject(ret);
 
         if (!userUtils.isAdminLoggedIn(request)) {
@@ -483,7 +503,8 @@ public final class ArticleConsole {
         }
 
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + ARTICLE_URI_PREFIX + "puttop/").length());
+            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/puttop/").length());
+
             articleMgmtService.topArticle(articleId, true);
 
             ret.put(Keys.STATUS_CODE, true);
@@ -492,6 +513,7 @@ public final class ArticleConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = new JSONObject();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("putTopFailLabel"));
@@ -533,15 +555,16 @@ public final class ArticleConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX, method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.PUT)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -565,7 +588,7 @@ public final class ArticleConsole {
             if (!article.has(Article.ARTICLE_SIGN_ID)) {
                 article.put(Article.ARTICLE_SIGN_ID, "0");
             }
-            
+
             articleMgmtService.updateArticle(requestJSONObject);
 
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
@@ -574,6 +597,7 @@ public final class ArticleConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -614,15 +638,16 @@ public final class ArticleConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = ARTICLE_URI_PREFIX, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.POST)
     public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -633,8 +658,7 @@ public final class ArticleConsole {
             final Users users = Users.getInstance();
             final JSONObject currentUser = users.getCurrentUser(request);
 
-            requestJSONObject.getJSONObject(Article.ARTICLE).
-                    put(Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(User.USER_EMAIL));
+            requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(User.USER_EMAIL));
 
             final String articleId = articleMgmtService.addArticle(requestJSONObject);
 
@@ -647,6 +671,7 @@ public final class ArticleConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }

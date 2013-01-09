@@ -15,10 +15,12 @@
  */
 package org.b3log.solo.repository;
 
+
 import java.util.List;
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
+
 
 /**
  * Tag repository.
@@ -37,7 +39,7 @@ public interface TagRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     List<JSONObject> getByArticleId(final String articleId)
-            throws RepositoryException;
+        throws RepositoryException;
 
     /**
      * Gets a tag by the specified tag title.

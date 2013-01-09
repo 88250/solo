@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,6 +30,7 @@ import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Tag query service.
  *
@@ -42,6 +44,7 @@ public final class TagQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagQueryService.class.getName());
+
     /**
      * Tag repository.
      */
@@ -140,8 +143,7 @@ public final class TagQueryService {
     /**
      * Private constructor.
      */
-    private TagQueryService() {
-    }
+    private TagQueryService() {}
 
     /**
      * Singleton holder.
@@ -154,13 +156,11 @@ public final class TagQueryService {
         /**
          * Singleton.
          */
-        private static final TagQueryService SINGLETON =
-                new TagQueryService();
+        private static final TagQueryService SINGLETON = new TagQueryService();
 
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

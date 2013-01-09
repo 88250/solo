@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
+
 
 /**
  * Statistic management service.
@@ -38,6 +40,7 @@ public final class StatisticMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(StatisticMgmtService.class.getName());
+
     /**
      * Statistic repository.
      */
@@ -51,6 +54,7 @@ public final class StatisticMgmtService {
      */
     public void updateStatistic(final JSONObject statistic) throws ServiceException {
         final Transaction transaction = statisticRepository.beginTransaction();
+
         try {
             statisticRepository.update(Statistic.STATISTIC, statistic);
             transaction.commit();
@@ -72,14 +76,12 @@ public final class StatisticMgmtService {
     public static StatisticMgmtService getInstance() {
         return SingletonHolder.SINGLETON;
 
-
     }
 
     /**
      * Private constructor.
      */
-    private StatisticMgmtService() {
-    }
+    private StatisticMgmtService() {}
 
     /**
      * Singleton holder.
@@ -97,7 +99,6 @@ public final class StatisticMgmtService {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

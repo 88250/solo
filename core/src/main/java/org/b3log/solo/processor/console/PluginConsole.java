@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +36,7 @@ import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
+
 /**
  * Plugin console request processing.
  *
@@ -49,26 +51,22 @@ public final class PluginConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PluginConsole.class.getName());
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Plugin query service.
      */
     private PluginQueryService pluginQueryService = PluginQueryService.getInstance();
+
     /**
      * Plugin management service.
      */
     private PluginMgmtService pluginMgmtService = PluginMgmtService.getInstance();
-    /**
-     * Plugins URI prefix.
-     */
-    private static final String PLUGINS_URI_PREFIX = "/console/plugins/";
-    /**
-     * Plugin URI prefix.
-     */
-    private static final String PLUGIN_URI_PREFIX = "/console/plugin/";
+
     /**
      * Language service.
      */
@@ -92,15 +90,16 @@ public final class PluginConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PLUGIN_URI_PREFIX + "status/", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/plugin/status/", method = HTTPRequestMethod.PUT)
     public void setPluginStatus(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
@@ -147,20 +146,22 @@ public final class PluginConsole {
      * @throws Exception exception
      * @see Requests#PAGINATION_PATH_PATTERN
      */
-    @RequestProcessing(value = PLUGINS_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/plugins/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
+        method = HTTPRequestMethod.GET)
     public void getPlugins(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring((Latkes.getContextPath() + PLUGINS_URI_PREFIX).length());
+            final String path = requestURI.substring((Latkes.getContextPath() + "/console/plugins/").length());
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
@@ -173,6 +174,7 @@ public final class PluginConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }

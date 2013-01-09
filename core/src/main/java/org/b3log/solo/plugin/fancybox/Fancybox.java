@@ -15,7 +15,9 @@
  */
 package org.b3log.solo.plugin.fancybox;
 
+
 import org.b3log.latke.plugin.AbstractPlugin;
+
 
 /**
  * Shows images with <a href="http://fancybox.net/howto">jQuery Fancy</a>.

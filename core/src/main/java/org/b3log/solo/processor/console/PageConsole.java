@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,7 @@ import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Plugin console request processing.
  *
@@ -52,30 +54,22 @@ public final class PageConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PageConsole.class.getName());
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Page query service.
      */
     private PageQueryService pageQueryService = PageQueryService.getInstance();
+
     /**
      * Page management service.
      */
     private PageMgmtService pageMgmtService = PageMgmtService.getInstance();
-    /**
-     * Pages URI prefix.
-     */
-    private static final String PAGES_URI_PREFIX = "/console/pages/";
-    /**
-     * Page URI prefix.
-     */
-    private static final String PAGE_URI_PREFIX = "/console/page/";
-    /**
-     * Page order URI prefix.
-     */
-    private static final String PAGE_ORDER_URI_PREFIX = PAGE_URI_PREFIX + "order/";
+
     /**
      * Language service.
      */
@@ -114,15 +108,16 @@ public final class PageConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PAGE_URI_PREFIX, method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.PUT)
     public void updatePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -140,6 +135,7 @@ public final class PageConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -163,22 +159,24 @@ public final class PageConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PAGE_URI_PREFIX + "*", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.DELETE)
     public void removePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String pageId = request.getRequestURI().substring((Latkes.getContextPath() + PAGE_URI_PREFIX).length());
+            final String pageId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/page/").length());
 
             pageMgmtService.removePage(pageId);
 
@@ -224,15 +222,16 @@ public final class PageConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = PAGE_URI_PREFIX, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.POST)
     public void addPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -251,6 +250,7 @@ public final class PageConsole {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -280,15 +280,16 @@ public final class PageConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = PAGE_ORDER_URI_PREFIX, method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/page/order/", method = HTTPRequestMethod.PUT)
     public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -308,6 +309,7 @@ public final class PageConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -338,20 +340,21 @@ public final class PageConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PAGE_URI_PREFIX + "*", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.GET)
     public void getPage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final String requestURI = request.getRequestURI();
-            final String pageId = requestURI.substring((Latkes.getContextPath() + PAGE_URI_PREFIX).length());
+            final String pageId = requestURI.substring((Latkes.getContextPath() + "/console/page/").length());
 
             final JSONObject result = pageQueryService.getPage(pageId);
 
@@ -368,6 +371,7 @@ public final class PageConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -402,37 +406,40 @@ public final class PageConsole {
      * @throws Exception exception
      * @see Requests#PAGINATION_PATH_PATTERN
      */
-    @RequestProcessing(value = PAGES_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/pages/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
+        method = HTTPRequestMethod.GET)
     public void getPages(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring((Latkes.getContextPath() + PAGES_URI_PREFIX).length());
+            final String path = requestURI.substring((Latkes.getContextPath() + "/console/pages/").length());
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
             final JSONObject result = pageQueryService.getPages(requestJSONObject);
-            
+
             final JSONArray pages = result.optJSONArray(Page.PAGES);
-            
+
             // Site-internal URLs process
             for (int i = 0; i < pages.length(); i++) {
-                final JSONObject page  = pages.getJSONObject(i);
-                
+                final JSONObject page = pages.getJSONObject(i);
+
                 if ("page".equals(page.optString(Page.PAGE_TYPE))) {
                     final String permalink = page.optString(Page.PAGE_PERMALINK);
+
                     page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + permalink);
                 }
             }
-            
+
             result.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(result);
@@ -440,6 +447,7 @@ public final class PageConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }

@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.api.metaweblog;
 
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,6 +55,7 @@ import org.json.JSONObject;
 import org.json.XML;
 import org.jsoup.Jsoup;
 
+
 /**
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> 
  * requests processing.
@@ -82,90 +84,112 @@ public final class MetaWeblogAPI {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(MetaWeblogAPI.class.getName());
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Tag query service.
      */
     private TagQueryService tagQueryService = TagQueryService.getInstance();
+
     /**
      * Article query service.
      */
     private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+
     /**
      * Article management service.
      */
     private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * Key of method call.
      */
     private static final String METHOD_CALL = "methodCall";
+
     /**
      * Key of method name.
      */
     private static final String METHOD_NAME = "methodName";
+
     /**
      * Method name: "blogger.getUsersBlogs".
      */
     private static final String METHOD_GET_USERS_BLOGS = "blogger.getUsersBlogs";
+
     /**
      * Method name: "metaWeblog.getCategories".
      */
     private static final String METHOD_GET_CATEGORIES = "metaWeblog.getCategories";
+
     /**
      * Method name: "metaWeblog.getRecentPosts".
      */
     private static final String METHOD_GET_RECENT_POSTS = "metaWeblog.getRecentPosts";
+
     /**
      * Method name: "metaWeblog.newPost".
      */
     private static final String METHOD_NEW_POST = "metaWeblog.newPost";
+
     /**
      * Method name: "metaWeblog.editPost".
      */
     private static final String METHOD_EDIT_POST = "metaWeblog.editPost";
+
     /**
      * Method name: "metaWeblog.getPost".
      */
     private static final String METHOD_GET_POST = "metaWeblog.getPost";
+
     /**
      * Method name: "blogger.deletePost".
      */
     private static final String METHOD_DELETE_POST = "blogger.deletePost";
+
     /**
      * Argument "username" index.
      */
     private static final int INDEX_USER_EMAIL = 1;
+
     /**
      * Argument "postid" index.
      */
     private static final int INDEX_POST_ID = 0;
+
     /**
      * Argument "password" index.
      */
     private static final int INDEX_USER_PWD = 2;
+
     /**
      * Argument "numberOfPosts" index.
      */
     private static final int INDEX_NUM_OF_POSTS = 3;
+
     /**
      * Argument "post" index.
      */
     private static final int INDEX_POST = 3;
+
     /**
      * Argument "publish" index.
      */
     private static final int INDEX_PUBLISH = 4;
+
     /**
      * Article abstract length.
      */
@@ -181,9 +205,11 @@ public final class MetaWeblogAPI {
     @RequestProcessing(value = "/apis/metaweblog", method = HTTPRequestMethod.POST)
     public void metaWeblog(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final TextXMLRenderer renderer = new TextXMLRenderer();
+
         context.setRenderer(renderer);
 
         String responseContent = null;
+
         try {
             final ServletInputStream inputStream = request.getInputStream();
             final String xml = IOUtils.toString(inputStream, "UTF-8");
@@ -191,25 +217,24 @@ public final class MetaWeblogAPI {
 
             final JSONObject methodCall = requestJSONObject.getJSONObject(METHOD_CALL);
             final String methodName = methodCall.getString(METHOD_NAME);
+
             LOGGER.log(Level.INFO, "MetaWeblog[methodName={0}]", methodName);
 
-            final JSONArray params = methodCall.getJSONObject("params").
-                    getJSONArray("param");
+            final JSONArray params = methodCall.getJSONObject("params").getJSONArray("param");
 
             if (METHOD_DELETE_POST.equals(methodName)) {
                 params.remove(0); // Removes the first argument "appkey"
             }
 
-            final String userEmail = params.getJSONObject(INDEX_USER_EMAIL).
-                    getJSONObject(
-                    "value").getString("string");
+            final String userEmail = params.getJSONObject(INDEX_USER_EMAIL).getJSONObject("value").getString("string");
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
+
             if (null == user) {
                 throw new Exception("No user[email=" + userEmail + "]");
             }
 
-            final String userPwd = params.getJSONObject(INDEX_USER_PWD).
-                    getJSONObject("value").getString("string");
+            final String userPwd = params.getJSONObject(INDEX_USER_PWD).getJSONObject("value").getString("string");
+
             if (!user.getString(User.USER_PASSWORD).equals(userPwd)) {
                 throw new Exception("Wrong password");
             }
@@ -220,42 +245,46 @@ public final class MetaWeblogAPI {
                 responseContent = getCategories();
             } else if (METHOD_GET_RECENT_POSTS.equals(methodName)) {
                 final int numOfPosts = params.getJSONObject(INDEX_NUM_OF_POSTS).getJSONObject("value").getInt("int");
+
                 responseContent = getRecentPosts(numOfPosts);
             } else if (METHOD_NEW_POST.equals(methodName)) {
                 final JSONObject article = parsetPost(methodCall);
+
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
                 addArticle(article);
 
-                final StringBuilder stringBuilder =
-                        new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><string>").
-                        append(article.getString(Keys.OBJECT_ID)).append("</string></value></param></params></methodResponse>");
+                final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><string>").append(article.getString(Keys.OBJECT_ID)).append(
+                    "</string></value></param></params></methodResponse>");
+
                 responseContent = stringBuilder.toString();
             } else if (METHOD_GET_POST.equals(methodName)) {
-                final String postId = params.getJSONObject(INDEX_POST_ID).
-                        getJSONObject("value").getString("string");
+                final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").getString("string");
+
                 responseContent = getPost(postId);
             } else if (METHOD_EDIT_POST.equals(methodName)) {
                 final JSONObject article = parsetPost(methodCall);
                 final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").getString("string");
+
                 article.put(Keys.OBJECT_ID, postId);
 
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
                 final JSONObject updateArticleRequest = new JSONObject();
+
                 updateArticleRequest.put(Article.ARTICLE, article);
                 articleMgmtService.updateArticle(updateArticleRequest);
 
-                final StringBuilder stringBuilder = new StringBuilder(
-                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><string>").append(postId).
-                        append("</string></value></param></params></methodResponse>");
+                final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><string>").append(postId).append(
+                    "</string></value></param></params></methodResponse>");
+
                 responseContent = stringBuilder.toString();
             } else if (METHOD_DELETE_POST.equals(methodName)) {
-                final String postId = params.getJSONObject(INDEX_POST_ID).
-                        getJSONObject("value").getString("string");
+                final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").getString("string");
+
                 articleMgmtService.removeArticle(postId);
 
-                final StringBuilder stringBuilder = new StringBuilder(
-                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><boolean>").append(true).append(
-                        "</boolean></value></param></params></methodResponse>");
+                final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><boolean>").append(true).append(
+                    "</boolean></value></param></params></methodResponse>");
+
                 responseContent = stringBuilder.toString();
             } else {
                 throw new UnsupportedOperationException("Unsupported method[name=" + methodName + "]");
@@ -264,12 +293,9 @@ public final class MetaWeblogAPI {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             responseContent = "";
-            final StringBuilder stringBuilder = new StringBuilder(
-                    "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><fault><value><struct>").append(
-                    "<member><name>faultCode</name><value><int>500</int></value></member>").
-                    append("<member><name>faultString</name><value><string>").
-                    append(e.getMessage()).append(
-                    "</string></value></member></struct></value></fault></methodResponse>");
+            final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<fault><value><struct>").append("<member><name>faultCode</name><value><int>500</int></value></member>").append("<member><name>faultString</name><value><string>").append(e.getMessage()).append(
+                "</string></value></member></struct></value></fault></methodResponse>");
+
             responseContent = stringBuilder.toString();
         }
 
@@ -284,16 +310,14 @@ public final class MetaWeblogAPI {
      * @throws Exception exception
      */
     private String getPost(final String postId) throws Exception {
-        final StringBuilder stringBuilder =
-                new StringBuilder(
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value>");
+        final StringBuilder stringBuilder = new StringBuilder(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value>");
 
         final String posts = buildPost(postId);
 
         stringBuilder.append(posts);
 
-        stringBuilder.append(
-                "</value></param></params></methodResponse>");
+        stringBuilder.append("</value></param></params></methodResponse>");
 
         return stringBuilder.toString();
     }
@@ -340,17 +364,18 @@ public final class MetaWeblogAPI {
             if ("dateCreated".equals(name)) {
                 final JSONObject preference = preferenceQueryService.getPreference();
 
-                final String dateString = member.getJSONObject("value").
-                        getString("dateTime.iso8601");
+                final String dateString = member.getJSONObject("value").getString("dateTime.iso8601");
                 Date date = null;
+
                 try {
                     date = (Date) DateFormatUtils.ISO_DATETIME_FORMAT.parseObject(dateString);
                 } catch (final ParseException e) {
                     LOGGER.log(Level.WARNING,
-                               "Parses article create date failed with ISO8601, retry to parse with pattern[yyyy-MM-dd'T'HH:mm:ss]");
+                        "Parses article create date failed with ISO8601, retry to parse with pattern[yyyy-MM-dd'T'HH:mm:ss]");
                     final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
                     final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
                     final DateFormat format = new SimpleDateFormat("yyyyMMdd'T'HH:mm:ss");
+
                     format.setTimeZone(timeZone);
                     date = format.parse(dateString);
                 }
@@ -359,9 +384,11 @@ public final class MetaWeblogAPI {
                 ret.put(Article.ARTICLE_TITLE, member.getJSONObject("value").getString("string"));
             } else if ("description".equals(name)) {
                 final String content = member.getJSONObject("value").getString("string");
+
                 ret.put(Article.ARTICLE_CONTENT, content);
 
                 final String plainTextContent = Jsoup.parse(content).text();
+
                 if (plainTextContent.length() > ARTICLE_ABSTRACT_LENGTH) {
                     ret.put(Article.ARTICLE_ABSTRACT, plainTextContent.substring(0, ARTICLE_ABSTRACT_LENGTH));
                 } else {
@@ -371,15 +398,19 @@ public final class MetaWeblogAPI {
                 final StringBuilder tagBuilder = new StringBuilder();
 
                 final JSONObject data = member.getJSONObject("value").getJSONObject("array").getJSONObject("data");
+
                 if (0 == data.length()) {
                     throw new Exception("At least one Tag");
                 }
 
                 final Object value = data.get("value");
+
                 if (value instanceof JSONArray) {
                     final JSONArray tags = (JSONArray) value;
+
                     for (int j = 0; j < tags.length(); j++) {
                         final String tagTitle = tags.getJSONObject(j).getString("string");
+
                         tagBuilder.append(tagTitle);
 
                         if (j < tags.length() - 1) {
@@ -388,6 +419,7 @@ public final class MetaWeblogAPI {
                     }
                 } else {
                     final JSONObject tag = (JSONObject) value;
+
                     tagBuilder.append(tag.getString("string"));
                 }
 
@@ -396,6 +428,7 @@ public final class MetaWeblogAPI {
         }
 
         final boolean publish = 1 == params.getJSONObject(INDEX_PUBLISH).getJSONObject("value").getInt("boolean") ? true : false;
+
         ret.put(Article.ARTICLE_IS_PUBLISHED, publish);
 
         ret.put(Article.ARTICLE_COMMENTABLE, true);
@@ -412,16 +445,14 @@ public final class MetaWeblogAPI {
      * @throws Exception exception
      */
     private String getRecentPosts(final int fetchSize) throws Exception {
-        final StringBuilder stringBuilder =
-                new StringBuilder(
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data>");
+        final StringBuilder stringBuilder = new StringBuilder(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data>");
 
         final String posts = buildRecentPosts(fetchSize);
 
         stringBuilder.append(posts);
 
-        stringBuilder.append(
-                "</data></array></value></param></params></methodResponse>");
+        stringBuilder.append("</data></array></value></param></params></methodResponse>");
 
         return stringBuilder.toString();
     }
@@ -433,18 +464,15 @@ public final class MetaWeblogAPI {
      * @throws Exception exception
      */
     private String getCategories() throws Exception {
-        final StringBuilder stringBuilder =
-                new StringBuilder(
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data>");
+        final StringBuilder stringBuilder = new StringBuilder(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data>");
 
-        final JSONObject preference =
-                preferenceQueryService.getPreference();
+        final JSONObject preference = preferenceQueryService.getPreference();
         final String categories = buildCategories(preference);
 
         stringBuilder.append(categories);
 
-        stringBuilder.append(
-                "</data></array></value></param></params></methodResponse>");
+        stringBuilder.append("</data></array></value></param></params></methodResponse>");
 
         return stringBuilder.toString();
     }
@@ -456,18 +484,15 @@ public final class MetaWeblogAPI {
      * @throws Exception exception
      */
     private String getUsersBlogs() throws Exception {
-        final StringBuilder stringBuilder =
-                new StringBuilder(
-                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data><value><struct>");
+        final StringBuilder stringBuilder = new StringBuilder(
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data><value><struct>");
 
-        final JSONObject preference =
-                preferenceQueryService.getPreference();
+        final JSONObject preference = preferenceQueryService.getPreference();
         final String blogInfo = buildBlogInfo(preference);
 
         stringBuilder.append(blogInfo);
 
-        stringBuilder.append(
-                "</struct></value></data></array></value></param></params></methodResponse>");
+        stringBuilder.append("</struct></value></data></array></value></param></params></methodResponse>");
 
         return stringBuilder.toString();
     }
@@ -490,35 +515,25 @@ public final class MetaWeblogAPI {
 
         final JSONObject article = result.getJSONObject(Article.ARTICLE);
 
-        final Date createDate =
-                (Date) article.get(Article.ARTICLE_CREATE_DATE);
-        final String articleTitle =
-                StringEscapeUtils.escapeXml(
-                article.getString(Article.ARTICLE_TITLE));
+        final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
+        final String articleTitle = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
 
         stringBuilder.append("<struct>");
 
-        stringBuilder.append("<member><name>dateCreated</name>").
-                append("<value><dateTime.iso8601>").
-                append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(
-                createDate)).append("</dateTime.iso8601></value></member>");
+        stringBuilder.append("<member><name>dateCreated</name>").append("<value><dateTime.iso8601>").append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(createDate)).append(
+            "</dateTime.iso8601></value></member>");
 
-        stringBuilder.append("<member><name>description</name>").
-                append("<value>").append(StringEscapeUtils.escapeXml(
-                article.getString(Article.ARTICLE_CONTENT))).
-                append("</value></member>");
+        stringBuilder.append("<member><name>description</name>").append("<value>").append(StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))).append(
+            "</value></member>");
 
-        stringBuilder.append("<member><name>title</name>").
-                append("<value>").append(articleTitle).
-                append("</value></member>");
+        stringBuilder.append("<member><name>title</name>").append("<value>").append(articleTitle).append("</value></member>");
 
-        stringBuilder.append("<member><name>categories</name>").
-                append("<value><array><data>");
-        final JSONArray tags =
-                article.getJSONArray(Article.ARTICLE_TAGS_REF);
+        stringBuilder.append("<member><name>categories</name>").append("<value><array><data>");
+        final JSONArray tags = article.getJSONArray(Article.ARTICLE_TAGS_REF);
+
         for (int i = 0; i < tags.length(); i++) {
-            final String tagTitle = tags.getJSONObject(i).getString(
-                    Tag.TAG_TITLE);
+            final String tagTitle = tags.getJSONObject(i).getString(Tag.TAG_TITLE);
+
             stringBuilder.append("<value>").append(tagTitle).append("</value>");
         }
         stringBuilder.append("</data></array></value></member></struct>");
@@ -535,48 +550,37 @@ public final class MetaWeblogAPI {
      * @throws Exception exception 
      */
     private String buildRecentPosts(final int fetchSize)
-            throws Exception {
+        throws Exception {
 
         final StringBuilder stringBuilder = new StringBuilder();
 
-        final List<JSONObject> recentArticles =
-                articleQueryService.getRecentArticles(fetchSize);
+        final List<JSONObject> recentArticles = articleQueryService.getRecentArticles(fetchSize);
 
         for (final JSONObject article : recentArticles) {
-            final Date createDate =
-                    (Date) article.get(Article.ARTICLE_CREATE_DATE);
-            final String articleTitle =
-                    StringEscapeUtils.escapeXml(
-                    article.getString(Article.ARTICLE_TITLE));
+            final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
+            final String articleTitle = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
 
             stringBuilder.append("<value><struct>");
 
-            stringBuilder.append("<member><name>dateCreated</name>").
-                    append("<value><dateTime.iso8601>").
-                    append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(
-                    createDate)).append("</dateTime.iso8601></value></member>");
+            stringBuilder.append("<member><name>dateCreated</name>").append("<value><dateTime.iso8601>").append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(createDate)).append(
+                "</dateTime.iso8601></value></member>");
 
-            stringBuilder.append("<member><name>description</name>").
-                    append("<value>").append(StringEscapeUtils.escapeXml(
-                    article.getString(Article.ARTICLE_CONTENT))).
-                    append("</value></member>");
+            stringBuilder.append("<member><name>description</name>").append("<value>").append(StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))).append(
+                "</value></member>");
 
-            stringBuilder.append("<member><name>title</name>").
-                    append("<value>").append(articleTitle).
-                    append("</value></member>");
+            stringBuilder.append("<member><name>title</name>").append("<value>").append(articleTitle).append("</value></member>");
 
-            stringBuilder.append("<member><name>postid</name>").
-                    append("<value>").append(article.getString(Keys.OBJECT_ID)).
-                    append("</value></member>");
+            stringBuilder.append("<member><name>postid</name>").append("<value>").append(article.getString(Keys.OBJECT_ID)).append(
+                "</value></member>");
 
-            stringBuilder.append("<member><name>categories</name>").
-                    append("<value><array><data>");
+            stringBuilder.append("<member><name>categories</name>").append("<value><array><data>");
             final String tagTitles = article.getString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitleArray = tagTitles.split(",");
+
             for (int i = 0; i < tagTitleArray.length; i++) {
                 final String tagTitle = tagTitleArray[i];
-                stringBuilder.append("<value>").append(tagTitle).append(
-                        "</value>");
+
+                stringBuilder.append("<value>").append(tagTitle).append("</value>");
             }
             stringBuilder.append("</data></array></value></member>");
 
@@ -595,39 +599,30 @@ public final class MetaWeblogAPI {
      * @throws Exception exception 
      */
     private String buildCategories(final JSONObject preference)
-            throws Exception {
-        final String blogHost = "http://" + preference.getString(
-                Preference.BLOG_HOST);
+        throws Exception {
+        final String blogHost = "http://" + preference.getString(Preference.BLOG_HOST);
 
         final StringBuilder stringBuilder = new StringBuilder();
 
         final List<JSONObject> tags = tagQueryService.getTags();
+
         for (final JSONObject tag : tags) {
-            final String tagTitle = StringEscapeUtils.escapeXml(
-                    tag.getString(Tag.TAG_TITLE));
+            final String tagTitle = StringEscapeUtils.escapeXml(tag.getString(Tag.TAG_TITLE));
             final String tagId = tag.getString(Keys.OBJECT_ID);
 
             stringBuilder.append("<value><struct>");
 
-            stringBuilder.append("<member><name>description</name>").
-                    append("<value>").append(tagTitle).append(
-                    "</value></member>");
+            stringBuilder.append("<member><name>description</name>").append("<value>").append(tagTitle).append("</value></member>");
 
-            stringBuilder.append("<member><name>title</name>").
-                    append("<value>").append(tagTitle).append(
-                    "</value></member>");
+            stringBuilder.append("<member><name>title</name>").append("<value>").append(tagTitle).append("</value></member>");
 
-            stringBuilder.append("<member><name>categoryid</name>").
-                    append("<value>").append(tagId).append("</value></member>");
+            stringBuilder.append("<member><name>categoryid</name>").append("<value>").append(tagId).append("</value></member>");
 
-            stringBuilder.append("<member><name>htmlUrl</name>").
-                    append("<value>").append(blogHost).
-                    append("/tags/").append(tagTitle).append("</value></member>");
+            stringBuilder.append("<member><name>htmlUrl</name>").append("<value>").append(blogHost).append("/tags/").append(tagTitle).append(
+                "</value></member>");
 
-            stringBuilder.append("<member><name>rsslUrl</name>").
-                    append("<value>").append(blogHost).
-                    append("/tag-articles-rss.do?oId=").append(tagId).
-                    append("</value></member>");
+            stringBuilder.append("<member><name>rsslUrl</name>").append("<value>").append(blogHost).append("/tag-articles-rss.do?oId=").append(tagId).append(
+                "</value></member>");
 
             stringBuilder.append("</struct></value>");
         }
@@ -643,22 +638,18 @@ public final class MetaWeblogAPI {
      * @throws JSONException json exception 
      */
     private String buildBlogInfo(final JSONObject preference)
-            throws JSONException {
+        throws JSONException {
         final String blogId = preference.getString(Keys.OBJECT_ID);
 
-        final String blogTitle = StringEscapeUtils.escapeXml(
-                preference.getString(Preference.BLOG_TITLE));
+        final String blogTitle = StringEscapeUtils.escapeXml(preference.getString(Preference.BLOG_TITLE));
 
-        final String blogURL = "http://" + preference.getString(
-                Preference.BLOG_HOST);
+        final String blogURL = "http://" + preference.getString(Preference.BLOG_HOST);
 
-        final StringBuilder stringBuilder = new StringBuilder(
-                "<member><name>blogid</name><value>").append(blogId).append(
-                "</value></member>");
-        stringBuilder.append("<member><name>url</name><value>").
-                append(blogURL).append("</value></member>");
-        stringBuilder.append("<member><name>blogName</name><value>").
-                append(blogTitle).append("</value></member>");
+        final StringBuilder stringBuilder = new StringBuilder("<member><name>blogid</name><value>").append(blogId).append(
+            "</value></member>");
+
+        stringBuilder.append("<member><name>url</name><value>").append(blogURL).append("</value></member>");
+        stringBuilder.append("<member><name>blogName</name><value>").append(blogTitle).append("</value></member>");
 
         return stringBuilder.toString();
     }

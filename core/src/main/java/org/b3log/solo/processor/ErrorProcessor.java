@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
@@ -37,6 +38,7 @@ import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
+
 /**
  * Error processor.
  * 
@@ -51,18 +53,22 @@ public final class ErrorProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class.getName());
+
     /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * User service.
      */
@@ -78,13 +84,15 @@ public final class ErrorProcessor {
      */
     @RequestProcessing(value = "/error/*.html", method = HTTPRequestMethod.GET)
     public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+        throws IOException {
         final String requestURI = request.getRequestURI();
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
+
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-        LOGGER.log(Level.FINE, "Shows error page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
+        LOGGER.log(Level.FINE, "Shows error page[requestURI={0}, templateName={1}]", new Object[] {requestURI, templateName});
 
         final ConsoleRenderer renderer = new ConsoleRenderer();
+
         context.setRenderer(renderer);
         renderer.setTemplateName("error" + File.separatorChar + templateName);
 
@@ -92,6 +100,7 @@ public final class ErrorProcessor {
 
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
 

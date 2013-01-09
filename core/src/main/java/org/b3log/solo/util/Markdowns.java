@@ -15,10 +15,12 @@
  */
 package org.b3log.solo.util;
 
+
 import java.io.StringReader;
 import java.io.StringWriter;
 import org.b3log.latke.util.Strings;
 import org.tautua.markdownpapers.Markdown;
+
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
@@ -54,6 +56,5 @@ public final class Markdowns {
     /**
      * Private constructor.
      */
-    private Markdowns() {
-    }
+    private Markdowns() {}
 }

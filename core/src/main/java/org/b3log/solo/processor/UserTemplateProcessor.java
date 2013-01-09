@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import freemarker.template.Template;
 import java.io.IOException;
 import java.util.Map;
@@ -41,6 +42,7 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
+
 /**
  * User template processor.
  * 
@@ -63,14 +65,17 @@ public final class UserTemplateProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class.getName());
+
     /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Language service.
      */
@@ -86,19 +91,22 @@ public final class UserTemplateProcessor {
      */
     @RequestProcessing(value = "/*.html", method = HTTPRequestMethod.GET)
     public void showPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+        throws IOException {
         final String requestURI = request.getRequestURI();
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
+
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-        LOGGER.log(Level.FINE, "Shows page[requestURI={0}, templateName={1}]", new Object[]{requestURI, templateName});
+        LOGGER.log(Level.FINE, "Shows page[requestURI={0}, templateName={1}]", new Object[] {requestURI, templateName});
 
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+
         context.setRenderer(renderer);
         renderer.setTemplateName(templateName);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), templateName);
+
         if (null == template) {
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -111,6 +119,7 @@ public final class UserTemplateProcessor {
 
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
 
@@ -118,8 +127,8 @@ public final class UserTemplateProcessor {
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillUserTemplate(template, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
-                                (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                dataModel);
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             request.setAttribute(PageCaches.CACHED_TITLE, requestURI);

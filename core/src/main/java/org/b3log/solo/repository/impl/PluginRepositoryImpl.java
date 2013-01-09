@@ -15,10 +15,12 @@
  */
 package org.b3log.solo.repository.impl;
 
+
 import java.util.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.solo.repository.PluginRepository;
+
 
 /**
  * Plugin repository.
@@ -33,6 +35,7 @@ public final class PluginRepositoryImpl extends AbstractRepository implements Pl
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PluginRepositoryImpl.class.getName());
+
     /**
      * Singleton.
      */

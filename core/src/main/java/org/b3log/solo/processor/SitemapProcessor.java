@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -50,6 +51,7 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Site map (sitemap) processor.
  *
@@ -64,22 +66,27 @@ public final class SitemapProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(SitemapProcessor.class.getName());
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Article repository.
      */
     private ArticleRepositoryImpl articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * Page repository.
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+
     /**
      * Tag repository.
      */
     private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+
     /**
      * Archive date repository.
      */
@@ -90,9 +97,10 @@ public final class SitemapProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/sitemap.xml"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = { "/sitemap.xml"}, method = HTTPRequestMethod.GET)
     public void sitemap(final HTTPRequestContext context) {
         final TextXMLRenderer renderer = new TextXMLRenderer();
+
         context.setRenderer(renderer);
 
         final Sitemap sitemap = new Sitemap();
@@ -107,6 +115,7 @@ public final class SitemapProcessor {
 
             LOGGER.log(Level.INFO, "Generating sitemap....");
             final String content = sitemap.toString();
+
             LOGGER.log(Level.INFO, "Generated sitemap");
             renderer.setContent(content);
         } catch (final Exception e) {
@@ -131,9 +140,8 @@ public final class SitemapProcessor {
         final String host = preference.getString(Preference.BLOG_HOST);
 
         // XXX: query all articles?
-        final Query query = new Query().setCurrentPageNum(1).
-                setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
-                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+        final Query query = new Query().setCurrentPageNum(1).setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).addSort(
+            Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
 
         // Closes cache avoid Java heap space out of memory while caching query results
         articleRepository.setCacheEnabled(false);
@@ -143,15 +151,18 @@ public final class SitemapProcessor {
         articleRepository.setCacheEnabled(true); // Restores cache
 
         final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
+
         for (int i = 0; i < articles.length(); i++) {
             final JSONObject article = articles.getJSONObject(i);
             final String permalink = article.getString(Article.ARTICLE_PERMALINK);
 
             final URL url = new URL();
+
             url.setLoc("http://" + host + permalink);
 
             final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
             final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updateDate);
+
             url.setLastMod(lastMod);
 
             sitemap.addURL(url);
@@ -170,11 +181,13 @@ public final class SitemapProcessor {
 
         final JSONObject result = pageRepository.get(new Query());
         final JSONArray pages = result.getJSONArray(Keys.RESULTS);
+
         for (int i = 0; i < pages.length(); i++) {
             final JSONObject page = pages.getJSONObject(i);
             final String permalink = page.getString(Page.PAGE_PERMALINK);
 
             final URL url = new URL();
+
             // The navigation maybe a page or a link
             // Just filters for user mistakes tolerance
             if (!permalink.contains("://")) {
@@ -200,11 +213,13 @@ public final class SitemapProcessor {
 
         final JSONObject result = tagRepository.get(new Query());
         final JSONArray tags = result.getJSONArray(Keys.RESULTS);
+
         for (int i = 0; i < tags.length(); i++) {
             final JSONObject tag = tags.getJSONObject(i);
             final String link = URLEncoder.encode(tag.getString(Tag.TAG_TITLE), "UTF-8");
 
             final URL url = new URL();
+
             url.setLoc("http://" + host + "/tags/" + link);
 
             sitemap.addURL(url);
@@ -212,6 +227,7 @@ public final class SitemapProcessor {
 
         // Tags wall
         final URL url = new URL();
+
         url.setLoc("http://" + host + "/tags.html");
         sitemap.addURL(url);
     }
@@ -228,12 +244,14 @@ public final class SitemapProcessor {
 
         final JSONObject result = archiveDateRepository.get(new Query());
         final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
+
         for (int i = 0; i < archiveDates.length(); i++) {
             final JSONObject archiveDate = archiveDates.getJSONObject(i);
             final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
             final String dateString = ArchiveDate.DATE_FORMAT.format(time);
 
             final URL url = new URL();
+
             url.setLoc("http://" + host + "/archives/" + dateString);
 
             sitemap.addURL(url);

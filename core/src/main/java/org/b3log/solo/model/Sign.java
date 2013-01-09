@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model;
 
+
 /**
  * This class defines all sign model relevant keys.
  *
@@ -27,10 +28,12 @@ public final class Sign {
      * Key of sign.
      */
     public static final String SIGN = "sign";
+
     /**
      * Key of signs.
      */
     public static final String SIGNS = "signs";
+
     /**
      * Key of sign HTML.
      */
@@ -39,6 +42,5 @@ public final class Sign {
     /**
      * Private default constructor.
      */
-    private Sign() {
-    }
+    private Sign() {}
 }

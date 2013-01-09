@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -38,6 +39,7 @@ import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
+
 /**
  * Comment processor.
  *
@@ -52,10 +54,12 @@ public final class CommentProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class.getName());
+
     /**
      * Language service.
      */
     private static LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Comment management service.
      */
@@ -100,11 +104,13 @@ public final class CommentProcessor {
         final HttpServletResponse httpServletResponse = context.getResponse();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
+
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
         final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -114,6 +120,7 @@ public final class CommentProcessor {
         }
 
         final HttpSession session = httpServletRequest.getSession(false);
+
         if (null == session) {
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
@@ -124,6 +131,7 @@ public final class CommentProcessor {
         if (!Users.getInstance().isLoggedIn(httpServletRequest, httpServletResponse)) {
             final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
                 jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
@@ -136,6 +144,7 @@ public final class CommentProcessor {
 
         try {
             final JSONObject addResult = commentMgmtService.addPageComment(requestJSONObject);
+
             addResult.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(addResult);
@@ -180,17 +189,19 @@ public final class CommentProcessor {
      * @throws ServletException servlet exception
      * @throws IOException io exception 
      */
-    @RequestProcessing(value = {"/add-article-comment.do"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = { "/add-article-comment.do"}, method = HTTPRequestMethod.POST)
     public void addArticleComment(final HTTPRequestContext context) throws ServletException, IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
+
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
         final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -200,6 +211,7 @@ public final class CommentProcessor {
         }
 
         final HttpSession session = httpServletRequest.getSession(false);
+
         if (null == session) {
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
@@ -210,6 +222,7 @@ public final class CommentProcessor {
         if (!Users.getInstance().isLoggedIn(httpServletRequest, httpServletResponse)) {
             final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
+
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
                 jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));

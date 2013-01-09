@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
+
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
@@ -22,6 +23,7 @@ import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 
 /**
  * Link repository.
@@ -36,6 +38,7 @@ public final class LinkRepositoryImpl extends AbstractRepository implements Link
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(LinkRepositoryImpl.class.getName());
+
     /**
      * Singleton.
      */
@@ -43,9 +46,7 @@ public final class LinkRepositoryImpl extends AbstractRepository implements Link
 
     @Override
     public JSONObject getByAddress(final String address) throws RepositoryException {
-        final Query query = new Query().setFilter(
-                new PropertyFilter(Link.LINK_ADDRESS, FilterOperator.EQUAL, address)).
-                setPageCount(1);
+        final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ADDRESS, FilterOperator.EQUAL, address)).setPageCount(1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -60,6 +61,7 @@ public final class LinkRepositoryImpl extends AbstractRepository implements Link
     @Override
     public int getMaxOrder() throws RepositoryException {
         final Query query = new Query();
+
         query.addSort(Link.LINK_ORDER, SortDirection.DESCENDING);
 
         final JSONObject result = get(query);
@@ -75,6 +77,7 @@ public final class LinkRepositoryImpl extends AbstractRepository implements Link
     @Override
     public JSONObject getByOrder(final int order) throws RepositoryException {
         final Query query = new Query();
+
         query.setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.EQUAL, order));
 
         final JSONObject result = get(query);
@@ -90,14 +93,15 @@ public final class LinkRepositoryImpl extends AbstractRepository implements Link
     @Override
     public JSONObject getUpper(final String id) throws RepositoryException {
         final JSONObject link = get(id);
+
         if (null == link) {
             return null;
         }
 
         final Query query = new Query();
-        query.setFilter(
-                new PropertyFilter(Link.LINK_ORDER, FilterOperator.LESS_THAN, link.optInt(Link.LINK_ORDER))).
-                addSort(Link.LINK_ORDER, SortDirection.DESCENDING);
+
+        query.setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.LESS_THAN, link.optInt(Link.LINK_ORDER))).addSort(Link.LINK_ORDER,
+            SortDirection.DESCENDING);
         query.setCurrentPageNum(1);
         query.setPageSize(1);
 
@@ -114,13 +118,15 @@ public final class LinkRepositoryImpl extends AbstractRepository implements Link
     @Override
     public JSONObject getUnder(final String id) throws RepositoryException {
         final JSONObject link = get(id);
+
         if (null == link) {
             return null;
         }
 
         final Query query = new Query();
-        query.setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.GREATER_THAN, link.optInt(Link.LINK_ORDER))).
-                addSort(Link.LINK_ORDER, SortDirection.ASCENDING);
+
+        query.setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.GREATER_THAN, link.optInt(Link.LINK_ORDER))).addSort(
+            Link.LINK_ORDER, SortDirection.ASCENDING);
         query.setCurrentPageNum(1);
         query.setPageSize(1);
 

@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.dev;
 
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
@@ -34,6 +35,7 @@ import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
+
 /**
  * Generates some dummy articles for development testing.
  *
@@ -47,8 +49,7 @@ public final class ArticleGenerator {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(ArticleGenerator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleGenerator.class.getName());
 
     /**
      * Generates some dummy articles with the specified context.
@@ -60,10 +61,10 @@ public final class ArticleGenerator {
      */
     @RequestProcessing(value = "/dev/articles/gen/*", method = HTTPRequestMethod.GET)
     public void genArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+        throws IOException {
         if (RuntimeMode.DEVELOPMENT != Latkes.getRuntimeMode()) {
             LOGGER.log(Level.WARNING, "Article generation just for development mode, " + "current runtime mode is [{0}]",
-                       Latkes.getRuntimeMode());
+                Latkes.getRuntimeMode());
             response.sendRedirect("/");
 
             return;

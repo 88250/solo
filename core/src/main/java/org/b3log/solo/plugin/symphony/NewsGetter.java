@@ -15,7 +15,9 @@
  */
 package org.b3log.solo.plugin.symphony;
 
+
 import org.b3log.latke.plugin.AbstractPlugin;
+
 
 /**
  * Getting news from <a href="http://symphony.b3log.org">B3log Symphony</a>.

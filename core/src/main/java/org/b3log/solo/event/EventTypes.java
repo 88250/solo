@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.event;
 
+
 /**
  * Event types.
  *
@@ -28,26 +29,32 @@ public final class EventTypes {
      * Indicates a add article event.
      */
     public static final String ADD_ARTICLE = "Add Article";
+
     /**
      * Indicates a update article event.
      */
     public static final String UPDATE_ARTICLE = "Update Article";
+
     /**
      * Indicates a remove article event.
      */
     public static final String REMOVE_ARTICLE = "Remove Article";
+
     /**
      * Indicates an add comment to article event.
      */
     public static final String ADD_COMMENT_TO_ARTICLE = "Add Comment To Article";
+
     /**
      * Indicates an add comment (from symphony) to article event.
      */
     public static final String ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY = "Add Comment To Article From Symphony";
+
     /**
      * Indicates an add comment to page event.
      */
     public static final String ADD_COMMENT_TO_PAGE = "Add Comment To Page";
+
     /**
      * Indicates a remove comment event.
      */
@@ -56,6 +63,5 @@ public final class EventTypes {
     /**
      * Private default constructor.
      */
-    private EventTypes() {
-    }
+    private EventTypes() {}
 }

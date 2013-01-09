@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.event.plugin;
 
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +29,7 @@ import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
 import org.b3log.solo.util.Plugins;
 
+
 /**
  * This listener is responsible for refreshing plugin after every loaded.
  * 
@@ -40,25 +42,23 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PluginRefresher.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PluginRefresher.class.getName());
+
     /**
      * Plugin repository.
      */
-    private PluginRepository pluginRepository =
-            PluginRepositoryImpl.getInstance();
+    private PluginRepository pluginRepository = PluginRepositoryImpl.getInstance();
 
     @Override
     public void action(final Event<List<AbstractPlugin>> event) throws
             EventException {
         final List<AbstractPlugin> plugins = event.getData();
 
-        LOGGER.log(Level.FINER,
-                   "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                   new Object[]{event.getType(), plugins,
-                                PluginRefresher.class.getName()});
+        LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+            new Object[] {event.getType(), plugins, PluginRefresher.class.getName()});
 
         final Transaction transaction = pluginRepository.beginTransaction();
+
         transaction.clearQueryCache(false);
         try {
             Plugins.refresh(plugins);

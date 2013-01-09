@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,6 +44,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.PNGRenderer;
 import org.b3log.solo.SoloServletListener;
 
+
 /**
  * Captcha processor.
  * 
@@ -62,18 +64,22 @@ public final class CaptchaProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CaptchaProcessor.class.getName());
+
     /**
      * Images service.
      */
     private static final ImageService IMAGE_SERVICE = ImageServiceFactory.getImageService();
+
     /**
      * Key of captcha.
      */
     public static final String CAPTCHA = "captcha";
+
     /**
      * Captchas.
      */
     private Image[] captchas;
+
     /**
      * Count of static captchas.
      */
@@ -87,6 +93,7 @@ public final class CaptchaProcessor {
     @RequestProcessing(value = "/captcha.do", method = HTTPRequestMethod.GET)
     public void get(final HTTPRequestContext context) {
         final PNGRenderer renderer = new PNGRenderer();
+
         context.setRenderer(renderer);
 
         if (null == captchas) {
@@ -103,8 +110,9 @@ public final class CaptchaProcessor {
             final String captcha = captchaImg.getName();
 
             final HttpSession httpSession = request.getSession(false);
+
             if (null != httpSession) {
-                LOGGER.log(Level.FINER, "Captcha[{0}] for session[id={1}]", new Object[]{captcha, httpSession.getId()});
+                LOGGER.log(Level.FINER, "Captcha[{0}] for session[id={1}]", new Object[] {captcha, httpSession.getId()});
                 httpSession.setAttribute(CAPTCHA, captcha);
             }
 
@@ -128,10 +136,12 @@ public final class CaptchaProcessor {
             captchas = new Image[CAPTCHA_COUNT];
 
             ZipFile zipFile;
+
             if (RuntimeEnv.LOCAL == Latkes.getRuntimeEnv()) {
                 final InputStream inputStream = SoloServletListener.class.getClassLoader().getResourceAsStream("captcha_static.zip");
                 final File file = File.createTempFile("b3log_captcha_static", null);
                 final OutputStream outputStream = new FileOutputStream(file);
+
                 IOUtils.copy(inputStream, outputStream);
                 zipFile = new ZipFile(file);
                 
@@ -139,21 +149,25 @@ public final class CaptchaProcessor {
                 IOUtils.closeQuietly(outputStream);
             } else {
                 final URL captchaURL = SoloServletListener.class.getClassLoader().getResource("captcha_static.zip");
+
                 zipFile = new ZipFile(captchaURL.getFile());
             }
 
             final Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
             int i = 0;
+
             while (entries.hasMoreElements()) {
                 final ZipEntry entry = entries.nextElement();
 
                 final BufferedInputStream bufferedInputStream = new BufferedInputStream(zipFile.getInputStream(entry));
                 final byte[] captchaCharData = new byte[bufferedInputStream.available()];
+
                 bufferedInputStream.read(captchaCharData);
                 bufferedInputStream.close();
 
                 final Image image = IMAGE_SERVICE.makeImage(captchaCharData);
+
                 image.setName(entry.getName().substring(0, entry.getName().lastIndexOf('.')));
 
                 captchas[i] = image;

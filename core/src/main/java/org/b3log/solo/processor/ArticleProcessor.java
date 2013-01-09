@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -60,6 +61,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
+
 /**
  * Article processor.
  *
@@ -74,42 +76,52 @@ public final class ArticleProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class.getName());
+
     /**
      * Article query service.
      */
     private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+
     /**
      * Tag query service.
      */
     private TagQueryService tagQueryService = TagQueryService.getInstance();
+
     /**
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+
     /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Article utilities.
      */
     private Articles articleUtils = Articles.getInstance();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Archive date query service.
      */
     private ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
+
     /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * Default update count for article random value.
      */
@@ -125,7 +137,7 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/console/article-pwd", method = HTTPRequestMethod.GET)
     public void showArticlePwdForm(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String articleId = request.getParameter("articleId");
 
         if (Strings.isEmptyOrNull(articleId)) {
@@ -134,12 +146,14 @@ public final class ArticleProcessor {
         }
 
         final JSONObject article = articleQueryService.getArticleById(articleId);
+
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+
         context.setRenderer(renderer);
         renderer.setTemplateName("article-pwd.ftl");
 
@@ -150,14 +164,17 @@ public final class ArticleProcessor {
         dataModel.put("articleTitle", article.optString(Article.ARTICLE_TITLE));
         dataModel.put("articleAbstract", article.optString(Article.ARTICLE_ABSTRACT));
         final String msg = request.getParameter(Keys.MSG);
+
         if (!Strings.isEmptyOrNull(msg)) {
             dataModel.put(Keys.MSG, langPropsService.get("passwordNotMatchLabel"));
         }
 
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+
         dataModel.putAll(langs);
 
         final JSONObject preference = preferenceQueryService.getPreference();
+
         dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
         dataModel.put(Preference.BLOG_HOST, preference.getString(Preference.BLOG_HOST));
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
@@ -179,7 +196,7 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/console/article-pwd", method = HTTPRequestMethod.POST)
     public void onArticlePwdForm(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         try {
             final String articleId = request.getParameter("articleId");
             final String pwdTyped = request.getParameter("pwdTyped");
@@ -188,9 +205,11 @@ public final class ArticleProcessor {
 
             if (article.getString(Article.ARTICLE_VIEW_PWD).equals(pwdTyped)) {
                 final HttpSession session = request.getSession(false);
+
                 if (null != session) {
                     @SuppressWarnings("unchecked")
                     Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
+
                     if (null == viewPwds) {
                         viewPwds = new HashMap<String, String>();
                     }
@@ -230,6 +249,7 @@ public final class ArticleProcessor {
             jsonObject.put(Common.RANDOM_ARTICLES, new ArrayList<JSONObject>());
 
             final JSONRenderer renderer = new JSONRenderer();
+
             context.setRenderer(renderer);
             renderer.setJSONObject(jsonObject);
 
@@ -242,6 +262,7 @@ public final class ArticleProcessor {
         jsonObject.put(Common.RANDOM_ARTICLES, randomArticles);
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -258,16 +279,18 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/article/id/*/relevant/articles", method = HTTPRequestMethod.GET)
     public void getRelevantArticles(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+        final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONObject jsonObject = new JSONObject();
 
         final JSONObject preference = preferenceQueryService.getPreference();
 
         final int displayCnt = preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
+
         if (0 == displayCnt) {
             jsonObject.put(Common.RANDOM_ARTICLES, new ArrayList<JSONObject>());
 
             final JSONRenderer renderer = new JSONRenderer();
+
             context.setRenderer(renderer);
             renderer.setJSONObject(jsonObject);
 
@@ -278,6 +301,7 @@ public final class ArticleProcessor {
         final String requestURI = request.getRequestURI();
 
         final String articleId = StringUtils.substringBetween(requestURI, "/article/id/", "/relevant/articles");
+
         if (Strings.isEmptyOrNull(articleId)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -285,6 +309,7 @@ public final class ArticleProcessor {
         }
 
         final JSONObject article = articleQueryService.getArticleById(articleId);
+
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -292,9 +317,11 @@ public final class ArticleProcessor {
         }
 
         final List<JSONObject> relevantArticles = articleQueryService.getRelevantArticles(article, preference);
+
         jsonObject.put(Common.RELEVANT_ARTICLES, relevantArticles);
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -316,9 +343,11 @@ public final class ArticleProcessor {
         }
 
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
+
         context.setRenderer(renderer);
 
         String content;
+
         try {
             content = articleQueryService.getArticleContent(articleId);
         } catch (final ServiceException e) {
@@ -354,20 +383,24 @@ public final class ArticleProcessor {
             final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final StringBuilder pathBuilder = new StringBuilder();
+
             pathBuilder.append(currentPageNum).append('/').append(pageSize).append('/').append(windowSize);
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(pathBuilder.toString());
+
             requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, true);
 
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
             final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
 
             final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
                     final JSONObject author = articleUtils.getAuthor(articles.get(0));
+
                     filler.setArticlesExProperties(articles, author, preference);
                 }
             }
@@ -380,8 +413,8 @@ public final class ArticleProcessor {
             Stopwatchs.end();
         }
 
-
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
     }
@@ -429,17 +462,20 @@ public final class ArticleProcessor {
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
 
             final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
                     final JSONObject author = articleUtils.getAuthor(articles.get(0));
+
                     filler.setArticlesExProperties(articles, author, preference);
                 }
             }
 
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
+
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             result.put(Pagination.PAGINATION, pagination);
 
@@ -454,6 +490,7 @@ public final class ArticleProcessor {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
     }
@@ -480,6 +517,7 @@ public final class ArticleProcessor {
             final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
 
             final JSONObject archiveQueryResult = archiveDateQueryService.getByArchiveDateString(archiveDateString);
+
             if (null == archiveQueryResult) {
                 throw new Exception("Can not foud archive[archiveDate=" + archiveDateString + "]");
             }
@@ -493,17 +531,20 @@ public final class ArticleProcessor {
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
 
             final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
                     final JSONObject author = articleUtils.getAuthor(articles.get(0));
+
                     filler.setArticlesExProperties(articles, author, preference);
                 }
             }
 
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
+
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             result.put(Pagination.PAGINATION, pagination);
 
@@ -518,6 +559,7 @@ public final class ArticleProcessor {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
     }
@@ -533,33 +575,35 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/authors/**", method = HTTPRequestMethod.GET)
     public void showAuthorArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException, JSONException {
+        throws IOException, JSONException {
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+
         context.setRenderer(renderer);
 
         renderer.setTemplateName("author-articles.ftl");
 
         try {
             String requestURI = request.getRequestURI();
+
             if (!requestURI.endsWith("/")) {
                 requestURI += "/";
             }
 
             final String authorId = getAuthorId(requestURI);
 
-            LOGGER.log(Level.FINER, "Request author articles[requestURI={0}, authorId={1}]",
-                    new Object[]{requestURI, authorId});
+            LOGGER.log(Level.FINER, "Request author articles[requestURI={0}, authorId={1}]", new Object[] {requestURI, authorId});
 
             final int currentPageNum = getAuthorCurrentPageNum(requestURI, authorId);
+
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
-            LOGGER.log(Level.FINER, "Request author articles[authorId={0}, currentPageNum={1}]",
-                    new Object[]{authorId, currentPageNum});
+            LOGGER.log(Level.FINER, "Request author articles[authorId={0}, currentPageNum={1}]", new Object[] {authorId, currentPageNum});
 
             final JSONObject preference = preferenceQueryService.getPreference();
+
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -572,16 +616,17 @@ public final class ArticleProcessor {
             final JSONObject author = result.getJSONObject(User.USER);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+
             request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.AUTHOR_ARTICLES.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             request.setAttribute(PageCaches.CACHED_TITLE,
-                    langs.get(PageTypes.AUTHOR_ARTICLES.getLangeLabel()) + "  ["
-                    + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
-                    + langs.get("authorLabel") + "=" + author.getString(User.USER_NAME) + "]");
+                langs.get(PageTypes.AUTHOR_ARTICLES.getLangeLabel()) + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
+                + langs.get("authorLabel") + "=" + author.getString(User.USER_NAME) + "]");
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
             final String authorEmail = author.getString(User.USER_EMAIL);
             final List<JSONObject> articles = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
+
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -605,12 +650,13 @@ public final class ArticleProcessor {
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
+
             prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author, preference);
             dataModel.put(Keys.PAGE_TYPE, PageTypes.AUTHOR_ARTICLES);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -631,28 +677,31 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/archives/**", method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context,
-            final HttpServletRequest request, final HttpServletResponse response) {
+        final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+
         context.setRenderer(renderer);
 
         renderer.setTemplateName("archive-articles.ftl");
 
         try {
             String requestURI = request.getRequestURI();
+
             if (!requestURI.endsWith("/")) {
                 requestURI += "/";
             }
 
             final String archiveDateString = getArchiveDate(requestURI);
             final int currentPageNum = getArchiveCurrentPageNum(requestURI);
+
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
-            LOGGER.log(Level.FINER, "Request archive date[string={0}, currentPageNum={1}]",
-                    new Object[]{archiveDateString, currentPageNum});
+            LOGGER.log(Level.FINER, "Request archive date[string={0}, currentPageNum={1}]", new Object[] {archiveDateString, currentPageNum});
             final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
+
             if (null == result) {
                 LOGGER.log(Level.WARNING, "Can not find articles for the specified archive date[string={0}]", archiveDateString);
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -669,6 +718,7 @@ public final class ArticleProcessor {
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
+
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -679,11 +729,13 @@ public final class ArticleProcessor {
             }
 
             final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
                     final JSONObject author = articleUtils.getAuthor(articles.get(0));
+
                     filler.setArticlesExProperties(articles, author, preference);
                 }
             }
@@ -692,19 +744,18 @@ public final class ArticleProcessor {
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                dataModel);
 
-            final String cachedTitle = prepareShowArchiveArticles(preference, dataModel, articles,
-                    currentPageNum,
-                    pageCount, archiveDateString,
-                    archiveDate);
+            final String cachedTitle = prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount,
+                archiveDateString, archiveDate);
 
             dataModel.put(Keys.PAGE_TYPE, PageTypes.DATE_ARTICLES);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+
             request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_OID, archiveDateId);
             request.setAttribute(PageCaches.CACHED_TITLE, cachedTitle + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
@@ -726,22 +777,21 @@ public final class ArticleProcessor {
      * @param request the specified request
      */
     @RequestProcessing(value = "/article-random-double-gen.do", method = HTTPRequestMethod.GET)
-    public void updateArticlesRandomValue(final HttpServletRequest request) {
-        // Commented for issue 308, see http://code.google.com/p/b3log-solo/issues/detail?id=308#c4 and 
+    public void updateArticlesRandomValue(final HttpServletRequest request) {// Commented for issue 308, see http://code.google.com/p/b3log-solo/issues/detail?id=308#c4 and 
         // cron.xml for more details.
-//        int updateCnt = DEFAULT_UPDATE_CNT;
-//        try {
-//            updateCnt =
-//                    Integer.valueOf(request.getParameter("cnt"));
-//        } catch (final NumberFormatException e) {
-//            LOGGER.log(Level.WARNING, e.getMessage(), e);
-//        }
-//
-//        try {
-//            articleMgmtService.updateArticlesRandomValue(updateCnt);
-//        } catch (final ServiceException e) {
-//            LOGGER.log(Level.SEVERE, "Updates articles random values failed", e);
-//        }
+        // int updateCnt = DEFAULT_UPDATE_CNT;
+        // try {
+        // updateCnt =
+        // Integer.valueOf(request.getParameter("cnt"));
+        // } catch (final NumberFormatException e) {
+        // LOGGER.log(Level.WARNING, e.getMessage(), e);
+        // }
+        //
+        // try {
+        // articleMgmtService.updateArticlesRandomValue(updateCnt);
+        // } catch (final ServiceException e) {
+        // LOGGER.log(Level.SEVERE, "Updates articles random values failed", e);
+        // }
     }
 
     /**
@@ -754,17 +804,20 @@ public final class ArticleProcessor {
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+        throws IOException {
         // See PermalinkFiler#dispatchToArticleOrPageProcessor()
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
+
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
         final String articleId = article.optString(Keys.OBJECT_ID);
+
         LOGGER.log(Level.FINER, "Article[id={0}]", articleId);
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+
         context.setRenderer(renderer);
         renderer.setTemplateName("article.ftl");
 
@@ -772,6 +825,7 @@ public final class ArticleProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             final boolean allowVisitDraftViaPermalink = preference.getBoolean(Preference.ALLOW_VISIT_DRAFT_VIA_PERMALINK);
+
             if (!article.optBoolean(Article.ARTICLE_IS_PUBLISHED) && !allowVisitDraftViaPermalink) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -792,6 +846,7 @@ public final class ArticleProcessor {
 
             // For <meta name="description" content="${article.articleAbstract}"/>
             final String metaDescription = Jsoup.parse(article.optString(Article.ARTICLE_ABSTRACT)).text();
+
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
@@ -802,8 +857,10 @@ public final class ArticleProcessor {
 
             final JSONObject author = articleUtils.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
+
             article.put(Common.AUTHOR_NAME, authorName);
             final String authorId = author.getString(Keys.OBJECT_ID);
+
             article.put(Common.AUTHOR_ID, authorId);
             article.put(Common.AUTHOR_ROLE, author.getString(User.USER_ROLE));
 
@@ -816,8 +873,8 @@ public final class ArticleProcessor {
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -881,6 +938,7 @@ public final class ArticleProcessor {
         final String path = requestURI.substring((Latkes.getContextPath() + "/authors/").length());
 
         final int idx = path.indexOf("/");
+
         if (-1 == idx) {
             return path.substring(0);
         } else {
@@ -997,12 +1055,12 @@ public final class ArticleProcessor {
      * @throws ServiceException service exception
      */
     private void prepareShowAuthorArticles(final List<Integer> pageNums,
-            final Map<String, Object> dataModel,
-            final int pageCount,
-            final int currentPageNum,
-            final List<JSONObject> articles,
-            final JSONObject author,
-            final JSONObject preference) throws ServiceException {
+        final Map<String, Object> dataModel,
+        final int pageCount,
+        final int currentPageNum,
+        final List<JSONObject> articles,
+        final JSONObject author,
+        final JSONObject preference) throws ServiceException {
         if (0 != pageNums.size()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
@@ -1012,6 +1070,7 @@ public final class ArticleProcessor {
 
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
         final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+
         dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
         if (pageCount == currentPageNum + 1) { // The next page is the last page
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
@@ -1021,6 +1080,7 @@ public final class ArticleProcessor {
 
         dataModel.put(Article.ARTICLES, articles);
         final String authorId = author.optString(Keys.OBJECT_ID);
+
         dataModel.put(Common.PATH, "/authors/" + authorId);
         dataModel.put(Keys.OBJECT_ID, authorId);
 
@@ -1044,12 +1104,12 @@ public final class ArticleProcessor {
      * @throws Exception  exception
      */
     private String prepareShowArchiveArticles(final JSONObject preference,
-            final Map<String, Object> dataModel,
-            final List<JSONObject> articles,
-            final int currentPageNum,
-            final int pageCount,
-            final String archiveDateString,
-            final JSONObject archiveDate) throws Exception {
+        final Map<String, Object> dataModel,
+        final List<JSONObject> articles,
+        final int currentPageNum,
+        final int pageCount,
+        final String archiveDateString,
+        final JSONObject archiveDate) throws Exception {
         final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
         final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
@@ -1057,6 +1117,7 @@ public final class ArticleProcessor {
 
         dataModel.put(Article.ARTICLES, articles);
         final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
+
         dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
         if (pageCount == currentPageNum + 1) { // The next page is the last page
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
@@ -1077,9 +1138,11 @@ public final class ArticleProcessor {
         final String[] dateStrings = dateString.split("/");
         final String year = dateStrings[0];
         final String month = dateStrings[1];
+
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
         final String language = Locales.getLanguage(preference.getString(Preference.LOCALE_STRING));
         String ret;
+
         if ("en".equals(language)) {
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_MONTH, Dates.EN_MONTHS.get(month));
             ret = Dates.EN_MONTHS.get(month) + " " + year;
@@ -1101,7 +1164,7 @@ public final class ArticleProcessor {
      * @throws Exception exception
      */
     private void prepareShowArticle(final JSONObject preference, final Map<String, Object> dataModel, final JSONObject article)
-            throws Exception {
+        throws Exception {
         article.put(Common.COMMENTABLE, article.getBoolean(Article.ARTICLE_COMMENTABLE));
         article.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
         dataModel.put(Article.ARTICLE, article);
@@ -1116,6 +1179,7 @@ public final class ArticleProcessor {
         Stopwatchs.start("Get Next Article");
         LOGGER.finer("Getting the next article....");
         final JSONObject nextArticle = articleQueryService.getNextArticle(articleId);
+
         if (null != nextArticle) {
             dataModel.put(Common.NEXT_ARTICLE_PERMALINK, nextArticle.getString(Article.ARTICLE_PERMALINK));
             dataModel.put(Common.NEXT_ARTICLE_TITLE, nextArticle.getString(Article.ARTICLE_TITLE));
@@ -1126,6 +1190,7 @@ public final class ArticleProcessor {
         Stopwatchs.start("Get Previous Article");
         LOGGER.finer("Getting the previous article....");
         final JSONObject previousArticle = articleQueryService.getPreviousArticle(articleId);
+
         if (null != previousArticle) {
             dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK, previousArticle.getString(Article.ARTICLE_PERMALINK));
             dataModel.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticle.getString(Article.ARTICLE_TITLE));
@@ -1136,8 +1201,10 @@ public final class ArticleProcessor {
         Stopwatchs.start("Get Article CMTs");
         LOGGER.finer("Getting article's comments....");
         final int cmtCount = article.getInt(Article.ARTICLE_COMMENT_COUNT);
+
         if (0 != cmtCount) {
             final List<JSONObject> articleComments = commentQueryService.getComments(articleId);
+
             dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
         } else {
             dataModel.put(Article.ARTICLE_COMMENTS_REF, Collections.emptyList());
@@ -1146,7 +1213,7 @@ public final class ArticleProcessor {
         Stopwatchs.end();
 
         dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
-                preference.getInt(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
+            preference.getInt(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
         dataModel.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT, preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT));
         dataModel.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT));
     }

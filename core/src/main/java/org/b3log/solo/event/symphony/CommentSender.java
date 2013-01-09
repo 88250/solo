@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.event.symphony;
 
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -36,6 +37,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
+
 /**
  * This listener is responsible for sending comment to B3log Symphony.
  * 
@@ -49,18 +51,22 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentSender.class.getName());
+
     /**
      * URL fetch service.
      */
     private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * B3log Symphony address.
      */
     public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:80";
+
     /**
      * URL of adding comment to Symphony.
      */
@@ -78,28 +84,33 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
+
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleSender.class.getName()});
+            new Object[] {event.getType(), data, ArticleSender.class.getName()});
         try {
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
 
             final JSONObject preference = preferenceQueryService.getPreference();
+
             if (null == preference) {
                 throw new EventException("Not found preference");
             }
 
             final String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase();
+
             if (blogHost.contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this comment[id={0}] to Symphony",
-                        new Object[]{originalComment.getString(Keys.OBJECT_ID)});
+                    new Object[] {originalComment.getString(Keys.OBJECT_ID)});
                 return;
             }
 
             final HTTPRequest httpRequest = new HTTPRequest();
+
             httpRequest.setURL(ADD_COMMENT_URL);
             httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject comment = new JSONObject();
+
             comment.put("commentId", originalComment.optString(Keys.OBJECT_ID));
             comment.put("commentAuthorName", originalComment.getString(Comment.COMMENT_NAME));
             comment.put("commentAuthorEmail", originalComment.getString(Comment.COMMENT_EMAIL));

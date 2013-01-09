@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -30,6 +31,7 @@ import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
 import org.json.JSONObject;
 
+
 /**
  * Plugin management service.
  *
@@ -42,13 +44,13 @@ public final class PluginMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PluginMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PluginMgmtService.class.getName());
+
     /**
      * Plugin repository.
      */
-    private PluginRepository pluginRepository =
-            PluginRepositoryImpl.getInstance();
+    private PluginRepository pluginRepository = PluginRepositoryImpl.getInstance();
+
     /**
      * Language service.
      */
@@ -68,8 +70,7 @@ public final class PluginMgmtService {
      * </pre>
      */
     public JSONObject setPluginStatus(final String pluginId, final String status) {
-        final Map<String, String> langs =
-                langPropsService.getAll(Latkes.getLocale());
+        final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 
         final PluginManager pluginManager = PluginManager.getInstance();
         final List<AbstractPlugin> plugins = pluginManager.getPlugins();
@@ -78,8 +79,8 @@ public final class PluginMgmtService {
 
         for (final AbstractPlugin plugin : plugins) {
             if (plugin.getId().equals(pluginId)) {
-                final Transaction transaction =
-                        pluginRepository.beginTransaction();
+                final Transaction transaction = pluginRepository.beginTransaction();
+
                 try {
                     plugin.setStatus(PluginStatus.valueOf(status));
 
@@ -126,8 +127,7 @@ public final class PluginMgmtService {
     /**
      * Private constructor.
      */
-    private PluginMgmtService() {
-    }
+    private PluginMgmtService() {}
 
     /**
      * Singleton holder.
@@ -140,13 +140,11 @@ public final class PluginMgmtService {
         /**
          * Singleton.
          */
-        private static final PluginMgmtService SINGLETON =
-                new PluginMgmtService();
+        private static final PluginMgmtService SINGLETON = new PluginMgmtService();
 
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }
