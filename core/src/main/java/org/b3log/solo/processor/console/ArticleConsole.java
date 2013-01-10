@@ -29,6 +29,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.PathVariable;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -48,7 +49,7 @@ import org.json.JSONObject;
  * Article console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 9, 2012
+ * @version 1.0.0.4, Jan 10, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -300,11 +301,12 @@ public final class ArticleConsole {
      * @param context the specified http request context
      * @param request the specified http servlet request
      * @param response the specified http servlet response
+     * @param articleId the specified article id
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/article/*", method = HTTPRequestMethod.DELETE)
-    public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
+    @RequestProcessing(value = "/console/article/{articleId}", method = HTTPRequestMethod.DELETE)
+    public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+        @PathVariable("articleId") final String articleId) throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -319,8 +321,6 @@ public final class ArticleConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/").length());
-
             if (!userUtils.canAccessArticle(articleId, request)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
