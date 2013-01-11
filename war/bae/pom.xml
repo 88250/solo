@@ -23,6 +23,7 @@
     </parent>
     
     <properties>
+        <servlet-api.version>2.5</servlet-api.version>
     </properties>
 
     <dependencies>
@@ -44,12 +45,13 @@
                     <groupId>c3p0</groupId>
                     <artifactId>c3p0</artifactId>
                 </exclusion>
-                <!-- Container provided -->
-                <exclusion>
-                    <groupId>javax.servlet</groupId>
-                    <artifactId>servlet-api</artifactId>
-                </exclusion>
             </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet-api.version}</version>
         </dependency>
         
         <dependency>
