@@ -185,19 +185,15 @@ input:focus {
 /* end article-pwd */
 
 /* start 403/404/500 */
-.img-404, .img-403, .img-500 {
+.img-403, .img-500 {
     box-shadow: 0 0 5px #E6E5D9;
     margin: 20px 0 0 45px;
     padding: 5px;
 }
 
-.a-404, .a-403, .a-500 {
+.a-403, .a-500 {
     margin: 20px 50px 0 0 ;
     text-align: right;
-}
-
-.img-403 {
-    margin: 20px 0 0 60px;
 }
 
 .a-403 {
