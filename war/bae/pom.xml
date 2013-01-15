@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo BAE POM.
-    Version: 1.0.1.1, Nov 21, 2012
+    Version: 1.0.1.2, Jan 15, 2013
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -35,6 +35,11 @@
                 <exclusion>
                     <artifactId>mail</artifactId>
                     <groupId>javax.mail</groupId>
+                </exclusion>
+                <!-- GAE container is not JBoss -->
+                <exclusion>
+                    <groupId>org.jboss</groupId>
+                    <artifactId>jboss-vfs</artifactId>
                 </exclusion>
                 <!-- Database Connections Pool for local-->
                 <exclusion>

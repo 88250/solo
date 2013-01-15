@@ -18,7 +18,7 @@
 -->
 <!--
     Description: B3log Solo web deployment descriptor.
-    Version: 1.0.4.9, Aug 10, 2012
+    Version: 1.0.4.10, Jan 15, 2013
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
@@ -100,6 +100,13 @@
         <servlet-name>HTTPRequestDispatcher</servlet-name>
         <servlet-class>org.b3log.latke.servlet.HTTPRequestDispatcher</servlet-class>
         <load-on-startup>2</load-on-startup>
+
+        <!-- Latke Request Processors Scan -->
+        <!-- See https://github.com/b3log/b3log-latke/issues/17 for more details -->
+        <init-param>
+            <param-name>scanPath</param-name>
+            <param-value>org.b3log</param-value>
+        </init-param>
     </servlet>
     <servlet-mapping>
         <servlet-name>HTTPRequestDispatcher</servlet-name>

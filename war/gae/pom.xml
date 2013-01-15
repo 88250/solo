@@ -56,6 +56,11 @@
                     <groupId>c3p0</groupId>
                     <artifactId>c3p0</artifactId>
                 </exclusion>
+                <!-- GAE container is not JBoss -->
+                <exclusion>
+                    <groupId>org.jboss</groupId>
+                    <artifactId>jboss-vfs</artifactId>
+                </exclusion>
                 <!-- Container provided -->
                 <exclusion>
                     <groupId>javax.servlet</groupId>
