@@ -99,14 +99,15 @@
     <servlet>
         <servlet-name>HTTPRequestDispatcher</servlet-name>
         <servlet-class>org.b3log.latke.servlet.HTTPRequestDispatcher</servlet-class>
+
+        <!-- Latke Request Processors Scan -->
+        <!-- See https://github.com/b3log/b3log-latke/issues/17 for more details -->
         <init-param>
             <param-name>scanPath</param-name>
             <param-value>org.b3log</param-value>
         </init-param>
+        
         <load-on-startup>2</load-on-startup>
-
-        <!-- Latke Request Processors Scan -->
-        <!-- See https://github.com/b3log/b3log-latke/issues/17 for more details -->
     </servlet>
     <servlet-mapping>
         <servlet-name>HTTPRequestDispatcher</servlet-name>
