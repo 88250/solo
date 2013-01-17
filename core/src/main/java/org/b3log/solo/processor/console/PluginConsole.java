@@ -26,10 +26,12 @@ import org.b3log.latke.model.Plugin;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.solo.processor.console.common.ProcessAuthAdvice;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.QueryResults;
@@ -41,10 +43,12 @@ import org.json.JSONObject;
  * Plugin console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 9, 2012
+ * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
+ * @version 1.1.0.0, Jan 17, 2013
  * @since 0.4.0
  */
 @RequestProcessor
+@Before(adviceClass = ProcessAuthAdvice.class)
 public final class PluginConsole {
 
     /**
@@ -93,10 +97,6 @@ public final class PluginConsole {
     @RequestProcessing(value = "/console/plugin/status/", method = HTTPRequestMethod.PUT)
     public void setPluginStatus(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
 
         final JSONRenderer renderer = new JSONRenderer();
 
@@ -150,10 +150,6 @@ public final class PluginConsole {
         method = HTTPRequestMethod.GET)
     public void getPlugins(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
 
         final JSONRenderer renderer = new JSONRenderer();
 
