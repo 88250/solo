@@ -16,15 +16,15 @@
 package org.b3log.solo.service;
 
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -68,7 +68,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Oct 12, 2012
+ * @version 1.0.1.4, Jan 18, 2013
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -147,11 +147,6 @@ public final class ArticleMgmtService {
      * Tag utilities.
      */
     private static Tags tagUtils = Tags.getInstance();
-
-    /**
-     * Permalink date format(yyyy/MM/dd).
-     */
-    public static final DateFormat PERMALINK_FORMAT = new SimpleDateFormat("yyyy/MM/dd");
 
     /**
      * Cancels publish an article by the specified article id.
@@ -990,13 +985,13 @@ public final class ArticleMgmtService {
      */
     private void archiveDate(final JSONObject article) throws RepositoryException {
         final Date createDate = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
-        final String createDateString = ArchiveDate.DATE_FORMAT.format(createDate);
+        final String createDateString = DateFormatUtils.format(createDate, "yyyy/MM");
         JSONObject archiveDate = archiveDateRepository.getByArchiveDate(createDateString);
 
         if (null == archiveDate) {
             archiveDate = new JSONObject();
             try {
-                archiveDate.put(ArchiveDate.ARCHIVE_TIME, ArchiveDate.DATE_FORMAT.parse(createDateString).getTime());
+                archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate(createDateString, new String[] {"yyyy/MM"}).getTime());
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 0);
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 0);
 
@@ -1064,7 +1059,7 @@ public final class ArticleMgmtService {
         String ret = article.optString(Article.ARTICLE_PERMALINK);
 
         if (Strings.isEmptyOrNull(ret)) {
-            ret = "/articles/" + PERMALINK_FORMAT.format(date) + "/" + article.optString(Keys.OBJECT_ID) + ".html";
+            ret = "/articles/" + DateFormatUtils.format(date, "yyyy/MM/dd") + "/" + article.optString(Keys.OBJECT_ID) + ".html";
         }
 
         if (!ret.startsWith("/")) {
@@ -1102,7 +1097,7 @@ public final class ArticleMgmtService {
 
         if (!oldPermalink.equals(ret)) {
             if (Strings.isEmptyOrNull(ret)) {
-                ret = "/articles/" + PERMALINK_FORMAT.format(createDate) + "/" + articleId + ".html";
+                ret = "/articles/" + DateFormatUtils.format(createDate, "yyyy/MM/dd") + "/" + articleId + ".html";
             }
 
             if (!ret.startsWith("/")) {

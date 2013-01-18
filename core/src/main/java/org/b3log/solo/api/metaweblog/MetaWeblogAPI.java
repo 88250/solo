@@ -16,12 +16,9 @@
 package org.b3log.solo.api.metaweblog;
 
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletInputStream;
@@ -30,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
@@ -74,7 +72,7 @@ import org.jsoup.Jsoup;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Aug 29, 2012
+ * @version 1.0.0.8, Jan 18, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -372,12 +370,7 @@ public final class MetaWeblogAPI {
                 } catch (final ParseException e) {
                     LOGGER.log(Level.WARNING,
                         "Parses article create date failed with ISO8601, retry to parse with pattern[yyyy-MM-dd'T'HH:mm:ss]");
-                    final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
-                    final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-                    final DateFormat format = new SimpleDateFormat("yyyyMMdd'T'HH:mm:ss");
-
-                    format.setTimeZone(timeZone);
-                    date = format.parse(dateString);
+                    date = DateUtils.parseDate(dateString, new String[] {"yyyyMMdd'T'HH:mm:ss"});
                 }
                 ret.put(Article.ARTICLE_CREATE_DATE, date);
             } else if ("title".equals(name)) {

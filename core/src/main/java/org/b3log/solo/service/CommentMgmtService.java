@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Aug 12, 2012
+ * @version 1.0.0.4, Jan 18, 2013
  * @since 0.3.5
  */
 public final class CommentMgmtService {
@@ -168,7 +169,7 @@ public final class CommentMgmtService {
             final Date date = TimeZones.getTime(timeZoneId);
 
             comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, Comment.DATE_FORMAT.format(date));
+            ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd hh:mm:ss"));
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
                 if (null != originalComment) {
@@ -288,7 +289,7 @@ public final class CommentMgmtService {
             final Date date = TimeZones.getTime(timeZoneId);
 
             comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, Comment.DATE_FORMAT.format(date));
+            ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd hh:mm:ss"));
 
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);

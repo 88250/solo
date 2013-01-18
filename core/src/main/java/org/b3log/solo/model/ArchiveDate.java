@@ -16,15 +16,11 @@
 package org.b3log.solo.model;
 
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-
-
 /**
  * This class defines all archive date model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jul 2, 2011
+ * @version 1.0.0.4, Jan 18, 2013
  */
 public final class ArchiveDate {
 
@@ -62,11 +58,6 @@ public final class ArchiveDate {
      * Archive date month.
      */
     public static final String ARCHIVE_DATE_MONTH = "archiveDateMonth";
-
-    /**
-     * Date format(yyyy/MM).
-     */
-    public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy/MM");
 
     /**
      * Private default constructor.

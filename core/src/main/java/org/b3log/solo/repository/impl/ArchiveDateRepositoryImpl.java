@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
@@ -34,7 +35,7 @@ import org.json.JSONObject;
  * Archive date repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Dec 31, 2011
+ * @version 1.0.0.7, Jan 18, 2013
  * @since 0.3.1
  */
 public final class ArchiveDateRepositoryImpl extends AbstractRepository implements ArchiveDateRepository {
@@ -54,7 +55,7 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
         long time = 0L;
 
         try {
-            time = ArchiveDate.DATE_FORMAT.parse(archiveDate).getTime();
+            time = DateUtils.parseDate(archiveDate, new String[] {"yyyy/MM"}).getTime();
         } catch (final ParseException e) {
             LOGGER.log(Level.SEVERE, "Can not parse archive date [" + archiveDate + "]", e);
             throw new RepositoryException("Can not parse archive date [" + archiveDate + "]");

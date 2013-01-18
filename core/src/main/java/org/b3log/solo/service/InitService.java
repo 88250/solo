@@ -25,6 +25,8 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
@@ -57,7 +59,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Jan 4, 2013
+ * @version 1.0.1.4, Jan 18, 2013
  * @since 0.4.0
  */
 public final class InitService {
@@ -345,11 +347,11 @@ public final class InitService {
      */
     public void archiveDate(final JSONObject article) throws RepositoryException {
         final Date createDate = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
-        final String createDateString = ArchiveDate.DATE_FORMAT.format(createDate);
+        final String createDateString = DateFormatUtils.format(createDate, "yyyy/MM");
         final JSONObject archiveDate = new JSONObject();
 
         try {
-            archiveDate.put(ArchiveDate.ARCHIVE_TIME, ArchiveDate.DATE_FORMAT.parse(createDateString).getTime());
+            archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate(createDateString, new String[] {"yyyy/MM"}).getTime());
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 1);
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 1);
 
