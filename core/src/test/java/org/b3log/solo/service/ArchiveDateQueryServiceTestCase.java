@@ -17,7 +17,8 @@ package org.b3log.solo.service;
 
 import java.util.Date;
 import java.util.List;
-
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
@@ -80,10 +81,10 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
     public void getByArchiveDateString() throws Exception {
         final ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
 
-        final String archiveDateString = ArchiveDate.DATE_FORMAT.format(new Date());
+        final String archiveDateString = DateFormatUtils.format(new Date(), "yyyy/MM");
         final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
         Assert.assertNotNull(result);
         Assert.assertEquals(result.getJSONObject(ArchiveDate.ARCHIVE_DATE).getLong(ArchiveDate.ARCHIVE_TIME), 
-                            ArchiveDate.DATE_FORMAT.parse(archiveDateString).getTime());
+                            DateUtils.parseDate(archiveDateString, new String[] {"yyyy/MM"}).getTime());
     }
 }
