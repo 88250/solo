@@ -50,7 +50,7 @@
 
             <div class="footerWrapper">
                 <div class="footer">
-                    &copy; ${year} - <a href="${blogHost}">${blogTitle}</a><br/>
+                    &copy; ${year} - <a href="${servePath}">${blogTitle}</a><br/>
                     Powered by
                     <a href="http://b3log.org" target="_blank">
                         ${b3logLabel}&nbsp;
