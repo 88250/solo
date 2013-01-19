@@ -55,7 +55,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.1.1.2, Jan 4, 2013
+ * @version 1.1.1.3, Jan 18, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -250,7 +250,7 @@ public final class LoginProcessor {
                 final String userPassword = user.optString(User.USER_PASSWORD);
                 final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
 
-                if (userPassword.equals(hashPassword)) {
+                if (MD5.hash(userPassword).equals(hashPassword)) {
                     Sessions.login(request, response, user);
                     LOGGER.log(Level.INFO, "Logged in with cookie[email={0}]", userEmail);
                 }
