@@ -7,7 +7,6 @@
         background-image: -webkit-linear-gradient(#FFFFFF,#E5E5E5);
         filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#FFFFFF', endColorstr='#E5E5E5');
         border-bottom: 1px solid #E5E5E5;
-        height: 26px;
         line-height: 26px;
         display: none;
     }

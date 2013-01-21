@@ -32,7 +32,7 @@
         <div class="clear"></div>
     </div>
 </div>
-<div id="goTop" onclick="Util.goTop()">TOP</div>
+<div class="ico-top none" onclick="Util.goTop()" title="TOP"></div>
 <script type="text/javascript">
     var latkeConfig = {
         "servePath": "${servePath}",
@@ -40,7 +40,7 @@
     };
     
     var Label = {
-        "tag1Label": "${tag1Label}",
+        "tagLabel": "${tagLabel}",
         "viewLabel": "${viewLabel}",
         "commentLabel": "${commentLabel}",
         "topArticleLabel": "${topArticleLabel}",

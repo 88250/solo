@@ -7,11 +7,7 @@
             <div class="arrow"></div>
             <time>
                 <span>
-                    <#if article.hasUpdated>
-                    ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
-                    <#else>
                     ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
-                    </#if>
                 </span>
             </time>
             <h2>
@@ -28,22 +24,30 @@
                     ${topArticleLabel}
                 </sup>
                 </#if>
-                <a rel="nofollow" href="${servePath}${article.articlePermalink}">
-                    ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
-                </a>
             </h2>
             <p>
                 ${article.articleAbstract}
             </p>
-            <span class="ico-author">
-                <a rel="author" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
-            </span>
-            <span class="ico-tags">
+            <span class="ico-tags" title="${tagLabel}">
                 <#list article.articleTags?split(",") as articleTag><a rel="category tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if></#list>
             </span>
-            <span class="ico-comment">
+            <span class="ico-author" title="${authorLabel}">
+                <a rel="author" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
+            </span>
+            <span class="ico-comment" title="${commentLabel}">
+                <#if article.articleCommentCount == 0>
+                <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                    ${noCommentLabel}
+                </a>
+                <#else>
                 <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
                     ${article.articleCommentCount}
+                </a>
+                </#if>
+            </span>
+            <span class="ico-view" title="${viewLabel}">
+                <a rel="nofollow" href="${servePath}${article.articlePermalink}">
+                    ${article.articleViewCount}
                 </a>
             </span>
         </div>

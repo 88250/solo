@@ -15,17 +15,13 @@
         </div>
         <#include "footer.ftl">
         <script>
-            var timeline = {
-                colH:[0, 20],
-                $articles:  $(".articles")
-            };
-            
+            timeline.$articles = $(".articles");
             $(window).resize(function () {
                 timeline.colH = [0, 20];
                 timeline.$articles.find("article").each(function () {
                     var $it = $(this),
                     isLeft = timeline.colH[1] > timeline.colH[0],
-                    left = isLeft ? 0 : parseInt(timeline.$articles.width() / 2),
+                    left = isLeft ? 0 : Math.floor(timeline.$articles.width() / 2),
                     top = isLeft ? timeline.colH[0] : timeline.colH[1];
                     $it.css({
                         "left": left + "px",
@@ -44,7 +40,7 @@
                 timeline.$articles.height(timeline.colH[0] > timeline.colH[1] ? timeline.colH[0] : timeline.colH[1]);
             });
             
-            $(window).resize();
+            $(window).resize();$(window).resize();
         </script>
     </body>
 </html>

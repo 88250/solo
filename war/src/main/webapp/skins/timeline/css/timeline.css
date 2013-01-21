@@ -57,6 +57,7 @@ a:hover {
 
 img {
     max-width: 100%;
+    vertical-align: middle;
 }
 
 ::selection {
@@ -222,14 +223,18 @@ img {
 .articles .arrow,
 .ico-author,
 .ico-tags, 
-.ico-comment {
+.ico-comment,
+.ico-top,
+.ico-view,
+#search {
     background-repeat: no-repeat;
     background-image: url("../../timeline/images/icons.png");
 }
 
 .ico-author,
 .ico-tags, 
-.ico-comment {
+.ico-comment,
+.ico-view {
     padding-left: 20px;
     background-position: -1px -63px;
     margin-right: 10px;
@@ -241,6 +246,41 @@ img {
 
 .ico-comment {
     background-position: -1px -41px;
+}
+
+.ico-view {
+    background-position: 0 -122px;
+} 
+
+#search {
+    background-position: 5px -138px;
+    border: medium none;
+    border-radius: 12px 12px 12px 12px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4) inset, 0 1px 0 rgba(255, 255, 255, 0.1);
+    color: #A5A099;
+    height: 22px;
+    margin-top: 14px;
+    padding-left: 25px;
+    transition: width 0.7s ease 0s;
+    width: 60px;
+}
+
+#search:focus {
+    color: #333;
+    width: 140px;
+}
+
+.ico-top {
+    background-color: #363A3D;
+    background-position: 4px -100px;
+    border-radius: 20em 20em 20em 20em;
+    bottom: 60px;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.3) inset, 0 1px 0 rgba(255, 255, 255, 0.15);
+    height: 25px;
+    position: fixed;
+    left: 90%;
+    width: 25px;
+    cursor: pointer;
 }
 /* end icon */
 
@@ -281,6 +321,28 @@ img {
 }
 /* end framework */
 
+/* start header */
+.header .title {
+    font-size: 150%;
+    margin: 3px 0 0;
+}
+
+.header a {
+    color: #414141;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.header a:hover {
+    color: #000;
+}
+
+.header li {
+    float: left;
+    list-style-type: none;
+    margin-right: 20px;
+}
+/* end header */
+
 /* start article list */
 .articles {
     position: relative;
@@ -309,6 +371,7 @@ img {
     border-radius: 5px 5px 5px 5px;
     margin-bottom: 20px;
     padding: 15px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .articles > article.l > div {
@@ -351,7 +414,7 @@ img {
 }
 
 .articles > article time {
-    top: -10px;    
+    top: -8px;    
     left: 50%;
     position: absolute;
 }

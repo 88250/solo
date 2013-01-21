@@ -20,6 +20,55 @@
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.0.1, Jan 14, 2013
  */
+var timeline = {
+    $articles: $(".articles"),
+    layoutArticleList: function () {
+        timeline.colH = [0, 20];
+        timeline.$articles.find("article").each(function () {
+            var $it = $(this),
+            isLeft = timeline.colH[1] > timeline.colH[0],
+            left = isLeft ? 0 : Math.floor(timeline.$articles.width() / 2),
+            top = isLeft ? timeline.colH[0] : timeline.colH[1];
+            $it.css({
+                "left": left + "px",
+                "top": top + "px"
+            });
+                
+            if (isLeft) {
+                $it.addClass("l");
+            } else {
+                $it.addClass("r");
+            }
+                
+            timeline.colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
+        });
+            
+        timeline.$articles.height(timeline.colH[0] > timeline.colH[1] ? timeline.colH[0] : timeline.colH[1]);
+    },
+    
+    initArticleList: function () {
+        $(window).resize(function () {
+            timeline.layoutArticleList();
+        });
+        $(window).resize();
+        $(window).resize();
+    },
+    
+    init: function () {
+        $(window).scroll(function () {
+           if ($(window).scrollTop() > 60) {
+               $(".ico-top").show();
+           } else {
+               $(".ico-top").hide();
+           }
+        });
+        
+        if ($(".articles").length === 1) {
+            timeline.initArticleList();
+        }
+    }
+};
+
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
 };
@@ -28,4 +77,6 @@ var goTranslate = function () {
     Util.init();
     Util.replaceSideEm($(".recent-comments-content"));
     Util.buildTags("tagsSide");
+    
+    timeline.init();
 })();
