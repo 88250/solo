@@ -22,8 +22,8 @@
  */
 var timeline = {
     $articles: $(".articles"),
-    layoutArticleList: function () {
-        timeline.colH = [0, 20];
+    _COLH: [0, 20],
+    _layoutArticleList: function () {
         timeline.$articles.find("article").each(function () {
             var $it = $(this),
             isLeft = timeline.colH[1] > timeline.colH[0],
@@ -44,11 +44,12 @@ var timeline = {
         });
             
         timeline.$articles.height(timeline.colH[0] > timeline.colH[1] ? timeline.colH[0] : timeline.colH[1]);
+        timeline.colH = timeline._COLH;
     },
     
-    initArticleList: function () {
+    _initArticleList: function () {
         $(window).resize(function () {
-            timeline.layoutArticleList();
+            timeline._layoutArticleList();
         });
         $(window).resize();
         $(window).resize();
@@ -56,15 +57,15 @@ var timeline = {
     
     init: function () {
         $(window).scroll(function () {
-           if ($(window).scrollTop() > 60) {
-               $(".ico-top").show();
-           } else {
-               $(".ico-top").hide();
-           }
+            if ($(window).scrollTop() > 60) {
+                $(".ico-top").show();
+            } else {
+                $(".ico-top").hide();
+            }
         });
         
         if ($(".articles").length === 1) {
-            timeline.initArticleList();
+            timeline._initArticleList();
         }
     }
 };
