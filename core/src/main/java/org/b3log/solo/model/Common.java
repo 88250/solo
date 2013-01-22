@@ -21,7 +21,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.4.8, May 4, 2012
+ * @version 1.0.4.9, Jan 22, 2013
  * @since 0.3.1
  */
 public final class Common {
@@ -145,6 +145,11 @@ public final class Common {
      * Author name.
      */
     public static final String AUTHOR_NAME = "authorName";
+
+    /**
+     * Author thumbnail URL.
+     */
+    public static final String AUTHOR_THUMBNAIL_URL = "authorThumbnailURL";
 
     /**
      * Author id.

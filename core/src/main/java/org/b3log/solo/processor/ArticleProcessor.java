@@ -44,6 +44,7 @@ import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
@@ -67,7 +68,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.7, Jan 18, 2013
+ * @version 1.1.2.8, Jan 22, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -1086,6 +1087,11 @@ public final class ArticleProcessor {
         dataModel.put(Keys.OBJECT_ID, authorId);
 
         dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
+        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(author.optString(User.USER_EMAIL)) + "?s=60&d="
+            + Latkes.getStaticServePath() + "/images/default-user-thumbnail.png";
+
+        dataModel.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
+
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
 
         filler.fillBlogFooter(dataModel, preference);
