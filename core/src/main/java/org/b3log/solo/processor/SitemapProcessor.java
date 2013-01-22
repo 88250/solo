@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Site map (sitemap) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jun 11, 2012
+ * @version 1.0.0.5, Jan 18, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -248,7 +248,7 @@ public final class SitemapProcessor {
         for (int i = 0; i < archiveDates.length(); i++) {
             final JSONObject archiveDate = archiveDates.getJSONObject(i);
             final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
-            final String dateString = ArchiveDate.DATE_FORMAT.format(time);
+            final String dateString = DateFormatUtils.format(time, "yyyy/MM");
 
             final URL url = new URL();
 

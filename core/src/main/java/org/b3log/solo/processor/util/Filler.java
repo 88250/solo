@@ -25,11 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.solo.util.Articles;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.TagRepository;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
@@ -43,15 +39,14 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.*;
 import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.model.ArchiveDate;
-import org.b3log.solo.model.Link;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArchiveDateRepository;
+import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
@@ -62,6 +57,7 @@ import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.StatisticQueryService;
+import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.Users;
 import org.json.JSONArray;
@@ -73,7 +69,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.1, Aug 9, 2012
+ * @version 1.0.6.2, Jan 18, 2013
  * @since 0.3.1
  */
 public final class Filler {
@@ -287,7 +283,7 @@ public final class Filler {
 
             for (final JSONObject archiveDate : archiveDates) {
                 final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
-                final String dateString = ArchiveDate.DATE_FORMAT.format(time);
+                final String dateString = DateFormatUtils.format(time, "yyyy/MM");
                 final String[] dateStrings = dateString.split("/");
                 final String year = dateStrings[0];
                 final String month = dateStrings[1];

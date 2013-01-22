@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
@@ -66,7 +67,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.6, Jan 7, 2013
+ * @version 1.1.2.7, Jan 18, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -1134,7 +1135,7 @@ public final class ArticleProcessor {
 
         filler.fillBlogFooter(dataModel, preference);
         final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
-        final String dateString = ArchiveDate.DATE_FORMAT.format(time);
+        final String dateString = DateFormatUtils.format(time, "yyyy/MM");
         final String[] dateStrings = dateString.split("/");
         final String year = dateStrings[0];
         final String month = dateStrings[1];

@@ -1,9 +1,17 @@
-<ul>
+<div class="content articles">
+    <div class="vertical"></div>
     <#list articles as article>
-    <li class="article<#if !article_has_next> article-last</#if>">
-        <div class="article-title">
+    <article<#if !article_has_next> class="last"</#if>>
+        <div>
+            <div class="dot"></div>
+            <div class="arrow"></div>
+            <time>
+                <span>
+                    ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
+                </span>
+            </time>
             <h2>
-                <a rel="bookmark" class="ft-gray" href="${servePath}${article.articlePermalink}">
+                <a rel="bookmark" href="${servePath}${article.articlePermalink}">
                     ${article.articleTitle}
                 </a>
                 <#if article.hasUpdated>
@@ -17,41 +25,35 @@
                 </sup>
                 </#if>
             </h2>
-            <div class="right">
-                <a rel="nofollow" class="ft-gray" href="${servePath}${article.articlePermalink}#comments">
-                    ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
-                </a>&nbsp;&nbsp;
-                <a rel="nofollow" class="ft-gray" href="${servePath}${article.articlePermalink}">
-                    ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
-                </a>
-            </div>
-            <div class="clear"></div>
-        </div>
-        <div class="article-body">
-            <div id="abstract${article.oId}">
+            <p>
                 ${article.articleAbstract}
-            </div>
-            <div id="content${article.oId}" class="none"></div>
+            </p>
+            <span class="ico-tags" title="${tagLabel}">
+                <#list article.articleTags?split(",") as articleTag><a rel="category tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if></#list>
+            </span>
+            <span class="ico-author" title="${authorLabel}">
+                <a rel="author" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
+            </span>
+            <span class="ico-comment" title="${commentLabel}">
+                <#if article.articleCommentCount == 0>
+                <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                    ${noCommentLabel}
+                </a>
+                <#else>
+                <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                    ${article.articleCommentCount}
+                </a>
+                </#if>
+            </span>
+            <span class="ico-view" title="${viewLabel}">
+                <a rel="nofollow" href="${servePath}${article.articlePermalink}">
+                    ${article.articleViewCount}
+                </a>
+            </span>
         </div>
-        <div class="right ft-gray">
-            <#if article.hasUpdated>
-            ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
-            <#else>
-            ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
-            </#if>
-            <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
-        </div>
-        <div class="left ft-gray">
-            ${tag1Label}
-            <#list article.articleTags?split(",") as articleTag>
-            <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
-                ${articleTag}</a><#if articleTag_has_next>, </#if>
-            </#list>
-        </div>
-        <div class="clear"></div>
-    </li>
+    </article>
     </#list>
-</ul>
+</div>
 <#if paginationCurrentPageNum != paginationPageCount && 0 != paginationPageCount>
 <div class="article-next ft-gray" onclick="getNextPage()" data-page="${paginationCurrentPageNum}">${moreLabel}</div>
 </#if>
