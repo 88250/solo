@@ -1,35 +1,25 @@
 <div class="footer">
-    <div class="wrapper">
+    <div class="container fn-clear">
         <div class="left">
-            <span class="ft-gray">&copy; ${year}</span> - <a href="${servePath}">${blogTitle}</a>
+            <span>&copy; ${year}</span> - <a href="${servePath}">${blogTitle}</a>
             Powered by
-            <a href="http://b3log.org" target="_blank" class="logo">
+            <a href="http://b3log.org" target="_blank">
                 ${b3logLabel}&nbsp;
-                <span style="color: orangered; font-weight: bold;">Solo</span></a>,
-            ver ${version}&nbsp;&nbsp;
-            Theme by <a rel="friend" rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+                <b style="color: orangered;">Solo</b></a>,
+                ver ${version}&nbsp;&nbsp;
+                Theme by <a rel="friend" rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         </div>
         <div class="right">
-            <div class="left">
-                ${viewCount1Label}
-                <span class="ft-gray">
-                    ${statistic.statisticBlogViewCount}
-                </span>
-                &nbsp;&nbsp;
-                ${articleCount1Label}
-                <span class="ft-gray">
-                    ${statistic.statisticPublishedBlogArticleCount}
-                </span>
-                &nbsp;&nbsp;
-                ${commentCount1Label}
-                <span class="ft-gray">
-                    ${statistic.statisticPublishedBlogCommentCount}
-                </span>
-            </div>
-            <span class="translate-ico" onclick="goTranslate()"></span>
-            <div class="clear"></div>
+            ${viewCount1Label}
+            ${statistic.statisticBlogViewCount}
+            &nbsp;&nbsp;
+            ${articleCount1Label}
+            ${statistic.statisticPublishedBlogArticleCount}
+            &nbsp;&nbsp;
+            ${commentCount1Label}
+            ${statistic.statisticPublishedBlogCommentCount}
+            <span class="ico-translate" onclick="timeline.translate()"></span>
         </div>
-        <div class="clear"></div>
     </div>
 </div>
 <div class="ico-top none" onclick="Util.goTop()" title="TOP"></div>

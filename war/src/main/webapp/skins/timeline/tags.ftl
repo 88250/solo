@@ -10,9 +10,9 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper">
-                <ul id="tags" class="other-main">
+        <div class="wrapper">
+            <div class="container">
+                <ul id="tags" class="module fn-clear">
                     <#list tags as tag>
                     <li>
                         <a rel="tag" data-count="${tag.tagPublishedRefCount}"
@@ -23,7 +23,6 @@
                     </li>
                     </#list>
                 </ul>
-                <div class="clear"></div>
             </div>
         </div>
         <#include "footer.ftl">
