@@ -92,7 +92,7 @@ admin.pluginList = {
                     }
                     datas[i].expendRow += "</a>  ";
                     
-                    datas[i].expendRow +="<a href='javascript:void(0)'> "+Label.settingLabel+" </a>  ";
+                    datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.plugin.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
                 }
                 
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
@@ -100,6 +100,10 @@ admin.pluginList = {
                 $("#loadMsg").text("");
             }
         });
+    },
+    
+    toSetting:function(pluginId){
+    	
     },
     
     changeStatus: function (pluginId, status) {
@@ -131,6 +135,8 @@ admin.pluginList = {
             }
         });
     }
+
+    
 };
 
 /*

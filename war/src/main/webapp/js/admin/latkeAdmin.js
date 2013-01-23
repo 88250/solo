@@ -3053,7 +3053,7 @@ admin.pluginList = {
                     }
                     datas[i].expendRow += "</a>  ";
                     
-                    datas[i].expendRow +="<a href='javascript:void(0)'> "+Label.settingLabel+" </a>  ";
+                    datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.plugin.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
                 }
                 
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
@@ -3061,6 +3061,10 @@ admin.pluginList = {
                 $("#loadMsg").text("");
             }
         });
+    },
+    
+    toSetting:function(pluginId){
+    	
     },
     
     changeStatus: function (pluginId, status) {
@@ -3092,6 +3096,8 @@ admin.pluginList = {
             }
         });
     }
+
+    
 };
 
 /*
@@ -3612,6 +3618,32 @@ admin.plugin = {
         if (data.index && pathList.length < 2) {
             this._addNew(data, pathList);
         }
+    },
+    
+    toSetting:function(pluginId){
+    	
+    	var requestJSONObject = {
+            "oId": pluginId
+        };
+    	$.ajax({
+            url: latkeConfig.servePath + "/console/plugin/toSetting",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+            	$("#loadMsg").text(Label.loadingLabel);
+            	$("#tipMsg").text(result.msg);
+                if (!result.sc) {
+                    $("#loadMsg").text("");
+                    return;
+                }
+                
+                //where to put the id?
+                $("#PluginSetting").dialog("open");
+                $("#loadMsg").text("");
+            }
+        });
+    	
     },
     
     /*

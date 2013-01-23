@@ -16,13 +16,17 @@
 package org.b3log.solo.processor.console;
 
 
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Plugin;
+import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -32,6 +36,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.processor.console.common.ProcessAuthAdvice;
+import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.QueryResults;
@@ -175,4 +180,42 @@ public final class PluginConsole {
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
     }
+
+    /**
+     * get the info of the specified pluginoId,just fot the plugin-setting.
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @param renderer the specified {@link ConsoleRenderer}
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/plugin/toSetting", method = HTTPRequestMethod.POST)
+    public void toSetting(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+        final ConsoleRenderer renderer) throws Exception {
+
+        context.setRenderer(renderer);
+
+        try {
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            final String pluginoId = requestJSONObject.getString(Keys.OBJECT_ID);
+            
+            final AbstractPlugin result = pluginQueryService.getPlugin(pluginoId);
+
+            renderer.setTemplateName("admin-plugin-setting.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            dataModel.put(Plugin.PLUGIN, result);
+            
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONRenderer jsonRenderer = new JSONRenderer();
+
+            jsonRenderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+
+    }
+
 }

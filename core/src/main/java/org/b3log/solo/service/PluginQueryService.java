@@ -121,6 +121,31 @@ public final class PluginQueryService {
     }
 
     /**
+     * get the {@link AbstractPlugin} by the specified pluginoId.
+     * 
+     * @param pluginoId the specified pluginId
+     * @return the {@link AbstractPlugin}
+     * @throws ServiceException service exception
+     */
+    public AbstractPlugin getPlugin(final String pluginoId) throws ServiceException {
+
+        final List<AbstractPlugin> plugins = PluginManager.getInstance().getPlugins();
+        AbstractPlugin ret = null;
+
+        for (final AbstractPlugin plugin : plugins) {
+            if (plugin.getId().equals(pluginoId)) {
+                ret = plugin;
+            }
+        }
+        if (ret == null) {
+            LOGGER.log(Level.SEVERE, "can not find plugin[" + pluginoId + "]");
+            throw new ServiceException("can not find plugin[" + pluginoId + "]");
+        }
+
+        return ret;
+    }
+
+    /**
      * Gets the {@link PluginQueryService} singleton.
      *
      * @return the singleton

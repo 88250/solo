@@ -39,6 +39,32 @@ admin.plugin = {
         }
     },
     
+    toSetting:function(pluginId){
+    	
+    	var requestJSONObject = {
+            "oId": pluginId
+        };
+    	$.ajax({
+            url: latkeConfig.servePath + "/console/plugin/toSetting",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+            	$("#loadMsg").text(Label.loadingLabel);
+            	$("#tipMsg").text(result.msg);
+                if (!result.sc) {
+                    $("#loadMsg").text("");
+                    return;
+                }
+                
+                //where to put the id?
+                $("#PluginSetting").dialog("open");
+                $("#loadMsg").text("");
+            }
+        });
+    	
+    },
+    
     /*
      * 根据当前 hash 初始化或刷新插件
      */
