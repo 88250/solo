@@ -387,6 +387,12 @@ $.extend(Page.prototype, {
             }
         });
         
+        $("#comment").keypress(function (event) {
+            if (event.keyCode === 13 && event.ctrlKey) {
+                that.submitComment();
+            }
+        });
+        
         // captcha
         $("#captcha").click(function () {
             $(this).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
@@ -641,6 +647,13 @@ $.extend(Page.prototype, {
             $("#replyForm #emotions").attr("id", "emotionsReply");
             
             this.insertEmotions("Reply");
+            
+            $("#commentReply").unbind().keypress(function (event) {
+                if (event.keyCode === 13 && event.ctrlKey) {
+                    that.submitComment(id, 'Reply');
+                    event.preventDefault();
+                }
+            });
             
             $("#commentValidateReply").unbind().keypress(function (event) {
                 if (event.keyCode === 13) {

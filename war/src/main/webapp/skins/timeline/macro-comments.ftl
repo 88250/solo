@@ -113,22 +113,22 @@
     });
 
     var addComment = function (result, state) {
-        var commentHTML = '<div id="' + result.oId + '"><img class="comment-header" \
+        var commentHTML = '<li id="' + result.oId + '"><img \
             title="' + $("#commentName" + state).val() + '" alt="' + $("#commentName" + state).val() + 
-            '" src="' + result.commentThumbnailURL + '"/><div class="comment-panel"><div class="left">' + result.replyNameHTML;
+            '" src="' + result.commentThumbnailURL + '"/><div><span class="author">' + result.replyNameHTML;
 
         if (state !== "") {
-            var commentOriginalCommentName = $("#" + page.currentCommentId + " .comment-panel>.left a").first().text();
+            var commentOriginalCommentName = $("#" + page.currentCommentId + " .author > a").first().text();
             commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                 + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 20);"'
                 + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
         }
             
-        commentHTML += '</div><div class="right ft-gray">' +  result.commentDate.substring(2, 16)
-            + '&nbsp;<a rel="nofollow" href="javascript:replyTo(\'' + result.oId 
-            + '\');">${replyLabel}</a></div><span class="clear"></span><div class="article-body">' + 
-            Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
-            + '</div></div><span class="clear"></span></div>';
+        commentHTML += '</span>&nbsp;<small><b>' +  result.commentDate.substring(2, 16)
+            + '</b></small><span class="ico-reply ico right"><a rel="nofollow" href="javascript:replyTo(\'' + result.oId 
+            + '\');">${replyLabel}</a></span><p>' 
+            + Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
+            + '</p></div></li>';
 
         return commentHTML;
     }

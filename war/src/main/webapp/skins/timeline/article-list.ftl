@@ -6,12 +6,12 @@
             <div class="module">
                 <div class="dot"></div>
                 <div class="arrow"></div>
-                <time>
+                <time class="article-time">
                     <span>
                         ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
                     </span>
                 </time>
-                <h2>
+                <h2 class="article-title">
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">
                         ${article.articleTitle}
                     </a>

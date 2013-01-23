@@ -330,6 +330,32 @@ img {
     width: 25px;
     cursor: pointer;
 }
+
+.ico-next,
+.ico-pre {
+    background: none repeat scroll 0 0 #6599C6;
+    border-radius: 10em 10em 10em 10em;
+    color: #FFFFFF;
+    display: block;
+    float: left;
+    font: 20px/100% "Times New Roman",Times,serif;
+    height: 28px;
+    margin: -8px 10px 0 0;
+    padding: 4px 0 0;
+    text-align: center;
+    transition: background 1s ease 0s;
+    width: 32px;
+}
+
+.ico-next {
+    float: right;
+    margin: -8px 0 0 10px;
+}
+
+a:hover > .ico-next,
+a:hover > .ico-pre {
+    background-color: #000;
+}
 /* end icon */
 
 /* start framework */
@@ -465,13 +491,21 @@ img {
     right: inherit
 }
 
-.articles > article time {
+.article {
+    position: relative;
+}
+
+time.article-time {
     top: -8px;    
     left: 50%;
     position: absolute;
 }
 
-.articles > article time > span {
+.article time.article-time {
+    top: -40px;
+}
+
+time.article-time > span {
     background-color: #FFFFFF;
     border: 1px solid #A8A9A9;
     border-radius: 20em 20em 20em 20em;
@@ -480,11 +514,11 @@ img {
     padding: 5px 10px;
 }
 
-.articles > article > div > h2 {
+article .article-title {
     margin: 0;
 }
 
-.articles > article > div > h2 > a {
+article .article-title a {
     color: #000;
     text-decoration: none;
 }
@@ -557,6 +591,11 @@ img {
 
 .comment-form {
     width: 100%;
+    margin: 30px 0;
+}
+
+#commentForm {
+    margin-top: 0;    
 }
 
 .comment-form input[type='text'],
@@ -566,7 +605,7 @@ img {
     border-radius: 5px 5px 5px 5px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
     margin: 5px 5px 5px 0;
-    padding: 6px 10px;
+    padding: 6px;
 }
 
 .comment-form input[type='text']:focus,
@@ -606,5 +645,7 @@ img {
     position: absolute;
     right: 30px;
     top: 61px;
+    z-index: 1;
+    text-align: center;
 }
 /* end others */

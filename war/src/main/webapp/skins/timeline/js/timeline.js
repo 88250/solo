@@ -59,7 +59,7 @@ var timeline = {
     
     _setNavCurrent: function () {
         $(".header li a").each(function () {
-            if($(this).attr("href") === location.href) {
+            if($(this).attr("href") === location.href.split("#")[0]) {
                 this.className = "current";
             } else {
                 this.className = "";
