@@ -200,7 +200,7 @@
             </activation>
             <properties>
                 <jacobeExecutable>
-                    ../src/main/resources/etc/jacobe/linux/jacobe.exe
+                    ../src/main/resources/etc/jacobe/linux/jacobe
                 </jacobeExecutable>
             </properties>
         </profile>
