@@ -350,6 +350,8 @@ public final class ArticleMgmtService {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
+            
+            LOGGER.log(Level.SEVERE, "Updates an article failed", e);
 
             throw e;
         } catch (final Exception e) {
