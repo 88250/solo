@@ -3051,7 +3051,9 @@ admin.pluginList = {
                         datas[i].status = Label.disabledLabel;
                         datas[i].expendRow += Label.enableLabel;
                     }
-                    datas[i].expendRow += "</a>";
+                    datas[i].expendRow += "</a>  ";
+                    
+                    datas[i].expendRow +="<a href='javascript:void(0)'> "+Label.settingLabel+" </a>  ";
                 }
                 
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
