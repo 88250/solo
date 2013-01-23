@@ -11,9 +11,9 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper">
-                <div class="article">
+        <div class="wrapper">
+            <div class="container">
+                <div class="module">
                     <div class="article-title">
                         <h2>
                             <a class="ft-gray" href="${servePath}${article.articlePermalink}">
@@ -57,7 +57,6 @@
                         <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                     </div>
                     <div class="left ft-gray">
-                        ${tag1Label}
                         <#list article.articleTags?split(",") as articleTag>
                         <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
                         </#list>
@@ -85,10 +84,11 @@
                     </div>
                     </#if>
                     <div class="clear"></div>
+                    <@comments commentList=articleComments article=article></@comments>
                 </div>
-                <@comments commentList=articleComments article=article></@comments>
             </div>
         </div>
+
         <#include "footer.ftl">
         <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";

@@ -10,99 +10,130 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper dynamic">
-                <div class="other-main">
-                    <#if 0 != recentComments?size>
-                    <div class="module side-comments">
-                        <h3 class="ft-gray">${recentCommentsLabel}</h3>
-                        <ul>
-                            <#list recentComments as comment>
-                            <li>
-                                <img class='comment-header'
-                                     alt='${comment.commentName}'
-                                     src='${comment.commentThumbnailURL}'/>
-                                <div class='comment-panel'>
-                                    <span class="left">
-                                        <#if "http://" == comment.commentURL>
-                                        ${comment.commentName}
+        <div class="wrapper">
+            <div class="container">
+                <div class="fn-clear">
+                    <div class="dynamic-l">
+                        <#if "" != noticeBoard>
+                        <div class="module">
+                            ${noticeBoard}
+                        </div>
+                        </#if>
+                        <#if 0 != recentComments?size>
+                        <div class="module">
+                            <h3>${recentCommentsLabel}</h3>
+                            <ul class="comments">
+                                <#list recentComments as comment>
+                                <li>
+                                    <img
+                                        alt='${comment.commentName}'
+                                        src='${comment.commentThumbnailURL}'/>
+                                    <div>
+                                        <span class="author">
+                                            <#if "http://" == comment.commentURL>
+                                            ${comment.commentName}
+                                            <#else>
+                                            <a target="_blank" href="${comment.commentURL}">${comment.commentName}</a>
+                                            </#if>
+                                        </span>
+                                        <small><b>${comment.commentDate?string("yyyy-MM-dd HH:mm")}</b></small>
+                                        <span class="ico ico-view right">
+                                            <a rel="nofollow" href="${servePath}${comment.commentSharpURL}">
+                                                ${viewLabel}
+                                            </a>
+                                        </span>
+                                        <p>   
+                                            ${comment.commentContent}
+                                        </p>
+                                    </div>
+                                </li>
+                                </#list>
+                            </ul>
+                        </div>
+                        </#if>
+                    </div>
+                    <div class="dynamic-r">
+                        <#if 0 != mostCommentArticles?size>
+                        <div class="module">
+                            <h3>${mostCommentArticlesLabel}</h3>
+                            <ul>
+                                <#list mostCommentArticles as article>
+                                <li class="fn-clear">
+                                    <a class="left" rel="nofollow" title="${article.articleTitle}" 
+                                       href="${servePath}${article.articlePermalink}">
+                                        ${article.articleTitle}
+                                    </a>
+                                    <span class="ico ico-comment right" title="${commentLabel}">
+                                        <#if article.articleCommentCount == 0>
+                                        <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                                            ${noCommentLabel}
+                                        </a>
                                         <#else>
-                                        <a target="_blank" href="${comment.commentURL}">${comment.commentName}</a>
+                                        <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                                            ${article.articleCommentCount}
+                                        </a>
                                         </#if>
                                     </span>
-                                    <div class="right ft-gray">
-                                        ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                        <a rel="nofollow" href="${servePath}${comment.commentSharpURL}">${viewLabel}</a>
-                                    </div>
-                                    <span class="clear"></span>
-                                    <div class="article-body">   
-                                        ${comment.commentContent}
-                                    </div>
-                                </div>
-                                <div class='clear'></div>
-                            </li>
-                            </#list>
-                        </ul>
-                    </div>
-                    </#if>
-                    <#if 0 != mostUsedTags?size>
-                    <div class="module side-tags">
-                        <h3 class="ft-gray">${popTagsLabel}</h3>
-                        <ul>
+                                </li>
+                                </#list>
+                            </ul>
+                        </div>
+                        </#if>
+                        <#if 0 != mostViewCountArticles?size>
+                        <div class="module">
+                            <h3>${mostViewCountArticlesLabel}</h3>
+                            <ul>
+                                <#list mostViewCountArticles as article>
+                                <li class="fn-clear">
+                                    <a rel="nofollow" class="left" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
+                                        ${article.articleTitle}
+                                    </a>
+                                    <span class="ico ico-view right" title="${viewLabel}">
+                                        <a rel="nofollow" href="${servePath}${article.articlePermalink}">
+                                            ${article.articleViewCount}
+                                        </a>
+                                    </span>
+                                </li>
+                                </#list>
+                            </ul>
+                        </div>
+                        </#if>
+                        <#if 0 != mostUsedTags?size>
+                        <div class="module tags">
+                            <h3>${popTagsLabel}</h3>
                             <#list mostUsedTags as tag>
-                            <li>
-                                <a rel="tag" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" 
-                                   title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
-                                    <span>${tag.tagTitle}</span>
-                                </a>
-                            </li>
+                            <a rel="tag" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" 
+                               title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
+                                ${tag.tagTitle}
+                            </a>&nbsp; &nbsp;
                             </#list>
-                        </ul>
-                        <div class="clear"></div>
+                            </ul>
+                        </div>
+                        </#if>
                     </div>
-                    </#if>
-                    <div class="clear"></div>
-                    <#if 0 != mostCommentArticles?size>
-                    <div class="module side-most-comment">
-                        <h3 class="ft-gray">${mostCommentArticlesLabel}</h3>
-                        <ul>
-                            <#list mostCommentArticles as article>
-                            <li>
-                                <a rel="nofollow" class="left" title="${article.articleTitle}" 
-                                   href="${servePath}${article.articlePermalink}">
-                                    ${article.articleTitle}
-                                </a>
-                                <a rel="nofollow" class="ft-gray right" href="${servePath}${article.articlePermalink}#comments">
-                                    ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
-                                </a>
-                                <span class="clear"></span>
-                            </li>
-                            </#list>
-                        </ul>
-                    </div>
-                    </#if>
-                    <#if 0 != mostViewCountArticles?size>
-                    <div class="module side-most-view">
-                        <h3 class="ft-gray">${mostViewCountArticlesLabel}</h3>
-                        <ul>
-                            <#list mostViewCountArticles as article>
-                            <li>
-                                <a rel="nofollow" class="left" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
-                                    ${article.articleTitle}
-                                </a>
-                                <a rel="nofollow" class="ft-gray right" href="${servePath}${article.articlePermalink}">
-                                    ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
-                                </a>
-                                <span class="clear"></span>
-                            </li>
-                            </#list>
-                        </ul>
-                    </div>
-                    </#if>
-                    <div class="clear"></div>
                 </div>
+                <#if 0 != links?size>
+                <div class="module links">
+                    <h3>${linkLabel}</h3>
+                    <#list links as link>
+                    <span>
+                        <a rel="friend" href="${link.linkAddress}" alt="${link.linkTitle}" target="_blank">
+                            <img alt="${link.linkTitle}"
+                                 src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" /></a>
+                        <a rel="friend" href="${link.linkAddress}" title="${link.linkDescription}" target="_blank">
+                            ${link.linkTitle}
+                        </a>
+                    </span> &nbsp; &nbsp;
+                    </#list>
+                </div>
+                </#if>
             </div>
         </div>
         <#include "footer.ftl">
+        <script>
+            $(".comments > li > div > p").each(function () {
+                this.innerHTML = Util.replaceEmString($(this).html());
+            });
+        </script>
     </body>
 </html>

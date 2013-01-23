@@ -21,38 +21,50 @@
  * @version 1.0.0.1, Jan 14, 2013
  */
 var timeline = {
-    $articles: $(".articles"),
-    _COLH: [0, 20],
-    _layoutArticleList: function () {
-        timeline.$articles.find("article").each(function () {
-            var $it = $(this),
-            isLeft = timeline.colH[1] > timeline.colH[0],
-            left = isLeft ? 0 : Math.floor(timeline.$articles.width() / 2),
-            top = isLeft ? timeline.colH[0] : timeline.colH[1];
-            $it.css({
-                "left": left + "px",
-                "top": top + "px"
-            });
-                
-            if (isLeft) {
-                $it.addClass("l");
-            } else {
-                $it.addClass("r");
-            }
-                
-            timeline.colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
-        });
+    _COLHA: 0,
+    _COLHB: 20,
+    _initArticleList: function () {
+        var $articles = $(".articles");
+        if ($articles.length === 0) {
+            return;
+        }
             
-        timeline.$articles.height(timeline.colH[0] > timeline.colH[1] ? timeline.colH[0] : timeline.colH[1]);
-        timeline.colH = timeline._COLH;
+        $(window).resize(function () {
+            var colH = [timeline._COLHA, timeline._COLHB];
+            $articles.find("article").each(function () {
+                var $it = $(this),
+                isLeft = colH[1] > colH[0],
+                left = isLeft ? 0 : "inherit",
+                top = isLeft ? colH[0] : colH[1];
+                $it.css({
+                    "left": left + "px",
+                    "top": top + "px",
+                    "position": "absolute"
+                });
+                
+                if (isLeft) {
+                    $it.addClass("l");
+                } else {
+                    $it.addClass("r");
+                }
+                
+                colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
+            });
+            
+            $articles.height(colH[0] > colH[1] ? colH[0] : colH[1]);
+        });
+        
+        $(window).resize();
     },
     
-    _initArticleList: function () {
-        $(window).resize(function () {
-            timeline._layoutArticleList();
-        });
-        $(window).resize();
-        $(window).resize();
+    _setNavCurrent: function () {
+        $(".header li a").each(function () {
+            if($(this).attr("href") === location.href) {
+                this.className = "current";
+            } else {
+                this.className = "";
+            }
+        })
     },
     
     init: function () {
@@ -63,15 +75,13 @@ var timeline = {
                 $(".ico-top").hide();
             }
         });
-        
-        if ($(".articles").length === 1) {
-            timeline._initArticleList();
-        }
+        timeline._initArticleList();
+        timeline._setNavCurrent();
+    },
+    
+    translate: function () {
+        window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
     }
-};
-
-var goTranslate = function () {
-    window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
 };
 
 (function () {

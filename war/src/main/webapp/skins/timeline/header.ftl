@@ -1,5 +1,5 @@
 <div class="header">
-    <div class="wrapper fn-clear">
+    <div class="container fn-clear">
         <div class="left">
             <h1 class="title">
                 <a href="${servePath}">
@@ -21,17 +21,11 @@
                 <a href="${servePath}/tags.html">${allTagsLabel}</a>  
             </li>
             <li>
-                <a href="${servePath}/archives.html">${archiveLabel}</a>
-            </li>
-            <li>
-                <a href="${servePath}/links.html">${linkLabel}</a>
-            </li>
-            <li>
                 <a rel="alternate" href="${servePath}/blog-articles-feed.do">Atom <img src="${staticServePath}/images/feed.png" alt="Atom"/></a>
             </li>
         </ul>
         <form class="right" target="_blank" method="get" action="http://www.google.com/search">
-            <input id="search" type="text" name="q" />
+            <input placeholder="${searchLabel}" id="search" type="text" name="q" />
             <input type="submit" name="btnG" value="" class="none" />
             <input type="hidden" name="oe" value="UTF-8" />
             <input type="hidden" name="ie" value="UTF-8" />

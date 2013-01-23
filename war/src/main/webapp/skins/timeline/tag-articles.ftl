@@ -10,18 +10,12 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper">
-                <h2>
-                    <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}">
-                        ${tag1Label}
-                        ${tag.tagTitle}
-                        (${tag.tagPublishedRefCount})
-                    </a>
-                </h2>
-                <#include "article-list.ftl">
-            </div>
-        </div>
+        <h2 class="nav-abs" onclick="window.location.href='${servePath}/tag-articles-feed.do?oId=${tag.oId}'"> 
+            ${tag.tagTitle}
+            (${tag.tagPublishedRefCount})
+            <img src="${staticServePath}/images/feed.png" alt="Atom"/>
+        </h2>
+        <#include "article-list.ftl">
         <#include "footer.ftl">
     </body>
 </html>
