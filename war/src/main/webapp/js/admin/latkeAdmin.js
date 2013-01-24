@@ -3068,14 +3068,13 @@ admin.pluginList = {
             }
         });
     },
-    
+ 
     toSetting:function(pluginId){
         $("#loadMsg").text(Label.loadingLabel);
                 
         var requestJSONObject = {
             "oId": pluginId
-        },
-        that = this;
+        };
         
         $.ajax({
             url: latkeConfig.servePath + "/console/plugin/toSetting",
@@ -3093,6 +3092,7 @@ admin.pluginList = {
         });
     },
     
+ 
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {
             status = "DISABLED";
@@ -3135,7 +3135,8 @@ admin.register["plugin-list"] =  {
     "refresh": function () {
         $("#loadMsg").text("");
     }
-}/*
+}
+/*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3738,7 +3739,8 @@ admin.plugin = {
                 break;
         }
     }
-};/*
+};
+/*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
