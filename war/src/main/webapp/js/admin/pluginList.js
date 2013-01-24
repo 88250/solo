@@ -92,7 +92,7 @@ admin.pluginList = {
                     }
                     datas[i].expendRow += "</a>  ";
                     
-                    datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.plugin.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
+                    datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
                 }
                 
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
@@ -103,7 +103,32 @@ admin.pluginList = {
     },
     
     toSetting:function(pluginId){
-    	
+        $("#loadMsg").text(Label.loadingLabel);
+                
+        var requestJSONObject = {
+            "oId": pluginId
+        };
+        
+        $.ajax({
+            url: latkeConfig.servePath + "/console/plugin/toSetting",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+                
+                $("#PluginSetting").html(result);
+                $("#PluginSetting").dialog({
+                    width: 700,
+                    height: 190,
+                    "modal": true,
+                    "hideFooter": true
+                });
+                $("#PluginSetting").dialog("open");
+                
+                $("#loadMsg").text("");
+            }
+        });
     },
     
     changeStatus: function (pluginId, status) {
