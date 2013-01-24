@@ -362,6 +362,8 @@ public final class ArticleQueryService {
                     // Skips the unpublished article
                     continue;
                 }
+                
+                article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
 
                 // Markdown to HTML for content and abstract
                 markdown(article);
@@ -420,6 +422,8 @@ public final class ArticleQueryService {
                     // Skips the unpublished article
                     continue;
                 }
+                
+                article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
 
                 // Markdown to HTML for content and abstract
                 markdown(article);
@@ -649,6 +653,8 @@ public final class ArticleQueryService {
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
 
+                article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
+                
                 // Markdown to HTML for content and abstract
                 markdown(article);
 

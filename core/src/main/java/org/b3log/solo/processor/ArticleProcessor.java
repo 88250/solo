@@ -567,6 +567,70 @@ public final class ArticleProcessor {
     }
 
     /**
+     * Gets author articles paged with the specified context.
+     * 
+     * @param context the specified context
+     * @param request the specified request
+     */
+    @RequestProcessing(value = "/articles/authors/\\d+/\\d+", uriPatternsMode = URIPatternMode.REGEX,
+        method = HTTPRequestMethod.GET)
+    public void getAuthorsArticlesByPage(final HTTPRequestContext context, final HttpServletRequest request) {
+        final JSONObject jsonObject = new JSONObject();
+
+        final String authorId = getAuthorsArticlesPagedAuthorId(request.getRequestURI());
+        final int currentPageNum = getAuthorsArticlesPagedCurrentPageNum(request.getRequestURI());
+
+        Stopwatchs.start("Get Author-Articles Paged[authorId=" + authorId + ", pageNum=" + currentPageNum + ']');
+
+        try {
+            jsonObject.put(Keys.STATUS_CODE, true);
+
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+
+            final JSONObject authorRet = userQueryService.getUser(authorId);
+
+            if (null == authorRet) {
+                context.getResponse().sendError(HttpServletResponse.SC_NOT_FOUND);
+                
+                return;
+            }
+            
+            final JSONObject author = authorRet.getJSONObject(User.USER);
+            final String authorEmail = author.optString(User.USER_EMAIL);
+
+            final List<JSONObject> articles = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
+
+            if (!articles.isEmpty()) {
+                filler.setArticlesExProperties(articles, author, preference);
+            }
+
+            final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
+            final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
+
+            final JSONObject result = new JSONObject();
+            final JSONObject pagination = new JSONObject();
+
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            result.put(Pagination.PAGINATION, pagination);
+
+            result.put(Article.ARTICLES, articles);
+
+            jsonObject.put(Keys.RESULTS, result);
+        } catch (final Exception e) {
+            jsonObject.put(Keys.STATUS_CODE, false);
+            LOGGER.log(Level.SEVERE, "Gets article paged failed", e);
+        } finally {
+            Stopwatchs.end();
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+
+        context.setRenderer(renderer);
+        renderer.setJSONObject(jsonObject);
+    }
+
+    /**
      * Shows author articles with the specified context.
      * 
      * @param context the specified context
@@ -1010,6 +1074,32 @@ public final class ArticleProcessor {
         }
 
         return StringUtils.substringBeforeLast(archiveAndPageNum, "/");
+    }
+
+    /**
+     * Gets the request page number from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return page number
+     */
+    private static int getAuthorsArticlesPagedCurrentPageNum(final String requestURI) {
+        return Requests.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
+    }
+
+    /**
+     * Gets the request author id from the specified request URI.
+     * 
+     * @param requestURI the specified request URI
+     * @return author id
+     */
+    private static String getAuthorsArticlesPagedAuthorId(final String requestURI) {
+        String authorIdAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/authors/").length());
+
+        if (!authorIdAndPageNum.endsWith("/")) {
+            authorIdAndPageNum += "/";
+        }
+
+        return StringUtils.substringBefore(authorIdAndPageNum, "/");
     }
 
     /**

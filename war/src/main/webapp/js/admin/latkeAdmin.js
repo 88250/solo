@@ -3053,7 +3053,7 @@ admin.pluginList = {
                     }
                     datas[i].expendRow += "</a>  ";
                     
-                    datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.plugin.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
+                    datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
                 }
                 
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
@@ -3062,11 +3062,37 @@ admin.pluginList = {
             }
         });
     },
-    
+ 
     toSetting:function(pluginId){
-    	
+        $("#loadMsg").text(Label.loadingLabel);
+                
+        var requestJSONObject = {
+            "oId": pluginId
+        };
+        
+        $.ajax({
+            url: latkeConfig.servePath + "/console/plugin/toSetting",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+                
+                $("#PluginSetting").html(result);
+                $("#PluginSetting").dialog({
+                    width: 700,
+                    height: 190,
+                    "modal": true,
+                    "hideFooter": true
+                });
+                $("#PluginSetting").dialog("open");
+                
+                $("#loadMsg").text("");
+            }
+        });
     },
     
+ 
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {
             status = "DISABLED";
@@ -3109,7 +3135,8 @@ admin.register["plugin-list"] =  {
     "refresh": function () {
         $("#loadMsg").text("");
     }
-}/*
+}
+/*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -3620,28 +3647,6 @@ admin.plugin = {
         }
     },
     
-    toSetting:function(pluginId){
-    	
-    	var requestJSONObject = {
-            "oId": pluginId
-        };
-    	$.ajax({
-            url: latkeConfig.servePath + "/console/plugin/toSetting",
-            type: "POST",
-            cache: false,
-            data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus){
-            	$("#loadMsg").text(Label.loadingLabel);
-            	$("#tipMsg").text(result.msg);
-                 
-                $("#PluginSetting").html(result);
-                $("#loadMsg").text("");
-                $("#PluginSetting").dialog("open");
-            }
-        });
-    	
-    },
-    
     /*
      * 根据当前 hash 初始化或刷新插件
      */
@@ -3653,7 +3658,7 @@ admin.plugin = {
             isCurrentPlugin = false;
             
             // 根据当前 hash 和插件 path 判别是非为当前插件
-             if (data.index && window.location.hash.indexOf(data.hash) > -1) {
+            if (data.index && window.location.hash.indexOf(data.hash) > -1) {
                 isCurrentPlugin = true;
             } else if(data.path.replace("/", "#") === window.location.hash ||
                 (window.location.hash === "#main" && data.path.indexOf("/main/panel") > -1)) {
@@ -3734,7 +3739,8 @@ admin.plugin = {
                 break;
         }
     }
-};/*
+};
+/*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
