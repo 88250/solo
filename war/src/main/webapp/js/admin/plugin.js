@@ -39,28 +39,6 @@ admin.plugin = {
         }
     },
     
-    toSetting:function(pluginId){
-    	
-    	var requestJSONObject = {
-            "oId": pluginId
-        };
-    	$.ajax({
-            url: latkeConfig.servePath + "/console/plugin/toSetting",
-            type: "POST",
-            cache: false,
-            data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus){
-            	$("#loadMsg").text(Label.loadingLabel);
-            	//$("#tipMsg").text(result.msg);
-                 
-                $("#PluginSetting").html("<a>jjjj</a>");
-                $("#loadMsg").text("");
-                $("#PluginSetting").dialog("open");
-            }
-        });
-    	
-    },
-    
     /*
      * 根据当前 hash 初始化或刷新插件
      */
@@ -72,7 +50,7 @@ admin.plugin = {
             isCurrentPlugin = false;
             
             // 根据当前 hash 和插件 path 判别是非为当前插件
-             if (data.index && window.location.hash.indexOf(data.hash) > -1) {
+            if (data.index && window.location.hash.indexOf(data.hash) > -1) {
                 isCurrentPlugin = true;
             } else if(data.path.replace("/", "#") === window.location.hash ||
                 (window.location.hash === "#main" && data.path.indexOf("/main/panel") > -1)) {

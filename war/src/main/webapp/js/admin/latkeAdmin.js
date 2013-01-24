@@ -3633,14 +3633,10 @@ admin.plugin = {
             success: function(result, textStatus){
             	$("#loadMsg").text(Label.loadingLabel);
             	$("#tipMsg").text(result.msg);
-                if (!result.sc) {
-                    $("#loadMsg").text("");
-                    return;
-                }
-                
-                //where to put the id?
-                $("#PluginSetting").dialog("open");
+                 
+                $("#PluginSetting").html(result);
                 $("#loadMsg").text("");
+                $("#PluginSetting").dialog("open");
             }
         });
     	

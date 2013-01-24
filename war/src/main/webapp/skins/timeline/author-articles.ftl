@@ -10,7 +10,11 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <h2 class="nav-abs"><img src="${authorThumbnailURL}"/>${authorName}</h2>
+        <h2 class="nav-abs">
+            <img width="90" title="${authorName}" src="${authorThumbnailURL}"/>
+            <br/>
+            ${authorName}
+        </h2>
         <#include "article-list.ftl">
         <#include "footer.ftl">
     </body>
