@@ -23,6 +23,6 @@ import org.b3log.latke.repository.Repository;
  * Plugin repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 21, 2011
+ * @version 1.0.0.0, Jan 24, 2013
  */
 public interface PluginRepository extends Repository {}

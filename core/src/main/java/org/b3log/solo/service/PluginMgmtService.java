@@ -20,8 +20,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.PluginStatus;
@@ -116,6 +118,58 @@ public final class PluginMgmtService {
     }
 
     /**
+     * updatePluginSetting.
+     * 
+     * @param pluginId the specified pluginoId
+     * @param setting the specified setting
+     * @return the ret json
+     */
+    public JSONObject updatePluginSetting(final String pluginId, final String setting) {
+
+        final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+
+        final PluginManager pluginManager = PluginManager.getInstance();
+        final List<AbstractPlugin> plugins = pluginManager.getPlugins();
+
+        final JSONObject ret = new JSONObject();
+
+        for (final AbstractPlugin plugin : plugins) {
+            if (plugin.getId().equals(pluginId)) {
+                final Transaction transaction = pluginRepository.beginTransaction();
+
+                try {
+                    final JSONObject pluginJson = plugin.toJSONObject();
+
+                    pluginJson.put(Plugin.PLUGIN_SETTING, setting);
+                    pluginRepository.update(pluginId, pluginJson);
+
+                    transaction.commit();
+
+                    ret.put(Keys.STATUS_CODE, true);
+                    ret.put(Keys.MSG, langs.get("setSuccLabel"));
+
+                    return ret;
+                } catch (final Exception e) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
+                    }
+                    LOGGER.log(Level.SEVERE, "Set plugin status error", e);
+                    ret.put(Keys.STATUS_CODE, false);
+                    ret.put(Keys.MSG, langs.get("setFailLabel"));
+
+                    return ret;
+                }
+            }
+        }
+
+        ret.put(Keys.STATUS_CODE, false);
+        ret.put(Keys.MSG, langs.get("refreshAndRetryLabel"));
+
+        return ret;
+        
+    }
+
+    /**
      * Gets the {@link PluginMgmtService} singleton.
      *
      * @return the singleton
@@ -147,4 +201,5 @@ public final class PluginMgmtService {
          */
         private SingletonHolder() {}
     }
+
 }

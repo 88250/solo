@@ -120,17 +120,15 @@ admin.pluginList = {
                 $("#PluginSetting").html(result);
                 $("#PluginSetting").dialog({
                     width: 700,
-                    height: 190,
+                    height: 400,
                     "modal": true,
                     "hideFooter": true
                 });
                 $("#PluginSetting").dialog("open");
-                
                 $("#loadMsg").text("");
             }
         });
     },
-    
  
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {

@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Plugin;
-import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -197,15 +196,19 @@ public final class PluginConsole {
 
         try {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-            final String pluginoId = requestJSONObject.getString(Keys.OBJECT_ID);
-            
-            final AbstractPlugin result = pluginQueryService.getPlugin(pluginoId);
+            final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
+
+            final String setting = pluginQueryService.getPluginSetting(pluginId);
 
             renderer.setTemplateName("admin-plugin-setting.ftl");
             final Map<String, Object> dataModel = renderer.getDataModel();
 
-            dataModel.put(Plugin.PLUGIN, result);
-            
+            Keys.fillServer(dataModel);
+            Keys.fillRuntime(dataModel);
+
+            dataModel.put(Plugin.PLUGIN_SETTING, setting);
+            dataModel.put(Keys.OBJECT_ID, pluginId);
+
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
@@ -215,6 +218,31 @@ public final class PluginConsole {
             jsonRenderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
+
+    }
+
+    /**
+     * update the setting of the plugin. 
+     * 
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @param renderer the specified {@link ConsoleRenderer}
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/plugin/updateSetting", method = HTTPRequestMethod.POST)
+    public void updateSetting(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+        final JSONRenderer renderer) throws Exception {
+
+        context.setRenderer(renderer);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final String pluginoId = requestJSONObject.getString(Keys.OBJECT_ID);
+        final String settings = requestJSONObject.getString(Plugin.PLUGIN_SETTING);
+
+        final JSONObject ret = pluginMgmtService.updatePluginSetting(pluginoId, settings);
+
+        renderer.setJSONObject(ret);
 
     }
 

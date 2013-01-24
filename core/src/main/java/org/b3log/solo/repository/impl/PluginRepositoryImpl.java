@@ -17,6 +17,7 @@ package org.b3log.solo.repository.impl;
 
 
 import java.util.logging.Logger;
+
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.solo.repository.PluginRepository;
@@ -58,4 +59,5 @@ public final class PluginRepositoryImpl extends AbstractRepository implements Pl
     private PluginRepositoryImpl(final String name) {
         super(name);
     }
+
 }

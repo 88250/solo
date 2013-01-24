@@ -20,14 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Paginator;
 import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -121,30 +124,33 @@ public final class PluginQueryService {
     }
 
     /**
-     * get the {@link AbstractPlugin} by the specified pluginoId.
+     * get the setting(json formatter) of the plugin(from database not cache which does not contains it) by the specified pluginoId.
      * 
-     * @param pluginoId the specified pluginId
+     * @param pluginId the specified pluginId
      * @return the {@link AbstractPlugin}
      * @throws ServiceException service exception
+     * @throws JSONException json exception
      */
-    public AbstractPlugin getPlugin(final String pluginoId) throws ServiceException {
+    public String getPluginSetting(final String pluginId) throws ServiceException, JSONException {
 
-        final List<AbstractPlugin> plugins = PluginManager.getInstance().getPlugins();
-        AbstractPlugin ret = null;
+        JSONObject ret = null;
 
-        for (final AbstractPlugin plugin : plugins) {
-            if (plugin.getId().equals(pluginoId)) {
-                ret = plugin;
-            }
+        try {
+            ret = pluginRepository.get(pluginId);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "get plugin[" + pluginId + "] fail");
+            throw new ServiceException("get plugin[" + pluginId + "] fail");
+
         }
+
         if (ret == null) {
-            LOGGER.log(Level.SEVERE, "can not find plugin[" + pluginoId + "]");
-            throw new ServiceException("can not find plugin[" + pluginoId + "]");
+            LOGGER.log(Level.SEVERE, "can not find plugin[" + pluginId + "]");
+            throw new ServiceException("can not find plugin[" + pluginId + "]");
         }
-
-        return ret;
+        
+        return ret.optString(Plugin.PLUGIN_SETTING).toString();
     }
-
+    
     /**
      * Gets the {@link PluginQueryService} singleton.
      *
