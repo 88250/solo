@@ -51,9 +51,9 @@ admin.plugin = {
             data: JSON.stringify(requestJSONObject),
             success: function(result, textStatus){
             	$("#loadMsg").text(Label.loadingLabel);
-            	$("#tipMsg").text(result.msg);
+            	//$("#tipMsg").text(result.msg);
                  
-                $("#PluginSetting").html(result);
+                $("#PluginSetting").html("<a>jjjj</a>");
                 $("#loadMsg").text("");
                 $("#PluginSetting").dialog("open");
             }

@@ -102,10 +102,6 @@ admin.pluginList = {
         });
     },
     
-    toSetting:function(pluginId){
-    	
-    },
-    
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {
             status = "DISABLED";
