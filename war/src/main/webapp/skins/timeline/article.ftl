@@ -54,15 +54,14 @@
                             <a rel="author" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                         </span>
                         <span class="ico-comment ico" title="${commentLabel}">
-                            <#if article.articleCommentCount == 0>
+
                             <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                                <#if article.articleCommentCount == 0>
                                 ${noCommentLabel}
-                            </a>
-                            <#else>
-                            <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                                <#else>
                                 ${article.articleCommentCount}
+                                </#if>
                             </a>
-                            </#if>
                         </span>
                         <span class="ico-view ico" title="${viewLabel}">
                             <a rel="nofollow" href="${servePath}${article.articlePermalink}">

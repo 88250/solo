@@ -64,15 +64,13 @@
                                         ${article.articleTitle}
                                     </a>
                                     <span class="ico ico-comment right" title="${commentLabel}">
-                                        <#if article.articleCommentCount == 0>
                                         <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                                            <#if article.articleCommentCount == 0>
                                             ${noCommentLabel}
-                                        </a>
-                                        <#else>
-                                        <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                                            <#else>
                                             ${article.articleCommentCount}
+                                            </#if>
                                         </a>
-                                        </#if>
                                     </span>
                                 </li>
                                 </#list>
