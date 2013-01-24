@@ -11,7 +11,7 @@
         ${topBarReplacement}
         <#include "header.ftl">
         <h2 class="nav-abs">
-            <img width="90" title="${authorName}" src="${authorThumbnailURL}"/>
+            <img style="border-radius: 45px;" width="90" title="${authorName}" src="${authorThumbnailURL}"/>
             <br/>
             ${authorName}
         </h2>

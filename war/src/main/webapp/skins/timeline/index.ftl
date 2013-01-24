@@ -10,6 +10,9 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
+        <div class="nav-abs">
+            <span>201201</span>
+        </div>
         <#include "article-list.ftl">
         <#include "footer.ftl">
     </body>

@@ -83,20 +83,18 @@ var timeline = {
         window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
     },
     
-    getNextPage: function (it) {
+    getNextPage: function (it, archives) {
         var $more = $(it),
         currentPage = $more.data("page") + 1,
-        path = "";
+        path = "/articles/";
         if(location.pathname.indexOf("tags") === 1) {
             var pathnames = location.pathname.split("/tags/");
             path = "/articles/tags/" + pathnames[1].split("/")[0] + "/";
         } else if (location.pathname.indexOf("authors") === 1) {
             var pathnames = location.pathname.split("/authors/");
             path = "/articles/authors/" + pathnames[1].split("/")[0] + "/";
-        } else {
-        //var archivesPathname = location.pathname.split("/archives/");
-        //var archives = archivesPathname[1].split("/");
-        //path = "/articles/archives/" + archives[0] + "/" + archives[1] + "/";
+        } else if (archives) {
+            path = "/articles/archives/" + archives + "/";
         }
         $.ajax({
             url: latkeConfig.servePath + path + currentPage,
