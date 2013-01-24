@@ -3017,6 +3017,12 @@ admin.pluginList = {
         }]);
     
         this.tablePagination.initPagination();
+        $("#pluginSetting").dialog({
+            width: 700,
+            height: 180,
+            "modal": true,
+            "hideFooter": true
+        });
         this.getList(page);
     },
 
@@ -3062,7 +3068,11 @@ admin.pluginList = {
             }
         });
     },
+<<<<<<< HEAD
  
+=======
+ 
+>>>>>>> 692cfe019926f553440bb6a3e2517360118353a7
     toSetting:function(pluginId){
         $("#loadMsg").text(Label.loadingLabel);
                 
@@ -3078,6 +3088,7 @@ admin.pluginList = {
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
                 
+<<<<<<< HEAD
                 $("#PluginSetting").html(result);
                 $("#PluginSetting").dialog({
                     width: 700,
@@ -3086,13 +3097,21 @@ admin.pluginList = {
                     "hideFooter": true
                 });
                 $("#PluginSetting").dialog("open");
+=======
+                $("#pluginSetting").html(result);
+                $("#pluginSetting").dialog("open");
+>>>>>>> 692cfe019926f553440bb6a3e2517360118353a7
                 
                 $("#loadMsg").text("");
             }
         });
     },
     
+<<<<<<< HEAD
  
+=======
+ 
+>>>>>>> 692cfe019926f553440bb6a3e2517360118353a7
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {
             status = "DISABLED";
@@ -3135,7 +3154,11 @@ admin.register["plugin-list"] =  {
     "refresh": function () {
         $("#loadMsg").text("");
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 692cfe019926f553440bb6a3e2517360118353a7
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *

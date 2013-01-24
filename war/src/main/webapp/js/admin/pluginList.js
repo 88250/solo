@@ -56,6 +56,12 @@ admin.pluginList = {
         }]);
     
         this.tablePagination.initPagination();
+        $("#pluginSetting").dialog({
+            width: 700,
+            height: 180,
+            "modal": true,
+            "hideFooter": true
+        });
         this.getList(page);
     },
 
@@ -117,14 +123,8 @@ admin.pluginList = {
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
                 
-                $("#PluginSetting").html(result);
-                $("#PluginSetting").dialog({
-                    width: 700,
-                    height: 190,
-                    "modal": true,
-                    "hideFooter": true
-                });
-                $("#PluginSetting").dialog("open");
+                $("#pluginSetting").html(result);
+                $("#pluginSetting").dialog("open");
                 
                 $("#loadMsg").text("");
             }
