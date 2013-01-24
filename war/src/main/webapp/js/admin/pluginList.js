@@ -107,14 +107,13 @@ admin.pluginList = {
             }
         });
     },
-    
+ 
     toSetting:function(pluginId){
         $("#loadMsg").text(Label.loadingLabel);
                 
         var requestJSONObject = {
             "oId": pluginId
-        },
-        that = this;
+        };
         
         $.ajax({
             url: latkeConfig.servePath + "/console/plugin/toSetting",
@@ -132,6 +131,7 @@ admin.pluginList = {
         });
     },
     
+ 
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {
             status = "DISABLED";
