@@ -134,16 +134,16 @@ admin.pluginList = {
                     "hideFooter": true
                 });
 
+=======
+>>>>>>> branch '0.5.6' of https://github.com/b3log/b3log-solo.git
                 $("#pluginSetting").html(result);
                 $("#pluginSetting").dialog("open");
                 
-                $("#loadMsg").text("");
-            }
-        });
-    },
 
-    
- 
+=======
+>>>>>>> branch '0.5.6' of https://github.com/b3log/b3log-solo.git
+                $(
+    },
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {
             status = "DISABLED";
