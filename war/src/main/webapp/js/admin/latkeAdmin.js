@@ -3086,7 +3086,6 @@ admin.pluginList = {
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
                 
-<<<<<<< HEAD
 
                 $("#PluginSetting").html(result);
                 $("#PluginSetting").dialog({
@@ -3101,20 +3100,11 @@ admin.pluginList = {
                 $("#pluginSetting").html(result);
                 $("#pluginSetting").dialog("open");
                 
-<<<<<<< HEAD
 
 =======
 >>>>>>> branch '0.5.6' of https://github.com/b3log/b3log-solo.git
-                $("#loadMsg").text("");
-            }
-        });
+                $(
     },
-<<<<<<< HEAD
-
-=======
-    
- 
->>>>>>> branch '0.5.6' of https://github.com/b3log/b3log-solo.git
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {
             status = "DISABLED";
