@@ -107,9 +107,9 @@ public final class SoloServletListener extends AbstractServletListener {
             }
         }
 
-        PluginManager.getInstance().load();
-
         registerEventProcessor();
+
+        PluginManager.getInstance().load();
 
         LOGGER.info("Initialized the context");
 
