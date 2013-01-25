@@ -19,6 +19,8 @@ package org.b3log.solo.util;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
@@ -27,6 +29,7 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -73,8 +76,16 @@ public final class Plugins {
 
                 if (null != plugin) {
                     final String status = oldPluginDesc.getString(Plugin.PLUGIN_STATUS);
-
+                    final String setting = oldPluginDesc.optString(Plugin.PLUGIN_SETTING);
+                    
                     plugin.setStatus(PluginStatus.valueOf(status));
+                    try {
+                        if (StringUtils.isNotBlank(setting)) {
+                            plugin.setSetting(new JSONObject(setting));
+                        }
+                    } catch (final JSONException e) {
+                        LOGGER.log(Level.WARNING, "the formatter of the old config failed to convert to json", e);
+                    }
                 }
             }
 

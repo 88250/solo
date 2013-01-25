@@ -98,8 +98,10 @@ admin.pluginList = {
                     }
                     datas[i].expendRow += "</a>  ";
                     
-                    datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
-                }
+                    if(datas[i].setting!="{}"){
+                    	datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
+                    }
+                    }
                 
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
                 
@@ -123,7 +125,7 @@ admin.pluginList = {
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
                 
-<<<<<<< HEAD
+
                 $("#PluginSetting").html(result);
                 $("#PluginSetting").dialog({
                     width: 700,
@@ -131,22 +133,16 @@ admin.pluginList = {
                     "modal": true,
                     "hideFooter": true
                 });
-                $("#PluginSetting").dialog("open");
-=======
+
                 $("#pluginSetting").html(result);
                 $("#pluginSetting").dialog("open");
                 
->>>>>>> branch '0.5.6' of https://github.com/b3log/b3log-solo.git
+
                 $("#loadMsg").text("");
             }
         });
     },
-<<<<<<< HEAD
- 
-=======
-    
- 
->>>>>>> branch '0.5.6' of https://github.com/b3log/b3log-solo.git
+
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {
             status = "DISABLED";

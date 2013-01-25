@@ -4,7 +4,6 @@
 	${setting}
 </textarea>
 
-
 <input type="hidden" id="pluginId" value="${oId}">
 <button class="marginRight12" id="updateSetting" onclick="updateSetting()">save</button>
 
