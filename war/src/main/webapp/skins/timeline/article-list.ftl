@@ -2,7 +2,7 @@
     <div class="articles container">
         <div class="vertical"></div>
         <#list articles as article>
-        <article<#if !article_has_next> class="last"</#if>>
+        <article>
             <div class="module">
                 <div class="dot"></div>
                 <div class="arrow"></div>
@@ -36,15 +36,13 @@
                     <a rel="author" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                 </span>
                 <span class="ico-comment ico" title="${commentLabel}">
-                    <#if article.articleCommentCount == 0>
                     <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                        <#if article.articleCommentCount == 0>
                         ${noCommentLabel}
-                    </a>
-                    <#else>
-                    <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
+                        <#else>
                         ${article.articleCommentCount}
+                        </#if>
                     </a>
-                    </#if>
                 </span>
                 <span class="ico-view ico" title="${viewLabel}">
                     <a rel="nofollow" href="${servePath}${article.articlePermalink}">
@@ -54,8 +52,8 @@
             </div>
         </article>
         </#list>
+        <#if paginationCurrentPageNum != paginationPageCount && 0 != paginationPageCount>
+        <div class="article-more" onclick="timeline.getNextPage(this)" data-page="${paginationCurrentPageNum}">${moreLabel}</div>
+        </#if>
     </div>
-    <#if paginationCurrentPageNum != paginationPageCount && 0 != paginationPageCount>
-    <div class="article-next ft-gray" onclick="getNextPage()" data-page="${paginationCurrentPageNum}">${moreLabel}</div>
-    </#if>
 </div>

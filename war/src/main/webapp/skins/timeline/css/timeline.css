@@ -518,6 +518,11 @@ article .article-title {
     margin: 0;
 }
 
+article .article-title > sup {
+    color: #6599C6;
+    font-size: 70%; 
+}
+
 article .article-title a {
     color: #000;
     text-decoration: none;
@@ -531,6 +536,22 @@ article .article-title a {
 
 .ico > a:hover {
     color: #000;
+}
+
+.article-more {
+    background-color: #60829F;
+    border-radius: 20em 20em 20em 20em;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2) inset, 0 1px 0 rgba(255, 255, 255, 0.6);
+    color: #FFFFFF;
+    font-weight: bold;
+    left: 50%;
+    margin-left: -36px;
+    padding: 5px 20px;
+    position: absolute;
+    top: 100%;
+    cursor: pointer;
+    height: 19px;
+    width: 26px;
 }
 /* end article list */
 
@@ -640,7 +661,6 @@ article .article-title a {
     border-radius: 5px 5px 5px 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) inset, 0 1px 0 rgba(255, 255, 255, 0.7), 0 -1px 0 rgba(255, 255, 255, 0.6);
     color: #CCCCCC;
-    cursor: pointer;
     padding: 5px 10px;
     position: absolute;
     right: 30px;

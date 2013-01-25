@@ -81,6 +81,91 @@ var timeline = {
     
     translate: function () {
         window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
+    },
+    
+    getNextPage: function (it, archives) {
+        var $more = $(it),
+        currentPage = $more.data("page") + 1,
+        path = "/articles/";
+        if(location.pathname.indexOf("tags") === 1) {
+            var pathnames = location.pathname.split("/tags/");
+            path = "/articles/tags/" + pathnames[1].split("/")[0] + "/";
+        } else if (location.pathname.indexOf("authors") === 1) {
+            var pathnames = location.pathname.split("/authors/");
+            path = "/articles/authors/" + pathnames[1].split("/")[0] + "/";
+        } else if (archives) {
+            path = "/articles/archives/" + archives + "/";
+        }
+        $.ajax({
+            url: latkeConfig.servePath + path + currentPage,
+            type: "GET",
+            beforeSend: function () {
+                $more.css("background",
+                    "url(" + latkeConfig.staticServePath 
+                    + "/skins/timeline/images/ajax-loader.gif) no-repeat scroll center center #60829F").text("");
+            },
+            success: function(result, textStatus){
+                if (!result.sc) {
+                    return;
+                }
+            
+                var articlesHTML = "",
+                pagination = result.rslts.pagination;
+            
+                // append articles
+                for (var i = 0; i < result.rslts.articles.length; i++) {
+                    var article = result.rslts.articles[i];
+            
+                    articlesHTML += '<article><div class="module"><div class="dot"></div>'
+                    + '<div class="arrow"></div><time class="article-time"><span>'
+                    + Util.toDate(article.articleCreateTime, 'yy-MM-dd HH:mm')
+                    + '</span></time><h2 class="article-title"><a rel="bookmark" href="' 
+                    + latkeConfig.servePath + article.articlePermalink + '">'
+                    +article.articleTitle + '</a>';
+                
+                    if (article.hasUpdated) {
+                        articlesHTML += '<sup>' + Label.updatedLabel + '</sup>';
+                    }
+            
+                    if (article.articlePutTop) {
+                        articlesHTML += '<sup>' + Label.topArticleLabel + '</sup>';
+                    }
+            
+                    articlesHTML += '</h2><p>' + article.articleAbstract + '</p>'
+                    + '<span class="ico-tags ico" title="' + Label.tagLabel + '">';
+                    
+                    var articleTags = article.articleTags.split(",");
+                    for (var j = 0; j < articleTags.length; j++) {
+                        articlesHTML +=  '<a rel="category tag" href="' + latkeConfig.servePath 
+                        + '/tags/' + encodeURIComponent(articleTags[j])  + '">' + articleTags[j] + '</a>';
+            
+                        if (j < articleTags.length - 1) {
+                            articlesHTML += ",";
+                        }
+                    }   
+                    
+                    articlesHTML +=  '</span>&nbsp;<span class="ico-author ico" title="' + Label.authorLabel + '">'
+                    + '<a rel="author" href="' + latkeConfig.servePath + '/authors/' + article.authorId + '">' 
+                    + article.authorName + '</a></span>&nbsp;<span class="ico-comment ico" title="' 
+                    + Label.commentLabel + '"><a rel="nofollow" href="' + latkeConfig.servePath + article.articlePermalink 
+                    + '#comments">' + (article.articleCommentCount === 0 ? Label.noCommentLabel : article.articleCommentCount) 
+                    + '</a></span>&nbsp;<span class="ico-view ico" title="' + Label.viewLabel + '">'
+                    + '<a rel="nofollow" href="${servePath}${article.articlePermalink}">' + article.articleViewCount
+                    + '</a></span></div></article>';
+                }
+            
+                $more.before(articlesHTML).data("page", currentPage);
+            
+                // 最后一页处理
+                if (pagination.paginationPageCount === currentPage) {
+                    $more.remove();
+                } else {
+                    $more.css("background", "none #60829F").text(Label.moreLabel);  
+                }
+                
+                $(window).resize();
+            }
+        });
     }
 };
 

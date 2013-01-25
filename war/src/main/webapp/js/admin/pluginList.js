@@ -137,12 +137,13 @@ admin.pluginList = {
                 $("#pluginSetting").html(result);
                 $("#pluginSetting").dialog("open");
                 
-
                 $("#loadMsg").text("");
             }
         });
     },
 
+    
+ 
     changeStatus: function (pluginId, status) {
         if (status === "ENABLED") {
             status = "DISABLED";
