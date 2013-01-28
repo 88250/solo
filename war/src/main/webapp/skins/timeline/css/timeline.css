@@ -58,6 +58,7 @@ a:hover {
 
 img {
     max-width: 100%;
+    border: 0;
     vertical-align: middle;
 }
 
@@ -231,6 +232,7 @@ img {
     margin-bottom: 30px;
     padding: 15px;
     word-wrap: break-word;
+    position: relative;
 }
 
 .module > h3 {
@@ -410,6 +412,7 @@ a:hover > .ico-pre {
     color: #444;
     padding: 19px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
+    white-space: nowrap;
 }
 
 .header li a.current {
@@ -432,6 +435,17 @@ a:hover > .ico-pre {
     margin-top: 11px;
 }
 
+.articles > div.fn-clear {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.articles > div.fn-clear > h2 {
+    margin: 0;
+    text-align: center;
+    height: 28px;
+}
+
 .articles > .vertical {
     background-color: #9EB5C6;
     border-radius: 20em 20em 20em 20em;
@@ -444,19 +458,20 @@ a:hover > .ico-pre {
     width: 6px
 }
 
-.articles > article {
+.articles article {
     width: 50%;
 }
 
-.articles > article.l > div.module {
+.articles article.l > div.module {
     margin-right: 30px;
+    left: 0;
 }
 
-.articles > article.r {
+.articles article.r {
     left: 50%;
 }
 
-.articles > article.r > div {
+.articles article.r > div {
     margin-left: 30px;
     position: relative;
 }
@@ -467,7 +482,7 @@ a:hover > .ico-pre {
     border-radius: 20em 20em 20em 20em;
     height: 6px;
     position: absolute;
-    right: -6px;
+    right: -37px;
     top: 22px;
     width: 6px;
 }
@@ -480,7 +495,7 @@ a:hover > .ico-pre {
 .articles .arrow {
     height: 15px;
     position: absolute;
-    right: 22px;
+    right: -9px;
     top: 21px;
     width: 9px;
 }
@@ -491,18 +506,10 @@ a:hover > .ico-pre {
     right: inherit
 }
 
-.article {
-    position: relative;
-}
-
 time.article-time {
     top: -8px;    
     left: 50%;
     position: absolute;
-}
-
-.article time.article-time {
-    top: -40px;
 }
 
 time.article-time > span {
@@ -552,6 +559,16 @@ article .article-title a {
     cursor: pointer;
     height: 19px;
     width: 26px;
+}
+
+.article-archive {
+    background-color: #60829F;
+    border-radius: 20em 20em 20em 20em;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2) inset, 0 1px 0 rgba(255, 255, 255, 0.6);
+    color: #FFFFFF;
+    font-size: 80%;
+    font-weight: normal;
+    padding: 5px 20px;
 }
 /* end article list */
 
@@ -667,5 +684,6 @@ article .article-title a {
     top: 61px;
     z-index: 1;
     text-align: center;
+    white-space: nowrap;
 }
 /* end others */

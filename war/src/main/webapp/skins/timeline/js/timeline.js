@@ -25,7 +25,7 @@ var timeline = {
     _COLHB: 20,
     _initArticleList: function () {
         var $articles = $(".articles");
-        if ($articles.length === 0) {
+        if ($articles.length === 0 || $(".articles > .fn-clear").length > 0) {
             return;
         }
             
@@ -57,6 +57,40 @@ var timeline = {
         $(window).resize();
     },
     
+    
+    _initIndexList: function () {
+        var $archives = $(".articles > .fn-clear");
+        if ($archives.length === 0) {
+            return;
+        }
+            
+        $(window).resize(function () {
+            $archives.each(function () {
+                var colH = [timeline._COLHA + 60, timeline._COLHB * 4];
+                $(this).find("article").each(function () {
+                    var $it = $(this),
+                    isLeft = colH[1] > colH[0],
+                    top = isLeft ? colH[0] : colH[1];
+                    $it.css({
+                        "top": top + "px",
+                        "position": "absolute"
+                    });
+                
+                    if (isLeft) {
+                        $it.addClass("l");
+                    } else {
+                        $it.addClass("r");
+                    }
+                
+                    colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
+                });
+                $(this).height(colH[0] > colH[1] ? colH[0] : colH[1]);
+            });
+        });
+        
+        $(window).resize();
+    },
+    
     _setNavCurrent: function () {
         $(".header li a").each(function () {
             if($(this).attr("href") === location.href.split("#")[0]) {
@@ -75,6 +109,7 @@ var timeline = {
                 $(".ico-top").hide();
             }
         });
+        timeline._initIndexList();
         timeline._initArticleList();
         timeline._setNavCurrent();
     },

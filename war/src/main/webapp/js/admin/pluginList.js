@@ -99,9 +99,9 @@ admin.pluginList = {
                     datas[i].expendRow += "</a>  ";
                     
                     if(datas[i].setting!="{}"){
-                    	datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
+                        datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
                     }
-                    }
+                }
                 
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
                 
@@ -124,27 +124,17 @@ admin.pluginList = {
             data: JSON.stringify(requestJSONObject),
             success: function(result, textStatus){
                 $("#tipMsg").text(result.msg);
-                
 
-                $("#PluginSetting").html(result);
-                $("#PluginSetting").dialog({
-                    width: 700,
-                    height: 400,
-                    "modal": true,
-                    "hideFooter": true
-                });
-
-=======
->>>>>>> branch '0.5.6' of https://github.com/b3log/b3log-solo.git
                 $("#pluginSetting").html(result);
                 $("#pluginSetting").dialog("open");
                 
-
-=======
->>>>>>> branch '0.5.6' of https://github.com/b3log/b3log-solo.git
-                $(
+                $("#loadMsg").text("");
+            }
+        });
     },
+    
     changeStatus: function (pluginId, status) {
+        $("#loadMsg").text(Label.loadingLabel);
         if (status === "ENABLED") {
             status = "DISABLED";
         } else {
@@ -173,13 +163,11 @@ admin.pluginList = {
             }
         });
     }
-
-    
 };
 
 /*
- * 注册到 admin 进行管理 
- */
+* 注册到 admin 进行管理 
+*/
 admin.register["plugin-list"] =  {
     "obj": admin.pluginList,
     "init": admin.pluginList.init,

@@ -1,3 +1,13 @@
+<!--[if lt IE 9]>
+    <script type="text/javascript">
+       (function () {
+           var element = ['time', 'article'];
+           for (var i = 0; i < element.length; i++) {
+               document.createElement(element[i]);
+           }
+       })();
+   </script>
+<![endif]-->
 <div class="header">
     <div class="container fn-clear">
         <div class="left">
