@@ -194,8 +194,6 @@
                         "display": "block",
                         "opacity": 1
                     });
-                    
-                    $("#initButton").focus();
                 }
             };
             
