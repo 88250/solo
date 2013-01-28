@@ -530,7 +530,7 @@ public final class Filler {
 
     /**
      * Fills minified directory and file postfix for static JavaScript, CSS.
-     * 
+     *
      * @param dataModel the specified data model
      */
     public void fillMinified(final Map<String, Object> dataModel) {
@@ -562,10 +562,21 @@ public final class Filler {
         try {
             LOGGER.fine("Filling side....");
 
-            final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "side.ftl");
+            Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "side.ftl");
 
             if (null == template) {
                 LOGGER.fine("The skin dose not contain [side.ftl] template");
+                
+                template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "index.ftl");
+                if (null == template) {
+                    LOGGER.fine("The skin dose not contain [index.ftl] template");
+                    
+                    return;
+                }
+
+                if (Templates.hasExpression(template, "<#list archiveDates as archiveDate>")) {
+                    fillArchiveDates(dataModel, preference);
+                }
 
                 return;
             }
@@ -702,26 +713,24 @@ public final class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified author and preference, performs content and 
-     * abstract editor processing.
-     * 
-     * <p>
-     * Article ext properties:
+     * Sets some extra properties into the specified article with the specified
+     * author and preference, performs content and abstract editor processing.
+     *
+     * <p> Article ext properties:
      * <pre>
      * {
-     *     ...., 
+     *     ....,
      *     "authorName": "",
      *     "authorId": "",
      *     "hasUpdated": boolean
      * }
-     * </pre>
-     * </p>
-     * 
+     * </pre> </p>
+     *
      * @param article the specified article
      * @param author the specified author
      * @param preference the specified preference
      * @throws ServiceException service exception
-     * @see #setArticlesExProperties(java.util.List, org.json.JSONObject) 
+     * @see #setArticlesExProperties(java.util.List, org.json.JSONObject)
      */
     private void setArticleExProperties(final JSONObject article, final JSONObject author, final JSONObject preference)
         throws ServiceException {
@@ -749,25 +758,23 @@ public final class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified preference, performs content and 
-     * abstract editor processing.
-     * 
-     * <p>
-     * Article ext properties:
+     * Sets some extra properties into the specified article with the specified
+     * preference, performs content and abstract editor processing.
+     *
+     * <p> Article ext properties:
      * <pre>
      * {
-     *     ...., 
+     *     ....,
      *     "authorName": "",
      *     "authorId": "",
      *     "hasUpdated": boolean
      * }
-     * </pre>
-     * </p>
-     * 
+     * </pre> </p>
+     *
      * @param article the specified article
      * @param preference the specified preference
      * @throws ServiceException service exception
-     * @see #setArticlesExProperties(java.util.List, org.json.JSONObject) 
+     * @see #setArticlesExProperties(java.util.List, org.json.JSONObject)
      */
     private void setArticleExProperties(final JSONObject article, final JSONObject preference) throws ServiceException {
         try {
@@ -795,31 +802,28 @@ public final class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified 
+     * Sets some extra properties into the specified article with the specified
      * author and preference.
-     * 
-     * <p>
-     * The batch version of method 
+     *
+     * <p> The batch version of method
      * {@linkplain #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)}.
      * </p>
      *
-     * <p>
-     * Article ext properties:
+     * <p> Article ext properties:
      * <pre>
      * {
-     *     ...., 
+     *     ....,
      *     "authorName": "",
      *     "authorId": "",
      *     "hasUpdated": boolean
      * }
-     * </pre>
-     * </p>
+     * </pre> </p>
      *
      * @param articles the specified articles
      * @param author the specified author
      * @param preference the specified preference
      * @throws ServiceException service exception
-     * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject) 
+     * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)
      */
     public void setArticlesExProperties(final List<JSONObject> articles, final JSONObject author, final JSONObject preference)
         throws ServiceException {
@@ -829,30 +833,27 @@ public final class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified 
+     * Sets some extra properties into the specified article with the specified
      * preference.
-     * 
-     * <p>
-     * The batch version of method 
+     *
+     * <p> The batch version of method
      * {@linkplain #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)}.
      * </p>
      *
-     * <p>
-     * Article ext properties:
+     * <p> Article ext properties:
      * <pre>
      * {
-     *     ...., 
+     *     ....,
      *     "authorName": "",
      *     "authorId": "",
      *     "hasUpdated": boolean
      * }
-     * </pre>
-     * </p>
+     * </pre> </p>
      *
      * @param articles the specified articles
      * @param preference the specified preference
      * @throws ServiceException service exception
-     * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject) 
+     * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)
      */
     public void setArticlesExProperties(final List<JSONObject> articles, final JSONObject preference)
         throws ServiceException {
@@ -862,16 +863,14 @@ public final class Filler {
     }
 
     /**
-     * Processes the abstract of the specified article with the specified preference.
-     * 
-     * <p>
-     *   <ul>
-     *     <li>If the abstract is {@code null}, sets it with ""</li>
-     *     <li>If user configured preference "titleOnly", sets the abstract with ""</li>
-     *     <li>If user configured preference "titleAndContent", sets the abstract with the content of the article</li>
-     *   </ul>
-     * </p>
-     * 
+     * Processes the abstract of the specified article with the specified
+     * preference.
+     *
+     * <p> <ul> <li>If the abstract is {@code null}, sets it with ""</li> <li>If
+     * user configured preference "titleOnly", sets the abstract with ""</li>
+     * <li>If user configured preference "titleAndContent", sets the abstract
+     * with the content of the article</li> </ul> </p>
+     *
      * @param preference the specified preference
      * @param article the specified article
      */
