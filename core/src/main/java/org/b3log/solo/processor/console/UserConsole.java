@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * User console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 9, 2012
+ * @version 1.0.0.2, Jan 29, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -335,7 +335,7 @@ public final class UserConsole {
     @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.GET)
     public void getUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
