@@ -41,7 +41,7 @@
         </span>
         <div class="right">
             <label for="articleCommentable">${allowComment1Label}</label>
-            <input type="checkbox" id="articleCommentable" checked="checked" /> &nbsp;&nbsp;&nbsp;
+            <input type="checkbox" id="articleCommentable" checked="checked" /> &nbsp; &nbsp; &nbsp;
             <span id="postToCommunityPanel">
                 <label for="postToCommunity">
                     <a class="no-underline" href="http://symphony.b3log.org/usage" target="_blank">${postToCommunityLabel}</a>

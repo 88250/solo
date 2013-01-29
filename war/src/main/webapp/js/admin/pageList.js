@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Jun 20, 2012
+ * @version 1.0.2.2, Jun 29, 2013
  */
 
 /* page-list 相关操作 */
@@ -76,7 +76,7 @@ admin.pageList = {
             language = "zh-cn";
         }
         
-        admin.editorPage = new Editor({
+        admin.editors.pageEditor = new Editor({
             language: language,
             kind: "all",
             id: "pageContent"
@@ -98,8 +98,9 @@ admin.pageList = {
                 $("#pagePagePanel").slideDown();
                 
                 // 使用 CodeMirror 编辑器时，当编辑器初始之前，元素为 display:none 时，行号显示不正常
-                if (Label.editorType === "CodeMirror-Markdown" && admin.editorPage.getContent() === "") {
-                    admin.editorPage.setContent("");
+                if (Label.editorType === "CodeMirror-Markdown" 
+                    && admin.editors.pageEditor.getContent() === "") {
+                    admin.editors.pageEditor.setContent("");
                 }
             } else {
                 $("#pagePagePanel").slideUp();
@@ -202,7 +203,7 @@ admin.pageList = {
                 }
                 $("#pageCommentable").prop("checked", result.page.pageCommentable);
 
-                admin.editorPage.setContent(result.page.pageContent);
+                admin.editors.pageEditor.setContent(result.page.pageContent);
                 
                 $("#loadMsg").text("");
             }
@@ -257,7 +258,7 @@ admin.pageList = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             
-            var pageContent = admin.editorPage.getContent();
+            var pageContent = admin.editors.pageEditor.getContent();
             
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (admin.pageList.type === "link") {
@@ -294,7 +295,7 @@ admin.pageList = {
                     $("#pageTarget").val("_self");
                     $($(".fn-type").get(0)).click();
                     
-                    admin.editorPage.setContent("");
+                    admin.editors.pageEditor.setContent("");
                     
                     if (admin.pageList.pageInfo.currentCount === Label.PAGE_SIZE &&
                         admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
@@ -321,7 +322,7 @@ admin.pageList = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             
-            var pageContent = admin.editorPage.getContent();
+            var pageContent = admin.editors.pageEditor.getContent();
             
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (admin.pageList.type === "link") {
@@ -362,7 +363,7 @@ admin.pageList = {
                     $("#pageTarget").val("_self");
                     $($(".fn-type").get(0)).click();
 
-                    admin.editorPage.setContent("");
+                    admin.editors.pageEditor.setContent("");
                     
                     $("#loadMsg").text("");
                 }
