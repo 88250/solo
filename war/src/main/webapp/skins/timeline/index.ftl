@@ -10,7 +10,7 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <ul class="nav-abs" style="padding: 0;">
+        <ul class="nav-abs"  style="padding: 0;position: fixed">
             <#list archiveDates as archiveDate>
             <li data-year="${archiveDate.archiveDateYear}"
                 onclick="timeline.getArchive('${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}')">
@@ -23,7 +23,7 @@
             </#list>
         </ul>
         <div class="wrapper">
-            <div class="articles container">
+            <div class="articles container" style="margin-top: 0">
                 <div class="vertical"></div>
                 <#list archiveDates as archiveDate>
                 <div class="fn-clear" id="${archiveDate.archiveDateYear}${archiveDate.archiveDateMonth}">

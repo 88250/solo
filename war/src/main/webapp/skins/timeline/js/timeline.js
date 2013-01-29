@@ -41,9 +41,9 @@ var timeline = {
                 });
                 
                 if (isLeft) {
-                    $it.addClass("l");
+                    this.className = "l";
                 } else {
-                    $it.addClass("r");
+                    this.className = "r";
                 }
                 
                 colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
@@ -81,6 +81,7 @@ var timeline = {
                 var $articles = $(this).find("article");
                 if ($articles.length === 0) {
                     $(this).find("h2").remove();
+                    $(this).css("margin-bottom" , 0);
                 } else {
                     $articles.each(function () {
                         var $it = $(this),
@@ -92,9 +93,9 @@ var timeline = {
                         });
                 
                         if (isLeft) {
-                            $it.addClass("l");
+                            this.className = "l";
                         } else {
-                            $it.addClass("r");
+                            this.className = "r";
                         }
                 
                         colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
@@ -143,7 +144,7 @@ var timeline = {
             + '<div class="article-more" onclick="timeline.getNextPage(this, \'' 
             + archive + '\')" data-page="0">' + Label.moreLabel + '</div>';
         
-            $("#" + archiveDate).html(archiveHTML);
+            $("#" + archiveDate).html(archiveHTML).css("margin-bottom", "50px");
             timeline.getNextPage($("#" + archiveDate).find(".article-more")[0], archive);
         }
     },
@@ -219,8 +220,25 @@ var timeline = {
                     + '</a></span></div></article>';
                 }
                 
-                var colH = [parseInt($(".article-more").prev().prev().css("top")) + $(".article-more").prev().prev().outerHeight(true),
-                parseInt($(".article-more").prev().css("top")) + $(".article-more").prev().outerHeight(true)];
+                var colHA = parseInt($(".article-more").prev().prev().css("top")) + $(".article-more").prev().prev().outerHeight(true),
+                colHB = parseInt($(".article-more").prev().css("top")) + $(".article-more").prev().outerHeight(true);
+                
+                if (archive) {
+                    // 前面无 article
+                    if ($(".article-more").prev()[0].tagName.toLowerCase() === "h2") {
+                        colHA = timeline._COLHA + 60;
+                        colHB = timeline._COLHB * 4;
+                    }
+                    
+                    // 前面只有1篇文章
+                    if ($(".article-more").prev()[0].tagName.toLowerCase() === "article"
+                        && $(".article-more").prev().prev()[0].tagName.toLowerCase() === "h2") {
+                        colHA = parseInt($(".article-more").prev().css("top")) + $(".article-more").prev().outerHeight(true);
+                        colHB = timeline._COLHB * 4;
+                    }
+                }
+                
+                var colH = [colHA, colHB];
             
                 $more.before(articlesHTML).data("page", currentPage);
             
@@ -242,9 +260,9 @@ var timeline = {
                         });
                 
                         if (isLeft) {
-                            $it.addClass("l");
+                            this.className = "l";
                         } else {
-                            $it.addClass("r");
+                            this.className = "r";
                         }
                 
                         colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
@@ -257,9 +275,12 @@ var timeline = {
     
     toggleArchives: function (year) {
         $(".nav-abs li").each(function (i) {
-            var $this = $(this);
-            if (year === $this.data("year")) {
-                $this.toggle();
+            var $it = $(this);
+            if (this.className !== "year") {
+                $it.hide();
+                if (year === $it.data("year")) {
+                    $it.show();
+                }
             }
         });
     }
