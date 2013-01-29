@@ -184,7 +184,7 @@ var timeline = {
                     articlesHTML += '<article><div class="module"><div class="dot"></div>'
                     + '<div class="arrow"></div><time class="article-time"><span>'
                     + Util.toDate(article.articleCreateTime, 'yy-MM-dd HH:mm')
-                    + '</span></time><h2 class="article-title"><a rel="bookmark" href="' 
+                    + '</span></time><h3 class="article-title"><a rel="bookmark" href="' 
                     + latkeConfig.servePath + article.articlePermalink + '">'
                     +article.articleTitle + '</a>';
                 
@@ -196,7 +196,7 @@ var timeline = {
                         articlesHTML += '<sup>' + Label.topArticleLabel + '</sup>';
                     }
             
-                    articlesHTML += '</h2><p>' + article.articleAbstract + '</p>'
+                    articlesHTML += '</h3><p>' + article.articleAbstract + '</p>'
                     + '<span class="ico-tags ico" title="' + Label.tagLabel + '">';
                     
                     var articleTags = article.articleTags.split(",");
@@ -219,8 +219,8 @@ var timeline = {
                     + '</a></span></div></article>';
                 }
                 
-                var colH = [parseInt($(".article-more").prev().css("top")) + $(".article-more").prev().css("top").outerHeight(true),
-                parseInt($(".article-more").prev().prev().css("top")) + $(".article-more").prev().prev().css("top").outerHeight(true)];
+                var colH = [parseInt($(".article-more").prev().prev().css("top")) + $(".article-more").prev().prev().outerHeight(true),
+                parseInt($(".article-more").prev().css("top")) + $(".article-more").prev().outerHeight(true)];
             
                 $more.before(articlesHTML).data("page", currentPage);
             
@@ -231,7 +231,7 @@ var timeline = {
                     $more.css("background", "none #60829F").text(Label.moreLabel);  
                 }
                 
-                $("#" + archive.replace("/", "") + " article").each(function () {
+                $((archive ? "#" + archive.replace("/", "") : ".articles") + " article").each(function () {
                     if (this.className !== "r" && this.className !== "l") {
                         var $it = $(this),
                         isLeft = colH[1] > colH[0],
@@ -250,7 +250,7 @@ var timeline = {
                         colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
                     }
                 });
-                $("#" + archive.replace("/", "")).height(colH[0] > colH[1] ? colH[0] : colH[1]);
+                $(archive ? "#" + archive.replace("/", "") : ".articles").height(colH[0] > colH[1] ? colH[0] : colH[1]);
             }
         });
     },

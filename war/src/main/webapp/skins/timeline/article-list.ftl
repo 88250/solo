@@ -11,7 +11,7 @@
                         ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
                     </span>
                 </time>
-                <h2 class="article-title">
+                <h3 class="article-title">
                     <a rel="bookmark" href="${servePath}${article.articlePermalink}">
                         ${article.articleTitle}
                     </a>
@@ -25,7 +25,7 @@
                         ${topArticleLabel}
                     </sup>
                     </#if>
-                </h2>
+                </h3>
                 <p>
                     ${article.articleAbstract}
                 </p>
