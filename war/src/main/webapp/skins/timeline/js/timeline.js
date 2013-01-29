@@ -34,10 +34,8 @@ var timeline = {
             $articles.find("article").each(function () {
                 var $it = $(this),
                 isLeft = colH[1] > colH[0],
-                left = isLeft ? 0 : "inherit",
                 top = isLeft ? colH[0] : colH[1];
                 $it.css({
-                    "left": left + "px",
                     "top": top + "px",
                     "position": "absolute"
                 });
@@ -63,28 +61,46 @@ var timeline = {
         if ($archives.length === 0) {
             return;
         }
+        
+        // 如果为 index 页面，重构 archives 结构，使其可收缩
+        var year = 0;
+        $(".nav-abs li").each(function (i) {
+            var $this = $(this);
+            $this.hide();
+            if (year !== $this.data("year")) {
+                year = $this.data("year");
+                $this.before("<li class='year' onclick='timeline.toggleArchives(" + 
+                    year + ")'>" + year + "</div></li>");
+            }
+        });
             
         $(window).resize(function () {
             $archives.each(function () {
                 var colH = [timeline._COLHA + 60, timeline._COLHB * 4];
-                $(this).find("article").each(function () {
-                    var $it = $(this),
-                    isLeft = colH[1] > colH[0],
-                    top = isLeft ? colH[0] : colH[1];
-                    $it.css({
-                        "top": top + "px",
-                        "position": "absolute"
+                
+                var $articles = $(this).find("article");
+                if ($articles.length === 0) {
+                    $(this).find("h2").remove();
+                } else {
+                    $articles.each(function () {
+                        var $it = $(this),
+                        isLeft = colH[1] > colH[0],
+                        top = isLeft ? colH[0] : colH[1];
+                        $it.css({
+                            "top": top + "px",
+                            "position": "absolute"
+                        });
+                
+                        if (isLeft) {
+                            $it.addClass("l");
+                        } else {
+                            $it.addClass("r");
+                        }
+                
+                        colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
                     });
-                
-                    if (isLeft) {
-                        $it.addClass("l");
-                    } else {
-                        $it.addClass("r");
-                    }
-                
-                    colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
-                });
-                $(this).height(colH[0] > colH[1] ? colH[0] : colH[1]);
+                    $(this).height(colH[0] > colH[1] ? colH[0] : colH[1]);
+                }
             });
         });
         
@@ -118,7 +134,21 @@ var timeline = {
         window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
     },
     
-    getNextPage: function (it, archives) {
+    getArchive: function (archive) {
+        var archiveDate = archive.replace("/", "");
+        if ($("#" + archiveDate + " > article").length > 0) {
+            window.location.hash = "#" + archiveDate;
+        } else {
+            var archiveHTML = '<h2><span class="article-archive">' + archiveDate + '</span></h2>'
+            + '<div class="article-more" onclick="timeline.getNextPage(this, \'' 
+            + archive + '\')" data-page="0">' + Label.moreLabel + '</div>';
+        
+            $("#" + archiveDate).html(archiveHTML)
+            timeline.getNextPage($("#" + archiveDate).find(".article-more")[0], archive);
+        }
+    },
+    
+    getNextPage: function (it, archive) {
         var $more = $(it),
         currentPage = $more.data("page") + 1,
         path = "/articles/";
@@ -128,8 +158,8 @@ var timeline = {
         } else if (location.pathname.indexOf("authors") === 1) {
             var pathnames = location.pathname.split("/authors/");
             path = "/articles/authors/" + pathnames[1].split("/")[0] + "/";
-        } else if (archives) {
-            path = "/articles/archives/" + archives + "/";
+        } else if (archive) {
+            path = "/articles/archives/" + archive + "/";
         }
         $.ajax({
             url: latkeConfig.servePath + path + currentPage,
@@ -188,6 +218,9 @@ var timeline = {
                     + '<a rel="nofollow" href="${servePath}${article.articlePermalink}">' + article.articleViewCount
                     + '</a></span></div></article>';
                 }
+                
+                var colH = [parseInt($(".article-more").prev().css("top")) + $(".article-more").prev().css("top").outerHeight(true),
+                parseInt($(".article-more").prev().prev().css("top")) + $(".article-more").prev().prev().css("top").outerHeight(true)];
             
                 $more.before(articlesHTML).data("page", currentPage);
             
@@ -198,7 +231,35 @@ var timeline = {
                     $more.css("background", "none #60829F").text(Label.moreLabel);  
                 }
                 
-                $(window).resize();
+                $("#" + archive.replace("/", "") + " article").each(function () {
+                    if (this.className !== "r" && this.className !== "l") {
+                        var $it = $(this),
+                        isLeft = colH[1] > colH[0],
+                        top = isLeft ? colH[0] : colH[1];
+                        $it.css({
+                            "top": top + "px",
+                            "position": "absolute"
+                        });
+                
+                        if (isLeft) {
+                            $it.addClass("l");
+                        } else {
+                            $it.addClass("r");
+                        }
+                
+                        colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
+                    }
+                });
+                $("#" + archive.replace("/", "")).height(colH[0] > colH[1] ? colH[0] : colH[1]);
+            }
+        });
+    },
+    
+    toggleArchives: function (year) {
+        $(".nav-abs li").each(function (i) {
+            var $this = $(this);
+            if (year === $this.data("year")) {
+                $this.toggle();
             }
         });
     }

@@ -10,31 +10,34 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <div class="nav-abs">
+        <ul class="nav-abs" style="padding: 0;">
             <#list archiveDates as archiveDate>
-            <span data-year="${archiveDate.archiveDateYear}">
+            <li data-year="${archiveDate.archiveDateYear}"
+                onclick="timeline.getArchive('${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}')">
                 <#if "en" == localeString?substring(0, 2)>
-                <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                   title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
-                    ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
+                ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})
                 <#else>
-                <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                   title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
-                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
+                ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})
                 </#if>
-            </span>
+            </li>
             </#list>
-        </div>
+        </ul>
         <div class="wrapper">
             <div class="articles container">
                 <div class="vertical"></div>
-                <#list ["17:02", "17:01"] as date>
-                <div class="fn-clear">
+                <#list archiveDates as archiveDate>
+                <div class="fn-clear" id="${archiveDate.archiveDateYear}${archiveDate.archiveDateMonth}">
                     <h2>
-                        <span class="article-archive">${date}</span>
+                        <span class="article-archive">
+                            <#if "en" == localeString?substring(0, 2)>
+                            ${archiveDate.monthName} ${archiveDate.archiveDateYear}
+                            <#else>   
+                            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}
+                            </#if>
+                        </span>
                     </h2>
                     <#list articles as article>
-                    <#if article.articleCreateDate?string("HH:mm") == date>
+                    <#if article.articleCreateDate?string("yyyy/MM") == "${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
                     <article>
                         <div class="module">
                             <div class="dot"></div>
@@ -85,7 +88,7 @@
                         </div>
                     </article>
                     <#if paginationCurrentPageNum != paginationPageCount && 0 != paginationPageCount && !article_has_next>
-                    <div class="article-more" onclick="timeline.getNextPage(this, '${date}')" data-page="${paginationCurrentPageNum}">${moreLabel}</div>
+                    <div class="article-more" onclick="timeline.getNextPage(this, '${article.articleCreateDate?string("yyyy/MM")}')" data-page="${paginationCurrentPageNum}">${moreLabel}</div>
                     </#if>
                     </#if>
                     </#list>    

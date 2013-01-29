@@ -550,15 +550,16 @@ article .article-title a {
     border-radius: 20em 20em 20em 20em;
     box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2) inset, 0 1px 0 rgba(255, 255, 255, 0.6);
     color: #FFFFFF;
+    cursor: pointer;
     font-weight: bold;
+    height: 19px;
     left: 50%;
-    margin-left: -36px;
+    margin-left: -38px;
     padding: 5px 20px;
     position: absolute;
+    text-align: center;
     top: 100%;
-    cursor: pointer;
-    height: 19px;
-    width: 26px;
+    width: 36px;
 }
 
 .article-archive {
@@ -685,5 +686,33 @@ article .article-title a {
     z-index: 1;
     text-align: center;
     white-space: nowrap;
+}
+
+.nav-abs li {
+    cursor: pointer;
+    height: 20px;
+    list-style-type: none;
+    min-width: 120px;
+    padding: 3px 10px;
+    text-align: left;
+    background-color: #DEDDDD;
+    color: #616161;
+}
+
+.nav-abs li.year {
+    color: #CCCCCC;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+    background-color: #6B6B6B;
+    padding: 5px 10px;
+}
+
+.nav-abs li:hover {
+    background-color: #EFEEEE;
+    color: #000;
+}
+
+.nav-abs li.year:hover {
+    background-color: #353535;
+    color: #fff;
 }
 /* end others */
