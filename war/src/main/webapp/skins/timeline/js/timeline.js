@@ -143,7 +143,7 @@ var timeline = {
             + '<div class="article-more" onclick="timeline.getNextPage(this, \'' 
             + archive + '\')" data-page="0">' + Label.moreLabel + '</div>';
         
-            $("#" + archiveDate).html(archiveHTML)
+            $("#" + archiveDate).html(archiveHTML);
             timeline.getNextPage($("#" + archiveDate).find(".article-more")[0], archive);
         }
     },
