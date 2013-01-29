@@ -17,6 +17,7 @@ package org.b3log.solo.processor;
 
 
 import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -34,7 +35,7 @@ import org.json.JSONObject;
  * Blog processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jul 18, 2012
+ * @version 1.0.0.2, Jan 29, 2013
  * @since 0.4.6
  */
 @RequestProcessor
@@ -92,7 +93,13 @@ public final class BlogProcessor {
         jsonObject.put("servePath", Latkes.getServePath());
         jsonObject.put("staticServePath", Latkes.getStaticServePath());
         jsonObject.put("version", SoloServletListener.VERSION);
-        jsonObject.put("runtimeEnv", Latkes.getRuntimeEnv());
         jsonObject.put("locale", Latkes.getLocale());
+        jsonObject.put("runtimeMode", Latkes.getRuntimeMode());
+        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
+
+        jsonObject.put("runtimeEnv", runtimeEnv);
+        if (RuntimeEnv.LOCAL == runtimeEnv) {
+            jsonObject.put("runtimeDatabase", Latkes.getRuntimeDatabase());
+        }
     }
 }

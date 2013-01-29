@@ -1043,8 +1043,8 @@ public final class ArticleProcessor {
     private static String getTagArticlesPagedTag(final String requestURI) {
         String tagAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/tags/").length());
 
-        if (!tagAndPageNum.endsWith("/")) {
-            tagAndPageNum += "/";
+        if (tagAndPageNum.endsWith("/")) {
+            tagAndPageNum = StringUtils.removeEnd(tagAndPageNum, "/");
         }
 
         return StringUtils.substringBefore(tagAndPageNum, "/");
@@ -1069,8 +1069,8 @@ public final class ArticleProcessor {
     private static String getArchivesArticlesPagedArchive(final String requestURI) {
         String archiveAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/archives/").length());
 
-        if (!archiveAndPageNum.endsWith("/")) {
-            archiveAndPageNum += "/";
+        if (archiveAndPageNum.endsWith("/")) {
+            archiveAndPageNum = StringUtils.removeEnd(archiveAndPageNum, "/");
         }
 
         return StringUtils.substringBeforeLast(archiveAndPageNum, "/");
@@ -1095,8 +1095,8 @@ public final class ArticleProcessor {
     private static String getAuthorsArticlesPagedAuthorId(final String requestURI) {
         String authorIdAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/authors/").length());
 
-        if (!authorIdAndPageNum.endsWith("/")) {
-            authorIdAndPageNum += "/";
+        if (authorIdAndPageNum.endsWith("/")) {
+            authorIdAndPageNum = StringUtils.removeEnd(authorIdAndPageNum, "/");
         }
 
         return StringUtils.substringBefore(authorIdAndPageNum, "/");
