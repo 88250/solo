@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.2, Jan 18, 2013
+ * @version 1.0.6.3, Jan 29, 2013
  * @since 0.3.1
  */
 public final class Filler {
@@ -506,6 +506,7 @@ public final class Filler {
             dataModel.put(User.USERS, userList);
             for (final JSONObject user : userList) {
                 user.remove(User.USER_EMAIL);
+                user.remove(User.USER_PASSWORD);
             }
 
             final String skinDirName = (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
