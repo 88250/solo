@@ -68,7 +68,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Jan 18, 2013
+ * @version 1.0.1.5, Jan 30, 2013
  * @since 0.3.5
  */
 public final class ArticleMgmtService {
@@ -231,7 +231,7 @@ public final class ArticleMgmtService {
      *         "articleTags": "tag1,tag2,tag3",
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
-     *         "articleSignId": "",
+     *         "articleSignId": "", // optional
      *         "articleCommentable": boolean,
      *         "articleViewPwd": ""
      *     }
@@ -267,6 +267,11 @@ public final class ArticleMgmtService {
             final JSONObject preference = preferenceQueryService.getPreference();
             final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
             final Date date = TimeZones.getTime(timeZoneId);
+
+            // The article to update has no sign
+            if (!article.has(Article.ARTICLE_SIGN_ID)) {
+                article.put(Article.ARTICLE_SIGN_ID, "0");
+            }
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
                 if (articleUtils.hadBeenPublished(oldArticle)) {
@@ -316,9 +321,9 @@ public final class ArticleMgmtService {
             final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
 
             article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
-            
+
             articleRepository.update(articleId, article);
-            
+
             article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
 
             if (publishNewArticle) {
@@ -350,7 +355,7 @@ public final class ArticleMgmtService {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            
+
             LOGGER.log(Level.SEVERE, "Updates an article failed", e);
 
             throw e;
