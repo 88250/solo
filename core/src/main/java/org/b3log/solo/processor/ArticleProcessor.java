@@ -475,6 +475,13 @@ public final class ArticleProcessor {
                 }
             }
 
+            //sort
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+            } else {
+                Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
+            }
+            
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
 
@@ -542,6 +549,13 @@ public final class ArticleProcessor {
 
                     filler.setArticlesExProperties(articles, author, preference);
                 }
+            }
+
+            //sort
+            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
+            } else {
+                Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
             }
 
             final JSONObject result = new JSONObject();
