@@ -12,7 +12,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <h2>${archive1Label}
+                <h2 id="archive">${archive1Label}
                     <#if "en" == localeString?substring(0, 2)>
                     ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
                     <#else>

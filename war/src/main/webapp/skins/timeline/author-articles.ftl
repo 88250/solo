@@ -10,7 +10,7 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <h3 class="nav-abs">
+        <h3 class="nav-abs" id="author">
             <img style="border-radius: 45px;" width="90" title="${authorName}" src="${authorThumbnailURL}"/>
             <br/>
             ${authorName}

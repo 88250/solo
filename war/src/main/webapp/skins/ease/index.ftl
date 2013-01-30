@@ -11,7 +11,7 @@
         ${topBarReplacement}
         <#include "header.ftl">
         <div class="main">
-            <div class="wrapper">
+            <div class="wrapper" id="index">
             <#include "article-list.ftl">
         </div>
         </div>

@@ -28,16 +28,15 @@ var getNextPage = function () {
     var $more = $(".article-next");
     currentPage += 1;
     var path = "/articles/";
-    if(location.pathname.indexOf("tags") === 1) {
-        var pathnames = location.pathname.split("/tags/");
-        path = "/articles/tags/" + pathnames[1].split("/")[0] + "/";
-    } else if (location.pathname.indexOf("archives") > -1) {
-        var archivesPathname = location.pathname.split("/archives/");
-        var archives = archivesPathname[1].split("/");
-        path = "/articles/archives/" + archives[0] + "/" + archives[1] + "/";
-    } else if (location.pathname.indexOf("authors") === 1) {
-        var pathnames = location.pathname.split("/authors/");
-        path = "/articles/authors/" + pathnames[1].split("/")[0] + "/";
+    if($("#tag").length === 1) {
+        var pathnames = location.pathname.split("/");
+        path = "/articles/tags/" + pathnames[pathnames.length - 1] + "/";
+    } else if ($("#archive").length === 1) {
+        var pathnames = location.pathname.split("/");
+        path = "/articles/archives/" + pathnames[pathnames.length - 2] + "/" + pathnames[pathnames.length - 1] + "/";
+    } else if ($("#author").length === 1) {
+        var pathnames = location.pathname.split("/");
+        path = "/articles/authors/" + pathnames[pathnames.length - 1] + "/";
     }
     
     $.ajax({

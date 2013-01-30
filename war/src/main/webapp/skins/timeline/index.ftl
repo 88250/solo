@@ -13,7 +13,7 @@
         <ul class="nav-abs"  style="padding: 0;position: fixed">
             <#list archiveDates as archiveDate>
             <li data-year="${archiveDate.archiveDateYear}"
-                onclick="timeline.getArchive('${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}')">
+                onclick="timeline.getArchive('${archiveDate.archiveDateYear}', '${archiveDate.archiveDateMonth}'<#if "en" == localeString?substring(0, 2)>, '${archiveDate.monthName}'</#if>)">
                 <#if "en" == localeString?substring(0, 2)>
                 ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})
                 <#else>

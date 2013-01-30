@@ -135,12 +135,17 @@ var timeline = {
         window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
     },
     
-    getArchive: function (archive) {
-        var archiveDate = archive.replace("/", "");
+    getArchive: function (year, month, monthName) {
+        var archiveDate = year + month,
+        archive = year + "/" + month;
         if ($("#" + archiveDate + " > article").length > 0) {
             window.location.hash = "#" + archiveDate;
         } else {
-            var archiveHTML = '<h2><span class="article-archive">' + archiveDate + '</span></h2>'
+            var archiveDataTitle = year + " " + Label.yearLabel + " " + month + " " + Label.monthLabel;
+            if (Label.localeString.substring(0, 2) === "en") {
+                archiveDataTitle = monthName + " " + year;
+            }
+            var archiveHTML = '<h2><span class="article-archive">' + archiveDataTitle + '</span></h2>'
             + '<div class="article-more" onclick="timeline.getNextPage(this, \'' 
             + archive + '\')" data-page="0">' + Label.moreLabel + '</div>';
         
@@ -153,12 +158,12 @@ var timeline = {
         var $more = $(it),
         currentPage = $more.data("page") + 1,
         path = "/articles/";
-        if(location.pathname.indexOf("tags") === 1) {
-            var pathnames = location.pathname.split("/tags/");
-            path = "/articles/tags/" + pathnames[1].split("/")[0] + "/";
-        } else if (location.pathname.indexOf("authors") === 1) {
-            var pathnames = location.pathname.split("/authors/");
-            path = "/articles/authors/" + pathnames[1].split("/")[0] + "/";
+        if($("#tag").length === 1) {
+            var pathnames = location.pathname.split("/");
+            path = "/articles/tags/" + pathnames[pathnames.length - 1] + "/";
+        } else if ($("#author").length === 1) {
+            var pathnames = location.pathname.split("/");
+            path = "/articles/authors/" + pathnames[pathnames.length - 1] + "/";
         } else if (archive) {
             path = "/articles/archives/" + archive + "/";
         }
@@ -172,6 +177,11 @@ var timeline = {
             },
             success: function(result, textStatus){
                 if (!result.sc) {
+                    return;
+                }
+                
+                if (result.rslts.articles.length === 0) {
+                    $more.remove();
                     return;
                 }
             
@@ -220,30 +230,33 @@ var timeline = {
                     + '</a></span></div></article>';
                 }
                 
-                var colHA = parseInt($(".article-more").prev().prev().css("top")) + $(".article-more").prev().prev().outerHeight(true),
-                colHB = parseInt($(".article-more").prev().css("top")) + $(".article-more").prev().outerHeight(true);
+                var colHA = 0,
+                colHB = 0,
+                colH = [colHA, colHB];
                 
-                if (archive) {
+                if (archive && $more.prev()[0].tagName.toLowerCase() === "h2") {
                     // 前面无 article
-                    if ($(".article-more").prev()[0].tagName.toLowerCase() === "h2") {
-                        colHA = timeline._COLHA + 60;
-                        colHB = timeline._COLHB * 4;
-                    }
-                    
+                    colHA = timeline._COLHA + 60;
+                    colHB = timeline._COLHB * 4;
+                    colH = [colHA, colHB];
+                } else if (archive && $more.prev()[0].tagName.toLowerCase() === "article"
+                    && $more.prev().prev()[0].tagName.toLowerCase() === "h2") {
                     // 前面只有1篇文章
-                    if ($(".article-more").prev()[0].tagName.toLowerCase() === "article"
-                        && $(".article-more").prev().prev()[0].tagName.toLowerCase() === "h2") {
-                        colHA = parseInt($(".article-more").prev().css("top")) + $(".article-more").prev().outerHeight(true);
-                        colHB = timeline._COLHB * 4;
+                    colHA = parseInt($more.prev().css("top")) + $more.prev().outerHeight(true);
+                    colHB = timeline._COLHB * 4;
+                    colH = [colHA, colHB];
+                } else {
+                    colHA = parseInt($more.prev().prev().css("top")) + $more.prev().prev().outerHeight(true);
+                    colHB = parseInt($more.prev().css("top")) + $more.prev().outerHeight(true);
+                    colH = [colHA, colHB];
+                    if ($more.prev().prev().hasClass("r")) {
+                        colH = [colHB, colHA];
                     }
                 }
                 
-                var colH = [colHA, colHB];
-            
                 $more.before(articlesHTML).data("page", currentPage);
-            
                 // 最后一页处理
-                if (pagination.paginationPageCount === currentPage) {
+                if (pagination.paginationPageCount <= currentPage) {
                     $more.remove();
                 } else {
                     $more.css("background", "none #60829F").text(Label.moreLabel);  

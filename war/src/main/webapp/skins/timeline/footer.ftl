@@ -60,7 +60,10 @@
         "em11Label": "${em11Label}",
         "em12Label": "${em12Label}",
         "em13Label": "${em13Label}",
-        "em14Label": "${em14Label}"
+        "em14Label": "${em14Label}",
+        "localeString": "${localeString}",
+        "yearLabel": "${yearLabel}",
+        "monthLabel": "${monthLabel}"
     };
 </script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
