@@ -18,7 +18,7 @@
  * @fileoverview timeline js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Jan 14, 2013
+ * @version 1.0.1.0, Jan 30, 2013
  */
 var timeline = {
     _COLHA: 0,
@@ -35,24 +35,27 @@ var timeline = {
                 var $it = $(this),
                 isLeft = colH[1] > colH[0],
                 top = isLeft ? colH[0] : colH[1];
-                $it.css({
-                    "top": top + "px",
-                    "position": "absolute"
-                });
+                if (!$it.hasClass("r") && !$it.hasClass("l")) {
+                    $it.css({
+                        "top": top + "px",
+                        "position": "absolute"
+                    });
                 
-                if (isLeft) {
-                    this.className = "l";
-                } else {
-                    this.className = "r";
+                    if (isLeft) {
+                        this.className = "l";
+                    } else {
+                        this.className = "r";
+                    }
                 }
-                
                 colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
             });
             
             $articles.height(colH[0] > colH[1] ? colH[0] : colH[1]);
         });
         
-        $(window).resize();
+        setTimeout(function () {
+            $(window).resize();            
+        }, 500);
     },
     
     
@@ -73,6 +76,11 @@ var timeline = {
                     year + ")'>" + year + "</div></li>");
             }
         });
+        
+        // 首次加载时，当没有下一页时，使用 js 隐藏"更多"按钮 
+        if ($(".article-more").parent().data("count") <= $(".article-more").parent().find("article").length) {
+            $(".article-more").remove();
+        }
             
         $(window).resize(function () {
             $archives.each(function () {
@@ -87,25 +95,29 @@ var timeline = {
                         var $it = $(this),
                         isLeft = colH[1] > colH[0],
                         top = isLeft ? colH[0] : colH[1];
-                        $it.css({
-                            "top": top + "px",
-                            "position": "absolute"
-                        });
+                        
+                        if (!$it.hasClass("r") && !$it.hasClass("l")) {
+                            $it.css({
+                                "top": top + "px",
+                                "position": "absolute"
+                            });
                 
-                        if (isLeft) {
-                            this.className = "l";
-                        } else {
-                            this.className = "r";
+                            if (isLeft) {
+                                this.className = "l";
+                            } else {
+                                this.className = "r";
+                            }
                         }
-                
-                        colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
+                        colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));    
                     });
                     $(this).height(colH[0] > colH[1] ? colH[0] : colH[1]);
                 }
             });
         });
         
-        $(window).resize();
+        setTimeout(function () {
+            $(window).resize();            
+        }, 500);
     },
     
     _setNavCurrent: function () {
@@ -230,30 +242,6 @@ var timeline = {
                     + '</a></span></div></article>';
                 }
                 
-                var colHA = 0,
-                colHB = 0,
-                colH = [colHA, colHB];
-                
-                if (archive && $more.prev()[0].tagName.toLowerCase() === "h2") {
-                    // 前面无 article
-                    colHA = timeline._COLHA + 60;
-                    colHB = timeline._COLHB * 4;
-                    colH = [colHA, colHB];
-                } else if (archive && $more.prev()[0].tagName.toLowerCase() === "article"
-                    && $more.prev().prev()[0].tagName.toLowerCase() === "h2") {
-                    // 前面只有1篇文章
-                    colHA = parseInt($more.prev().css("top")) + $more.prev().outerHeight(true);
-                    colHB = timeline._COLHB * 4;
-                    colH = [colHA, colHB];
-                } else {
-                    colHA = parseInt($more.prev().prev().css("top")) + $more.prev().prev().outerHeight(true);
-                    colHB = parseInt($more.prev().css("top")) + $more.prev().outerHeight(true);
-                    colH = [colHA, colHB];
-                    if ($more.prev().prev().hasClass("r")) {
-                        colH = [colHB, colHA];
-                    }
-                }
-                
                 $more.before(articlesHTML).data("page", currentPage);
                 // 最后一页处理
                 if (pagination.paginationPageCount <= currentPage) {
@@ -262,26 +250,9 @@ var timeline = {
                     $more.css("background", "none #60829F").text(Label.moreLabel);  
                 }
                 
-                $((archive ? "#" + archive.replace("/", "") : ".articles") + " article").each(function () {
-                    if (this.className !== "r" && this.className !== "l") {
-                        var $it = $(this),
-                        isLeft = colH[1] > colH[0],
-                        top = isLeft ? colH[0] : colH[1];
-                        $it.css({
-                            "top": top + "px",
-                            "position": "absolute"
-                        });
-                
-                        if (isLeft) {
-                            this.className = "l";
-                        } else {
-                            this.className = "r";
-                        }
-                
-                        colH[( isLeft ? '0' : '1' )] += parseInt($it.outerHeight(true));
-                    }
-                });
-                $(archive ? "#" + archive.replace("/", "") : ".articles").height(colH[0] > colH[1] ? colH[0] : colH[1]);
+                setTimeout(function () {
+                    $(window).resize();            
+                }, 500);
             }
         });
     },

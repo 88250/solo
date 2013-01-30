@@ -17,7 +17,7 @@
 * timeline skin style.
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.8, Jan 14, 2013
+* @version 1.0.1.0, Jan 30, 2013
 */
 /* start reset */
 html, body {
@@ -198,6 +198,7 @@ img {
 #tags b {
     font-size: 70%;
     opacity: 0.6;
+    filter: alpha(opacity=60);
 }
 
 .tags1, .tags1:visited {
@@ -336,7 +337,7 @@ img {
 
 .ico-next,
 .ico-pre {
-    background: none repeat scroll 0 0 #6599C6;
+    background-color: #6599C6;
     border-radius: 10em 10em 10em 10em;
     color: #FFFFFF;
     display: block;
@@ -370,7 +371,11 @@ a:hover > .ico-pre {
 
 .header {
     background-color: #BFBFBF;
-    background-image: url("../../timeline/images/nav-bg.png"), linear-gradient(to bottom, #CCCCCC 0%, #A9A9A9 100%);
+    background-image: url("../../timeline/images/nav-bg.png"), linear-gradient(#CCCCCC, #A9A9A9);
+    background-image: url("../../timeline/images/nav-bg.png"), -ms-linear-gradient(#CCCCCC, #A9A9A9);
+    background-image: url("../../timeline/images/nav-bg.png"), -o-linear-gradient(#CCCCCC, #A9A9A9);
+    background-image: url("../../timeline/images/nav-bg.png"), -webkit-linear-gradient(#CCCCCC, #A9A9A9);
+    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#CCCCCC', endColorstr='#A9A9A9');
     border-bottom: 1px solid #898989;
     box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 1px rgba(0, 0, 0, 0.2);
     height: 50px;
@@ -524,7 +529,7 @@ time.article-time > span {
 }
 
 article .article-title {
-    margin: 0;
+    margin: 10px 0 0 0;
 }
 
 article .article-title > sup {
@@ -535,8 +540,6 @@ article .article-title > sup {
 article .article-title a {
     color: #000;
     text-decoration: none;
-    margin-top: 10px;
-    display: block;
 }
 
 .ico > a {
@@ -626,6 +629,7 @@ article .article-title a {
     border: 1px solid #ddd;
     left: 76px;
     opacity: 0.8;
+    filter: alpha(opacity=80);
     padding: 10px;
     position: absolute;
     width: 74%;

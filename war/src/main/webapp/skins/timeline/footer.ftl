@@ -6,18 +6,20 @@
             <a href="http://b3log.org" target="_blank">
                 ${b3logLabel}&nbsp;
                 <b style="color: orangered;">Solo</b></a>,
-                ver ${version}&nbsp;&nbsp;
-                Theme by <a rel="friend" rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+            ver ${version}&nbsp;&nbsp;
+            Theme by <a rel="friend" rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
         </div>
-        <div class="right">
-            ${viewCount1Label}
-            ${statistic.statisticBlogViewCount}
-            &nbsp;&nbsp;
-            ${articleCount1Label}
-            ${statistic.statisticPublishedBlogArticleCount}
-            &nbsp;&nbsp;
-            ${commentCount1Label}
-            ${statistic.statisticPublishedBlogCommentCount}
+        <div class="right fn-clear">
+            <span class="left">
+                ${viewCount1Label}
+                ${statistic.statisticBlogViewCount}
+                &nbsp;&nbsp;
+                ${articleCount1Label}
+                ${statistic.statisticPublishedBlogArticleCount}
+                &nbsp;&nbsp;
+                ${commentCount1Label}
+                ${statistic.statisticPublishedBlogCommentCount}
+            </span>
             <span class="ico-translate" onclick="timeline.translate()"></span>
         </div>
     </div>

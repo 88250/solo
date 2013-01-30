@@ -26,7 +26,7 @@
         <div class="articles container" style="margin-top: 0">
             <div class="vertical"></div>
             <#list archiveDates as archiveDate>
-            <div class="fn-clear" id="${archiveDate.archiveDateYear}${archiveDate.archiveDateMonth}">
+            <div class="fn-clear" id="${archiveDate.archiveDateYear}${archiveDate.archiveDateMonth}" data-count="${archiveDate.archiveDatePublishedArticleCount}">
                 <h2>
                     <span class="article-archive">
                         <#if "en" == localeString?substring(0, 2)>
