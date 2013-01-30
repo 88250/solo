@@ -178,6 +178,7 @@ img {
 #tags li {
     float: left;
     list-style-type: none;
+    height: 45px;
 }
 
 #tags a {
@@ -410,7 +411,7 @@ a:hover > .ico-pre {
 
 .header li a {
     color: #444;
-    padding: 19px;
+    padding: 17px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
     white-space: nowrap;
 }
@@ -533,6 +534,8 @@ article .article-title > sup {
 article .article-title a {
     color: #000;
     text-decoration: none;
+    margin-top: 10px;
+    display: block;
 }
 
 .ico > a {
@@ -689,21 +692,19 @@ article .article-title a {
 }
 
 .nav-abs li {
+    background-color: #DEDDDD;
+    color: #616161;
     cursor: pointer;
     height: 20px;
     list-style-type: none;
-    min-width: 120px;
-    padding: 3px 10px;
-    text-align: left;
-    background-color: #DEDDDD;
-    color: #616161;
+    min-width: 54px;
+    padding: 3px 5px;
 }
 
 .nav-abs li.year {
     color: #CCCCCC;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
     background-color: #6B6B6B;
-    padding: 5px 10px;
 }
 
 .nav-abs li:hover {

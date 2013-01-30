@@ -110,7 +110,7 @@ var timeline = {
     
     _setNavCurrent: function () {
         $(".header li a").each(function () {
-            if($(this).attr("href") === location.href.split("#")[0]) {
+            if($(this).prop("href") === location.href.split("#")[0]) {
                 this.className = "current";
             } else {
                 this.className = "";
@@ -138,9 +138,8 @@ var timeline = {
     getArchive: function (year, month, monthName) {
         var archiveDate = year + month,
         archive = year + "/" + month;
-        if ($("#" + archiveDate + " > article").length > 0) {
-            window.location.hash = "#" + archiveDate;
-        } else {
+        window.location.hash = "#" + archiveDate;
+        if ($("#" + archiveDate + " > article").length === 0) {
             var archiveDataTitle = year + " " + Label.yearLabel + " " + month + " " + Label.monthLabel;
             if (Label.localeString.substring(0, 2) === "en") {
                 archiveDataTitle = monthName + " " + year;
@@ -177,6 +176,7 @@ var timeline = {
             },
             success: function(result, textStatus){
                 if (!result.sc) {
+                    $more.css("background", "none #60829F").text("Error");  
                     return;
                 }
                 
