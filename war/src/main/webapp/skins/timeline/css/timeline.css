@@ -412,6 +412,7 @@ a:hover > .ico-pre {
 .header li a {
     color: #444;
     padding: 17px;
+    line-height: 20px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.7);
     white-space: nowrap;
 }
@@ -614,6 +615,10 @@ article .article-title a {
 .comments .author {
     font-size: 130%;
     font-style: italic;
+}
+
+.comments > li > div > p {
+    padding-left: 75px;
 }
 
 .module > ul > li.comment-body-ref {

@@ -63,7 +63,7 @@ a:hover>.ico-next,a:hover>.ico-pre{background-color:#000;}
 .footer a:hover{text-decoration:underline;}
 .header .title{font-size:150%;margin:3px 0 0;}
 .header .title a{color:#414141;text-shadow:0 1px 0 rgba(255, 255, 255, 0.7);}
-.header li a{color:#444;padding:17px;text-shadow:0 1px 0 rgba(255, 255, 255, 0.7);white-space:nowrap;}
+.header li a{color:#444;padding:17px;line-height:20px;text-shadow:0 1px 0 rgba(255, 255, 255, 0.7);white-space:nowrap;}
 .header li a.current{border-bottom:2px solid #D26911;}
 .header a:hover{color:#000;}
 .header li{float:left;list-style-type:none;}
@@ -95,6 +95,7 @@ article .article-title a{color:#000;text-decoration:none;margin-top:10px;display
 #comments{margin:30px 0 50px;position:relative;}
 .comments>li>img{height:60px;width:60px;border-radius:30px;float:left;margin-right:15px;}
 .comments .author{font-size:130%;font-style:italic;}
+.comments>li>div>p{padding-left:75px;}
 .module>ul>li.comment-body-ref{background-color:#FFFFFF;border:1px solid #ddd;left:76px;opacity:0.8;padding:10px;position:absolute;width:74%;border-radius:10px;}
 .comment-body-ref .ico-reply{display:none;}
 .comment-form{width:100%;margin:30px 0;}
