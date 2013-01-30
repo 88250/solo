@@ -203,12 +203,9 @@ public final class TagProcessor {
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
             LOGGER.log(Level.FINEST, "tag-articles[pageNums={0}]", pageNums);
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
-            } else {
-                Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-            }
-
+            
+            Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
+         
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
             dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle, "UTF-8"));
             dataModel.put(Keys.OBJECT_ID, tagId);
