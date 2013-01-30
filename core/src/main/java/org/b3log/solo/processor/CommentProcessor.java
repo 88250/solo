@@ -44,7 +44,8 @@ import org.json.JSONObject;
  * Comment processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.10, Dec 29, 2012
+ * @author ArmstrongCN
+ * @version 1.1.0.11, Jan 30, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -80,8 +81,8 @@ public final class CommentProcessor {
      * }
      * </pre> </p>
      *
-     * @param context the specified context, including a request json object,
-     * for example,      <pre>
+     * @param context the specified context, including a request json object, for example,      
+     * <pre>
      * {
      *     "captcha": "",
      *     "oId": pageId,
@@ -172,8 +173,8 @@ public final class CommentProcessor {
      * }
      * </pre>
      *
-     * @param context the specified context, including a request json object,
-     * for example,      <pre>
+     * @param context the specified context, including a request json object, for example,      
+     * <pre>
      * {
      *     "captcha": "",
      *     "oId": articleId,
