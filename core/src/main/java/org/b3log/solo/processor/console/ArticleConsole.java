@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * Article console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 10, 2013
+ * @version 1.0.0.5, Jan 30, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -581,11 +581,6 @@ public final class ArticleConsole {
                 ret.put(Keys.STATUS_CODE, false);
 
                 return;
-            }
-
-            // The article to update has no sign
-            if (!article.has(Article.ARTICLE_SIGN_ID)) {
-                article.put(Article.ARTICLE_SIGN_ID, "0");
             }
 
             articleMgmtService.updateArticle(requestJSONObject);

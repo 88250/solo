@@ -44,7 +44,8 @@ import org.json.JSONObject;
  * Comment processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.10, Dec 29, 2012
+ * @author ArmstrongCN
+ * @version 1.1.0.11, Jan 30, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -67,9 +68,8 @@ public final class CommentProcessor {
 
     /**
      * Adds a comment to a page.
-     * 
-     * <p>
-     * Renders the response with a json object, for example,
+     *
+     * <p> Renders the response with a json object, for example,
      * <pre>
      * {
      *     "oId": generatedCommentId,
@@ -79,11 +79,9 @@ public final class CommentProcessor {
      *     "commentThumbnailURL": "",
      *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
      * }
-     * </pre>
-     * </p>
+     * </pre> </p>
      *
-     * @param context the specified context, 
-     * including a request json object, for example,
+     * @param context the specified context, including a request json object, for example,      
      * <pre>
      * {
      *     "captcha": "",
@@ -128,8 +126,12 @@ public final class CommentProcessor {
             return;
         }
 
+        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+
+        session.removeAttribute(CaptchaProcessor.CAPTCHA);
+
         if (!Users.getInstance().isLoggedIn(httpServletRequest, httpServletResponse)) {
-            final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
@@ -139,7 +141,6 @@ public final class CommentProcessor {
                 return;
             }
 
-            session.removeAttribute(CaptchaProcessor.CAPTCHA);
         }
 
         try {
@@ -159,9 +160,8 @@ public final class CommentProcessor {
     /**
      * Adds a comment to an article.
      *
-     * 
-     * <p>
-     * Renders the response with a json object, for example,
+     *
+     * <p> Renders the response with a json object, for example,
      * <pre>
      * {
      *     "oId": generatedCommentId,
@@ -172,9 +172,8 @@ public final class CommentProcessor {
      *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
      * }
      * </pre>
-     * 
-     * @param context the specified context, 
-     * including a request json object, for example,
+     *
+     * @param context the specified context, including a request json object, for example,      
      * <pre>
      * {
      *     "captcha": "",
@@ -187,7 +186,7 @@ public final class CommentProcessor {
      * }
      * </pre>
      * @throws ServletException servlet exception
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = { "/add-article-comment.do"}, method = HTTPRequestMethod.POST)
     public void addArticleComment(final HTTPRequestContext context) throws ServletException, IOException {
@@ -219,8 +218,12 @@ public final class CommentProcessor {
             return;
         }
 
+        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+
+        session.removeAttribute(CaptchaProcessor.CAPTCHA);
+        
         if (!Users.getInstance().isLoggedIn(httpServletRequest, httpServletResponse)) {
-            final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
+            
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
@@ -230,7 +233,6 @@ public final class CommentProcessor {
                 return;
             }
 
-            session.removeAttribute(CaptchaProcessor.CAPTCHA);
         }
 
         try {

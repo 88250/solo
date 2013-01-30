@@ -37,6 +37,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextXMLRenderer;
+import org.b3log.latke.util.MD5;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
@@ -72,7 +73,7 @@ import org.jsoup.Jsoup;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Jan 18, 2013
+ * @version 1.0.0.9, Jan 30, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -233,7 +234,7 @@ public final class MetaWeblogAPI {
 
             final String userPwd = params.getJSONObject(INDEX_USER_PWD).getJSONObject("value").getString("string");
 
-            if (!user.getString(User.USER_PASSWORD).equals(userPwd)) {
+            if (!user.getString(User.USER_PASSWORD).equals(MD5.hash(userPwd))) {
                 throw new Exception("Wrong password");
             }
 
