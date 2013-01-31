@@ -59,7 +59,8 @@ import org.json.JSONObject;
  * Article query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Jan 8, 2013
+ * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
+ * @version 1.0.1.2, Jan 30, 2013
  * @since 0.3.5
  */
 public final class ArticleQueryService {
@@ -269,8 +270,10 @@ public final class ArticleQueryService {
 
             if (!articleIsPublished) {
                 articleCount -= statistics.getPublishedBlogArticleCount();
+            } else {
+                articleCount = statistics.getPublishedBlogArticleCount();
             }
-
+            
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             query.setPageCount(pageCount);

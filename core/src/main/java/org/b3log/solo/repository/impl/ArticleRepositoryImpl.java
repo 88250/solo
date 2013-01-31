@@ -21,11 +21,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.9, May 8, 2012
+ * @version 1.0.3.10, Jan 31, 2013
  * @since 0.3.1
  */
 public final class ArticleRepositoryImpl extends AbstractRepository implements ArticleRepository {
@@ -58,7 +58,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
     @Override
     public JSONObject getByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
         throws RepositoryException {
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, authorEmail), new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(
+        final Query query = new Query().setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, authorEmail), new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(
             1);
 
         return get(query);
