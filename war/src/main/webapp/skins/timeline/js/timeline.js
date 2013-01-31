@@ -72,7 +72,7 @@ var timeline = {
             $this.hide();
             if (year !== $this.data("year")) {
                 year = $this.data("year");
-                $this.before("<li class='year' onclick='timeline.toggleArchives(" + 
+                $this.before("<li class='close year' onclick='timeline.toggleArchives(this, " + 
                     year + ")'>" + year + "</div></li>");
             }
         });
@@ -257,14 +257,26 @@ var timeline = {
         });
     },
     
-    toggleArchives: function (year) {
+    toggleArchives: function (it, year) {
         $(".nav-abs li").each(function (i) {
             var $it = $(this);
-            if (this.className !== "year") {
+            if (!$it.hasClass("year")) {
                 $it.hide();
-                if (year === $it.data("year")) {
+                if (year === $it.data("year") && $(it).hasClass("close")) {
                     $it.show();
                 }
+            } 
+        });
+        
+        $(".nav-abs li.year").each(function () {
+            if (parseInt($(this).text()) === year) {
+                if ($(it).hasClass("close")) {
+                    it.className = "year open";
+                } else {
+                    it.className = "year close";
+                }
+            } else {
+                this.className = "year close";
             }
         });
     }
