@@ -22,6 +22,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.model.User;
@@ -65,7 +67,7 @@ public final class ArticleGenerator {
         if (RuntimeMode.DEVELOPMENT != Latkes.getRuntimeMode()) {
             LOGGER.log(Level.WARNING, "Article generation just for development mode, " + "current runtime mode is [{0}]",
                 Latkes.getRuntimeMode());
-            response.sendRedirect("/");
+            response.sendRedirect(request.getContextPath());
 
             return;
         }
@@ -87,7 +89,9 @@ public final class ArticleGenerator {
                 // XXX: http://en.wikipedia.org/wiki/Markov_chain
                 article.put(Article.ARTICLE_TITLE, "article title" + i);
                 article.put(Article.ARTICLE_ABSTRACT, "article" + i + " abstract");
-                article.put(Article.ARTICLE_TAGS_REF, "tag1,tag2");
+                final int deviationTag = 3;
+
+                article.put(Article.ARTICLE_TAGS_REF, "taga,tagb,tag" + i % deviationTag);
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
                 article.put(Article.ARTICLE_COMMENT_COUNT, 0);
                 article.put(Article.ARTICLE_VIEW_COUNT, 0);
@@ -96,8 +100,15 @@ public final class ArticleGenerator {
                 article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
                 article.put(Article.ARTICLE_IS_PUBLISHED, true);
                 article.put(Article.ARTICLE_PUT_TOP, false);
-                article.put(Article.ARTICLE_CREATE_DATE, new Date());
-                article.put(Article.ARTICLE_UPDATE_DATE, new Date());
+          
+                final int deviationBase = 5;
+                final int deviationDay = -(Integer.valueOf(String.valueOf(i).substring(0, 1)) % deviationBase);           
+                
+                final Date date = DateUtils.addMonths(new Date(), deviationDay);
+
+                article.put(Article.ARTICLE_CREATE_DATE, date);
+                article.put(Article.ARTICLE_UPDATE_DATE, date);
+                
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
                 article.put(Article.ARTICLE_COMMENTABLE, true);
                 article.put(Article.ARTICLE_VIEW_PWD, "");
@@ -112,6 +123,7 @@ public final class ArticleGenerator {
 
         Stopwatchs.end();
 
-        response.sendRedirect("/");
+        response.sendRedirect(request.getContextPath());
     }
+    
 }
