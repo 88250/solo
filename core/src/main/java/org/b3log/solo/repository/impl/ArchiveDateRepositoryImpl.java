@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * Archive date repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, Jan 18, 2013
+ * @version 1.0.0.8, Jan 31, 2013
  * @since 0.3.1
  */
 public final class ArchiveDateRepositoryImpl extends AbstractRepository implements ArchiveDateRepository {
@@ -60,6 +60,8 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
             LOGGER.log(Level.SEVERE, "Can not parse archive date [" + archiveDate + "]", e);
             throw new RepositoryException("Can not parse archive date [" + archiveDate + "]");
         }
+
+        LOGGER.log(Level.FINEST, "Archive date [{0}] parsed to time [{1}]", new Object[] {archiveDate, time});
 
         final Query query = new Query();
 

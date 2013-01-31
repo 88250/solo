@@ -523,7 +523,7 @@ public final class ArticleProcessor {
             final JSONObject archiveQueryResult = archiveDateQueryService.getByArchiveDateString(archiveDateString);
 
             if (null == archiveQueryResult) {
-                throw new Exception("Can not foud archive[archiveDate=" + archiveDateString + "]");
+                throw new Exception("Can not found archive[archiveDate=" + archiveDateString + "]");
             }
 
             final JSONObject archiveDate = archiveQueryResult.getJSONObject(ArchiveDate.ARCHIVE_DATE);
