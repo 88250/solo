@@ -702,18 +702,24 @@ article .article-title a {
 
 .nav-abs li {
     background-color: #DEDDDD;
+    border: 1px solid #6B6B6B;
     color: #616161;
     cursor: pointer;
+    float: left;
     height: 20px;
     list-style-type: none;
-    min-width: 54px;
     padding: 3px 5px;
+    width: 28px;
 }
 
 .nav-abs li.year {
-    color: #CCCCCC;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
     background-color: #6B6B6B;
+    clear: both;
+    color: #CCCCCC;
+    float: none;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
+    width: auto;
+    border-width: 0;
 }
 
 .nav-abs li:hover {

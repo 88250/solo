@@ -10,14 +10,14 @@
     <body>
         ${topBarReplacement}
         <#include "header.ftl">
-        <ul class="nav-abs"  style="padding: 0;position: fixed">
+        <ul class="nav-abs"  style="padding: 0;position: fixed;max-width: 160px">
             <#list archiveDates as archiveDate>
-            <li data-year="${archiveDate.archiveDateYear}"
+            <li data-year="${archiveDate.archiveDateYear}"  title="${archiveDate.archiveDatePublishedArticleCount}"
                 onclick="timeline.getArchive('${archiveDate.archiveDateYear}', '${archiveDate.archiveDateMonth}'<#if "en" == localeString?substring(0, 2)>, '${archiveDate.monthName}'</#if>)">
                 <#if "en" == localeString?substring(0, 2)>
-                ${archiveDate.monthName} (${archiveDate.archiveDatePublishedArticleCount})
+                ${archiveDate.monthName}
                 <#else>
-                ${archiveDate.archiveDateMonth}${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})
+                ${archiveDate.archiveDateMonth}
                 </#if>
         </li>
         </#list>

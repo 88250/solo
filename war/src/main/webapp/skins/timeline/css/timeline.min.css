@@ -105,7 +105,7 @@ article .article-title a{color:#000;text-decoration:none;}
 #submitCommentButton,#submitCommentButtonReply{background:none repeat scroll 0 0 #868889;border:1px solid #5D6265;border-radius:10em 10em 10em 10em;box-shadow:0 1px 0 rgba(255, 255, 255, 0.3) inset,0 1px 1px rgba(0, 0, 0, 0.3);color:#FFFFFF;cursor:pointer;padding:5px 20px;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.3);}
 #submitCommentButton:hover,#submitCommentButtonReply:hover{color:#fff;background-color:#444;}
 .nav-abs{background-color:#6B6B6B;border:1px solid #898989;border-radius:5px 5px 5px 5px;box-shadow:0 1px 3px rgba(0, 0, 0, 0.4) inset,0 1px 0 rgba(255, 255, 255, 0.7),0 -1px 0 rgba(255, 255, 255, 0.6);color:#CCCCCC;padding:5px 10px;position:absolute;right:30px;top:61px;z-index:1;text-align:center;white-space:nowrap;}
-.nav-abs li{background-color:#DEDDDD;color:#616161;cursor:pointer;height:20px;list-style-type:none;min-width:54px;padding:3px 5px;}
-.nav-abs li.year{color:#CCCCCC;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);background-color:#6B6B6B;}
+.nav-abs li{background-color:#DEDDDD;border:1px solid #6B6B6B;color:#616161;cursor:pointer;float:left;height:20px;list-style-type:none;padding:3px 5px;width:28px;}
+.nav-abs li.year{background-color:#6B6B6B;clear:both;color:#CCCCCC;float:none;text-shadow:0 -1px 0 rgba(0, 0, 0, 0.5);width:auto;border-width:0;}
 .nav-abs li:hover{background-color:#EFEEEE;color:#000;}
 .nav-abs li.year:hover{background-color:#353535;color:#fff;}

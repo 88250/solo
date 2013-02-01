@@ -146,7 +146,7 @@
         page.load();
         // emotions
         page.replaceCommentsEm("#comments li > div > p");
-            <#nested>
+        <#nested>
         });
 </script>
 </#macro>

@@ -92,6 +92,8 @@
             </div>
         </div>
         <#include "footer.ftl">
-        <@comment_script oId=article.oId></@comment_script>    
+        <@comment_script oId=article.oId>
+        page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
+        </@comment_script>    
     </body>
 </html>
