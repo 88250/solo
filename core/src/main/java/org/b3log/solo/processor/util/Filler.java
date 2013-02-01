@@ -142,12 +142,14 @@ public final class Filler {
     /**
      * Fills articles in index.ftl.
      *
+     * @param request the specified HTTP servlet request
      * @param dataModel data model
      * @param currentPageNum current page number
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillIndexArticles(final Map<String, Object> dataModel, final int currentPageNum, final JSONObject preference)
+    public void fillIndexArticles(final HttpServletRequest request,
+        final Map<String, Object> dataModel, final int currentPageNum, final JSONObject preference)
         throws ServiceException {
         Stopwatchs.start("Fill Index Articles");
 
@@ -159,14 +161,32 @@ public final class Filler {
             final int publishedArticleCnt = statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) publishedArticleCnt / (double) pageSize);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(pageCount).setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED)).addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).index(
-                Article.ARTICLE_PERMALINK);
+            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(pageCount).setFilter(
+                new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED));
 
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
-            } else {
-                query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+            final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "index.ftl");
+
+            boolean isArticles1 = false;
+
+            if (null == template) {
+                LOGGER.fine("The skin dose not contain [index.ftl] template");
+            } else { // See https://github.com/b3log/b3log-solo/issues/179 for more details
+                if (Templates.hasExpression(template, "<#list articles1 as article>")) {
+                    isArticles1 = true;
+                    query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+                    
+                    LOGGER.finest("Query ${articles1} in index.ftl");
+                } else { // <#list articles as article>
+                    query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+                    if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+                        query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
+                    } else {
+                        query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+                    }
+                }
             }
+
+            query.index(Article.ARTICLE_PERMALINK);
 
             final JSONObject result = articleRepository.get(query);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
@@ -193,7 +213,11 @@ public final class Filler {
                 }
             }
 
-            dataModel.put(Article.ARTICLES, articles);
+            if (!isArticles1) {
+                dataModel.put(Article.ARTICLES, articles);
+            } else {
+                dataModel.put(Article.ARTICLES + "1", articles);
+            }
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Fills index articles failed", e);
             throw new ServiceException(e);
@@ -567,11 +591,11 @@ public final class Filler {
 
             if (null == template) {
                 LOGGER.fine("The skin dose not contain [side.ftl] template");
-                
+
                 template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "index.ftl");
                 if (null == template) {
                     LOGGER.fine("The skin dose not contain [index.ftl] template");
-                    
+
                     return;
                 }
 

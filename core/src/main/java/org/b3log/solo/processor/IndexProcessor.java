@@ -85,9 +85,11 @@ public final class IndexProcessor {
      * Shows index with the specified context.
      * 
      * @param context the specified context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
      */
     @RequestProcessing(value = { "/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
-    public void showIndex(final HTTPRequestContext context) {
+    public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
 
         context.setRenderer(renderer);
@@ -95,8 +97,6 @@ public final class IndexProcessor {
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         final String requestURI = request.getRequestURI();
 
         try {
@@ -114,7 +114,7 @@ public final class IndexProcessor {
             request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.INDEX.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
-            filler.fillIndexArticles(dataModel, currentPageNum, preference);
+            filler.fillIndexArticles(request, dataModel, currentPageNum, preference);
             dataModel.put(Keys.PAGE_TYPE, PageTypes.INDEX);
 
             filler.fillSide(request, dataModel, preference);

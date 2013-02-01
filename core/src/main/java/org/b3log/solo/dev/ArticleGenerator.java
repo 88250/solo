@@ -22,7 +22,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
@@ -42,7 +41,7 @@ import org.json.JSONObject;
  * Generates some dummy articles for development testing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, May 21, 2012
+ * @version 1.0.0.4, Feb 1, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -67,7 +66,7 @@ public final class ArticleGenerator {
         if (RuntimeMode.DEVELOPMENT != Latkes.getRuntimeMode()) {
             LOGGER.log(Level.WARNING, "Article generation just for development mode, " + "current runtime mode is [{0}]",
                 Latkes.getRuntimeMode());
-            response.sendRedirect(request.getContextPath());
+            response.sendRedirect(Latkes.getServePath());
 
             return;
         }
@@ -123,7 +122,7 @@ public final class ArticleGenerator {
 
         Stopwatchs.end();
 
-        response.sendRedirect(request.getContextPath());
+        response.sendRedirect(Latkes.getServePath());
     }
     
 }
