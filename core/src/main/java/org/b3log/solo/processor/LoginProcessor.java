@@ -250,7 +250,7 @@ public final class LoginProcessor {
                 final String userPassword = user.optString(User.USER_PASSWORD);
                 final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
 
-                if (MD5.hash(userPassword).equals(hashPassword)) {
+                if (userPassword.equals(hashPassword)) {
                     Sessions.login(request, response, user);
                     LOGGER.log(Level.INFO, "Logged in with cookie[email={0}]", userEmail);
                 }
