@@ -73,7 +73,7 @@ var timeline = {
             if (year !== $this.data("year")) {
                 year = $this.data("year");
                 $this.before("<li class='close year' onclick='timeline.toggleArchives(this, " + 
-                    year + ")'>" + year + "</div></li>");
+                    year + ")'>" + year + "</li>");
             }
         });
         

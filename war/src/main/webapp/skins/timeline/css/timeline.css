@@ -727,7 +727,7 @@ article .article-title a {
     color: #000;
 }
 
-.nav-abs li.year:hover {
+.nav-abs li.year:hover, .nav-abs li.open {
     background-color: #353535;
     color: #fff;
 }
