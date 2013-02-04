@@ -237,19 +237,19 @@ img {
     position: relative;
 }
 
-.module > h3 {
+.module > h3.title {
     margin: 0 0 10px 0;
     color: #444;
 }
 
-.module > ul {
+.module > ul.list {
     list-style-type: none;
     padding-left: 0;
     margin: 0;
     overflow: hidden;
 }
 
-.module > ul > li {
+.module > ul.list > li {
     border-top: 1px solid #EEEEEE;
     padding: 6px 0;
 }

@@ -39,9 +39,9 @@ img{max-width:100%;border:0;vertical-align:middle;}
 .tags4,.tags4:visited{font-size:18px;color:#323232;}
 .tags5,.tags5:visited{font-size:20px;color:#0a0a0a;}
 .module{background-color:#FFFFFF;border:1px solid #BEC3C7;border-radius:5px 5px 5px 5px;box-shadow:0 1px 1px rgba(0, 0, 0, 0.1);margin-bottom:30px;padding:15px;word-wrap:break-word;position:relative;}
-.module>h3{margin:0 0 10px 0;color:#444;}
-.module>ul{list-style-type:none;padding-left:0;margin:0;overflow:hidden;}
-.module>ul>li{border-top:1px solid #EEEEEE;padding:6px 0;}
+.module>h3.title{margin:0 0 10px 0;color:#444;}
+.module>ul.list{list-style-type:none;padding-left:0;margin:0;overflow:hidden;}
+.module>ul.list>li{border-top:1px solid #EEEEEE;padding:6px 0;}
 .articles .arrow,.ico-author,.ico-tags,.ico-comment,.ico-top,.ico-view,.ico-reply,.ico-translate,#search{background-repeat:no-repeat;background-image:url("../../timeline/images/icons.png");}
 .ico-author,.ico-tags,.ico-comment,.ico-view,.ico-reply{padding-left:20px;background-position:-1px -63px;margin-right:10px;}
 .ico-tags{background-position:-1px -83px;}
