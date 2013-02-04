@@ -21,8 +21,8 @@
                         </#if>
                         <#if 0 != recentComments?size>
                         <div class="module">
-                            <h3>${recentCommentsLabel}</h3>
-                            <ul class="comments">
+                            <h3 class="title">${recentCommentsLabel}</h3>
+                            <ul class="comments list">
                                 <#list recentComments as comment>
                                 <li>
                                     <img
@@ -55,8 +55,8 @@
                     <div class="dynamic-r">
                         <#if 0 != mostCommentArticles?size>
                         <div class="module">
-                            <h3>${mostCommentArticlesLabel}</h3>
-                            <ul>
+                            <h3 class="title">${mostCommentArticlesLabel}</h3>
+                            <ul class="list">
                                 <#list mostCommentArticles as article>
                                 <li class="fn-clear">
                                     <a class="left" rel="nofollow" title="${article.articleTitle}" 
@@ -79,8 +79,8 @@
                         </#if>
                         <#if 0 != mostViewCountArticles?size>
                         <div class="module">
-                            <h3>${mostViewCountArticlesLabel}</h3>
-                            <ul>
+                            <h3 class="title">${mostViewCountArticlesLabel}</h3>
+                            <ul class="list">
                                 <#list mostViewCountArticles as article>
                                 <li class="fn-clear">
                                     <a rel="nofollow" class="left" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
@@ -98,7 +98,7 @@
                         </#if>
                         <#if 0 != mostUsedTags?size>
                         <div class="module tags">
-                            <h3>${popTagsLabel}</h3>
+                            <h3 class="title">${popTagsLabel}</h3>
                             <#list mostUsedTags as tag>
                             <a rel="tag" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" 
                                title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
@@ -112,7 +112,7 @@
                 </div>
                 <#if 0 != links?size>
                 <div class="module links">
-                    <h3>${linkLabel}</h3>
+                    <h3 class="title">${linkLabel}</h3>
                     <#list links as link>
                     <span>
                         <a rel="friend" href="${link.linkAddress}" alt="${link.linkTitle}" target="_blank">
