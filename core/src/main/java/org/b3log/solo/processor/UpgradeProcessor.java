@@ -17,13 +17,19 @@ package org.b3log.solo.processor;
 
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
+import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -47,7 +53,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.1.1.5, Jan 4, 2013
+ * @version 1.1.1.6, Feb 4, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -132,8 +138,8 @@ public final class UpgradeProcessor {
                 return;
             }
 
-            if ("0.5.0".equals(version)) {
-                v050ToV055();
+            if ("0.5.5".equals(version)) {
+                v055ToV056();
             } else {
                 LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.5.0; Actually: {0}", version);
                 if (!sent) {
@@ -146,17 +152,18 @@ public final class UpgradeProcessor {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
             renderer.setContent(
                 "Upgrade failed [" + e.getMessage() + "], please contact the B3log Solo developers or reports this "
-                + "issue directly (https://github.com/b3log/b3log-solo/issues/new) ");
+                + "issue directly (<a href='https://github.com/b3log/b3log-solo/issues/new'>"
+                + "https://github.com/b3log/b3log-solo/issues/new</a>) ");
         }
     }
 
     /**
-     * Upgrades from version 050 to version 055.
+     * Upgrades from version 055 to version 056.
      *
      * @throws Exception upgrade fails
      */
-    private void v050ToV055() throws Exception {
-        LOGGER.info("Upgrading from version 050 to version 055....");
+    private void v055ToV056() throws Exception {
+        LOGGER.info("Upgrading from version 055 to version 056....");
 
         articleRepository.setCacheEnabled(false);
 
@@ -168,9 +175,23 @@ public final class UpgradeProcessor {
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
-            preference.put(Preference.VERSION, "0.5.5");
-
+            preference.put(Preference.VERSION, "0.5.6");
             preferenceRepository.update(Preference.PREFERENCE, preference);
+
+            upgradeUsers();
+
+            final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
+
+            if (RuntimeEnv.LOCAL == runtimeEnv || RuntimeEnv.BAE == runtimeEnv) {
+                final Connection connection = Connections.getConnection();
+                final Statement statement = connection.createStatement();
+
+                final String tableName = Latkes.getLocalProperty("jdbc.tablePrefix") + '_' + Plugin.PLUGIN;
+
+                statement.execute("ALTER TABLE " + tableName + " ADD setting text");
+
+                connection.commit();
+            }
 
             transaction.commit();
 
@@ -181,12 +202,12 @@ public final class UpgradeProcessor {
             }
 
             LOGGER.log(Level.SEVERE, "Upgrade failed.", e);
-            throw new Exception("Upgrade failed from version 050 to version 055");
+            throw new Exception("Upgrade failed from version 055 to version 056");
         } finally {
             articleRepository.setCacheEnabled(true);
         }
 
-        LOGGER.info("Upgraded from version 050 to version 055 successfully :-)");
+        LOGGER.info("Upgraded from version 055 to version 056 successfully :-)");
     }
 
     /**
@@ -206,7 +227,7 @@ public final class UpgradeProcessor {
             final String oldPwd = user.optString(User.USER_PASSWORD);
 
             user.put(User.USER_PASSWORD, MD5.hash(oldPwd));
-            
+
             userRepository.update(user.optString(Keys.OBJECT_ID), user);
 
             LOGGER.log(Level.INFO, "Hashed user[name={0}] password.", user.optString(User.USER_NAME));

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo core.
-    Version: 2.0.1.1, Nov 21, 2012
+    Version: 2.0.1.2, Feb 4, 2013
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -17,7 +17,7 @@
     <parent>
         <groupId>org.b3log</groupId>
         <artifactId>solo</artifactId>
-        <version>0.5.5</version>
+        <version>0.5.6</version>
     </parent>
     
     <dependencies>
