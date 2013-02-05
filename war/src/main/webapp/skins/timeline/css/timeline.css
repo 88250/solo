@@ -467,6 +467,7 @@ a:hover > .ico-pre {
 
 .articles article {
     width: 50%;
+    float: left;
 }
 
 .articles article.l > div.module {
@@ -620,8 +621,9 @@ article .article-title a {
     font-style: italic;
 }
 
-.comments > li > div > p {
+.comments > li > div > div.article-body {
     padding-left: 75px;
+    margin: 12px 0;
 }
 
 .module > ul > li.comment-body-ref {

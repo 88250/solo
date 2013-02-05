@@ -42,9 +42,9 @@
                                                 ${viewLabel}
                                             </a>
                                         </span>
-                                        <p>   
+                                        <div class="article-body">   
                                             ${comment.commentContent}
-                                        </p>
+                                        </div>
                                     </div>
                                 </li>
                                 </#list>

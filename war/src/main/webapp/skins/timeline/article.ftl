@@ -39,9 +39,9 @@
                             </sup>
                             </#if>
                         </h2>
-                        <p>
+                        <div class="article-body">
                             ${article.articleContent}
-                        </p>
+                        </div>
                         <#if "" != article.articleSign.signHTML?trim>
                         <p>
                             ${article.articleSign.signHTML}

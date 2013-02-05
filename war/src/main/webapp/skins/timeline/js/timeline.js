@@ -81,7 +81,7 @@ var timeline = {
         if ($(".article-more").parent().data("count") <= $(".article-more").parent().find("article").length) {
             $(".article-more").remove();
         }
-            
+        
         $(window).resize(function () {
             $archives.each(function () {
                 var colH = [timeline._COLHA + 60, timeline._COLHB * 4];

@@ -26,9 +26,9 @@
                     </sup>
                     </#if>
                 </h3>
-                <p>
+                <div class="article-body">
                     ${article.articleAbstract}
-                </p>
+                </div>
                 <span class="ico-tags ico" title="${tagLabel}">
                     <#list article.articleTags?split(",") as articleTag><a rel="category tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if></#list>
                 </span>

@@ -1,5 +1,5 @@
 <#macro comments commentList article>
-<ul id="comments" class="comments">
+<ul id="comments" class="comments list">
     <#list commentList as comment>
     <li id="${comment.oId}">
         <img title="${comment.commentName}"
@@ -23,7 +23,7 @@
                 <a rel="nofollow" href="javascript:replyTo('${comment.oId}');">${replyLabel}</a>
             </span>
             </#if>
-            <p>${comment.commentContent}</p>
+            <div class="article-body">${comment.commentContent}</div>
         </div>
     </li>
     </#list>
@@ -126,9 +126,9 @@
             
         commentHTML += '</span>&nbsp;<small><b>' +  result.commentDate.substring(2, 16)
             + '</b></small><span class="ico-reply ico right"><a rel="nofollow" href="javascript:replyTo(\'' + result.oId 
-            + '\');">${replyLabel}</a></span><p>' 
+            + '\');">${replyLabel}</a></span><div class="article-body">' 
             + Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
-            + '</p></div></li>';
+            + '</div></div></li>';
 
         return commentHTML;
     }
@@ -145,7 +145,7 @@
     $(document).ready(function () {
         page.load();
         // emotions
-        page.replaceCommentsEm("#comments li > div > p");
+        page.replaceCommentsEm("#comments li .article-body");
         <#nested>
         });
 </script>

@@ -14,7 +14,7 @@
         <div class="wrapper">
             <div class="container">
                 <div class="module">
-                    <div>
+                    <div class="article-body">
                         ${page.pageContent}
                     </div>
                     <@comments commentList=pageComments article=page></@comments>

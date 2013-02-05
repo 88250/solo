@@ -684,6 +684,7 @@ public final class ArticleProcessor {
             final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final JSONObject result = userQueryService.getUser(authorId);
+
             if (null == result) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 
