@@ -68,7 +68,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.8, Jan 22, 2013
+ * @version 1.1.2.9, Feb 5, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -676,6 +676,7 @@ public final class ArticleProcessor {
 
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                
                 return;
             }
 
@@ -683,6 +684,12 @@ public final class ArticleProcessor {
             final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final JSONObject result = userQueryService.getUser(authorId);
+            if (null == result) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                
+                return;
+            }
+            
             final JSONObject author = result.getJSONObject(User.USER);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
