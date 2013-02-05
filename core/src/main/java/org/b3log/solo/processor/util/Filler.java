@@ -17,6 +17,7 @@ package org.b3log.solo.processor.util;
 
 
 import freemarker.template.Template;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +70,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.3, Jan 29, 2013
+ * @version 1.0.6.4, Feb 5, 2013
  * @since 0.3.1
  */
 public final class Filler {
@@ -174,7 +175,7 @@ public final class Filler {
                 if (Templates.hasExpression(template, "<#list articles1 as article>")) {
                     isArticles1 = true;
                     query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
-                    
+
                     LOGGER.finest("Query ${articles1} in index.ftl");
                 } else { // <#list articles as article>
                     query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
@@ -301,11 +302,35 @@ public final class Filler {
         try {
             LOGGER.finer("Filling archive dates....");
             final List<JSONObject> archiveDates = archiveDateRepository.getArchiveDates();
+            final List<JSONObject> archiveDates2 = new ArrayList<JSONObject>();
+
+            dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates2);
+
+            if (archiveDates.isEmpty()) {
+                return;
+            }
+
+            archiveDates2.add(archiveDates.get(0));
+
+            // XXX: Workaround, remove the duplicated archive dates
+            for (final JSONObject archiveDate : archiveDates) {
+                final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+                final String dateString = DateFormatUtils.format(time, "yyyy/MM");
+
+                final JSONObject last = archiveDates2.get(archiveDates2.size() - 1);
+                final String lastDateString = DateFormatUtils.format(last.getLong(ArchiveDate.ARCHIVE_TIME), "yyyy/MM");
+
+                if (!dateString.equals(lastDateString)) {
+                    archiveDates2.add(archiveDate);
+                } else {
+                    LOGGER.log(Level.WARNING, "Found a duplicated archive date [{0}]", dateString);
+                }
+            }
 
             final String localeString = preference.getString(Preference.LOCALE_STRING);
             final String language = Locales.getLanguage(localeString);
 
-            for (final JSONObject archiveDate : archiveDates) {
+            for (final JSONObject archiveDate : archiveDates2) {
                 final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
                 final String dateString = DateFormatUtils.format(time, "yyyy/MM");
                 final String[] dateStrings = dateString.split("/");
@@ -322,7 +347,7 @@ public final class Filler {
                 }
             }
 
-            dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates);
+            dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates2);
         } catch (final JSONException e) {
             LOGGER.log(Level.SEVERE, "Fills archive dates failed", e);
             throw new ServiceException(e);
