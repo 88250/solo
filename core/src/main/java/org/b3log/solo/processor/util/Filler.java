@@ -913,13 +913,15 @@ public final class Filler {
     }
 
     /**
-     * Processes the abstract of the specified article with the specified
-     * preference.
+     * Processes the abstract of the specified article with the specified preference.
      *
-     * <p> <ul> <li>If the abstract is {@code null}, sets it with ""</li> <li>If
-     * user configured preference "titleOnly", sets the abstract with ""</li>
-     * <li>If user configured preference "titleAndContent", sets the abstract
-     * with the content of the article</li> </ul> </p>
+     * <p> 
+     *   <ul> 
+     *     <li>If the abstract is {@code null}, sets it with ""</li> 
+     *     <li>If user configured preference "titleOnly", sets the abstract with ""</li>
+     *     <li>If user configured preference "titleAndContent", sets the abstract with the content of the article</li> 
+     *   </ul> 
+     * </p>
      *
      * @param preference the specified preference
      * @param article the specified article
