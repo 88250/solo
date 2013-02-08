@@ -155,7 +155,6 @@ public final class InitService {
      *     "userName": "",
      *     "userEmail": "",
      *     "userPassword": "", // Unhashed
-     *     "locale": ""
      * }
      * </pre>
      * @throws ServiceException service exception
@@ -214,7 +213,7 @@ public final class InitService {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
-            helloWorld(requestJSONObject.getString(Keys.LOCALE));
+            helloWorld();
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -228,10 +227,9 @@ public final class InitService {
     /**
      * Publishes the first article "Hello World" and the first comment with the specified locale.
      *
-     * @param locale the specified locale
      * @throws Exception exception
      */
-    private void helloWorld(final String locale) throws Exception {
+    private void helloWorld() throws Exception {
         final JSONObject article = new JSONObject();
 
         article.put(Article.ARTICLE_TITLE, langPropsService.get("helloWorld.title"));

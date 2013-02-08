@@ -17,10 +17,8 @@ package org.b3log.solo.service;
 
 import java.util.List;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -48,7 +46,6 @@ public class TagQueryServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
         requestJSONObject.put(User.USER_NAME, "Admin");
         requestJSONObject.put(User.USER_PASSWORD, "pass");
-        requestJSONObject.put(Keys.LOCALE, Preference.Default.DEFAULT_LANGUAGE);
 
         initService.init(requestJSONObject);
 

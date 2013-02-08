@@ -26,7 +26,6 @@ import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Preference;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -53,7 +52,6 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
         requestJSONObject.put(User.USER_NAME, "Admin");
         requestJSONObject.put(User.USER_PASSWORD, "pass");
-        requestJSONObject.put(Keys.LOCALE, Preference.Default.DEFAULT_LANGUAGE);
 
         initService.init(requestJSONObject);
 

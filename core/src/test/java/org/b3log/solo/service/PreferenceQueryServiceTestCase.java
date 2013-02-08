@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Preference;
@@ -45,7 +44,6 @@ public class PreferenceQueryServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
         requestJSONObject.put(User.USER_NAME, "Admin");
         requestJSONObject.put(User.USER_PASSWORD, "pass");
-        requestJSONObject.put(Keys.LOCALE, Preference.Default.DEFAULT_LANGUAGE);
 
         initService.init(requestJSONObject);
 
