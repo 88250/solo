@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.util;
+
 
 import java.io.IOException;
 import java.net.URL;
@@ -35,6 +36,7 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * Comment utilities.
  *
@@ -48,50 +50,57 @@ public final class Comments {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Comments.class.getName());
+
     /**
      * Language service.
      */
     private static LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Preference query service.
      */
     private static PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Article repository.
      */
     private static ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * Page repository.
      */
     private static PageRepository pageRepository = PageRepositoryImpl.getInstance();
+
     /**
      * Mail service.
      */
     private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
+
     /**
      * Minimum length of comment name.
      */
     private static final int MIN_COMMENT_NAME_LENGTH = 2;
+
     /**
      * Maximum length of comment name.
      */
     private static final int MAX_COMMENT_NAME_LENGTH = 20;
+
     /**
      * Minimum length of comment content.
      */
     private static final int MIN_COMMENT_CONTENT_LENGTH = 2;
+
     /**
      * Maximum length of comment content.
      */
     private static final int MAX_COMMENT_CONTENT_LENGTH = 500;
+
     /**
      * Comment mail HTML body.
      */
-    public static final String COMMENT_MAIL_HTML_BODY =
-                               "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">"
-                               + "{title}</a>]" + " received a new comment:</p>"
-                               + "{commenter}: <span><a href=\"http://{commentSharpURL}\">"
-                               + "{commentContent}</a></span>";
+    public static final String COMMENT_MAIL_HTML_BODY = "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">" + "{title}</a>]"
+        + " received a new comment:</p>" + "{commenter}: <span><a href=\"http://{commentSharpURL}\">" + "{commentContent}</a></span>";
 
     /**
      * Gets comment sharp URL with the specified page and comment id.
@@ -147,6 +156,7 @@ public final class Comments {
         try {
             ret.put(Keys.STATUS_CODE, false);
             final JSONObject preference = preferenceQueryService.getPreference();
+
             if (null == preference || !preference.optBoolean(Preference.COMMENTABLE)) {
                 ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
 
@@ -155,8 +165,10 @@ public final class Comments {
 
             final String id = requestJSONObject.optString(Keys.OBJECT_ID);
             final String type = requestJSONObject.optString(Common.TYPE);
+
             if (Article.ARTICLE.equals(type)) {
                 final JSONObject article = articleRepository.get(id);
+
                 if (null == article || !article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
                     ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
 
@@ -164,6 +176,7 @@ public final class Comments {
                 }
             } else {
                 final JSONObject page = pageRepository.get(id);
+
                 if (null == page || !page.optBoolean(Page.PAGE_COMMENTABLE)) {
                     ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
 
@@ -172,6 +185,7 @@ public final class Comments {
             }
 
             final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
+
             if (MAX_COMMENT_NAME_LENGTH < commentName.length() || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
                 LOGGER.log(Level.WARNING, "Comment name is too long[{0}]", commentName);
                 ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
@@ -180,6 +194,7 @@ public final class Comments {
             }
 
             final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
+
             if (!Strings.isEmail(commentEmail)) {
                 LOGGER.log(Level.WARNING, "Comment email is invalid[{0}]", commentEmail);
                 ret.put(Keys.MSG, langPropsService.get("mailInvalidLabel"));
@@ -188,6 +203,7 @@ public final class Comments {
             }
 
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
+
             try {
                 new URL(commentURL);
 
@@ -201,8 +217,9 @@ public final class Comments {
                 return ret;
             }
 
-            final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT).
-                    replaceAll("\\n", SoloServletListener.ENTER_ESC);
+            final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT).replaceAll("\\n",
+                SoloServletListener.ENTER_ESC);
+
             if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length() || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
                 LOGGER.log(Level.WARNING, "Comment conent length is invalid[{0}]", commentContent.length());
                 ret.put(Keys.MSG, langPropsService.get("commentContentCannotEmptyLabel"));
@@ -236,16 +253,16 @@ public final class Comments {
      * @throws JSONException json exception
      */
     public static void sendNotificationMail(final JSONObject articleOrPage,
-                                            final JSONObject comment,
-                                            final JSONObject originalComment,
-                                            final JSONObject preference)
-            throws IOException, JSONException {
+        final JSONObject comment,
+        final JSONObject originalComment,
+        final JSONObject preference)
+        throws IOException, JSONException {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String commentId = comment.getString(Keys.OBJECT_ID);
-        final String commentContent = comment.getString(Comment.COMMENT_CONTENT).
-                replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+        final String commentContent = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
 
         final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
+
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
             LOGGER.log(Level.FINER, "Do not send comment notification mail to admin itself[{0}]", adminEmail);
             return;
@@ -253,9 +270,10 @@ public final class Comments {
 
         if (null != originalComment && comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
             final String originalEmail = originalComment.getString(Comment.COMMENT_EMAIL);
+
             if (originalEmail.equalsIgnoreCase(adminEmail)) {
                 LOGGER.log(Level.FINER, "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
-                           commentId);
+                    commentId);
                 return;
             }
         }
@@ -264,6 +282,7 @@ public final class Comments {
         final String blogHost = preference.getString(Preference.BLOG_HOST);
         boolean isArticle = true;
         String title = articleOrPage.optString(Article.ARTICLE_TITLE);
+
         if (Strings.isEmptyOrNull(title)) {
             title = articleOrPage.getString(Page.PAGE_TITLE);
             isArticle = false;
@@ -271,11 +290,13 @@ public final class Comments {
 
         final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
         final Message message = new Message();
+
         message.setFrom(adminEmail);
         message.addRecipient(adminEmail);
         String mailSubject = null;
         String articleOrPageURL = null;
         String mailBody = null;
+
         if (isArticle) {
             mailSubject = blogTitle + ": New comment on article [" + title + "]";
             articleOrPageURL = "http://" + blogHost + articleOrPage.getString(Article.ARTICLE_PERMALINK);
@@ -290,22 +311,19 @@ public final class Comments {
         final String commentName = comment.getString(Comment.COMMENT_NAME);
         final String commentURL = comment.getString(Comment.COMMENT_URL);
         String commenter = null;
+
         if (!"http://".equals(commentURL)) {
             commenter = "<a target=\"_blank\" " + "href=\"" + commentURL + "\">" + commentName + "</a>";
         } else {
             commenter = commentName;
         }
 
-        mailBody = mailBody.replace("{articleOrPageURL}", articleOrPageURL).
-                replace("{title}", title).
-                replace("{commentContent}", commentContent).
-                replace("{commentSharpURL}", blogHost + commentSharpURL).
-                replace("{commenter}", commenter);
+        mailBody = mailBody.replace("{articleOrPageURL}", articleOrPageURL).replace("{title}", title).replace("{commentContent}", commentContent).replace("{commentSharpURL}", blogHost + commentSharpURL).replace(
+            "{commenter}", commenter);
         message.setHtmlBody(mailBody);
 
-        LOGGER.log(Level.FINER,
-                   "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
-                   new Object[]{mailSubject, mailBody, adminEmail});
+        LOGGER.log(Level.FINER, "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
+            new Object[] {mailSubject, mailBody, adminEmail});
         MAIL_SVC.send(message);
     }
 
@@ -321,8 +339,7 @@ public final class Comments {
     /**
      * Private default constructor.
      */
-    private Comments() {
-    }
+    private Comments() {}
 
     /**
      * Singleton holder.
@@ -340,7 +357,6 @@ public final class Comments {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

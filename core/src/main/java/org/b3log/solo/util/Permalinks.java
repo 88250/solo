@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.util;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -25,6 +26,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
+
 
 /**
  * Permalink utilities.
@@ -39,57 +41,28 @@ public final class Permalinks {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Permalinks.class.getName());
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * Page repository.
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+
     /**
      * Reserved permalinks.
      */
-    public static final String[] RESERVED_LINKS = new String[]{
-        "/",
-        "/article",
-        "/tags.html",
-        "/tags",
-        "/page",
-        "/blog-articles-feed.do",
-        "/tag-articles-feed.do",
-        "/blog-articles-rss.do",
-        "/tag-articles-rss.do",
-        "/get-random-articles.do",
-        "/article-random-double-gen.do",
-        "/captcha.do",
-        "/kill-browser.html",
-        "/add-article-comment.do",
-        "/add-article-from-symphony-comment.do",
-        "/add-page-comment.do",
-        "/get-article-content",
-        "/sitemap.xml",
-        "/login",
-        "/logout",
-        "/get-article-content",
-        "/admin-index.do",
-        "/admin-article.do",
-        "/admin-article-list.do",
-        "/admin-link-list.do",
-        "/admin-preference.do",
-        "/admin-file-list.do",
-        "/admin-page-list.do",
-        "/admin-others.do",
-        "/admin-draft-list.do",
-        "/admin-user-list.do",
-        "/admin-plugin-list.do",
-        "/admin-main.do",
-        "/admin-about.do",
-        "/admin-label",
-        "/admin-about.do",
-        "/rm-all-data.do",
-        "/init",
-        "/clear-cache.do",
+    public static final String[] RESERVED_LINKS = new String[] {
+        "/", "/article", "/tags.html", "/tags", "/page", "/blog-articles-feed.do", "/tag-articles-feed.do", "/blog-articles-rss.do",
+        "/tag-articles-rss.do", "/get-random-articles.do", "/article-random-double-gen.do", "/captcha.do", "/kill-browser.html",
+        "/add-article-comment.do", "/add-article-from-symphony-comment.do", "/add-page-comment.do", "/get-article-content", "/sitemap.xml",
+        "/login", "/logout", "/get-article-content", "/admin-index.do", "/admin-article.do", "/admin-article-list.do", "/admin-link-list.do",
+        "/admin-preference.do", "/admin-file-list.do", "/admin-page-list.do", "/admin-others.do", "/admin-draft-list.do",
+        "/admin-user-list.do", "/admin-plugin-list.do", "/admin-main.do", "/admin-about.do", "/admin-label", "/admin-about.do",
+        "/rm-all-data.do", "/init", "/clear-cache.do",
     };
 
     /**
@@ -176,7 +149,7 @@ public final class Permalinks {
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
     private static boolean invalidUserDefinedPermalinkFormat(
-            final String permalink) {
+        final String permalink) {
         if (Strings.isEmptyOrNull(permalink)) {
             return true;
         }
@@ -192,6 +165,7 @@ public final class Permalinks {
         }
 
         int slashCnt = 0;
+
         for (int i = 0; i < permalink.length(); i++) {
             if ('/' == permalink.charAt(i)) {
                 slashCnt++;
@@ -222,6 +196,7 @@ public final class Permalinks {
     private static boolean isReservedLink(final String requestURI) {
         for (int i = 0; i < Permalinks.RESERVED_LINKS.length; i++) {
             final String reservedLink = Permalinks.RESERVED_LINKS[i];
+
             if (reservedLink.startsWith(requestURI)) {
 
                 return true;
@@ -239,10 +214,8 @@ public final class Permalinks {
      */
     public boolean exist(final String permalink) {
         try {
-            return isReservedLink(permalink)
-                   || null != articleRepository.getByPermalink(permalink)
-                   || null != pageRepository.getByPermalink(permalink)
-                   || permalink.endsWith(".ftl");
+            return isReservedLink(permalink) || null != articleRepository.getByPermalink(permalink)
+                || null != pageRepository.getByPermalink(permalink) || permalink.endsWith(".ftl");
         } catch (final RepositoryException e) {
             LOGGER.log(Level.SEVERE, "Determines whether the permalink[" + permalink + "] exists failed, returns true", e);
 
@@ -262,8 +235,7 @@ public final class Permalinks {
     /**
      * Private default constructor.
      */
-    private Permalinks() {
-    }
+    private Permalinks() {}
 
     /**
      * Singleton holder.
@@ -281,7 +253,6 @@ public final class Permalinks {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

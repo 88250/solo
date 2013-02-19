@@ -18,7 +18,7 @@
  * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.4, Aug 29, 2012
+ * @version 1.0.1.5, Jan 29, 2013
  */
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
@@ -28,14 +28,15 @@ var getNextPage = function () {
     var $more = $(".article-next");
     currentPage += 1;
     var path = "/articles/";
-    if(location.pathname.indexOf("tags") > -1) {
-        var tagsPathnaem = location.pathname.split("/tags/");
-        var tags = tagsPathnaem[1].split("/");
-        path = "/articles/tags/" + tags[0] + "/";
-    } else if (location.pathname.indexOf("archives") > -1) {
-        var archivesPathname = location.pathname.split("/archives/");
-        var archives = archivesPathname[1].split("/");
-        path = "/articles/archives/" + archives[0] + "/" + archives[1] + "/";
+    if($("#tag").length === 1) {
+        var pathnames = location.pathname.split("/");
+        path = "/articles/tags/" + pathnames[pathnames.length - 1] + "/";
+    } else if ($("#archive").length === 1) {
+        var pathnames = location.pathname.split("/");
+        path = "/articles/archives/" + pathnames[pathnames.length - 2] + "/" + pathnames[pathnames.length - 1] + "/";
+    } else if ($("#author").length === 1) {
+        var pathnames = location.pathname.split("/");
+        path = "/articles/authors/" + pathnames[pathnames.length - 1] + "/";
     }
     
     $.ajax({
@@ -94,9 +95,9 @@ var getNextPage = function () {
                 '</div>' +
                 '<div class="right ft-gray">';
                 if (article.hasUpdated) {
-                    articlesHTML += Util.toDate(article.articleUpdateDate, 'yy-MM-dd HH:mm');
+                    articlesHTML += Util.toDate(article.articleUpdateTime, 'yy-MM-dd HH:mm');
                 } else {
-                    articlesHTML +=  Util.toDate(article.articleCreateDate, 'yy-MM-dd HH:mm');
+                    articlesHTML +=  Util.toDate(article.articleCreateTime, 'yy-MM-dd HH:mm');
                 }
             
                 articlesHTML += ' <a href="' + latkeConfig.servePath + '/authors/' + article.authorId + '">' + article.authorName + '</a>' +
@@ -293,6 +294,15 @@ var ease = {
         $(".article-body").each(function () {
             this.innerHTML = Util.replaceEmString($(this).html());
         });
+    },
+    
+    /**
+     * @description 纠正评论滚动位置偏差
+     */
+    scrollToCmt: function () {
+        if ($(window.location.hash).length == 1) {
+            $(window).scrollTop($(window.location.hash).offset().top - 60);
+        }    
     }
 };
     

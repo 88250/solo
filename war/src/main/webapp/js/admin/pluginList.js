@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,6 +56,12 @@ admin.pluginList = {
         }]);
     
         this.tablePagination.initPagination();
+        $("#pluginSetting").dialog({
+            width: 700,
+            height: 180,
+            "modal": true,
+            "hideFooter": true
+        });
         this.getList(page);
     },
 
@@ -90,7 +96,11 @@ admin.pluginList = {
                         datas[i].status = Label.disabledLabel;
                         datas[i].expendRow += Label.enableLabel;
                     }
-                    datas[i].expendRow += "</a>";
+                    datas[i].expendRow += "</a>  ";
+                    
+                    if(datas[i].setting!="{}"){
+                        datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
+                    }
                 }
                 
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
@@ -99,8 +109,32 @@ admin.pluginList = {
             }
         });
     },
+ 
+    toSetting:function(pluginId){
+        $("#loadMsg").text(Label.loadingLabel);
+                
+        var requestJSONObject = {
+            "oId": pluginId
+        };
+        
+        $.ajax({
+            url: latkeConfig.servePath + "/console/plugin/toSetting",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+
+                $("#pluginSetting").html(result);
+                $("#pluginSetting").dialog("open");
+                
+                $("#loadMsg").text("");
+            }
+        });
+    },
     
     changeStatus: function (pluginId, status) {
+        $("#loadMsg").text(Label.loadingLabel);
         if (status === "ENABLED") {
             status = "DISABLED";
         } else {
@@ -132,8 +166,8 @@ admin.pluginList = {
 };
 
 /*
- * 注册到 admin 进行管理 
- */
+* 注册到 admin 进行管理 
+*/
 admin.register["plugin-list"] =  {
     "obj": admin.pluginList,
     "init": admin.pluginList.init,

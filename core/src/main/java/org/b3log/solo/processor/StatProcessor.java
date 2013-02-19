@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.processor;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -43,6 +44,7 @@ import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
+
 /**
  * Statistics processor.
  * 
@@ -66,18 +68,22 @@ public final class StatProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(StatProcessor.class.getName());
+
     /**
      * Statistic repository.
      */
     private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Flush size.
      */
@@ -106,8 +112,9 @@ public final class StatProcessor {
 
         context.setRenderer(new DoNothingRenderer());
 
-        final JSONObject statistic = (JSONObject) statisticRepository.getCache().
-                get(Statistics.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC);
+        final JSONObject statistic = (JSONObject) statisticRepository.getCache().get(
+            Statistics.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC);
+
         if (null == statistic) {
             LOGGER.log(Level.INFO, "Not found statistic in memcache, ignores sync");
 
@@ -115,6 +122,7 @@ public final class StatProcessor {
         }
 
         final Transaction transaction = statisticRepository.beginTransaction();
+
         transaction.clearQueryCache(false);
         try {
             // For blog view counter
@@ -128,19 +136,21 @@ public final class StatProcessor {
             final List<Integer> idx = CollectionUtils.getRandomIntegers(0, keys.size(), size);
 
             final Set<String> cachedPageKeys = new HashSet<String>();
+
             for (final Integer i : idx) {
                 cachedPageKeys.add(keyList.get(i));
             }
 
             for (final String cachedPageKey : cachedPageKeys) {
                 final JSONObject cachedPage = PageCaches.get(cachedPageKey);
+
                 if (null == cachedPage) {
                     continue;
                 }
 
                 final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-                if (!cachedPage.optString(PageCaches.CACHED_TYPE).
-                        equals(langs.get(PageTypes.ARTICLE.getLangeLabel()))) { // Cached is not an article page
+
+                if (!cachedPage.optString(PageCaches.CACHED_TYPE).equals(langs.get(PageTypes.ARTICLE.getLangeLabel()))) { // Cached is not an article page
                     continue;
                 }
 
@@ -148,12 +158,13 @@ public final class StatProcessor {
                 final String articleId = cachedPage.optString(PageCaches.CACHED_OID);
 
                 final JSONObject article = articleRepository.get(articleId);
+
                 if (null == article) {
                     continue;
                 }
 
                 LOGGER.log(Level.FINER, "Updating article[id={0}, title={1}] view count",
-                           new Object[]{articleId, cachedPage.optString(PageCaches.CACHED_TITLE)});
+                    new Object[] {articleId, cachedPage.optString(PageCaches.CACHED_TITLE)});
 
                 final int oldViewCount = article.optInt(Article.ARTICLE_VIEW_COUNT);
                 final int viewCount = oldViewCount + hitCount;
@@ -167,7 +178,7 @@ public final class StatProcessor {
                 cachedPage.put(PageCaches.CACHED_HIT_COUNT, 0);
 
                 LOGGER.log(Level.FINER, "Updating article[id={0}, title={1}] view count from [{2}] to [{3}]",
-                           new Object[]{articleId, article.optString(Article.ARTICLE_TITLE), oldViewCount, viewCount});
+                    new Object[] {articleId, article.optString(Article.ARTICLE_TITLE), oldViewCount, viewCount});
             }
 
             transaction.commit();

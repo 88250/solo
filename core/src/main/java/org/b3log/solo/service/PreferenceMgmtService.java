@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.service;
+
 
 import java.io.IOException;
 import org.b3log.latke.service.LangPropsService;
@@ -44,6 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import static org.b3log.solo.model.Preference.*;
 
+
 /**
  * Preference management service.
  *
@@ -57,14 +59,17 @@ public final class PreferenceMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PreferenceMgmtService.class.getName());
+
     /**
      * Preference repository.
      */
     private PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Language service.
      */
@@ -82,8 +87,7 @@ public final class PreferenceMgmtService {
         final Transaction transaction = preferenceRepository.beginTransaction();
 
         try {
-            preferenceRepository.update(Preference.REPLY_NOTIFICATION_TEMPLATE,
-                                        replyNotificationTemplate);
+            preferenceRepository.update(Preference.REPLY_NOTIFICATION_TEMPLATE, replyNotificationTemplate);
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -104,8 +108,10 @@ public final class PreferenceMgmtService {
     public void updatePreference(final JSONObject preference) throws ServiceException {
         @SuppressWarnings("unchecked")
         final Iterator<String> keys = preference.keys();
+
         while (keys.hasNext()) {
             final String key = keys.next();
+
             if (preference.isNull(key)) {
                 throw new ServiceException("A value is null of preference[key=" + key + "]");
             }
@@ -114,8 +120,10 @@ public final class PreferenceMgmtService {
         // TODO: checks preference 
 
         final Transaction transaction = preferenceRepository.beginTransaction();
+
         try {
             String blogHost = preference.getString(BLOG_HOST).toLowerCase().trim();
+
             if (StringUtils.startsWithIgnoreCase(blogHost, "http://")) {
                 blogHost = blogHost.substring("http://".length());
             }
@@ -128,31 +136,38 @@ public final class PreferenceMgmtService {
 
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             final String skinName = Skins.getSkinName(skinDirName);
+
             preference.put(Skin.SKIN_NAME, skinName);
             final Set<String> skinDirNames = Skins.getSkinDirNames();
             final JSONArray skinArray = new JSONArray();
+
             for (final String dirName : skinDirNames) {
                 final JSONObject skin = new JSONObject();
+
                 skinArray.put(skin);
 
                 final String name = Skins.getSkinName(dirName);
+
                 skin.put(Skin.SKIN_NAME, name);
                 skin.put(Skin.SKIN_DIR_NAME, dirName);
             }
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
+
             LOGGER.log(Level.FINER, "Skin path[{0}]", skinPath);
             Templates.CACHE.clear();
 
             preference.put(Skin.SKINS, skinArray.toString());
 
             final String timeZoneId = preference.getString(TIME_ZONE_ID);
+
             TimeZones.setTimeZone(timeZoneId);
 
             preference.put(Preference.SIGNS, preference.get(Preference.SIGNS).toString());
 
             final JSONObject oldPreference = preferenceQueryService.getPreference();
             final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
+
             preference.put(ADMIN_EMAIL, adminEmail);
 
             if (!preference.has(PAGE_CACHE_ENABLED)) {
@@ -166,14 +181,17 @@ public final class PreferenceMgmtService {
             }
 
             final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
+
             Templates.enableCache(pageCacheEnabled);
 
             final String version = oldPreference.optString(VERSION);
+
             if (!Strings.isEmptyOrNull(version)) {
                 preference.put(VERSION, version);
             }
 
             final String localeString = preference.getString(Preference.LOCALE_STRING);
+
             LOGGER.log(Level.FINER, "Current locale[string={0}]", localeString);
             Latkes.setLocale(new Locale(Locales.getLanguage(localeString), Locales.getCountry(localeString)));
 
@@ -223,8 +241,7 @@ public final class PreferenceMgmtService {
     /**
      * Private constructor.
      */
-    private PreferenceMgmtService() {
-    }
+    private PreferenceMgmtService() {}
 
     /**
      * Singleton holder.
@@ -242,7 +259,6 @@ public final class PreferenceMgmtService {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

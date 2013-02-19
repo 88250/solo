@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -24,6 +25,7 @@ import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.json.JSONObject;
+
 
 /**
  * Link management service.
@@ -37,8 +39,8 @@ public final class LinkMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(LinkMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinkMgmtService.class.getName());
+
     /**
      * Link repository.
      */
@@ -51,7 +53,7 @@ public final class LinkMgmtService {
      * @throws ServiceException service exception
      */
     public void removeLink(final String linkId)
-            throws ServiceException {
+        throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {
@@ -63,8 +65,7 @@ public final class LinkMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes a link[id=" + linkId + "] failed",
-                       e);
+            LOGGER.log(Level.SEVERE, "Removes a link[id=" + linkId + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -85,12 +86,11 @@ public final class LinkMgmtService {
      * @throws ServiceException service exception
      */
     public void updateLink(final JSONObject requestJSONObject)
-            throws ServiceException {
+        throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {
-            final JSONObject link =
-                    requestJSONObject.getJSONObject(Link.LINK);
+            final JSONObject link = requestJSONObject.getJSONObject(Link.LINK);
             final String linkId = link.getString(Keys.OBJECT_ID);
             final JSONObject oldLink = linkRepository.get(linkId);
 
@@ -119,7 +119,7 @@ public final class LinkMgmtService {
      * @throws ServiceException service exception
      */
     public void changeOrder(final String linkId, final String direction)
-            throws ServiceException {
+        throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {
@@ -127,6 +127,7 @@ public final class LinkMgmtService {
             final int srcLinkOrder = srcLink.getInt(Link.LINK_ORDER);
 
             JSONObject targetLink = null;
+
             if ("up".equals(direction)) {
                 targetLink = linkRepository.getUpper(linkId);
             } else { // Down
@@ -138,9 +139,7 @@ public final class LinkMgmtService {
                     transaction.rollback();
                 }
                 
-                LOGGER.log(Level.WARNING,
-                           "Cant not find the target link of source link[order={0}]",
-                           srcLinkOrder);
+                LOGGER.log(Level.WARNING, "Cant not find the target link of source link[order={0}]", srcLinkOrder);
                 return;
             }
 
@@ -180,13 +179,13 @@ public final class LinkMgmtService {
      * @throws ServiceException service exception
      */
     public String addLink(final JSONObject requestJSONObject)
-            throws ServiceException {
+        throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {
-            final JSONObject link =
-                    requestJSONObject.getJSONObject(Link.LINK);
+            final JSONObject link = requestJSONObject.getJSONObject(Link.LINK);
             final int maxOrder = linkRepository.getMaxOrder();
+
             link.put(Link.LINK_ORDER, maxOrder + 1);
             final String ret = linkRepository.add(link);
 
@@ -215,8 +214,7 @@ public final class LinkMgmtService {
     /**
      * Private constructor.
      */
-    private LinkMgmtService() {
-    }
+    private LinkMgmtService() {}
 
     /**
      * Singleton holder.
@@ -229,13 +227,11 @@ public final class LinkMgmtService {
         /**
          * Singleton.
          */
-        private static final LinkMgmtService SINGLETON =
-                new LinkMgmtService();
+        private static final LinkMgmtService SINGLETON = new LinkMgmtService();
 
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
+
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
@@ -23,6 +24,7 @@ import org.b3log.latke.repository.*;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 
 /**
  * User repository.
@@ -37,6 +39,7 @@ public final class UserRepositoryImpl extends AbstractRepository implements User
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserRepositoryImpl.class.getName());
+
     /**
      * Singleton.
      */
@@ -45,8 +48,8 @@ public final class UserRepositoryImpl extends AbstractRepository implements User
     @Override
     public JSONObject getByEmail(final String email) throws RepositoryException {
         final Query query = new Query().setPageCount(1);
-        query.setFilter(
-                new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
+
+        query.setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -60,8 +63,7 @@ public final class UserRepositoryImpl extends AbstractRepository implements User
 
     @Override
     public JSONObject getAdmin() throws RepositoryException {
-        final Query query = new Query().setFilter(
-                new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)).setPageCount(1);
+        final Query query = new Query().setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)).setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 

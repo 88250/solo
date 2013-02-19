@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,9 @@
  */
 package org.b3log.solo.processor;
 
+
 import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -28,11 +30,12 @@ import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Articles;
 import org.json.JSONObject;
 
+
 /**
  * Blog processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jul 18, 2012
+ * @version 1.0.0.2, Jan 29, 2013
  * @since 0.4.6
  */
 @RequestProcessor
@@ -42,10 +45,12 @@ public final class BlogProcessor {
      * Article utilities.
      */
     private Articles articleUtils = Articles.getInstance();
+
     /**
      * Tag query service.
      */
     private TagQueryService tagQueryService = TagQueryService.getInstance();
+
     /**
      * Statistic query service.
      */
@@ -72,20 +77,29 @@ public final class BlogProcessor {
     @RequestProcessing(value = "/blog/info", method = HTTPRequestMethod.GET)
     public void getRecentArticleTime(final HTTPRequestContext context) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         jsonObject.put("recentArticleTime", articleUtils.getRecentArticleTime());
         final JSONObject statistic = statisticQueryService.getStatistic();
+
         jsonObject.put("articleCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));
         jsonObject.put("commentCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
         jsonObject.put("tagCount", tagQueryService.getTagCount());
         jsonObject.put("servePath", Latkes.getServePath());
         jsonObject.put("staticServePath", Latkes.getStaticServePath());
         jsonObject.put("version", SoloServletListener.VERSION);
-        jsonObject.put("runtimeEnv", Latkes.getRuntimeEnv());
         jsonObject.put("locale", Latkes.getLocale());
+        jsonObject.put("runtimeMode", Latkes.getRuntimeMode());
+        final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
+
+        jsonObject.put("runtimeEnv", runtimeEnv);
+        if (RuntimeEnv.LOCAL == runtimeEnv) {
+            jsonObject.put("runtimeDatabase", Latkes.getRuntimeDatabase());
+        }
     }
 }

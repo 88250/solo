@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -23,6 +24,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.json.JSONObject;
+
 
 /**
  * Preference query service.
@@ -37,6 +39,7 @@ public final class PreferenceQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PreferenceQueryService.class.getName());
+
     /**
      * Preference repository.
      */
@@ -70,6 +73,7 @@ public final class PreferenceQueryService {
     public JSONObject getPreference() throws ServiceException {
         try {
             final JSONObject ret = preferenceRepository.get(Preference.PREFERENCE);
+
             if (null == ret) {
                 LOGGER.log(Level.WARNING, "Can not load preference from datastore");
                 return null;
@@ -94,8 +98,7 @@ public final class PreferenceQueryService {
     /**
      * Private constructor.
      */
-    private PreferenceQueryService() {
-    }
+    private PreferenceQueryService() {}
 
     /**
      * Singleton holder.
@@ -108,13 +111,11 @@ public final class PreferenceQueryService {
         /**
          * Singleton.
          */
-        private static final PreferenceQueryService SINGLETON =
-                new PreferenceQueryService();
+        private static final PreferenceQueryService SINGLETON = new PreferenceQueryService();
 
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

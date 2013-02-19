@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -24,16 +25,18 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.MD5;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.json.JSONObject;
 
+
 /**
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Feb 23, 2011
+ * @version 1.0.0.3, Jan 4, 2013
  * @since 0.4.0
  */
 public final class UserMgmtService {
@@ -41,12 +44,13 @@ public final class UserMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(UserMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserMgmtService.class.getName());
+
     /**
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
+
     /**
      * Language service.
      */
@@ -61,7 +65,7 @@ public final class UserMgmtService {
      *     "oId": "",
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassword": "",
+     *     "userPassword": "", // Unhashed
      *     "userRole": ""
      * }
      * </pre>
@@ -81,6 +85,7 @@ public final class UserMgmtService {
             final String userNewEmail = requestJSONObject.optString(User.USER_EMAIL).toLowerCase().trim();
             // Check email is whether duplicated
             final JSONObject mayBeAnother = userRepository.getByEmail(userNewEmail);
+
             if (null != mayBeAnother && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
                 // Exists someone else has the save email as requested
                 throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
@@ -89,9 +94,10 @@ public final class UserMgmtService {
             // Update
             final String userName = requestJSONObject.optString(User.USER_NAME);
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
+
             oldUser.put(User.USER_EMAIL, userNewEmail);
             oldUser.put(User.USER_NAME, userName);
-            oldUser.put(User.USER_PASSWORD, userPassword);
+            oldUser.put(User.USER_PASSWORD, MD5.hash(userPassword));
             // Unchanges the default role
 
             userRepository.update(oldUserId, oldUser);
@@ -114,7 +120,7 @@ public final class UserMgmtService {
      * {
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassword": "",
+     *     "userPassword": "", // Unhashed
      *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead,
      *                       if not speciffied
      * }
@@ -127,9 +133,9 @@ public final class UserMgmtService {
 
         try {
             final JSONObject user = new JSONObject();
-            final String userEmail = requestJSONObject.optString(User.USER_EMAIL).
-                    trim().toLowerCase();
+            final String userEmail = requestJSONObject.optString(User.USER_EMAIL).trim().toLowerCase();
             final JSONObject duplicatedUser = userRepository.getByEmail(userEmail);
+
             if (null != duplicatedUser) {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -139,11 +145,14 @@ public final class UserMgmtService {
             }
 
             final String userName = requestJSONObject.optString(User.USER_NAME);
+
             user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-            user.put(User.USER_PASSWORD, userPassword);
+
+            user.put(User.USER_PASSWORD, MD5.hash(userPassword));
             final String roleName = requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE);
+
             user.put(User.USER_ROLE, roleName);
             user.put(UserExt.USER_ARTICLE_COUNT, 0);
             user.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
@@ -198,8 +207,7 @@ public final class UserMgmtService {
     /**
      * Private constructor.
      */
-    private UserMgmtService() {
-    }
+    private UserMgmtService() {}
 
     /**
      * Singleton holder.
@@ -212,13 +220,11 @@ public final class UserMgmtService {
         /**
          * Singleton.
          */
-        private static final UserMgmtService SINGLETON =
-                new UserMgmtService();
+        private static final UserMgmtService SINGLETON = new UserMgmtService();
 
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

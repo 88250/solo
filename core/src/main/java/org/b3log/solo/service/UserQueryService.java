@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.service;
+
 
 import java.util.List;
 import java.util.logging.Level;
@@ -32,6 +33,7 @@ import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * User query service.
  *
@@ -45,10 +47,12 @@ public final class UserQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserQueryService.class.getName());
+
     /**
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+
     /**
      * User repository.
      */
@@ -133,16 +137,18 @@ public final class UserQueryService {
             throw new ServiceException(e);
         }
 
-        final int pageCount = result.optJSONObject(Pagination.PAGINATION).
-                optInt(Pagination.PAGINATION_PAGE_COUNT);
+        final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
 
         final JSONObject pagination = new JSONObject();
+
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray users = result.optJSONArray(Keys.RESULTS);
+
         ret.put(User.USERS, users);
 
         return ret;
@@ -169,6 +175,7 @@ public final class UserQueryService {
         final JSONObject ret = new JSONObject();
 
         JSONObject user = null;
+
         try {
             user = userRepository.get(userId);
         } catch (final RepositoryException e) {
@@ -216,8 +223,7 @@ public final class UserQueryService {
     /**
      * Private constructor.
      */
-    private UserQueryService() {
-    }
+    private UserQueryService() {}
 
     /**
      * Singleton holder.
@@ -230,13 +236,11 @@ public final class UserQueryService {
         /**
          * Singleton.
          */
-        private static final UserQueryService SINGLETON =
-                new UserQueryService();
+        private static final UserQueryService SINGLETON = new UserQueryService();
 
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

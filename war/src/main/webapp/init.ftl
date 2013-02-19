@@ -194,8 +194,6 @@
                         "display": "block",
                         "opacity": 1
                     });
-                    
-                    $("#initButton").focus();
                 }
             };
             
@@ -241,6 +239,7 @@
             
             (function () {
                 try {
+                    $("#userEmail").focus();
                     $("input").keypress(function (event) {
                         if (event.keyCode === 13) {
                             event.preventDefault();

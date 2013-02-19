@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,9 @@
  */
 package org.b3log.solo.repository;
 
+
 import org.b3log.latke.repository.Repository;
+
 
 /**
  * Preference repository.
@@ -23,5 +25,4 @@ import org.b3log.latke.repository.Repository;
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Aug 14, 2010
  */
-public interface PreferenceRepository extends Repository {
-}
+public interface PreferenceRepository extends Repository {}

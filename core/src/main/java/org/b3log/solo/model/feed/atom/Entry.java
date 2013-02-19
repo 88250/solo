@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,14 @@
  */
 package org.b3log.solo.model.feed.atom;
 
+
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TimeZone;
 import org.apache.commons.lang.time.DateFormatUtils;
+
 
 /**
  * Entry.
@@ -35,103 +37,127 @@ public final class Entry {
      * Link variable.
      */
     private static final String LINK_VARIABLE = "${link}";
+
     /**
      * Start title element.
      */
     private static final String START_TITLE_ELEMENT = "<title type=\"text\">";
+
     /**
      * End title element.
      */
     private static final String END_TITLE_ELEMENT = "</title>";
+
     /**
      * Start author element.
      */
     private static final String START_AUTHOR_ELEMENT = "<author>";
+
     /**
      * End author element.
      */
     private static final String END_AUTHOR_ELEMENT = "</author>";
+
     /**
      * Start name element.
      */
     private static final String START_NAME_ELEMENT = "<name>";
+
     /**
      * End name element.
      */
     private static final String END_NAME_ELEMENT = "</name>";
+
     /**
      * Start URI element.
      */
     private static final String START_URI_ELEMENT = "<uri>";
+
     /**
      * End URI element.
      */
     private static final String END_URI_ELEMENT = "</uri>";
+
     /**
      * Start entry element.
      */
     private static final String START_ENTRY_ELEMENT = "<entry>";
+
     /**
      * End entry element.
      */
     private static final String END_ENTRY_ELEMENT = "</entry>";
+
     /**
      * Start id element.
      */
     private static final String START_ID_ELEMENT = "<id>";
+
     /**
      * End id element.
      */
     private static final String END_ID_ELEMENT = "</id>";
+
     /**
      * Start summary element.
      */
     private static final String START_SUMMARY_ELEMENT = "<summary type=\"html\">";
+
     /**
      * End summary element.
      */
     private static final String END_SUMMARY_ELEMENT = "</summary>";
+
     /**
      * Link element.
      */
-    private static final String LINK_ELEMENT =
-                                "<link href=\"" + LINK_VARIABLE + "\" />";
+    private static final String LINK_ELEMENT = "<link href=\"" + LINK_VARIABLE + "\" />";
+
     /**
      * Start updated element.
      */
     private static final String START_UPDATED_ELEMENT = "<updated>";
+
     /**
      * End updated element.
      */
     private static final String END_UPDATED_ELEMENT = "</updated>";
+
     /**
      * Id.
      */
     private String id;
+
     /**
      * Update date.
      */
     private Date updated;
+
     /**
      * Title.
      */
     private String title;
+
     /**
      * Summary.
      */
     private String summary;
+
     /**
      * Link.
      */
     private String link;
+
     /**
      * Author.
      */
     private String author;
+
     /**
      * URI.
      */
     private String uri;
+
     /**
      * Categories.
      */
@@ -298,7 +324,6 @@ public final class Entry {
         stringBuilder.append(END_URI_ELEMENT);
         stringBuilder.append(END_AUTHOR_ELEMENT);
 
-
         for (final Category category : categories) {
             stringBuilder.append(category.toString());
         }
@@ -311,9 +336,7 @@ public final class Entry {
 
         stringBuilder.append(START_UPDATED_ELEMENT);
         stringBuilder.append(DateFormatUtils.format(// using ISO-8601 instead of RFC-3339
-                updated,
-                DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.getPattern(),
-                TimeZone.getTimeZone(Feed.TIME_ZONE_ID)));
+            updated, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.getPattern(), TimeZone.getTimeZone(Feed.TIME_ZONE_ID)));
         stringBuilder.append(END_UPDATED_ELEMENT);
 
         stringBuilder.append(START_SUMMARY_ELEMENT);

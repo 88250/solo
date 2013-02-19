@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ admin.plugin = {
             isCurrentPlugin = false;
             
             // 根据当前 hash 和插件 path 判别是非为当前插件
-             if (data.index && window.location.hash.indexOf(data.hash) > -1) {
+            if (data.index && window.location.hash.indexOf(data.hash) > -1) {
                 isCurrentPlugin = true;
             } else if(data.path.replace("/", "#") === window.location.hash ||
                 (window.location.hash === "#main" && data.path.indexOf("/main/panel") > -1)) {

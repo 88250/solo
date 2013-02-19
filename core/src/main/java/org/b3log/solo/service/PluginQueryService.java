@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,24 @@
  */
 package org.b3log.solo.service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Paginator;
 import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
+import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  * Plugin query service.
@@ -41,13 +46,12 @@ public final class PluginQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(PluginQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PluginQueryService.class.getName());
+
     /**
      * Plugin repository.
      */
-    private PluginRepository pluginRepository =
-            PluginRepositoryImpl.getInstance();
+    private PluginRepository pluginRepository = PluginRepositoryImpl.getInstance();
 
     /**
      * Gets plugins by the specified request json object.
@@ -79,41 +83,36 @@ public final class PluginQueryService {
      * @see Pagination
      */
     public JSONObject getPlugins(final JSONObject requestJSONObject)
-            throws ServiceException {
+        throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         try {
-            final int currentPageNum = requestJSONObject.getInt(
-                    Pagination.PAGINATION_CURRENT_PAGE_NUM);
-            final int pageSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_PAGE_SIZE);
-            final int windowSize = requestJSONObject.getInt(
-                    Pagination.PAGINATION_WINDOW_SIZE);
+            final int currentPageNum = requestJSONObject.getInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
+            final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
+            final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
-            final List<JSONObject> pluginJSONObjects =
-                    new ArrayList<JSONObject>();
-            final List<AbstractPlugin> plugins =
-                    PluginManager.getInstance().getPlugins();
+            final List<JSONObject> pluginJSONObjects = new ArrayList<JSONObject>();
+            final List<AbstractPlugin> plugins = PluginManager.getInstance().getPlugins();
+
             for (final AbstractPlugin plugin : plugins) {
                 final JSONObject jsonObject = plugin.toJSONObject();
 
                 pluginJSONObjects.add(jsonObject);
             }
 
-            final int pageCount = (int) Math.ceil((double) pluginJSONObjects.
-                    size() / (double) pageSize);
+            final int pageCount = (int) Math.ceil((double) pluginJSONObjects.size() / (double) pageSize);
             final JSONObject pagination = new JSONObject();
+
             ret.put(Pagination.PAGINATION, pagination);
-            final List<Integer> pageNums =
-                    Paginator.paginate(currentPageNum, pageSize, pageCount,
-                                       windowSize);
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final int start = pageSize * (currentPageNum - 1);
             int end = start + pageSize;
-            end = end > pluginJSONObjects.size()
-                  ? pluginJSONObjects.size() : end;
+
+            end = end > pluginJSONObjects.size() ? pluginJSONObjects.size() : end;
             ret.put(Plugin.PLUGINS, pluginJSONObjects.subList(start, end));
 
             return ret;
@@ -124,6 +123,34 @@ public final class PluginQueryService {
         }
     }
 
+    /**
+     * get the setting(json formatter) of the plugin(from database not cache which does not contains it) by the specified pluginoId.
+     * 
+     * @param pluginId the specified pluginId
+     * @return the {@link AbstractPlugin}
+     * @throws ServiceException service exception
+     * @throws JSONException json exception
+     */
+    public String getPluginSetting(final String pluginId) throws ServiceException, JSONException {
+
+        JSONObject ret = null;
+
+        try {
+            ret = pluginRepository.get(pluginId);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "get plugin[" + pluginId + "] fail");
+            throw new ServiceException("get plugin[" + pluginId + "] fail");
+
+        }
+
+        if (ret == null) {
+            LOGGER.log(Level.SEVERE, "can not find plugin[" + pluginId + "]");
+            throw new ServiceException("can not find plugin[" + pluginId + "]");
+        }
+        
+        return ret.optString(Plugin.PLUGIN_SETTING).toString();
+    }
+    
     /**
      * Gets the {@link PluginQueryService} singleton.
      *
@@ -136,8 +163,7 @@ public final class PluginQueryService {
     /**
      * Private constructor.
      */
-    private PluginQueryService() {
-    }
+    private PluginQueryService() {}
 
     /**
      * Singleton holder.
@@ -150,13 +176,11 @@ public final class PluginQueryService {
         /**
          * Singleton.
          */
-        private static final PluginQueryService SINGLETON =
-                new PluginQueryService();
+        private static final PluginQueryService SINGLETON = new PluginQueryService();
 
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

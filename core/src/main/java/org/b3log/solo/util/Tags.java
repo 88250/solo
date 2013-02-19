@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.util;
 
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  * Tag utilities.
@@ -37,13 +39,13 @@ public final class Tags {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(Tags.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Tags.class.getName());
+
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository =
-            TagRepositoryImpl.getInstance();
+    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+
     /**
      * Article utilities.
      */
@@ -58,15 +60,16 @@ public final class Tags {
      * @throws RepositoryException repository exception
      */
     public void decTagPublishedRefCount(final String articleId)
-            throws JSONException, RepositoryException {
+        throws JSONException, RepositoryException {
         final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
 
         for (final JSONObject tag : tags) {
             final String tagId = tag.getString(Keys.OBJECT_ID);
             final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+
             tag.put(Tag.TAG_REFERENCE_COUNT, refCnt);
-            final int publishedRefCnt =
-                    tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            final int publishedRefCnt = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+
             tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
             tagRepository.update(tagId, tag);
         }
@@ -81,8 +84,10 @@ public final class Tags {
      */
     public void removeForUnpublishedArticles(final List<JSONObject> tags) throws JSONException, RepositoryException {
         final Iterator<JSONObject> iterator = tags.iterator();
+
         while (iterator.hasNext()) {
             final JSONObject tag = iterator.next();
+
             if (0 == tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
                 iterator.remove();
             }
@@ -101,8 +106,7 @@ public final class Tags {
     /**
      * Private default constructor.
      */
-    private Tags() {
-    }
+    private Tags() {}
 
     /**
      * Singleton holder.
@@ -120,7 +124,6 @@ public final class Tags {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

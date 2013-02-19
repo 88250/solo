@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.plugin.cache;
+
 
 import org.b3log.solo.model.Common;
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 
+
 /**
  * Admin cache service.
  *
@@ -55,14 +57,17 @@ public final class AdminCacheService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AdminCacheService.class.getName());
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Preference management service.
      */
@@ -89,24 +94,27 @@ public final class AdminCacheService {
      */
     @RequestProcessing(value = "/console/plugins/admin-cache/status/", method = HTTPRequestMethod.GET)
     public void getPageCache(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
+
         renderer.setJSONObject(ret);
 
         LOGGER.log(Level.INFO, "Cache status[cachedBytes={0}, cachedCount={1}]",
-                   new Object[]{PageCaches.getCache().getCachedBytes(), PageCaches.getCache().getCachedCount()});
+            new Object[] {PageCaches.getCache().getCachedBytes(), PageCaches.getCache().getCachedCount()});
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
+
             ret.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
 
             ret.put(Common.PAGE_CACHED_CNT, PageCaches.getKeys().size());
@@ -117,6 +125,7 @@ public final class AdminCacheService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, "Admin Cache plugin exception: " + e.getMessage());
         }
@@ -154,19 +163,21 @@ public final class AdminCacheService {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = "/console/plugins/admin-cache/pages/" + Requests.PAGINATION_PATH_PATTERN,
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/plugins/admin-cache/pages/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
+        method = HTTPRequestMethod.GET)
     public void getPages(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
+
         renderer.setJSONObject(ret);
 
         try {
@@ -181,22 +192,25 @@ public final class AdminCacheService {
 
             List<String> keys = new ArrayList<String>(PageCaches.getKeys());
             // Paginates
-            final int pageCount =
-                    (int) Math.ceil((double) keys.size() / (double) pageSize);
+            final int pageCount = (int) Math.ceil((double) keys.size() / (double) pageSize);
             final JSONObject pagination = new JSONObject();
+
             ret.put(Pagination.PAGINATION, pagination);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final int start = pageSize * (currentPageNum - 1);
             int end = start + pageSize;
+
             end = end > keys.size() ? keys.size() : end;
 
             keys = keys.subList(start, end);
 
             // Retrives cached pages
             final List<JSONObject> pages = new ArrayList<JSONObject>();
+
             for (final String key : keys) {
                 LOGGER.log(Level.FINER, "Cached page[key={0}]", key);
 
@@ -204,8 +218,7 @@ public final class AdminCacheService {
 
                 if (null != cachedPage) {
                     // Do a copy for properties removing and retrieving
-                    cachedPage = new JSONObject(cachedPage,
-                                                JSONObject.getNames(cachedPage));
+                    cachedPage = new JSONObject(cachedPage, JSONObject.getNames(cachedPage));
                     cachedPage.remove(PageCaches.CACHED_CONTENT);
                     pages.add(cachedPage);
                 }
@@ -218,6 +231,7 @@ public final class AdminCacheService {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, "Admin Cache plugin exception: " + e.getMessage());
         }
@@ -243,7 +257,7 @@ public final class AdminCacheService {
      */
     @RequestProcessing(value = "/console/plugins/admin-cache/enable/*", method = HTTPRequestMethod.PUT)
     public void setPageCache(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -251,18 +265,21 @@ public final class AdminCacheService {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
+
         renderer.setJSONObject(ret);
 
         try {
             final String path = request.getRequestURI().substring(
-                    (Latkes.getContextPath() + "/console/plugins/admin-cache/enable/").length());
+                (Latkes.getContextPath() + "/console/plugins/admin-cache/enable/").length());
 
             final boolean pageCacheEnabled = "true".equals(path) ? true : false;
 
             final JSONObject preference = preferenceQueryService.getPreference();
+
             preference.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
 
             preferenceMgmtService.updatePreference(preference);
@@ -272,6 +289,7 @@ public final class AdminCacheService {
             LOGGER.log(Level.SEVERE, "Sets page cache error: {0}", e.getMessage());
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, "Admin Cache plugin exception: " + e.getMessage());
         }

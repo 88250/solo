@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,15 @@
  */
 package org.b3log.solo.util;
 
+
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.b3log.latke.util.Strings;
 import org.tautua.markdownpapers.Markdown;
+import org.tautua.markdownpapers.parser.ParseException;
+
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
@@ -26,19 +31,24 @@ import org.tautua.markdownpapers.Markdown;
  * <p>Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Apr 28, 2012
+ * @version 1.0.0.1, Feb 8, 2013
  * @since 0.4.5
  */
 public final class Markdowns {
+    
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Markdowns.class.getName());
 
     /**
      * Converts the specified markdown text to HTML.
      * 
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}
-     * @throws Exception exception 
+     * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}, returns "Markdown error" if 
+     * exception
      */
-    public static String toHTML(final String markdownText) throws Exception {
+    public static String toHTML(final String markdownText) {
         if (Strings.isEmptyOrNull(markdownText)) {
             return null;
         }
@@ -46,14 +56,19 @@ public final class Markdowns {
         final StringWriter writer = new StringWriter();
         final Markdown markdown = new Markdown();
 
-        markdown.transform(new StringReader(markdownText), writer);
-
+        try {
+            markdown.transform(new StringReader(markdownText), writer);
+        } catch (final ParseException e) {
+            LOGGER.log(Level.SEVERE, "Markdown error", e);
+            
+            return "Markdown error";
+        }
+        
         return writer.toString();
     }
 
     /**
      * Private constructor.
      */
-    private Markdowns() {
-    }
+    private Markdowns() {}
 }

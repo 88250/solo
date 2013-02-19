@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,10 @@
  */
 package org.b3log.solo.model.sitemap;
 
+
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * Sitemap.
@@ -36,17 +38,18 @@ public final class Sitemap {
     /**
      * Start document.
      */
-    private static final String START_DOCUMENT =
-            "<?xml version='1.0' encoding='UTF-8'?>";
+    private static final String START_DOCUMENT = "<?xml version='1.0' encoding='UTF-8'?>";
+
     /**
      * Start URL set element.
      */
-    private static final String START_URL_SET_ELEMENT =
-            "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">";
+    private static final String START_URL_SET_ELEMENT = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">";
+
     /**
      * End URL set element.
      */
     private static final String END_URL_SET_ELEMENT = "</urlset>";
+
     /**
      * URLs.
      */
@@ -64,6 +67,7 @@ public final class Sitemap {
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
+
         stringBuilder.append(START_DOCUMENT);
         stringBuilder.append(START_URL_SET_ELEMENT);
 

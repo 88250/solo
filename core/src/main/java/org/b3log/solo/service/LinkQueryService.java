@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.service;
+
 
 import java.util.List;
 import java.util.logging.Level;
@@ -30,6 +31,7 @@ import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Link query service.
  *
@@ -43,6 +45,7 @@ public final class LinkQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(LinkQueryService.class.getName());
+
     /**
      * Link repository.
      */
@@ -85,13 +88,14 @@ public final class LinkQueryService {
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).
-                    setPageSize(pageSize).addSort(Link.LINK_ORDER, SortDirection.ASCENDING);
+            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(Link.LINK_ORDER,
+                SortDirection.ASCENDING);
             final JSONObject result = linkRepository.get(query);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
 
             final JSONObject pagination = new JSONObject();
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
@@ -129,6 +133,7 @@ public final class LinkQueryService {
 
         try {
             final JSONObject link = linkRepository.get(linkId);
+
             if (null == link) {
                 return null;
             }
@@ -155,8 +160,7 @@ public final class LinkQueryService {
     /**
      * Private constructor.
      */
-    private LinkQueryService() {
-    }
+    private LinkQueryService() {}
 
     /**
      * Singleton holder.
@@ -169,13 +173,11 @@ public final class LinkQueryService {
         /**
          * Singleton.
          */
-        private static final LinkQueryService SINGLETON =
-                new LinkQueryService();
+        private static final LinkQueryService SINGLETON = new LinkQueryService();
 
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

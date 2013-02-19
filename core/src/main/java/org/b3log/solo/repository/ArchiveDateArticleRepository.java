@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,11 @@
  */
 package org.b3log.solo.repository;
 
+
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
+
 
 /**
  * Archive date-Article repository.
@@ -51,9 +53,9 @@ public interface ArchiveDateArticleRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     JSONObject getByArchiveDateId(final String archiveDateId,
-                                  final int currentPageNum,
-                                  final int pageSize)
-            throws RepositoryException;
+        final int currentPageNum,
+        final int pageSize)
+        throws RepositoryException;
 
     /**
      * Gets an archive date-article relations by the specified article id.
@@ -69,5 +71,5 @@ public interface ArchiveDateArticleRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     JSONObject getByArticleId(final String articleId)
-            throws RepositoryException;
+        throws RepositoryException;
 }

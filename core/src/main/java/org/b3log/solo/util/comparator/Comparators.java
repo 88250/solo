@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.util.comparator;
 
+
 /**
  * Comparators utilities.
  *
@@ -26,22 +27,20 @@ public final class Comparators {
     /**
      * Article create date comparator.
      */
-    public static final ArticleCreateDateComparator ARTICLE_CREATE_DATE_COMPARATOR =
-            new ArticleCreateDateComparator();
+    public static final ArticleCreateDateComparator ARTICLE_CREATE_DATE_COMPARATOR = new ArticleCreateDateComparator();
+
     /**
      * Article update date comparator.
      */
-    public static final ArticleUpdateDateComparator ARTICLE_UPDATE_DATE_COMPARATOR =
-            new ArticleUpdateDateComparator();
+    public static final ArticleUpdateDateComparator ARTICLE_UPDATE_DATE_COMPARATOR = new ArticleUpdateDateComparator();
+
     /**
      * Tag reference count comparator.
      */
-    public static final TagRefCntComparator TAG_REF_CNT_COMPARATOR =
-            new TagRefCntComparator();
+    public static final TagRefCntComparator TAG_REF_CNT_COMPARATOR = new TagRefCntComparator();
 
     /**
      * Private default constructor.
      */
-    private Comparators() {
-    }
+    private Comparators() {}
 }

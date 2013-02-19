@@ -221,6 +221,12 @@
             "name": "version",
             "type": "String",
             "length": 10
+        },
+        {
+            "name": "setting",
+            "type": "String",
+            "length": 2000,
+            "nullable": true
         }
         ]
     },

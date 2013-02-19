@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.service;
+
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +43,7 @@ import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Comment query service.
  *
@@ -55,14 +57,17 @@ public final class CommentQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentQueryService.class.getName());
+
     /**
      * Comment repository.
      */
     private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * Page repository.
      */
@@ -116,8 +121,8 @@ public final class CommentQueryService {
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).
-                    setPageSize(pageSize).addSort(Comment.COMMENT_DATE, SortDirection.DESCENDING);
+            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(Comment.COMMENT_DATE,
+                SortDirection.DESCENDING);
             final JSONObject result = commentRepository.get(query);
             final JSONArray comments = result.getJSONArray(Keys.RESULTS);
 
@@ -128,12 +133,15 @@ public final class CommentQueryService {
 
                 final String onType = comment.getString(Comment.COMMENT_ON_TYPE);
                 final String onId = comment.getString(Comment.COMMENT_ON_ID);
+
                 if (Article.ARTICLE.equals(onType)) {
                     final JSONObject article = articleRepository.get(onId);
+
                     title = article.getString(Article.ARTICLE_TITLE);
                     comment.put(Common.TYPE, Common.ARTICLE_COMMENT_TYPE);
                 } else { // It's a comment of page
                     final JSONObject page = pageRepository.get(onId);
+
                     title = page.getString(Page.PAGE_TITLE);
                     comment.put(Common.TYPE, Common.PAGE_COMMENT_TYPE);
                 }
@@ -143,15 +151,15 @@ public final class CommentQueryService {
                 comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
                 comment.remove(Comment.COMMENT_DATE);
 
-                final String content = comment.getString(Comment.COMMENT_CONTENT).
-                        replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+                final String content = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+
                 comment.put(Comment.COMMENT_CONTENT, content);
             }
 
-            final int pageCount = result.getJSONObject(Pagination.PAGINATION).
-                    getInt(Pagination.PAGINATION_PAGE_COUNT);
+            final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
             final JSONObject pagination = new JSONObject();
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
@@ -178,8 +186,10 @@ public final class CommentQueryService {
             final List<JSONObject> ret = new ArrayList<JSONObject>();
 
             final List<JSONObject> comments = commentRepository.getComments(onId, 1, Integer.MAX_VALUE);
+
             for (final JSONObject comment : comments) {
                 final String content = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+
                 comment.put(Comment.COMMENT_CONTENT, content);
                 comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
                 comment.put(Comment.COMMENT_NAME, StringEscapeUtils.escapeHtml(comment.getString(Comment.COMMENT_NAME)));
@@ -204,8 +214,7 @@ public final class CommentQueryService {
     /**
      * Private constructor.
      */
-    private CommentQueryService() {
-    }
+    private CommentQueryService() {}
 
     /**
      * Singleton holder.
@@ -223,7 +232,6 @@ public final class CommentQueryService {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

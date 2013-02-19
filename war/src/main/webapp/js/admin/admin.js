@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.0, Aug 30, 2012
+ * @version 1.0.2.1, Jan 29, 2013
  */
 
 var Admin = function () {
@@ -101,7 +101,8 @@ $.extend(Admin.prototype, {
         try {
             // 除更新、发布、取消发布文章，编辑器中无内容外，离开编辑器需进行提示。
             if (tab !== "article" && admin.article.isConfirm &&
-                admin.editorArticle.getContent().replace(/\s/g, '') !== "") {
+                admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ""
+                && admin.article.content !== admin.editors.articleEditor.getContent()) {
                 if (!confirm(Label.editorLeaveLabel)) {
                     window.location.hash = "#article/article";
                     return;
@@ -109,14 +110,16 @@ $.extend(Admin.prototype, {
             }
             // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
             if (tab === "article" && admin.article.isConfirm &&
-                admin.editorArticle.getContent().replace(/\s/g, '') !== "") {
+                admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ""
+                && admin.article.content !== admin.editors.articleEditor.getContent()) {
                 return;
             }
         } catch (e) {
             var $articleContent =  $('#articleContent');
             if ($articleContent.length > 0) {
                 if (tab !== "article" && admin.article.isConfirm &&
-                    $articleContent.val().replace(/\s/g, '') !== "") {
+                    $articleContent.val().replace(/\s/g, '') !== ""
+                    && admin.article.content !== $articleContent.val()) {
                     if (!confirm(Label.editorLeaveLabel)) {
                         window.location.hash = "#article/article";
                         return;
@@ -124,14 +127,15 @@ $.extend(Admin.prototype, {
                 }
                 // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
                 if (tab === "article" && admin.article.isConfirm &&
-                    $articleContent.val().replace(/\s/g, '') !== "") {
+                    $articleContent.val().replace(/\s/g, '') !== ""
+                    && admin.article.content !== $articleContent.val()) {
                     return;
                 }
             }
         }
         
         // clear article 
-        if (tab !== "article" && admin.editorArticle.setContent) {
+        if (tab !== "article" && admin.editors.articleEditor.setContent) {
             admin.article.clear();
         }
         admin.article.isConfirm = true;

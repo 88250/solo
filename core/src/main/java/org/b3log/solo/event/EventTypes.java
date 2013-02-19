@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.event;
 
+
 /**
  * Event types.
  *
@@ -28,26 +29,32 @@ public final class EventTypes {
      * Indicates a add article event.
      */
     public static final String ADD_ARTICLE = "Add Article";
+
     /**
      * Indicates a update article event.
      */
     public static final String UPDATE_ARTICLE = "Update Article";
+
     /**
      * Indicates a remove article event.
      */
     public static final String REMOVE_ARTICLE = "Remove Article";
+
     /**
      * Indicates an add comment to article event.
      */
     public static final String ADD_COMMENT_TO_ARTICLE = "Add Comment To Article";
+
     /**
      * Indicates an add comment (from symphony) to article event.
      */
     public static final String ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY = "Add Comment To Article From Symphony";
+
     /**
      * Indicates an add comment to page event.
      */
     public static final String ADD_COMMENT_TO_PAGE = "Add Comment To Page";
+
     /**
      * Indicates a remove comment event.
      */
@@ -56,6 +63,5 @@ public final class EventTypes {
     /**
      * Private default constructor.
      */
-    private EventTypes() {
-    }
+    private EventTypes() {}
 }

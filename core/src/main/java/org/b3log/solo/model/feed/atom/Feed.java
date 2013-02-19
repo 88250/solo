@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,13 @@
  */
 package org.b3log.solo.model.feed.atom;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import org.apache.commons.lang.time.DateFormatUtils;
+
 
 /**
  * Feed.
@@ -41,99 +43,122 @@ public final class Feed {
      * Id.
      */
     private String id;
+
     /**
      * Title.
      */
     private String title;
+
     /**
      * Subtitle.
      */
     private String subtitle;
+
     /**
      * Update date.
      */
     private Date updated;
+
     /**
      * Author.
      */
     private String author;
+
     /**
      * Link.
      */
     private String link;
+
     /**
      * Entries.
      */
     private List<Entry> entries = new ArrayList<Entry>();
+
     /**
      * Link variable.
      */
     private static final String LINK_VARIABLE = "${link}";
+
     /**
      * Time zone id.
      */
     public static final String TIME_ZONE_ID = "Asia/Shanghai";
+
     /**
      * Start document.
      */
     private static final String START_DOCUMENT = "<?xml version=\"1.0\"?>";
+
     /**
      * Start feed element.
      */
-    private static final String START_FEED_ELEMENT =
-                                "<feed xmlns=\"http://www.w3.org/2005/Atom\">";
+    private static final String START_FEED_ELEMENT = "<feed xmlns=\"http://www.w3.org/2005/Atom\">";
+
     /**
      * End feed element.
      */
     private static final String END_FEED_ELEMENT = "</feed>";
+
     /**
      * Start id element.
      */
     private static final String START_ID_ELEMENT = "<id>";
+
     /**
      * End if element.
      */
     private static final String END_ID_ELEMENT = "</id>";
+
     /**
      * Start title element.
      */
     private static final String START_TITLE_ELEMENT = "<title type=\"text\">";
+
     /**
      * End title element.
      */
     private static final String END_TITLE_ELEMENT = "</title>";
+
     /**
      * Start subtitle element.
      */
     private static final String START_SUBTITLE_ELEMENT = "<subtitle type=\"text\"> ";
+
     /**
      * End subtitle element.
      */
     private static final String END_SUBTITLE_ELEMENT = "</subtitle>";
+
     /**
      * Start updated element.
      */
     private static final String START_UPDATED_ELEMENT = "<updated>";
+
     /**
      * End updated element.
      */
     private static final String END_UPDATED_ELEMENT = "</updated>";
+
     /**
      * Start author element.
      */
     private static final String START_AUTHOR_ELEMENT = "<author>";
+
     /**
      * End author element.
      */
     private static final String END_AUTHOR_ELEMENT = "</author>";
+
     /**
      * Start name element.
      */
     private static final String START_NAME_ELEMENT = "<name>";
+
     /**
      * End name element.
      */
     private static final String END_NAME_ELEMENT = "</name>";
+
     /**
      * Link element.
      */
@@ -259,6 +284,7 @@ public final class Feed {
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
+
         stringBuilder.append(START_DOCUMENT);
         stringBuilder.append(START_FEED_ELEMENT);
 
@@ -276,9 +302,7 @@ public final class Feed {
 
         stringBuilder.append(START_UPDATED_ELEMENT);
         stringBuilder.append(DateFormatUtils.format(// using ISO-8601 instead of RFC-3339
-                updated,
-                DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.getPattern(),
-                TimeZone.getTimeZone(TIME_ZONE_ID)));
+            updated, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.getPattern(), TimeZone.getTimeZone(TIME_ZONE_ID)));
         stringBuilder.append(END_UPDATED_ELEMENT);
 
         stringBuilder.append(START_AUTHOR_ELEMENT);

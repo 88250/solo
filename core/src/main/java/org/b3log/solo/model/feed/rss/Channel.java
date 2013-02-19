@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
  */
 package org.b3log.solo.model.feed.rss;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.time.DateFormatUtils;
+
 
 /**
  * RSS 2.0 channel.
@@ -40,104 +42,124 @@ public final class Channel {
      * Title.
      */
     private String title;
+
     /**
      * Link.
      */
     private String link;
+
     /**
      * Atom link.
      */
     private String atomLink;
+
     /**
      * Description.
      */
     private String description;
+
     /**
      * Generator.
      */
     private String generator;
+
     /**
      * Last build date.
      */
     private Date lastBuildDate;
+
     /**
      * Language.
      */
     private String language;
+
     /**
      * Items.
      */
     private List<Item> items = new ArrayList<Item>();
+
     /**
      * Time zone id.
      */
     public static final String TIME_ZONE_ID = "Asia/Shanghai";
+
     /**
      * Start.
      */
-    private static final String START =
-            "<?xml version='1.0' encoding='UTF-8'?><rss version=\"2.0\" "
-            + "xmlns:atom=\"http://www.w3.org/2005/Atom\"><channel>";
+    private static final String START = "<?xml version='1.0' encoding='UTF-8'?><rss version=\"2.0\" "
+        + "xmlns:atom=\"http://www.w3.org/2005/Atom\"><channel>";
+
     /**
      * End.
      */
     private static final String END = "</channel></rss>";
+
     /**
      * Start title element.
      */
     private static final String START_TITLE_ELEMENT = "<title>";
+
     /**
      * End title element.
      */
     private static final String END_TITLE_ELEMENT = "</title>";
+
     /**
      * Start link element.
      */
     private static final String START_LINK_ELEMENT = "<link>";
+
     /**
      * Atom link variable.
      */
     private static final String ATOM_LINK_VARIABLE = "${atomLink}";
+
     /**
      * End link element.
      */
     private static final String END_LINK_ELEMENT = "</link>";
+
     /**
      * Atom link element.
      */
-    private static final String ATOM_LINK_ELEMENT =
-            "<atom:link href=\""
-            + ATOM_LINK_VARIABLE
-            + "\" rel=\"self\" type=\"application/rss+xml\" />";
+    private static final String ATOM_LINK_ELEMENT = "<atom:link href=\"" + ATOM_LINK_VARIABLE
+        + "\" rel=\"self\" type=\"application/rss+xml\" />";
+
     /**
      * Start description element.
      */
     private static final String START_DESCRIPTION_ELEMENT = "<description>";
+
     /**
      * End description element.
      */
     private static final String END_DESCRIPTION_ELEMENT = "</description>";
+
     /**
      * Start generator element.
      */
     private static final String START_GENERATOR_ELEMENT = "<generator>";
+
     /**
      * End generator element.
      */
     private static final String END_GENERATOR_ELEMENT = "</generator>";
+
     /**
      * Start language element.
      */
     private static final String START_LANGUAGE_ELEMENT = "<language>";
+
     /**
      * End language element.
      */
     private static final String END_LANGUAGE_ELEMENT = "</language>";
+
     /**
      * Start last build date element.
      */
-    private static final String START_LAST_BUILD_DATE_ELEMENT =
-            "<lastBuildDate>";
+    private static final String START_LAST_BUILD_DATE_ELEMENT = "<lastBuildDate>";
+
     /**
      * End last build date  element.
      */
@@ -281,6 +303,7 @@ public final class Channel {
     @Override
     public String toString() {
         final StringBuilder stringBuilder = new StringBuilder();
+
         stringBuilder.append(START);
 
         stringBuilder.append(START_TITLE_ELEMENT);
@@ -291,8 +314,7 @@ public final class Channel {
         stringBuilder.append(link);
         stringBuilder.append(END_LINK_ELEMENT);
 
-        stringBuilder.append(ATOM_LINK_ELEMENT.replace(ATOM_LINK_VARIABLE,
-                                                       atomLink));
+        stringBuilder.append(ATOM_LINK_ELEMENT.replace(ATOM_LINK_VARIABLE, atomLink));
 
         stringBuilder.append(START_DESCRIPTION_ELEMENT);
         stringBuilder.append(description);
@@ -303,8 +325,7 @@ public final class Channel {
         stringBuilder.append(END_GENERATOR_ELEMENT);
 
         stringBuilder.append(START_LAST_BUILD_DATE_ELEMENT);
-        stringBuilder.append(DateFormatUtils.SMTP_DATETIME_FORMAT.format(
-                lastBuildDate));
+        stringBuilder.append(DateFormatUtils.SMTP_DATETIME_FORMAT.format(lastBuildDate));
         stringBuilder.append(END_LAST_BUILD_DATE_ELEMENT);
 
         stringBuilder.append(START_LANGUAGE_ELEMENT);

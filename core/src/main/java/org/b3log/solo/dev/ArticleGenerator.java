@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,14 @@
  */
 package org.b3log.solo.dev;
 
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.model.User;
@@ -34,11 +36,12 @@ import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
+
 /**
  * Generates some dummy articles for development testing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, May 21, 2012
+ * @version 1.0.0.4, Feb 1, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -47,8 +50,7 @@ public final class ArticleGenerator {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(ArticleGenerator.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleGenerator.class.getName());
 
     /**
      * Generates some dummy articles with the specified context.
@@ -60,11 +62,11 @@ public final class ArticleGenerator {
      */
     @RequestProcessing(value = "/dev/articles/gen/*", method = HTTPRequestMethod.GET)
     public void genArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+        throws IOException {
         if (RuntimeMode.DEVELOPMENT != Latkes.getRuntimeMode()) {
             LOGGER.log(Level.WARNING, "Article generation just for development mode, " + "current runtime mode is [{0}]",
-                       Latkes.getRuntimeMode());
-            response.sendRedirect("/");
+                Latkes.getRuntimeMode());
+            response.sendRedirect(Latkes.getServePath());
 
             return;
         }
@@ -86,7 +88,9 @@ public final class ArticleGenerator {
                 // XXX: http://en.wikipedia.org/wiki/Markov_chain
                 article.put(Article.ARTICLE_TITLE, "article title" + i);
                 article.put(Article.ARTICLE_ABSTRACT, "article" + i + " abstract");
-                article.put(Article.ARTICLE_TAGS_REF, "tag1,tag2");
+                final int deviationTag = 3;
+
+                article.put(Article.ARTICLE_TAGS_REF, "taga,tagb,tag" + i % deviationTag);
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
                 article.put(Article.ARTICLE_COMMENT_COUNT, 0);
                 article.put(Article.ARTICLE_VIEW_COUNT, 0);
@@ -95,8 +99,15 @@ public final class ArticleGenerator {
                 article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
                 article.put(Article.ARTICLE_IS_PUBLISHED, true);
                 article.put(Article.ARTICLE_PUT_TOP, false);
-                article.put(Article.ARTICLE_CREATE_DATE, new Date());
-                article.put(Article.ARTICLE_UPDATE_DATE, new Date());
+          
+                final int deviationBase = 5;
+                final int deviationDay = -(Integer.valueOf(String.valueOf(i).substring(0, 1)) % deviationBase);           
+                
+                final Date date = DateUtils.addMonths(new Date(), deviationDay);
+
+                article.put(Article.ARTICLE_CREATE_DATE, date);
+                article.put(Article.ARTICLE_UPDATE_DATE, date);
+                
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
                 article.put(Article.ARTICLE_COMMENTABLE, true);
                 article.put(Article.ARTICLE_VIEW_PWD, "");
@@ -111,6 +122,7 @@ public final class ArticleGenerator {
 
         Stopwatchs.end();
 
-        response.sendRedirect("/");
+        response.sendRedirect(Latkes.getServePath());
     }
+    
 }

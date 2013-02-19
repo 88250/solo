@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.1, Jul 5, 2012
+ * @version 1.0.3.2, Dec 26, 2012
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -99,7 +99,7 @@ $.extend(Page.prototype, {
         } else if (2 > commenterContent.length || commenterContent.length > 500) {
             $("#commentErrorTip" + state).html(this.tips.commentContentCannotEmptyLabel);
             $("#comment" + state).focus();
-        } else if ($("#commentValidate" + state).val().replace(/\s/g, "") === "") {
+        } else if (!$("#admin").data("login") && $("#commentValidate" + state).val().replace(/\s/g, "") === "") {
             $("#commentErrorTip" + state).html(this.tips.captchaCannotEmptyLabel);
             $("#commentValidate" + state).focus();
         } else {
@@ -369,6 +369,11 @@ $.extend(Page.prototype, {
      */
     load: function (obj) {
         var that = this;
+        // if login, remove captcha
+        if ($("#admin").data("login")) {
+            $("#commentValidate").parent().parent().hide();
+        }
+        
         // emotions
         that.insertEmotions();
         
@@ -378,6 +383,12 @@ $.extend(Page.prototype, {
         // submit comment
         $("#commentValidate").keypress(function (event) {
             if (event.keyCode === 13) {
+                that.submitComment();
+            }
+        });
+        
+        $("#comment").keypress(function (event) {
+            if (event.keyCode === 13 && event.ctrlKey) {
                 that.submitComment();
             }
         });
@@ -430,7 +441,7 @@ $.extend(Page.prototype, {
                 for (var i = 0; i < randomArticles.length; i++) {
                     var article = randomArticles[i];
                     var title = article.articleTitle;
-                    var randomArticleLiHtml = "<li>" + "<a rel='nofollow' title='" + title + "' href='" + 
+                    var randomArticleLiHtml = "<li>" + "<a rel='nofollow' title='" + title + "' href='" + latkeConfig.servePath +
                     article.articlePermalink +"'>" +  title + "</a></li>";
                     listHtml += randomArticleLiHtml;
                 }
@@ -462,7 +473,7 @@ $.extend(Page.prototype, {
                     var article = articles[i];
                     var title = article.articleTitle;
                     var articleLiHtml = "<li>"
-                    + "<a rel='nofollow' title='" + title + "' href='" + article.articlePermalink + "'>"
+                    + "<a rel='nofollow' title='" + title + "' href='" + latkeConfig.servePath + article.articlePermalink + "'>"
                     +  title + "</a></li>"
                     listHtml += articleLiHtml
                 }
@@ -636,6 +647,13 @@ $.extend(Page.prototype, {
             $("#replyForm #emotions").attr("id", "emotionsReply");
             
             this.insertEmotions("Reply");
+            
+            $("#commentReply").unbind().keypress(function (event) {
+                if (event.keyCode === 13 && event.ctrlKey) {
+                    that.submitComment(id, 'Reply');
+                    event.preventDefault();
+                }
+            });
             
             $("#commentValidateReply").unbind().keypress(function (event) {
                 if (event.keyCode === 13) {

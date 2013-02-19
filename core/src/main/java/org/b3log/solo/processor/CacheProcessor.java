@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.processor;
+
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -32,6 +33,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
+
 /**
  * Cache processor.
  *
@@ -46,6 +48,7 @@ public final class CacheProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CacheProcessor.class.getName());
+
     /**
      * User utilities.
      */
@@ -61,7 +64,7 @@ public final class CacheProcessor {
      */
     @RequestProcessing(value = "/clear-cache.do", method = HTTPRequestMethod.POST)
     public void clearCache(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+        throws IOException {
         LoginProcessor.tryLogInWithCookie(request, response);
 
         if (!userUtils.isAdminLoggedIn(request)) {
@@ -75,6 +78,7 @@ public final class CacheProcessor {
 
             if (Strings.isEmptyOrNull(all)) { // Just clears single page cache
                 final String uri = requestJSONObject.optString(Common.URI);
+
                 clearPageCache(uri);
             } else { // Clears all page caches
                 clearAllPageCache();
@@ -93,6 +97,7 @@ public final class CacheProcessor {
      */
     private void clearPageCache(final String uri) {
         final String pageCacheKey = PageCaches.getPageCacheKey(uri, null);
+
         LOGGER.log(Level.INFO, "Clears page cache[pageCacheKey={0}]", pageCacheKey);
 
         PageCaches.remove(pageCacheKey);

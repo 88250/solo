@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,13 @@
  */
 package org.b3log.solo.repository.impl;
 
+
 import java.util.logging.Logger;
+
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.solo.repository.PluginRepository;
+
 
 /**
  * Plugin repository.
@@ -33,6 +36,7 @@ public final class PluginRepositoryImpl extends AbstractRepository implements Pl
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PluginRepositoryImpl.class.getName());
+
     /**
      * Singleton.
      */
@@ -55,4 +59,5 @@ public final class PluginRepositoryImpl extends AbstractRepository implements Pl
     private PluginRepositoryImpl(final String name) {
         super(name);
     }
+
 }

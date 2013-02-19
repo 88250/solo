@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.renderer;
 
+
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,6 +28,7 @@ import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.util.TopBars;
 import org.b3log.solo.util.Statistics;
+
 
 /**
  * <a href="http://freemarker.org">FreeMarker</a> HTTP response 
@@ -42,6 +44,7 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(FrontRenderer.class.getName());
+
     /**
      * Statistic utilities.
      */
@@ -62,12 +65,13 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
 
     @Override
     protected void doRender(final String html, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         LOGGER.log(Level.FINEST, "Do render....");
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
 
         PrintWriter writer;
+
         try {
             writer = response.getWriter();
         } catch (final Exception e) {
@@ -83,9 +87,11 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
 
         final String pageContent = (String) request.getAttribute(PageCaches.CACHED_CONTENT);
         String output = html;
+
         if (null != pageContent) {
             // Adds the top bar HTML content for output
             final String topBarHTML = TopBars.getTopBarHTML(request, response);
+
             output = html.replace(Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
         }
 
@@ -112,6 +118,7 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
         }
 
         final HttpServletRequest request = context.getRequest();
+
         if ("mobile".equals((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME))) {
             // Skips page caching if requested by mobile device
             return;

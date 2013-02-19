@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model;
 
+
 /**
  * This class defines ext of user model relevant keys.
  *
@@ -29,6 +30,7 @@ public final class UserExt {
      * Key of user article count.
      */
     public static final String USER_ARTICLE_COUNT = "userArticleCount";
+
     /**
      * Key of user article count.
      */
@@ -37,6 +39,5 @@ public final class UserExt {
     /**
      * Private constructor.
      */
-    private UserExt() {
-    }
+    private UserExt() {}
 }

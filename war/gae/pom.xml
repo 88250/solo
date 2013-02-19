@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo GAE POM.
-    Version: 2.0.2.1, Nov 21, 2012
+    Version: 2.0.2.2, Jan 4, 2013
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -19,7 +19,7 @@
     <parent>
         <groupId>org.b3log</groupId>
         <artifactId>solo-war</artifactId>
-        <version>0.5.5</version>
+        <version>0.5.6</version>
     </parent>
     
     <properties>
@@ -32,7 +32,12 @@
             <groupId>org.b3log</groupId>
             <artifactId>latke</artifactId>
             <exclusions>
-                <!-- Javamail for local -->
+                <!-- H2 database for local -->
+                <exclusion>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                </exclusion>
+                <!-- JavaMail for local -->
                 <exclusion>
                     <artifactId>mail</artifactId>
                     <groupId>javax.mail</groupId>
@@ -50,6 +55,11 @@
                 <exclusion>
                     <groupId>c3p0</groupId>
                     <artifactId>c3p0</artifactId>
+                </exclusion>
+                <!-- GAE container is not JBoss -->
+                <exclusion>
+                    <groupId>org.jboss</groupId>
+                    <artifactId>jboss-vfs</artifactId>
                 </exclusion>
                 <!-- Container provided -->
                 <exclusion>

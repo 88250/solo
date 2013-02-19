@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,8 +41,7 @@ admin.editors.CodeMirror = {
             "<div class='clear'></div>" + 
             "<div class='markdown-preview-main none'></div>" +
             "<div class='markdown-help-main'>" + Label.markdownHelpLabel + "</div>"
-            "</div>" + 
-        "<div class='clear'></div>";
+            + "</div><div class='clear'></div>";
         } 
         $("#" + conf.id).after(previewHTML);
         

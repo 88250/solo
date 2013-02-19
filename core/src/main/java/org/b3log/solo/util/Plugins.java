@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,12 @@
  */
 package org.b3log.solo.util;
 
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
@@ -26,7 +29,9 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
 
 /**
  * Plugin utilities.
@@ -39,13 +44,12 @@ public final class Plugins {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(Plugins.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Plugins.class.getName());
+
     /**
      * Plugin repository.
      */
-    private static final PluginRepositoryImpl PLUGIN_REPOS =
-            PluginRepositoryImpl.getInstance();
+    private static final PluginRepositoryImpl PLUGIN_REPOS = PluginRepositoryImpl.getInstance();
 
     /**
      * Updates datastore plugin descriptions with the specified plugins.
@@ -54,11 +58,10 @@ public final class Plugins {
      * @throws Exception exception 
      */
     public static void refresh(final List<AbstractPlugin> plugins)
-            throws Exception {
+        throws Exception {
         final JSONObject result = PLUGIN_REPOS.get(new Query());
         final JSONArray pluginArray = result.getJSONArray(Keys.RESULTS);
-        final List<JSONObject> persistedPlugins =
-                CollectionUtils.jsonArrayToList(pluginArray);
+        final List<JSONObject> persistedPlugins = CollectionUtils.jsonArrayToList(pluginArray);
 
         // Disables plugin repository cache to avoid remove all cache
         PLUGIN_REPOS.setCacheEnabled(false);
@@ -72,15 +75,24 @@ public final class Plugins {
                 PLUGIN_REPOS.remove(descId);
 
                 if (null != plugin) {
-                    final String status =
-                            oldPluginDesc.getString(Plugin.PLUGIN_STATUS);
+                    final String status = oldPluginDesc.getString(Plugin.PLUGIN_STATUS);
+                    final String setting = oldPluginDesc.optString(Plugin.PLUGIN_SETTING);
+                    
                     plugin.setStatus(PluginStatus.valueOf(status));
+                    try {
+                        if (StringUtils.isNotBlank(setting)) {
+                            plugin.setSetting(new JSONObject(setting));
+                        }
+                    } catch (final JSONException e) {
+                        LOGGER.log(Level.WARNING, "the formatter of the old config failed to convert to json", e);
+                    }
                 }
             }
 
             // Adds these plugins into datastore
             for (final AbstractPlugin plugin : plugins) {
                 final JSONObject pluginDesc = plugin.toJSONObject();
+
                 PLUGIN_REPOS.add(pluginDesc);
 
                 LOGGER.log(Level.FINEST, "Refreshed plugin[{0}]", pluginDesc);
@@ -101,7 +113,7 @@ public final class Plugins {
      * @return a plugin, returns {@code null} if not found
      */
     private static AbstractPlugin get(final List<AbstractPlugin> plugins,
-                                      final String id) {
+        final String id) {
         if (null == id) {
             throw new IllegalArgumentException("id must not be null");
         }
@@ -118,6 +130,5 @@ public final class Plugins {
     /**
      * Private default constructor.
      */
-    private Plugins() {
-    }
+    private Plugins() {}
 }

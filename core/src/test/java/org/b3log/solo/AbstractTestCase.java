@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.b3log.solo;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import java.util.Locale;
 import org.b3log.latke.Latkes;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
@@ -50,7 +51,7 @@ import org.testng.annotations.BeforeClass;
  * Abstract test case.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Feb 7, 2012
+ * @version 1.0.0.5, Feb 8, 2013
  * @see #beforeClass() 
  * @see #afterClass() 
  */
@@ -188,6 +189,7 @@ public abstract class AbstractTestCase {
         localServiceTestHelper.setUp();
 
         Latkes.initRuntimeEnv();
+        Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
 
         // Repositories
         userRepository = UserRepositoryImpl.getInstance();

@@ -34,7 +34,7 @@
                         <#if msg??>
                         <div>${msg}</div>
                         </#if>
-                        <form method="POST" action="${staticServePath}/console/article-pwd">
+                        <form method="POST" action="${servePath}/console/article-pwd">
                             <label for="pwdTyped">访问密码：</label>
                             <input type="password" id="pwdTyped" name="pwdTyped" />
                             <input type="hidden" name="articleId" value="${articleId}" />
@@ -50,7 +50,7 @@
 
             <div class="footerWrapper">
                 <div class="footer">
-                    &copy; ${year} - <a href="${blogHost}">${blogTitle}</a><br/>
+                    &copy; ${year} - <a href="${servePath}">${blogTitle}</a><br/>
                     Powered by
                     <a href="http://b3log.org" target="_blank">
                         ${b3logLabel}&nbsp;

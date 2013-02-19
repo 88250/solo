@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,12 @@
  */
 package org.b3log.solo.util.comparator;
 
+
 import java.util.Comparator;
 import java.util.Date;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
+
 
 /**
  * Article comparator by create date.
@@ -27,13 +29,12 @@ import org.json.JSONObject;
  * @version 1.0.0.1, Dec 30, 2010
  */
 public final class ArticleCreateDateComparator
-        implements Comparator<JSONObject> {
+    implements Comparator<JSONObject> {
 
     /**
      * Package default constructor.
      */
-    ArticleCreateDateComparator() {
-    }
+    ArticleCreateDateComparator() {}
 
     @Override
     public int compare(final JSONObject article1, final JSONObject article2) {

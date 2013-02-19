@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.repository.impl;
 
+
 import java.util.List;
 import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
@@ -25,6 +26,7 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 
 /**
  * Tag-Article relation repository.
@@ -39,6 +41,7 @@ public final class TagArticleRepositoryImpl extends AbstractRepository implement
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TagArticleRepositoryImpl.class.getName());
+
     /**
      * Singleton.
      */
@@ -46,9 +49,8 @@ public final class TagArticleRepositoryImpl extends AbstractRepository implement
 
     @Override
     public List<JSONObject> getByArticleId(final String articleId) throws RepositoryException {
-        final Query query = new Query().setFilter(
-                new PropertyFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId)).
-                setPageCount(1);
+        final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId)).setPageCount(
+            1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -58,13 +60,9 @@ public final class TagArticleRepositoryImpl extends AbstractRepository implement
 
     @Override
     public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)
-            throws RepositoryException {
-        final Query query = new Query().setFilter(
-                new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).
-                addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setCurrentPageNum(currentPageNum).
-                setPageSize(pageSize).
-                setPageCount(1);
+        throws RepositoryException {
+        final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(
+            1);
 
         return get(query);
     }

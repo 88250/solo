@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,13 @@
  */
 package org.b3log.solo.model.feed.rss;
 
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TimeZone;
 import org.apache.commons.lang.time.DateFormatUtils;
+
 
 /**
  * Item.
@@ -33,86 +35,93 @@ public final class Item {
     /**
      * Start title element.
      */
-    private static final String START_TITLE_ELEMENT =
-            "<title>";
+    private static final String START_TITLE_ELEMENT = "<title>";
+
     /**
      * End title element.
      */
-    private static final String END_TITLE_ELEMENT =
-            "</title>";
+    private static final String END_TITLE_ELEMENT = "</title>";
+
     /**
      * Start link element.
      */
-    private static final String START_LINK_ELEMENT =
-            "<link>";
+    private static final String START_LINK_ELEMENT = "<link>";
+
     /**
      * End link element.
      */
     private static final String END_LINK_ELEMENT = "</link>";
+
     /**
      * Start description element.
      */
-    private static final String START_DESCRIPTION_ELEMENT =
-            "<description>";
+    private static final String START_DESCRIPTION_ELEMENT = "<description>";
+
     /**
      * End summary element.
      */
-    private static final String END_DESCRIPTION_ELEMENT =
-            "</description>";
+    private static final String END_DESCRIPTION_ELEMENT = "</description>";
+
     /**
      * Start author element.
      */
-    private static final String START_AUTHOR_ELEMENT =
-            "<author>";
+    private static final String START_AUTHOR_ELEMENT = "<author>";
+
     /**
      * End author element.
      */
-    private static final String END_AUTHOR_ELEMENT =
-            "</author>";
+    private static final String END_AUTHOR_ELEMENT = "</author>";
+
     /**
      * Categories.
      */
     private Set<Category> categories = new HashSet<Category>();
+
     /**
      * Start guid element.
      */
-    private static final String START_GUID_ELEMENT =
-            "<guid>";
+    private static final String START_GUID_ELEMENT = "<guid>";
+
     /**
      * End guid element.
      */
-    private static final String END_GUID_ELEMENT =
-            "</guid>";
+    private static final String END_GUID_ELEMENT = "</guid>";
+
     /**
      * Start pubDate element.
      */
-    private static final String START_PUB_DATE_ELEMENT =
-            "<pubDate>";
+    private static final String START_PUB_DATE_ELEMENT = "<pubDate>";
+
     /**
      * End pubDate element.
      */
-    private static final String END_PUB_DATE_ELEMENT =
-            "</pubDate>";
+    private static final String END_PUB_DATE_ELEMENT = "</pubDate>";
+
     /**
      * Guid.
      */
     private String guid;
+
     /**
      * Publish date.
      */
     private Date pubDate;
+
     /**
      * Title.
      */
     private String title;
+
     /**
      * Description.
      */
     private String description;
+
     /**
      * Link.
      */
     private String link;
+
     /**
      * Author.
      */
@@ -264,9 +273,7 @@ public final class Item {
         }
 
         stringBuilder.append(START_PUB_DATE_ELEMENT);
-        stringBuilder.append(DateFormatUtils.format(
-                pubDate, "EEE, dd MMM yyyy HH:mm:ss z",
-                TimeZone.getTimeZone(Channel.TIME_ZONE_ID)));
+        stringBuilder.append(DateFormatUtils.format(pubDate, "EEE, dd MMM yyyy HH:mm:ss z", TimeZone.getTimeZone(Channel.TIME_ZONE_ID)));
         stringBuilder.append(END_PUB_DATE_ELEMENT).append("</item>");
 
         return stringBuilder.toString();

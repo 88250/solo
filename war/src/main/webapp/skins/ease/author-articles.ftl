@@ -12,7 +12,7 @@
         <#include "header.ftl">
         <div class="main">
             <div class="wrapper">
-                <h2>${author1Label}${authorName}</h2>
+                <h2 id="author">${author1Label}${authorName}</h2>
                 <#include "article-list.ftl">
             </div>
         </div>

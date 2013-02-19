@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,10 @@ package org.b3log.solo.repository.impl;
 
 import java.util.List;
 import junit.framework.Assert;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.json.JSONObject;
@@ -28,7 +30,7 @@ import org.testng.annotations.Test;
  * {@link ArchiveDateRepositoryImpl} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Dec 31, 2011
+ * @version 1.0.0.1, Jan 18, 2013
  */
 @Test(suiteName = "repository")
 public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
@@ -44,7 +46,7 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
 
         final JSONObject archiveDate = new JSONObject();
 
-        archiveDate.put(ArchiveDate.ARCHIVE_TIME, ArchiveDate.DATE_FORMAT.parse("2011/12").getTime());
+        archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate("2011/12", new String[] {"yyyy/MM"}).getTime());
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 1);
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 1);
 
@@ -68,5 +70,6 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
 
         final JSONObject archiveDate = archiveDateRepository.getByArchiveDate("2011/12");
         Assert.assertNotNull(archiveDate);
+        System.out.println(archiveDate.toString(SoloServletListener.JSON_PRINT_INDENT_FACTOR));
     }
 }

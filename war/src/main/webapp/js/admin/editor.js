@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  * @fileoverview editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Apr 29, 2012
+ * @version 1.0.0.4, Jan 29, 2013
  */
 
 admin.editors = {};
@@ -86,6 +86,6 @@ $.extend(Editor.prototype, {
     }
 });
 
-admin.editorArticle = {};
-admin.editorAbstract = {};
-admin.editorPage = {};
+admin.editors.articleEditor = {};
+admin.editors.abstractEditor = {};
+admin.editors.pageEditor = {};

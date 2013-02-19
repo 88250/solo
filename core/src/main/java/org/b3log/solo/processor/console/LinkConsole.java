@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.processor.console;
+
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,7 @@ import org.b3log.solo.util.Users;
 import org.b3log.latke.util.Requests;
 import org.json.JSONObject;
 
+
 /**
  * Link console request processing.
  *
@@ -48,36 +50,27 @@ public final class LinkConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =            Logger.getLogger(LinkConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinkConsole.class.getName());
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Link query service.
      */
     private LinkQueryService linkQueryService = LinkQueryService.getInstance();
+
     /**
      * Link management service.
      */
     private LinkMgmtService linkMgmtService = LinkMgmtService.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
-    /**
-     * Link URI prefix.
-     */
-    private static final String LINK_URI_PREFIX = "/console/link/";
-    /**
-     * Links URI prefix.
-     */
-    private static final String LINKS_URI_PREFIX = "/console/links/";
-    /**
-     * Link order URI prefix.
-     */
-    private static final String LINK_ORDER_URI_PREFIX = LINK_URI_PREFIX
-                                                        + "order/";
 
     /**
      * Removes a link by the specified request.
@@ -97,26 +90,24 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = LINK_URI_PREFIX + "*",
-                       method = HTTPRequestMethod.DELETE)
-    public void removeLink(final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final HTTPRequestContext context)
-            throws Exception {
+    @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.DELETE)
+    public void removeLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String linkId =
-                    request.getRequestURI().substring((Latkes.getContextPath() + LINK_URI_PREFIX).length());
+            final String linkId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/link/").length());
 
             linkMgmtService.removeLink(linkId);
 
@@ -158,18 +149,16 @@ public final class LinkConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = LINK_URI_PREFIX,
-                       method = HTTPRequestMethod.PUT)
-    public void updateLink(final HttpServletRequest request,
-                           final HttpServletResponse response,
-                           final HTTPRequestContext context)
-            throws Exception {
+    @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.PUT)
+    public void updateLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -187,6 +176,7 @@ public final class LinkConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -216,18 +206,18 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = LINK_ORDER_URI_PREFIX,
-                       method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/link/order/", method = HTTPRequestMethod.PUT)
     public void changeOrder(final HttpServletRequest request,
-                            final HttpServletResponse response,
-                            final HTTPRequestContext context)
-            throws Exception {
+        final HttpServletResponse response,
+        final HTTPRequestContext context)
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -247,6 +237,7 @@ public final class LinkConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -280,18 +271,16 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = LINK_URI_PREFIX,
-                       method = HTTPRequestMethod.POST)
-    public void addLink(final HttpServletRequest request,
-                        final HttpServletResponse response,
-                        final HTTPRequestContext context)
-            throws Exception {
+    @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.POST)
+    public void addLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+        throws Exception {
         if (!userUtils.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -310,6 +299,7 @@ public final class LinkConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
         }
@@ -348,26 +338,28 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = LINKS_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN,
-                       method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/links/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
+        method = HTTPRequestMethod.GET)
     public void getLinks(final HttpServletRequest request,
-                         final HttpServletResponse response,
-                         final HTTPRequestContext context) throws Exception {
+        final HttpServletResponse response,
+        final HTTPRequestContext context) throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring((Latkes.getContextPath() + LINKS_URI_PREFIX).length());
+            final String path = requestURI.substring((Latkes.getContextPath() + "/console/links/").length());
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
             final JSONObject result = linkQueryService.getLinks(requestJSONObject);
+
             result.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(result);
@@ -375,6 +367,7 @@ public final class LinkConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -403,22 +396,21 @@ public final class LinkConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = LINK_URI_PREFIX + "*", method = HTTPRequestMethod.GET)
-    public void getLink(final HttpServletRequest request,
-                        final HttpServletResponse response,
-                        final HTTPRequestContext context)
-            throws Exception {
+    @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.GET)
+    public void getLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final String requestURI = request.getRequestURI();
-            final String linkId = requestURI.substring((Latkes.getContextPath() + LINK_URI_PREFIX).length());
+            final String linkId = requestURI.substring((Latkes.getContextPath() + "/console/link/").length());
 
             final JSONObject result = linkQueryService.getLink(linkId);
 
@@ -434,6 +426,7 @@ public final class LinkConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }

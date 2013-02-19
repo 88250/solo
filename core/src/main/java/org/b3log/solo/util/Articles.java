@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,7 @@
  */
 package org.b3log.solo.util;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +24,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.b3log.solo.model.Article;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
@@ -33,6 +31,7 @@ import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
@@ -43,11 +42,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * Article utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.8, May 6, 2012
+ * @version 1.0.2.9, Jan 8, 2013
  * @since 0.3.1
  */
 public final class Articles {
@@ -56,38 +56,21 @@ public final class Articles {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Articles.class.getName());
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * User repository.
      */
     private UserRepository userRepository = UserRepositoryImpl.getInstance();
+
     /**
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
-
-    /**
-     * Builds article view password form parameters with the specified article.
-     * 
-     * @param article the specified article
-     * @return parameters string, for example,
-     * <pre>
-     * "?articleId=xxx&articleTitle=xxx&articlePermalink=xxx&articleAbstract=xxx"
-     * </pre>
-     * @throws UnsupportedEncodingException if can not encode the arguments 
-     */
-    public String buildArticleViewPwdFormParameters(final JSONObject article) throws UnsupportedEncodingException {
-        final StringBuilder parametersBuilder =
-                new StringBuilder("?articleId=").append(article.optString(Keys.OBJECT_ID)).
-                append("&articleTitle=").append(URLEncoder.encode(article.optString(Article.ARTICLE_TITLE), "UTF-8")).
-                append("&articlePermalink=").append(URLEncoder.encode(article.optString(Article.ARTICLE_PERMALINK), "UTF-8")).
-                append("&articleAbstract=").append(URLEncoder.encode(article.optString(Article.ARTICLE_ABSTRACT, " "), "UTF-8"));
-
-        return parametersBuilder.toString();
-    }
 
     /**
      * Checks whether need password to view the specified article with the specified request.
@@ -112,9 +95,11 @@ public final class Articles {
         }
 
         final HttpSession session = request.getSession(false);
+
         if (null != session) {
             @SuppressWarnings("unchecked")
             Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
+
             if (null == viewPwds) {
                 viewPwds = new HashMap<String, String>();
             }
@@ -140,11 +125,13 @@ public final class Articles {
     public long getRecentArticleTime() throws ServiceException {
         try {
             final List<JSONObject> recentArticles = articleRepository.getRecentArticles(1);
+
             if (recentArticles.isEmpty()) {
                 return 0;
             }
 
             final JSONObject recentArticle = recentArticles.get(0);
+
             return ((Date) recentArticle.get(Article.ARTICLE_UPDATE_DATE)).getTime();
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
@@ -177,9 +164,8 @@ public final class Articles {
             JSONObject ret = userRepository.getByEmail(email);
 
             if (null == ret) {
-                LOGGER.log(Level.WARNING,
-                           "Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
-                           article.getString(Keys.OBJECT_ID));
+                LOGGER.log(Level.WARNING, "Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
+                    article.getString(Keys.OBJECT_ID));
                 // This author may be deleted by admin, use admin as the author
                 // of this article
                 ret = userRepository.getAdmin();
@@ -206,6 +192,7 @@ public final class Articles {
         final JSONObject article = articleRepository.get(articleId);
         final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
+
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt + 1);
 
         articleRepository.update(articleId, newArticle);
@@ -224,8 +211,10 @@ public final class Articles {
         final JSONArray signs = new JSONArray(preference.getString(Preference.SIGNS));
 
         JSONObject defaultSign = null;
+
         for (int i = 0; i < signs.length(); i++) {
             final JSONObject ret = signs.getJSONObject(i);
+
             if (signId.equals(ret.optString(Keys.OBJECT_ID))) {
                 return ret;
             }
@@ -277,10 +266,10 @@ public final class Articles {
      */
     public List<JSONObject> getUnpublishedArticles() throws RepositoryException, JSONException {
         final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+
         sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        final Query query = new Query().setFilter(
-                new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
+        final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
         final JSONObject result = articleRepository.get(query);
         final JSONArray articles = result.getJSONArray(Keys.RESULTS);
 
@@ -299,8 +288,7 @@ public final class Articles {
     /**
      * Private default constructor.
      */
-    private Articles() {
-    }
+    private Articles() {}
 
     /**
      * Singleton holder.
@@ -318,7 +306,6 @@ public final class Articles {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

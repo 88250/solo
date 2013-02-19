@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.processor;
+
 
 import java.io.IOException;
 import java.util.List;
@@ -45,6 +46,7 @@ import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
+
 /**
  * Page processor.
  *
@@ -59,22 +61,27 @@ public final class PageProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PageProcessor.class.getName());
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+
     /**
      * Page query service.
      */
@@ -88,6 +95,7 @@ public final class PageProcessor {
     @RequestProcessing(value = "/page", method = HTTPRequestMethod.GET)
     public void showPage(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+
         context.setRenderer(renderer);
 
         renderer.setTemplateName("page.ftl");
@@ -98,27 +106,29 @@ public final class PageProcessor {
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
+
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
-            Skins.fillSkinLangs(
-                    preference.getString(Preference.LOCALE_STRING),
-                    (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                    dataModel);
+            Skins.fillSkinLangs(preference.getString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
+                dataModel);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+
             request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.PAGE.getLangeLabel()));
 
             // See PermalinkFiler#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
+
             if (null == page) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
             }
 
             final String pageId = page.getString(Keys.OBJECT_ID);
+
             request.setAttribute(PageCaches.CACHED_OID, pageId);
             request.setAttribute(PageCaches.CACHED_TITLE, page.getString(Page.PAGE_TITLE));
             request.setAttribute(PageCaches.CACHED_LINK, page.getString(Page.PAGE_PERMALINK));
@@ -127,6 +137,7 @@ public final class PageProcessor {
             page.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
             dataModel.put(Page.PAGE, page);
             final List<JSONObject> comments = commentQueryService.getComments(pageId);
+
             dataModel.put(Page.PAGE_COMMENTS_REF, comments);
 
             // Markdown
@@ -134,6 +145,7 @@ public final class PageProcessor {
                 Stopwatchs.start("Markdown Page[id=" + page.optString(Keys.OBJECT_ID) + "]");
 
                 final String content = page.optString(Page.PAGE_CONTENT);
+
                 page.put(Page.PAGE_CONTENT, Markdowns.toHTML(content));
 
                 Stopwatchs.end();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +25,7 @@ import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.json.JSONObject;
+
 
 /**
  * Archive date query service.
@@ -38,6 +40,7 @@ public final class ArchiveDateQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArchiveDateQueryService.class.getName());
+
     /**
      * Archive date repository.
      */
@@ -106,8 +109,7 @@ public final class ArchiveDateQueryService {
     /**
      * Private constructor.
      */
-    private ArchiveDateQueryService() {
-    }
+    private ArchiveDateQueryService() {}
 
     /**
      * Singleton holder.
@@ -120,13 +122,11 @@ public final class ArchiveDateQueryService {
         /**
          * Singleton.
          */
-        private static final ArchiveDateQueryService SINGLETON =
-                new ArchiveDateQueryService();
+        private static final ArchiveDateQueryService SINGLETON = new ArchiveDateQueryService();
 
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

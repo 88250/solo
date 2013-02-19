@@ -37,7 +37,7 @@
     Most Checks are configurable, be sure to consult the documentation.
     To completely disable a check, just comment it out or delete it from the file.
     Finally, it is worth reading the documentation.
-    Version: 1.0.1.5, Jul 20, 2010
+    Version: 1.0.1.7, Jan 9, 2013
     Author: Liang Ding
 -->
 <!DOCTYPE module PUBLIC
@@ -68,7 +68,7 @@
         <module name="JavadocMethod"/>
         <module name="JavadocType">
             <property name="authorFormat" value="\S"/>
-            <property name="versionFormat" value="\d\.\d\.\d\.\d, [A-Z]+[a-z]{2,2} \d{1,2}, \d\d\d\d"/>
+            <property name="versionFormat" value="\d+\.\d+\.\d+\.\d+, [A-Z]+[a-z]{2,2} \d{1,2}, \d\d\d\d"/>
         </module>
         <module name="JavadocVariable"/>
         <module name="JavadocStyle">
@@ -113,10 +113,12 @@
         <module name="UnusedImports"/>
 
         <!-- Checks for Size Violations.                    -->
-        <!-- See http://checkstyle.sf.net/config_sizes.html -->
+        <!-- See http://checkstyle.sf.net/config_sizes  .html -->
+        <!--
         <module name="LineLength">
             <property name="max" value="140"/>
         </module>
+        -->
         <module name="MethodLength"/>
         <module name="ParameterNumber"/>
 

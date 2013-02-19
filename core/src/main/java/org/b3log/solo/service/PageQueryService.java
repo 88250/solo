@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.service;
+
 
 import java.util.List;
 import java.util.logging.Level;
@@ -30,6 +31,7 @@ import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 /**
  * Page query service.
  *
@@ -43,6 +45,7 @@ public final class PageQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PageQueryService.class.getName());
+
     /**
      * Page repository.
      */
@@ -75,6 +78,7 @@ public final class PageQueryService {
 
         try {
             final JSONObject page = pageRepository.get(pageId);
+
             if (null == page) {
                 return null;
             }
@@ -130,21 +134,22 @@ public final class PageQueryService {
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).
-                    setPageSize(pageSize).
-                    addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).
-                    setPageCount(1);
+            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).setPageCount(
+                1);
             final JSONObject result = pageRepository.get(query);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
 
             final JSONObject pagination = new JSONObject();
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final JSONArray pages = result.getJSONArray(Keys.RESULTS);
+
             for (int i = 0; i < pages.length(); i++) { // remove unused properties
                 final JSONObject page = pages.getJSONObject(i);
+
                 page.remove(Page.PAGE_CONTENT);
             }
 
@@ -171,8 +176,7 @@ public final class PageQueryService {
     /**
      * Private constructor.
      */
-    private PageQueryService() {
-    }
+    private PageQueryService() {}
 
     /**
      * Singleton holder.
@@ -190,7 +194,6 @@ public final class PageQueryService {
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

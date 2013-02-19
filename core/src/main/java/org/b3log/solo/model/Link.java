@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model;
 
+
 /**
  * This class defines all link model relevant keys.
  *
@@ -28,22 +29,27 @@ public final class Link {
      * Link.
      */
     public static final String LINK = "link";
+
     /**
      * Links.
      */
     public static final String LINKS = "links";
+
     /**
      * Key of title.
      */
     public static final String LINK_TITLE = "linkTitle";
+
     /**
      * Key of address.
      */
     public static final String LINK_ADDRESS = "linkAddress";
+
     /**
      * Key of description.
      */
     public static final String LINK_DESCRIPTION = "linkDescription";
+
     /**
      * Key of order.
      */
@@ -52,6 +58,5 @@ public final class Link {
     /**
      * Private default constructor.
      */
-    private Link() {
-    }
+    private Link() {}
 }

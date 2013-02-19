@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.renderer;
 
+
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.File;
@@ -24,6 +25,7 @@ import java.util.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.SoloServletListener;
+
 
 /**
  * <a href="http://freemarker.org">FreeMarker</a> HTTP response 
@@ -39,6 +41,7 @@ public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ConsoleRenderer.class.getName());
+
     /**
      * FreeMarker configuration.
      */
@@ -58,15 +61,13 @@ public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
 
     @Override
     protected Template getTemplate(final String templateDirName, final String templateName)
-            throws IOException {
+        throws IOException {
         return TEMPLATE_CFG.getTemplate(templateName);
     }
 
     @Override
-    protected void beforeRender(final HTTPRequestContext context) throws Exception {
-    }
+    protected void beforeRender(final HTTPRequestContext context) throws Exception {}
 
     @Override
-    protected void afterRender(final HTTPRequestContext context) throws Exception {
-    }
+    protected void afterRender(final HTTPRequestContext context) throws Exception {}
 }

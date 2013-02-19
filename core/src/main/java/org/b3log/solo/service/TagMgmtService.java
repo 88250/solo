@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.json.JSONObject;
+
 
 /**
  * Tag management service.
@@ -38,12 +40,13 @@ public final class TagMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER =
-            Logger.getLogger(TagMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagMgmtService.class.getName());
+
     /**
      * Tag query service.
      */
     private TagQueryService tagQueryService = TagQueryService.getInstance();
+
     /**
      * Tag repository.
      */
@@ -63,8 +66,10 @@ public final class TagMgmtService {
             for (int i = 0; i < tags.size(); i++) {
                 final JSONObject tag = tags.get(i);
                 final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+
                 if (0 == tagRefCnt) {
                     final String tagId = tag.getString(Keys.OBJECT_ID);
+
                     tagRepository.remove(tagId);
                 }
             }
@@ -93,8 +98,7 @@ public final class TagMgmtService {
     /**
      * Private constructor.
      */
-    private TagMgmtService() {
-    }
+    private TagMgmtService() {}
 
     /**
      * Singleton holder.
@@ -107,13 +111,11 @@ public final class TagMgmtService {
         /**
          * Singleton.
          */
-        private static final TagMgmtService SINGLETON =
-                new TagMgmtService();
+        private static final TagMgmtService SINGLETON = new TagMgmtService();
 
         /**
          * Private default constructor.
          */
-        private SingletonHolder() {
-        }
+        private SingletonHolder() {}
     }
 }

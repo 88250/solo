@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,13 @@
  */
 package org.b3log.solo.repository;
 
+
 import java.util.List;
 
 import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
+
 
 /**
  * Comment repository.
@@ -37,7 +39,7 @@ public interface CommentRepository extends Repository {
      * @throws RepositoryException repository exception 
      */
     List<JSONObject> getRecentComments(final int fetchSize)
-            throws RepositoryException;
+        throws RepositoryException;
 
     /**
      * Gets comments with the specified on id, current page number and 
@@ -50,8 +52,8 @@ public interface CommentRepository extends Repository {
      * @throws RepositoryException repository exception 
      */
     List<JSONObject> getComments(final String onId,
-                                 final int currentPageNum,
-                                 final int pageSize) throws RepositoryException;
+        final int currentPageNum,
+        final int pageSize) throws RepositoryException;
 
     /**
      * Removes comments with the specified on id.

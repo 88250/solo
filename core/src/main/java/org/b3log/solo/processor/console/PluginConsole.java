@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,60 +15,66 @@
  */
 package org.b3log.solo.processor.console;
 
+
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.solo.processor.console.common.ProcessAuthAdvice;
+import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
+
 /**
  * Plugin console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Aug 9, 2012
+ * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
+ * @version 1.1.0.0, Jan 17, 2013
  * @since 0.4.0
  */
 @RequestProcessor
+@Before(adviceClass = ProcessAuthAdvice.class)
 public final class PluginConsole {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PluginConsole.class.getName());
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Plugin query service.
      */
     private PluginQueryService pluginQueryService = PluginQueryService.getInstance();
+
     /**
      * Plugin management service.
      */
     private PluginMgmtService pluginMgmtService = PluginMgmtService.getInstance();
-    /**
-     * Plugins URI prefix.
-     */
-    private static final String PLUGINS_URI_PREFIX = "/console/plugins/";
-    /**
-     * Plugin URI prefix.
-     */
-    private static final String PLUGIN_URI_PREFIX = "/console/plugin/";
+
     /**
      * Language service.
      */
@@ -92,15 +98,12 @@ public final class PluginConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = PLUGIN_URI_PREFIX + "status/", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/plugin/status/", method = HTTPRequestMethod.PUT)
     public void setPluginStatus(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
+        throws Exception {
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
@@ -147,20 +150,18 @@ public final class PluginConsole {
      * @throws Exception exception
      * @see Requests#PAGINATION_PATH_PATTERN
      */
-    @RequestProcessing(value = PLUGINS_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/plugins/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
+        method = HTTPRequestMethod.GET)
     public void getPlugins(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
+        throws Exception {
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring((Latkes.getContextPath() + PLUGINS_URI_PREFIX).length());
+            final String path = requestURI.substring((Latkes.getContextPath() + "/console/plugins/").length());
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
@@ -173,8 +174,76 @@ public final class PluginConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
     }
+
+    /**
+     * get the info of the specified pluginoId,just fot the plugin-setting.
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @param renderer the specified {@link ConsoleRenderer}
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/plugin/toSetting", method = HTTPRequestMethod.POST)
+    public void toSetting(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+        final ConsoleRenderer renderer) throws Exception {
+
+        context.setRenderer(renderer);
+
+        try {
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
+
+            final String setting = pluginQueryService.getPluginSetting(pluginId);
+
+            renderer.setTemplateName("admin-plugin-setting.ftl");
+            final Map<String, Object> dataModel = renderer.getDataModel();
+
+            Keys.fillServer(dataModel);
+            Keys.fillRuntime(dataModel);
+
+            dataModel.put(Plugin.PLUGIN_SETTING, setting);
+            dataModel.put(Keys.OBJECT_ID, pluginId);
+
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONRenderer jsonRenderer = new JSONRenderer();
+
+            jsonRenderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+
+    }
+
+    /**
+     * update the setting of the plugin. 
+     * 
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @param renderer the specified {@link ConsoleRenderer}
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/plugin/updateSetting", method = HTTPRequestMethod.POST)
+    public void updateSetting(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+        final JSONRenderer renderer) throws Exception {
+
+        context.setRenderer(renderer);
+
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final String pluginoId = requestJSONObject.getString(Keys.OBJECT_ID);
+        final String settings = requestJSONObject.getString(Plugin.PLUGIN_SETTING);
+
+        final JSONObject ret = pluginMgmtService.updatePluginSetting(pluginoId, settings);
+
+        renderer.setJSONObject(ret);
+
+    }
+
 }

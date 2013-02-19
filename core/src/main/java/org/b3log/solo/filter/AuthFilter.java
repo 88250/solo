@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.filter;
+
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,7 @@ import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.solo.processor.LoginProcessor;
 import org.b3log.solo.util.Users;
 
+
 /**
  * Authentication filter.
  *
@@ -45,18 +47,19 @@ public final class AuthFilter implements Filter {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AuthFilter.class.getName());
+
     /**
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+
     /**
      * User utilities.
      */
     private Users users = Users.getInstance();
 
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {
-    }
+    public void init(final FilterConfig filterConfig) throws ServletException {}
 
     /**
      * If the specified request is NOT made by an authenticated user, sends 
@@ -70,9 +73,9 @@ public final class AuthFilter implements Filter {
      */
     @Override
     public void doFilter(final ServletRequest request,
-                         final ServletResponse response,
-                         final FilterChain chain) throws IOException,
-                                                         ServletException {
+        final ServletResponse response,
+        final FilterChain chain) throws IOException,
+            ServletException {
         final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
@@ -80,6 +83,7 @@ public final class AuthFilter implements Filter {
             LoginProcessor.tryLogInWithCookie(httpServletRequest, httpServletResponse);
 
             final GeneralUser currentUser = userService.getCurrentUser(httpServletRequest);
+
             if (null == currentUser) {
                 LOGGER.warning("The request has been forbidden");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -88,6 +92,7 @@ public final class AuthFilter implements Filter {
             }
 
             final String currentUserEmail = currentUser.getEmail();
+
             LOGGER.log(Level.FINER, "Current user email[{0}]", currentUserEmail);
             if (users.isSoloUser(currentUserEmail)) {
                 chain.doFilter(request, response);
@@ -103,6 +108,5 @@ public final class AuthFilter implements Filter {
     }
 
     @Override
-    public void destroy() {
-    }
+    public void destroy() {}
 }

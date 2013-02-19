@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package org.b3log.solo.processor.console;
+
 
 import java.util.List;
 import java.util.logging.Level;
@@ -36,6 +37,7 @@ import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
+
 /**
  * Comment console request processing.
  *
@@ -50,30 +52,26 @@ public final class CommentConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentConsole.class.getName());
+
     /**
      * User utilities.
      */
     private Users userUtils = Users.getInstance();
+
     /**
      * Comment query service.
      */
     private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+
     /**
      * Comment management service.
      */
     private CommentMgmtService commentMgmtService = CommentMgmtService.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
-    /**
-     * Comment URI prefix.
-     */
-    private static final String COMMENT_URI_PREFIX = "/console/comment/";
-    /**
-     * Comments URI prefix.
-     */
-    private static final String COMMENTS_URI_PREFIX = "/console/comments/";
 
     /**
      * Removes a comment of an article by the specified request.
@@ -95,16 +93,18 @@ public final class CommentConsole {
      */
     @RequestProcessing(value = "/console/page/comment/*", method = HTTPRequestMethod.DELETE)
     public void removePageComment(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         try {
@@ -142,16 +142,18 @@ public final class CommentConsole {
      */
     @RequestProcessing(value = "/console/article/comment/*", method = HTTPRequestMethod.DELETE)
     public void removeArticleComment(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
+
         renderer.setJSONObject(jsonObject);
 
         try {
@@ -207,24 +209,26 @@ public final class CommentConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = COMMENTS_URI_PREFIX + Requests.PAGINATION_PATH_PATTERN, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/comments/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
     public void getComments(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final String requestURI = request.getRequestURI();
-            final String path = requestURI.substring((Latkes.getContextPath() + COMMENTS_URI_PREFIX).length());
+            final String path = requestURI.substring((Latkes.getContextPath() + "/console/comments/").length());
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
             final JSONObject result = commentQueryService.getComments(requestJSONObject);
+
             result.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(result);
@@ -232,6 +236,7 @@ public final class CommentConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -265,23 +270,25 @@ public final class CommentConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = COMMENTS_URI_PREFIX + "article/*", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/comments/article/*", method = HTTPRequestMethod.GET)
     public void getArticleComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final JSONObject ret = new JSONObject();
+
             renderer.setJSONObject(ret);
 
             final String requestURI = request.getRequestURI();
-            final String articleId = requestURI.substring((Latkes.getContextPath() + COMMENTS_URI_PREFIX + "article/").length());
+            final String articleId = requestURI.substring((Latkes.getContextPath() + "/console/comments/article/").length());
 
             final List<JSONObject> comments = commentQueryService.getComments(articleId);
 
@@ -291,6 +298,7 @@ public final class CommentConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -324,23 +332,25 @@ public final class CommentConsole {
      * @param response the specified http servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = COMMENTS_URI_PREFIX + "page/*", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/comments/page/*", method = HTTPRequestMethod.GET)
     public void getPageComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+        throws Exception {
         if (!userUtils.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
 
         try {
             final JSONObject ret = new JSONObject();
+
             renderer.setJSONObject(ret);
 
             final String requestURI = request.getRequestURI();
-            final String pageId = requestURI.substring((Latkes.getContextPath() + COMMENTS_URI_PREFIX + "page/").length());
+            final String pageId = requestURI.substring((Latkes.getContextPath() + "/console/comments/page/").length());
 
             final List<JSONObject> comments = commentQueryService.getComments(pageId);
 
@@ -350,6 +360,7 @@ public final class CommentConsole {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model;
 
+
 /**
  * This class defines all skin model relevant keys.
  *
@@ -27,18 +28,22 @@ public final class Skin {
      * Skin.
      */
     public static final String SKIN = "skin";
+
     /**
      * Skins.
      */
     public static final String SKINS = "skins";
+
     /**
      * Key of skin name, current selected skin name.
      */
     public static final String SKIN_NAME = "skinName";
+
     /**
      * Key of skin names.
      */
     public static final String SKIN_NAMES = "skinNames";
+
     /**
      * Key of skin directory name.
      */
@@ -47,6 +52,5 @@ public final class Skin {
     /**
      * Private default constructor.
      */
-    private Skin() {
-    }
+    private Skin() {}
 }

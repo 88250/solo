@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,12 +17,11 @@ package org.b3log.solo.service;
 
 import java.util.Date;
 import java.util.List;
-
-import org.b3log.latke.Keys;
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.ArchiveDate;
-import org.b3log.solo.model.Preference;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -48,7 +47,6 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
         requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
         requestJSONObject.put(User.USER_NAME, "Admin");
         requestJSONObject.put(User.USER_PASSWORD, "pass");
-        requestJSONObject.put(Keys.LOCALE, Preference.Default.DEFAULT_LANGUAGE);
 
         initService.init(requestJSONObject);
 
@@ -80,10 +78,10 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
     public void getByArchiveDateString() throws Exception {
         final ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
 
-        final String archiveDateString = ArchiveDate.DATE_FORMAT.format(new Date());
+        final String archiveDateString = DateFormatUtils.format(new Date(), "yyyy/MM");
         final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
         Assert.assertNotNull(result);
         Assert.assertEquals(result.getJSONObject(ArchiveDate.ARCHIVE_DATE).getLong(ArchiveDate.ARCHIVE_TIME), 
-                            ArchiveDate.DATE_FORMAT.parse(archiveDateString).getTime());
+                            DateUtils.parseDate(archiveDateString, new String[] {"yyyy/MM"}).getTime());
     }
 }

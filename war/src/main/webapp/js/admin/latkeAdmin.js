@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.0, Aug 30, 2012
+ * @version 1.0.2.1, Jan 29, 2013
  */
 
 var Admin = function () {
@@ -101,7 +101,8 @@ $.extend(Admin.prototype, {
         try {
             // 除更新、发布、取消发布文章，编辑器中无内容外，离开编辑器需进行提示。
             if (tab !== "article" && admin.article.isConfirm &&
-                admin.editorArticle.getContent().replace(/\s/g, '') !== "") {
+                admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ""
+                && admin.article.content !== admin.editors.articleEditor.getContent()) {
                 if (!confirm(Label.editorLeaveLabel)) {
                     window.location.hash = "#article/article";
                     return;
@@ -109,14 +110,16 @@ $.extend(Admin.prototype, {
             }
             // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
             if (tab === "article" && admin.article.isConfirm &&
-                admin.editorArticle.getContent().replace(/\s/g, '') !== "") {
+                admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ""
+                && admin.article.content !== admin.editors.articleEditor.getContent()) {
                 return;
             }
         } catch (e) {
             var $articleContent =  $('#articleContent');
             if ($articleContent.length > 0) {
                 if (tab !== "article" && admin.article.isConfirm &&
-                    $articleContent.val().replace(/\s/g, '') !== "") {
+                    $articleContent.val().replace(/\s/g, '') !== ""
+                    && admin.article.content !== $articleContent.val()) {
                     if (!confirm(Label.editorLeaveLabel)) {
                         window.location.hash = "#article/article";
                         return;
@@ -124,14 +127,15 @@ $.extend(Admin.prototype, {
                 }
                 // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
                 if (tab === "article" && admin.article.isConfirm &&
-                    $articleContent.val().replace(/\s/g, '') !== "") {
+                    $articleContent.val().replace(/\s/g, '') !== ""
+                    && admin.article.content !== $articleContent.val()) {
                     return;
                 }
             }
         }
         
         // clear article 
-        if (tab !== "article" && admin.editorArticle.setContent) {
+        if (tab !== "article" && admin.editors.articleEditor.setContent) {
             admin.article.clear();
         }
         admin.article.isConfirm = true;
@@ -246,7 +250,7 @@ $.extend(Admin.prototype, {
 });
 
 var admin = new Admin();/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -264,7 +268,7 @@ var admin = new Admin();/*
  * @fileoverview editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Apr 29, 2012
+ * @version 1.0.0.4, Jan 29, 2013
  */
 
 admin.editors = {};
@@ -333,11 +337,11 @@ $.extend(Editor.prototype, {
     }
 });
 
-admin.editorArticle = {};
-admin.editorAbstract = {};
-admin.editorPage = {};
+admin.editors.articleEditor = {};
+admin.editors.abstractEditor = {};
+admin.editors.pageEditor = {};
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -462,7 +466,7 @@ admin.editors.tinyMCE = {
     }
 };
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -502,7 +506,7 @@ admin.editors.KindEditor = {
                     langType : language,
                     resizeType: 0, 
                     items: ["bold", "italic", "underline", "strikethrough", "|", "undo", "redo", "|", 
-                    "insertunorderedlist", "insertorderedlist",
+                    "insertunorderedlist", "insertorderedlist", "|", "source"
                     ]
                 });
             } catch (e) {
@@ -559,7 +563,7 @@ admin.editors.KindEditor = {
     }
 };
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -601,8 +605,7 @@ admin.editors.CodeMirror = {
             "<div class='clear'></div>" + 
             "<div class='markdown-preview-main none'></div>" +
             "<div class='markdown-help-main'>" + Label.markdownHelpLabel + "</div>"
-            "</div>" + 
-        "<div class='clear'></div>";
+            + "</div><div class='clear'></div>";
         } 
         $("#" + conf.id).after(previewHTML);
         
@@ -729,7 +732,7 @@ admin.editors.CodeMirror = {
         this[id].setValue(content);
     }
 };/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -843,7 +846,7 @@ $.extend(TablePaginate.prototype, {
     }
 });
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -862,7 +865,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.9, May 3, 2012
+ * @version 1.0.3.0, Jan 29, 2013
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -872,7 +875,7 @@ admin.article = {
         isArticle: undefined,
         articleHadBeenPublished: undefined
     },
-    
+    content: "",
     /* 
      * 获取文章并把值塞入发布文章页面 
      * @id 文章 id
@@ -902,9 +905,10 @@ admin.article = {
                 $("#title").val(result.article.articleTitle);
                 admin.article.status.articleHadBeenPublished =  result.article.articleHadBeenPublished;
                 
-                admin.editorArticle.setContent(result.article.articleContent);
-                admin.editorAbstract.setContent(result.article.articleAbstract);
-
+                admin.editors.articleEditor.setContent(result.article.articleContent);
+                admin.editors.abstractEditor.setContent(result.article.articleAbstract);
+                admin.article.content = admin.editors.articleEditor.getContent();
+                
                 var tags = result.article.articleTags,
                 tagsString = '';
                 for (var i = 0; i < tags.length; i++) {
@@ -983,8 +987,8 @@ admin.article = {
                 }
             });
 
-            var articleContent = admin.editorArticle.getContent(),
-            articleAbstract = admin.editorAbstract.getContent();
+            var articleContent = admin.editors.articleEditor.getContent(),
+            articleAbstract = admin.editors.abstractEditor.getContent();
             
             var requestJSONObject = {
                 "article": {
@@ -1053,8 +1057,8 @@ admin.article = {
                 }
             });
             
-            var articleContent = admin.editorArticle.getContent(),
-            articleAbstract = admin.editorAbstract.getContent();
+            var articleContent = admin.editors.articleEditor.getContent(),
+            articleAbstract = admin.editors.abstractEditor.getContent();
             
             var requestJSONObject = {
                 "article": {
@@ -1067,7 +1071,8 @@ admin.article = {
                     "articleIsPublished": articleIsPublished,
                     "articleSignId": signId,
                     "articleCommentable": $("#articleCommentable").prop("checked"),
-                    "articleViewPwd": $("#viewPwd").val()
+                    "articleViewPwd": $("#viewPwd").val(),
+                    "postToCommunity": $("#postToCommunity").prop("checked")
                 }
             };
             
@@ -1147,8 +1152,8 @@ admin.article = {
         
         $("#title").val("");
         
-        admin.editorArticle.setContent("");
-        admin.editorAbstract.setContent("");
+        admin.editors.articleEditor.setContent("");
+        admin.editors.abstractEditor.setContent("");
         
         // reset tag
         $("#tag").val("");
@@ -1164,6 +1169,8 @@ admin.article = {
                 this.className = "";
             }
         });
+        
+        $(".markdown-preview-main").html("");
     },
     
     /*
@@ -1256,14 +1263,14 @@ admin.article = {
         });
 
         // editor
-        admin.editorArticle = new Editor({
+        admin.editors.articleEditor = new Editor({
             id: "articleContent",
             kind: "all",
             fun: fun,
             height: 500
         });
         
-        admin.editorAbstract = new Editor({
+        admin.editors.abstractEditor = new Editor({
             id: "abstract",
             kind: "simple",
             height: 200
@@ -1274,7 +1281,7 @@ admin.article = {
      * 验证发布文章字段的合法性
      */
     validate: function () {
-        var articleContent = admin.editorArticle.getContent();
+        var articleContent = admin.editors.articleEditor.getContent();
         
         if ($("#title").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.titleEmptyLabel);
@@ -1341,12 +1348,12 @@ admin.article = {
      */
     prePost: function () {
         $("#loadMsg").text(Label.loadingLabel);
-        
-        if (!admin.editorArticle.getContent) {
+        admin.article.content = "";
+        if (!admin.editors.articleEditor.getContent) {
             return;
         }
         
-        var articleContent = admin.editorArticle.getContent();
+        var articleContent = admin.editors.articleEditor.getContent();
         
         if (window.location.hash === "#article/article" && 
             articleContent.replace(/\s/g, '') !== "") {
@@ -1388,7 +1395,7 @@ admin.register.article =  {
         $("#loadMsg").text("");
     }
 }/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1516,7 +1523,7 @@ admin.comment = {
     }
 };
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1535,7 +1542,7 @@ admin.comment = {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.2, May 4, 2012
+ * @version 1.0.1.3, Jan 30, 2013
  */
 
 /* article-list 相关操作 */
@@ -1652,6 +1659,7 @@ admin.articleList = {
                 }
                     
                 $it.html(tip);
+                $("#loadMsg").text("");
             }
         });
     }
@@ -1665,7 +1673,7 @@ admin.register["article-list"] =  {
     "init": admin.articleList.init,
     "refresh": admin.articleList.getList
 }/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1779,7 +1787,7 @@ admin.register["draft-list"] =  {
     "init": admin.draftList.init,
     "refresh": admin.draftList.getList
 };/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1798,7 +1806,7 @@ admin.register["draft-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Jun 20, 2012
+ * @version 1.0.2.2, Jun 29, 2013
  */
 
 /* page-list 相关操作 */
@@ -1856,7 +1864,7 @@ admin.pageList = {
             language = "zh-cn";
         }
         
-        admin.editorPage = new Editor({
+        admin.editors.pageEditor = new Editor({
             language: language,
             kind: "all",
             id: "pageContent"
@@ -1878,8 +1886,9 @@ admin.pageList = {
                 $("#pagePagePanel").slideDown();
                 
                 // 使用 CodeMirror 编辑器时，当编辑器初始之前，元素为 display:none 时，行号显示不正常
-                if (Label.editorType === "CodeMirror-Markdown" && admin.editorPage.getContent() === "") {
-                    admin.editorPage.setContent("");
+                if (Label.editorType === "CodeMirror-Markdown" 
+                    && admin.editors.pageEditor.getContent() === "") {
+                    admin.editors.pageEditor.setContent("");
                 }
             } else {
                 $("#pagePagePanel").slideUp();
@@ -1982,7 +1991,7 @@ admin.pageList = {
                 }
                 $("#pageCommentable").prop("checked", result.page.pageCommentable);
 
-                admin.editorPage.setContent(result.page.pageContent);
+                admin.editors.pageEditor.setContent(result.page.pageContent);
                 
                 $("#loadMsg").text("");
             }
@@ -2037,7 +2046,7 @@ admin.pageList = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             
-            var pageContent = admin.editorPage.getContent();
+            var pageContent = admin.editors.pageEditor.getContent();
             
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (admin.pageList.type === "link") {
@@ -2074,7 +2083,7 @@ admin.pageList = {
                     $("#pageTarget").val("_self");
                     $($(".fn-type").get(0)).click();
                     
-                    admin.editorPage.setContent("");
+                    admin.editors.pageEditor.setContent("");
                     
                     if (admin.pageList.pageInfo.currentCount === Label.PAGE_SIZE &&
                         admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
@@ -2101,7 +2110,7 @@ admin.pageList = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             
-            var pageContent = admin.editorPage.getContent();
+            var pageContent = admin.editors.pageEditor.getContent();
             
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (admin.pageList.type === "link") {
@@ -2142,7 +2151,7 @@ admin.pageList = {
                     $("#pageTarget").val("_self");
                     $($(".fn-type").get(0)).click();
 
-                    admin.editorPage.setContent("");
+                    admin.editors.pageEditor.setContent("");
                     
                     $("#loadMsg").text("");
                 }
@@ -2215,7 +2224,7 @@ admin.register["page-list"] =  {
     "refresh": admin.pageList.getList
 }
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2342,7 +2351,7 @@ admin.register.others =  {
     }
 }
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2691,7 +2700,7 @@ admin.register["link-list"] =  {
     "init": admin.linkList.init,
     "refresh": admin.linkList.getList
 }/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2960,7 +2969,7 @@ admin.register["preference"] =  {
     }
 }
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3017,6 +3026,12 @@ admin.pluginList = {
         }]);
     
         this.tablePagination.initPagination();
+        $("#pluginSetting").dialog({
+            width: 700,
+            height: 180,
+            "modal": true,
+            "hideFooter": true
+        });
         this.getList(page);
     },
 
@@ -3051,7 +3066,11 @@ admin.pluginList = {
                         datas[i].status = Label.disabledLabel;
                         datas[i].expendRow += Label.enableLabel;
                     }
-                    datas[i].expendRow += "</a>";
+                    datas[i].expendRow += "</a>  ";
+                    
+                    if(datas[i].setting!="{}"){
+                        datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
+                    }
                 }
                 
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
@@ -3060,8 +3079,32 @@ admin.pluginList = {
             }
         });
     },
+ 
+    toSetting:function(pluginId){
+        $("#loadMsg").text(Label.loadingLabel);
+                
+        var requestJSONObject = {
+            "oId": pluginId
+        };
+        
+        $.ajax({
+            url: latkeConfig.servePath + "/console/plugin/toSetting",
+            type: "POST",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+
+                $("#pluginSetting").html(result);
+                $("#pluginSetting").dialog("open");
+                
+                $("#loadMsg").text("");
+            }
+        });
+    },
     
     changeStatus: function (pluginId, status) {
+        $("#loadMsg").text(Label.loadingLabel);
         if (status === "ENABLED") {
             status = "DISABLED";
         } else {
@@ -3093,16 +3136,17 @@ admin.pluginList = {
 };
 
 /*
- * 注册到 admin 进行管理 
- */
+* 注册到 admin 进行管理 
+*/
 admin.register["plugin-list"] =  {
     "obj": admin.pluginList,
     "init": admin.pluginList.init,
     "refresh": function () {
         $("#loadMsg").text("");
     }
-}/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+}
+/*
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3422,7 +3466,7 @@ admin.register["user-list"] =  {
         $("#loadMsg").text("");
     }
 }/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3572,7 +3616,7 @@ admin.register["comment-list"] =  {
     "init": admin.commentList.init,
     "refresh": admin.commentList.getList
 }/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3623,7 +3667,7 @@ admin.plugin = {
             isCurrentPlugin = false;
             
             // 根据当前 hash 和插件 path 判别是非为当前插件
-             if (data.index && window.location.hash.indexOf(data.hash) > -1) {
+            if (data.index && window.location.hash.indexOf(data.hash) > -1) {
                 isCurrentPlugin = true;
             } else if(data.path.replace("/", "#") === window.location.hash ||
                 (window.location.hash === "#main" && data.path.indexOf("/main/panel") > -1)) {
@@ -3704,8 +3748,9 @@ admin.plugin = {
                 break;
         }
     }
-};/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+};
+/*
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3743,7 +3788,7 @@ admin.register.main =  {
     }
 }
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

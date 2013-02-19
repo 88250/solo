@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.api.symphony;
 
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -23,12 +24,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.mail.MailService;
-import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -61,11 +61,12 @@ import org.b3log.solo.util.TimeZones;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 19, 2012
+ * @version 1.0.0.5, Jan 18, 2013
  * @since 0.5.5
  */
 @RequestProcessor
@@ -75,38 +76,42 @@ public final class CommentReceiver {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentReceiver.class.getName());
+
     /**
      * Comment repository.
      */
     private static CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+
     /**
      * Article utilities.
      */
     private static Articles articleUtils = Articles.getInstance();
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+
     /**
      * Article repository.
      */
     private static ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+
     /**
      * Statistic utilities.
      */
     private static Statistics statistics = Statistics.getInstance();
+
     /**
      * Default user thumbnail.
      */
     private static final String DEFAULT_USER_THUMBNAIL = "default-user-thumbnail.png";
-    /**
-     * Mail service.
-     */
-    private static MailService mailService = MailServiceFactory.getMailService();
+
     /**
      * URL fetch service.
      */
     private static URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
     /**
      * Event manager.
      */
@@ -146,19 +151,23 @@ public final class CommentReceiver {
      */
     @RequestProcessing(value = "/apis/symphony/comment", method = HTTPRequestMethod.PUT)
     public void addComment(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+        throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
+
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
+
         renderer.setJSONObject(ret);
 
         final Transaction transaction = commentRepository.beginTransaction();
+
         try {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final JSONObject symphonyCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
             final JSONObject preference = preferenceQueryService.getPreference();
             final String keyOfSolo = preference.optString(Preference.KEY_OF_SOLO);
             final String key = symphonyCmt.optString("userB3Key");
+
             if (Strings.isEmptyOrNull(keyOfSolo) || !keyOfSolo.equals(key)) {
                 ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
                 ret.put(Keys.MSG, "Wrong key");
@@ -168,6 +177,7 @@ public final class CommentReceiver {
 
             final String articleId = symphonyCmt.getString("commentOnArticleId");
             final JSONObject article = articleRepository.get(articleId);
+
             if (null == article) {
                 ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
                 ret.put(Keys.MSG, "Not found the specified article[id=" + articleId + "]");
@@ -180,8 +190,9 @@ public final class CommentReceiver {
             final String commentURL = "http://" + symphonyCmt.optString("commentAuthorURL");
             final String commentId = symphonyCmt.optString(Keys.OBJECT_ID);
             String commentContent = symphonyCmt.getString(Comment.COMMENT_CONTENT);
-            commentContent += "<br/><p><i>该评论同步自 <a href='http://symphony.b3log.org/article/"
-                    + symphonyCmt.optString("commentSymphonyArticleId") + "#" + commentId + "'>B3log 社区</a></i></p>";
+
+            commentContent += "<br/><br/><p style='font-size: 12px;'><i>该评论同步自 <a href='http://symphony.b3log.org/article/"
+                + symphonyCmt.optString("commentSymphonyArticleId") + "#" + commentId + "' target='_blank'>B3log 社区</a></i></p>";
             final String originalCommentId = symphonyCmt.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
@@ -194,20 +205,22 @@ public final class CommentReceiver {
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
             final Date date = TimeZones.getTime(timeZoneId);
+
             comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, Comment.DATE_FORMAT.format(date));
+            ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd hh:mm:ss"));
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
                 if (null != originalComment) {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);
                     final String originalCommentName = originalComment.getString(Comment.COMMENT_NAME);
+
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                     ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                 } else {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
                     LOGGER.log(Level.WARNING, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
-                            new String[]{originalCommentId, commentName, commentContent});
+                        new String[] {originalCommentId, commentName, commentContent});
                 }
             } else {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
@@ -221,6 +234,7 @@ public final class CommentReceiver {
             comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
 
             final String commentSharpURL = getCommentSharpURLForArticle(article, commentId);
+
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
             commentRepository.add(comment);
@@ -237,6 +251,7 @@ public final class CommentReceiver {
             }
             // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
+
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);
             eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY, eventData));
@@ -254,6 +269,7 @@ public final class CommentReceiver {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
+
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -268,8 +284,8 @@ public final class CommentReceiver {
      * @throws JSONException json exception
      */
     private static String getCommentSharpURLForArticle(final JSONObject article,
-            final String commentId)
-            throws JSONException {
+        final String commentId)
+        throws JSONException {
         final String articleLink = article.getString(Article.ARTICLE_PERMALINK);
 
         return articleLink + "#" + commentId;
@@ -282,7 +298,7 @@ public final class CommentReceiver {
      * @throws Exception exception
      */
     private static void setCommentThumbnailURL(final JSONObject comment)
-            throws Exception {
+        throws Exception {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String id = commentEmail.split("@")[0];
         final String domain = commentEmail.split("@")[1];
@@ -291,11 +307,13 @@ public final class CommentReceiver {
         // Try to set thumbnail URL using Gravatar service
         final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
         final int size = 60;
-        final URL gravatarURL =
-                new URL("http://secure.gravatar.com/avatar/" + hashedEmail + "?s="
-                + size + "&d=" + Latkes.getServePath() + "/images/default-user-thumbnail.png");
+        final URL gravatarURL = new URL(
+            "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=" + size + "&d=" + Latkes.getServePath()
+            + "/images/default-user-thumbnail.png");
+
         try {
             final HTTPRequest request = new HTTPRequest();
+
             request.setURL(gravatarURL);
             final HTTPResponse response = urlFetchService.fetch(request);
             final int statusCode = response.getResponseCode();
@@ -303,6 +321,7 @@ public final class CommentReceiver {
             if (HttpServletResponse.SC_OK == statusCode) {
                 final List<HTTPHeader> headers = response.getHeaders();
                 boolean defaultFileLengthMatched = false;
+
                 for (final HTTPHeader httpHeader : headers) {
                     if ("Content-Length".equalsIgnoreCase(httpHeader.getName())) {
                         if (httpHeader.getValue().equals("2147")) {
@@ -312,30 +331,24 @@ public final class CommentReceiver {
                 }
 
                 if (!defaultFileLengthMatched) {
-                    thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s="
-                            + size + "&d=" + Latkes.getServePath() + "/images/default-user-thumbnail.png";
+                    thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=" + size + "&d=" + Latkes.getServePath()
+                        + "/images/default-user-thumbnail.png";
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]",
-                            thumbnailURL);
+                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]", thumbnailURL);
 
                     return;
                 }
             } else {
-                LOGGER.log(Level.WARNING,
-                        "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
-                        new Object[]{commentEmail, statusCode});
+                LOGGER.log(Level.WARNING, "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
+                    new Object[] {commentEmail, statusCode});
             }
         } catch (final IOException e) {
             LOGGER.warning(e.getMessage());
-            LOGGER.log(Level.WARNING,
-                    "Can not fetch thumbnail from Gravatar[commentEmail={0}]",
-                    commentEmail);
+            LOGGER.log(Level.WARNING, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
         }
 
         if (null == thumbnailURL) {
-            LOGGER.log(Level.WARNING,
-                    "Not supported yet for comment thumbnail for email[{0}]",
-                    commentEmail);
+            LOGGER.log(Level.WARNING, "Not supported yet for comment thumbnail for email[{0}]", commentEmail);
             thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
         }
