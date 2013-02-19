@@ -38,6 +38,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
@@ -53,7 +54,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.1.1.6, Feb 4, 2013
+ * @version 1.1.1.7, Feb 19, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -186,7 +187,8 @@ public final class UpgradeProcessor {
                 final Connection connection = Connections.getConnection();
                 final Statement statement = connection.createStatement();
 
-                final String tableName = Latkes.getLocalProperty("jdbc.tablePrefix") + '_' + Plugin.PLUGIN;
+                final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix");
+                final String tableName = Strings.isEmptyOrNull(tablePrefix) ? Plugin.PLUGIN : tablePrefix + '_' + Plugin.PLUGIN;
 
                 statement.execute("ALTER TABLE " + tableName + " ADD setting text");
 
