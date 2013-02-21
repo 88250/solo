@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.0.0.7, Apr 29, 2012",
+    "version": "1.0.0.8, Feb 22, 2013",
     "authors": ["Liang Ding"],
     "since": "0.4.0",
     
@@ -102,12 +102,14 @@
         {
             "name": "commentOriginalCommentId",
             "type": "String",
-            "length": 255
+            "length": 255,
+            "nullable": true
         },
         {
             "name": "commentOriginalCommentName",
             "type": "String",
-            "length": 50
+            "length": 50,
+            "nullable": true
         }
         ]
     },
