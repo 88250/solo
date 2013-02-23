@@ -865,7 +865,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.0, Jan 29, 2013
+ * @version 1.0.3.1, Feb 23, 2013
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -945,9 +945,10 @@ admin.article = {
      * 删除文章
      * @id 文章 id
      * @fromId 文章来自草稿夹(draft)/文件夹(article)
+     * @title 文章标题
      */
-    del: function (id, fromId) {
-        var isDelete = confirm(Label.confirmRemoveLabel);
+    del: function (id, fromId, title) {
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + title + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
@@ -1414,7 +1415,7 @@ admin.register.article =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, May 3, 2012
+ * @version 1.0.0.8, Feb 23, 2013
  */
 
 admin.comment = { 
@@ -1493,9 +1494,10 @@ admin.comment = {
      * 删除评论
      * @id 评论 id
      * @fromId 该评论来自文章/草稿/自定义页面
+     * @articleId 该评论对应的实体 id，可能是文章，也可能是自定义页面
      */
     del: function (id, fromId, articleId) {
-        var isDelete = confirm(Label.confirmRemoveLabel);
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.commentLabel + "?");
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             var from = "article";
@@ -1542,7 +1544,7 @@ admin.comment = {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Jan 30, 2013
+ * @version 1.0.1.4, Feb 23, 2013
  */
 
 /* article-list 相关操作 */
@@ -1617,7 +1619,7 @@ admin.articleList = {
                     var topClass = articles[i].articlePutTop ? Label.cancelPutTopLabel : Label.putTopLabel;
                     articleData[i].expendRow = "<a target='_blank' href='" + latkeConfig.servePath + articles[i].articlePermalink + "'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', true)\">" + Label.updateLabel + "</a>  \
-                                <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'article')\">" + Label.removeLabel + "</a>  \
+                                <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'article', '" + articles[i].articleTitle + "')\">" + Label.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.articleList.popTop(this, '" + articles[i].oId + "')\">" + topClass + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + articles[i].oId + "', 'article')\">" + Label.commentLabel + "</a>";
                 }
@@ -1692,7 +1694,7 @@ admin.register["article-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, May 4, 2012
+ * @version 1.0.1.4, Feb 23, 2013
  */
 
 /* draft-list 相关操作 */
@@ -1765,9 +1767,8 @@ admin.draftList = {
                     articleData[i].title = "<a class='no-underline' href='" + latkeConfig.servePath +
                     articles[i].articlePermalink + "' target='_blank'>" + 
                     articles[i].articleTitle + "</a><span class='table-tag'>" + articles[i].articleTags + "</span>";
-                    articleData[i].expendRow = "<a target='_blank' href='" + latkeConfig.servePath + articles[i].articlePermalink + "'>" + Label.viewLabel + "</a>  \
-                                <a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', false);\">" + Label.updateLabel + "</a>  \
-                                <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'draft')\">" + Label.removeLabel + "</a>  \
+                    articleData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', false);\">" + Label.updateLabel + "</a>  \
+                                <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'draft', '" + articles[i].articleTitle + "')\">" + Label.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + articles[i].oId + "', 'draft')\">" + Label.commentLabel + "</a>";
                 }
                     
@@ -1806,7 +1807,7 @@ admin.register["draft-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Jun 29, 2013
+ * @version 1.0.2.3, Feb 23, 2013
  */
 
 /* page-list 相关操作 */
@@ -1949,7 +1950,7 @@ admin.pageList = {
                     pageData[i].comments = pages[i].pageCommentCount;
                     pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.get('" + pages[i].oId + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "')\">" + Label.removeLabel + "</a>\
+                                <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "', '" + pages[i].pageTitle + "')\">" + Label.removeLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + pages[i].oId + "', 'page')\">" + Label.commentLabel + "</a></span>";
                 }
                         
@@ -2001,9 +2002,10 @@ admin.pageList = {
     /* 
      * 删除自定义页面
      * @id 自定义页面 id
+     * @title 自定义页面标题
      */
-    del: function (id) {
-        var isDelete = confirm(Label.confirmRemoveLabel);
+    del: function (id, title) {
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.navLabel + '"' + title + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
@@ -2370,7 +2372,7 @@ admin.register.others =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, May 18, 2012
+ * @version 1.0.1.4, Feb 23, 2013
  */
 
 /* link-list 相关操作 */
@@ -2475,7 +2477,7 @@ admin.linkList = {
                     linkData[i].linkDescription = links[i].linkDescription;
                     linkData[i].expendRow = "<span><a href='" + links[i].linkAddress + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.get('" + links[i].oId + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.linkList.del('" + links[i].oId + "')\">" + Label.removeLabel + "</a></span>";
+                                <a href='javascript:void(0)' onclick=\"admin.linkList.del('" + links[i].oId + "', '" + links[i].linkTitle + "')\">" + Label.removeLabel + "</a></span>";
                 }
 
                 that.tablePagination.updateTablePagination(linkData, pageNum, result.pagination);
@@ -2602,9 +2604,10 @@ admin.linkList = {
     /*
      * 删除链接
      * @id 链接 id
+     * @title 链接标题
      */
-    del: function (id) {
-        var isDelete = confirm(Label.confirmRemoveLabel);
+    del: function (id, title) {
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.permalinkLabel + '"' + title + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
@@ -3165,7 +3168,7 @@ admin.register["plugin-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Aug 30, 2012
+ * @version 1.0.1.4, Feb 23, 2013
  */
 
 /* user-list 相关操作 */
@@ -3255,7 +3258,7 @@ admin.userList = {
                     } else {
                         userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" + 
                         users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "')\">" + Label.removeLabel + "</a>";
+                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a>";
                         userData[i].isAdmin = Label.commonUserLabel;
                     }
                             
@@ -3392,9 +3395,10 @@ admin.userList = {
     /*
      * 删除用户
      * @id 用户 id
+     * @userName 用户名称
      */
-    del: function (id) {
-        var isDelete = confirm(Label.confirmRemoveLabel);
+    del: function (id, userName) {
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.userLabel + '"' + userName + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
@@ -3485,7 +3489,7 @@ admin.register["user-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, May 4, 2012
+ * @version 1.0.1.5, Feb 23, 2013
  */
 
 /* comment-list 相关操作 */
@@ -3585,7 +3589,7 @@ admin.commentList = {
      * @type 评论类型：文章/自定义页面
      */
     del: function (id, type) {
-        if (confirm(Label.confirmRemoveLabel)) {
+        if (confirm(Label.confirmRemoveLabel + Label.commentLabel + "?")) {
             $("#loadMsg").text(Label.loadingLabel);
             
             $.ajax({

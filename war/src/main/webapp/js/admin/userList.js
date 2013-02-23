@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Aug 30, 2012
+ * @version 1.0.1.4, Feb 23, 2013
  */
 
 /* user-list 相关操作 */
@@ -108,7 +108,7 @@ admin.userList = {
                     } else {
                         userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" + 
                         users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "')\">" + Label.removeLabel + "</a>";
+                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a>";
                         userData[i].isAdmin = Label.commonUserLabel;
                     }
                             
@@ -245,9 +245,10 @@ admin.userList = {
     /*
      * 删除用户
      * @id 用户 id
+     * @userName 用户名称
      */
-    del: function (id) {
-        var isDelete = confirm(Label.confirmRemoveLabel);
+    del: function (id, userName) {
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.userLabel + '"' + userName + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");

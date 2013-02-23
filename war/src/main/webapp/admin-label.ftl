@@ -110,7 +110,9 @@
         "randomArticlesDisplayCntLabel": "${randomArticlesDisplayCntLabel}",
         "relevantArticlesDisplayCntLabel": "${relevantArticlesDisplayCntLabel}",
         "externalRelevantArticlesDisplayCntLabel": "${externalRelevantArticlesDisplayCntLabel}",
-        "nameTooLongLabel": "${nameTooLongLabel}"
+        "nameTooLongLabel": "${nameTooLongLabel}",
+        "navLabel": "${navLabel}",
+        "userLabel": "${userLabel}"
     };    
     
     admin.init();

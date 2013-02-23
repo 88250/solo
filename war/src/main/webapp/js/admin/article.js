@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.0, Jan 29, 2013
+ * @version 1.0.3.1, Feb 23, 2013
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -98,9 +98,10 @@ admin.article = {
      * 删除文章
      * @id 文章 id
      * @fromId 文章来自草稿夹(draft)/文件夹(article)
+     * @title 文章标题
      */
-    del: function (id, fromId) {
-        var isDelete = confirm(Label.confirmRemoveLabel);
+    del: function (id, fromId, title) {
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + title + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
