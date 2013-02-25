@@ -34,6 +34,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
+import org.b3log.solo.event.cache.RemoveCacheListener;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.7.7, Feb 4, 2013
+ * @version 1.0.8.7, Feb 25, 2013
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -235,15 +236,20 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final EventManager eventManager = EventManager.getInstance();
 
+            // Comment
             eventManager.registerListener(new ArticleCommentReplyNotifier());
             eventManager.registerListener(new PageCommentReplyNotifier());
+            // Article
             eventManager.registerListener(new AddArticleGoogleBlogSearchPinger());
             eventManager.registerListener(new UpdateArticleGoogleBlogSearchPinger());
+            // Plugin
             eventManager.registerListener(new PluginRefresher());
             eventManager.registerListener(new ViewLoadEventHandler());
             // Sync
             eventManager.registerListener(new ArticleSender());
             eventManager.registerListener(new CommentSender());
+            // Cache
+            eventManager.registerListener(new RemoveCacheListener());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
             throw new IllegalStateException(e);
