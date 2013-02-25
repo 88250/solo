@@ -34,6 +34,8 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
@@ -72,6 +74,11 @@ public final class LoginProcessor {
     private static UserQueryService userQueryService = UserQueryService.getInstance();
 
     /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
+
+    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
@@ -92,14 +99,24 @@ public final class LoginProcessor {
      * @param context the specified context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = { "/login"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/login", method = HTTPRequestMethod.GET)
     public void showLogin(final HTTPRequestContext context) throws Exception {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
 
         if (Strings.isEmptyOrNull(destinationURL)) {
-            destinationURL = "/";
+            destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
+        }
+
+        final HttpServletResponse response = context.getResponse();
+
+        LoginProcessor.tryLogInWithCookie(request, response);
+
+        if (null != userService.getCurrentUser(request)) { // User has already logged in
+            response.sendRedirect(destinationURL);
+
+            return;
         }
 
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
