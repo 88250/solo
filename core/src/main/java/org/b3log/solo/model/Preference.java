@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.7, Sep 10, 2012
+ * @version 1.1.0.8, Mar 5, 2013
  * @since 0.3.1
  */
 public final class Preference {
@@ -205,6 +205,11 @@ public final class Preference {
      * </p>
      */
     public static final String FEED_OUTPUT_MODE = "feedOutputMode";
+
+    /**
+     * Key of feed (Atom/RSS) output entry count.
+     */
+    public static final String FEED_OUTPUT_CNT = "feedOutputCnt";
 
     /**
      * Key of editor type.
@@ -391,6 +396,11 @@ public final class Preference {
         public static final String DEFAULT_FEED_OUTPUT_MODE = "abstract";
 
         /**
+         * Default feed output entry count.
+         */
+        public static final int DEFAULT_FEED_OUTPUT_CNT = 10;
+
+        /**
          * Default editor type.
          */
         public static final String DEFAULT_EDITOR_TYPE = "tinyMCE";
@@ -422,7 +432,7 @@ public final class Preference {
                     "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"
                     + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
                 DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
-                
+
                 if (RuntimeEnv.BAE == Latkes.getRuntimeEnv()) {
                     DEFAULT_PAGE_CACHE_ENABLED = false; // https://github.com/b3log/b3log-solo/issues/73
                 } else {

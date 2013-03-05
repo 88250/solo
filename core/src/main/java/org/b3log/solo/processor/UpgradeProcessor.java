@@ -58,6 +58,8 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @RequestProcessor
+// TODO: 060
+// 1. Add column Preference.feedOutputCnt
 public final class UpgradeProcessor {
 
     /**

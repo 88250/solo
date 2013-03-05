@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.0.0.8, Feb 22, 2013",
+    "version": "1.0.0.9, Mar 5, 2013",
     "authors": ["Liang Ding"],
     "since": "0.4.0",
     
@@ -261,6 +261,11 @@
             "name": "feedOutputMode",
             "type": "String",
             "length": 20,
+            "nullable": true
+        },
+        {
+            "name": "feedOutputCnt",
+            "type": "int",
             "nullable": true
         },
         {
