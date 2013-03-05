@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending comment to B3log Symphony.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 20, 2012
+ * @version 1.0.0.3, Mar 5, 2013
  * @since 0.5.5
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -107,7 +107,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final HTTPRequest httpRequest = new HTTPRequest();
 
             httpRequest.setURL(ADD_COMMENT_URL);
-            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
+            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject comment = new JSONObject();
 

@@ -135,7 +135,7 @@ public final class ArticleReceiver {
                 article.put(Article.ARTICLE_ABSTRACT, plainTextContent);
             }
             article.put(Article.ARTICLE_IS_PUBLISHED, true);
-            article.put(Common.POST_TO_COMMUNITY, false);
+            article.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
             article.put(Article.ARTICLE_COMMENTABLE, true);
             article.put(Article.ARTICLE_VIEW_PWD, "");
             String content = article.getString(Article.ARTICLE_CONTENT);

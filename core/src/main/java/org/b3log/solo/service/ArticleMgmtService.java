@@ -713,9 +713,11 @@ public final class ArticleMgmtService {
     /**
      * Processes tags for article update.
      *
-     * <ul> <li>Un-tags old article, decrements tag reference count</li>
-     * <li>Removes old article-tag relations</li> <li>Saves new article-tag
-     * relations with tag reference count</li> </ul>
+     * <ul> 
+     *   <li>Un-tags old article, decrements tag reference count</li>
+     *   <li>Removes old article-tag relations</li> 
+     *   <li>Saves new article-tag relations with tag reference count</li>
+     * </ul>
      *
      * @param oldArticle the specified old article
      * @param newArticle the specified new article
