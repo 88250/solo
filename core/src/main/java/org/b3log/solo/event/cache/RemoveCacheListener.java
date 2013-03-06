@@ -55,7 +55,7 @@ public final class RemoveCacheListener extends AbstractEventListener<Void> {
             new Object[] {event.getType(), RemoveCacheListener.class.getName()});
 
         try {
-            statisticMgmtService.flushStatistic(false);
+            statisticMgmtService.flushStatistic();
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Flushes statistic to repository failed", e);
         }

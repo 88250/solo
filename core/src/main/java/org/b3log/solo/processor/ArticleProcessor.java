@@ -57,6 +57,7 @@ import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Users;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
@@ -123,11 +124,6 @@ public final class ArticleProcessor {
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
-
-    /**
-     * Default update count for article random value.
-     */
-    private static final int DEFAULT_UPDATE_CNT = 10;
 
     /**
      * Shows the article view password form.
@@ -476,7 +472,7 @@ public final class ArticleProcessor {
             }
 
             Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-            
+
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
 
@@ -547,7 +543,7 @@ public final class ArticleProcessor {
             }
 
             Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-        
+
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
 
@@ -596,10 +592,10 @@ public final class ArticleProcessor {
 
             if (null == authorRet) {
                 context.getResponse().sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return;
             }
-            
+
             final JSONObject author = authorRet.getJSONObject(User.USER);
             final String authorEmail = author.optString(User.USER_EMAIL);
 
@@ -676,7 +672,7 @@ public final class ArticleProcessor {
 
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return;
             }
 
@@ -687,10 +683,10 @@ public final class ArticleProcessor {
 
             if (null == result) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return;
             }
-            
+
             final JSONObject author = result.getJSONObject(User.USER);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
@@ -953,6 +949,11 @@ public final class ArticleProcessor {
             filler.fillSide(request, dataModel, preference);
             Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                 dataModel);
+
+            if (!Requests.hasBeenServed(request, response)) {
+                ArticleMgmtService.getInstance().incViewCount(articleId);
+                Statistics.getInstance().incBlogViewCount(request, response);
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

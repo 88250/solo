@@ -605,6 +605,46 @@ public final class ArticleMgmtService {
     }
 
     /**
+     * Increments the view count of the article specified by the given article id.
+     * 
+     * @param articleId the given article id
+     * @throws ServiceException service exception
+     */
+    public void incViewCount(final String articleId) throws ServiceException {
+        JSONObject article;
+
+        try {
+            article = articleRepository.get(articleId);
+
+            if (null == article) {
+                return;
+            }
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.SEVERE, "Gets article [id=" + articleId + "] failed", e);
+
+            return;
+        }
+
+        final Transaction transaction = articleRepository.beginTransaction();
+
+        try {
+            article.put(Article.ARTICLE_VIEW_COUNT, article.getInt(Article.ARTICLE_VIEW_COUNT) + 1);
+
+            articleRepository.update(articleId, article);
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.WARNING, "Updates article view count failed");
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Decrements reference count of every tag of an article specified by the
      * given article id.
      *
@@ -724,7 +764,6 @@ public final class ArticleMgmtService {
      * @throws Exception exception
      */
     private void processTagsForArticleUpdate(final JSONObject oldArticle, final JSONObject newArticle) throws Exception {
-        // TODO: public -> private
         final String oldArticleId = oldArticle.getString(Keys.OBJECT_ID);
         final List<JSONObject> oldTags = tagRepository.getByArticleId(oldArticleId);
         final String tagsString = newArticle.getString(Article.ARTICLE_TAGS_REF);
@@ -827,10 +866,11 @@ public final class ArticleMgmtService {
     }
 
     /**
-     * Removes tag-article relations by the specified article id and tag ids of
-     * the relations to be removed.
+     * Removes tag-article relations by the specified article id and tag ids of the relations to be removed.
      *
-     * <p> Removes all relations if not specified the tag ids. </p>
+     * <p>
+     * Removes all relations if not specified the tag ids.
+     * </p>
      *
      * @param articleId the specified article id
      * @param tagIds the specified tag ids of the relations to be removed

@@ -78,10 +78,9 @@ public final class StatisticMgmtService {
     /**
      * Flushes the statistic to repository.
      * 
-     * @param transactional whether execution with transaction
      * @throws ServiceException 
      */
-    public void flushStatistic(final boolean transactional) throws ServiceException {
+    public void flushStatistic() throws ServiceException {
         final JSONObject statistic = (JSONObject) statisticRepository.getCache().get(
             Statistics.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC);
 
@@ -91,14 +90,12 @@ public final class StatisticMgmtService {
             return;
         }
 
-        Transaction transaction = null;
+        final Transaction transaction = statisticRepository.beginTransaction();
 
-        if (transactional) {
-            transaction = statisticRepository.beginTransaction();
+        transaction.clearQueryCache(false);
 
-            transaction.clearQueryCache(false);
-        }
         try {
+            statisticRepository.getCache().remove(Statistics.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC);
             // For blog view counter
             statisticRepository.update(Statistic.STATISTIC, statistic);
 
@@ -155,13 +152,11 @@ public final class StatisticMgmtService {
                     new Object[] {articleId, article.optString(Article.ARTICLE_TITLE), oldViewCount, viewCount});
             }
 
-            if (transactional) {
-                transaction.commit();
-            }
-            
+            transaction.commit();
+
             LOGGER.log(Level.INFO, "Synchronized statistic from cache to repository[statistic={0}]", statistic);
         } catch (final RepositoryException e) {
-            if (transactional && transaction.isActive()) {
+            if (transaction.isActive()) {
                 transaction.rollback();
             }
 

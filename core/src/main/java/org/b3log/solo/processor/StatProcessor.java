@@ -40,7 +40,7 @@ import org.b3log.solo.util.Statistics;
  * <p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.8, Feb 25, 2013
+ * @version 1.0.1.9, Mar 6, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -80,7 +80,7 @@ public final class StatProcessor {
         context.setRenderer(new DoNothingRenderer());
 
         try {
-            statisticMgmtService.flushStatistic(true);
+            statisticMgmtService.flushStatistic();
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Flushes statistic to repository failed", e);
         }
