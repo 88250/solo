@@ -22,12 +22,13 @@ package org.b3log.solo.util;
 import java.util.Random;
 
 /**
- * Generate a random string, <p> whose length is also random between 8 and 16.
+ * Generate random stuff, <p> currently only support random alpha and digital
+ * string, whose length is also random between 8 and 16.
  *
- * @author <a href="mailto:echowdx@gmail.com">Dongxu Wang</a>
- * @version 1.0.0.0, Mar 11, 2013
+ * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
+ * @version 1.0.0.1, Mar 11, 2013
  */
-public class RandomString {
+public class Randoms {
 
     /**
      * String's length should be positive.
@@ -62,7 +63,7 @@ public class RandomString {
     /**
      * Generate a random string with a random length [8, 16].
      */
-    public RandomString() {
+    public Randoms() {
         this(RANDOM_LEN);
     }
 
@@ -71,7 +72,7 @@ public class RandomString {
      *
      * @param length string's length
      */
-    public RandomString(final int length) {
+    public Randoms(final int length) {
         if (length < LEN_LIM) {
             throw new IllegalArgumentException("length < 1: " + length);
         }
@@ -81,7 +82,8 @@ public class RandomString {
     }
 
     /**
-     * Generate next random string.
+     * Generate next random string, whose length is also random between 8 and
+     * 16.
      *
      * @return next random string
      */

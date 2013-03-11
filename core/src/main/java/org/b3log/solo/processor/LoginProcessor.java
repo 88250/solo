@@ -29,6 +29,7 @@ import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -49,7 +50,8 @@ import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.RandomString;
+import org.b3log.solo.util.Randoms;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -59,7 +61,8 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.1.1.3, Jan 18, 2013
+ * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
+ * @version 1.1.1.4, Mar 11, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -123,27 +126,7 @@ public final class LoginProcessor {
 
             return;
         }
-
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-
-        renderer.setTemplateName("login.ftl");
-        context.setRenderer(renderer);
-
-        final Map<String, Object> dataModel = renderer.getDataModel();
-        final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-        final JSONObject preference = preferenceQueryService.getPreference();
-
-        dataModel.putAll(langs);
-        dataModel.put(Common.GOTO, destinationURL);
-        dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        dataModel.put(Common.VERSION, SoloServletListener.VERSION);
-        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-        dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
-        dataModel.put(Preference.BLOG_HOST, preference.getString(Preference.BLOG_HOST));
-
-        Keys.fillServer(dataModel);
-        Keys.fillRuntime(dataModel);
-        filler.fillMinified(dataModel);
+        renderPage(context, "login.ftl", destinationURL);
     }
 
     /**
@@ -233,7 +216,7 @@ public final class LoginProcessor {
     }
 
     /**
-     * Shows forgot password page.
+     * Shows forgotten password page.
      *
      * @param context the specified context
      * @throws Exception exception
@@ -250,38 +233,11 @@ public final class LoginProcessor {
 
         final HttpServletResponse response = context.getResponse();
 
-//        LoginProcessor.tryLogInWithCookie(request, response);
-//
-//        if (null != userService.getCurrentUser(request)) { // User has already logged in
-//            response.sendRedirect(destinationURL);
-//
-//            return;
-//        }
-
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-
-        renderer.setTemplateName("reset-pwd.ftl");
-        context.setRenderer(renderer);
-
-        final Map<String, Object> dataModel = renderer.getDataModel();
-        final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-        final JSONObject preference = preferenceQueryService.getPreference();
-
-        dataModel.putAll(langs);
-        dataModel.put(Common.GOTO, destinationURL);
-        dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        dataModel.put(Common.VERSION, SoloServletListener.VERSION);
-        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-        dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
-        dataModel.put(Preference.BLOG_HOST, preference.getString(Preference.BLOG_HOST));
-
-        Keys.fillServer(dataModel);
-        Keys.fillRuntime(dataModel);
-        filler.fillMinified(dataModel);
+        renderPage(context, "reset-pwd.ftl", destinationURL);
     }
 
     /**
-     * Logins.
+     * reset forgotten password.
      *
      * <p> Renders the response with a json object, for example,
      * <pre>
@@ -305,13 +261,14 @@ public final class LoginProcessor {
         renderer.setJSONObject(jsonObject);
 
         try {
-
+            jsonObject.put("succeed", false);
             jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
 
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 
             if (Strings.isEmptyOrNull(userEmail)) {
+                LOGGER.log(Level.WARNING, "Why user's email is empty");
                 return;
             }
 
@@ -325,33 +282,13 @@ public final class LoginProcessor {
                 return;
             }
 
-            final JSONObject preference = preferenceQueryService.getPreference();
-            final String randomPwd = new RandomString().nextString(); // TODO random string generator
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
-            final String mailSubject = langPropsService.get("resetPwdMailSubject");
-            final String mailBody = langPropsService.get("resetPwdMailBody") + randomPwd;
-            user.put(User.USER_PASSWORD, MD5.hash(randomPwd));
-            
-            userMgmtService.updateUser(user);
+            if (isPwdExpired()) {
+                LOGGER.log(Level.WARNING, "User[email={0}]'s random password has been expired", userEmail);
+                jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
+                return;
+            }
 
-            final MailService.Message message = new MailService.Message();
-
-            message.setFrom(adminEmail);
-            message.addRecipient(userEmail);
-
-            message.setSubject(mailSubject);
-
-            message.setHtmlBody(mailBody);
-
-            mailService.send(message);
-
-            jsonObject.put("succeed", true);
-            jsonObject.put("to", Latkes.getServePath() + "/login");
-            jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
-
-            LOGGER.log(Level.FINER, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
-                    new Object[]{mailSubject, mailBody, userEmail});
+            sendRandomPwd(user, userEmail, jsonObject);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
         }
@@ -410,5 +347,83 @@ public final class LoginProcessor {
 
             response.addCookie(cookie);
         }
+    }
+
+    /**
+     * Whether user is going to update an expired password out of 24 hours.
+     *
+     * @return whether the password has been expired TODO implement it
+     */
+    private boolean isPwdExpired() {
+        return false;
+    }
+
+    /**
+     * Send the random password to the given address and update the ever one.
+     *
+     * @param user the user relative to the given email below
+     * @param userEmail the given email
+     * @param jsonObject return code and message object
+     * @throws JSONException the JSONException
+     * @throws ServiceException the ServiceException
+     * @throws IOException the IOException
+     */
+    private void sendRandomPwd(final JSONObject user, final String userEmail, final JSONObject jsonObject) throws JSONException, ServiceException, IOException {
+        final JSONObject preference = preferenceQueryService.getPreference();
+        final String randomPwd = new Randoms().nextString();
+        final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+        final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
+        final String mailSubject = langPropsService.get("resetPwdMailSubject");
+        final String mailBody = langPropsService.get("resetPwdMailBody") + randomPwd;
+        final MailService.Message message = new MailService.Message();
+        //FIXME whether we should put the ever-hashed password here, rather during updating?
+        user.put(User.USER_PASSWORD, randomPwd);
+        userMgmtService.updateUser(user);
+
+        message.setFrom(adminEmail);
+        message.addRecipient(userEmail);
+        message.setSubject(mailSubject);
+        message.setHtmlBody(mailBody);
+
+        mailService.send(message);
+
+        jsonObject.put("succeed", true);
+        jsonObject.put("to", Latkes.getServePath() + "/login");
+        jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
+
+        LOGGER.log(Level.FINER, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
+                new Object[]{mailSubject, mailBody, userEmail});
+    }
+
+    /**
+     * Render a page template with the destination URL.
+     *
+     * @param context the context
+     * @param pageTemplate the page template
+     * @param destinationURL the destination URL
+     * @throws JSONException the JSONException
+     * @throws ServiceException the ServiceException
+     */
+    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL) throws JSONException, ServiceException {
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+
+        renderer.setTemplateName(pageTemplate);
+        context.setRenderer(renderer);
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+        final JSONObject preference = preferenceQueryService.getPreference();
+
+        dataModel.putAll(langs);
+        dataModel.put(Common.GOTO, destinationURL);
+        dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+        dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
+        dataModel.put(Preference.BLOG_HOST, preference.getString(Preference.BLOG_HOST));
+
+        Keys.fillServer(dataModel);
+        Keys.fillRuntime(dataModel);
+        filler.fillMinified(dataModel);
     }
 }

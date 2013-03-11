@@ -106,10 +106,10 @@
                         // alert("reset password error!");
                     },
                     success: function(data, textStatus){
+                        $("#tip").text(data.msg);
                         if (data.succeed) {
-                            $("#tip").text(data.msg);
+                            setTimeout(function() { window.location.href = data.to; }, 3000);
                         }
-                        setTimeout(function() { window.location.href = data.to; }, 3000);
                     }
                 });
             };

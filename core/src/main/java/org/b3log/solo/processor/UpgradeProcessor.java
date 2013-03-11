@@ -53,8 +53,8 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.1.1.7, Feb 19, 2013
+ * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
+ * @version 1.1.1.8, Mar 11, 2013
  * @since 0.3.1
  */
 @RequestProcessor

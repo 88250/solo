@@ -48,8 +48,8 @@ import org.json.JSONObject;
  * Top bar utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.0.4, May 4, 2012
+ * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
+ * @version 1.0.0.5, May 11, 2013
  * @since 0.3.5
  */
 public final class TopBars {
