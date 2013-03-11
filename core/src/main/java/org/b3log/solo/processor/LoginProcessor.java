@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
@@ -26,6 +25,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.mail.MailService;
+import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -46,9 +47,10 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.RandomString;
 import org.json.JSONObject;
-
 
 /**
  * Login/logout processor.
@@ -67,27 +69,30 @@ public final class LoginProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
-
     /**
      * User query service.
      */
     private static UserQueryService userQueryService = UserQueryService.getInstance();
-
     /**
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
-
+    /**
+     * Mail service.
+     */
+    private MailService mailService = MailServiceFactory.getMailService();
+    /**
+     * User management service.
+     */
+    private UserMgmtService userMgmtService = UserMgmtService.getInstance();
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
-
     /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
-
     /**
      * Preference query service.
      */
@@ -97,7 +102,7 @@ public final class LoginProcessor {
      * Shows login page.
      *
      * @param context the specified context
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/login", method = HTTPRequestMethod.GET)
     public void showLogin(final HTTPRequestContext context) throws Exception {
@@ -144,19 +149,17 @@ public final class LoginProcessor {
     /**
      * Logins.
      *
-     * <p>
-     * Renders the response with a json object, for example,
+     * <p> Renders the response with a json object, for example,
      * <pre>
      * {
      *     "isLoggedIn": boolean,
      *     "msg": "" // optional, exists if isLoggedIn equals to false
      * }
-     * </pre>
-     * </p>
+     * </pre> </p>
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/login"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.POST)
     public void login(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
@@ -214,7 +217,7 @@ public final class LoginProcessor {
      * @param context the specified context
      * @throws IOException io exception
      */
-    @RequestProcessing(value = { "/logout"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/logout"}, method = HTTPRequestMethod.GET)
     public void logout(final HTTPRequestContext context) throws IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
@@ -227,6 +230,131 @@ public final class LoginProcessor {
         }
 
         context.getResponse().sendRedirect(destinationURL);
+    }
+
+    /**
+     * Shows forgot password page.
+     *
+     * @param context the specified context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/forgot", method = HTTPRequestMethod.GET)
+    public void showForgot(final HTTPRequestContext context) throws Exception {
+        final HttpServletRequest request = context.getRequest();
+
+        String destinationURL = request.getParameter(Common.GOTO);
+
+        if (Strings.isEmptyOrNull(destinationURL)) {
+            destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
+        }
+
+        final HttpServletResponse response = context.getResponse();
+
+//        LoginProcessor.tryLogInWithCookie(request, response);
+//
+//        if (null != userService.getCurrentUser(request)) { // User has already logged in
+//            response.sendRedirect(destinationURL);
+//
+//            return;
+//        }
+
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+
+        renderer.setTemplateName("reset-pwd.ftl");
+        context.setRenderer(renderer);
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+        final JSONObject preference = preferenceQueryService.getPreference();
+
+        dataModel.putAll(langs);
+        dataModel.put(Common.GOTO, destinationURL);
+        dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+        dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
+        dataModel.put(Preference.BLOG_HOST, preference.getString(Preference.BLOG_HOST));
+
+        Keys.fillServer(dataModel);
+        Keys.fillRuntime(dataModel);
+        filler.fillMinified(dataModel);
+    }
+
+    /**
+     * Logins.
+     *
+     * <p> Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "isLoggedIn": boolean,
+     *     "msg": "" // optional, exists if isLoggedIn equals to false
+     * }
+     * </pre> </p>
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/forgot"}, method = HTTPRequestMethod.POST)
+    public void forgot(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+
+        final JSONRenderer renderer = new JSONRenderer();
+
+        context.setRenderer(renderer);
+        final JSONObject jsonObject = new JSONObject();
+
+        renderer.setJSONObject(jsonObject);
+
+        try {
+
+            jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
+
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
+
+            if (Strings.isEmptyOrNull(userEmail)) {
+                return;
+            }
+
+            LOGGER.log(Level.INFO, "Login[email={0}]", userEmail);
+
+            final JSONObject user = userQueryService.getUserByEmail(userEmail);
+
+            if (null == user) {
+                LOGGER.log(Level.WARNING, "Not found user[email={0}]", userEmail);
+                jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
+                return;
+            }
+
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final String randomPwd = new RandomString().nextString(); // TODO random string generator
+            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+            final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
+            final String mailSubject = langPropsService.get("resetPwdMailSubject");
+            final String mailBody = langPropsService.get("resetPwdMailBody") + randomPwd;
+            user.put(User.USER_PASSWORD, MD5.hash(randomPwd));
+            
+            userMgmtService.updateUser(user);
+
+            final MailService.Message message = new MailService.Message();
+
+            message.setFrom(adminEmail);
+            message.addRecipient(userEmail);
+
+            message.setSubject(mailSubject);
+
+            message.setHtmlBody(mailBody);
+
+            mailService.send(message);
+
+            jsonObject.put("succeed", true);
+            jsonObject.put("to", Latkes.getServePath() + "/login");
+            jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
+
+            LOGGER.log(Level.FINER, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
+                    new Object[]{mailSubject, mailBody, userEmail});
+        } catch (final Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+        }
     }
 
     /**

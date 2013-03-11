@@ -59,7 +59,7 @@ public final class Permalinks {
         "/", "/article", "/tags.html", "/tags", "/page", "/blog-articles-feed.do", "/tag-articles-feed.do", "/blog-articles-rss.do",
         "/tag-articles-rss.do", "/get-random-articles.do", "/article-random-double-gen.do", "/captcha.do", "/kill-browser.html",
         "/add-article-comment.do", "/add-article-from-symphony-comment.do", "/add-page-comment.do", "/get-article-content", "/sitemap.xml",
-        "/login", "/logout", "/get-article-content", "/admin-index.do", "/admin-article.do", "/admin-article-list.do", "/admin-link-list.do",
+        "/login", "/logout", "/forgot", "/get-article-content", "/admin-index.do", "/admin-article.do", "/admin-article-list.do", "/admin-link-list.do",
         "/admin-preference.do", "/admin-file-list.do", "/admin-page-list.do", "/admin-others.do", "/admin-draft-list.do",
         "/admin-user-list.do", "/admin-plugin-list.do", "/admin-main.do", "/admin-about.do", "/admin-label", "/admin-about.do",
         "/rm-all-data.do", "/init", "/clear-cache.do",
