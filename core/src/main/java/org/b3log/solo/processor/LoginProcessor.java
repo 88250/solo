@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
@@ -54,6 +55,7 @@ import org.b3log.solo.util.Randoms;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+
 /**
  * Login/logout processor.
  *
@@ -72,30 +74,37 @@ public final class LoginProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
+
     /**
      * User query service.
      */
     private static UserQueryService userQueryService = UserQueryService.getInstance();
+
     /**
      * User service.
      */
     private UserService userService = UserServiceFactory.getUserService();
+
     /**
      * Mail service.
      */
     private MailService mailService = MailServiceFactory.getMailService();
+
     /**
      * User management service.
      */
     private UserMgmtService userMgmtService = UserMgmtService.getInstance();
+
     /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
+
     /**
      * Filler.
      */
     private Filler filler = Filler.getInstance();
+
     /**
      * Preference query service.
      */
@@ -142,7 +151,7 @@ public final class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = { "/login"}, method = HTTPRequestMethod.POST)
     public void login(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
@@ -200,7 +209,7 @@ public final class LoginProcessor {
      * @param context the specified context
      * @throws IOException io exception
      */
-    @RequestProcessing(value = {"/logout"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = { "/logout"}, method = HTTPRequestMethod.GET)
     public void logout(final HTTPRequestContext context) throws IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
@@ -249,7 +258,7 @@ public final class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/forgot"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = { "/forgot"}, method = HTTPRequestMethod.POST)
     public void forgot(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
@@ -376,7 +385,8 @@ public final class LoginProcessor {
         final String mailSubject = langPropsService.get("resetPwdMailSubject");
         final String mailBody = langPropsService.get("resetPwdMailBody") + randomPwd;
         final MailService.Message message = new MailService.Message();
-        //FIXME whether we should put the ever-hashed password here, rather during updating?
+
+        // FIXME whether we should put the ever-hashed password here, rather during updating?
         user.put(User.USER_PASSWORD, randomPwd);
         userMgmtService.updateUser(user);
 
@@ -391,8 +401,7 @@ public final class LoginProcessor {
         jsonObject.put("to", Latkes.getServePath() + "/login");
         jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
 
-        LOGGER.log(Level.FINER, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
-                new Object[]{mailSubject, mailBody, userEmail});
+        LOGGER.log(Level.FINER, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[] {mailSubject, mailBody, userEmail});
     }
 
     /**

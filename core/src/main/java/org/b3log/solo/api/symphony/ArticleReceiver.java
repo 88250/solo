@@ -33,6 +33,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.ArticleMgmtService;
+import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
@@ -44,7 +45,7 @@ import org.jsoup.Jsoup;
  * Article receiver (from B3log Symphony).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Jan 4, 2013
+ * @version 1.0.0.5, Mar 18, 2013
  * @since 0.5.5
  */
 @RequestProcessor
@@ -64,6 +65,11 @@ public final class ArticleReceiver {
      * Article management service.
      */
     private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+
+    /**
+     * Article query service.
+     */
+    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
 
     /**
      * Article abstract length.
@@ -101,7 +107,7 @@ public final class ArticleReceiver {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/apis/symphony/article", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/apis/symphony/article", method = HTTPRequestMethod.POST)
     public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
@@ -142,7 +148,7 @@ public final class ArticleReceiver {
             final String articleId = article.getString(Keys.OBJECT_ID);
 
             content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://symphony.b3log.org/article/" + articleId
-                + "' target='_blank>B3log 社区</a></i></p>";
+                + "' target='_blank'>B3log 社区</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
             articleMgmtService.addArticle(requestJSONObject);
@@ -152,6 +158,100 @@ public final class ArticleReceiver {
             ret.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(ret);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, e.getMessage());
+        }
+    }
+
+    /**
+     * Updates an article with the specified request.
+     *
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "article": {
+     *         "oId": "", // Symphony Article#clientArticleId
+     *         "articleTitle": "",
+     *         "articleContent": "",
+     *         "articleTags": "tag1,tag2,tag3",
+     *         "userB3Key": "",
+     *         "articleEditorType": ""
+     *     }
+     * }
+     * </pre>
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/apis/symphony/article", method = HTTPRequestMethod.PUT)
+    public void updateArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+        throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+
+        renderer.setJSONObject(ret);
+
+        try {
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
+            final String userB3Key = article.optString("userB3Key");
+            final JSONObject preference = preferenceQueryService.getPreference();
+
+            if (!userB3Key.equals(preference.optString(Preference.KEY_OF_SOLO))) {
+                LOGGER.log(Level.WARNING, "B3 key not match, ignored update article");
+
+                return;
+            }
+            article.remove("userB3Key");
+
+            final String articleId = article.getString(Keys.OBJECT_ID);
+
+            if (null == articleQueryService.getArticleById(articleId)) {
+                ret.put(Keys.MSG, "No found article[oId=" + articleId + "] to update");
+                ret.put(Keys.STATUS_CODE, false);
+
+                return;
+            }
+
+            final String plainTextContent = Jsoup.parse(article.optString(Article.ARTICLE_CONTENT)).text();
+
+            if (plainTextContent.length() > ARTICLE_ABSTRACT_LENGTH) {
+                article.put(Article.ARTICLE_ABSTRACT, plainTextContent.substring(0, ARTICLE_ABSTRACT_LENGTH) + "....");
+            } else {
+                article.put(Article.ARTICLE_ABSTRACT, plainTextContent);
+            }
+            article.put(Article.ARTICLE_IS_PUBLISHED, true);
+            article.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
+            article.put(Article.ARTICLE_COMMENTABLE, true);
+            article.put(Article.ARTICLE_VIEW_PWD, "");
+            String content = article.getString(Article.ARTICLE_CONTENT);
+
+            content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://symphony.b3log.org/article/" + articleId
+                + "' target='_blank'>B3log 社区</a></i></p>";
+            article.put(Article.ARTICLE_CONTENT, content);
+
+            articleMgmtService.updateArticle(requestJSONObject);
+
+            ret.put(Keys.MSG, "update article succ");
+            ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

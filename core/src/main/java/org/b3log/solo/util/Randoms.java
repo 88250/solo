@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package org.b3log.solo.util;
 
+
 import java.util.Random;
+
 
 /**
  * Generate random stuff, <p> currently only support random alpha and digital
@@ -34,27 +33,32 @@ public class Randoms {
      * String's length should be positive.
      */
     private static final int LEN_LIM = 1;
+
     /**
      * String's length maximum limit.
      */
     private static final int MAX_LEN = 16;
+
     /**
      * String's length minimum limit.
      */
     private static final int MIN_LEN = 8;
+
     /**
      * String's random length.
      */
-    private static final int RANDOM_LEN = new Random()
-            .nextInt(MAX_LEN - MIN_LEN + LEN_LIM) + MIN_LEN;
+    private static final int RANDOM_LEN = new Random().nextInt(MAX_LEN - MIN_LEN + LEN_LIM) + MIN_LEN;
+
     /**
      * Characters set table, can be extended.
      */
     private final char[] table;
+
     /**
      * String's random seed.
      */
     private final Random random = new Random();
+
     /**
      * String's random characters buffer.
      */
@@ -76,8 +80,7 @@ public class Randoms {
         if (length < LEN_LIM) {
             throw new IllegalArgumentException("length < 1: " + length);
         }
-        table = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                .toCharArray();
+        table = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
         buf = new char[length];
     }
 
