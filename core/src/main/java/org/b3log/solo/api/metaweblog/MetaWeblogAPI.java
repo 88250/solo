@@ -73,7 +73,7 @@ import org.jsoup.Jsoup;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Jan 30, 2013
+ * @version 1.0.0.10, Mar 19, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -291,7 +291,6 @@ public final class MetaWeblogAPI {
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
-            responseContent = "";
             final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<fault><value><struct>").append("<member><name>faultCode</name><value><int>500</int></value></member>").append("<member><name>faultString</name><value><string>").append(e.getMessage()).append(
                 "</string></value></member></struct></value></fault></methodResponse>");
 
@@ -370,8 +369,9 @@ public final class MetaWeblogAPI {
                     date = (Date) DateFormatUtils.ISO_DATETIME_FORMAT.parseObject(dateString);
                 } catch (final ParseException e) {
                     LOGGER.log(Level.WARNING,
-                        "Parses article create date failed with ISO8601, retry to parse with pattern[yyyy-MM-dd'T'HH:mm:ss]");
-                    date = DateUtils.parseDate(dateString, new String[] {"yyyyMMdd'T'HH:mm:ss"});
+                        "Parses article create date failed with ISO8601, retry to parse with "
+                        + "pattern[yyyy-MM-dd'T'HH:mm:ss, yyyyMMdd'T'HH:mm:ss'Z']");
+                    date = DateUtils.parseDate(dateString, new String[] {"yyyyMMdd'T'HH:mm:ss", "yyyyMMdd'T'HH:mm:ss'Z'"});
                 }
                 ret.put(Article.ARTICLE_CREATE_DATE, date);
             } else if ("title".equals(name)) {
