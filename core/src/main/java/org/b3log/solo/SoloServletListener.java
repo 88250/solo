@@ -41,6 +41,7 @@ import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.event.rhythm.ArticleSender;
+import org.b3log.solo.event.rhythm.ArticleUpdater;
 import org.b3log.solo.event.symphony.CommentSender;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
@@ -56,7 +57,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.8.7, Feb 25, 2013
+ * @version 1.0.9.7, Mar 19, 2013
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -247,6 +248,7 @@ public final class SoloServletListener extends AbstractServletListener {
             eventManager.registerListener(new ViewLoadEventHandler());
             // Sync
             eventManager.registerListener(new ArticleSender());
+            eventManager.registerListener(new ArticleUpdater());
             eventManager.registerListener(new CommentSender());
             // Cache
             eventManager.registerListener(new RemoveCacheListener());

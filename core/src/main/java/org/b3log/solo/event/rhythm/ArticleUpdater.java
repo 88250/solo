@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.event.rhythm;
 
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -39,25 +38,23 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
-
 /**
- * This listener is responsible for sending article to B3log Rhythm.
+ * This listener is responsible for updating article to B3log Rhythm.
  * 
  * <p>
- * The B3log Rhythm article update interface: http://rhythm.b3log.org/article (POST).
+ * The B3log Rhythm article update interface: http://rhythm.b3log.org/article (PUT).
  * </p>
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @author ArmstrongCN
- * @version 1.0.2.5, Mar 19, 2013
- * @since 0.3.1
+ * @version 1.0.0.0, Mar 19, 2013
+ * @since 0.6.0
  */
-public final class ArticleSender extends AbstractEventListener<JSONObject> {
+public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleSender.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleUpdater.class.getName());
 
     /**
      * URL fetch service.
@@ -70,20 +67,15 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     /**
-     * B3log Rhythm address.
+     * URL of updating article to Rhythm.
      */
-    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
-
-    /**
-     * URL of adding article to Rhythm.
-     */
-    private static final URL ADD_ARTICLE_URL;
+    private static final URL UPDATE_ARTICLE_URL;
 
     static {
         try {
-            ADD_ARTICLE_URL = new URL(B3LOG_RHYTHM_ADDRESS + "/article");
+            UPDATE_ARTICLE_URL = new URL(ArticleSender.B3LOG_RHYTHM_ADDRESS + "/article");
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm add article] error!");
+            LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm update article] error!");
             throw new IllegalStateException(e);
         }
     }
@@ -93,7 +85,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
         final JSONObject data = event.getData();
 
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-            new Object[] {event.getType(), data, ArticleSender.class.getName()});
+                new Object[]{event.getType(), data, ArticleUpdater.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
@@ -115,13 +107,13 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
             if (blogHost.contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-                    new Object[] {originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
+                        new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
                 return;
             }
 
             final HTTPRequest httpRequest = new HTTPRequest();
 
-            httpRequest.setURL(ADD_ARTICLE_URL);
+            httpRequest.setURL(UPDATE_ARTICLE_URL);
             httpRequest.setRequestMethod(HTTPRequestMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject();
@@ -158,12 +150,12 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     * Gets the event type {@linkplain EventTypes#UPDATE_ARTICLE}.
      * 
      * @return event type
      */
     @Override
     public String getEventType() {
-        return EventTypes.ADD_ARTICLE;
+        return EventTypes.UPDATE_ARTICLE;
     }
 }
