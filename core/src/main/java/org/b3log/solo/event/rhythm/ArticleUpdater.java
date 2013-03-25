@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.event.rhythm;
 
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -37,6 +38,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
+
 
 /**
  * This listener is responsible for updating article to B3log Rhythm.
@@ -85,7 +87,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
         final JSONObject data = event.getData();
 
         LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleUpdater.class.getName()});
+            new Object[] {event.getType(), data, ArticleUpdater.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
@@ -107,7 +109,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
             if (blogHost.contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-                        new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
+                    new Object[] {originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
                 return;
             }
 
