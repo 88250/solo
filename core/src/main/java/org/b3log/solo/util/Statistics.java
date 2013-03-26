@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
@@ -42,7 +43,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.2, Mar 6, 2013
+ * @version 1.0.2.3, Mar 26, 2013
  * @since 0.3.1
  */
 public final class Statistics {
@@ -264,7 +265,19 @@ public final class Statistics {
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
 
         if (!Latkes.isDataCacheEnabled()) {
-            statisticRepository.update(Statistic.STATISTIC, statistic);
+            final Transaction transaction = statisticRepository.beginTransaction();
+
+            try {
+                statisticRepository.update(Statistic.STATISTIC, statistic);
+                
+                transaction.commit();
+            } catch (final RepositoryException e) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+                
+                LOGGER.log(Level.SEVERE, "Updates blog view count failed", e);
+            }
         } else {
             // Repository cache prefix, Refers to GAERepository#CACHE_KEY_PREFIX 
             statisticRepository.getCache().putAsync(REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC, statistic);

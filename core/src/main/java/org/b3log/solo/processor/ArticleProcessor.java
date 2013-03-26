@@ -57,7 +57,6 @@ import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Users;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
@@ -69,7 +68,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.9, Feb 5, 2013
+ * @version 1.1.2.10, Mar 26, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -952,7 +951,6 @@ public final class ArticleProcessor {
 
             if (!Requests.hasBeenServed(request, response)) {
                 ArticleMgmtService.getInstance().incViewCount(articleId);
-                Statistics.getInstance().incBlogViewCount(request, response);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);

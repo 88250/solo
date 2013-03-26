@@ -180,6 +180,12 @@ public final class PreferenceMgmtService {
                 }
             }
 
+            final String maxPageCntStr = Latkes.getLocalProperty("cache.maxPageCnt");
+
+            if (Integer.valueOf(maxPageCntStr) <= 0) {
+                preference.put(PAGE_CACHE_ENABLED, false);
+            }
+
             final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
 
             Templates.enableCache(pageCacheEnabled);
