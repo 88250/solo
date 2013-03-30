@@ -36,7 +36,8 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 4, 2013
+ * @author <a href="mailto:385321165@qq.com">DASHU</a>
+ * @version 1.0.0.4, Mar 30, 2013
  * @since 0.4.0
  */
 public final class UserMgmtService {
@@ -101,6 +102,42 @@ public final class UserMgmtService {
             // Unchanges the default role
 
             userRepository.update(oldUserId, oldUser);
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * change user role by the specified userid.
+     *
+     * @param userId the specified userid
+     * @throws ServiceException exception
+     */
+    public void changeRole(final String userId) throws ServiceException {
+        final Transaction transaction = userRepository.beginTransaction();
+
+        try {
+            final JSONObject oldUser = userRepository.get(userId);
+
+            if (null == oldUser) {
+                throw new ServiceException(langPropsService.get("updateFailLabel"));
+            }
+
+            final String role = oldUser.optString(User.USER_ROLE);
+
+            if (Role.VISITOR_ROLE.equals(role)) {
+                oldUser.put(User.USER_ROLE, Role.DEFAULT_ROLE);
+            } else if (Role.DEFAULT_ROLE.equals(role)) {
+                oldUser.put(User.USER_ROLE, Role.VISITOR_ROLE);
+            }
+
+            userRepository.update(userId, oldUser);
             transaction.commit();
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {

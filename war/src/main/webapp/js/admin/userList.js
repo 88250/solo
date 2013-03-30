@@ -105,11 +105,18 @@ admin.userList = {
                         userData[i].isAdmin = "&nbsp;" + Label.administratorLabel;
                         userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" + 
                         users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>";
-                    } else {
+                    } else if ("defaultRole" === users[i].userRole) {
                         userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" + 
                         users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a>";
+                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a>" +
+                            "<a href='javascript:void(0)' onclick=\"admin.userList.changeRole('" + users[i].oId + "')\">" + "ChangeRole" + "</a>";
                         userData[i].isAdmin = Label.commonUserLabel;
+                    } else {
+                        userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" +
+                            users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
+                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a>" +
+                                "<a href='javascript:void(0)' onclick=\"admin.userList.changeRole('" + users[i].oId + "')\">" + "ChangeRole" + "</a>";
+                        userData[i].isAdmin = Label.visitorUserLabel;
                     }
                             
                 }
@@ -280,6 +287,39 @@ admin.userList = {
                 }
             });
         }
+    },
+
+    /**
+     * 修改角色
+     * @param id
+     */
+    changeRole : function(id){
+        $.ajax({
+            url: latkeConfig.servePath + "/console/changeRole/" + id,
+            type: "GET",
+            cache: false,
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+                if (!result.sc) {
+                    $("#loadMsg").text("");
+                    return;
+                }
+
+                var pageNum = admin.userList.pageInfo.currentPage;
+                if (admin.userList.pageInfo.currentCount === 1 && admin.userList.pageInfo.pageCount !== 1 &&
+                    admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
+                    admin.userList.pageInfo.pageCount--;
+                    pageNum = admin.userList.pageInfo.pageCount;
+                }
+                var hashList = window.location.hash.split("/");
+                if (pageNum !== parseInt(hashList[hashList.length - 1])) {
+                    admin.setHashByPage(pageNum);
+                }
+                admin.userList.getList(pageNum);
+
+                $("#loadMsg").text("");
+            }
+        });
     },
     
     /*

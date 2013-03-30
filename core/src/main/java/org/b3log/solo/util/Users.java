@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
@@ -44,7 +45,8 @@ import org.json.JSONObject;
  * User utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, Feb 7, 2012
+ * @author <a href="mailto:385321165@qq.com">DASHU</a>
+ * @version 1.0.1.4, Mar 30, 2013
  * @since 0.3.1
  */
 public final class Users {
@@ -214,11 +216,29 @@ public final class Users {
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.getJSONObject(i);
 
+            if (isVisitor(user)) {
+                return false;
+            }
+
             if (user.getString(User.USER_EMAIL).equalsIgnoreCase(email)) {
                 return true;
             }
         }
 
+        return false;
+    }
+
+    /**
+     * Check the user is visitor or not.
+     *
+     * @param user the specified user
+     * @return {@code true} if is visitor, {@code false} otherwise
+     * @throws JSONException json exception
+     */
+    private boolean isVisitor(final JSONObject user) throws JSONException {
+        if (user.getString(User.USER_ROLE).equals(Role.VISITOR_ROLE)) {
+            return true;
+        }
         return false;
     }
 

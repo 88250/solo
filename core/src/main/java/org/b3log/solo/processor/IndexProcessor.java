@@ -55,7 +55,8 @@ import org.json.JSONObject;
  * Index processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.0, Oct 11, 2012
+ * @author <a href="mailto:385321165@qq.com">DASHU</a>
+ * @version 1.1.1.1, Mar 30, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -177,6 +178,45 @@ public final class IndexProcessor {
             request.setAttribute(PageCaches.CACHED_TITLE, "Kill Browser Page");
             request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.KILL_BROWSER.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, request.getRequestURI());
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            try {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } catch (final IOException ex) {
+                LOGGER.severe(ex.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Show register page.
+     *
+     * @param context the specified context
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     */
+    @RequestProcessing(value = "/register.html", method = HTTPRequestMethod.GET)
+    public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+
+        context.setRenderer(renderer);
+
+        renderer.setTemplateName("register.ftl");
+
+        final Map<String, Object> dataModel = renderer.getDataModel();
+
+        try {
+            final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+
+            dataModel.putAll(langs);
+
+            final JSONObject preference = preferenceQueryService.getPreference();
+
+            filler.fillBlogFooter(dataModel, preference);
+            filler.fillMinified(dataModel);
+            Keys.fillServer(dataModel);
+
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 
