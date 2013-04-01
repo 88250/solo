@@ -50,7 +50,7 @@ import static org.b3log.solo.model.Preference.*;
  * Preference management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, May 16, 2012
+ * @version 1.0.0.6, Apr 1, 2013
  * @since 0.4.0
  */
 public final class PreferenceMgmtService {
@@ -180,7 +180,7 @@ public final class PreferenceMgmtService {
                 }
             }
 
-            final String maxPageCntStr = Latkes.getLocalProperty("cache.maxPageCnt");
+            final String maxPageCntStr = Latkes.getMaxPageCacheCnt();
 
             if (Integer.valueOf(maxPageCntStr) <= 0) {
                 preference.put(PAGE_CACHE_ENABLED, false);
