@@ -186,11 +186,6 @@ button:active {
     margin: 6px 0 6px 16px;
 }
 
-
-.mian tr {
-    height: 54px;
-}
-
 .footerWrapper {
     background-color: #FFFFFF;
     border-top: 1px solid #E6E5D9;
@@ -271,7 +266,8 @@ button:active {
     width: 470px;
 }
 
-#init input {
+#init input,
+.register input {
     margin: 5px 0;
     padding: 5px 8px;
 }
