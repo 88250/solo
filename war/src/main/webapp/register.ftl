@@ -24,7 +24,7 @@
                         </a>
                     </div>
                     <div class="main register">
-                        <h2>${registerSoloUser}</h2>
+                        <h2>${registerSoloUserLabel}</h2>
                         <div class="form">
                             <label for="userEmail">
                                 ${commentEmail1Label}

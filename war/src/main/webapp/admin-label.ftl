@@ -112,7 +112,9 @@
         "externalRelevantArticlesDisplayCntLabel": "${externalRelevantArticlesDisplayCntLabel}",
         "nameTooLongLabel": "${nameTooLongLabel}",
         "navLabel": "${navLabel}",
-        "userLabel": "${userLabel}"
+        "userLabel": "${userLabel}",
+        "changeRoleLabel": "${changeRoleLabel}",
+        "visitorUserLabel": "${visitorUserLabel}"
     };    
     
     admin.init();

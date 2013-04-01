@@ -39,7 +39,9 @@ body {
 }
 
 h2 {  
-    background: linear-gradient(#F9F9F9, #ECECEC) repeat scroll 0 0 transparent;
+	background-color:#ECECEC;
+    background-image:linear-gradient(#F9F9F9, #ECECEC);
+    background-repeat:repeat-x;
     border-radius: 4px 4px 0 0;
     font-size: 16px;
     margin: 0;
@@ -106,10 +108,9 @@ button:active {
     color:#fff;
     text-decoration:none;
     text-shadow:0 -1px 0 rgba(0,0,0,0.25);
-    background-color:#3072b3;
+    background-color: #3072b3;
     background-image:linear-gradient(#599bcd,#3072b3);
     background-repeat:repeat-x;
-    border-color:#2a65a0;
 }
 
 .clear {
@@ -227,11 +228,11 @@ button:active {
 }
 
 .a-403 {
-    margin: 20px 75px 0 0 ;
+    margin: 10px 75px 0 0 ;
 }
 
 .img-500 {
-    margin: 25px 0 0 25px;
+    margin: 20px 0 0 25px;
 }
 
 .a-500 {
