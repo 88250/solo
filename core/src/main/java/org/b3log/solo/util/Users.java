@@ -46,7 +46,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.0.1.4, Mar 30, 2013
+ * @version 1.0.1.5, Apr 1, 2013
  * @since 0.3.1
  */
 public final class Users {
@@ -206,6 +206,10 @@ public final class Users {
 
     /**
      * Determines whether the specified email exits in the specified users.
+     * 
+     * <p>
+     * If the email is a visitor's, returns {@code false}.
+     * </p>
      *
      * @param email the specified email
      * @param users the specified user
