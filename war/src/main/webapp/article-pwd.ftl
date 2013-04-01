@@ -5,8 +5,9 @@
         <title>${articleViewPwdLabel}</title>
         <meta name="keywords" content="GAE 博客,GAE blog,b3log" />
         <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客" />
+        <meta name="owner" content="B3log Team" />
         <meta name="author" content="B3log Team" />
-        <meta name="generator" content="B3log" />
+        <meta name="generator" content="B3log Solo" />
         <meta name="copyright" content="B3log" />
         <meta name="revised" content="B3log, ${year}" />
         <meta name="robots" content="noindex, follow" />
