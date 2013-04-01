@@ -114,10 +114,11 @@ public final class UserMgmtService {
     }
 
     /**
-     * change user role by the specified userid.
+     * Swithches the user role between "defaultRole" and "visitorRole"  by the specified user id.
      *
-     * @param userId the specified userid
+     * @param userId the specified user id
      * @throws ServiceException exception
+     * @see User
      */
     public void changeRole(final String userId) throws ServiceException {
         final Transaction transaction = userRepository.beginTransaction();
