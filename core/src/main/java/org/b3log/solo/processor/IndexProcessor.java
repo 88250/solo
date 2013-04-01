@@ -56,7 +56,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.1.1.1, Mar 30, 2013
+ * @version 1.1.1.2, Apr 1, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -196,7 +196,7 @@ public final class IndexProcessor {
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      */
-    @RequestProcessing(value = "/register.html", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
     public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
 
