@@ -32,11 +32,11 @@
                             <label for="userEmail">
                                 ${commentEmailLabel}
                             </label>
-                            <input id="userEmail" />
+                            <input id="userEmail" tabindex="1" />
                             <label for="userPassword">
                                 ${userPasswordLabel} <a href="/forgot">(${forgotLabel})</a>
                             </label>
-                            <input type="password" id="userPassword" />
+                            <input type="password" id="userPassword" tabindex="2" />
                             <button onclick='login();'>${loginLabel}</button>
                             <span id="tip"></span>
                         </div>
