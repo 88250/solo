@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Apr 1, 2013
+ * @version 1.0.1.6, Apr 2, 2013
  */
 
 /* user-list 相关操作 */
@@ -49,7 +49,7 @@ admin.userList = {
                 minWidth: 180
             }, {
                 style: "padding-left: 12px;",
-                text: Label.administratorLabel,
+                text: Label.roleLabel,
                 index: "isAdmin",
                 width: 120
             }]);
@@ -59,7 +59,7 @@ admin.userList = {
 
         $("#userUpdate").dialog({
             width: 700,
-            height: 190,
+            height: 230,
             "modal": true,
             "hideFooter": true
         });

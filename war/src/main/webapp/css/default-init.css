@@ -18,7 +18,7 @@
 * 403, 404, 500, article-pwd, init, login and kill-browser page style.
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.1.3, Apr 1, 2013
+* @version 1.0.1.4, Apr 2, 2013
 */
 html {
     height: 100%;
@@ -271,6 +271,10 @@ button:active {
 .register input {
     margin: 5px 0;
     padding: 5px 8px;
+}
+
+.register {
+    height: 400px;
 }
 
 #sys p {

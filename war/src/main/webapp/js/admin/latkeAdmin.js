@@ -3171,7 +3171,7 @@ admin.register["plugin-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Apr 1, 2013
+ * @version 1.0.1.6, Apr 2, 2013
  */
 
 /* user-list 相关操作 */
@@ -3202,7 +3202,7 @@ admin.userList = {
                 minWidth: 180
             }, {
                 style: "padding-left: 12px;",
-                text: Label.administratorLabel,
+                text: Label.roleLabel,
                 index: "isAdmin",
                 width: 120
             }]);
@@ -3212,7 +3212,7 @@ admin.userList = {
 
         $("#userUpdate").dialog({
             width: 700,
-            height: 190,
+            height: 230,
             "modal": true,
             "hideFooter": true
         });
@@ -3287,6 +3287,7 @@ admin.userList = {
             var requestJSONObject = {
                 "userName": $("#userName").val(),
                 "userEmail": $("#userEmail").val(),
+                "userURL": $("#userURL").val(),
                 "userPassword": $("#userPassword").val()
             };
 
@@ -3304,6 +3305,7 @@ admin.userList = {
 
                     $("#userName").val("");
                     $("#userEmail").val("");
+                    $("#userURL").val("");
                     $("#userPassword").val("");
                     if (admin.userList.pageInfo.currentCount === Label.PAGE_SIZE &&
                             admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
@@ -3351,6 +3353,8 @@ admin.userList = {
                 } else {
                     $userEmailUpdate.removeAttr("disabled");
                 }
+                
+                $("#userURLUpdate").val(result.user.userURL);
                 $("#userPasswordUpdate").val(result.user.userPassword);
 
                 $("#loadMsg").text("");
@@ -3370,6 +3374,7 @@ admin.userList = {
                 "userName": $("#userNameUpdate").val(),
                 "oId": userInfo.oId,
                 "userEmail": $("#userEmailUpdate").val(),
+                "userURL": $("#userURLUpdate").val(),
                 "userRole": userInfo.userRole,
                 "userPassword": $("#userPasswordUpdate").val()
             };

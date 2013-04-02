@@ -54,6 +54,7 @@
         "versionLabel": "${versionLabel}",
         "commentNameLabel": "${commentNameLabel}",
         "commentEmailLabel": "${commentEmailLabel}",
+        "roleLabel": "${roleLabel}", 
         "administratorLabel": "${administratorLabel}",
         "duplicatedEmailLabel": "${duplicatedEmailLabel}",
         "mailInvalidLabel": "${mailInvalidLabel}",
