@@ -134,6 +134,7 @@ admin.userList = {
             var requestJSONObject = {
                 "userName": $("#userName").val(),
                 "userEmail": $("#userEmail").val(),
+                "userURL": $("#userURL").val(),
                 "userPassword": $("#userPassword").val()
             };
 
@@ -151,6 +152,7 @@ admin.userList = {
 
                     $("#userName").val("");
                     $("#userEmail").val("");
+                    $("#userURL").val("");
                     $("#userPassword").val("");
                     if (admin.userList.pageInfo.currentCount === Label.PAGE_SIZE &&
                             admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
@@ -198,6 +200,8 @@ admin.userList = {
                 } else {
                     $userEmailUpdate.removeAttr("disabled");
                 }
+                
+                $("#userURLUpdate").val(result.user.userURL);
                 $("#userPasswordUpdate").val(result.user.userPassword);
 
                 $("#loadMsg").text("");
@@ -217,6 +221,7 @@ admin.userList = {
                 "userName": $("#userNameUpdate").val(),
                 "oId": userInfo.oId,
                 "userEmail": $("#userEmailUpdate").val(),
+                "userURL": $("#userURLUpdate").val(),
                 "userRole": userInfo.userRole,
                 "userPassword": $("#userPasswordUpdate").val()
             };

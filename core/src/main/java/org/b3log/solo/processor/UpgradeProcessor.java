@@ -60,6 +60,7 @@ import org.json.JSONObject;
 @RequestProcessor
 // TODO: 060
 // 1. Add column Preference.feedOutputCnt
+// 2. Add column User.userURL
 public final class UpgradeProcessor {
 
     /**

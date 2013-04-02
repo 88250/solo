@@ -437,6 +437,7 @@ public final class InitService {
 
         admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
         admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
+        admin.put(User.USER_URL, Latkes.getServePath());
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
         admin.put(User.USER_PASSWORD, MD5.hash(requestJSONObject.getString(User.USER_PASSWORD)));
         admin.put(UserExt.USER_ARTICLE_COUNT, 0);

@@ -44,7 +44,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.0.0.3, Mar 30, 2013
+ * @version 1.0.0.4, Apr 2, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -94,8 +94,9 @@ public final class UserConsole {
      *     "oId": "",
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassword": "",
-     *     "userRole": ""
+     *     "userPassword": "", // Unhashed
+     *     "userRole": "", // optional
+     *     "userURL": "", // optional
      * }
      * </pre>
      * @param context the specified http request context
@@ -155,8 +156,8 @@ public final class UserConsole {
      *     "userName": "",
      *     "userEmail": "",
      *     "userPassword": "",
-     *     "userRole": "" // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead,
-     *                       if not speciffied
+     *     "userURL": "", // optional, uses 'servePath' instead if not specified 
+     *     "userRole": "" // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not speciffied
      * }
      * </pre>
      * @param response the specified http servlet response
@@ -176,9 +177,11 @@ public final class UserConsole {
         try {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
-            if (userUtils.isAdminLoggedIn(request)) {
+            if (userUtils.isAdminLoggedIn(request)) { // if the administrator register a new user, treats the new user as a normal user
+                // (defaultRole) who could post article
                 requestJSONObject.put(User.USER_ROLE, Role.DEFAULT_ROLE);
-            } else {
+            } else { // if a normal user or a visitor register a new user, treates the new user as a visitor (visitorRole) who couldn't 
+                // post article
                 requestJSONObject.put(User.USER_ROLE, Role.VISITOR_ROLE);
             }
 

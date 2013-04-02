@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
  * {@link UserRepositoryImpl} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Feb 21, 2012
+ * @version 1.0.0.2, Apr 2, 2013
  */
 @Test(suiteName = "repository")
 public final class UserRepositoryImplTestCase extends AbstractTestCase {
@@ -52,6 +52,7 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         another.put(User.USER_NAME, "test1");
         another.put(User.USER_EMAIL, "test1@gmail.com");
         another.put(User.USER_PASSWORD, "pass1");
+        another.put(User.USER_URL, "http://b3log.org");
         another.put(User.USER_ROLE, Role.DEFAULT_ROLE);
         another.put(UserExt.USER_ARTICLE_COUNT, 0);
         another.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
@@ -66,6 +67,7 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         admin.put(User.USER_NAME, "test");
         admin.put(User.USER_EMAIL, "test@gmail.com");
         admin.put(User.USER_PASSWORD, "pass");
+        admin.put(User.USER_URL, "http://b3log.org");
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
         admin.put(UserExt.USER_ARTICLE_COUNT, 0);
         admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);

@@ -26,7 +26,15 @@
                 <input id="userEmail" type="text"/>
             </td>
         </tr>
-         <tr>
+        <tr>
+            <th>
+                <label for="userURL">${userURL1Label}</label>
+            </th>
+            <td>
+                <input id="userURL" type="text"/>
+            </td>
+        </tr>
+        <tr>
             <th>
                 <label for="userPassword">${userPassword1Label}</label>
             </th>
@@ -65,6 +73,14 @@
                 </th>
                 <td>
                     <input id="userEmailUpdate" type="text"/>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <label for="userURLUpdate">${userURL1Label}</label>
+                </th>
+                <td>
+                    <input id="userURLUpdate" type="text"/>
                 </td>
             </tr>
             <tr>
