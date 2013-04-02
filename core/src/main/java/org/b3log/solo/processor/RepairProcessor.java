@@ -329,10 +329,10 @@ public final class RepairProcessor {
             htmlBuilder.append("<script type='text/javascript'");
             htmlBuilder.append("src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js'");
             htmlBuilder.append("></script></head><body>");
-            htmlBuilder.append("<button id='ok' onclick='remove()'>");
+            htmlBuilder.append("<button id='ok' onclick='removeData()'>");
             htmlBuilder.append("Continue to delete ALL DATA</button></body>");
             htmlBuilder.append("<script type='text/javascript'>");
-            htmlBuilder.append("function remove() {");
+            htmlBuilder.append("function removeData() {");
             htmlBuilder.append("$.ajax({type: 'POST',url:'").append(Latkes.getContextPath()).append("/rm-all-data.do',");
             htmlBuilder.append("dataType: 'text/html',success: function(result){");
             htmlBuilder.append("$('html').html(result);}});}</script></html>");
