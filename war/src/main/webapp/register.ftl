@@ -96,6 +96,8 @@
                                             "userURL": $("#userURL").val(),
                                             "userPassword": $("#userPassword").val()
                                         };
+
+                                        $("#tip").html("<img src='${staticServePath}/images/loading.gif'/> loading...")
                                         $.ajax({
                                             url: "${contextPath}" + "/console/user/",
                                             type: "POST",

@@ -192,13 +192,14 @@
                                         };
 
                                         if (confirm("${confirmInitLabel}")) {
+                                            $("#tip").html("<img src='${staticServePath}/images/loading.gif'/> loading...")
                                             $.ajax({
                                                 url: "${contextPath}/init",
                                                 type: "POST",
                                                 data: JSON.stringify(requestJSONObject),
                                                 success: function(result, textStatus) {
                                                     if (!result.sc) {
-                                                        alert(result.msg);
+                                                        $("#tip").text(result.msg);;
                                                         return;
                                                     }
 

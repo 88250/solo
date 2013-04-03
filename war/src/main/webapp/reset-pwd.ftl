@@ -57,52 +57,53 @@
         </div>       
         <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
         <script type="text/javascript">
-                            (function() {
-                                $("#userEmail").focus();
-
-                                $("#userEmail").keypress(function(event) {
-                                    if (13 === event.keyCode) { // Enter pressed
-                                        forgot();
-                                    }
-                                });
-
-                                // if no JSON, add it.
-                                try {
-                                    JSON
-                                } catch (e) {
-                                    document.write("<script src=\"${staticServePath}/js/lib/json2.js\"><\/script>");
-                                }
-                            })();
-
-                            var forgot = function() {
-                                if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#userEmail" + status).val())) {
-                                    $("#tip").text("${mailInvalidLabel}");
+                                (function() {
                                     $("#userEmail").focus();
-                                    return;
-                                }
 
-                                var requestJSONObject = {
-                                    "userEmail": $("#userEmail").val()
-                                };
-
-                                $.ajax({
-                                    url: "${servePath}/forgot",
-                                    type: "POST",
-                                    contentType: "application/json",
-                                    data: JSON.stringify(requestJSONObject),
-                                    error: function() {
-                                        // alert("reset password error!");
-                                    },
-                                    success: function(data, textStatus) {
-                                        $("#tip").text(data.msg);
-                                        if (data.succeed) {
-                                            setTimeout(function() {
-                                                window.location.href = data.to;
-                                            }, 3000);
+                                    $("#userEmail").keypress(function(event) {
+                                        if (13 === event.keyCode) { // Enter pressed
+                                            forgot();
                                         }
+                                    });
+
+                                    // if no JSON, add it.
+                                    try {
+                                        JSON
+                                    } catch (e) {
+                                        document.write("<script src=\"${staticServePath}/js/lib/json2.js\"><\/script>");
                                     }
-                                });
-                            };
+                                })();
+
+                                var forgot = function() {
+                                    if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#userEmail" + status).val())) {
+                                        $("#tip").text("${mailInvalidLabel}");
+                                        $("#userEmail").focus();
+                                        return;
+                                    }
+
+                                    var requestJSONObject = {
+                                        "userEmail": $("#userEmail").val()
+                                    };
+
+                                    $("#tip").html("<img src='${staticServePath}/images/loading.gif'/> loading...")
+                                    $.ajax({
+                                        url: "${servePath}/forgot",
+                                        type: "POST",
+                                        contentType: "application/json",
+                                        data: JSON.stringify(requestJSONObject),
+                                        error: function() {
+                                            // alert("reset password error!");
+                                        },
+                                        success: function(data, textStatus) {
+                                            $("#tip").text(data.msg);
+                                            if (data.succeed) {
+                                                setTimeout(function() {
+                                                    window.location.href = data.to;
+                                                }, 3000);
+                                            }
+                                        }
+                                    });
+                                };
         </script>
     </body>
 </html>
