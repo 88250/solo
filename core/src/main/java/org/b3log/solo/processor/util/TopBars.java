@@ -49,7 +49,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.0.0.5, May 11, 2013
+ * @version 1.0.1.5, Apr 10, 2013
  * @since 0.3.5
  */
 public final class TopBars {
@@ -107,6 +107,7 @@ public final class TopBars {
             if (null == currentUser) {
                 topBarModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
                 topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
+                topBarModel.put("registerLabel", langPropsService.get("registerLabel"));
 
                 topBarTemplate.process(topBarModel, stringWriter);
 
