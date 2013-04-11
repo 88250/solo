@@ -6,3 +6,5 @@
 /war/mysql/target/
 /war/h2/target/
 /war/src/main/webapp/WEB-INF/lib/
+/.idea/
+/target/
