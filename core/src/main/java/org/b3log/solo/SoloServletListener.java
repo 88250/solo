@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.9.7, Mar 19, 2013
+ * @version 1.0.9.8, Apr 18, 2013
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -81,6 +81,16 @@ public final class SoloServletListener extends AbstractServletListener {
      * Enter escape.
      */
     public static final String ENTER_ESC = "_esc_enter_88250_";
+
+    /**
+     * B3log Rhythm address.
+     */
+    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
+
+    /**
+     * B3log Symphony address.
+     */
+    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:80";
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
