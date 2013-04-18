@@ -63,18 +63,13 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     /**
-     * B3log Symphony address.
-     */
-    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:80";
-
-    /**
      * URL of adding comment to Symphony.
      */
     private static final URL ADD_COMMENT_URL;
 
     static {
         try {
-            ADD_COMMENT_URL = new URL(B3LOG_SYMPHONY_ADDRESS + "/solo/comment");
+            ADD_COMMENT_URL = new URL(SoloServletListener.B3LOG_SYMPHONY_ADDRESS + "/solo/comment");
         } catch (final MalformedURLException e) {
             LOGGER.log(Level.SEVERE, "Creates remote service address[symphony add comment] error!");
             throw new IllegalStateException(e);
