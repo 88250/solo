@@ -18,36 +18,36 @@ package org.b3log.solo.repository.impl;
 
 import java.util.logging.Logger;
 
-import org.b3log.latke.model.Plugin;
 import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.solo.repository.PluginRepository;
+import org.b3log.solo.model.Option;
+import org.b3log.solo.repository.OptionRepository;
 
 
 /**
- * Plugin repository.
+ * Option repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Jul 21, 2011
- * @since 0.3.1
+ * @version 1.0.0.0, Apr 15, 2013
+ * @since 0.6.0
  */
-public final class PluginRepositoryImpl extends AbstractRepository implements PluginRepository {
+public final class OptionRepositoryImpl extends AbstractRepository implements OptionRepository {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PluginRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OptionRepositoryImpl.class.getName());
 
     /**
      * Singleton.
      */
-    private static final PluginRepositoryImpl SINGLETON = new PluginRepositoryImpl(Plugin.PLUGIN);
+    private static final OptionRepositoryImpl SINGLETON = new OptionRepositoryImpl(Option.OPTION);
 
     /**
-     * Gets the {@link PluginRepositoryImpl} singleton.
+     * Gets the {@link OptionRepositoryImpl1} singleton.
      *
      * @return the singleton
      */
-    public static PluginRepositoryImpl getInstance() {
+    public static OptionRepositoryImpl getInstance() {
         return SINGLETON;
     }
 
@@ -56,7 +56,7 @@ public final class PluginRepositoryImpl extends AbstractRepository implements Pl
      * 
      * @param name the specified name
      */
-    private PluginRepositoryImpl(final String name) {
+    private OptionRepositoryImpl(final String name) {
         super(name);
     }
 
