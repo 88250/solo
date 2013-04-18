@@ -27,6 +27,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.1, Aug 12, 2010
+ * @since 0.3.1
  */
 public interface TagRepository extends Repository {
 

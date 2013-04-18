@@ -20,9 +20,10 @@ import org.b3log.latke.repository.Repository;
 
 
 /**
- * Plugin repository.
+ * Option repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.0.0.0, Jan 24, 2013
+ * @since 0.6.0
  */
-public interface PluginRepository extends Repository {}
+public interface OptionRepository extends Repository {}
