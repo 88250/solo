@@ -24,6 +24,7 @@ import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.LinkRepository;
+import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.PreferenceRepository;
@@ -36,6 +37,7 @@ import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
+import org.b3log.solo.repository.impl.OptionRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
@@ -51,7 +53,7 @@ import org.testng.annotations.BeforeClass;
  * Abstract test case.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Feb 8, 2013
+ * @version 1.0.0.6, Apr 19, 2013
  * @see #beforeClass() 
  * @see #afterClass() 
  */
@@ -62,118 +64,161 @@ public abstract class AbstractTestCase {
      */
     private final LocalServiceTestHelper localServiceTestHelper =
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
     /**
      * User repository.
      */
     private UserRepository userRepository;
+
     /**
      * Link repository.
      */
     private LinkRepository linkRepository;
+
     /**
      * Article repository.
      */
     private ArticleRepository articleRepository;
+
     /**
      * Tag repository.
      */
     private TagRepository tagRepository;
+
     /**
      * Tag-Article repository.
      */
     private TagArticleRepository tagArticleRepository;
+
     /**
      * Page repository.
      */
     private PageRepository pageRepository;
+
     /**
      * Comment repository.
      */
     private CommentRepository commentRepository;
+
     /**
      * Archive date repository.
      */
     private ArchiveDateRepository archiveDateRepository;
+
     /**
      * Archive date article repository.
      */
     private ArchiveDateArticleRepository archiveDateArticleRepository;
+
     /**
      * Plugin repository.
      */
     private PluginRepository pluginRepository;
+
     /**
      * Preference repository.
      */
     private PreferenceRepository preferenceRepository;
+
     /**
      * Statistic repository.
      */
     private StatisticRepository statisticRepository;
+
+    /**
+     * Option repository.
+     */
+    private OptionRepository optionRepository;
+
     /**
      * Initialization service.
      */
     private InitService initService;
+
     /**
      * User management service.
      */
     private UserMgmtService userMgmtService;
+
     /**
      * User query service.
      */
     private UserQueryService userQueryService;
+
     /**
      * Article management service.
      */
     private ArticleMgmtService articleMgmtService;
+
     /**
      * Article query service.
      */
     private ArticleQueryService articleQueryService;
+
     /**
      * Page management service.
      */
     private PageMgmtService pageMgmtService;
+
     /**
      * Page query service.
      */
     private PageQueryService pageQueryService;
+
     /**
      * Link management service.
      */
     private LinkMgmtService linkMgmtService;
+
     /**
      * Link query service.
      */
     private LinkQueryService linkQueryService;
+
     /**
      * Preference management service.
      */
     private PreferenceMgmtService preferenceMgmtService;
+
     /**
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService;
+
     /**
      * Tag query service.
      */
     private TagQueryService tagQueryService;
+
     /**
      * Tag management service.
      */
     private TagMgmtService tagMgmtService;
+
     /**
      * Comment query service.
      */
     private CommentQueryService commentQueryService;
+
     /**
      * Comment management service.
      */
     private CommentMgmtService commentMgmtService;
+
     /**
      * Archive date query service.
      */
     private ArchiveDateQueryService archiveDateQueryService;
+
+    /**
+     * Option management service.
+     */
+    private OptionMgmtService optionMgmtService;
+
+    /**
+     * Option query service.
+     */
+    private OptionQueryService optionQueryService;
 
     /**
      * Before class.
@@ -205,6 +250,7 @@ public abstract class AbstractTestCase {
         pluginRepository = PluginRepositoryImpl.getInstance();
         preferenceRepository = PreferenceRepositoryImpl.getInstance();
         statisticRepository = StatisticRepositoryImpl.getInstance();
+        optionRepository = OptionRepositoryImpl.getInstance();
 
         // Services
         initService = InitService.getInstance();
@@ -223,6 +269,8 @@ public abstract class AbstractTestCase {
         commentQueryService = CommentQueryService.getInstance();
         commentMgmtService = CommentMgmtService.getInstance();
         archiveDateQueryService = ArchiveDateQueryService.getInstance();
+        optionMgmtService = OptionMgmtService.getInstance();
+        optionQueryService = OptionQueryService.getInstance();
     }
 
     /**
@@ -235,8 +283,8 @@ public abstract class AbstractTestCase {
      */
     @AfterClass
     public void afterClass() {
-        localServiceTestHelper.tearDown();
-
+        // XXX: NPE, localServiceTestHelper.tearDown();
+        
         Latkes.shutdown();
     }
 
@@ -346,6 +394,15 @@ public abstract class AbstractTestCase {
      */
     public StatisticRepository getStatisticRepository() {
         return statisticRepository;
+    }
+
+    /**
+     * Gets option repository.
+     * 
+     * @return option repository
+     */
+    public OptionRepository getOptionRepository() {
+        return optionRepository;
     }
 
     /**
@@ -490,5 +547,23 @@ public abstract class AbstractTestCase {
      */
     public ArchiveDateQueryService getArchiveDateQueryService() {
         return archiveDateQueryService;
+    }
+
+    /**
+     * Gets option management service.
+     * 
+     * @return option management service
+     */
+    public OptionMgmtService getOptionMgmtService() {
+        return optionMgmtService;
+    }
+
+    /**
+     * Gets option query service.
+     * 
+     * @return option query service
+     */
+    public OptionQueryService getOptionQueryService() {
+        return optionQueryService;
     }
 }

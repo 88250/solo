@@ -47,52 +47,25 @@ public final class OptionMgmtService {
     private OptionRepository optionRepository = OptionRepositoryImpl.getInstance();
 
     /**
-     * Updates the specified option, if not found the old version of the specified option by id, creates it.
-     * 
-     * @param option the specified option
-     * @throws ServiceException service exception
-     */
-    public void updateOption(final JSONObject option) throws ServiceException {
-        final String id = option.optString(Keys.OBJECT_ID);
-
-        final Transaction transaction = optionRepository.beginTransaction();
-
-        try {
-            if (null != optionRepository.get(id)) {
-                optionRepository.update(id, option);
-            } else {
-                optionRepository.add(option);
-            }
-
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
      * Adds or updates the specified option.
      * 
      * @param option the specified option
+     * @return option id
      * @throws ServiceException 
      */
-    public void addOrUpdateOption(final JSONObject option) throws ServiceException {
+    public String addOrUpdateOption(final JSONObject option) throws ServiceException {
         final Transaction transaction = optionRepository.beginTransaction();
 
         try {
-            final String id = option.optString(Keys.OBJECT_ID);
+            String id = option.optString(Keys.OBJECT_ID);
 
             if (Strings.isEmptyOrNull(id)) {
-                optionRepository.add(option);
+                id = optionRepository.add(option);
             } else {
                 final JSONObject old = optionRepository.get(id);
 
                 if (null == old) { // The id is specified by caller
-                    optionRepository.add(option);
+                    id = optionRepository.add(option);
                 } else {
                     old.put(Option.OPTION_CATEGORY, option.optString(Option.OPTION_CATEGORY));
                     old.put(Option.OPTION_VALUE, option.optString(Option.OPTION_VALUE));
@@ -101,6 +74,30 @@ public final class OptionMgmtService {
                 }
             }
 
+            transaction.commit();
+            
+            return id;
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw new ServiceException(e);
+        }
+    }
+    
+    /**
+     * Removes the option specified by the given option id. 
+     * 
+     * @param optionId the given option id
+     * @throws ServiceException service exception
+     */
+    public void removeOption(final String optionId) throws ServiceException {
+        final Transaction transaction = optionRepository.beginTransaction();
+        
+        try {
+            optionRepository.remove(optionId);
+            
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
