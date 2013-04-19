@@ -360,10 +360,8 @@ public final class MetaWeblogAPI {
             final String name = member.getString("name");
 
             if ("dateCreated".equals(name)) {
-                final JSONObject preference = preferenceQueryService.getPreference();
-
                 final String dateString = member.getJSONObject("value").getString("dateTime.iso8601");
-                Date date = null;
+                Date date;
 
                 try {
                     date = (Date) DateFormatUtils.ISO_DATETIME_FORMAT.parseObject(dateString);
