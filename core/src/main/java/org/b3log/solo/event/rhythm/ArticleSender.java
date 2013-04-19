@@ -75,7 +75,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
     static {
         try {
-            ADD_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_ADDRESS + "/article");
+            ADD_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_SERVE_PATH + "/article");
         } catch (final MalformedURLException e) {
             LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm add article] error!");
             throw new IllegalStateException(e);

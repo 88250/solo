@@ -75,7 +75,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
     static {
         try {
-            UPDATE_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_ADDRESS + "/article");
+            UPDATE_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_SERVE_PATH + "/article");
         } catch (final MalformedURLException e) {
             LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm update article] error!");
             throw new IllegalStateException(e);
@@ -103,9 +103,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
-            // Use configured host if Preference.BLOG_HOST is empty.
-            final String perferHost = preference.getString(Preference.BLOG_HOST);
-            final String blogHost = !Strings.isEmptyOrNull(perferHost) ? perferHost.toLowerCase() : Latkes.getServePath().toLowerCase();
+            final String blogHost = Latkes.getServePath();
 
             if (blogHost.contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
@@ -116,7 +114,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
             final HTTPRequest httpRequest = new HTTPRequest();
 
             httpRequest.setURL(UPDATE_ARTICLE_URL);
-            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
+            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject();
 

@@ -69,7 +69,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
 
     static {
         try {
-            ADD_COMMENT_URL = new URL(SoloServletListener.B3LOG_SYMPHONY_ADDRESS + "/solo/comment");
+            ADD_COMMENT_URL = new URL(SoloServletListener.B3LOG_SYMPHONY_SERVE_PATH + "/solo/comment");
         } catch (final MalformedURLException e) {
             LOGGER.log(Level.SEVERE, "Creates remote service address[symphony add comment] error!");
             throw new IllegalStateException(e);

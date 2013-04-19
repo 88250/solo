@@ -87,7 +87,7 @@ public final class ChanceProcessor {
 
     static {
         try {
-            ADD_BROADCAST_URL = new URL(SoloServletListener.B3LOG_RHYTHM_ADDRESS + "/broadcast");
+            ADD_BROADCAST_URL = new URL(SoloServletListener.B3LOG_RHYTHM_SERVE_PATH + "/broadcast");
         } catch (final MalformedURLException e) {
             LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm add broadcast] error!");
             throw new IllegalStateException(e);
@@ -126,7 +126,7 @@ public final class ChanceProcessor {
         try {
             // TODO: verify b3 key
 
-            final String time = request.getParameter("broadcastChanceExpirationTime");
+            final String time = request.getParameter("time");
 
             if (Strings.isEmptyOrNull(time)) {
                 ret.put(Keys.STATUS_CODE, false);
@@ -142,7 +142,7 @@ public final class ChanceProcessor {
             option.put(Option.OPTION_VALUE, expirationTime);
             option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_BROADCAST);
 
-            optionMgmtService.addOption(option);
+            optionMgmtService.addOrUpdateOption(option);
 
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {

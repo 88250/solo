@@ -16,6 +16,7 @@
 package org.b3log.solo;
 
 
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
@@ -85,12 +86,19 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * B3log Rhythm address.
      */
-    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
+    public static final String B3LOG_RHYTHM_SERVE_PATH;
 
     /**
      * B3log Symphony address.
      */
-    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:80";
+    public static final String B3LOG_SYMPHONY_SERVE_PATH;
+
+    static {
+        final ResourceBundle b3log = ResourceBundle.getBundle("b3log");
+
+        B3LOG_RHYTHM_SERVE_PATH = b3log.getString("rhythm.servePath");
+        B3LOG_SYMPHONY_SERVE_PATH = b3log.getString("symphony.servePath");
+    }
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {

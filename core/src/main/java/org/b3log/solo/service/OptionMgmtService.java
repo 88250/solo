@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.Strings;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.impl.OptionRepositoryImpl;
 import org.json.JSONObject;
@@ -73,16 +75,31 @@ public final class OptionMgmtService {
     }
 
     /**
-     * Adds the specified option.
+     * Adds or updates the specified option.
      * 
-     * @param optioin the specified option
+     * @param option the specified option
      * @throws ServiceException 
      */
-    public void addOption(final JSONObject optioin) throws ServiceException {
+    public void addOrUpdateOption(final JSONObject option) throws ServiceException {
         final Transaction transaction = optionRepository.beginTransaction();
 
         try {
-            optionRepository.add(optioin);
+            final String id = option.optString(Keys.OBJECT_ID);
+
+            if (Strings.isEmptyOrNull(id)) {
+                optionRepository.add(option);
+            } else {
+                final JSONObject old = optionRepository.get(id);
+
+                if (null == old) { // The id is specified by caller
+                    optionRepository.add(option);
+                } else {
+                    old.put(Option.OPTION_CATEGORY, option.optString(Option.OPTION_CATEGORY));
+                    old.put(Option.OPTION_VALUE, option.optString(Option.OPTION_VALUE));
+                    
+                    optionRepository.update(id, old);
+                }
+            }
 
             transaction.commit();
         } catch (final Exception e) {
