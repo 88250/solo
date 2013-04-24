@@ -33,7 +33,7 @@
     plugins.b3logBroadcast = {
         init: function() {
             $("#loadMsg").text("${loadingLabel}");
-            
+
             // dialog
             $("#b3logBroadcastDialog").dialog({
                 width: 700,
@@ -96,33 +96,32 @@
                 url: "http://symphony.b3log.org/apis/broadcasts",
                 dataType: "jsonp",
                 jsonp: "callback",
-                beforeSend: function () {
+                beforeSend: function() {
                     $("#b3logBroadcastList").css("background",
-                    "url(${staticServePath}/images/loader.gif) no-repeat scroll center center transparent");
+                            "url(${staticServePath}/images/loader.gif) no-repeat scroll center center transparent");
                 },
                 error: function() {
                     $("#b3logBroadcastList").html("Loading Symphony broadcasts failed :-(").css("background", "none");
                 },
                 success: function(result) {
-                    if (result.sc) {
-                        var articles = result.articles;
-                        if (0 === articles.length) {
-                            return;
-                        }
+                    var articles = result.articles;
 
-                        var listHTML = "<ul>";
-                        for (var i = 0; i < articles.length; i++) {
-                            var article = articles[i];
-                            var articleLiHtml = "<li>"
-                                    + "<a target='_blank' href='" + article.articlePermalink + "'>"
-                                    + article.articleTitle + "</a>&nbsp; <span class='date'>" + $.bowknot.getDate(article.articleCreateTime, 1);
-                            +"</span></li>"
-                            listHTML += articleLiHtml
-                        }
-                        listHTML += "</ul>";
-
-                        $("#b3logBroadcastList").html(listHTML).css("background", "none");
+                    if (0 === articles.length) {
+                        return;
                     }
+
+                    var listHTML = "<ul>";
+                    for (var i = 0; i < articles.length; i++) {
+                        var article = articles[i];
+                        var articleLiHtml = "<li>"
+                                + "<a target='_blank' href='" + article.articlePermalink + "'>"
+                                + article.articleTitle + "</a>&nbsp; <span class='date'>" + $.bowknot.getDate(article.articleCreateTime, 1);
+                        +"</span></li>"
+                        listHTML += articleLiHtml
+                    }
+                    listHTML += "</ul>";
+
+                    $("#b3logBroadcastList").html(listHTML).css("background", "none");
                 },
                 complete: function(XMLHttpRequest, textStatus) {
                     $("#loadMsg").text("");

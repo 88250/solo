@@ -18,6 +18,7 @@ package org.b3log.solo.plugin.broadcast;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +31,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.HTTPResponse;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Requests;
@@ -49,7 +51,7 @@ import org.json.JSONObject;
  * Broadcast chance processor.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, May 16, 2012
+ * @version 1.0.0.8, Apr 24, 2013
  * @since 0.6.0
  */
 @RequestProcessor
@@ -246,7 +248,7 @@ public final class ChanceProcessor {
      *     "broadcast": {
      *         "title": "",
      *         "content": "",
-     *         "link": ""
+     *         "link": "" // optional
      *     }
      * }
      * </pre>
@@ -293,16 +295,28 @@ public final class ChanceProcessor {
             broadcastRequest.put("clientVersion", clientVersion);
             broadcastRequest.put("clientName", clientName);
             broadcastRequest.put("clientHost", blogHost);
-            
+
             final HTTPRequest httpRequest = new HTTPRequest();
 
             httpRequest.setURL(ADD_BROADCAST_URL);
             httpRequest.setRequestMethod(HTTPRequestMethod.POST);
             httpRequest.setPayload(broadcastRequest.toString().getBytes("UTF-8"));
 
-            urlFetchService.fetchAsync(httpRequest);
+            @SuppressWarnings("unchecked")
+            final Future<HTTPResponse> future = (Future<HTTPResponse>) urlFetchService.fetchAsync(httpRequest);
+            final HTTPResponse result = future.get();
 
-            ret.put(Keys.STATUS_CODE, true);
+            if (HttpServletResponse.SC_OK == result.getResponseCode()) {
+                ret.put(Keys.STATUS_CODE, true);
+                
+                optionMgmtService.removeOption(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
+                
+                LOGGER.info("Submits broadcast successfully");
+
+                return;
+            }
+
+            ret.put(Keys.STATUS_CODE, false);
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Submits broadcast failed", e);
 
