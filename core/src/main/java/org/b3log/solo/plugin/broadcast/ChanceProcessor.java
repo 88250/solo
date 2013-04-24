@@ -170,7 +170,6 @@ public final class ChanceProcessor {
      * {
      *     "sc": boolean, // if has a chance, the value will be true
      *     "broadCastChanceExpirationTime": long, // if has a chance, the value will larger then 0L
-     *     "msg": "" // optional
      * }
      * </pre>
      * </p>
@@ -219,14 +218,11 @@ public final class ChanceProcessor {
             ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, option.getLong(Option.OPTION_VALUE));
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            final String msg = "Broadcast plugin exception";
-
-            LOGGER.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.SEVERE, "Broadcast plugin exception", e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
             renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, msg);
         }
     }
 
