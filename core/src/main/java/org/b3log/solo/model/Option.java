@@ -48,7 +48,7 @@ public final class Option {
     /**
      * Key of broadcast chance expiration time.
      */
-    public static final String ID_C_BROADCAST_CHANCE_EXPIRATION_TIME = "broadCastChanceExpirationTime";
+    public static final String ID_C_BROADCAST_CHANCE_EXPIRATION_TIME = "broadcastChanceExpirationTime";
     // Category constants
     /**
      * Broadcast.
