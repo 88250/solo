@@ -169,7 +169,7 @@ public final class ChanceProcessor {
      * <pre>
      * {
      *     "sc": boolean, // if has a chance, the value will be true
-     *     "broadCastChanceExpirationTime": long, // if has a chance, the value will larger then 0L
+     *     "broadcastChanceExpirationTime": long, // if has a chance, the value will larger then 0L
      * }
      * </pre>
      * </p>
