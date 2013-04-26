@@ -20,8 +20,8 @@ package org.b3log.solo.model;
  * This class defines all common model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.0.4.9, Jan 22, 2013
+ * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
+ * @version 1.0.5.0, Mar 11, 2013
  * @since 0.3.1
  */
 public final class Common {

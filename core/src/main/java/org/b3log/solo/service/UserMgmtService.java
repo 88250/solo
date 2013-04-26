@@ -19,6 +19,7 @@ package org.b3log.solo.service;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
@@ -26,6 +27,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
@@ -36,7 +38,8 @@ import org.json.JSONObject;
  * User management service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 4, 2013
+ * @author <a href="mailto:385321165@qq.com">DASHU</a>
+ * @version 1.0.0.4, Mar 30, 2013
  * @since 0.4.0
  */
 public final class UserMgmtService {
@@ -66,7 +69,8 @@ public final class UserMgmtService {
      *     "userName": "",
      *     "userEmail": "",
      *     "userPassword": "", // Unhashed
-     *     "userRole": ""
+     *     "userRole": "", // optional
+     *     "userURL": "", // optional
      * }
      * </pre>
      * @throws ServiceException service exception
@@ -98,9 +102,57 @@ public final class UserMgmtService {
             oldUser.put(User.USER_EMAIL, userNewEmail);
             oldUser.put(User.USER_NAME, userName);
             oldUser.put(User.USER_PASSWORD, MD5.hash(userPassword));
-            // Unchanges the default role
+            
+            final String userRole = requestJSONObject.optString(User.USER_ROLE);
 
+            if (!Strings.isEmptyOrNull(userRole)) {
+                oldUser.put(User.USER_ROLE, userRole);
+            }
+            
+            final String userURL = requestJSONObject.optString(User.USER_URL);
+
+            if (!Strings.isEmptyOrNull(userURL)) {
+                oldUser.put(User.USER_URL, userURL);
+            }
+            
             userRepository.update(oldUserId, oldUser);
+            transaction.commit();
+        } catch (final RepositoryException e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Swithches the user role between "defaultRole" and "visitorRole"  by the specified user id.
+     *
+     * @param userId the specified user id
+     * @throws ServiceException exception
+     * @see User
+     */
+    public void changeRole(final String userId) throws ServiceException {
+        final Transaction transaction = userRepository.beginTransaction();
+
+        try {
+            final JSONObject oldUser = userRepository.get(userId);
+
+            if (null == oldUser) {
+                throw new ServiceException(langPropsService.get("updateFailLabel"));
+            }
+
+            final String role = oldUser.optString(User.USER_ROLE);
+
+            if (Role.VISITOR_ROLE.equals(role)) {
+                oldUser.put(User.USER_ROLE, Role.DEFAULT_ROLE);
+            } else if (Role.DEFAULT_ROLE.equals(role)) {
+                oldUser.put(User.USER_ROLE, Role.VISITOR_ROLE);
+            }
+
+            userRepository.update(userId, oldUser);
             transaction.commit();
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
@@ -121,8 +173,8 @@ public final class UserMgmtService {
      *     "userName": "",
      *     "userEmail": "",
      *     "userPassword": "", // Unhashed
-     *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead,
-     *                       if not speciffied
+     *     "userURL": "", // optional, uses 'servePath' instead if not specified 
+     *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead, if not speciffied
      * }
      * </pre>,see {@link User} for more details
      * @return generated user id
@@ -144,16 +196,32 @@ public final class UserMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
             }
 
+            user.put(User.USER_EMAIL, userEmail);
+
             final String userName = requestJSONObject.optString(User.USER_NAME);
 
-            user.put(User.USER_EMAIL, userEmail);
             user.put(User.USER_NAME, userName);
+
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
 
             user.put(User.USER_PASSWORD, MD5.hash(userPassword));
+
+            String userURL = requestJSONObject.optString(User.USER_URL);
+
+            if (Strings.isEmptyOrNull(userURL)) {
+                userURL = Latkes.getServePath();
+            }
+            
+            if (!Strings.isURL(userURL)) {
+                throw new ServiceException(langPropsService.get("urlInvalidLabel"));
+            }
+            
+            user.put(User.USER_URL, userURL);
+
             final String roleName = requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE);
 
             user.put(User.USER_ROLE, roleName);
+            
             user.put(UserExt.USER_ARTICLE_COUNT, 0);
             user.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
 

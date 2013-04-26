@@ -44,7 +44,7 @@
             <input type="checkbox" id="articleCommentable" checked="checked" /> &nbsp; &nbsp; &nbsp;
             <span id="postToCommunityPanel">
                 <label for="postToCommunity">
-                    <a class="no-underline" href="http://symphony.b3log.org/usage" target="_blank">${postToCommunityLabel}</a>
+                    <a class="no-underline" href="http://symphony.b3log.org/article/1360294444788" target="_blank">${postToCommunityLabel}</a>
                 </label>
                 <input id="postToCommunity" type="checkbox" checked="checked"/>
             </span>

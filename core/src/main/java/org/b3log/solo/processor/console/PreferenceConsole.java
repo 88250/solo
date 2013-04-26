@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Preference console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.4, Aug 9, 2012
+ * @version 1.0.0.5, Mar 5, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -291,6 +291,7 @@ public final class PreferenceConsole {
      *         "articleListStyle": "", // Optional values: "titleOnly"/"titleAndContent"/"titleAndAbstract"
      *         "commentable": boolean,
      *         "feedOutputMode: "" // Optional values: "abstract"/"full"
+     *         "feedOutputCnt": int
      *     }
      * }
      * </pre>
@@ -371,7 +372,8 @@ public final class PreferenceConsole {
      *         "allowVisitDraftViaPermalink": boolean,
      *         "articleListStyle": "",
      *         "commentable": boolean,
-     *         "feedOutputMode: ""
+     *         "feedOutputMode: "",
+     *         "feedOutputCnt": int
      *     }
      * }, see {@link org.b3log.solo.model.Preference} for more details
      * </pre>
@@ -500,6 +502,14 @@ public final class PreferenceConsole {
         input = preference.optString(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("windowSizeLabel")).append("]  ").append(
+                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            responseObject.put(Keys.MSG, errMsgBuilder.toString());
+            return true;
+        }
+
+        input = preference.optString(Preference.FEED_OUTPUT_CNT);
+        if (!isNonNegativeInteger(input)) {
+            errMsgBuilder.append(langPropsService.get("feedOutputCntLabel")).append("]  ").append(
                 langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;

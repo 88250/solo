@@ -277,6 +277,14 @@
                         </select>
                     </td>
                 </tr>
+                <tr>
+                    <th>
+                        <label for="feedOutputCnt">${feedOutputCnt1Label}</label>
+                    </th>
+                    <td>
+                        <input id="feedOutputCnt" class="normalInput" type="text"/>
+                    </td>
+                </tr>
 
                 <tr>
                     <th colspan="2">

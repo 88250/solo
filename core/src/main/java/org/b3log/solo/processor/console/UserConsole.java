@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -41,7 +43,8 @@ import org.json.JSONObject;
  * User console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jan 29, 2013
+ * @author <a href="mailto:385321165@qq.com">DASHU</a>
+ * @version 1.0.0.4, Apr 2, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -91,8 +94,9 @@ public final class UserConsole {
      *     "oId": "",
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassword": "",
-     *     "userRole": ""
+     *     "userPassword": "", // Unhashed
+     *     "userRole": "", // optional
+     *     "userURL": "", // optional
      * }
      * </pre>
      * @param context the specified http request context
@@ -152,8 +156,8 @@ public final class UserConsole {
      *     "userName": "",
      *     "userEmail": "",
      *     "userPassword": "",
-     *     "userRole": "" // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead,
-     *                       if not speciffied
+     *     "userURL": "", // optional, uses 'servePath' instead if not specified 
+     *     "userRole": "" // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not speciffied
      * }
      * </pre>
      * @param response the specified http servlet response
@@ -163,10 +167,6 @@ public final class UserConsole {
     @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.POST)
     public void addUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
-        }
 
         final JSONRenderer renderer = new JSONRenderer();
 
@@ -176,6 +176,14 @@ public final class UserConsole {
 
         try {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+
+            if (userUtils.isAdminLoggedIn(request)) { // if the administrator register a new user, treats the new user as a normal user
+                // (defaultRole) who could post article
+                requestJSONObject.put(User.USER_ROLE, Role.DEFAULT_ROLE);
+            } else { // if a normal user or a visitor register a new user, treates the new user as a visitor (visitorRole) who couldn't 
+                // post article
+                requestJSONObject.put(User.USER_ROLE, Role.VISITOR_ROLE);
+            }
 
             final String userId = userMgmtService.addUser(requestJSONObject);
 
@@ -366,6 +374,56 @@ public final class UserConsole {
 
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
+
+    /**
+     * Change a user role.
+     *
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/changeRole/*", method = HTTPRequestMethod.GET)
+    public void changeUserRole(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+        throws Exception {
+        if (!userUtils.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+
+        renderer.setJSONObject(jsonObject);
+
+        try {
+            final String userId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/changeRole/").length());
+
+            userMgmtService.changeRole(userId);
+
+            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
     }
 }

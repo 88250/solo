@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Aug 26, 2012
+ * @version 1.0.1.7, Mar 5, 2013
  */
 
 /* preference 相关操作 */
@@ -71,7 +71,6 @@ admin.preference = {
                 $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
                 $("#keyOfSolo").val(preference.keyOfSolo);
                 preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
-                        
                 preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
 
                 admin.preference.locale = preference.localeString;
@@ -114,8 +113,9 @@ admin.preference = {
                 $("#articleListDisplay").val(preference.articleListStyle);
                 // Editor Type
                 $("#editorType").val(preference.editorType);
-                // Feed output mode
+                // Feed output
                 $("#feedOutputMode").val(preference.feedOutputMode);
+                $("#feedOutputCnt").val(preference.feedOutputCnt);
                 // Commentable
                 preference.commentable ? $("#commentable").attr("checked", "checked") : $("commentable").removeAttr("checked");
                 
@@ -220,6 +220,7 @@ admin.preference = {
                 "articleListStyle": $("#articleListDisplay").val(),
                 "editorType": $("#editorType").val(),
                 "feedOutputMode": $("#feedOutputMode").val(),
+                "feedOutputCnt": $("#feedOutputCnt").val(),
                 "commentable": $("#commentable").prop("checked")
             }
         };

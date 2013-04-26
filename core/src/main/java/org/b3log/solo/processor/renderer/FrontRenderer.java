@@ -95,6 +95,14 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
             output = html.replace(Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
         }
 
+        // Inc blog view count
+        try {
+            statistics.incBlogViewCount(request, response);
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARNING, "Incs blog view count failed", e);
+        }
+
+        // Write out
         writer.write(output);
         writer.flush();
         writer.close();
@@ -104,18 +112,12 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
      * {@inheritDoc}
      * 
      * <p>
-     * Blog statistic view count +1.
+     * Skips page caching if requested by mobile device.
      * </p>
      */
     @Override
     protected void afterRender(final HTTPRequestContext context) throws Exception {
         LOGGER.log(Level.FINEST, "After render....");
-
-        try {
-            statistics.incBlogViewCount(context.getRequest(), context.getResponse());
-        } catch (final Exception e) {
-            LOGGER.log(Level.WARNING, "Incs blog view count failed", e);
-        }
 
         final HttpServletRequest request = context.getRequest();
 

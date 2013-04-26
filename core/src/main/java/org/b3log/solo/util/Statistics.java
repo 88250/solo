@@ -24,7 +24,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
@@ -41,7 +43,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.1, Dec 21, 2012
+ * @version 1.0.2.3, Mar 26, 2013
  * @since 0.3.1
  */
 public final class Statistics {
@@ -91,9 +93,9 @@ public final class Statistics {
      */
     public static void onlineVisitorCount(final HttpServletRequest request) {
         final String remoteAddr = Requests.getRemoteAddr(request);
-        
+
         LOGGER.log(Level.FINER, "Current request [IP={0}]", remoteAddr);
-        
+
         ONLINE_VISITORS.put(remoteAddr, System.currentTimeMillis());
         LOGGER.log(Level.FINER, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
@@ -248,7 +250,7 @@ public final class Statistics {
         if (Requests.hasBeenServed(request, response)) {
             return;
         }
-        
+
         final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
 
         if (null == statistic) {
@@ -262,8 +264,24 @@ public final class Statistics {
         ++blogViewCnt;
         statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
 
-        // Repository cache prefix, Refers to GAERepository#CACHE_KEY_PREFIX 
-        statisticRepository.getCache().putAsync(REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC, statistic);
+        if (!Latkes.isDataCacheEnabled()) {
+            final Transaction transaction = statisticRepository.beginTransaction();
+
+            try {
+                statisticRepository.update(Statistic.STATISTIC, statistic);
+                
+                transaction.commit();
+            } catch (final RepositoryException e) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+                
+                LOGGER.log(Level.SEVERE, "Updates blog view count failed", e);
+            }
+        } else {
+            // Repository cache prefix, Refers to GAERepository#CACHE_KEY_PREFIX 
+            statisticRepository.getCache().putAsync(REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC, statistic);
+        }
 
         LOGGER.log(Level.FINER, "Inced blog view count[statistic={0}]", statistic);
     }

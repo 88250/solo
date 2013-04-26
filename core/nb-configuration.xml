@@ -37,6 +37,7 @@ Without this configuration present, some functionality in the IDE may be limited
         <word>sitemap</word>
         <word>struct</word>
         <word>structs</word>
+        <word>Swithches</word>
         <word>Upgrader</word>
         <word>Upgraders</word>
     </spellchecker-wordlist>

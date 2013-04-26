@@ -18,7 +18,10 @@ package org.b3log.solo.processor;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -26,10 +29,12 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
-import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.jdbc.JdbcFactory;
 import org.b3log.latke.repository.jdbc.util.Connections;
+import org.b3log.latke.repository.jdbc.util.FieldDefinition;
+import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -37,7 +42,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
@@ -53,8 +57,8 @@ import org.json.JSONObject;
  * Upgrader.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @author <a href="mailto:dongxv.vang@gmail.com">Dongxu Wang</a>
- * @version 1.1.1.7, Feb 19, 2013
+ * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
+ * @version 1.1.1.9, Apr 26, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -69,11 +73,6 @@ public final class UpgradeProcessor {
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
-
-    /**
-     * Page repository.
-     */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
 
     /**
      * User repository.
@@ -139,10 +138,10 @@ public final class UpgradeProcessor {
                 return;
             }
 
-            if ("0.5.5".equals(version)) {
-                v055ToV056();
+            if ("0.5.6".equals(version)) {
+                v056ToV060();
             } else {
-                LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.5.0; Actually: {0}", version);
+                LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.5.6; Actually: {0}", version);
                 if (!sent) {
                     notifyUserByEmail();
                     sent = true;
@@ -159,12 +158,12 @@ public final class UpgradeProcessor {
     }
 
     /**
-     * Upgrades from version 055 to version 056.
+     * Upgrades from version 056 to version 060.
      *
      * @throws Exception upgrade fails
      */
-    private void v055ToV056() throws Exception {
-        LOGGER.info("Upgrading from version 055 to version 056....");
+    private void v056ToV060() throws Exception {
+        LOGGER.info("Upgrading from version 056 to version 060....");
 
         articleRepository.setCacheEnabled(false);
 
@@ -172,15 +171,7 @@ public final class UpgradeProcessor {
 
         try {
             transaction = userRepository.beginTransaction();
-
-            // Upgrades preference model
-            final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
-
-            preference.put(Preference.VERSION, "0.5.6");
-            preferenceRepository.update(Preference.PREFERENCE, preference);
-
-            upgradeUsers();
-
+            
             final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
             if (RuntimeEnv.LOCAL == runtimeEnv || RuntimeEnv.BAE == runtimeEnv) {
@@ -188,12 +179,34 @@ public final class UpgradeProcessor {
                 final Statement statement = connection.createStatement();
 
                 final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix");
-                final String tableName = Strings.isEmptyOrNull(tablePrefix) ? Plugin.PLUGIN : tablePrefix + '_' + Plugin.PLUGIN;
 
-                statement.execute("ALTER TABLE " + tableName + " ADD setting text");
+                String tableName = Strings.isEmptyOrNull(tablePrefix) ? "preference" : tablePrefix + "_preference";
+
+                statement.execute("ALTER TABLE " + tableName + " ADD feedOutputCnt int");
+
+                tableName = Strings.isEmptyOrNull(tablePrefix) ? "user" : tablePrefix + "_user";
+                statement.execute("ALTER TABLE " + tableName + " ADD userURL varchar(255)");
 
                 connection.commit();
+
+                tableName = Strings.isEmptyOrNull(tablePrefix) ? "option" : tablePrefix + "_option";
+                final Map<String, List<FieldDefinition>> map = JdbcRepositories.getRepositoriesMap();
+
+                try {
+                    JdbcFactory.createJdbcFactory().createTable(tableName, map.get(tableName));
+                } catch (final SQLException e) {
+                    LOGGER.log(Level.SEVERE, "createTable[" + tableName + "] error", e);
+                }
             }
+            
+            // Upgrades preference model
+            final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
+
+            preference.put(Preference.VERSION, "0.6.0");
+            preference.put(Preference.FEED_OUTPUT_CNT, Preference.Default.DEFAULT_FEED_OUTPUT_CNT);
+            preferenceRepository.update(Preference.PREFERENCE, preference);
+
+            upgradeUsers();
 
             transaction.commit();
 
@@ -204,12 +217,12 @@ public final class UpgradeProcessor {
             }
 
             LOGGER.log(Level.SEVERE, "Upgrade failed.", e);
-            throw new Exception("Upgrade failed from version 055 to version 056");
+            throw new Exception("Upgrade failed from version 056 to version 060");
         } finally {
             articleRepository.setCacheEnabled(true);
         }
 
-        LOGGER.info("Upgraded from version 055 to version 056 successfully :-)");
+        LOGGER.info("Upgraded from version 056 to version 060 successfully :-)");
     }
 
     /**
@@ -226,9 +239,8 @@ public final class UpgradeProcessor {
 
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.getJSONObject(i);
-            final String oldPwd = user.optString(User.USER_PASSWORD);
 
-            user.put(User.USER_PASSWORD, MD5.hash(oldPwd));
+            user.put(User.USER_URL, Latkes.getServePath());
 
             userRepository.update(user.optString(Keys.OBJECT_ID), user);
 

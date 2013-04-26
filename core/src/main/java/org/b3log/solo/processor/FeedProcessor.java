@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.2, Nov 15, 2012
+ * @version 1.1.0.3, Mar 5, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -89,11 +89,6 @@ public final class FeedProcessor {
      * Preference query service.
      */
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
-
-    /**
-     * Count of output entry.
-     */
-    public static final int ENTRY_OUTPUT_CNT = 10;
 
     /**
      * Article utilities.
@@ -129,6 +124,7 @@ public final class FeedProcessor {
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE);
             final String blogHost = preference.getString(Preference.BLOG_HOST);
+            final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
@@ -141,7 +137,7 @@ public final class FeedProcessor {
 
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
-            final Query query = new Query().setCurrentPageNum(1).setPageSize(ENTRY_OUTPUT_CNT).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setPageCount(
+            final Query query = new Query().setCurrentPageNum(1).setPageSize(outputCnt).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setPageCount(
                 1);
 
             final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
@@ -255,6 +251,7 @@ public final class FeedProcessor {
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE) + ", " + tagTitle;
             final String blogHost = preference.getString(Preference.BLOG_HOST);
+            final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
@@ -263,7 +260,7 @@ public final class FeedProcessor {
             feed.setLink("http://" + blogHost + "/tag-articles-feed.do");
             feed.setId("http://" + blogHost + "/");
 
-            final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
+            final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, outputCnt);
             final JSONArray tagArticleRelations = tagArticleResult.getJSONArray(Keys.RESULTS);
 
             if (0 == tagArticleRelations.length()) {
@@ -368,6 +365,7 @@ public final class FeedProcessor {
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE);
             final String blogHost = preference.getString(Preference.BLOG_HOST);
+            final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             channel.setLastBuildDate(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
@@ -385,7 +383,7 @@ public final class FeedProcessor {
 
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
-            final Query query = new Query().setCurrentPageNum(1).setPageSize(ENTRY_OUTPUT_CNT).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setPageCount(
+            final Query query = new Query().setCurrentPageNum(1).setPageSize(outputCnt).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setPageCount(
                 1);
 
             final JSONObject articleResult = articleRepository.get(query);
@@ -501,6 +499,7 @@ public final class FeedProcessor {
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE) + ", " + tagTitle;
             final String blogHost = preference.getString(Preference.BLOG_HOST);
+            final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             channel.setLastBuildDate(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
@@ -514,7 +513,7 @@ public final class FeedProcessor {
             channel.setLanguage(language + '-' + country);
             channel.setDescription(blogSubtitle);
 
-            final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, ENTRY_OUTPUT_CNT);
+            final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, outputCnt);
             final JSONArray tagArticleRelations = tagArticleResult.getJSONArray(Keys.RESULTS);
 
             if (0 == tagArticleRelations.length()) {

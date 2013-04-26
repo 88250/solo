@@ -30,7 +30,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
@@ -43,9 +42,13 @@ import org.json.JSONObject;
 /**
  * This listener is responsible for sending article to B3log Rhythm.
  * 
+ * <p>
+ * The B3log Rhythm article update interface: http://rhythm.b3log.org/article (POST).
+ * </p>
+ * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.0.2.4, Jan 4, 2013
+ * @version 1.0.2.6, Apr 16, 2013
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -66,18 +69,13 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     /**
-     * B3log Rhythm address.
-     */
-    public static final String B3LOG_RHYTHM_ADDRESS = "http://rhythm.b3log.org:80";
-
-    /**
      * URL of adding article to Rhythm.
      */
     private static final URL ADD_ARTICLE_URL;
 
     static {
         try {
-            ADD_ARTICLE_URL = new URL(B3LOG_RHYTHM_ADDRESS + "/add-article.do");
+            ADD_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_SERVE_PATH + "/article");
         } catch (final MalformedURLException e) {
             LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm add article] error!");
             throw new IllegalStateException(e);
@@ -105,9 +103,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
-            // Use configured host if Preference.BLOG_HOST is empty.
-            final String perferHost = preference.getString(Preference.BLOG_HOST);
-            final String blogHost = !Strings.isEmptyOrNull(perferHost) ? perferHost.toLowerCase() : Latkes.getServePath().toLowerCase();
+            final String blogHost = Latkes.getServePath();
 
             if (blogHost.contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",

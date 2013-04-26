@@ -17,7 +17,6 @@ package org.b3log.solo.util;
 
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, Mar 28, 2012
+ * @version 1.0.0.10, Apr 2, 2013
  * @since 0.3.1
  */
 public final class Comments {
@@ -204,17 +203,11 @@ public final class Comments {
 
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
 
-            try {
-                new URL(commentURL);
-
-                if (commentURL.contains("<") || commentURL.contains(">")) {
-                    throw new IllegalArgumentException();
-                }
-            } catch (final Exception e) {
+            if (!Strings.isURL(commentURL)) {
                 LOGGER.log(Level.WARNING, "Comment URL is invalid[{0}]", commentURL);
                 ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
 
-                return ret;
+                return ret;                
             }
 
             final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT).replaceAll("\\n",

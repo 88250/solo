@@ -68,7 +68,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.9, Feb 5, 2013
+ * @version 1.1.2.10, Mar 26, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -123,11 +123,6 @@ public final class ArticleProcessor {
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
-
-    /**
-     * Default update count for article random value.
-     */
-    private static final int DEFAULT_UPDATE_CNT = 10;
 
     /**
      * Shows the article view password form.
@@ -476,7 +471,7 @@ public final class ArticleProcessor {
             }
 
             Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-            
+
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
 
@@ -547,7 +542,7 @@ public final class ArticleProcessor {
             }
 
             Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-        
+
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
 
@@ -596,10 +591,10 @@ public final class ArticleProcessor {
 
             if (null == authorRet) {
                 context.getResponse().sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return;
             }
-            
+
             final JSONObject author = authorRet.getJSONObject(User.USER);
             final String authorEmail = author.optString(User.USER_EMAIL);
 
@@ -676,7 +671,7 @@ public final class ArticleProcessor {
 
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return;
             }
 
@@ -687,10 +682,10 @@ public final class ArticleProcessor {
 
             if (null == result) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                
+
                 return;
             }
-            
+
             final JSONObject author = result.getJSONObject(User.USER);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
@@ -953,6 +948,10 @@ public final class ArticleProcessor {
             filler.fillSide(request, dataModel, preference);
             Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
                 dataModel);
+
+            if (!Requests.hasBeenServed(request, response)) {
+                ArticleMgmtService.getInstance().incViewCount(articleId);
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, e.getMessage(), e);
 

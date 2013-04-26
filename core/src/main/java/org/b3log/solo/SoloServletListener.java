@@ -16,6 +16,7 @@
 package org.b3log.solo;
 
 
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
@@ -34,12 +35,14 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
+import org.b3log.solo.event.cache.RemoveCacheListener;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.event.rhythm.ArticleSender;
+import org.b3log.solo.event.rhythm.ArticleUpdater;
 import org.b3log.solo.event.symphony.CommentSender;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
@@ -55,7 +58,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.7.7, Feb 4, 2013
+ * @version 1.0.9.9, Apr 26, 2013
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -63,7 +66,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * B3log Solo version.
      */
-    public static final String VERSION = "0.5.6";
+    public static final String VERSION = "0.6.0";
 
     /**
      * Logger.
@@ -79,6 +82,23 @@ public final class SoloServletListener extends AbstractServletListener {
      * Enter escape.
      */
     public static final String ENTER_ESC = "_esc_enter_88250_";
+
+    /**
+     * B3log Rhythm address.
+     */
+    public static final String B3LOG_RHYTHM_SERVE_PATH;
+
+    /**
+     * B3log Symphony address.
+     */
+    public static final String B3LOG_SYMPHONY_SERVE_PATH;
+
+    static {
+        final ResourceBundle b3log = ResourceBundle.getBundle("b3log");
+
+        B3LOG_RHYTHM_SERVE_PATH = b3log.getString("rhythm.servePath");
+        B3LOG_SYMPHONY_SERVE_PATH = b3log.getString("symphony.servePath");
+    }
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
@@ -235,15 +255,21 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final EventManager eventManager = EventManager.getInstance();
 
+            // Comment
             eventManager.registerListener(new ArticleCommentReplyNotifier());
             eventManager.registerListener(new PageCommentReplyNotifier());
+            // Article
             eventManager.registerListener(new AddArticleGoogleBlogSearchPinger());
             eventManager.registerListener(new UpdateArticleGoogleBlogSearchPinger());
+            // Plugin
             eventManager.registerListener(new PluginRefresher());
             eventManager.registerListener(new ViewLoadEventHandler());
             // Sync
             eventManager.registerListener(new ArticleSender());
+            eventManager.registerListener(new ArticleUpdater());
             eventManager.registerListener(new CommentSender());
+            // Cache
+            eventManager.registerListener(new RemoveCacheListener());
         } catch (final Exception e) {
             LOGGER.log(Level.SEVERE, "Register event processors error", e);
             throw new IllegalStateException(e);

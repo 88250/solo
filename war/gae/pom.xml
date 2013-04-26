@@ -19,12 +19,14 @@
     <parent>
         <groupId>org.b3log</groupId>
         <artifactId>solo-war</artifactId>
-        <version>0.5.6</version>
+        <version>0.6.0</version>
     </parent>
     
     <properties>
-        <maven-gae-plugin.version>0.9.4</maven-gae-plugin.version>    
+        <maven-gae-plugin.version>0.9.5</maven-gae-plugin.version>    
         <gae.dev_sever.port>8080</gae.dev_sever.port>
+        <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
+        <gae.home>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</gae.home>
     </properties>
 
     <dependencies>
@@ -117,8 +119,9 @@
                 <version>${maven-gae-plugin.version}</version>
                 <configuration>
                     <serverId>appengine.google.com</serverId>
-                    <sdkDir>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</sdkDir>
-                    <appDir>${project.build.directory}/${project.build.finalName}</appDir>
+                    <unpackVersion>${gae.version}</unpackVersion>
+                    <appDir>${webappDirectory}</appDir>
+                    <sdkDir>${gae.home}</sdkDir>
                     <port>${gae.dev_sever.port}</port>
                     <passIn>true</passIn>
                     <!-- TODO: http://code.google.com/p/googleappengine/issues/detail?id=6928#c7 -->

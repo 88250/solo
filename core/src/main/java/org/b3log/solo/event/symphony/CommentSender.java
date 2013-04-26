@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending comment to B3log Symphony.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Nov 20, 2012
+ * @version 1.0.0.3, Mar 5, 2013
  * @since 0.5.5
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -63,18 +63,13 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     /**
-     * B3log Symphony address.
-     */
-    public static final String B3LOG_SYMPHONY_ADDRESS = "http://symphony.b3log.org:80";
-
-    /**
      * URL of adding comment to Symphony.
      */
     private static final URL ADD_COMMENT_URL;
 
     static {
         try {
-            ADD_COMMENT_URL = new URL(B3LOG_SYMPHONY_ADDRESS + "/solo/comment");
+            ADD_COMMENT_URL = new URL(SoloServletListener.B3LOG_SYMPHONY_SERVE_PATH + "/solo/comment");
         } catch (final MalformedURLException e) {
             LOGGER.log(Level.SEVERE, "Creates remote service address[symphony add comment] error!");
             throw new IllegalStateException(e);
@@ -107,7 +102,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final HTTPRequest httpRequest = new HTTPRequest();
 
             httpRequest.setURL(ADD_COMMENT_URL);
-            httpRequest.setRequestMethod(HTTPRequestMethod.PUT);
+            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject comment = new JSONObject();
 

@@ -17,6 +17,7 @@ package org.b3log.solo.api.symphony;
 
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +67,7 @@ import org.json.JSONObject;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 18, 2013
+ * @version 1.0.0.6, Mar 18, 2013
  * @since 0.5.5
  */
 @RequestProcessor
@@ -187,7 +188,19 @@ public final class CommentReceiver {
 
             final String commentName = symphonyCmt.getString("commentAuthorName");
             final String commentEmail = symphonyCmt.getString("commentAuthorEmail").trim().toLowerCase();
-            final String commentURL = "http://" + symphonyCmt.optString("commentAuthorURL");
+            String commentURL = symphonyCmt.optString("commentAuthorURL");
+
+            if (!commentURL.contains("://")) {
+                commentURL = "http://" + commentURL;
+            }
+
+            try {
+                new URL(commentURL);
+            } catch (final MalformedURLException e) {
+                LOGGER.log(Level.WARNING, "The comment URL is invalid [{0}]", commentURL);
+                commentURL = "";
+            }
+
             final String commentId = symphonyCmt.optString(Keys.OBJECT_ID);
             String commentContent = symphonyCmt.getString(Comment.COMMENT_CONTENT);
 

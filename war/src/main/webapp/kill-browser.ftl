@@ -5,8 +5,9 @@
         <title>${blogTitle}</title>
         <meta name="keywords" content="GAE 博客,blog,b3log,kill IE6" />
         <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客,Let's kill IE6" />
+        <meta name="owner" content="B3log Team" />
         <meta name="author" content="B3log Team" />
-        <meta name="generator" content="B3log" />
+        <meta name="generator" content="B3log Solo" />
         <meta name="copyright" content="B3log" />
         <meta name="revised" content="B3log, ${year}" />
         <meta http-equiv="Window-target" content="_top" />
@@ -22,9 +23,9 @@
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
-                    <div class="main">
+                    <div class="main kill">
                         ${killBrowserLabel}
-                        <img class="kill" src='${staticServePath}/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
+                        <img src='${staticServePath}/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
                         <a href="http://b3log.org" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
                         </a>

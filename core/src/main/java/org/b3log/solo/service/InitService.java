@@ -59,7 +59,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Jan 18, 2013
+ * @version 1.0.1.5, Mar 5, 2013
  * @since 0.4.0
  */
 public final class InitService {
@@ -437,6 +437,7 @@ public final class InitService {
 
         admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
         admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
+        admin.put(User.USER_URL, Latkes.getServePath());
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
         admin.put(User.USER_PASSWORD, MD5.hash(requestJSONObject.getString(User.USER_PASSWORD)));
         admin.put(UserExt.USER_ARTICLE_COUNT, 0);
@@ -529,6 +530,7 @@ public final class InitService {
         ret.put(ARTICLE_LIST_STYLE, Default.DEFAULT_ARTICLE_LIST_STYLE);
         ret.put(KEY_OF_SOLO, Default.DEFAULT_KEY_OF_SOLO);
         ret.put(FEED_OUTPUT_MODE, Default.DEFAULT_FEED_OUTPUT_MODE);
+        ret.put(FEED_OUTPUT_CNT, Default.DEFAULT_FEED_OUTPUT_CNT);
         ret.put(EDITOR_TYPE, Default.DEFAULT_EDITOR_TYPE);
 
         final String skinDirName = Default.DEFAULT_SKIN_DIR_NAME;
