@@ -93,7 +93,7 @@
             // 获取广播
             $.ajax({
                 type: "GET",
-                url: "http://symphony.b3log.org/apis/broadcasts",
+                url: "http://symphony.b3log.org:8084/apis/broadcasts",
                 dataType: "jsonp",
                 jsonp: "callback",
                 beforeSend: function() {
@@ -116,8 +116,8 @@
                         var articleLiHtml = "<li>"
                                 + "<a target='_blank' href='" + article.articlePermalink + "'>"
                                 + article.articleTitle + "</a>&nbsp; <span class='date'>" + $.bowknot.getDate(article.articleCreateTime, 1);
-                        +"</span></li>"
-                        listHTML += articleLiHtml
+                        +"</span></li>";
+                        listHTML += articleLiHtml;
                     }
                     listHTML += "</ul>";
 
@@ -136,7 +136,19 @@
                     url: latkeConfig.servePath + "/console/plugins/b3log-broadcast/chance",
                     success: function(result) {
                         if (result.sc) {
-                            $("#b3logBroadcast .module-header > button").text(result.broadcastChanceExpirationTime + "${chanceBroadcastLabel}").show();
+                            var ShowCountDown = function() {
+                                var now = new Date();
+                                var leftTime = result.broadcastChanceExpirationTime - now.getTime();
+                                var leftsecond = parseInt(leftTime / 1000);
+                                var minute = Math.floor(leftsecond / 60),
+                                        second = Math.floor(leftsecond - minute * 60);
+                                $("#b3logBroadcast .module-header > button").text("${chanceBroadcastLabel}：" + minute + ":" + second).show();
+                            };
+
+                            window.setInterval(function() {
+                                ShowCountDown();
+                            }, 1000);
+
                         } else {
                             $("#b3logBroadcast .module-header > button").hide();
                         }
