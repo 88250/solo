@@ -20,12 +20,12 @@
     Description: Web deployment descriptor on GAE. See
                  http://code.google.com/intl/en/appengine/docs/java/config/appconfig.html
                  for more details.
-    Version: 1.0.3.11, Feb 4, 2013
+    Version: 1.0.4.2, Apr 26, 2013
     Author: Liang Ding
 -->
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <application>solo-demo</application>
-    <version>056</version>
+    <version>060</version>
     
     <sessions-enabled>true</sessions-enabled>
     

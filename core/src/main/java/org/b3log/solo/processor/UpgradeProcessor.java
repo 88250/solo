@@ -26,7 +26,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
-import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.jdbc.util.Connections;
@@ -54,13 +53,10 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.1.8, Mar 11, 2013
+ * @version 1.1.1.9, Apr 26, 2013
  * @since 0.3.1
  */
 @RequestProcessor
-// TODO: 060
-// 1. Add column Preference.feedOutputCnt
-// 2. Add column User.userURL
 public final class UpgradeProcessor {
 
     /**
@@ -72,11 +68,6 @@ public final class UpgradeProcessor {
      * Article repository.
      */
     private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
-
-    /**
-     * Page repository.
-     */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
 
     /**
      * User repository.
@@ -142,10 +133,10 @@ public final class UpgradeProcessor {
                 return;
             }
 
-            if ("0.5.5".equals(version)) {
-                v055ToV056();
+            if ("0.5.6".equals(version)) {
+                v056ToV060();
             } else {
-                LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.5.0; Actually: {0}", version);
+                LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.5.6; Actually: {0}", version);
                 if (!sent) {
                     notifyUserByEmail();
                     sent = true;
@@ -162,12 +153,12 @@ public final class UpgradeProcessor {
     }
 
     /**
-     * Upgrades from version 055 to version 056.
+     * Upgrades from version 056 to version 060.
      *
      * @throws Exception upgrade fails
      */
-    private void v055ToV056() throws Exception {
-        LOGGER.info("Upgrading from version 055 to version 056....");
+    private void v056ToV060() throws Exception {
+        LOGGER.info("Upgrading from version 056 to version 060....");
 
         articleRepository.setCacheEnabled(false);
 
@@ -179,10 +170,8 @@ public final class UpgradeProcessor {
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
-            preference.put(Preference.VERSION, "0.5.6");
+            preference.put(Preference.VERSION, "0.6.0");
             preferenceRepository.update(Preference.PREFERENCE, preference);
-
-            upgradeUsers();
 
             final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
@@ -191,9 +180,13 @@ public final class UpgradeProcessor {
                 final Statement statement = connection.createStatement();
 
                 final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix");
-                final String tableName = Strings.isEmptyOrNull(tablePrefix) ? Plugin.PLUGIN : tablePrefix + '_' + Plugin.PLUGIN;
+                
+                String tableName = Strings.isEmptyOrNull(tablePrefix) ? "preference" : tablePrefix + "_preference";
 
-                statement.execute("ALTER TABLE " + tableName + " ADD setting text");
+                statement.execute("ALTER TABLE " + tableName + " ADD feedOutputCnt int");
+                
+                tableName = Strings.isEmptyOrNull(tablePrefix) ? "user" : tablePrefix + "_user";
+                statement.execute("ALTER TABLE " + tableName + " ADD userURL varchar(255)");
 
                 connection.commit();
             }
@@ -207,12 +200,12 @@ public final class UpgradeProcessor {
             }
 
             LOGGER.log(Level.SEVERE, "Upgrade failed.", e);
-            throw new Exception("Upgrade failed from version 055 to version 056");
+            throw new Exception("Upgrade failed from version 056 to version 060");
         } finally {
             articleRepository.setCacheEnabled(true);
         }
 
-        LOGGER.info("Upgraded from version 055 to version 056 successfully :-)");
+        LOGGER.info("Upgraded from version 056 to version 060 successfully :-)");
     }
 
     /**
