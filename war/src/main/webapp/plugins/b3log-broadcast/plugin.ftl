@@ -80,9 +80,9 @@
                             $("#b3logBroadcastContent").val("");
                             $("#b3logBroadcastDialog").dialog("close");
                             $("#b3logBroadcastDialog > button").next().hide();
-                            $("#b3logBroadcast .module-header > button").hide();
                             $("#b3logBroadcastTitle").prev().hide();
                             $("#b3logBroadcastContent").prev().hide();
+                            broadcastChange();
                         } else {
                             $("#b3logBroadcastDialog > button").next().show();
                         }
@@ -93,7 +93,7 @@
             // 获取广播
             $.ajax({
                 type: "GET",
-                url: "http://symphony.b3log.org:8084/apis/broadcasts",
+                url: "http://symphony.b3log.org/apis/broadcasts",
                 dataType: "jsonp",
                 jsonp: "callback",
                 beforeSend: function() {
@@ -128,33 +128,50 @@
                 }
             });
 
-
             // 广播机会
-            setInterval(function() {
+            var interval;
+            var broadcastChange = function() {
                 $.ajax({
                     type: "GET",
                     url: latkeConfig.servePath + "/console/plugins/b3log-broadcast/chance",
+                    cache: false,
                     success: function(result) {
                         if (result.sc) {
-                            var ShowCountDown = function() {
+                            var showCountDown = function() {
                                 var now = new Date();
                                 var leftTime = result.broadcastChanceExpirationTime - now.getTime();
                                 var leftsecond = parseInt(leftTime / 1000);
-                                var minute = Math.floor(leftsecond / 60),
-                                        second = Math.floor(leftsecond - minute * 60);
-                                $("#b3logBroadcast .module-header > button").text("${chanceBroadcastLabel}：" + minute + ":" + second).show();
+                                if (leftsecond < 0) {
+                                    $("#b3logBroadcast .module-header > button").hide();
+                                    clearInterval(interval);
+                                    interval = undefined;
+                                    return;
+                                } else {
+                                    var minute = Math.floor(leftsecond / 60),
+                                            second = Math.floor(leftsecond - minute * 60);
+                                    $("#b3logBroadcast .module-header > button").text("${chanceBroadcastLabel1}" + minute + ":" + second).show();
+                                }
                             };
 
-                            window.setInterval(function() {
-                                ShowCountDown();
-                            }, 1000);
-
+                            if (!interval) {
+                                interval = window.setInterval(function() {
+                                    showCountDown();
+                                }, 1000);
+                            }
                         } else {
                             $("#b3logBroadcast .module-header > button").hide();
+                            clearInterval(interval);
+                            interval = undefined;
                         }
                     }
                 });
+            };
+
+            setInterval(function() {
+                broadcastChange();
             }, 10000);
+            
+            broadcastChange();
         }
     };
     /*
