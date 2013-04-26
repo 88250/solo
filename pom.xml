@@ -28,7 +28,7 @@
     <!-- Properties -->
     <properties>
         <servlet.version>2.5</servlet.version>
-        <org.b3log.solo.version>0.5.6</org.b3log.solo.version>
+        <org.b3log.solo.version>0.6.0</org.b3log.solo.version>
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
         <org.b3log.latke-gae.version>0.5.0-SNAPSHOT</org.b3log.latke-gae.version>
         <org.b3log.latke-bae.version>0.5.0-SNAPSHOT</org.b3log.latke-bae.version>

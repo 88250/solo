@@ -18,7 +18,10 @@ package org.b3log.solo.processor;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
@@ -28,7 +31,10 @@ import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.jdbc.JdbcFactory;
 import org.b3log.latke.repository.jdbc.util.Connections;
+import org.b3log.latke.repository.jdbc.util.FieldDefinition;
+import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -36,7 +42,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
@@ -166,13 +171,7 @@ public final class UpgradeProcessor {
 
         try {
             transaction = userRepository.beginTransaction();
-
-            // Upgrades preference model
-            final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
-
-            preference.put(Preference.VERSION, "0.6.0");
-            preferenceRepository.update(Preference.PREFERENCE, preference);
-
+            
             final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
             if (RuntimeEnv.LOCAL == runtimeEnv || RuntimeEnv.BAE == runtimeEnv) {
@@ -180,16 +179,34 @@ public final class UpgradeProcessor {
                 final Statement statement = connection.createStatement();
 
                 final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix");
-                
+
                 String tableName = Strings.isEmptyOrNull(tablePrefix) ? "preference" : tablePrefix + "_preference";
 
                 statement.execute("ALTER TABLE " + tableName + " ADD feedOutputCnt int");
-                
+
                 tableName = Strings.isEmptyOrNull(tablePrefix) ? "user" : tablePrefix + "_user";
                 statement.execute("ALTER TABLE " + tableName + " ADD userURL varchar(255)");
 
                 connection.commit();
+
+                tableName = Strings.isEmptyOrNull(tablePrefix) ? "option" : tablePrefix + "_option";
+                final Map<String, List<FieldDefinition>> map = JdbcRepositories.getRepositoriesMap();
+
+                try {
+                    JdbcFactory.createJdbcFactory().createTable(tableName, map.get(tableName));
+                } catch (final SQLException e) {
+                    LOGGER.log(Level.SEVERE, "createTable[" + tableName + "] error", e);
+                }
             }
+            
+            // Upgrades preference model
+            final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
+
+            preference.put(Preference.VERSION, "0.6.0");
+            preference.put(Preference.FEED_OUTPUT_CNT, Preference.Default.DEFAULT_FEED_OUTPUT_CNT);
+            preferenceRepository.update(Preference.PREFERENCE, preference);
+
+            upgradeUsers();
 
             transaction.commit();
 
@@ -222,9 +239,8 @@ public final class UpgradeProcessor {
 
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.getJSONObject(i);
-            final String oldPwd = user.optString(User.USER_PASSWORD);
 
-            user.put(User.USER_PASSWORD, MD5.hash(oldPwd));
+            user.put(User.USER_URL, Latkes.getServePath());
 
             userRepository.update(user.optString(Keys.OBJECT_ID), user);
 
