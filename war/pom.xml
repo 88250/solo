@@ -35,7 +35,7 @@
             <artifactId>solo-core</artifactId>
         </dependency>
     </dependencies>
-    
+
     <build>
         <resources>
             <resource>
@@ -45,9 +45,9 @@
                 </excludes>
             </resource>
         </resources>
-        
+
         <plugins>
-            <plugin>            
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1.1</version>
@@ -56,15 +56,31 @@
                     <warSourceDirectory>../src/main/webapp</warSourceDirectory>
                 </configuration>
             </plugin>
-            
+
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>maven-jetty-plugin</artifactId>
+                <version>6.1.22</version>
+                <configuration>
+                    <stopKey>stop</stopKey>
+                    <stopPort>4500</stopPort>
+                    <webAppSourceDirectory>../src/main/webapp</webAppSourceDirectory>
+                    <classesDirectory>${basedir}/target/${project.build.finalName}/WEB-INF/classes</classesDirectory>
+                    <contextPath>/</contextPath>
+
+                    <reload>manual</reload>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.b3log.latke</groupId>
                 <artifactId>maven-min-plugin</artifactId>
                 <version>${maven-min-plugin.version}</version>
                 <inherited>false</inherited>
-                
+
                 <configuration>
-                    <suffix>.min</suffix> <!-- Common#MINI_POSTFIX_VALUE -->
+                    <suffix>.min</suffix>
+                    <!-- Common#MINI_POSTFIX_VALUE -->
                     <adminJSs>
                         <param>admin.js</param>
                         <param>editor.js</param>
@@ -87,7 +103,7 @@
                         <param>main.js</param>
                         <param>about.js</param>
                     </adminJSs>
-                    
+
                     <cssSourceDir>${basedir}/src/main/webapp/css</cssSourceDir>
                     <cssTargetDir>${basedir}/src/main/webapp/css</cssTargetDir>
 
@@ -103,7 +119,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
         </plugins>
     </build>
 </project>
