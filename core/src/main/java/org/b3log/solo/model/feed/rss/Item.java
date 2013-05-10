@@ -18,8 +18,8 @@ package org.b3log.solo.model.feed.rss;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
-import java.util.TimeZone;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 
@@ -27,7 +27,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
  * Item.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.1, Nov 19, 2011
+ * @version 1.1.0.2, May 10, 2013
  * @since 0.3.1
  */
 public final class Item {
@@ -273,7 +273,7 @@ public final class Item {
         }
 
         stringBuilder.append(START_PUB_DATE_ELEMENT);
-        stringBuilder.append(DateFormatUtils.format(pubDate, "EEE, dd MMM yyyy HH:mm:ss z", TimeZone.getTimeZone(Channel.TIME_ZONE_ID)));
+        stringBuilder.append(DateFormatUtils.format(pubDate, "EEE, dd MMM yyyy HH:mm:ss Z", Locale.US));
         stringBuilder.append(END_PUB_DATE_ELEMENT).append("</item>");
 
         return stringBuilder.toString();
