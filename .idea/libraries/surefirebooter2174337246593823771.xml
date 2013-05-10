@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="surefirebooter2174337246593823771">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/war/mysql/target/surefire/surefirebooter2174337246593823771.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

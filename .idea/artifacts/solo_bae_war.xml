@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="solo-bae:war">
+    <output-path>$PROJECT_DIR$/war/bae/target</output-path>
+    <root id="archive" name="b3log-solo-bae.war">
+      <element id="artifact" artifact-name="solo-bae:war exploded" />
+    </root>
+  </artifact>
+</component>

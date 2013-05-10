@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.google.appengine:appengine-testing:1.7.7">
+    <CLASSES>
+      <root url="jar://D:/repo/com/google/appengine/appengine-testing/1.7.7/appengine-testing-1.7.7.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/repo/com/google/appengine/appengine-testing/1.7.7/appengine-testing-1.7.7-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/repo/com/google/appengine/appengine-testing/1.7.7/appengine-testing-1.7.7-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

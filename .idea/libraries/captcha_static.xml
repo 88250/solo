@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="captcha_static">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/war/src/main/resources/captcha_static.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

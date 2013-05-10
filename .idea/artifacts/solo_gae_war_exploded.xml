@@ -1,0 +1,27 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="solo-gae:war exploded">
+    <output-path>$PROJECT_DIR$/war/gae/target/b3log-solo-gae</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="solo-gae/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="solo-gae" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.b3log:latke:0.5.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:1.4" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.5" />
+          <element id="library" level="project" name="Maven: javassist:javassist:3.12.1.GA" />
+          <element id="library" level="project" name="Maven: org.b3log:latke-gae:0.5.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: com.google.appengine:appengine-api-1.0-sdk:1.7.7" />
+          <element id="library" level="project" name="Maven: org.freemarker:freemarker-gae:2.3.19" />
+          <element id="archive" name="b3log-solo.jar">
+            <element id="module-output" name="solo-core" />
+          </element>
+          <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.5.2" />
+          <element id="library" level="project" name="Maven: org.tautua.markdownpapers:markdownpapers-core:1.3.2" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

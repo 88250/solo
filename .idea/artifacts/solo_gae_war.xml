@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="solo-gae:war">
+    <output-path>$PROJECT_DIR$/war/gae/target</output-path>
+    <root id="archive" name="b3log-solo-gae.war">
+      <element id="artifact" artifact-name="solo-gae:war exploded" />
+    </root>
+  </artifact>
+</component>

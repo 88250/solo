@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.b3log:latke-repository-mysql:0.5.0-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://D:/repo/org/b3log/latke-repository-mysql/0.5.0-SNAPSHOT/latke-repository-mysql-0.5.0-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/repo/org/b3log/latke-repository-mysql/0.5.0-SNAPSHOT/latke-repository-mysql-0.5.0-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/repo/org/b3log/latke-repository-mysql/0.5.0-SNAPSHOT/latke-repository-mysql-0.5.0-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

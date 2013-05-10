@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/solo.iml" filepath="$PROJECT_DIR$/solo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/war/bae/solo-bae.iml" filepath="$PROJECT_DIR$/war/bae/solo-bae.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/solo-core.iml" filepath="$PROJECT_DIR$/core/solo-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/war/gae/solo-gae.iml" filepath="$PROJECT_DIR$/war/gae/solo-gae.iml" />
+      <module fileurl="file://$PROJECT_DIR$/war/h2/solo-h2.iml" filepath="$PROJECT_DIR$/war/h2/solo-h2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/war/mysql/solo-mysql.iml" filepath="$PROJECT_DIR$/war/mysql/solo-mysql.iml" />
+      <module fileurl="file://$PROJECT_DIR$/war/solo-war.iml" filepath="$PROJECT_DIR$/war/solo-war.iml" />
+    </modules>
+  </component>
+</project>
+

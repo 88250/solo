@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.freemarker:freemarker-gae:2.3.19">
+    <CLASSES>
+      <root url="jar://D:/repo/org/freemarker/freemarker-gae/2.3.19/freemarker-gae-2.3.19.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/repo/org/freemarker/freemarker-gae/2.3.19/freemarker-gae-2.3.19-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/repo/org/freemarker/freemarker-gae/2.3.19/freemarker-gae-2.3.19-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

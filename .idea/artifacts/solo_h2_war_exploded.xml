@@ -1,0 +1,33 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="solo-h2:war exploded">
+    <output-path>$PROJECT_DIR$/war/h2/target/b3log-solo-h2</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="solo-h2/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="solo-h2" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.b3log:latke:0.5.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: org.freemarker:freemarker:2.3.19" />
+          <element id="library" level="project" name="Maven: javax.mail:mail:1.4" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:1.4" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.5" />
+          <element id="library" level="project" name="Maven: javassist:javassist:3.12.1.GA" />
+          <element id="library" level="project" name="Maven: com.h2database:h2:1.3.170" />
+          <element id="library" level="project" name="Maven: org.jboss:jboss-vfs:3.1.0.Final" />
+          <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.0.0.CR1" />
+          <element id="archive" name="b3log-solo.jar">
+            <element id="module-output" name="solo-core" />
+          </element>
+          <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.5.2" />
+          <element id="library" level="project" name="Maven: org.tautua.markdownpapers:markdownpapers-core:1.3.2" />
+          <element id="library" level="project" name="Maven: org.b3log:latke-repository-h2:0.5.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-simple:1.5.10" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.5.10" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

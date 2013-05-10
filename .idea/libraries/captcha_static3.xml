@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="captcha_static3">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/war/h2/target/b3log-solo-h2/WEB-INF/classes/captcha_static.zip!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
