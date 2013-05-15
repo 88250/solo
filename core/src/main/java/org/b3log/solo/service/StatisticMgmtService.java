@@ -81,6 +81,10 @@ public final class StatisticMgmtService {
      * @throws ServiceException 
      */
     public void flushStatistic() throws ServiceException {
+        if (!Latkes.isDataCacheEnabled()) {
+            return;
+        }
+
         final JSONObject statistic = (JSONObject) statisticRepository.getCache().get(
             Statistics.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC);
 

@@ -17,16 +17,20 @@ package org.b3log.solo.repository.impl;
 
 
 import java.util.logging.Logger;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.util.Statistics;
+import org.json.JSONObject;
 
 
 /**
  * Statistic repository.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @version 1.0.0.2, May 15, 2013
  * @since 0.3.1
  */
 public final class StatisticRepositoryImpl extends AbstractRepository implements StatisticRepository {
@@ -40,6 +44,15 @@ public final class StatisticRepositoryImpl extends AbstractRepository implements
      * Singleton.
      */
     private static final StatisticRepositoryImpl SINGLETON = new StatisticRepositoryImpl(Statistic.STATISTIC);
+
+    @Override
+    public void update(final String id, final JSONObject jsonObject) throws RepositoryException {
+        super.update(id, jsonObject);
+
+        if (Latkes.isDataCacheEnabled()) {
+            getCache().put(Statistics.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC, jsonObject);
+        }
+    }
 
     /**
      * Gets the {@link StatisticRepositoryImpl} singleton.
