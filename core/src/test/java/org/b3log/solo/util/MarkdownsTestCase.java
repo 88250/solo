@@ -29,7 +29,7 @@ import org.testng.Assert;
  * {@link org.b3log.solo.util.Markdowns} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 11, 2012
+ * @version 1.0.0.2, May 16, 2013
  * @since 0.4.5
  */
 public final class MarkdownsTestCase {
@@ -75,5 +75,11 @@ public final class MarkdownsTestCase {
         
         System.out.println("Stopwatch: ");
         System.out.println(Stopwatchs.getTimingStat());
+        
+        // HTML entity test
+        markdownText = "The first: &#39; <br/> The second: &AElig;";
+        html = Markdowns.toHTML(markdownText);
+        
+        System.out.println(html);
     }
 }
