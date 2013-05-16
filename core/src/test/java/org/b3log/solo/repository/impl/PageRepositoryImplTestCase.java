@@ -19,7 +19,6 @@ import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.json.JSONObject;
