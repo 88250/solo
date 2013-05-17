@@ -59,7 +59,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.5, Mar 5, 2013
+ * @version 1.0.1.6, May 17, 2013
  * @since 0.4.0
  */
 public final class InitService {
@@ -517,7 +517,6 @@ public final class InitService {
         ret.put(RECENT_COMMENT_DISPLAY_CNT, Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
         ret.put(BLOG_TITLE, Default.DEFAULT_BLOG_TITLE);
         ret.put(BLOG_SUBTITLE, Default.DEFAULT_BLOG_SUBTITLE);
-        ret.put(BLOG_HOST, Latkes.getServePath());
         ret.put(ADMIN_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
         ret.put(LOCALE_STRING, Default.DEFAULT_LANGUAGE);
         ret.put(ENABLE_ARTICLE_UPDATE_HINT, Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);

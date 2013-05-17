@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Preference console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Mar 5, 2013
+ * @version 1.0.0.6, May 17, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -267,7 +267,6 @@ public final class PreferenceConsole {
      *         "randomArticlesDisplayCount": int,
      *         "blogTitle": "",
      *         "blogSubtitle": "",
-     *         "blogHost": "",
      *         "localeString": "",
      *         "timeZoneId": "",
      *         "skinName": "",
@@ -357,7 +356,6 @@ public final class PreferenceConsole {
      *         "blogTitle": "",
      *         "blogSubtitle": "",
      *         "skinDirName": "",
-     *         "blogHost": "",
      *         "localeString": "",
      *         "timeZoneId": "",
      *         "noticeBoard": "",

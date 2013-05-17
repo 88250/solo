@@ -62,6 +62,8 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @RequestProcessor
+// TODO:
+// 1. Removes preference.blogHost from repository
 public final class UpgradeProcessor {
 
     /**

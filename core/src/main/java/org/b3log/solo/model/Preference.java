@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.8, Mar 5, 2013
+ * @version 1.1.0.9, May 17, 2013
  * @since 0.3.1
  */
 public final class Preference {
@@ -98,11 +98,6 @@ public final class Preference {
      * Article list pagination window size.
      */
     public static final String ARTICLE_LIST_PAGINATION_WINDOW_SIZE = "articleListPaginationWindowSize";
-
-    /**
-     * Blog host.
-     */
-    public static final String BLOG_HOST = "blogHost";
 
     /**
      * Administrator's email.
@@ -233,7 +228,7 @@ public final class Preference {
      * Default preference.
      *
      * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.1.0.8, Sep 18, 2012
+     * @version 1.1.0.9, May 17, 2013
      * @since 0.3.1
      */
     public static final class Default {
@@ -304,11 +299,6 @@ public final class Preference {
          * Default enable article update hint.
          */
         public static final boolean DEFAULT_ENABLE_ARTICLE_UPDATE_HINT = true;
-
-        /**
-         * Default enable post to Tencent microblog.
-         */
-        public static final boolean DEFAULT_ENABLE_POST_TO_TENCENT_MICROBLOG = false;
 
         /**
          * Default notice board.

@@ -240,8 +240,6 @@ public final class LoginProcessor {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         }
 
-        final HttpServletResponse response = context.getResponse();
-
         renderPage(context, "reset-pwd.ftl", destinationURL);
     }
 
@@ -429,7 +427,6 @@ public final class LoginProcessor {
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
-        dataModel.put(Preference.BLOG_HOST, preference.getString(Preference.BLOG_HOST));
 
         Keys.fillServer(dataModel);
         Keys.fillRuntime(dataModel);

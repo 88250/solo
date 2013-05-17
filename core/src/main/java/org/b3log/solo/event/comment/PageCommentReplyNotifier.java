@@ -19,6 +19,7 @@ package org.b3log.solo.event.comment;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -41,7 +42,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.1, Oct 31, 2011
+ * @version 1.0.1.2, May 17, 2013
  * @since 0.3.1
  */
 public final class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> {
@@ -110,8 +111,7 @@ public final class PageCommentReplyNotifier extends AbstractEventListener<JSONOb
 
             message.setSubject(mailSubject);
             final String pageTitle = page.getString(Page.PAGE_TITLE);
-            final String blogHost = preference.getString(Preference.BLOG_HOST);
-            final String pageLink = "http://" + blogHost + page.getString(Page.PAGE_PERMALINK);
+            final String pageLink = Latkes.getServePath() + page.getString(Page.PAGE_PERMALINK);
             final String commentName = comment.getString(Comment.COMMENT_NAME);
             final String commentURL = comment.getString(Comment.COMMENT_URL);
             String commenter;
@@ -122,7 +122,7 @@ public final class PageCommentReplyNotifier extends AbstractEventListener<JSONOb
                 commenter = commentName;
             }
 
-            final String mailBody = replyNotificationTemplate.getString("body").replace("${postLink}", pageLink).replace("${postTitle}", pageTitle).replace("${replier}", commenter).replace("${replyURL}", "http://" + blogHost + commentSharpURL).replace(
+            final String mailBody = replyNotificationTemplate.getString("body").replace("${postLink}", pageLink).replace("${postTitle}", pageTitle).replace("${replier}", commenter).replace("${replyURL}", Latkes.getServePath() + commentSharpURL).replace(
                 "${replyContent}", commentContent);
 
             message.setHtmlBody(mailBody);

@@ -283,7 +283,6 @@ public final class ChanceProcessor {
             final String clientVersion = SoloServletListener.VERSION;
             final String clientTitle = preference.getString(Preference.BLOG_TITLE);
             final String clientRuntimeEnv = Latkes.getRuntimeEnv().name();
-            final String blogHost = Latkes.getServePath();
 
             final JSONObject broadcastRequest = new JSONObject();
 
@@ -294,7 +293,7 @@ public final class ChanceProcessor {
             broadcastRequest.put("clientTitle", clientTitle);
             broadcastRequest.put("clientVersion", clientVersion);
             broadcastRequest.put("clientName", clientName);
-            broadcastRequest.put("clientHost", blogHost);
+            broadcastRequest.put("clientHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
 
             final HTTPRequest httpRequest = new HTTPRequest();
 
@@ -308,9 +307,9 @@ public final class ChanceProcessor {
 
             if (HttpServletResponse.SC_OK == result.getResponseCode()) {
                 ret.put(Keys.STATUS_CODE, true);
-                
+
                 optionMgmtService.removeOption(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
-                
+
                 LOGGER.info("Submits broadcast successfully");
 
                 return;

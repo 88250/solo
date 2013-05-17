@@ -207,7 +207,7 @@ public final class AdminConsole {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.putAll(langs);
-
+        Keys.fillServer(dataModel);
         dataModel.put(Preference.LOCALE_STRING, locale.toString());
 
         JSONObject preference = null;

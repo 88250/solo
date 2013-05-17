@@ -103,9 +103,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
-            final String blogHost = Latkes.getServePath();
-
-            if (blogHost.contains("localhost")) {
+            if (Latkes.getServePath().contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
                     new Object[] {originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
                 return;
@@ -134,7 +132,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Common.BLOG_VERSION, SoloServletListener.VERSION);
             requestJSONObject.put(Common.BLOG, "B3log Solo");
             requestJSONObject.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
-            requestJSONObject.put(Preference.BLOG_HOST, blogHost);
+            requestJSONObject.put("blogHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
             requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
             requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());

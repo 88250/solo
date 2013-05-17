@@ -20,7 +20,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jun 23, 2011
+ * @version 1.0.0.3, May 17, 2013
  * @see AddArticleGoogleBlogSearchPinger
  * @since 0.3.1
  */
@@ -84,19 +84,17 @@ public final class UpdateArticleGoogleBlogSearchPinger extends AbstractEventList
             articleTitle = article.getString(Article.ARTICLE_TITLE);
             final JSONObject preference = PreferenceQueryService.getInstance().getPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase().trim();
 
-            if ("localhost".equals(blogHost.split(":")[0].trim())) {
+            if (Latkes.getServePath().contains("localhost")) {
                 LOGGER.log(Level.INFO,
                     "Blog Solo runs on local server, so should not ping " + "Google Blog Search Service for the article[title={0}]",
                     new Object[] {article.getString(Article.ARTICLE_TITLE)});
                 return;
             }
-            blogHost = StringUtils.removeEnd("http://" + blogHost, "/");
 
-            final String articlePermalink = blogHost + article.getString(Article.ARTICLE_PERMALINK);
+            final String articlePermalink = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
             final String spec = "http://blogsearch.google.com/ping?name=" + URLEncoder.encode(blogTitle, "UTF-8") + "&url="
-                + URLEncoder.encode(blogHost, "UTF-8") + "&changesURL=" + URLEncoder.encode(articlePermalink, "UTF-8");
+                + URLEncoder.encode(Latkes.getServePath(), "UTF-8") + "&changesURL=" + URLEncoder.encode(articlePermalink, "UTF-8");
 
             LOGGER.log(Level.FINER,
                 "Request Google Blog Search Service API[{0}] while updateing " + "an article[title=" + articleTitle + "]", spec);

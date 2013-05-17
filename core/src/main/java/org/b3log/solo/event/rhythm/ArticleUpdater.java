@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * </p>
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Mar 19, 2013
+ * @version 1.0.0.1, May 17, 2013
  * @since 0.6.0
  */
 public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
@@ -102,9 +102,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
-            final String blogHost = Latkes.getServePath();
-
-            if (blogHost.contains("localhost")) {
+            if (Latkes.getServePath().contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
                     new Object[] {originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
                 return;
@@ -133,7 +131,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Common.BLOG_VERSION, SoloServletListener.VERSION);
             requestJSONObject.put(Common.BLOG, "B3log Solo");
             requestJSONObject.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
-            requestJSONObject.put(Preference.BLOG_HOST, blogHost);
+            requestJSONObject.put("blogHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
             requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
             requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());

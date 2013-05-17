@@ -57,7 +57,7 @@
                         <label for="blogHost">${blogHost1Label}</label>
                     </th>
                     <td>
-                        <input id="blogHost" type="text"/>
+                        <input id="blogHost" type="text" value="${servePath}" readonly="true" />
                     </td>
                 </tr>
                 <tr>

@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
@@ -40,7 +41,7 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.10, Apr 2, 2013
+ * @version 1.0.0.11, May 17, 2013
  * @since 0.3.1
  */
 public final class Comments {
@@ -207,7 +208,7 @@ public final class Comments {
                 LOGGER.log(Level.WARNING, "Comment URL is invalid[{0}]", commentURL);
                 ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
 
-                return ret;                
+                return ret;
             }
 
             final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT).replaceAll("\\n",
@@ -272,7 +273,6 @@ public final class Comments {
         }
 
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-        final String blogHost = preference.getString(Preference.BLOG_HOST);
         boolean isArticle = true;
         String title = articleOrPage.optString(Article.ARTICLE_TITLE);
 
@@ -286,24 +286,24 @@ public final class Comments {
 
         message.setFrom(adminEmail);
         message.addRecipient(adminEmail);
-        String mailSubject = null;
-        String articleOrPageURL = null;
-        String mailBody = null;
+        String mailSubject;
+        String articleOrPageURL;
+        String mailBody;
 
         if (isArticle) {
             mailSubject = blogTitle + ": New comment on article [" + title + "]";
-            articleOrPageURL = "http://" + blogHost + articleOrPage.getString(Article.ARTICLE_PERMALINK);
+            articleOrPageURL = Latkes.getServePath() + articleOrPage.getString(Article.ARTICLE_PERMALINK);
             mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Article");
         } else {
             mailSubject = blogTitle + ": New comment on page [" + title + "]";
-            articleOrPageURL = "http://" + blogHost + articleOrPage.getString(Page.PAGE_PERMALINK);
+            articleOrPageURL = Latkes.getServePath() + articleOrPage.getString(Page.PAGE_PERMALINK);
             mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Page");
         }
 
         message.setSubject(mailSubject);
         final String commentName = comment.getString(Comment.COMMENT_NAME);
         final String commentURL = comment.getString(Comment.COMMENT_URL);
-        String commenter = null;
+        String commenter;
 
         if (!"http://".equals(commentURL)) {
             commenter = "<a target=\"_blank\" " + "href=\"" + commentURL + "\">" + commentName + "</a>";
@@ -311,7 +311,7 @@ public final class Comments {
             commenter = commentName;
         }
 
-        mailBody = mailBody.replace("{articleOrPageURL}", articleOrPageURL).replace("{title}", title).replace("{commentContent}", commentContent).replace("{commentSharpURL}", blogHost + commentSharpURL).replace(
+        mailBody = mailBody.replace("{articleOrPageURL}", articleOrPageURL).replace("{title}", title).replace("{commentContent}", commentContent).replace("{commentSharpURL}", Latkes.getServePath() + commentSharpURL).replace(
             "{commenter}", commenter);
         message.setHtmlBody(mailBody);
 

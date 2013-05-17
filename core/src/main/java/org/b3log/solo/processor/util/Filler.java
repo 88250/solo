@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.4, Feb 5, 2013
+ * @version 1.0.6.5, May 17, 2013
  * @since 0.3.1
  */
 public final class Filler {
@@ -487,9 +487,7 @@ public final class Filler {
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
 
             dataModel.put(Preference.BLOG_TITLE, blogTitle);
-            final String blogHost = preference.getString(Preference.BLOG_HOST);
-
-            dataModel.put(Preference.BLOG_HOST, blogHost);
+            dataModel.put("blogHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
 
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());

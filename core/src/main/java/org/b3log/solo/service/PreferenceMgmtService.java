@@ -27,7 +27,6 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.repository.RepositoryException;
@@ -122,18 +121,6 @@ public final class PreferenceMgmtService {
         final Transaction transaction = preferenceRepository.beginTransaction();
 
         try {
-            String blogHost = preference.getString(BLOG_HOST).toLowerCase().trim();
-
-            if (StringUtils.startsWithIgnoreCase(blogHost, "http://")) {
-                blogHost = blogHost.substring("http://".length());
-            }
-            if (blogHost.endsWith("/")) {
-                blogHost = blogHost.substring(0, blogHost.length() - 1);
-            }
-
-            LOGGER.log(Level.FINER, "Blog Host[{0}]", blogHost);
-            preference.put(BLOG_HOST, blogHost);
-
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             final String skinName = Skins.getSkinName(skinDirName);
 

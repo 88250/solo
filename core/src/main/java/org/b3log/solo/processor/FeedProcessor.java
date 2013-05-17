@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
@@ -69,7 +70,7 @@ import org.json.JSONObject;
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.3, Mar 5, 2013
+ * @version 1.1.0.4, May 17, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -123,15 +124,14 @@ public final class FeedProcessor {
 
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE);
-            final String blogHost = preference.getString(Preference.BLOG_HOST);
             final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
             feed.setUpdated(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
-            feed.setLink("http://" + blogHost + "/blog-articles-feed.do");
-            feed.setId("http://" + blogHost + "/");
+            feed.setLink(Latkes.getServePath() + "/blog-articles-feed.do");
+            feed.setId(Latkes.getServePath() + "/");
 
             final List<Filter> filters = new ArrayList<Filter>();
 
@@ -169,7 +169,7 @@ public final class FeedProcessor {
 
                 entry.setUpdated(updated);
 
-                final String link = "http://" + blogHost + article.getString(Article.ARTICLE_PERMALINK);
+                final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
 
                 entry.setLink(link);
                 entry.setId(link);
@@ -250,15 +250,14 @@ public final class FeedProcessor {
 
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE) + ", " + tagTitle;
-            final String blogHost = preference.getString(Preference.BLOG_HOST);
             final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
             feed.setUpdated(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
-            feed.setLink("http://" + blogHost + "/tag-articles-feed.do");
-            feed.setId("http://" + blogHost + "/");
+            feed.setLink(Latkes.getServePath() + "/tag-articles-feed.do");
+            feed.setId(Latkes.getServePath() + "/");
 
             final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, outputCnt);
             final JSONArray tagArticleRelations = tagArticleResult.getJSONArray(Keys.RESULTS);
@@ -306,7 +305,7 @@ public final class FeedProcessor {
                 final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
 
                 entry.setUpdated(updated);
-                final String link = "http://" + blogHost + article.getString(Article.ARTICLE_PERMALINK);
+                final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
 
                 entry.setLink(link);
                 entry.setId(link);
@@ -364,13 +363,12 @@ public final class FeedProcessor {
 
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE);
-            final String blogHost = preference.getString(Preference.BLOG_HOST);
             final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             channel.setLastBuildDate(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
-            channel.setLink("http://" + blogHost);
-            channel.setAtomLink("http://" + blogHost + "/blog-articles-rss.do");
+            channel.setLink(Latkes.getServePath());
+            channel.setAtomLink(Latkes.getServePath() + "/blog-articles-rss.do");
             channel.setGenerator("B3log Solo, ver " + SoloServletListener.VERSION);
             final String localeString = preference.getString(Preference.LOCALE_STRING);
             final String country = Locales.getCountry(localeString).toLowerCase();
@@ -414,7 +412,7 @@ public final class FeedProcessor {
                 final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
 
                 item.setPubDate(pubDate);
-                final String link = "http://" + blogHost + article.getString(Article.ARTICLE_PERMALINK);
+                final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
 
                 item.setLink(link);
                 item.setGUID(link);
@@ -498,13 +496,12 @@ public final class FeedProcessor {
 
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
             final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE) + ", " + tagTitle;
-            final String blogHost = preference.getString(Preference.BLOG_HOST);
             final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             channel.setLastBuildDate(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
-            channel.setLink("http://" + blogHost);
-            channel.setAtomLink("http://" + blogHost + "/tag-articles-rss.do");
+            channel.setLink(Latkes.getServePath());
+            channel.setAtomLink(Latkes.getServePath() + "/tag-articles-rss.do");
             channel.setGenerator("B3log Solo, ver " + SoloServletListener.VERSION);
             final String localeString = preference.getString(Preference.LOCALE_STRING);
             final String country = Locales.getCountry(localeString).toLowerCase();
@@ -559,7 +556,7 @@ public final class FeedProcessor {
                 final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
 
                 item.setPubDate(pubDate);
-                final String link = "http://" + blogHost + article.getString(Article.ARTICLE_PERMALINK);
+                final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
 
                 item.setLink(link);
                 item.setGUID(link);

@@ -29,6 +29,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
@@ -73,7 +74,7 @@ import org.jsoup.Jsoup;
  * </p>
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.10, Mar 19, 2013
+ * @version 1.0.0.11, May 17, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -459,8 +460,7 @@ public final class MetaWeblogAPI {
         final StringBuilder stringBuilder = new StringBuilder(
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data>");
 
-        final JSONObject preference = preferenceQueryService.getPreference();
-        final String categories = buildCategories(preference);
+        final String categories = buildCategories();
 
         stringBuilder.append(categories);
 
@@ -583,17 +583,12 @@ public final class MetaWeblogAPI {
     }
 
     /**
-     * Builds categories (array of category info structs) with the specified 
-     * preference.
+     * Builds categories (array of category info structs) with the specified preference.
      * 
-     * @param preference the specified preference
      * @return blog info XML
      * @throws Exception exception 
      */
-    private String buildCategories(final JSONObject preference)
-        throws Exception {
-        final String blogHost = "http://" + preference.getString(Preference.BLOG_HOST);
-
+    private String buildCategories() throws Exception {
         final StringBuilder stringBuilder = new StringBuilder();
 
         final List<JSONObject> tags = tagQueryService.getTags();
@@ -610,12 +605,11 @@ public final class MetaWeblogAPI {
 
             stringBuilder.append("<member><name>categoryid</name>").append("<value>").append(tagId).append("</value></member>");
 
-            stringBuilder.append("<member><name>htmlUrl</name>").append("<value>").append(blogHost).append("/tags/").append(tagTitle).append(
+            stringBuilder.append("<member><name>htmlUrl</name>").append("<value>").append(Latkes.getServePath()).append("/tags/").append(tagTitle).append(
                 "</value></member>");
 
-            stringBuilder.append("<member><name>rsslUrl</name>").append("<value>").append(blogHost).append("/tag-articles-rss.do?oId=").append(tagId).append(
+            stringBuilder.append("<member><name>rsslUrl</name>").append("<value>").append(Latkes.getServePath()).append("/tag-articles-rss.do?oId=").append(tagId).append(
                 "</value></member>");
-
             stringBuilder.append("</struct></value>");
         }
 
@@ -635,12 +629,10 @@ public final class MetaWeblogAPI {
 
         final String blogTitle = StringEscapeUtils.escapeXml(preference.getString(Preference.BLOG_TITLE));
 
-        final String blogURL = "http://" + preference.getString(Preference.BLOG_HOST);
-
         final StringBuilder stringBuilder = new StringBuilder("<member><name>blogid</name><value>").append(blogId).append(
             "</value></member>");
 
-        stringBuilder.append("<member><name>url</name><value>").append(blogURL).append("</value></member>");
+        stringBuilder.append("<member><name>url</name><value>").append(Latkes.getServePath()).append("</value></member>");
         stringBuilder.append("<member><name>blogName</name><value>").append(blogTitle).append("</value></member>");
 
         return stringBuilder.toString();

@@ -45,12 +45,6 @@ admin.preference = {
                 
                 var preference = result.preference;
                 
-                // 线上环境严禁使用 localhost, 默认将其设为 host
-                if (preference.blogHost.indexOf("localhost") > -1 && Label.miniPostfix === ".min") {
-                    preference.blogHost = window.location.host;
-                    $("#tipMsg").text(Label.resetBlogHostLabel);
-                }
-                
                 $("#metaKeywords").val(preference.metaKeywords),
                 $("#metaDescription").val(preference.metaDescription),
                 $("#blogTitle").val(preference.blogTitle),
@@ -61,7 +55,6 @@ admin.preference = {
                 $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
                 $("#articleListDisplayCount").val(preference.articleListDisplayCount);
                 $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
-                $("#blogHost").val(preference.blogHost);
                 $("#localeString").val(preference.localeString);
                 $("#timeZoneId").val(preference.timeZoneId);
                 $("#noticeBoard").val(preference.noticeBoard);
@@ -205,7 +198,6 @@ admin.preference = {
                 "articleListDisplayCount": $("#articleListDisplayCount").val(),
                 "articleListPaginationWindowSize": $("#articleListPaginationWindowSize").val(),
                 "skinDirName": $("#skinMain").data("skinDirName"),
-                "blogHost": $("#blogHost").val(),
                 "localeString": $("#localeString").val(),
                 "timeZoneId": $("#timeZoneId").val(),
                 "noticeBoard": $("#noticeBoard").val(),
