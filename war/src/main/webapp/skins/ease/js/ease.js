@@ -48,7 +48,7 @@ var getNextPage = function () {
         },
         success: function(result, textStatus){
             if (!result.sc) {
-                console.log("[B3log-Solo Err]: " + result);
+                alert("[B3log-Solo Err]: " + result);
                 return;
             }
             
