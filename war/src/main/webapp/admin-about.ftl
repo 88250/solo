@@ -12,7 +12,7 @@
             <div id="aboutLatest" class="about-margin">${checkingVersionLabel}</div>
             ${aboutContentLabel}
         </div>
-        <span class="clear"></span>
+        <span class="clear" />
     </div>
 </div>
 ${plugins}
