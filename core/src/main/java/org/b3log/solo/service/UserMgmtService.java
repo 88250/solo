@@ -39,7 +39,7 @@ import org.json.JSONObject;
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.0.0.5, May 16, 2013
+ * @version 1.0.0.6, May 27, 2013
  * @since 0.4.0
  */
 public final class UserMgmtService {
@@ -58,7 +58,7 @@ public final class UserMgmtService {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
-    
+
     /**
      * Length of hashed password.
      */
@@ -111,8 +111,10 @@ public final class UserMgmtService {
             final String newHashedPassword = MD5.hash(userPassword);
             final String oldHashedPassword = oldUser.optString(User.USER_PASSWORD);
 
-            if (!mybeHashed || (!oldHashedPassword.equals(userPassword) && !oldHashedPassword.equals(newHashedPassword))) {
-                oldUser.put(User.USER_PASSWORD, newHashedPassword);
+            if (!"demo.b3log.org".equals(Latkes.getServerHost())) { // Skips the B3log Solo Online Demo (http://demo.b3log.org)
+                if (!mybeHashed || (!oldHashedPassword.equals(userPassword) && !oldHashedPassword.equals(newHashedPassword))) {
+                    oldUser.put(User.USER_PASSWORD, newHashedPassword);
+                }
             }
 
             final String userRole = requestJSONObject.optString(User.USER_ROLE);
