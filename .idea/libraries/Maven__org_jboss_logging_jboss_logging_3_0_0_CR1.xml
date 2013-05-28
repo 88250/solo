@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.jboss.logging:jboss-logging:3.0.0.CR1">
     <CLASSES>
-      <root url="jar://D:/repo/org/jboss/logging/jboss-logging/3.0.0.CR1/jboss-logging-3.0.0.CR1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.0.0.CR1/jboss-logging-3.0.0.CR1.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://D:/repo/org/jboss/logging/jboss-logging/3.0.0.CR1/jboss-logging-3.0.0.CR1-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.0.0.CR1/jboss-logging-3.0.0.CR1-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://D:/repo/org/jboss/logging/jboss-logging/3.0.0.CR1/jboss-logging-3.0.0.CR1-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/jboss/logging/jboss-logging/3.0.0.CR1/jboss-logging-3.0.0.CR1-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
