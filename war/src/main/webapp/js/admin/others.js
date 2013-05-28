@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, May 3, 2012
+ * @version 1.0.0.8, May 28, 2013
  */
 
 /* oterhs 相关操作 */
@@ -122,6 +122,6 @@ admin.register.others =  {
     "obj": admin.others,
     "init":admin.others.init,
     "refresh": function () {
-        $("#loadMsg").text("");
+        admin.clearTip();
     }
-}
+};

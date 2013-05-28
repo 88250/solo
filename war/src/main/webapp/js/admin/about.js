@@ -18,29 +18,28 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 7, 2012
+ * @version 1.0.0.4, May 28, 2013
  */
 
 /* about 相关操作 */
 admin.about = {
-    init: function () {
+    init: function() {
         $.ajax({
             url: "http://rhythm.b3log.org/version/solo/latest/" + Label.version,
             type: "GET",
             cache: false,
-            dataType:"jsonp",
-            error: function() {
-            // alert("Error loading articles from Rhythm");
-            },
+            dataType: "jsonp",
             success: function(data, textStatus) {
                 var version = data.soloVersion;
                 if (version === Label.version) {
                     $("#aboutLatest").text(Label.upToDateLabel);
                 } else {
                     $("#aboutLatest").html(Label.outOfDateLabel +
-                        "<a href='" + data.soloDownload + "'>" + version + "</a>");
+                            "<a href='" + data.soloDownload + "'>" + version + "</a>");
                 }
-                $("#loadMsg").text("");
+            },
+            complete: function(XHR, TS) {
+                admin.clearTip();
             }
         });
     }
@@ -52,7 +51,7 @@ admin.about = {
 admin.register["about"] = {
     "obj": admin.about,
     "init": admin.about.init,
-    "refresh": function () {
-        $("#loadMsg").text("");
+    "refresh": function() {
+        admin.clearTip();
     }
-}
+};

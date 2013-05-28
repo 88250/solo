@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.1, Feb 23, 2013
+ * @version 1.0.3.2, May 28, 2013
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -42,7 +42,7 @@ admin.article = {
     
     getAndSet: function () {
         $("#loadMsg").text(Label.loadingLabel);
-        
+        $("#tipMsg").text("");
         $.ajax({
             url: latkeConfig.servePath + "/console/article/" + admin.article.status.id,
             type: "GET",
@@ -515,7 +515,7 @@ admin.article = {
                 admin.article.clear();
             }
         }
-        
+        $("#tipMsg").text("");
         $("#loadMsg").text("");
     },
     
@@ -547,5 +547,6 @@ admin.register.article =  {
     "init": admin.article.init,
     "refresh": function () {
         $("#loadMsg").text("");
+        $("#tipMsg").text("");
     }
-}
+};

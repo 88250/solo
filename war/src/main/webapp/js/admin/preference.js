@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Mar 5, 2013
+ * @version 1.0.1.8, May 28, 2013
  */
 
 /* preference 相关操作 */
@@ -257,6 +257,6 @@ admin.register["preference"] =  {
     "obj": admin.preference,
     "init": admin.preference.init,
     "refresh": function () {
-        $("#loadMsg").text("");
+        admin.clearTip();
     }
-}
+};

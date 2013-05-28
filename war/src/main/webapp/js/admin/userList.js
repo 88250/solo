@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Apr 2, 2013
+ * @version 1.0.1.7, May 28, 2013
  */
 
 /* user-list 相关操作 */
@@ -70,6 +70,7 @@ admin.userList = {
      */
     getList: function(pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         this.pageInfo.currentPage = pageNum;
         var that = this;
 
@@ -176,6 +177,7 @@ admin.userList = {
      */
     get: function(id, userRole) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         $("#userUpdate").dialog("open");
 
         $.ajax({
@@ -290,6 +292,7 @@ admin.userList = {
      * @param id
      */
     changeRole: function(id) {
+        $("#tipMsg").text("");
         $.ajax({
             url: latkeConfig.servePath + "/console/changeRole/" + id,
             type: "GET",
@@ -352,6 +355,6 @@ admin.register["user-list"] = {
     "obj": admin.userList,
     "init": admin.userList.init,
     "refresh": function() {
-        $("#loadMsg").text("");
+        admin.clearTip();
     }
 }
