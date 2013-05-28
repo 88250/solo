@@ -7,6 +7,3 @@
 /war/h2/target/
 /war/src/main/webapp/WEB-INF/lib/
 .DS_Store
-.idea/
-*.iws
-*.ipr
