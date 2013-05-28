@@ -7,9 +7,6 @@
 /war/h2/target/
 /war/src/main/webapp/WEB-INF/lib/
 
-.idea/copyright/
-.idea/uiDesigner.xml
-.idea/workspace.xml
-.idea/tasks.xml
+.idea/
 
 .DS_Store
