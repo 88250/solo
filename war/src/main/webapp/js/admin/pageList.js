@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Feb 23, 2013
+ * @version 1.0.2.4, May 28, 2013
  */
 
 /* page-list 相关操作 */
@@ -114,6 +114,7 @@ admin.pageList = {
      */
     getList: function (pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         var that = this;
         
         $.ajax({

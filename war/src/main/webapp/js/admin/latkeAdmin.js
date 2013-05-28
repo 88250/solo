@@ -17,34 +17,39 @@
  *  index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.2.1, Jan 29, 2013
+ * @version 1.0.2.2, May 28, 2013
  */
-
-var Admin = function () {
+var Admin = function() {
     this.register = {};
     // 工具栏下的工具
-    this.tools = ['#page-list', '#file-list', '#link-list', '#preference', 
-    '#user-list', '#plugin-list', '#others'];
+    this.tools = ['#page-list', '#file-list', '#link-list', '#preference',
+        '#user-list', '#plugin-list', '#others'];
     // 多用户时，一般用户不能使用的功能
     this.adTools = ['link-list', 'preference', 'file-list', 'page-list',
-    'user-list', 'plugin-list', 'others'];
+        'user-list', 'plugin-list', 'others'];
 };
 
-$.extend(Admin.prototype, {    
+$.extend(Admin.prototype, {
     /*
      * 登出
      */
-    logout: function () {
+    logout: function() {
         window.location.href = latkeConfig.servePath + "/logout?goto=" + latkeConfig.servePath;
     },
-    
+    /**
+     * @description 清除提示
+     */
+    clearTip: function() {
+        $("#tipMsg").text("");
+        $("#loadMsg").text("");
+    },
     /*
      * 根据当前页数设置 hash
      * @currentPage {string} 当前页
      */
-    setHashByPage: function (currentPage) {
+    setHashByPage: function(currentPage) {
         var hash = window.location.hash,
-        hashList = hash.split("/");
+                hashList = hash.split("/");
         if (/^\d*$/.test(hashList[hashList.length - 1])) {
             hashList[hashList.length - 1] = currentPage;
         } else {
@@ -52,25 +57,23 @@ $.extend(Admin.prototype, {
         }
         window.location.hash = hashList.join("/");
     },
-    
     /*
      * 设置某个 tab 被选择
      * @id tab id
      */
-    selectTab: function (id) {
+    selectTab: function(id) {
         window.location.hash = "#" + id;
     },
-    
     /*
      * 根据当前 hash 解析出当前页数及 hash 数组。
      */
-    analyseHash: function () {
+    analyseHash: function() {
         var hash = window.location.hash;
         var tag = hash.substr(1, hash.length - 1);
         var tagList = tag.split("/");
         var tags = {};
         tags.page = 1,
-        tags.hashList = [];
+                tags.hashList = [];
         for (var i = 0; i < tagList.length; i++) {
             if (i === tagList.length - 1 && (/^\d+$/.test(tagList[i]))) {
                 tags.page = tagList[i];
@@ -80,29 +83,29 @@ $.extend(Admin.prototype, {
         }
         return tags;
     },
-    
     /*
      * 根据当前 hash 设置当前 tab
      */
-    setCurByHash: function () {
+    setCurByHash: function() {
+        $("#tipMsg").text("");
         var tags = admin.analyseHash();
-        var tab = tags.hashList[1], 
-        subTab = tags.hashList[2];
-        
+        var tab = tags.hashList[1],
+                subTab = tags.hashList[2];
+
         if (tags.hashList.length === 1) {
             tab = tags.hashList[0];
         }
-        
+
         if (tab === "") {
             return;
         }
-        
+
         // 离开编辑器时进行提示
         try {
             // 除更新、发布、取消发布文章，编辑器中无内容外，离开编辑器需进行提示。
             if (tab !== "article" && admin.article.isConfirm &&
-                admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ""
-                && admin.article.content !== admin.editors.articleEditor.getContent()) {
+                    admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ""
+                    && admin.article.content !== admin.editors.articleEditor.getContent()) {
                 if (!confirm(Label.editorLeaveLabel)) {
                     window.location.hash = "#article/article";
                     return;
@@ -110,16 +113,16 @@ $.extend(Admin.prototype, {
             }
             // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
             if (tab === "article" && admin.article.isConfirm &&
-                admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ""
-                && admin.article.content !== admin.editors.articleEditor.getContent()) {
+                    admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ""
+                    && admin.article.content !== admin.editors.articleEditor.getContent()) {
                 return;
             }
         } catch (e) {
-            var $articleContent =  $('#articleContent');
+            var $articleContent = $('#articleContent');
             if ($articleContent.length > 0) {
                 if (tab !== "article" && admin.article.isConfirm &&
-                    $articleContent.val().replace(/\s/g, '') !== ""
-                    && admin.article.content !== $articleContent.val()) {
+                        $articleContent.val().replace(/\s/g, '') !== ""
+                        && admin.article.content !== $articleContent.val()) {
                     if (!confirm(Label.editorLeaveLabel)) {
                         window.location.hash = "#article/article";
                         return;
@@ -127,26 +130,26 @@ $.extend(Admin.prototype, {
                 }
                 // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
                 if (tab === "article" && admin.article.isConfirm &&
-                    $articleContent.val().replace(/\s/g, '') !== ""
-                    && admin.article.content !== $articleContent.val()) {
+                        $articleContent.val().replace(/\s/g, '') !== ""
+                        && admin.article.content !== $articleContent.val()) {
                     return;
                 }
             }
         }
-        
+
         // clear article 
         if (tab !== "article" && admin.editors.articleEditor.setContent) {
             admin.article.clear();
         }
         admin.article.isConfirm = true;
-        
+
         $("#tabs").tabs("setCurrent", tab);
         $("#loadMsg").text(Label.loadingLabel);
-        
+
         if ($("#tabsPanel_" + tab).length === 1) {
             if ($("#tabsPanel_" + tab).html().replace(/\s/g, "") === "") {
                 // 还未加载 HTML
-                $("#tabsPanel_" + tab).load("admin-" + tab + ".do", function () {
+                $("#tabsPanel_" + tab).load("admin-" + tab + ".do", function() {
                     // 页面加载完后，回调初始函数
                     if (tab === "article" && admin.article.status.id) {
                         // 当文章页面编辑器未初始化时，调用更新文章需先初始化编辑器
@@ -154,13 +157,13 @@ $.extend(Admin.prototype, {
                     } else {
                         admin.register[tab].init.call(admin.register[tab].obj, tags.page);
                     }
-                
+
                     // 页面包含子 tab，需根据 hash 定位到相应的 tab
                     if (subTab) {
                         $("#tab" + tab.substring(0, 1).toUpperCase() + tab.substring(1)).
-                        tabs("setCurrent", subTab);
+                                tabs("setCurrent", subTab);
                     }
-                
+
                     // 根据 hash 调用现有的插件函数
                     admin.plugin.setCurByHash(tags);
                 });
@@ -168,57 +171,55 @@ $.extend(Admin.prototype, {
                 if (tab === "article" && admin.article.status.id) {
                     admin.article.getAndSet();
                 }
-            
+
                 // 已加载过 HTML，只需调用刷新函数
                 if (admin.register[tab] && admin.register[tab].refresh) {
                     admin.register[tab].refresh.call(admin.register[tab].obj, tags.page);
                 }
-            
+
                 // 页面包含子 tab，需根据 hash 定位到相应的 tab
                 if (subTab) {
                     $("#tab" + tab.substring(0, 1).toUpperCase() + tab.substring(1)).
-                    tabs("setCurrent", subTab);
+                            tabs("setCurrent", subTab);
                 }
-                
+
                 // 根据 hash 调用现有的插件函数
                 admin.plugin.setCurByHash(tags);
-            }  
+            }
         } else {
             $("#tipMsg").text("Error: No tab! " + Label.reportIssueLabel);
             $("#loadMsg").text("");
         }
     },
-    
     /*
      * 初始化整个后台
      */
-    init: function () {
+    init: function() {
         //window.onerror = Util.error;
-        
-        Util.killIE();   
+
+        Util.killIE();
         $("#loadMsg").text(Label.loadingLabel);
-        
+
         // 构建 tabs
         $("#tabs").tabs();
-            
+
         // tipMsg
-        setInterval(function () {
-            if($("#tipMsg").text() !== "") {
-                setTimeout(function () {
+        setInterval(function() {
+            if ($("#tipMsg").text() !== "") {
+                setTimeout(function() {
                     $("#tipMsg").text("");
                 }, 7000);
             }
         }, 6000);
         $("#loadMsg").text("");
     },
-    
     /*
      * @description tools and article collapse
      * @param {bom} it 触发事件对象
      */
-    collapseNav: function (it) {
+    collapseNav: function(it) {
         var subNav = $(it).next();
-        subNav.slideToggle("normal", function () {
+        subNav.slideToggle("normal", function() {
             if (this.style.display !== "none") {
                 $(it).find(".ico-arrow-down")[0].className = "ico-arrow-up";
             } else {
@@ -226,11 +227,10 @@ $.extend(Admin.prototype, {
             }
         });
     },
-    
     /*
-    * 后台及当前页面所需插件初始化完后，对权限进行控制及当前页面属于 tools 时，tools 选项需展开。
-    */
-    inited: function () {
+     * 后台及当前页面所需插件初始化完后，对权限进行控制及当前页面属于 tools 时，tools 选项需展开。
+     */
+    inited: function() {
         // Removes functions with the current user role
         if (Label.userRole !== "adminRole") {
             for (var i = 0; i < this.adTools.length; i++) {
@@ -867,7 +867,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.1, Feb 23, 2013
+ * @version 1.0.3.2, May 28, 2013
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -891,7 +891,7 @@ admin.article = {
     
     getAndSet: function () {
         $("#loadMsg").text(Label.loadingLabel);
-        
+        $("#tipMsg").text("");
         $.ajax({
             url: latkeConfig.servePath + "/console/article/" + admin.article.status.id,
             type: "GET",
@@ -1364,7 +1364,7 @@ admin.article = {
                 admin.article.clear();
             }
         }
-        
+        $("#tipMsg").text("");
         $("#loadMsg").text("");
     },
     
@@ -1396,8 +1396,9 @@ admin.register.article =  {
     "init": admin.article.init,
     "refresh": function () {
         $("#loadMsg").text("");
+        $("#tipMsg").text("");
     }
-}/*
+};/*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -1417,7 +1418,7 @@ admin.register.article =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Feb 23, 2013
+ * @version 1.0.0.9, May 28, 2013
  */
 
 admin.comment = { 
@@ -1439,6 +1440,7 @@ admin.comment = {
      */
     getList: function (onId, fromId) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         $("#" + fromId + "Comments").html("");
         
         var from = "article";
@@ -1546,7 +1548,7 @@ admin.comment = {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Feb 23, 2013
+ * @version 1.0.1.5, May 28, 2013
  */
 
 /* article-list 相关操作 */
@@ -1595,7 +1597,6 @@ admin.articleList = {
     getList: function (pageNum) {
         var that = this;
         $("#loadMsg").text(Label.loadingLabel);
-        
         $.ajax({
             url: latkeConfig.servePath + "/console/articles/status/published/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
             type: "GET",
@@ -1809,7 +1810,7 @@ admin.register["draft-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.3, Feb 23, 2013
+ * @version 1.0.2.4, May 28, 2013
  */
 
 /* page-list 相关操作 */
@@ -1905,6 +1906,7 @@ admin.pageList = {
      */
     getList: function (pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         var that = this;
         
         $.ajax({
@@ -2247,7 +2249,7 @@ admin.register["page-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.7, May 3, 2012
+ * @version 1.0.0.8, May 28, 2013
  */
 
 /* oterhs 相关操作 */
@@ -2351,9 +2353,9 @@ admin.register.others =  {
     "obj": admin.others,
     "init":admin.others.init,
     "refresh": function () {
-        $("#loadMsg").text("");
+        admin.clearTip();
     }
-}
+};
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
@@ -2724,7 +2726,7 @@ admin.register["link-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.7, Mar 5, 2013
+ * @version 1.0.1.8, May 28, 2013
  */
 
 /* preference 相关操作 */
@@ -2963,9 +2965,9 @@ admin.register["preference"] =  {
     "obj": admin.preference,
     "init": admin.preference.init,
     "refresh": function () {
-        $("#loadMsg").text("");
+        admin.clearTip();
     }
-}
+};
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
@@ -2986,12 +2988,12 @@ admin.register["preference"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, May 3, 2012
+ * @version 1.0.1.4, May 28, 2013
  */
 
 /* plugin-list 相关操作 */
 admin.pluginList = {
-    tablePagination:  new TablePaginate("plugin"),
+    tablePagination: new TablePaginate("plugin"),
     pageInfo: {
         currentCount: 1,
         pageCount: 1,
@@ -3000,29 +3002,29 @@ admin.pluginList = {
     /* 
      * 初始化 table, pagination
      */
-    init: function (page) {
+    init: function(page) {
         this.tablePagination.buildTable([{
-            style: "padding-left: 12px;",
-            text: Label.pluginNameLabel,
-            index: "name",
-            width: 230
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.statusLabel,
-            index: "status",
-            minWidth: 180
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.authorLabel,
-            index: "author",
-            width: 200
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.versionLabel,
-            index: "version",
-            width: 120
-        }]);
-    
+                style: "padding-left: 12px;",
+                text: Label.pluginNameLabel,
+                index: "name",
+                width: 230
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.statusLabel,
+                index: "status",
+                minWidth: 180
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.authorLabel,
+                index: "author",
+                width: 200
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.versionLabel,
+                index: "version",
+                width: 120
+            }]);
+
         this.tablePagination.initPagination();
         $("#pluginSetting").dialog({
             width: 700,
@@ -3032,31 +3034,31 @@ admin.pluginList = {
         });
         this.getList(page);
     },
-
     /* 
      * 根据当前页码获取列表
      * @pagNum 当前页码
      */
-    getList: function (pageNum) {
+    getList: function(pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         var that = this;
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/plugins/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
-            success: function(result, textStatus){
+            success: function(result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 admin.pluginList.pageInfo.currentPage = pageNum;
                 var datas = result.plugins;
                 for (var i = 0; i < datas.length; i++) {
-                    datas[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.pluginList.changeStatus('" + 
-                    datas[i].oId + "', '" + datas[i].status + "')\">";
+                    datas[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.pluginList.changeStatus('" +
+                            datas[i].oId + "', '" + datas[i].status + "')\">";
                     if (datas[i].status === "ENABLED") {
                         datas[i].status = Label.enabledLabel;
                         datas[i].expendRow += Label.disableLabel;
@@ -3065,67 +3067,66 @@ admin.pluginList = {
                         datas[i].expendRow += Label.enableLabel;
                     }
                     datas[i].expendRow += "</a>  ";
-                    
-                    if(datas[i].setting!="{}"){
-                        datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
+
+                    if (datas[i].setting != "{}") {
+                        datas[i].expendRow += "<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('" + datas[i].oId + "')\"> " + Label.settingLabel + " </a>  ";
                     }
                 }
-                
+
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
- 
-    toSetting:function(pluginId){
+    toSetting: function(pluginId) {
         $("#loadMsg").text(Label.loadingLabel);
-                
+        $("#tipMsg").text("");
         var requestJSONObject = {
             "oId": pluginId
         };
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/plugin/toSetting",
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus){
+            success: function(result, textStatus) {
                 $("#tipMsg").text(result.msg);
 
                 $("#pluginSetting").html(result);
                 $("#pluginSetting").dialog("open");
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
-    
-    changeStatus: function (pluginId, status) {
+    changeStatus: function(pluginId, status) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         if (status === "ENABLED") {
             status = "DISABLED";
         } else {
             status = "ENABLED";
         }
-        
+
         var requestJSONObject = {
             "oId": pluginId,
             "status": status
         };
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/plugin/status/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus){
+            success: function(result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 $("#loadMsg").text("");
                 window.location.reload();
             }
@@ -3134,15 +3135,15 @@ admin.pluginList = {
 };
 
 /*
-* 注册到 admin 进行管理 
-*/
-admin.register["plugin-list"] =  {
+ * 注册到 admin 进行管理 
+ */
+admin.register["plugin-list"] = {
     "obj": admin.pluginList,
     "init": admin.pluginList.init,
-    "refresh": function () {
-        $("#loadMsg").text("");
+    "refresh": function() {
+        admin.claerTip();
     }
-}
+};
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
@@ -3163,7 +3164,7 @@ admin.register["plugin-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, Apr 2, 2013
+ * @version 1.0.1.7, May 28, 2013
  */
 
 /* user-list 相关操作 */
@@ -3215,6 +3216,7 @@ admin.userList = {
      */
     getList: function(pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         this.pageInfo.currentPage = pageNum;
         var that = this;
 
@@ -3321,6 +3323,7 @@ admin.userList = {
      */
     get: function(id, userRole) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         $("#userUpdate").dialog("open");
 
         $.ajax({
@@ -3435,6 +3438,7 @@ admin.userList = {
      * @param id
      */
     changeRole: function(id) {
+        $("#tipMsg").text("");
         $.ajax({
             url: latkeConfig.servePath + "/console/changeRole/" + id,
             type: "GET",
@@ -3497,7 +3501,7 @@ admin.register["user-list"] = {
     "obj": admin.userList,
     "init": admin.userList.init,
     "refresh": function() {
-        $("#loadMsg").text("");
+        admin.clearTip();
     }
 }/*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
@@ -3802,7 +3806,7 @@ admin.plugin = {
  * main for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Aug 9, 2011
+ * @version 1.0.0.3, May 28, 2013
  */
 
 /* main 相关操作 */
@@ -3815,12 +3819,12 @@ admin.main = {
 admin.register.main =  {
     "obj": admin.main,
     "init": function () {
-        $("#loadMsg").text("");
+        admin.clearTip();
     },
     "refresh": function () {
-        $("#loadMsg").text("");
+        admin.clearTip();
     }
-}
+};
 /*
  * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
@@ -3841,29 +3845,28 @@ admin.register.main =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.3, Jan 7, 2012
+ * @version 1.0.0.4, May 28, 2013
  */
 
 /* about 相关操作 */
 admin.about = {
-    init: function () {
+    init: function() {
         $.ajax({
             url: "http://rhythm.b3log.org/version/solo/latest/" + Label.version,
             type: "GET",
             cache: false,
-            dataType:"jsonp",
-            error: function() {
-            // alert("Error loading articles from Rhythm");
-            },
+            dataType: "jsonp",
             success: function(data, textStatus) {
                 var version = data.soloVersion;
                 if (version === Label.version) {
                     $("#aboutLatest").text(Label.upToDateLabel);
                 } else {
                     $("#aboutLatest").html(Label.outOfDateLabel +
-                        "<a href='" + data.soloDownload + "'>" + version + "</a>");
+                            "<a href='" + data.soloDownload + "'>" + version + "</a>");
                 }
-                $("#loadMsg").text("");
+            },
+            complete: function(XHR, TS) {
+                admin.clearTip();
             }
         });
     }
@@ -3875,7 +3878,7 @@ admin.about = {
 admin.register["about"] = {
     "obj": admin.about,
     "init": admin.about.init,
-    "refresh": function () {
-        $("#loadMsg").text("");
+    "refresh": function() {
+        admin.clearTip();
     }
-}
+};
