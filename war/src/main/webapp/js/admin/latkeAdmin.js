@@ -583,7 +583,7 @@ admin.editors.KindEditor = {
  * @fileoverview markdowm CodeMirror editor 
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, May 3, 2012
+ * @version 1.0.0.4, May 30, 2013
  */
 admin.editors.CodeMirror = {
     /*
@@ -645,7 +645,7 @@ admin.editors.CodeMirror = {
                             url: latkeConfig.servePath + "/console/markdown/2html",
                             type: "POST",
                             cache: false,
-                            data: "markdownText=" + it[conf.id].getValue(),
+                            data: JSON.stringify({markdownText:it[conf.id].getValue()}),
                             success: function(data, textStatus) {
                                 if (data.sc) {
                                     if (it[conf.id + "IsFirst"] && $help.hasClass("ico-close")) {
