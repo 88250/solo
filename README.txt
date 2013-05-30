@@ -19,5 +19,7 @@ Join B3log Team: https://github.com/b3log/b3log-solo/wiki/Join_us
 平等，自由，奔放
 Equality, Freedom, Passion
 
-Thanks To: http://www.jetbrains.com/idea/index.html
+;-)
 
+====
+Thanks To http://www.jetbrains.com/idea/index.html 

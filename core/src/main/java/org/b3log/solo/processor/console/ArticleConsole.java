@@ -16,7 +16,6 @@
 package org.b3log.solo.processor.console;
 
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +47,7 @@ import org.json.JSONObject;
  * Article console request processing.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 30, 2013
+ * @version 1.0.0.6, May 30, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -91,14 +90,19 @@ public final class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request the specified http servlet request, for example,
+     * <pre>
+     * {
+     *     "markdownText": ""
+     * }
+     * </pre>
      * @param response the specified http servlet response
      * @param context the specified http request context
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/markdown/2html", method = HTTPRequestMethod.POST)
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws IOException {
+        throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
 
         context.setRenderer(renderer);
@@ -108,7 +112,8 @@ public final class ArticleConsole {
 
         result.put(Keys.STATUS_CODE, true);
 
-        final String markdownText = request.getParameter("markdownText");
+        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+        final String markdownText = requestJSONObject.getString("markdownText");
 
         if (Strings.isEmptyOrNull(markdownText)) {
             result.put("html", "");
