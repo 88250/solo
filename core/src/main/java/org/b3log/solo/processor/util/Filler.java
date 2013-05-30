@@ -24,7 +24,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -58,6 +61,7 @@ import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.StatisticQueryService;
+import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.Users;
@@ -139,6 +143,41 @@ public final class Filler {
      * {@code true} for published.
      */
     private static final boolean PUBLISHED = true;
+
+    /**
+     * Tag query service.
+     */
+    private TagQueryService tagQueryService = TagQueryService.getInstance();
+
+    /**
+     * default page.
+     */
+    private static final int DEFAULT_PAGE = 0;
+
+    /**
+     * default page size.
+     */
+    private static final int DEFAULT_PAGESIZE = 10;
+
+    /**
+     * march1.
+     */
+    private static final int MARCH1 = 1;
+
+    /**
+     * march2.
+     */
+    private static final int MARCH2 = 2;
+
+    /**
+     * march3.
+     */
+    private static final int MARCH3 = 3;
+
+    /**
+     * march4.
+     */
+    private static final int MARCH4 = 4;
 
     /**
      * Fills articles in index.ftl.
@@ -436,6 +475,54 @@ public final class Filler {
     }
 
     /**
+     * Fills tag's articles recently.
+     *
+     * @param dataModel dataModel
+     * @param tagTitle tagTitle
+     * @param tagName tagName user in template
+     * @param pageStr page
+     * @param pageSizeStr pageSize
+     * @throws ServiceException service exception
+     */
+    public void fillRecentTagArticles(final Map<String, Object> dataModel, final String tagTitle,
+        final String tagName, final String pageStr, final String pageSizeStr) throws ServiceException {
+
+        Stopwatchs.start("Fill Recent tag's Articles");
+
+        try {
+
+            final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
+
+            if (null == result) {
+                return;
+            }
+
+            final JSONObject tag = result.getJSONObject(Tag.TAG);
+            final String tagId = tag.getString(Keys.OBJECT_ID);
+
+            int currentPageNum = DEFAULT_PAGE;
+            int pageSize = DEFAULT_PAGESIZE;
+
+            if (!Strings.isEmptyOrNull(pageStr)) {
+                currentPageNum = Integer.parseInt(pageStr);
+            }
+            if (!Strings.isEmptyOrNull(pageSizeStr)) {
+                pageSize = Integer.parseInt(pageSizeStr);
+            }
+            final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
+
+            dataModel.put(tagName, articles);
+
+        } catch (final JSONException e) {
+            LOGGER.log(Level.SEVERE, "Fills recent articles failed", e);
+            throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
+        }
+
+    }
+
+    /**
      * Fills post comments recently.
      *
      * @param dataModel data model
@@ -618,18 +705,14 @@ public final class Filler {
                 template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "index.ftl");
                 if (null == template) {
                     LOGGER.fine("The skin dose not contain [index.ftl] template");
-
                     return;
                 }
-
-                if (Templates.hasExpression(template, "<#list archiveDates as archiveDate>")) {
-                    fillArchiveDates(dataModel, preference);
-                }
-
-                return;
             }
 
-            // TODO:       fillRecentArticles(dataModel, preference);
+            if (Templates.hasExpression(template, "<#list recentArticles as article>")) {
+                fillRecentArticles(dataModel, preference);
+            }
+
             if (Templates.hasExpression(template, "<#list links as link>")) {
                 fillLinks(dataModel);
             }
@@ -653,6 +736,14 @@ public final class Filler {
             if (Templates.hasExpression(template, "<#list archiveDates as archiveDate>")) {
                 fillArchiveDates(dataModel, preference);
             }
+
+            final Pattern p = Pattern.compile("<#-- save (\\S*?) to (\\S*?) page is (\\S*?) and pagesize is (\\S*?) -->");
+            final Matcher matcher = p.matcher(template.toString());
+
+            while (matcher.find()) {
+                fillRecentTagArticles(dataModel, matcher.group(MARCH1), matcher.group(MARCH2), matcher.group(MARCH3), matcher.group(MARCH4));
+            }
+
         } catch (final ServiceException e) {
             LOGGER.log(Level.SEVERE, "Fills side failed", e);
             throw new ServiceException(e);
