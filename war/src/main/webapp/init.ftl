@@ -165,12 +165,13 @@
                                                 "display": "block",
                                                 "opacity": 1
                                             });
-                                            $(window).unbind().keydown(function(e){
-                                                if(e.keyCode == 27){// esc
-                                                    $(returnTo);
+                                            
+                                            $(window).unbind().keydown(function(e) {
+                                                if (e.keyCode === 27) {// esc
+                                                    returnTo();
                                                     $(window).unbind();
-                                                } else if(e.keyCode == 13){// enter
-                                                    $(initSys);
+                                                } else if (e.keyCode === 13) {// enter
+                                                    initSys();
                                                 }
                                             });
                                         }
@@ -208,7 +209,8 @@
                                                 data: JSON.stringify(requestJSONObject),
                                                 success: function(result, textStatus) {
                                                     if (!result.sc) {
-                                                        $("#tip").text(result.msg);;
+                                                        $("#tip").text(result.msg);
+                                                        ;
                                                         return;
                                                     }
 
