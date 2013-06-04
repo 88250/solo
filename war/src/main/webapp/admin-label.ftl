@@ -114,7 +114,8 @@
         "navLabel": "${navLabel}",
         "userLabel": "${userLabel}",
         "changeRoleLabel": "${changeRoleLabel}",
-        "visitorUserLabel": "${visitorUserLabel}"
+        "visitorUserLabel": "${visitorUserLabel}",
+        "autoSaveLabel": "${autoSaveLabel}"
     };    
     
     admin.init();

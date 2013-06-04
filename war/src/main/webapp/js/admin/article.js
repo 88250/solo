@@ -32,7 +32,7 @@ admin.article = {
     // 自动保存草稿定时器
     autoSaveDraftTimer: "",
     // 自动保存间隔
-    AUTOSAVETIME: 3000,
+    AUTOSAVETIME: 1000 * 60,
     /**
      * @description 获取文章并把值塞入发布文章页面 
      * @param {String} id 文章 id
@@ -171,7 +171,7 @@ admin.article = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus) {
                     if (isAuto) {
-                        $("#tipMsg").text("TODO:");
+                        $("#tipMsg").text(Label.autoSaveLabel);
                         admin.article.status.id = result.oId;
                         return;
                     }
@@ -246,7 +246,7 @@ admin.article = {
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus) {
                     if (isAuto) {
-                        $("#tipMsg").text("TODO:");
+                        $("#tipMsg").text(Label.autoSaveLabel);
                         return;
                     }
 
@@ -450,7 +450,6 @@ admin.article = {
      * @description 自动保存草稿件
      */
     _autoSaveToDraft: function() {
-        console.log("auto");
         if ($("#title").val().replace(/\s/g, "") === "" ||
                 admin.editors.articleEditor.getContent().replace(/\s/g, "") === "" ||
                 $("#tag").val().replace(/\s/g, "") === "") {
@@ -458,13 +457,15 @@ admin.article = {
         }
         if (admin.article.status.id) {
             if (admin.article.status.isArticle) {
-                admin.article.unPublish(true);
                 admin.article.status.isArticle = false;
+                admin.article.setStatus();
+                admin.article.unPublish(true);
             } else {
                 admin.article.update(false, true);
             }
         } else {
             admin.article.add(false, true);
+            admin.article.status.isArticle = false;
         }
     },
     /**
@@ -508,7 +509,7 @@ admin.article = {
             cache: false,
             success: function(result, textStatus) {
                 if (isAuto) {
-                    $("#tipMsg").text("TODO:");
+                    $("#tipMsg").text(Label.autoSaveLabel);
                     return;
                 }
 
