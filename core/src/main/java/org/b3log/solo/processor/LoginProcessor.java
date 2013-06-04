@@ -341,7 +341,7 @@ public final class LoginProcessor {
 
                 if (userPassword.equals(hashPassword)) {
                     Sessions.login(request, response, user);
-                    LOGGER.log(Level.INFO, "Logged in with cookie[email={0}]", userEmail);
+                    LOGGER.log(Level.FINER, "Logged in with cookie[email={0}]", userEmail);
                 }
             }
         } catch (final Exception e) {
