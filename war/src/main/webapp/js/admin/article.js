@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.2, May 28, 2013
+ * @version 1.0.3.3, Jun 4, 2013
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -29,16 +29,19 @@ admin.article = {
         articleHadBeenPublished: undefined
     },
     content: "",
-    /* 
-     * 获取文章并把值塞入发布文章页面 
-     * @id 文章 id
-     * @isArticle 文章或者草稿
+    /**
+     * @description 获取文章并把值塞入发布文章页面 
+     * @param {String} id 文章 id
+     * @param {Boolean} isArticle 文章或者草稿
      */
     get: function(id, isArticle) {
         this.status.id = id;
-        this.status.isArticle = isArticle
+        this.status.isArticle = isArticle;
         admin.selectTab("article/article");
     },
+    /**
+     * @description 获取文章内容
+     */
     getAndSet: function() {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
@@ -92,11 +95,11 @@ admin.article = {
             }
         });
     },
-    /*
-     * 删除文章
-     * @id 文章 id
-     * @fromId 文章来自草稿夹(draft)/文件夹(article)
-     * @title 文章标题
+    /**
+     * @description 删除文章
+     * @param {String} id 文章 id
+     * @param {String} fromId 文章来自草稿夹(draft)/文件夹(article)
+     * @param {String} title 文章标题
      */
     del: function(id, fromId, title) {
         var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + title + '"?');
@@ -120,9 +123,9 @@ admin.article = {
             });
         }
     },
-    /*
-     * 添加文章
-     * @articleIsPublished 文章是否发布过
+    /**
+     * @@description 添加文章
+     * @param {Boolean} articleIsPublished 文章是否发布过
      */
     add: function(articleIsPublished) {
         if (admin.article.validate()) {
@@ -189,9 +192,9 @@ admin.article = {
             });
         }
     },
-    /*
-     * 更新文章
-     * @articleIsPublished 文章是否发布过 
+    /**
+     * @description 更新文章
+     * @param {Boolean} articleIsPublished 文章是否发布过
      */
     update: function(articleIsPublished) {
         if (admin.article.validate()) {
@@ -261,8 +264,8 @@ admin.article = {
             });
         }
     },
-    /*
-     * 发布文章页面设置文章按钮、发布到社区等状态的显示
+    /**
+     * @description 发布文章页面设置文章按钮、发布到社区等状态的显示
      */
     setStatus: function() {
         // set button status
@@ -287,8 +290,8 @@ admin.article = {
 
         $("#postToCommunity").attr("checked", "checked");
     },
-    /*
-     * 清除发布文章页面的输入框的内容
+    /**
+     * @description 清除发布文章页面的输入框的内容
      */
     clear: function() {
         this.status = {
@@ -320,8 +323,9 @@ admin.article = {
 
         $(".markdown-preview-main").html("");
     },
-    /*
-     * 初始化发布文章页面
+    /**
+     * @description 初始化发布文章页面
+     * @param {Function} fun 切面函数
      */
     init: function(fun) {
         // Inits Signs.
@@ -342,7 +346,8 @@ admin.article = {
                         $("#articleSign1").addClass("selected");
                     } else {
                         $("#articleSign" + result.signs[i].oId).tip({
-                            content: result.signs[i].signHTML === "" ? Label.signIsNullLabel : result.signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
+                            content: result.signs[i].signHTML === "" ? Label.signIsNullLabel :
+                                    result.signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
                             position: "top"
                         });
                     }
@@ -423,8 +428,8 @@ admin.article = {
             height: 200
         });
     },
-    /*
-     * 验证发布文章字段的合法性
+    /**
+     * @description 验证发布文章字段的合法性
      */
     validate: function() {
         var articleContent = admin.editors.articleEditor.getContent();
@@ -442,8 +447,8 @@ admin.article = {
         }
         return false;
     },
-    /*
-     * 取消发布 
+    /**
+     * @description 取消发布 
      */
     unPublish: function() {
         var that = this;
@@ -472,6 +477,11 @@ admin.article = {
             }
         });
     },
+    /**
+     * @description 数组中无重复
+     * @param {String} str 被解析的字符串
+     * @returns {String} 无重复的字符串
+     */
     trimUniqueArray: function(str) {
         str = str.toString();
         var arr = str.split(",");
@@ -485,8 +495,8 @@ admin.article = {
         var unique = $.unique(arr);
         return unique.toString();
     },
-    /*
-     * 点击发文文章时的处理
+    /**
+     * @description 点击发文文章时的处理
      */
     prePost: function() {
         $("#loadMsg").text(Label.loadingLabel);
@@ -506,7 +516,7 @@ admin.article = {
         $("#tipMsg").text("");
         $("#loadMsg").text("");
     },
-    /*
+    /**
      * @description: 仿重复提交，点击一次后，按钮设置为 disabled
      */
     _addDisabled: function() {
@@ -514,7 +524,7 @@ admin.article = {
         $("#saveArticle").attr("disabled", "disabled");
         $("#submitArticle").attr("disabled", "disabled");
     },
-    /*
+    /**
      * @description: 仿重复提交，当后台有数据返回后，按钮移除 disabled 状态
      */
     _removeDisabled: function() {
@@ -524,8 +534,8 @@ admin.article = {
     }
 };
 
-/*
- * 注册到 admin 进行管理 
+/**
+ * @description 注册到 admin 进行管理 
  */
 admin.register.article = {
     "obj": admin.article,
