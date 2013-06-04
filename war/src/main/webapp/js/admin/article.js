@@ -29,6 +29,10 @@ admin.article = {
         articleHadBeenPublished: undefined
     },
     content: "",
+    // 自动保存草稿定时器
+    autoSaveDraftTimer: "",
+    // 自动保存间隔
+    AUTOSAVETIME: 3000,
     /**
      * @description 获取文章并把值塞入发布文章页面 
      * @param {String} id 文章 id
@@ -126,8 +130,9 @@ admin.article = {
     /**
      * @@description 添加文章
      * @param {Boolean} articleIsPublished 文章是否发布过
+     * @param {Boolean} isAuto 是否为自动保存
      */
-    add: function(articleIsPublished) {
+    add: function(articleIsPublished, isAuto) {
         if (admin.article.validate()) {
             var that = this;
             that._addDisabled();
@@ -165,9 +170,14 @@ admin.article = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus) {
+                    if (isAuto) {
+                        $("#tipMsg").text("TODO:");
+                        admin.article.status.id = result.oId;
+                        return;
+                    }
+
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
-                        $("#loadMsg").text("");
                         return;
                     }
 
@@ -179,11 +189,10 @@ admin.article = {
                     }
 
                     admin.article.isConfirm = false;
-
-                    $("#loadMsg").text("");
                 },
                 complete: function(jqXHR, textStatus) {
                     that._removeDisabled();
+                    $("#loadMsg").text("");
                     if (jqXHR.status === 403) {
                         $.get("/admin-index.do");
                         that.add(articleIsPublished);
@@ -195,8 +204,9 @@ admin.article = {
     /**
      * @description 更新文章
      * @param {Boolean} articleIsPublished 文章是否发布过
+     * @param {Boolean} isAuto 是否为自动保存
      */
-    update: function(articleIsPublished) {
+    update: function(articleIsPublished, isAuto) {
         if (admin.article.validate()) {
             var that = this;
             that._addDisabled();
@@ -235,9 +245,13 @@ admin.article = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus) {
+                    if (isAuto) {
+                        $("#tipMsg").text("TODO:");
+                        return;
+                    }
+
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
-                        $("#loadMsg").text("");
                         return;
                     }
 
@@ -251,11 +265,10 @@ admin.article = {
 
                     admin.article.status.id = undefined;
                     admin.article.isConfirm = false;
-
-                    $("#loadMsg").text("");
                 },
                 complete: function(jqXHR, textStatus) {
                     that._removeDisabled();
+                    $("#loadMsg").text("");
                     if (jqXHR.status === 403) {
                         $.get("/admin-index.do");
                         that.update(articleIsPublished);
@@ -427,6 +440,41 @@ admin.article = {
             kind: "simple",
             height: 200
         });
+
+        admin.article.clearDraftTimer();
+        admin.article.autoSaveDraftTimer = setInterval(function() {
+            admin.article._autoSaveToDraft();
+        }, admin.article.AUTOSAVETIME);
+    },
+    /**
+     * @description 自动保存草稿件
+     */
+    _autoSaveToDraft: function() {
+        console.log("auto");
+        if ($("#title").val().replace(/\s/g, "") === "" ||
+                admin.editors.articleEditor.getContent().replace(/\s/g, "") === "" ||
+                $("#tag").val().replace(/\s/g, "") === "") {
+            return;
+        }
+        if (admin.article.status.id) {
+            if (admin.article.status.isArticle) {
+                admin.article.unPublish(true);
+                admin.article.status.isArticle = false;
+            } else {
+                admin.article.update(false, true);
+            }
+        } else {
+            admin.article.add(false, true);
+        }
+    },
+    /**
+     * @description 关闭定时器
+     */
+    clearDraftTimer: function() {
+        if (admin.article.autoSaveDraftTimer !== "") {
+            window.clearInterval(admin.article.autoSaveDraftTimer);
+            admin.article.autoSaveDraftTimer = "";
+        }
     },
     /**
      * @description 验证发布文章字段的合法性
@@ -449,8 +497,9 @@ admin.article = {
     },
     /**
      * @description 取消发布 
+     * @param {Boolean} isAuto 是否为自动保存
      */
-    unPublish: function() {
+    unPublish: function(isAuto) {
         var that = this;
         that._addDisabled();
         $.ajax({
@@ -458,9 +507,13 @@ admin.article = {
             type: "PUT",
             cache: false,
             success: function(result, textStatus) {
+                if (isAuto) {
+                    $("#tipMsg").text("TODO:");
+                    return;
+                }
+
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
-                    $("#loadMsg").text("");
                     return;
                 }
 
@@ -470,6 +523,7 @@ admin.article = {
             },
             complete: function(jqXHR, textStatus) {
                 that._removeDisabled();
+                $("#loadMsg").text("");
                 if (jqXHR.status === 403) {
                     $.get("/admin-index.do");
                     that.unPublish();
