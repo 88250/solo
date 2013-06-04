@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Comment utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.11, May 17, 2013
+ * @version 1.0.0.12, Jun 4, 2013
  * @since 0.3.1
  */
 public final class Comments {
@@ -100,7 +100,7 @@ public final class Comments {
      * Comment mail HTML body.
      */
     public static final String COMMENT_MAIL_HTML_BODY = "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">" + "{title}</a>]"
-        + " received a new comment:</p>" + "{commenter}: <span><a href=\"http://{commentSharpURL}\">" + "{commentContent}</a></span>";
+        + " received a new comment:</p>" + "{commenter}: <span><a href=\"{commentSharpURL}\">" + "{commentContent}</a></span>";
 
     /**
      * Gets comment sharp URL with the specified page and comment id.
