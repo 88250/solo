@@ -115,7 +115,7 @@ var Util = {
             $showTop.click(function () {
                 $top.slideDown();
                 $showTop.hide();
-            })
+            });
             
             $("#hideTop").click(function () {
                 $top.slideUp();
