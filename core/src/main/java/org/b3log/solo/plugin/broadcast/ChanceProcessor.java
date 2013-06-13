@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * Broadcast chance processor.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Apr 24, 2013
+ * @version 1.0.0.9, Jun 13, 2013
  * @since 0.6.0
  */
 @RequestProcessor
@@ -293,7 +293,7 @@ public final class ChanceProcessor {
             broadcastRequest.put("clientTitle", clientTitle);
             broadcastRequest.put("clientVersion", clientVersion);
             broadcastRequest.put("clientName", clientName);
-            broadcastRequest.put("clientHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
+            broadcastRequest.put("clientHost", Latkes.getServePath());
 
             final HTTPRequest httpRequest = new HTTPRequest();
 

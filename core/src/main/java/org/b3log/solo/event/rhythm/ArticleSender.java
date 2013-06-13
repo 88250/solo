@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.0.2.6, Apr 16, 2013
+ * @version 1.0.2.7, Jun 13, 2013
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -132,7 +132,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Common.BLOG_VERSION, SoloServletListener.VERSION);
             requestJSONObject.put(Common.BLOG, "B3log Solo");
             requestJSONObject.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
-            requestJSONObject.put("blogHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
+            requestJSONObject.put("blogHost", Latkes.getServePath());
             requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
             requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());
