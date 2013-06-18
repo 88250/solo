@@ -104,7 +104,7 @@
         <!-- See https://github.com/b3log/b3log-latke/issues/17 for more details -->
         <init-param>
             <param-name>scanPath</param-name>
-            <param-value>org.b3log</param-value>
+            <param-value>org.b3log.solo</param-value>
         </init-param>
         
         <load-on-startup>2</load-on-startup>
