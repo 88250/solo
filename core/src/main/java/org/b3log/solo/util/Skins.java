@@ -86,7 +86,7 @@ public final class Skins {
             if (null == langs) {
                 LANG_MAP.clear(); // Collect unused skin languages
 
-                LOGGER.log(Level.INFO, "Loading skin[dirName={0}, locale={1}]", new Object[] {currentSkinDirName, localeString});
+                LOGGER.log(Level.INFO, "Loading skin [dirName={0}, locale={1}]", new Object[] {currentSkinDirName, localeString});
                 langs = new HashMap<String, String>();
 
                 final String webRootPath = SoloServletListener.getWebRoot();
