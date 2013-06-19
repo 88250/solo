@@ -19,13 +19,13 @@ package org.b3log.solo.processor;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
@@ -181,7 +181,7 @@ public final class LoginProcessor {
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
 
             if (null == user) {
-                LOGGER.log(Level.WARNING, "Not found user[email={0}]", userEmail);
+                LOGGER.log(Level.WARN, "Not found user[email={0}]", userEmail);
                 return;
             }
 
@@ -197,9 +197,9 @@ public final class LoginProcessor {
                 return;
             }
 
-            LOGGER.log(Level.WARNING, "Wrong password[{0}]", userPwd);
+            LOGGER.log(Level.WARN, "Wrong password[{0}]", userPwd);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -275,7 +275,7 @@ public final class LoginProcessor {
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 
             if (Strings.isEmptyOrNull(userEmail)) {
-                LOGGER.log(Level.WARNING, "Why user's email is empty");
+                LOGGER.log(Level.WARN, "Why user's email is empty");
                 return;
             }
 
@@ -284,20 +284,20 @@ public final class LoginProcessor {
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
 
             if (null == user) {
-                LOGGER.log(Level.WARNING, "Not found user[email={0}]", userEmail);
+                LOGGER.log(Level.WARN, "Not found user[email={0}]", userEmail);
                 jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
                 return;
             }
 
             if (isPwdExpired()) {
-                LOGGER.log(Level.WARNING, "User[email={0}]'s random password has been expired", userEmail);
+                LOGGER.log(Level.WARN, "User[email={0}]'s random password has been expired", userEmail);
                 jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
                 return;
             }
 
             sendRandomPwd(user, userEmail, jsonObject);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -341,11 +341,11 @@ public final class LoginProcessor {
 
                 if (userPassword.equals(hashPassword)) {
                     Sessions.login(request, response, user);
-                    LOGGER.log(Level.FINER, "Logged in with cookie[email={0}]", userEmail);
+                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userEmail);
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.WARNING, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
+            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
 
             final Cookie cookie = new Cookie("b3log-latke", null);
 
@@ -399,7 +399,7 @@ public final class LoginProcessor {
         jsonObject.put("to", Latkes.getServePath() + "/login");
         jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
 
-        LOGGER.log(Level.FINER, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[] {mailSubject, mailBody, userEmail});
+        LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[] {mailSubject, mailBody, userEmail});
     }
 
     /**

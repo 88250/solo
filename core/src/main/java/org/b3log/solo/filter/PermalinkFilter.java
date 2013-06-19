@@ -17,8 +17,6 @@ package org.b3log.solo.filter;
 
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -30,6 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
@@ -97,13 +97,13 @@ public final class PermalinkFilter implements Filter {
 
         final String requestURI = httpServletRequest.getRequestURI();
 
-        LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
+        LOGGER.log(Level.DEBUG, "Request URI[{0}]", requestURI);
 
         final String contextPath = Latkes.getContextPath();
         final String permalink = StringUtils.substringAfter(requestURI, contextPath);
 
         if (Permalinks.invalidPermalinkFormat(permalink)) {
-            LOGGER.log(Level.FINER, "Skip filter request[URI={0}]", permalink);
+            LOGGER.log(Level.DEBUG, "Skip filter request[URI={0}]", permalink);
             chain.doFilter(request, response);
 
             return;
@@ -118,14 +118,14 @@ public final class PermalinkFilter implements Filter {
                 page = pageRepository.getByPermalink(permalink);
             }
 
-            if (null == page && null == article) {
-                LOGGER.log(Level.FINER, "Not found article/page with permalink[{0}]", permalink);
+            if (null == page) {
+                LOGGER.log(Level.DEBUG, "Not found article/page with permalink[{0}]", permalink);
                 chain.doFilter(request, response);
 
                 return;
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Processes article permalink filter failed", e);
+            LOGGER.log(Level.ERROR, "Processes article permalink filter failed", e);
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;

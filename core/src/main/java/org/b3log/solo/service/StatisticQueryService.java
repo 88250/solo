@@ -16,8 +16,8 @@
 package org.b3log.solo.service;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Statistic;
@@ -56,13 +56,13 @@ public final class StatisticQueryService {
             final JSONObject ret = statisticRepository.get(Statistic.STATISTIC);
 
             if (null == ret) {
-                LOGGER.log(Level.WARNING, "Can not load statistic from repository");
+                LOGGER.log(Level.WARN, "Can not load statistic from repository");
                 return null;
             }
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
     }

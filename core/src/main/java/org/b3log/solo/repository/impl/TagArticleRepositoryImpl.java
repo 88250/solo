@@ -17,7 +17,6 @@ package org.b3log.solo.repository.impl;
 
 
 import java.util.List;
-import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagArticleRepository;
@@ -36,11 +35,6 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 public final class TagArticleRepositoryImpl extends AbstractRepository implements TagArticleRepository {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(TagArticleRepositoryImpl.class.getName());
 
     /**
      * Singleton.

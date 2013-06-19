@@ -16,7 +16,6 @@
 package org.b3log.solo.service;
 
 
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
@@ -35,11 +34,6 @@ import org.json.JSONObject;
  * @since 0.6.0
  */
 public final class OptionMgmtService {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(OptionMgmtService.class.getName());
 
     /**
      * Option repository.

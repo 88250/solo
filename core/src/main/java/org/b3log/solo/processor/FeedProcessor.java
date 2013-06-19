@@ -20,13 +20,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.CompositeFilter;
 import org.b3log.latke.repository.CompositeFilterOperator;
@@ -194,7 +194,7 @@ public final class FeedProcessor {
 
             renderer.setContent(feed.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Get blog article feed error", e);
+            LOGGER.log(Level.ERROR, "Get blog article feed error", e);
 
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -329,7 +329,7 @@ public final class FeedProcessor {
 
             renderer.setContent(feed.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Get tag article feed error", e);
+            LOGGER.log(Level.ERROR, "Get tag article feed error", e);
 
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -440,7 +440,7 @@ public final class FeedProcessor {
 
             renderer.setContent(channel.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Get blog article rss error", e);
+            LOGGER.log(Level.ERROR, "Get blog article rss error", e);
 
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -582,7 +582,7 @@ public final class FeedProcessor {
 
             renderer.setContent(channel.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Get tag article rss error", e);
+            LOGGER.log(Level.ERROR, "Get tag article rss error", e);
 
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

@@ -22,14 +22,14 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
@@ -196,13 +196,13 @@ public final class InitService {
                 break;
             } catch (final Exception e) {
                 if (0 == retries) {
-                    LOGGER.log(Level.SEVERE, "Initialize B3log Solo error", e);
+                    LOGGER.log(Level.ERROR, "Initialize B3log Solo error", e);
                     throw new ServiceException("Initailize B3log Solo error: " + e.getMessage());
                 }
 
                 // Allow retry to occur
                 --retries;
-                LOGGER.log(Level.WARNING, "Retrying to init B3log Solo[retries={0}]", retries);
+                LOGGER.log(Level.WARN, "Retrying to init B3log Solo[retries={0}]", retries);
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -220,7 +220,7 @@ public final class InitService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Hello World error?!", e);
+            LOGGER.log(Level.ERROR, "Hello World error?!", e);
         }
     }
 
@@ -321,7 +321,7 @@ public final class InitService {
             admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 1);
             userRepository.update(admin.optString(Keys.OBJECT_ID), admin);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Adds an article failed", e);
+            LOGGER.log(Level.ERROR, "Adds an article failed", e);
 
             throw new RepositoryException(e);
         }
@@ -355,7 +355,7 @@ public final class InitService {
 
             archiveDateRepository.add(archiveDate);
         } catch (final ParseException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             throw new RepositoryException(e);
         }
 
@@ -401,7 +401,7 @@ public final class InitService {
             final String tagTitle = tagTitles[i].trim();
             final JSONObject tag = new JSONObject();
 
-            LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
+            LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
                 new Object[] {tagTitle, article.optString(Article.ARTICLE_TITLE)});
             tag.put(Tag.TAG_TITLE, tagTitle);
             tag.put(Tag.TAG_REFERENCE_COUNT, 1);
@@ -562,7 +562,7 @@ public final class InitService {
 
             Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
         } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, "Loads skins error!", e);
+            LOGGER.log(Level.ERROR, "Loads skins error!", e);
             throw new IllegalStateException(e);
         }
 

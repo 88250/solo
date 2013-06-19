@@ -20,8 +20,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.SoloServletListener;
@@ -55,7 +55,7 @@ public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
 
             TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(webRootPath));
         } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
     }
 

@@ -16,7 +16,6 @@
 package org.b3log.solo.repository.impl;
 
 
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
@@ -34,11 +33,6 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 public final class UserRepositoryImpl extends AbstractRepository implements UserRepository {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(UserRepositoryImpl.class.getName());
 
     /**
      * Singleton.

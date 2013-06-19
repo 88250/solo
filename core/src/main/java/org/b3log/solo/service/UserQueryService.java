@@ -17,9 +17,9 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
@@ -68,7 +68,7 @@ public final class UserQueryService {
         try {
             return userRepository.getAdmin();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets admin failed", e);
+            LOGGER.log(Level.ERROR, "Gets admin failed", e);
             throw new ServiceException(e);
         }
     }
@@ -84,7 +84,7 @@ public final class UserQueryService {
         try {
             return userRepository.getByEmail(email);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets user by email[" + email + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets user by email[" + email + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -132,7 +132,7 @@ public final class UserQueryService {
         try {
             result = userRepository.get(query);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets users failed", e);
+            LOGGER.log(Level.ERROR, "Gets users failed", e);
 
             throw new ServiceException(e);
         }
@@ -179,7 +179,7 @@ public final class UserQueryService {
         try {
             user = userRepository.get(userId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets a user failed", e);
+            LOGGER.log(Level.ERROR, "Gets a user failed", e);
             throw new ServiceException(e);
         }
 

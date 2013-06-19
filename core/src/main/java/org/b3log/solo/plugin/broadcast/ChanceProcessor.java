@@ -19,12 +19,12 @@ package org.b3log.solo.plugin.broadcast;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -91,7 +91,7 @@ public final class ChanceProcessor {
         try {
             ADD_BROADCAST_URL = new URL(SoloServletListener.B3LOG_RHYTHM_SERVE_PATH + "/broadcast");
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm add broadcast] error!");
+            LOGGER.log(Level.ERROR, "Creates remote service address[rhythm add broadcast] error!");
             throw new IllegalStateException(e);
         }
     }
@@ -150,7 +150,7 @@ public final class ChanceProcessor {
         } catch (final Exception e) {
             final String msg = "Broadcast plugin exception";
 
-            LOGGER.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.ERROR, msg, e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -220,7 +220,7 @@ public final class ChanceProcessor {
             ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, option.getLong(Option.OPTION_VALUE));
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Broadcast plugin exception", e);
+            LOGGER.log(Level.ERROR, "Broadcast plugin exception", e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -317,7 +317,7 @@ public final class ChanceProcessor {
 
             ret.put(Keys.STATUS_CODE, false);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Submits broadcast failed", e);
+            LOGGER.log(Level.ERROR, "Submits broadcast failed", e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

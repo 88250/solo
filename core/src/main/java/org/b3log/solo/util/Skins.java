@@ -25,11 +25,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
@@ -113,7 +113,7 @@ public final class Skins {
 
             dataModel.putAll(langs);
         } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, "Fills skin langs failed", e);
+            LOGGER.log(Level.ERROR, "Fills skin langs failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -139,7 +139,7 @@ public final class Skins {
 
         final Set<String> skinDirNames = getSkinDirNames();
 
-        LOGGER.log(Level.FINER, "Loaded skins[dirNames={0}]", skinDirNames);
+        LOGGER.log(Level.DEBUG, "Loaded skins[dirNames={0}]", skinDirNames);
         final JSONArray skinArray = new JSONArray();
 
         for (final String dirName : skinDirNames) {
@@ -147,7 +147,7 @@ public final class Skins {
             final String name = getSkinName(dirName);
 
             if (null == name) {
-                LOGGER.log(Level.WARNING, "The directory[{0}] does not contain any skin, ignored it", dirName);
+                LOGGER.log(Level.WARN, "The directory[{0}] does not contain any skin, ignored it", dirName);
                 continue;
             }
 
@@ -163,10 +163,10 @@ public final class Skins {
         LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
 
         if (!skinDirNames.contains(currentSkinDirName)) {
-            LOGGER.log(Level.WARNING, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName=ease] instead.",
+            LOGGER.log(Level.WARN, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName=ease] instead.",
                 currentSkinDirName);
             if (!skinDirNames.contains("ease")) {
-                LOGGER.log(Level.SEVERE, "Can not find skin[dirName=ease]");
+                LOGGER.log(Level.ERROR, "Can not find skin[dirName=ease]");
 
                 throw new IllegalStateException(
                     "Can not find default skin[dirName=ease], please redeploy your B3log Solo and make sure "
@@ -223,7 +223,7 @@ public final class Skins {
 
             Templates.MOBILE_CFG.setDirectoryForTemplateLoading(new File(webRootPath + SKINS + File.separator + "mobile"));
         } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, "Loads skins error!", e);
+            LOGGER.log(Level.ERROR, "Loads skins error!", e);
             throw new IllegalStateException(e);
         }
     }
@@ -257,7 +257,7 @@ public final class Skins {
         final Set<String> ret = new HashSet<String>();
 
         if (null == skinDirs) {
-            LOGGER.severe("Skin directory is null");
+            LOGGER.error("Skin directory is null");
 
             return ret;
         }
@@ -292,13 +292,13 @@ public final class Skins {
         });
 
         if (null == skinDirs) {
-            LOGGER.severe("Skin directory is null");
+            LOGGER.error("Skin directory is null");
 
             return null;
         }
 
         if (1 != skinDirs.length) {
-            LOGGER.log(Level.SEVERE, "Skin directory count[{0}]", skinDirs.length);
+            LOGGER.log(Level.ERROR, "Skin directory count[{0}]", skinDirs.length);
 
             return null;
         }
@@ -311,7 +311,7 @@ public final class Skins {
 
             return ret.getProperty("name");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Read skin configuration error[msg={0}]", e.getMessage());
+            LOGGER.log(Level.ERROR, "Read skin configuration error[msg={0}]", e.getMessage());
 
             return null;
         }

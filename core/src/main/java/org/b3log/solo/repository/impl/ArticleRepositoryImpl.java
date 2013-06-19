@@ -19,9 +19,9 @@ package org.b3log.solo.repository.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
@@ -199,7 +199,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
 
         final double mid = Math.random() + RANDOM_RANGE;
 
-        LOGGER.log(Level.FINEST, "Random mid[{0}]", mid);
+        LOGGER.log(Level.TRACE, "Random mid[{0}]", mid);
 
         Query query = new Query();
 

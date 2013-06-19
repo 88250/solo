@@ -17,11 +17,10 @@ package org.b3log.solo.util;
 
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginStatus;
@@ -84,7 +83,7 @@ public final class Plugins {
                             plugin.setSetting(new JSONObject(setting));
                         }
                     } catch (final JSONException e) {
-                        LOGGER.log(Level.WARNING, "the formatter of the old config failed to convert to json", e);
+                        LOGGER.log(Level.WARN, "the formatter of the old config failed to convert to json", e);
                     }
                 }
             }
@@ -95,11 +94,11 @@ public final class Plugins {
 
                 PLUGIN_REPOS.add(pluginDesc);
 
-                LOGGER.log(Level.FINEST, "Refreshed plugin[{0}]", pluginDesc);
+                LOGGER.log(Level.TRACE, "Refreshed plugin[{0}]", pluginDesc);
             }
 
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Refresh plugins failed", e);
+            LOGGER.log(Level.ERROR, "Refresh plugins failed", e);
         }
 
         PLUGIN_REPOS.setCacheEnabled(true);

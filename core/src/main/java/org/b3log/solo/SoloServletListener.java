@@ -17,8 +17,6 @@ package org.b3log.solo;
 
 
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +24,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.RepositoryException;
@@ -134,7 +134,7 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
-        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[] {Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", new Object[] {Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
     }
 
     @Override
@@ -159,13 +159,13 @@ public final class SoloServletListener extends AbstractServletListener {
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
 
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
-            LOGGER.log(Level.FINER, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
+            LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
 
-            LOGGER.log(Level.FINE, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", new Object[] {
+            LOGGER.log(Level.DEBUG, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", new Object[] {
                 session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), session.isNew()});
             // Online visitor count
             Statistics.onlineVisitorCount(httpServletRequest);
@@ -178,7 +178,7 @@ public final class SoloServletListener extends AbstractServletListener {
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         Stopwatchs.end();
 
-        LOGGER.log(Level.FINE, "Stopwatch: {0}{1}", new Object[] {Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", new Object[] {Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
         Stopwatchs.release();
 
         super.requestDestroyed(servletRequestEvent);
@@ -210,7 +210,7 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             preference = preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) {
-                LOGGER.log(Level.WARNING, "Can't not init default skin, please init B3log Solo first");
+                LOGGER.log(Level.WARN, "Can't not init default skin, please init B3log Solo first");
                 return;
             }
 
@@ -220,7 +220,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
             Templates.enableCache(pageCacheEnabled);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             throw new IllegalStateException(e);
         }
@@ -240,7 +240,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
             return null != admin;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARNING, "B3log Solo has not been initialized");
+            LOGGER.log(Level.WARN, "B3log Solo has not been initialized");
             return false;
         }
     }
@@ -271,7 +271,7 @@ public final class SoloServletListener extends AbstractServletListener {
             // Cache
             eventManager.registerListener(new RemoveCacheListener());
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Register event processors error", e);
+            LOGGER.log(Level.ERROR, "Register event processors error", e);
             throw new IllegalStateException(e);
         }
 
@@ -302,12 +302,12 @@ public final class SoloServletListener extends AbstractServletListener {
                 desiredView = preference.getString(Skin.SKIN_DIR_NAME);
             } else {
                 desiredView = "mobile";
-                LOGGER.log(Level.FINER, "The request [URI={0}] comes frome mobile device", requestURI);
+                LOGGER.log(Level.DEBUG, "The request [URI={0}] comes frome mobile device", requestURI);
             }
 
             httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, desiredView);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Resolves skin failed", e);
+            LOGGER.log(Level.ERROR, "Resolves skin failed", e);
         }
     }
 }

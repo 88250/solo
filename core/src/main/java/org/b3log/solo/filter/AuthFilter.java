@@ -16,8 +16,6 @@
 package org.b3log.solo.filter;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,6 +25,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
@@ -85,7 +85,7 @@ public final class AuthFilter implements Filter {
             final GeneralUser currentUser = userService.getCurrentUser(httpServletRequest);
 
             if (null == currentUser) {
-                LOGGER.warning("The request has been forbidden");
+                LOGGER.warn("The request has been forbidden");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                 return;
@@ -93,14 +93,14 @@ public final class AuthFilter implements Filter {
 
             final String currentUserEmail = currentUser.getEmail();
 
-            LOGGER.log(Level.FINER, "Current user email[{0}]", currentUserEmail);
+            LOGGER.log(Level.DEBUG, "Current user email[{0}]", currentUserEmail);
             if (users.isSoloUser(currentUserEmail)) {
                 chain.doFilter(request, response);
 
                 return;
             }
 
-            LOGGER.warning("The request has been forbidden");
+            LOGGER.warn("The request has been forbidden");
             httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
         } catch (final Exception e) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);

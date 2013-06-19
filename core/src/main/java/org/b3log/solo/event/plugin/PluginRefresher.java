@@ -17,11 +17,11 @@ package org.b3log.solo.event.plugin;
 
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
@@ -54,7 +54,7 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
             EventException {
         final List<AbstractPlugin> plugins = event.getData();
 
-        LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
             new Object[] {event.getType(), plugins, PluginRefresher.class.getName()});
 
         final Transaction transaction = pluginRepository.beginTransaction();
@@ -68,7 +68,7 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Processing plugin loaded event error", e);
+            LOGGER.log(Level.ERROR, "Processing plugin loaded event error", e);
             throw new EventException(e);
         }
     }

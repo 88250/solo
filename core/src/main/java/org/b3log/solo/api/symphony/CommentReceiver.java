@@ -21,8 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -30,6 +28,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -197,7 +197,7 @@ public final class CommentReceiver {
             try {
                 new URL(commentURL);
             } catch (final MalformedURLException e) {
-                LOGGER.log(Level.WARNING, "The comment URL is invalid [{0}]", commentURL);
+                LOGGER.log(Level.WARN, "The comment URL is invalid [{0}]", commentURL);
                 commentURL = "";
             }
 
@@ -232,7 +232,7 @@ public final class CommentReceiver {
                 } else {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-                    LOGGER.log(Level.WARNING, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
+                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
                         new String[] {originalCommentId, commentName, commentContent});
                 }
             } else {
@@ -260,7 +260,7 @@ public final class CommentReceiver {
             try {
                 Comments.sendNotificationMail(article, comment, originalComment, preference);
             } catch (final Exception e) {
-                LOGGER.log(Level.WARNING, "Send mail failed", e);
+                LOGGER.log(Level.WARN, "Send mail failed", e);
             }
             // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
@@ -279,7 +279,7 @@ public final class CommentReceiver {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -347,21 +347,21 @@ public final class CommentReceiver {
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=" + size + "&d=" + Latkes.getServePath()
                         + "/images/default-user-thumbnail.png";
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]", thumbnailURL);
+                    LOGGER.log(Level.TRACE, "Comment thumbnail[URL={0}]", thumbnailURL);
 
                     return;
                 }
             } else {
-                LOGGER.log(Level.WARNING, "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
+                LOGGER.log(Level.WARN, "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
                     new Object[] {commentEmail, statusCode});
             }
         } catch (final IOException e) {
-            LOGGER.warning(e.getMessage());
-            LOGGER.log(Level.WARNING, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
+            LOGGER.warn(e.getMessage());
+            LOGGER.log(Level.WARN, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
         }
 
         if (null == thumbnailURL) {
-            LOGGER.log(Level.WARNING, "Not supported yet for comment thumbnail for email[{0}]", commentEmail);
+            LOGGER.log(Level.WARN, "Not supported yet for comment thumbnail for email[{0}]", commentEmail);
             thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
         }

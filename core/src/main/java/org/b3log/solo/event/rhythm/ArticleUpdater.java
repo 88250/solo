@@ -19,13 +19,13 @@ package org.b3log.solo.event.rhythm;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
@@ -76,7 +76,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
         try {
             UPDATE_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_SERVE_PATH + "/article");
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm update article] error!");
+            LOGGER.log(Level.ERROR, "Creates remote service address[rhythm update article] error!");
             throw new IllegalStateException(e);
         }
     }
@@ -85,13 +85,13 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
 
-        LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
             new Object[] {event.getType(), data, ArticleUpdater.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                LOGGER.log(Level.FINER, "Ignores post article[title={0}] to Rhythm", originalArticle.getString(Article.ARTICLE_TITLE));
+                LOGGER.log(Level.DEBUG, "Ignores post article[title={0}] to Rhythm", originalArticle.getString(Article.ARTICLE_TITLE));
 
                 return;
             }
@@ -140,10 +140,10 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Sends an article to Rhythm error: {0}", e.getMessage());
+            LOGGER.log(Level.ERROR, "Sends an article to Rhythm error: {0}", e.getMessage());
         }
 
-        LOGGER.log(Level.FINER, "Sent an article to Rhythm");
+        LOGGER.log(Level.DEBUG, "Sent an article to Rhythm");
     }
 
     /**

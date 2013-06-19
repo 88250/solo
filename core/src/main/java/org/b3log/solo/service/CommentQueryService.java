@@ -19,10 +19,10 @@ package org.b3log.solo.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
@@ -168,7 +168,7 @@ public final class CommentQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets comments failed", e);
+            LOGGER.log(Level.ERROR, "Gets comments failed", e);
 
             throw new ServiceException(e);
         }
@@ -206,7 +206,7 @@ public final class CommentQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets comments failed", e);
+            LOGGER.log(Level.ERROR, "Gets comments failed", e);
             throw new ServiceException(e);
         }
     }

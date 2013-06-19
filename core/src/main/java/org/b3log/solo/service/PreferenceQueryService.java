@@ -16,8 +16,8 @@
 package org.b3log.solo.service;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Preference;
@@ -55,7 +55,7 @@ public final class PreferenceQueryService {
         try {
             return preferenceRepository.get(Preference.REPLY_NOTIFICATION_TEMPLATE);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Updates reply notification template failed", e);
+            LOGGER.log(Level.ERROR, "Updates reply notification template failed", e);
             throw new ServiceException(e);
         }
     }
@@ -75,13 +75,13 @@ public final class PreferenceQueryService {
             final JSONObject ret = preferenceRepository.get(Preference.PREFERENCE);
 
             if (null == ret) {
-                LOGGER.log(Level.WARNING, "Can not load preference from datastore");
+                LOGGER.log(Level.WARN, "Can not load preference from datastore");
                 return null;
             }
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             throw new IllegalStateException(e);
         }
     }

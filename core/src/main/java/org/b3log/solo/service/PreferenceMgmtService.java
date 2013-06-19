@@ -25,10 +25,10 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
@@ -93,7 +93,7 @@ public final class PreferenceMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates reply notification failed", e);
+            LOGGER.log(Level.ERROR, "Updates reply notification failed", e);
             throw new ServiceException(e);
         }
     }
@@ -141,7 +141,7 @@ public final class PreferenceMgmtService {
             final String webRootPath = SoloServletListener.getWebRoot();
             final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
 
-            LOGGER.log(Level.FINER, "Skin path[{0}]", skinPath);
+            LOGGER.log(Level.DEBUG, "Skin path[{0}]", skinPath);
             Templates.CACHE.clear();
 
             preference.put(Skin.SKINS, skinArray.toString());
@@ -185,7 +185,7 @@ public final class PreferenceMgmtService {
 
             final String localeString = preference.getString(Preference.LOCALE_STRING);
 
-            LOGGER.log(Level.FINER, "Current locale[string={0}]", localeString);
+            LOGGER.log(Level.DEBUG, "Current locale[string={0}]", localeString);
             Latkes.setLocale(new Locale(Locales.getLanguage(localeString), Locales.getCountry(localeString)));
 
             preferenceRepository.update(Preference.PREFERENCE, preference);
@@ -203,23 +203,23 @@ public final class PreferenceMgmtService {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LOGGER.log(Level.SEVERE, "Updates preference failed", e);
+            LOGGER.log(Level.ERROR, "Updates preference failed", e);
             throw new ServiceException(langPropsService.get("updateFailLabel"));
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LOGGER.log(Level.SEVERE, "Updates preference failed", e);
+            LOGGER.log(Level.ERROR, "Updates preference failed", e);
             throw new ServiceException(langPropsService.get("updateFailLabel"));
         } catch (final IOException e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LOGGER.log(Level.SEVERE, "Updates preference failed", e);
+            LOGGER.log(Level.ERROR, "Updates preference failed", e);
             throw new ServiceException(langPropsService.get("updateFailLabel"));
         }
 
-        LOGGER.log(Level.FINER, "Updates preference successfully");
+        LOGGER.log(Level.DEBUG, "Updates preference successfully");
     }
 
     /**

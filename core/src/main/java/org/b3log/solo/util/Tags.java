@@ -18,7 +18,6 @@ package org.b3log.solo.util;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
@@ -35,11 +34,6 @@ import org.json.JSONObject;
  * @version 1.0.0.6, Mar 8, 2011
  */
 public final class Tags {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(Tags.class.getName());
 
     /**
      * Tag repository.

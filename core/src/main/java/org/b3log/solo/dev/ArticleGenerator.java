@@ -18,13 +18,13 @@ package org.b3log.solo.dev;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -64,7 +64,7 @@ public final class ArticleGenerator {
     public void genArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws IOException {
         if (RuntimeMode.DEVELOPMENT != Latkes.getRuntimeMode()) {
-            LOGGER.log(Level.WARNING, "Article generation just for development mode, " + "current runtime mode is [{0}]",
+            LOGGER.log(Level.WARN, "Article generation just for development mode, " + "current runtime mode is [{0}]",
                 Latkes.getRuntimeMode());
             response.sendRedirect(Latkes.getServePath());
 
@@ -117,7 +117,7 @@ public final class ArticleGenerator {
             }
 
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
 
         Stopwatchs.end();

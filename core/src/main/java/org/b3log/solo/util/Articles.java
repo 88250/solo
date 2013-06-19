@@ -20,11 +20,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.user.UserService;
@@ -134,7 +134,7 @@ public final class Articles {
 
             return ((Date) recentArticle.get(Article.ARTICLE_UPDATE_DATE)).getTime();
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             throw new ServiceException("Gets recent article time failed");
         }
     }
@@ -164,7 +164,7 @@ public final class Articles {
             JSONObject ret = userRepository.getByEmail(email);
 
             if (null == ret) {
-                LOGGER.log(Level.WARNING, "Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
+                LOGGER.log(Level.WARN, "Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
                     article.getString(Keys.OBJECT_ID));
                 // This author may be deleted by admin, use admin as the author
                 // of this article
@@ -173,10 +173,10 @@ public final class Articles {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
+            LOGGER.log(Level.ERROR, "Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
             throw new ServiceException(e);
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
+            LOGGER.log(Level.ERROR, "Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
             throw new ServiceException(e);
         }
     }
@@ -224,7 +224,7 @@ public final class Articles {
             }
         }
 
-        LOGGER.log(Level.WARNING, "Can not find the sign[id={0}], returns a default sign[id=1]", signId);
+        LOGGER.log(Level.WARN, "Can not find the sign[id={0}], returns a default sign[id=1]", signId);
         if (null == defaultSign) {
             throw new IllegalStateException("Can not find the default sign which id equals to 1");
         }

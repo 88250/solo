@@ -16,11 +16,11 @@
 package org.b3log.solo.api.symphony;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -123,7 +123,7 @@ public final class ArticleReceiver {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             if (!userB3Key.equals(preference.optString(Preference.KEY_OF_SOLO))) {
-                LOGGER.log(Level.WARNING, "B3 key not match, ignored add article");
+                LOGGER.log(Level.WARN, "B3 key not match, ignored add article");
 
                 return;
             }
@@ -159,7 +159,7 @@ public final class ArticleReceiver {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -216,7 +216,7 @@ public final class ArticleReceiver {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             if (!userB3Key.equals(preference.optString(Preference.KEY_OF_SOLO))) {
-                LOGGER.log(Level.WARNING, "B3 key not match, ignored update article");
+                LOGGER.log(Level.WARN, "B3 key not match, ignored update article");
 
                 return;
             }
@@ -253,7 +253,7 @@ public final class ArticleReceiver {
             ret.put(Keys.MSG, "update article succ");
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

@@ -22,11 +22,11 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -131,13 +131,13 @@ public final class TopBars {
 
             return stringWriter.toString();
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
+            LOGGER.log(Level.ERROR, "Gens top bar HTML failed", e);
             throw new ServiceException(e);
         } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
+            LOGGER.log(Level.ERROR, "Gens top bar HTML failed", e);
             throw new ServiceException(e);
         } catch (final TemplateException e) {
-            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
+            LOGGER.log(Level.ERROR, "Gens top bar HTML failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();

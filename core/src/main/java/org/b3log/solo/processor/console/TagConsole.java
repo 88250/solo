@@ -19,11 +19,11 @@ package org.b3log.solo.processor.console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -118,7 +118,7 @@ public final class TagConsole {
 
             jsonObject.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets tags failed", e);
+            LOGGER.log(Level.ERROR, "Gets tags failed", e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
         }
@@ -183,7 +183,7 @@ public final class TagConsole {
 
             jsonObject.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets unused tags failed", e);
+            LOGGER.log(Level.ERROR, "Gets unused tags failed", e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
         }
@@ -230,7 +230,7 @@ public final class TagConsole {
 
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Removes unused tags failed", e);
+            LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
 
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }

@@ -17,10 +17,10 @@ package org.b3log.solo.util;
 
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
@@ -187,7 +187,7 @@ public final class Comments {
             final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
 
             if (MAX_COMMENT_NAME_LENGTH < commentName.length() || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
-                LOGGER.log(Level.WARNING, "Comment name is too long[{0}]", commentName);
+                LOGGER.log(Level.WARN, "Comment name is too long[{0}]", commentName);
                 ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
 
                 return ret;
@@ -196,7 +196,7 @@ public final class Comments {
             final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
 
             if (!Strings.isEmail(commentEmail)) {
-                LOGGER.log(Level.WARNING, "Comment email is invalid[{0}]", commentEmail);
+                LOGGER.log(Level.WARN, "Comment email is invalid[{0}]", commentEmail);
                 ret.put(Keys.MSG, langPropsService.get("mailInvalidLabel"));
 
                 return ret;
@@ -205,7 +205,7 @@ public final class Comments {
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
 
             if (!Strings.isURL(commentURL)) {
-                LOGGER.log(Level.WARNING, "Comment URL is invalid[{0}]", commentURL);
+                LOGGER.log(Level.WARN, "Comment URL is invalid[{0}]", commentURL);
                 ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
 
                 return ret;
@@ -215,7 +215,7 @@ public final class Comments {
                 SoloServletListener.ENTER_ESC);
 
             if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length() || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
-                LOGGER.log(Level.WARNING, "Comment conent length is invalid[{0}]", commentContent.length());
+                LOGGER.log(Level.WARN, "Comment conent length is invalid[{0}]", commentContent.length());
                 ret.put(Keys.MSG, langPropsService.get("commentContentCannotEmptyLabel"));
 
                 return ret;
@@ -225,7 +225,7 @@ public final class Comments {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.WARNING, "Checks add comment request[" + requestJSONObject.toString() + "] failed", e);
+            LOGGER.log(Level.WARN, "Checks add comment request[" + requestJSONObject.toString() + "] failed", e);
 
             ret.put(Keys.STATUS_CODE, false);
             ret.put(Keys.MSG, langPropsService.get("addFailLabel"));
@@ -258,7 +258,7 @@ public final class Comments {
         final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
 
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
-            LOGGER.log(Level.FINER, "Do not send comment notification mail to admin itself[{0}]", adminEmail);
+            LOGGER.log(Level.DEBUG, "Do not send comment notification mail to admin itself[{0}]", adminEmail);
             return;
         }
 
@@ -266,7 +266,7 @@ public final class Comments {
             final String originalEmail = originalComment.getString(Comment.COMMENT_EMAIL);
 
             if (originalEmail.equalsIgnoreCase(adminEmail)) {
-                LOGGER.log(Level.FINER, "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
+                LOGGER.log(Level.DEBUG, "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
                     commentId);
                 return;
             }
@@ -315,7 +315,7 @@ public final class Comments {
             "{commenter}", commenter);
         message.setHtmlBody(mailBody);
 
-        LOGGER.log(Level.FINER, "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
+        LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
             new Object[] {mailSubject, mailBody, adminEmail});
         MAIL_SVC.send(message);
     }

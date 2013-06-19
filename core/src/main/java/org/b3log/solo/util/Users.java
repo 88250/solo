@@ -16,11 +16,11 @@
 package org.b3log.solo.util;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
@@ -85,11 +85,11 @@ public final class Users {
 
             return 1 != users.length();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Determines multiple users failed", e);
+            LOGGER.log(Level.ERROR, "Determines multiple users failed", e);
 
             throw new ServiceException(e);
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Determines multiple users failed", e);
+            LOGGER.log(Level.ERROR, "Determines multiple users failed", e);
 
             throw new ServiceException(e);
         }
@@ -178,7 +178,7 @@ public final class Users {
         try {
             return userRepository.getByEmail(email);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets current user by request failed, returns null", e);
+            LOGGER.log(Level.ERROR, "Gets current user by request failed, returns null", e);
 
             return null;
         }
@@ -199,7 +199,7 @@ public final class Users {
 
             return existEmail(email, users);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             return false;
         }
     }

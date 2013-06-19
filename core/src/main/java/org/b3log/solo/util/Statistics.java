@@ -20,11 +20,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.util.Requests;
@@ -94,10 +94,10 @@ public final class Statistics {
     public static void onlineVisitorCount(final HttpServletRequest request) {
         final String remoteAddr = Requests.getRemoteAddr(request);
 
-        LOGGER.log(Level.FINER, "Current request [IP={0}]", remoteAddr);
+        LOGGER.log(Level.DEBUG, "Current request [IP={0}]", remoteAddr);
 
         ONLINE_VISITORS.put(remoteAddr, System.currentTimeMillis());
-        LOGGER.log(Level.FINER, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+        LOGGER.log(Level.DEBUG, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**
@@ -113,11 +113,11 @@ public final class Statistics {
 
             if (currentTimeMillis > (onlineVisitor.getValue() + ONLINE_VISITOR_EXPIRATION)) {
                 iterator.remove();
-                LOGGER.log(Level.FINEST, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
+                LOGGER.log(Level.TRACE, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
             }
         }
 
-        LOGGER.log(Level.FINER, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+        LOGGER.log(Level.DEBUG, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 
     /**
@@ -257,7 +257,7 @@ public final class Statistics {
             return;
         }
 
-        LOGGER.log(Level.FINEST, "Before inc blog view count[statistic={0}]", statistic);
+        LOGGER.log(Level.TRACE, "Before inc blog view count[statistic={0}]", statistic);
 
         int blogViewCnt = statistic.getInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
 
@@ -276,14 +276,14 @@ public final class Statistics {
                     transaction.rollback();
                 }
                 
-                LOGGER.log(Level.SEVERE, "Updates blog view count failed", e);
+                LOGGER.log(Level.ERROR, "Updates blog view count failed", e);
             }
         } else {
             // Repository cache prefix, Refers to GAERepository#CACHE_KEY_PREFIX 
             statisticRepository.getCache().putAsync(REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC, statistic);
         }
 
-        LOGGER.log(Level.FINER, "Inced blog view count[statistic={0}]", statistic);
+        LOGGER.log(Level.DEBUG, "Inced blog view count[statistic={0}]", statistic);
     }
 
     /**

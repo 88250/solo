@@ -16,8 +16,8 @@
 package org.b3log.solo.repository.impl;
 
 
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
@@ -33,11 +33,6 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 public final class LinkRepositoryImpl extends AbstractRepository implements LinkRepository {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(LinkRepositoryImpl.class.getName());
 
     /**
      * Singleton.

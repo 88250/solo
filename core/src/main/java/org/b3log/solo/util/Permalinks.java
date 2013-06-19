@@ -16,10 +16,10 @@
 package org.b3log.solo.util;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.repository.ArticleRepository;
@@ -217,7 +217,7 @@ public final class Permalinks {
             return isReservedLink(permalink) || null != articleRepository.getByPermalink(permalink)
                 || null != pageRepository.getByPermalink(permalink) || permalink.endsWith(".ftl");
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Determines whether the permalink[" + permalink + "] exists failed, returns true", e);
+            LOGGER.log(Level.ERROR, "Determines whether the permalink[" + permalink + "] exists failed, returns true", e);
 
             return true;
         }

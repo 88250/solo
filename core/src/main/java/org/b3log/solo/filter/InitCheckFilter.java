@@ -17,8 +17,6 @@ package org.b3log.solo.filter;
 
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -29,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
@@ -75,7 +75,7 @@ public final class InitCheckFilter implements Filter {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
 
-        LOGGER.log(Level.FINEST, "Request[URI={0}]", requestURI);
+        LOGGER.log(Level.TRACE, "Request[URI={0}]", requestURI);
         
         if (requestURI.startsWith("/latke/remote")) {
             // If requests Latke Remote APIs, skips this filter 
@@ -98,11 +98,11 @@ public final class InitCheckFilter implements Filter {
                 return;
             }
 
-            LOGGER.finer("Try to get preference to confirm whether the preference exixts");
+            LOGGER.debug("Try to get preference to confirm whether the preference exixts");
             final JSONObject preference = preferenceQueryService.getPreference();
 
             if (null == preference) {
-                LOGGER.log(Level.WARNING, "B3log Solo has not been initialized, so redirects to /init");
+                LOGGER.log(Level.WARN, "B3log Solo has not been initialized, so redirects to /init");
 
                 final HTTPRequestContext context = new HTTPRequestContext();
 

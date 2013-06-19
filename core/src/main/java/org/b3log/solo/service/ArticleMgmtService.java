@@ -21,14 +21,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -182,7 +182,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Cancels publish article failed", e);
+            LOGGER.log(Level.ERROR, "Cancels publish article failed", e);
 
             throw new ServiceException(e);
         }
@@ -212,7 +212,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Can't put the article[oId{0}] to top", articleId);
+            LOGGER.log(Level.ERROR, "Can't put the article[oId{0}] to top", articleId);
             throw new ServiceException(e);
         }
     }
@@ -335,7 +335,7 @@ public final class ArticleMgmtService {
                 try {
                     eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
                 } catch (final EventException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    LOGGER.log(Level.ERROR, e.getMessage(), e);
                 }
             } else {
                 // Fire update article event
@@ -346,7 +346,7 @@ public final class ArticleMgmtService {
                 try {
                     eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
                 } catch (final EventException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    LOGGER.log(Level.ERROR, e.getMessage(), e);
                 }
             }
 
@@ -356,7 +356,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates an article failed", e);
+            LOGGER.log(Level.ERROR, "Updates an article failed", e);
 
             throw e;
         } catch (final Exception e) {
@@ -364,7 +364,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates an article failed", e);
+            LOGGER.log(Level.ERROR, "Updates an article failed", e);
 
             throw new ServiceException(e.getMessage());
         }
@@ -516,11 +516,11 @@ public final class ArticleMgmtService {
 
             article.remove(Common.POST_TO_COMMUNITY);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Adds an article failed", e);
+            LOGGER.log(Level.ERROR, "Adds an article failed", e);
 
             throw new ServiceException(e);
         } catch (final EventException e) {
-            LOGGER.log(Level.WARNING, "Adds an article event process failed", e);
+            LOGGER.log(Level.WARN, "Adds an article event process failed", e);
         }
 
         return ret;
@@ -533,7 +533,7 @@ public final class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public void removeArticle(final String articleId) throws ServiceException {
-        LOGGER.log(Level.FINER, "Removing an article[id={0}]", articleId);
+        LOGGER.log(Level.DEBUG, "Removing an article[id={0}]", articleId);
 
         final Transaction transaction = articleRepository.beginTransaction();
 
@@ -564,11 +564,11 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes an article[id=" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Removes an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
 
-        LOGGER.log(Level.FINER, "Removed an article[id={0}]", articleId);
+        LOGGER.log(Level.DEBUG, "Removed an article[id={0}]", articleId);
     }
 
     /**
@@ -598,7 +598,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.WARNING, "Updates article random value failed");
+            LOGGER.log(Level.WARN, "Updates article random value failed");
 
             throw new ServiceException(e);
         }
@@ -620,7 +620,7 @@ public final class ArticleMgmtService {
                 return;
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets article [id=" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets article [id=" + articleId + "] failed", e);
 
             return;
         }
@@ -638,7 +638,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.WARNING, "Updates article view count failed");
+            LOGGER.log(Level.WARN, "Updates article view count failed");
 
             throw new ServiceException(e);
         }
@@ -669,17 +669,17 @@ public final class ArticleMgmtService {
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
                 }
                 tagRepository.update(tagId, tag);
-                LOGGER.log(Level.FINEST, "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
+                LOGGER.log(Level.TRACE, "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
                     new Object[] {
                     tag.getString(Tag.TAG_TITLE), tag.getInt(Tag.TAG_REFERENCE_COUNT), tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
                     articleId});
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Decs tag references count of article[id" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Decs tag references count of article[id" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
 
-        LOGGER.log(Level.FINER, "Deced all tag reference count of article[id={0}]", articleId);
+        LOGGER.log(Level.DEBUG, "Deced all tag reference count of article[id={0}]", articleId);
     }
 
     /**
@@ -716,7 +716,7 @@ public final class ArticleMgmtService {
 
             archiveDateArticleRepository.remove(archiveDateArticleRelation.getString(Keys.OBJECT_ID));
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Unarchive date for article[id=" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Unarchive date for article[id=" + articleId + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -789,7 +789,7 @@ public final class ArticleMgmtService {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(newTagTitle, oldTags)) {
-                LOGGER.log(Level.FINER, "Tag need to add[title={0}]", newTagTitle);
+                LOGGER.log(Level.DEBUG, "Tag need to add[title={0}]", newTagTitle);
                 tagsNeedToAdd.add(newTag);
             } else {
                 tagsUnchanged.add(newTag);
@@ -799,14 +799,14 @@ public final class ArticleMgmtService {
             final String oldTagTitle = oldTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(oldTagTitle, newTags)) {
-                LOGGER.log(Level.FINER, "Tag dropped[title={0}]", oldTag);
+                LOGGER.log(Level.DEBUG, "Tag dropped[title={0}]", oldTag);
                 tagsDropped.add(oldTag);
             } else {
                 tagsUnchanged.remove(oldTag);
             }
         }
 
-        LOGGER.log(Level.FINER, "Tags unchanged[{0}]", tagsUnchanged);
+        LOGGER.log(Level.DEBUG, "Tags unchanged[{0}]", tagsUnchanged);
         for (final JSONObject tagUnchanged : tagsUnchanged) {
             final String tagId = tagUnchanged.optString(Keys.OBJECT_ID);
 
@@ -934,7 +934,7 @@ public final class ArticleMgmtService {
             String tagId;
 
             if (null == tag) {
-                LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
+                LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
                     new Object[] {tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
@@ -949,7 +949,7 @@ public final class ArticleMgmtService {
                 tag.put(Keys.OBJECT_ID, tagId);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
-                LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
+                LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
                     new Object[] {tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
 
@@ -1046,7 +1046,7 @@ public final class ArticleMgmtService {
 
                 archiveDateRepository.add(archiveDate);
             } catch (final ParseException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                LOGGER.log(Level.ERROR, e.getMessage(), e);
                 throw new RepositoryException(e);
             }
         }

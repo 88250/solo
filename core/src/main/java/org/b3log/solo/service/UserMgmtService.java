@@ -16,10 +16,10 @@
 package org.b3log.solo.service;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
@@ -136,7 +136,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
+            LOGGER.log(Level.ERROR, "Updates a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -173,7 +173,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
+            LOGGER.log(Level.ERROR, "Updates a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -249,7 +249,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds a user failed", e);
+            LOGGER.log(Level.ERROR, "Adds a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -272,7 +272,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes a user[id=" + userId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Removes a user[id=" + userId + "] failed", e);
             throw new ServiceException(e);
         }
     }

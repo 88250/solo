@@ -22,11 +22,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
@@ -143,7 +143,7 @@ public final class UpgradeProcessor {
             if ("0.5.6".equals(version)) {
                 v056ToV060();
             } else {
-                LOGGER.log(Level.WARNING, "Attempt to skip more than one version to upgrade. Expected: 0.5.6; Actually: {0}", version);
+                LOGGER.log(Level.WARN, "Attempt to skip more than one version to upgrade. Expected: 0.5.6; Actually: {0}", version);
                 if (!sent) {
                     notifyUserByEmail();
                     sent = true;
@@ -151,7 +151,7 @@ public final class UpgradeProcessor {
                 renderer.setContent(langPropsService.get("skipVersionAlert"));
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent(
                 "Upgrade failed [" + e.getMessage() + "], please contact the B3log Solo developers or reports this "
                 + "issue directly (<a href='https://github.com/b3log/b3log-solo/issues/new'>"
@@ -197,7 +197,7 @@ public final class UpgradeProcessor {
                 try {
                     JdbcFactory.createJdbcFactory().createTable(tableName, map.get(tableName));
                 } catch (final SQLException e) {
-                    LOGGER.log(Level.SEVERE, "createTable[" + tableName + "] error", e);
+                    LOGGER.log(Level.ERROR, "createTable[" + tableName + "] error", e);
                 }
             }
             
@@ -212,13 +212,13 @@ public final class UpgradeProcessor {
 
             transaction.commit();
 
-            LOGGER.log(Level.FINEST, "Updated preference");
+            LOGGER.log(Level.TRACE, "Updated preference");
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Upgrade failed.", e);
+            LOGGER.log(Level.ERROR, "Upgrade failed.", e);
             throw new Exception("Upgrade failed from version 056 to version 060");
         } finally {
             articleRepository.setCacheEnabled(true);
@@ -261,7 +261,7 @@ public final class UpgradeProcessor {
         final JSONArray articles = articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
 
         if (articles.length() <= 0) {
-            LOGGER.log(Level.FINEST, "No articles");
+            LOGGER.log(Level.TRACE, "No articles");
             return;
         }
 
@@ -284,7 +284,7 @@ public final class UpgradeProcessor {
 
                 if (0 == i % STEP) {
                     transaction.commit();
-                    LOGGER.log(Level.FINEST, "Updated some articles");
+                    LOGGER.log(Level.TRACE, "Updated some articles");
                 }
             }
 
@@ -292,7 +292,7 @@ public final class UpgradeProcessor {
                 transaction.commit();
             }
 
-            LOGGER.log(Level.FINEST, "Updated all articles");
+            LOGGER.log(Level.TRACE, "Updated all articles");
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

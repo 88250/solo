@@ -19,10 +19,10 @@ package org.b3log.solo.repository.impl;
 import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.ArchiveDate;
@@ -57,11 +57,11 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
         try {
             time = DateUtils.parseDate(archiveDate, new String[] {"yyyy/MM"}).getTime();
         } catch (final ParseException e) {
-            LOGGER.log(Level.SEVERE, "Can not parse archive date [" + archiveDate + "]", e);
+            LOGGER.log(Level.ERROR, "Can not parse archive date [" + archiveDate + "]", e);
             throw new RepositoryException("Can not parse archive date [" + archiveDate + "]");
         }
 
-        LOGGER.log(Level.FINEST, "Archive date [{0}] parsed to time [{1}]", new Object[] {archiveDate, time});
+        LOGGER.log(Level.TRACE, "Archive date [{0}] parsed to time [{1}]", new Object[] {archiveDate, time});
 
         final Query query = new Query();
 

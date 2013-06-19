@@ -17,9 +17,9 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
@@ -79,11 +79,11 @@ public final class TagQueryService {
 
             ret.put(Tag.TAG, tag);
 
-            LOGGER.log(Level.FINER, "Got an tag[title={0}]", tagTitle);
+            LOGGER.log(Level.DEBUG, "Got an tag[title={0}]", tagTitle);
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets an article failed", e);
+            LOGGER.log(Level.ERROR, "Gets an article failed", e);
             throw new ServiceException(e);
         }
     }
@@ -98,7 +98,7 @@ public final class TagQueryService {
         try {
             return tagRepository.count();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets tags failed", e);
+            LOGGER.log(Level.ERROR, "Gets tags failed", e);
 
             throw new ServiceException(e);
         }
@@ -125,7 +125,7 @@ public final class TagQueryService {
 
             return CollectionUtils.jsonArrayToList(tagArray);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets tags failed", e);
+            LOGGER.log(Level.ERROR, "Gets tags failed", e);
 
             throw new ServiceException(e);
         }

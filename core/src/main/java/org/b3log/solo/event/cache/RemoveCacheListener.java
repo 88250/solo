@@ -16,12 +16,12 @@
 package org.b3log.solo.event.cache;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.service.StatisticMgmtService;
 
@@ -51,13 +51,13 @@ public final class RemoveCacheListener extends AbstractEventListener<Void> {
 
     @Override
     public void action(final Event<Void> event) throws EventException {
-        LOGGER.log(Level.FINER, "Processing an event[type={0} in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0} in listener[className={2}]",
             new Object[] {event.getType(), RemoveCacheListener.class.getName()});
 
         try {
             statisticMgmtService.flushStatistic();
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, "Flushes statistic to repository failed", e);
+            LOGGER.log(Level.ERROR, "Flushes statistic to repository failed", e);
         }
     }
 

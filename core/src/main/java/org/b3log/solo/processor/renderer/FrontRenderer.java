@@ -17,12 +17,12 @@ package org.b3log.solo.processor.renderer;
 
 
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
@@ -59,14 +59,14 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
      */
     @Override
     protected void beforeRender(final HTTPRequestContext context) throws Exception {
-        LOGGER.log(Level.FINEST, "Before render....");
+        LOGGER.log(Level.TRACE, "Before render....");
         getDataModel().put(Common.TOP_BAR_REPLACEMENT_FLAG_KEY, Common.TOP_BAR_REPLACEMENT_FLAG);
     }
 
     @Override
     protected void doRender(final String html, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        LOGGER.log(Level.FINEST, "Do render....");
+        LOGGER.log(Level.TRACE, "Do render....");
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
 
@@ -99,7 +99,7 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
         try {
             statistics.incBlogViewCount(request, response);
         } catch (final Exception e) {
-            LOGGER.log(Level.WARNING, "Incs blog view count failed", e);
+            LOGGER.log(Level.WARN, "Incs blog view count failed", e);
         }
 
         // Write out
@@ -117,7 +117,7 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
      */
     @Override
     protected void afterRender(final HTTPRequestContext context) throws Exception {
-        LOGGER.log(Level.FINEST, "After render....");
+        LOGGER.log(Level.TRACE, "After render....");
 
         final HttpServletRequest request = context.getRequest();
 

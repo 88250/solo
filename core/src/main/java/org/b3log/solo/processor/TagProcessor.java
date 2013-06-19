@@ -22,13 +22,13 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -142,7 +142,7 @@ public final class TagProcessor {
                 return;
             }
 
-            LOGGER.log(Level.FINER, "Tag[title={0}, currentPageNum={1}]", new Object[] {tagTitle, currentPageNum});
+            LOGGER.log(Level.DEBUG, "Tag[title={0}, currentPageNum={1}]", new Object[] {tagTitle, currentPageNum});
 
             tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
@@ -180,7 +180,7 @@ public final class TagProcessor {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     return;
                 } catch (final IOException ex) {
-                    LOGGER.severe(ex.getMessage());
+                    LOGGER.error(ex.getMessage());
                 }
             }
 
@@ -198,11 +198,11 @@ public final class TagProcessor {
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
 
-            LOGGER.log(Level.FINEST, "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
+            LOGGER.log(Level.TRACE, "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
                 new Object[] {currentPageNum, pageSize, pageCount, windowSize});
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
-            LOGGER.log(Level.FINEST, "tag-articles[pageNums={0}]", pageNums);
+            LOGGER.log(Level.TRACE, "tag-articles[pageNums={0}]", pageNums);
             
             Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
          
@@ -216,20 +216,20 @@ public final class TagProcessor {
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         }
     }
@@ -310,13 +310,12 @@ public final class TagProcessor {
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         }
     }

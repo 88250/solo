@@ -17,13 +17,13 @@ package org.b3log.solo.processor;
 
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -113,7 +113,7 @@ public final class CommentProcessor {
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARNING, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
+            LOGGER.log(Level.WARN, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
             return;
         }
 
@@ -150,7 +150,7 @@ public final class CommentProcessor {
 
             renderer.setJSONObject(addResult);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Can not add comment on page", e);
+            LOGGER.log(Level.ERROR, "Can not add comment on page", e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
@@ -205,7 +205,7 @@ public final class CommentProcessor {
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARNING, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
+            LOGGER.log(Level.WARN, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
             return;
         }
 
@@ -242,7 +242,7 @@ public final class CommentProcessor {
             renderer.setJSONObject(addResult);
         } catch (final Exception e) {
 
-            LOGGER.log(Level.SEVERE, "Can not add comment on article", e);
+            LOGGER.log(Level.ERROR, "Can not add comment on article", e);
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
         }

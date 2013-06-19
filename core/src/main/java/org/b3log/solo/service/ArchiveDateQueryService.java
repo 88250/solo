@@ -17,8 +17,8 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.ArchiveDate;
@@ -56,7 +56,7 @@ public final class ArchiveDateQueryService {
         try {
             return archiveDateRepository.getArchiveDates();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets archive dates failed", e);
+            LOGGER.log(Level.ERROR, "Gets archive dates failed", e);
             throw new ServiceException("Gets archive dates failed");
         }
     }
@@ -92,7 +92,7 @@ public final class ArchiveDateQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets archive date[string=" + archiveDateString + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets archive date[string=" + archiveDateString + "] failed", e);
             throw new ServiceException("Gets archive date[string=" + archiveDateString + "] failed");
         }
     }

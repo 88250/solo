@@ -17,9 +17,9 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Tag;
@@ -80,7 +80,7 @@ public final class TagMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes unused tags failed", e);
+            LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
 
             throw new ServiceException(e);
         }

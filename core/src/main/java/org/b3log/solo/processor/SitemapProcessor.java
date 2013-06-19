@@ -19,12 +19,12 @@ package org.b3log.solo.processor;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -117,7 +117,7 @@ public final class SitemapProcessor {
             LOGGER.log(Level.INFO, "Generated sitemap");
             renderer.setContent(content);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Get blog article feed error", e);
+            LOGGER.log(Level.ERROR, "Get blog article feed error", e);
 
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

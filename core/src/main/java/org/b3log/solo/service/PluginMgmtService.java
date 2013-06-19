@@ -18,11 +18,10 @@ package org.b3log.solo.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
@@ -101,7 +100,7 @@ public final class PluginMgmtService {
                         transaction.rollback();
                     }
 
-                    LOGGER.log(Level.SEVERE, "Set plugin status error", e);
+                    LOGGER.log(Level.ERROR, "Set plugin status error", e);
 
                     ret.put(Keys.STATUS_CODE, false);
                     ret.put(Keys.MSG, langs.get("setFailLabel"));
@@ -153,7 +152,7 @@ public final class PluginMgmtService {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
-                    LOGGER.log(Level.SEVERE, "Set plugin status error", e);
+                    LOGGER.log(Level.ERROR, "Set plugin status error", e);
                     ret.put(Keys.STATUS_CODE, false);
                     ret.put(Keys.MSG, langs.get("setFailLabel"));
 

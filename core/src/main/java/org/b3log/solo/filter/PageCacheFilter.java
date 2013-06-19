@@ -18,8 +18,6 @@ package org.b3log.solo.filter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -32,6 +30,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -105,19 +105,19 @@ public final class PageCacheFilter implements Filter {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
 
-        LOGGER.log(Level.FINER, "Request URI[{0}]", requestURI);
+        LOGGER.log(Level.DEBUG, "Request URI[{0}]", requestURI);
 
         if (StaticResources.isStatic(httpServletRequest)) {
             final String path = httpServletRequest.getServletPath() + httpServletRequest.getPathInfo();
 
-            LOGGER.log(Level.FINEST, "Requests a static resource, forwards to servlet[path={0}]", path);
+            LOGGER.log(Level.TRACE, "Requests a static resource, forwards to servlet[path={0}]", path);
             request.getRequestDispatcher(path).forward(request, response);
 
             return;
         }
 
         if (!Latkes.isPageCacheEnabled()) {
-            LOGGER.log(Level.FINEST, "Page cache is disabled");
+            LOGGER.log(Level.TRACE, "Page cache is disabled");
             chain.doFilter(request, response);
 
             return;
@@ -144,7 +144,7 @@ public final class PageCacheFilter implements Filter {
         final JSONObject cachedPageContentObject = PageCaches.get(pageCacheKey, httpServletRequest, (HttpServletResponse) response);
 
         if (null == cachedPageContentObject) {
-            LOGGER.log(Level.FINER, "Page cache miss for request URI[{0}]", requestURI);
+            LOGGER.log(Level.DEBUG, "Page cache miss for request URI[{0}]", requestURI);
             chain.doFilter(request, response);
 
             return;
@@ -179,12 +179,12 @@ public final class PageCacheFilter implements Filter {
                 }
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             chain.doFilter(request, response);
         }
 
         try {
-            LOGGER.log(Level.FINEST, "Writes resposne for page[pageCacheKey={0}] from cache", pageCacheKey);
+            LOGGER.log(Level.TRACE, "Writes resposne for page[pageCacheKey={0}] from cache", pageCacheKey);
             response.setContentType("text/html");
             response.setCharacterEncoding("UTF-8");
             final PrintWriter writer = response.getWriter();
@@ -195,7 +195,7 @@ public final class PageCacheFilter implements Filter {
 
             final String cachedTitle = cachedPageContentObject.getString(PageCaches.CACHED_TITLE);
 
-            LOGGER.log(Level.FINEST, "Cached value[key={0}, type={1}, title={2}]", new Object[] {pageCacheKey, cachedType, cachedTitle});
+            LOGGER.log(Level.TRACE, "Cached value[key={0}, type={1}, title={2}]", new Object[] {pageCacheKey, cachedType, cachedTitle});
 
             statistics.incBlogViewCount((HttpServletRequest) request, (HttpServletResponse) response);
 
@@ -203,19 +203,19 @@ public final class PageCacheFilter implements Filter {
             final String dateString = DateFormatUtils.format(endimeMillis, "yyyy/MM/dd HH:mm:ss");
             final String msg = String.format("<!-- Cached by B3log Solo(%1$d ms), %2$s -->", endimeMillis - startTimeMillis, dateString);
 
-            LOGGER.finer(msg);
+            LOGGER.debug(msg);
             cachedPageContent += Strings.LINE_SEPARATOR + msg;
             writer.write(cachedPageContent);
             writer.flush();
             writer.close();
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             chain.doFilter(request, response);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             chain.doFilter(request, response);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             chain.doFilter(request, response);
         }
     }

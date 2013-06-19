@@ -19,8 +19,6 @@ package org.b3log.solo.service;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -28,6 +26,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
@@ -179,7 +179,7 @@ public final class CommentMgmtService {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                     ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                 } else {
-                    LOGGER.log(Level.WARNING, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
+                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
                         new String[] {originalCommentId, commentName, commentContent});
                 }
             }
@@ -207,7 +207,7 @@ public final class CommentMgmtService {
             try {
                 Comments.sendNotificationMail(page, comment, originalComment, preference);
             } catch (final Exception e) {
-                LOGGER.log(Level.WARNING, "Send mail failed", e);
+                LOGGER.log(Level.WARN, "Send mail failed", e);
             }
             // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
@@ -300,7 +300,7 @@ public final class CommentMgmtService {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                     ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                 } else {
-                    LOGGER.log(Level.WARNING, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
+                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
                         new String[] {originalCommentId, commentName, commentContent});
                 }
             }
@@ -328,7 +328,7 @@ public final class CommentMgmtService {
             try {
                 Comments.sendNotificationMail(article, comment, originalComment, preference);
             } catch (final Exception e) {
-                LOGGER.log(Level.WARNING, "Send mail failed", e);
+                LOGGER.log(Level.WARN, "Send mail failed", e);
             }
             // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
@@ -378,7 +378,7 @@ public final class CommentMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes a comment of a page failed", e);
+            LOGGER.log(Level.ERROR, "Removes a comment of a page failed", e);
             throw new ServiceException(e);
         }
     }
@@ -411,7 +411,7 @@ public final class CommentMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes a comment of an article failed", e);
+            LOGGER.log(Level.ERROR, "Removes a comment of an article failed", e);
             throw new ServiceException(e);
         }
     }
@@ -499,7 +499,7 @@ public final class CommentMgmtService {
 
             statusCode = response.getResponseCode();
         } catch (final IOException e) {
-            LOGGER.log(Level.WARNING, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
+            LOGGER.log(Level.WARN, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
         } finally {
             if (HttpServletResponse.SC_OK != statusCode) {
                 thumbnailURL = Latkes.getStaticServePath() + "/images/" + DEFAULT_USER_THUMBNAIL;

@@ -21,14 +21,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -136,12 +136,12 @@ public final class IndexProcessor {
 
             dataModel.put(Common.PATH, "");
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         }
     }
@@ -179,12 +179,12 @@ public final class IndexProcessor {
             request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.KILL_BROWSER.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, request.getRequestURI());
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         }
     }
@@ -218,12 +218,12 @@ public final class IndexProcessor {
             Keys.fillServer(dataModel);
 
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         }
     }
@@ -283,7 +283,7 @@ public final class IndexProcessor {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 } catch (final IOException ex) {
-                    LOGGER.log(Level.SEVERE, "Can not sned error 500!", ex);
+                    LOGGER.log(Level.ERROR, "Can not sned error 500!", ex);
                 }
             }
         }

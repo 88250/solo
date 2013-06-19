@@ -16,8 +16,6 @@
 package org.b3log.solo.repository.impl;
 
 
-import java.util.logging.Logger;
-
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
@@ -31,11 +29,6 @@ import org.b3log.solo.repository.OptionRepository;
  * @since 0.6.0
  */
 public final class OptionRepositoryImpl extends AbstractRepository implements OptionRepository {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(OptionRepositoryImpl.class.getName());
 
     /**
      * Singleton.

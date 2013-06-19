@@ -17,7 +17,6 @@ package org.b3log.solo.repository.impl;
 
 
 import java.util.List;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.util.CollectionUtils;
@@ -35,11 +34,6 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 public final class PageRepositoryImpl extends AbstractRepository implements PageRepository {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(PageRepositoryImpl.class.getName());
 
     /**
      * Singleton.

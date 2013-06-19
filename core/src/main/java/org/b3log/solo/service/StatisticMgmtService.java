@@ -21,10 +21,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -138,7 +138,7 @@ public final class StatisticMgmtService {
                     continue;
                 }
 
-                LOGGER.log(Level.FINER, "Updating article[id={0}, title={1}] view count",
+                LOGGER.log(Level.DEBUG, "Updating article[id={0}, title={1}] view count",
                     new Object[] {articleId, cachedPage.optString(PageCaches.CACHED_TITLE)});
 
                 final int oldViewCount = article.optInt(Article.ARTICLE_VIEW_COUNT);
@@ -152,7 +152,7 @@ public final class StatisticMgmtService {
 
                 cachedPage.put(PageCaches.CACHED_HIT_COUNT, 0);
 
-                LOGGER.log(Level.FINER, "Updating article[id={0}, title={1}] view count from [{2}] to [{3}]",
+                LOGGER.log(Level.DEBUG, "Updating article[id={0}, title={1}] view count from [{2}] to [{3}]",
                     new Object[] {articleId, article.optString(Article.ARTICLE_TITLE), oldViewCount, viewCount});
             }
 
@@ -164,7 +164,7 @@ public final class StatisticMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates statistic failed", e);
+            LOGGER.log(Level.ERROR, "Updates statistic failed", e);
         }
     }
 
@@ -184,10 +184,10 @@ public final class StatisticMgmtService {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LOGGER.log(Level.SEVERE, "Updates statistic failed", e);
+            LOGGER.log(Level.ERROR, "Updates statistic failed", e);
         }
 
-        LOGGER.log(Level.FINER, "Updates statistic successfully");
+        LOGGER.log(Level.DEBUG, "Updates statistic successfully");
     }
 
     /**

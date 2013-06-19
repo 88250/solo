@@ -16,9 +16,9 @@
 package org.b3log.solo.service;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.model.Link;
@@ -65,7 +65,7 @@ public final class LinkMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes a link[id=" + linkId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Removes a link[id=" + linkId + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -104,7 +104,7 @@ public final class LinkMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             throw new ServiceException(e);
         }
@@ -139,7 +139,7 @@ public final class LinkMgmtService {
                     transaction.rollback();
                 }
                 
-                LOGGER.log(Level.WARNING, "Cant not find the target link of source link[order={0}]", srcLinkOrder);
+                LOGGER.log(Level.WARN, "Cant not find the target link of source link[order={0}]", srcLinkOrder);
                 return;
             }
 
@@ -156,7 +156,7 @@ public final class LinkMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Changes link's order failed", e);
+            LOGGER.log(Level.ERROR, "Changes link's order failed", e);
 
             throw new ServiceException(e);
         }
@@ -197,7 +197,7 @@ public final class LinkMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds a link failed", e);
+            LOGGER.log(Level.ERROR, "Adds a link failed", e);
             throw new ServiceException(e);
         }
     }

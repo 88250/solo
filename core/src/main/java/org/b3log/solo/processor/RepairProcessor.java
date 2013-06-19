@@ -20,13 +20,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
@@ -163,7 +163,7 @@ public final class RepairProcessor {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent("Removes unused article properties failed, error msg[" + e.getMessage() + "]");
         }
     }
@@ -212,7 +212,7 @@ public final class RepairProcessor {
 
             renderer.setContent("Restores statistic succeeded.");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent("Restores statistics failed, error msg[" + e.getMessage() + "]");
         }
     }
@@ -247,7 +247,7 @@ public final class RepairProcessor {
             MAIL_SVC.send(msg);
             renderer.setContent("Restores signs succeeded.");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent("Restores signs failed, error msg[" + e.getMessage() + "]");
         }
     }
@@ -305,7 +305,7 @@ public final class RepairProcessor {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent("Repairs failed, error msg[" + e.getMessage() + "]");
         }
     }
@@ -339,7 +339,7 @@ public final class RepairProcessor {
 
             renderer.setContent(htmlBuilder.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -378,8 +378,7 @@ public final class RepairProcessor {
 
             succeed = true;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            LOGGER.log(Level.WARNING, "Removed partial data only");
+            LOGGER.log(Level.WARN, "Removed partial data only", e);
         }
 
         final StringBuilder htmlBuilder = new StringBuilder();
@@ -399,7 +398,7 @@ public final class RepairProcessor {
 
             renderer.setContent(htmlBuilder.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             } catch (final IOException ex) {
@@ -443,7 +442,7 @@ public final class RepairProcessor {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes all data in repository[name=" + repository.getName() + "] failed", e);
+            LOGGER.log(Level.ERROR, "Removes all data in repository[name=" + repository.getName() + "] failed", e);
         }
     }
 }
