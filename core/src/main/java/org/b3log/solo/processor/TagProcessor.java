@@ -22,6 +22,7 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -77,7 +78,8 @@ public final class TagProcessor {
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Language service.
@@ -97,7 +99,8 @@ public final class TagProcessor {
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * Tag query service.
@@ -203,9 +206,9 @@ public final class TagProcessor {
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
             LOGGER.log(Level.TRACE, "tag-articles[pageNums={0}]", pageNums);
-            
+
             Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-         
+
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
             dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle, "UTF-8"));
             dataModel.put(Keys.OBJECT_ID, tagId);
@@ -332,7 +335,7 @@ public final class TagProcessor {
         if (Strings.isEmptyOrNull(tagTitle)) {
             return -1;
         }
-        
+
         final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/tags/" + tagTitle + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);

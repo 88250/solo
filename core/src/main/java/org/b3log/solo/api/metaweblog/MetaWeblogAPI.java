@@ -19,6 +19,7 @@ package org.b3log.solo.api.metaweblog;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -98,12 +99,14 @@ public final class MetaWeblogAPI {
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * Article management service.
      */
-    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+    @Inject
+    private ArticleMgmtService articleMgmtService;
 
     /**
      * Article repository.

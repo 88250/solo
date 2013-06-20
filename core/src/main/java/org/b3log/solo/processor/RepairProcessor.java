@@ -20,11 +20,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -77,6 +79,12 @@ public final class RepairProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(RepairProcessor.class.getName());
+    
+    /**
+     * Bean manager.
+     */
+    @Inject
+    private LatkeBeanManager beanManager;
 
     /**
      * Preference query service.
@@ -363,7 +371,7 @@ public final class RepairProcessor {
         boolean succeed = false;
 
         try {
-            remove(ArchiveDateArticleRepositoryImpl.getInstance());
+            remove((Repository) beanManager.getReference(ArchiveDateArticleRepositoryImpl.class));
             remove(ArchiveDateRepositoryImpl.getInstance());
             remove(ArticleRepositoryImpl.getInstance());
             remove(CommentRepositoryImpl.getInstance());

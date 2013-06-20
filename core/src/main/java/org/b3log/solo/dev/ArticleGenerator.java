@@ -18,6 +18,7 @@ package org.b3log.solo.dev;
 
 import java.io.IOException;
 import java.util.Date;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateUtils;
@@ -51,6 +52,12 @@ public final class ArticleGenerator {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleGenerator.class.getName());
+    
+    /**
+     * Article management service.
+     */
+    @Inject
+    private ArticleMgmtService articleMgmtService;
 
     /**
      * Generates some dummy articles with the specified context.
@@ -77,7 +84,6 @@ public final class ArticleGenerator {
         final int num = Integer.valueOf(requestURI.substring((Latkes.getContextPath() + "/dev/articles/gen/").length()));
 
         try {
-            final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
             final UserQueryService userQueryService = UserQueryService.getInstance();
             final JSONObject admin = userQueryService.getAdmin();
             final String authorEmail = admin.optString(User.USER_EMAIL);

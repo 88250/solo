@@ -19,6 +19,7 @@ package org.b3log.solo.processor;
 import freemarker.template.Template;
 import java.io.IOException;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
@@ -69,7 +70,8 @@ public final class UserTemplateProcessor {
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Preference query service.

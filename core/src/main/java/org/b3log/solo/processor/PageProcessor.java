@@ -19,6 +19,7 @@ package org.b3log.solo.processor;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -70,7 +71,8 @@ public final class PageProcessor {
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Preference query service.

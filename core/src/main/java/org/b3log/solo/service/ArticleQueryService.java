@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -29,6 +30,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
@@ -43,7 +45,6 @@ import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
@@ -63,6 +64,7 @@ import org.json.JSONObject;
  * @version 1.0.1.2, Jan 30, 2013
  * @since 0.3.5
  */
+@Service
 public final class ArticleQueryService {
 
     /**
@@ -93,7 +95,8 @@ public final class ArticleQueryService {
     /**
      * Archive date-Article repository.
      */
-    private ArchiveDateArticleRepository archiveDateArticleRepository = ArchiveDateArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateArticleRepository archiveDateArticleRepository;
 
     /**
      * Statistic utilities.
@@ -273,7 +276,7 @@ public final class ArticleQueryService {
             } else {
                 articleCount = statistics.getPublishedBlogArticleCount();
             }
-            
+
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             query.setPageCount(pageCount);
@@ -365,7 +368,7 @@ public final class ArticleQueryService {
                     // Skips the unpublished article
                     continue;
                 }
-                
+
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
 
                 // Markdown to HTML for content and abstract
@@ -425,7 +428,7 @@ public final class ArticleQueryService {
                     // Skips the unpublished article
                     continue;
                 }
-                
+
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
 
                 // Markdown to HTML for content and abstract
@@ -657,7 +660,7 @@ public final class ArticleQueryService {
                 final JSONObject article = articles.getJSONObject(i);
 
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
-                
+
                 // Markdown to HTML for content and abstract
                 markdown(article);
 
@@ -810,35 +813,11 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Gets the {@link ArticleQueryService} singleton.
-     *
-     * @return the singleton
+     * Sets archive date article repository with the specified archive date article repository.
+     * 
+     * @param archiveDateArticleRepository the specified archive date article repository
      */
-    public static ArticleQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ArticleQueryService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 3, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final ArticleQueryService SINGLETON = new ArticleQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setArchiveDateArticleRepository(final ArchiveDateArticleRepository archiveDateArticleRepository) {
+        this.archiveDateArticleRepository = archiveDateArticleRepository;
     }
 }

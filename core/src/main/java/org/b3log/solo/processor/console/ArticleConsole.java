@@ -16,6 +16,7 @@
 package org.b3log.solo.processor.console;
 
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
@@ -61,12 +62,14 @@ public final class ArticleConsole {
     /**
      * Article management service.
      */
-    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+    @Inject
+    private ArticleMgmtService articleMgmtService;
 
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * User utilities.

@@ -19,6 +19,7 @@ package org.b3log.solo.processor;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -65,12 +66,14 @@ public final class InitProcessor {
     /**
      * Initialization service.
      */
-    private InitService initService = InitService.getInstance();
+    @Inject
+    private InitService initService;
 
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Language service.

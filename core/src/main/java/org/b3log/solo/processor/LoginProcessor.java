@@ -19,6 +19,7 @@ package org.b3log.solo.processor;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -103,7 +104,8 @@ public final class LoginProcessor {
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Preference query service.
@@ -375,7 +377,8 @@ public final class LoginProcessor {
      * @throws ServiceException the ServiceException
      * @throws IOException the IOException
      */
-    private void sendRandomPwd(final JSONObject user, final String userEmail, final JSONObject jsonObject) throws JSONException, ServiceException, IOException {
+    private void sendRandomPwd(final JSONObject user, final String userEmail, final JSONObject jsonObject) throws JSONException,
+            ServiceException, IOException {
         final JSONObject preference = preferenceQueryService.getPreference();
         final String randomPwd = new Randoms().nextString();
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
@@ -411,7 +414,8 @@ public final class LoginProcessor {
      * @throws JSONException the JSONException
      * @throws ServiceException the ServiceException
      */
-    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL) throws JSONException, ServiceException {
+    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL) throws JSONException,
+            ServiceException {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
 
         renderer.setTemplateName(pageTemplate);

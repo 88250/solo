@@ -20,6 +20,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -84,7 +85,8 @@ public final class AdminConsole {
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Event manager.

@@ -245,31 +245,50 @@ public abstract class AbstractTestCase {
         pageRepository = PageRepositoryImpl.getInstance();
         commentRepository = CommentRepositoryImpl.getInstance();
         archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
-        archiveDateArticleRepository =
-                ArchiveDateArticleRepositoryImpl.getInstance();
+        archiveDateArticleRepository = new ArchiveDateArticleRepositoryImpl();
         pluginRepository = PluginRepositoryImpl.getInstance();
         preferenceRepository = PreferenceRepositoryImpl.getInstance();
         statisticRepository = StatisticRepositoryImpl.getInstance();
         optionRepository = OptionRepositoryImpl.getInstance();
 
         // Services
-        initService = InitService.getInstance();
+        initService = new InitService();
+        initService.setArchiveDateArticleRepository(archiveDateArticleRepository);
+        
         userMgmtService = UserMgmtService.getInstance();
+        
         userQueryService = UserQueryService.getInstance();
-        articleMgmtService = ArticleMgmtService.getInstance();
-        articleQueryService = ArticleQueryService.getInstance();
+        
+        articleMgmtService = new ArticleMgmtService();
+        articleMgmtService.setArchiveDateArticleRepository(archiveDateArticleRepository);
+        
+        articleQueryService = new ArticleQueryService();
+        articleQueryService.setArchiveDateArticleRepository(archiveDateArticleRepository);
+        
         pageMgmtService = PageMgmtService.getInstance();
+        
         pageQueryService = PageQueryService.getInstance();
+        
         linkMgmtService = LinkMgmtService.getInstance();
+        
         linkQueryService = LinkQueryService.getInstance();
+        
         preferenceMgmtService = PreferenceMgmtService.getInstance();
+        
         preferenceQueryService = PreferenceQueryService.getInstance();
+        
         tagQueryService = TagQueryService.getInstance();
+        
         tagMgmtService = TagMgmtService.getInstance();
+        
         commentQueryService = CommentQueryService.getInstance();
+        
         commentMgmtService = CommentMgmtService.getInstance();
+        
         archiveDateQueryService = ArchiveDateQueryService.getInstance();
+        
         optionMgmtService = OptionMgmtService.getInstance();
+        
         optionQueryService = OptionQueryService.getInstance();
     }
 

@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -41,6 +42,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.*;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
@@ -77,6 +79,7 @@ import org.json.JSONObject;
  * @version 1.0.6.5, May 17, 2013
  * @since 0.3.1
  */
+@Service
 public final class Filler {
 
     /**
@@ -137,7 +140,8 @@ public final class Filler {
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * {@code true} for published.
@@ -1029,38 +1033,5 @@ public final class Filler {
         } else if ("titleAndContent".equals(articleListStyle)) {
             article.put(Article.ARTICLE_ABSTRACT, article.optString(Article.ARTICLE_CONTENT));
         }
-    }
-
-    /**
-     * Gets the {@link Filler} singleton.
-     *
-     * @return the singleton
-     */
-    public static Filler getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private default constructor.
-     */
-    private Filler() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final Filler SINGLETON = new Filler();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
     }
 }

@@ -19,6 +19,7 @@ package org.b3log.solo.processor;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
@@ -57,7 +58,8 @@ public final class ErrorProcessor {
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Preference query service.

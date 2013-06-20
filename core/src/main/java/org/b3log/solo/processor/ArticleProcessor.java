@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -82,7 +83,8 @@ public final class ArticleProcessor {
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * Tag query service.
@@ -97,7 +99,8 @@ public final class ArticleProcessor {
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Language service.
@@ -123,6 +126,12 @@ public final class ArticleProcessor {
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
+    
+    /**
+     * Article management service.
+     */
+    @Inject
+    private ArticleMgmtService articleMgmtService;
 
     /**
      * Shows the article view password form.
@@ -949,7 +958,7 @@ public final class ArticleProcessor {
                 dataModel);
 
             if (!Requests.hasBeenServed(request, response)) {
-                ArticleMgmtService.getInstance().incViewCount(articleId);
+                articleMgmtService.incViewCount(articleId);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

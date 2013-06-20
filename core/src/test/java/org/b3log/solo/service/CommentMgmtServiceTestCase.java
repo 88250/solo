@@ -63,7 +63,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void addArticleComment() throws Exception {
-        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
 
         final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 

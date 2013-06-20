@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
@@ -70,7 +71,8 @@ public final class IndexProcessor {
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Preference query service.
@@ -171,7 +173,7 @@ public final class IndexProcessor {
             Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
-            
+
             dataModel.put(Keys.PAGE_TYPE, PageTypes.KILL_BROWSER);
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");

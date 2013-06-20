@@ -16,6 +16,8 @@
 package org.b3log.solo.repository.impl;
 
 
+import javax.inject.Named;
+import javax.inject.Singleton;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.solo.model.Article;
@@ -32,13 +34,16 @@ import org.json.JSONObject;
  * @version 1.0.0.6, Nov 9, 2011
  * @since 0.3.1
  */
+@Named
+@Singleton
 public final class ArchiveDateArticleRepositoryImpl extends AbstractRepository implements ArchiveDateArticleRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final ArchiveDateArticleRepositoryImpl SINGLETON = new ArchiveDateArticleRepositoryImpl(
-        ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE);
+    public ArchiveDateArticleRepositoryImpl() {
+        super(ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE);
+    }
 
     @Override
     public JSONObject getByArchiveDateId(final String archiveDateId, final int currentPageNum, final int pageSize)
@@ -63,23 +68,5 @@ public final class ArchiveDateArticleRepositoryImpl extends AbstractRepository i
         }
 
         return array.optJSONObject(0);
-    }
-
-    /**
-     * Gets the {@link ArchiveDateArticleRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static ArchiveDateArticleRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private ArchiveDateArticleRepositoryImpl(final String name) {
-        super(name);
     }
 }

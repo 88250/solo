@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -33,6 +34,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
@@ -46,7 +48,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
@@ -71,6 +72,7 @@ import org.json.JSONObject;
  * @version 1.0.1.5, Jan 30, 2013
  * @since 0.3.5
  */
+@Service
 public final class ArticleMgmtService {
 
     /**
@@ -101,7 +103,8 @@ public final class ArticleMgmtService {
     /**
      * Archive date-Article repository.
      */
-    private ArchiveDateArticleRepository archiveDateArticleRepository = ArchiveDateArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateArticleRepository archiveDateArticleRepository;
 
     /**
      * Tag-Article repository.
@@ -1205,35 +1208,11 @@ public final class ArticleMgmtService {
     }
 
     /**
-     * Gets the {@link ArticleMgmtService} singleton.
-     *
-     * @return the singleton
+     * Sets archive date article repository with the specified archive date article repository.
+     * 
+     * @param archiveDateArticleRepository the specified archive date article repository
      */
-    public static ArticleMgmtService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ArticleMgmtService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 3, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final ArticleMgmtService SINGLETON = new ArticleMgmtService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setArchiveDateArticleRepository(final ArchiveDateArticleRepository archiveDateArticleRepository) {
+        this.archiveDateArticleRepository = archiveDateArticleRepository;
     }
 }

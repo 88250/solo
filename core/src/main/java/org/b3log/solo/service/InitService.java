@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import javax.inject.Inject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -38,6 +39,7 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.freemarker.Templates;
@@ -62,6 +64,7 @@ import org.json.JSONObject;
  * @version 1.0.1.6, May 17, 2013
  * @since 0.4.0
  */
+@Service
 public final class InitService {
 
     /**
@@ -97,7 +100,8 @@ public final class InitService {
     /**
      * Archive date-Article repository.
      */
-    private ArchiveDateArticleRepository archiveDateArticleRepository = ArchiveDateArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateArticleRepository archiveDateArticleRepository;
 
     /**
      * Tag repository.
@@ -583,35 +587,11 @@ public final class InitService {
     }
 
     /**
-     * Gets the {@link InitService} singleton.
-     *
-     * @return the singleton
+     * Sets archive date article repository with the specified archive date article repository.
+     * 
+     * @param archiveDateArticleRepository the specified archive date article repository
      */
-    public static InitService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private InitService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 24, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final InitService SINGLETON = new InitService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setArchiveDateArticleRepository(final ArchiveDateArticleRepository archiveDateArticleRepository) {
+        this.archiveDateArticleRepository = archiveDateArticleRepository;
     }
 }

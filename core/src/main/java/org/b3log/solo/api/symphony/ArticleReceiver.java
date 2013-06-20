@@ -16,6 +16,7 @@
 package org.b3log.solo.api.symphony;
 
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -64,12 +65,14 @@ public final class ArticleReceiver {
     /**
      * Article management service.
      */
-    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+    @Inject
+    private ArticleMgmtService articleMgmtService;
 
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * Article abstract length.
