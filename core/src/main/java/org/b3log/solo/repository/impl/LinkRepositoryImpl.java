@@ -17,7 +17,6 @@ package org.b3log.solo.repository.impl;
 
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
