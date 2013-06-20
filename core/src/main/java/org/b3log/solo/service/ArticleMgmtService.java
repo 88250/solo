@@ -48,7 +48,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
@@ -98,7 +97,8 @@ public final class ArticleMgmtService {
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateRepository archiveDateRepository;
 
     /**
      * Archive date-Article repository.
@@ -1214,5 +1214,14 @@ public final class ArticleMgmtService {
      */
     public void setArchiveDateArticleRepository(final ArchiveDateArticleRepository archiveDateArticleRepository) {
         this.archiveDateArticleRepository = archiveDateArticleRepository;
+    }
+
+    /**
+     * Sets archive date repository with the specified archive date repository.
+     * 
+     * @param archiveDateRepository the specified archive date repository
+     */
+    public void setArchiveDateRepository(final ArchiveDateRepository archiveDateRepository) {
+        this.archiveDateRepository = archiveDateRepository;
     }
 }

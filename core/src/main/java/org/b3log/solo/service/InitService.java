@@ -95,7 +95,8 @@ public final class InitService {
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateRepository archiveDateRepository;
 
     /**
      * Archive date-Article repository.
@@ -593,5 +594,14 @@ public final class InitService {
      */
     public void setArchiveDateArticleRepository(final ArchiveDateArticleRepository archiveDateArticleRepository) {
         this.archiveDateArticleRepository = archiveDateArticleRepository;
+    }
+
+    /**
+     * Sets archive date repository with the specified archive date repository.
+     * 
+     * @param archiveDateRepository the specified archive date repository
+     */
+    public void setArchiveDateRepository(final ArchiveDateRepository archiveDateRepository) {
+        this.archiveDateRepository = archiveDateRepository;
     }
 }

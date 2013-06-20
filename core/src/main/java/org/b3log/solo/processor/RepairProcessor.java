@@ -362,7 +362,7 @@ public final class RepairProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/rm-all-data.do"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/rm-all-data.do", method = HTTPRequestMethod.POST)
     public void removeAllDataPOST(final HTTPRequestContext context) {
         LOGGER.info("Removing all data....");
 
@@ -372,7 +372,7 @@ public final class RepairProcessor {
 
         try {
             remove((Repository) beanManager.getReference(ArchiveDateArticleRepositoryImpl.class));
-            remove(ArchiveDateRepositoryImpl.getInstance());
+            remove((Repository) beanManager.getReference(ArchiveDateRepositoryImpl.class));
             remove(ArticleRepositoryImpl.getInstance());
             remove(CommentRepositoryImpl.getInstance());
             remove(LinkRepositoryImpl.getInstance());

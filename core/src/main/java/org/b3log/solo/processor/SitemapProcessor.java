@@ -19,6 +19,7 @@ package org.b3log.solo.processor;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -43,7 +44,6 @@ import org.b3log.solo.model.sitemap.URL;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
@@ -90,7 +90,8 @@ public final class SitemapProcessor {
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateRepository archiveDateRepository;
 
     /**
      * Returns the sitemap.

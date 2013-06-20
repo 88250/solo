@@ -244,7 +244,7 @@ public abstract class AbstractTestCase {
         tagArticleRepository = TagArticleRepositoryImpl.getInstance();
         pageRepository = PageRepositoryImpl.getInstance();
         commentRepository = CommentRepositoryImpl.getInstance();
-        archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
+        archiveDateRepository = new ArchiveDateRepositoryImpl();
         archiveDateArticleRepository = new ArchiveDateArticleRepositoryImpl();
         pluginRepository = PluginRepositoryImpl.getInstance();
         preferenceRepository = PreferenceRepositoryImpl.getInstance();
@@ -254,6 +254,7 @@ public abstract class AbstractTestCase {
         // Services
         initService = new InitService();
         initService.setArchiveDateArticleRepository(archiveDateArticleRepository);
+        initService.setArchiveDateRepository(archiveDateRepository);
         
         userMgmtService = UserMgmtService.getInstance();
         
@@ -261,6 +262,7 @@ public abstract class AbstractTestCase {
         
         articleMgmtService = new ArticleMgmtService();
         articleMgmtService.setArchiveDateArticleRepository(archiveDateArticleRepository);
+        articleMgmtService.setArchiveDateRepository(archiveDateRepository);
         
         articleQueryService = new ArticleQueryService();
         articleQueryService.setArchiveDateArticleRepository(archiveDateArticleRepository);
@@ -285,7 +287,8 @@ public abstract class AbstractTestCase {
         
         commentMgmtService = CommentMgmtService.getInstance();
         
-        archiveDateQueryService = ArchiveDateQueryService.getInstance();
+        archiveDateQueryService = new  ArchiveDateQueryService();
+        archiveDateQueryService.setArchiveDateRepository(archiveDateRepository);
         
         optionMgmtService = OptionMgmtService.getInstance();
         

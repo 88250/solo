@@ -153,7 +153,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getArticlesByArchiveDate() throws Exception {
-        final ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
+        final ArchiveDateQueryService archiveDateQueryService = getArchiveDateQueryService();
 
         final List<JSONObject> archiveDates = archiveDateQueryService.getArchiveDates();
 

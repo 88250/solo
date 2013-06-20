@@ -120,13 +120,14 @@ public final class ArticleProcessor {
     /**
      * Archive date query service.
      */
-    private ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
+    @Inject
+    private ArchiveDateQueryService archiveDateQueryService;
 
     /**
      * User query service.
      */
     private UserQueryService userQueryService = UserQueryService.getInstance();
-    
+
     /**
      * Article management service.
      */
