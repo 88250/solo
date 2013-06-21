@@ -56,15 +56,17 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
     private static final Logger LOGGER = Logger.getLogger(CommentRepositoryImpl.class.getName());
 
     /**
-     * Singleton.
-     */
-    private static final CommentRepositoryImpl SINGLETON = new CommentRepositoryImpl(Comment.COMMENT);
-
-    /**
      * Article repository.
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * Public constructor.
+     */
+    public CommentRepositoryImpl() {
+        super(Comment.COMMENT);
+    }
 
     /**
      * Recent comments query results cache key.
@@ -160,20 +162,11 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
     }
 
     /**
-     * Gets the {@link CommentRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static CommentRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
+     * Sets the article repository with the specified article repository.
      * 
-     * @param name the specified name
+     * @param articleRepository the specified article repository
      */
-    private CommentRepositoryImpl(final String name) {
-        super(name);
+    public void setArticleRepository(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 }

@@ -33,7 +33,6 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.util.Comments;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,7 +62,8 @@ public final class PageMgmtService {
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Language service.
@@ -451,5 +451,14 @@ public final class PageMgmtService {
      */
     public void setStatisticMgmtService(final StatisticMgmtService statisticMgmtService) {
         this.statisticMgmtService = statisticMgmtService;
+    }
+
+    /**
+     * Sets the comment repository with the specified comment repository.
+     * 
+     * @param commentRepository the specified comment repository
+     */
+    public void setCommentRepository(final CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
 }

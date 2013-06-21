@@ -48,7 +48,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.TimeZones;
@@ -117,7 +116,8 @@ public final class ArticleMgmtService {
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Preference query service.
@@ -1343,5 +1343,14 @@ public final class ArticleMgmtService {
      */
     public void setTagMgmtService(final TagMgmtService tagMgmtService) {
         this.tagMgmtService = tagMgmtService;
+    }
+
+    /**
+     * Sets the comment repository with the specified comment repository.
+     * 
+     * @param commentRepository the specified comment repository
+     */
+    public void setCommentRepository(final CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
 }

@@ -39,7 +39,6 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -62,7 +61,8 @@ public final class CommentQueryService {
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Article repository.
@@ -221,5 +221,14 @@ public final class CommentQueryService {
      */
     public void setPageRepository(final PageRepository pageRepository) {
         this.pageRepository = pageRepository;
+    }
+
+    /**
+     * Sets the comment repository with the specified comment repository.
+     * 
+     * @param commentRepository the specified comment repository
+     */
+    public void setCommentRepository(final CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
 }

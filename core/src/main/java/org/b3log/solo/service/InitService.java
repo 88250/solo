@@ -48,7 +48,6 @@ import org.b3log.solo.model.*;
 import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Preference.Default;
 import org.b3log.solo.repository.*;
-import org.b3log.solo.repository.impl.*;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.TimeZones;
@@ -123,7 +122,8 @@ public final class InitService {
     /**
      * Comment repository.
      */
-    private static CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Maximum count of initialization.
@@ -663,5 +663,14 @@ public final class InitService {
      */
     public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
         this.tagArticleRepository = tagArticleRepository;
+    }
+
+    /**
+     * Sets the comment repository with the specified comment repository.
+     * 
+     * @param commentRepository the specified comment repository
+     */
+    public void setCommentRepository(final CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
 }

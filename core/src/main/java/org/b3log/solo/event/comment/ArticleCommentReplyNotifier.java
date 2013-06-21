@@ -55,11 +55,6 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
     private static final Logger LOGGER = Logger.getLogger(ArticleCommentReplyNotifier.class.getName());
 
     /**
-     * Comment repository.
-     */
-    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
-
-    /**
      * Mail service.
      */
     private MailService mailService = MailServiceFactory.getMailService();
@@ -81,6 +76,8 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+        
+        final CommentRepository commentRepository = beanManager.getReference(CommentRepositoryImpl.class);
         
         try {
             final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);

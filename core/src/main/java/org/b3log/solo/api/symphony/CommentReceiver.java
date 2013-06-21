@@ -52,7 +52,6 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -87,7 +86,7 @@ public final class CommentReceiver {
     /**
      * Comment repository.
      */
-    private static CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+    private static CommentRepository commentRepository;
 
     /**
      * Preference query service.
