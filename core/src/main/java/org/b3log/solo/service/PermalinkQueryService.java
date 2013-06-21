@@ -26,7 +26,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
 
 
 /**
@@ -47,7 +46,8 @@ public final class PermalinkQueryService {
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    @Inject
+    private PageRepository pageRepository;
 
     /**
      * Article repository.
@@ -230,5 +230,14 @@ public final class PermalinkQueryService {
      */
     public void setArticleRepository(final ArticleRepository articleRepository) {
         this.articleRepository = articleRepository;
+    }
+
+    /**
+     * Set the page repository with the specified page repository.
+     * 
+     * @param pageRepository the specified page repository
+     */
+    public void setPageRepository(final PageRepository pageRepository) {
+        this.pageRepository = pageRepository;
     }
 }

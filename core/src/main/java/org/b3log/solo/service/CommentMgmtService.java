@@ -47,7 +47,6 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
@@ -90,7 +89,8 @@ public final class CommentMgmtService {
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    @Inject
+    private PageRepository pageRepository;
 
     /**
      * Statistic utilities.
@@ -759,5 +759,14 @@ public final class CommentMgmtService {
      */
     public void setArticleMgmtService(final ArticleMgmtService articleMgmtService) {
         this.articleMgmtService = articleMgmtService;
+    }
+
+    /**
+     * Set the page repository with the specified page repository.
+     * 
+     * @param pageRepository the specified page repository
+     */
+    public void setPageRepository(final PageRepository pageRepository) {
+        this.pageRepository = pageRepository;
     }
 }

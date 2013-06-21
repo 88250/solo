@@ -378,7 +378,7 @@ public final class RepairProcessor {
             remove(beanManager.getReference(ArticleRepositoryImpl.class));
             remove(CommentRepositoryImpl.getInstance());
             remove(beanManager.getReference(LinkRepositoryImpl.class));
-            remove(PageRepositoryImpl.getInstance());
+            remove(beanManager.getReference(PageRepositoryImpl.class));
             remove(PreferenceRepositoryImpl.getInstance());
             remove(StatisticRepositoryImpl.getInstance());
             remove(TagArticleRepositoryImpl.getInstance());

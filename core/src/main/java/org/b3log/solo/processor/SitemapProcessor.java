@@ -45,7 +45,6 @@ import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
@@ -81,7 +80,8 @@ public final class SitemapProcessor {
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    @Inject
+    private PageRepository pageRepository;
 
     /**
      * Tag repository.

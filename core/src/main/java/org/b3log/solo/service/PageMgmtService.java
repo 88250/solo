@@ -34,7 +34,6 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
@@ -59,7 +58,8 @@ public final class PageMgmtService {
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    @Inject
+    private PageRepository pageRepository;
 
     /**
      * Comment repository.
@@ -408,5 +408,14 @@ public final class PageMgmtService {
      */
     public void setPermalinkQueryService(final PermalinkQueryService permalinkQueryService) {
         this.permalinkQueryService = permalinkQueryService;
+    }
+
+    /**
+     * Set the page repository with the specified page repository.
+     * 
+     * @param pageRepository the specified page repository
+     */
+    public void setPageRepository(final PageRepository pageRepository) {
+        this.pageRepository = pageRepository;
     }
 }
