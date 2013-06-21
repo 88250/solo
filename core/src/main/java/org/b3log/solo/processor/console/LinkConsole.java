@@ -62,12 +62,14 @@ public final class LinkConsole {
     /**
      * Link query service.
      */
-    private LinkQueryService linkQueryService = LinkQueryService.getInstance();
+    @Inject
+    private LinkQueryService linkQueryService;
 
     /**
      * Link management service.
      */
-    private LinkMgmtService linkMgmtService = LinkMgmtService.getInstance();
+    @Inject
+    private LinkMgmtService linkMgmtService;
 
     /**
      * Language service.

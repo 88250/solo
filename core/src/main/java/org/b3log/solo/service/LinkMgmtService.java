@@ -16,14 +16,15 @@
 package org.b3log.solo.service;
 
 
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
-import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.json.JSONObject;
 
 
@@ -34,6 +35,7 @@ import org.json.JSONObject;
  * @version 1.0.0.1, Nov 2, 2011
  * @since 0.4.0
  */
+@Service
 public final class LinkMgmtService {
 
     /**
@@ -44,7 +46,8 @@ public final class LinkMgmtService {
     /**
      * Link repository.
      */
-    private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
+    @Inject
+    private LinkRepository linkRepository;
 
     /**
      * Removes a link specified by the given link id.
@@ -138,7 +141,7 @@ public final class LinkMgmtService {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
-                
+
                 LOGGER.log(Level.WARN, "Cant not find the target link of source link[order={0}]", srcLinkOrder);
                 return;
             }
@@ -203,35 +206,11 @@ public final class LinkMgmtService {
     }
 
     /**
-     * Gets the {@link LinkMgmtService} singleton.
-     *
-     * @return the singleton
+     * Sets the link repository with the specified link repository.
+     * 
+     * @param linkRepository the specified link repository
      */
-    public static LinkMgmtService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private LinkMgmtService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 27, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final LinkMgmtService SINGLETON = new LinkMgmtService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setLinkRepository(final LinkRepository linkRepository) {
+        this.linkRepository = linkRepository;
     }
 }

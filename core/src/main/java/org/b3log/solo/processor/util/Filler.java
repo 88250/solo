@@ -54,7 +54,6 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
@@ -112,7 +111,8 @@ public final class Filler {
     /**
      * Link repository.
      */
-    private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
+    @Inject
+    private LinkRepository linkRepository;
 
     /**
      * Page repository.

@@ -17,6 +17,7 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -24,10 +25,10 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
-import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -39,6 +40,7 @@ import org.json.JSONObject;
  * @version 1.0.0.2, Oct 31, 2011
  * @since 0.4.0
  */
+@Service
 public final class LinkQueryService {
 
     /**
@@ -49,7 +51,8 @@ public final class LinkQueryService {
     /**
      * Link repository.
      */
-    private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
+    @Inject
+    private LinkRepository linkRepository;
 
     /**
      * Gets links by the specified request json object.
@@ -149,35 +152,11 @@ public final class LinkQueryService {
     }
 
     /**
-     * Gets the {@link LinkQueryService} singleton.
-     *
-     * @return the singleton
+     * Sets the link repository with the specified link repository.
+     * 
+     * @param linkRepository the specified link repository
      */
-    public static LinkQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private LinkQueryService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 25, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final LinkQueryService SINGLETON = new LinkQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setLinkRepository(final LinkRepository linkRepository) {
+        this.linkRepository = linkRepository;
     }
 }

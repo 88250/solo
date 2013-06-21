@@ -243,7 +243,7 @@ public abstract class AbstractTestCase {
 
         // Repositories
         userRepository = new UserRepositoryImpl();
-        linkRepository = LinkRepositoryImpl.getInstance();
+        linkRepository = new LinkRepositoryImpl();
         articleRepository = new ArticleRepositoryImpl();
         tagRepository = TagRepositoryImpl.getInstance();
         tagArticleRepository = TagArticleRepositoryImpl.getInstance();
@@ -292,9 +292,11 @@ public abstract class AbstractTestCase {
 
         pageQueryService = PageQueryService.getInstance();
 
-        linkMgmtService = LinkMgmtService.getInstance();
+        linkMgmtService = new LinkMgmtService();
+        linkMgmtService.setLinkRepository(linkRepository);
 
-        linkQueryService = LinkQueryService.getInstance();
+        linkQueryService = new LinkQueryService();
+        linkQueryService.setLinkRepository(linkRepository);
 
         preferenceMgmtService = PreferenceMgmtService.getInstance();
 
