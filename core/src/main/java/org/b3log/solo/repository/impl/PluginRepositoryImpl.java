@@ -18,6 +18,7 @@ package org.b3log.solo.repository.impl;
 
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.repository.PluginRepository;
 
 
@@ -28,29 +29,14 @@ import org.b3log.solo.repository.PluginRepository;
  * @version 1.0.0.0, Jul 21, 2011
  * @since 0.3.1
  */
+@Repository
 public final class PluginRepositoryImpl extends AbstractRepository implements PluginRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final PluginRepositoryImpl SINGLETON = new PluginRepositoryImpl(Plugin.PLUGIN);
-
-    /**
-     * Gets the {@link PluginRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static PluginRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private PluginRepositoryImpl(final String name) {
-        super(name);
+    public PluginRepositoryImpl() {
+        super(Plugin.PLUGIN);
     }
 
 }

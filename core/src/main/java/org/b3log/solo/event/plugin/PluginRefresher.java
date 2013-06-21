@@ -20,6 +20,8 @@ import java.util.List;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.AbstractPlugin;
@@ -27,7 +29,7 @@ import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.repository.PluginRepository;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
-import org.b3log.solo.util.Plugins;
+import org.b3log.solo.service.PluginMgmtService;
 
 
 /**
@@ -44,24 +46,23 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
      */
     private static final Logger LOGGER = Logger.getLogger(PluginRefresher.class.getName());
 
-    /**
-     * Plugin repository.
-     */
-    private PluginRepository pluginRepository = PluginRepositoryImpl.getInstance();
-
     @Override
-    public void action(final Event<List<AbstractPlugin>> event) throws
-            EventException {
+    public void action(final Event<List<AbstractPlugin>> event) throws EventException {
         final List<AbstractPlugin> plugins = event.getData();
 
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
             new Object[] {event.getType(), plugins, PluginRefresher.class.getName()});
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final PluginRepository pluginRepository = beanManager.getReference(PluginRepositoryImpl.class);
+        
         final Transaction transaction = pluginRepository.beginTransaction();
-
+        
         transaction.clearQueryCache(false);
         try {
-            Plugins.refresh(plugins);
+            final PluginMgmtService pluginMgmtService = beanManager.getReference(PluginMgmtService.class);
+            
+            pluginMgmtService.refresh(plugins);
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {

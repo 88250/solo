@@ -65,7 +65,8 @@ public final class PageConsole {
     /**
      * Page query service.
      */
-    private PageQueryService pageQueryService = PageQueryService.getInstance();
+    @Inject
+    private PageQueryService pageQueryService;
 
     /**
      * Page management service.

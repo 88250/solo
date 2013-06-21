@@ -64,11 +64,6 @@ public final class PermalinkFilter implements Filter {
      */
     private static final Logger LOGGER = Logger.getLogger(PermalinkFilter.class.getName());
 
-    /**
-     * Page repository.
-     */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
-
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {}
 
@@ -111,7 +106,10 @@ public final class PermalinkFilter implements Filter {
             final ArticleRepository articleRepository = beanManager.getReference(ArticleRepositoryImpl.class);
 
             article = articleRepository.getByPermalink(permalink);
+            
             if (null == article) {
+                final PageRepository pageRepository = beanManager.getReference(PageRepositoryImpl.class);
+         
                 page = pageRepository.getByPermalink(permalink);
             }
 

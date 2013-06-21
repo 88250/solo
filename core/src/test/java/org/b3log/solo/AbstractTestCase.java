@@ -247,11 +247,11 @@ public abstract class AbstractTestCase {
         articleRepository = new ArticleRepositoryImpl();
         tagRepository = TagRepositoryImpl.getInstance();
         tagArticleRepository = TagArticleRepositoryImpl.getInstance();
-        pageRepository = PageRepositoryImpl.getInstance();
+        pageRepository = new PageRepositoryImpl();
         commentRepository = CommentRepositoryImpl.getInstance();
         archiveDateRepository = new ArchiveDateRepositoryImpl();
         archiveDateArticleRepository = new ArchiveDateArticleRepositoryImpl();
-        pluginRepository = PluginRepositoryImpl.getInstance();
+        pluginRepository = new PluginRepositoryImpl();
         preferenceRepository = PreferenceRepositoryImpl.getInstance();
         statisticRepository = StatisticRepositoryImpl.getInstance();
         optionRepository = new OptionRepositoryImpl();
@@ -272,6 +272,7 @@ public abstract class AbstractTestCase {
 
         permalinkQueryService = new PermalinkQueryService();
         permalinkQueryService.setArticleRepository(articleRepository);
+        permalinkQueryService.setPageRepository(pageRepository);
 
         articleQueryService = new ArticleQueryService();
         articleQueryService.setArchiveDateArticleRepository(archiveDateArticleRepository);
@@ -289,8 +290,10 @@ public abstract class AbstractTestCase {
 
         pageMgmtService = new PageMgmtService();
         pageMgmtService.setPermalinkQueryService(permalinkQueryService);
+        pageMgmtService.setPageRepository(pageRepository);
 
-        pageQueryService = PageQueryService.getInstance();
+        pageQueryService = new PageQueryService();
+        pageQueryService.setPageRepository(pageRepository);
 
         linkMgmtService = new LinkMgmtService();
         linkMgmtService.setLinkRepository(linkRepository);
@@ -308,10 +311,12 @@ public abstract class AbstractTestCase {
 
         commentQueryService = new CommentQueryService();
         commentQueryService.setArticleRepository(articleRepository);
+        commentQueryService.setPageRepository(pageRepository);
 
         commentMgmtService = new CommentMgmtService();
         commentMgmtService.setArticleRepository(articleRepository);
         commentMgmtService.setArticleMgmtService(articleMgmtService);
+        commentMgmtService.setPageRepository(pageRepository);
 
         archiveDateQueryService = new ArchiveDateQueryService();
         archiveDateQueryService.setArchiveDateRepository(archiveDateRepository);

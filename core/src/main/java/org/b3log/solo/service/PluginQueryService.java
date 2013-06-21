@@ -18,6 +18,7 @@ package org.b3log.solo.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -26,9 +27,9 @@ import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
 import org.b3log.solo.repository.PluginRepository;
-import org.b3log.solo.repository.impl.PluginRepositoryImpl;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,6 +41,7 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Oct 27, 2011
  * @since 0.4.0
  */
+@Service
 public final class PluginQueryService {
 
     /**
@@ -50,7 +52,8 @@ public final class PluginQueryService {
     /**
      * Plugin repository.
      */
-    private PluginRepository pluginRepository = PluginRepositoryImpl.getInstance();
+    @Inject
+    private PluginRepository pluginRepository;
 
     /**
      * Gets plugins by the specified request json object.
@@ -146,40 +149,16 @@ public final class PluginQueryService {
             LOGGER.log(Level.ERROR, "can not find plugin[" + pluginId + "]");
             throw new ServiceException("can not find plugin[" + pluginId + "]");
         }
-        
+
         return ret.optString(Plugin.PLUGIN_SETTING).toString();
     }
-    
-    /**
-     * Gets the {@link PluginQueryService} singleton.
-     *
-     * @return the singleton
-     */
-    public static PluginQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
 
     /**
-     * Private constructor.
+     * Sets the plugin repository with the specified plugin repository.
+     * 
+     * @param pluginRepository the specified plugin repository
      */
-    private PluginQueryService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 27, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final PluginQueryService SINGLETON = new PluginQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setPluginRepository(final PluginRepository pluginRepository) {
+        this.pluginRepository = pluginRepository;
     }
 }

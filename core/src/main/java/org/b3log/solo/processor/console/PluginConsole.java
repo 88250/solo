@@ -17,6 +17,7 @@ package org.b3log.solo.processor.console;
 
 
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -60,12 +61,14 @@ public final class PluginConsole {
     /**
      * Plugin query service.
      */
-    private PluginQueryService pluginQueryService = PluginQueryService.getInstance();
+    @Inject
+    private PluginQueryService pluginQueryService;
 
     /**
      * Plugin management service.
      */
-    private PluginMgmtService pluginMgmtService = PluginMgmtService.getInstance();
+    @Inject
+    private PluginMgmtService pluginMgmtService;
 
     /**
      * Language service.

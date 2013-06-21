@@ -384,7 +384,7 @@ public final class RepairProcessor {
             remove(TagArticleRepositoryImpl.getInstance());
             remove(TagRepositoryImpl.getInstance());
             remove(beanManager.getReference(UserRepositoryImpl.class));
-            remove(PluginRepositoryImpl.getInstance());
+            remove(beanManager.getReference(PluginRepositoryImpl.class));
 
             succeed = true;
         } catch (final Exception e) {

@@ -41,7 +41,6 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.CommentQueryService;
-import org.b3log.solo.service.PageQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
@@ -84,11 +83,6 @@ public final class PageProcessor {
      */
     @Inject
     private CommentQueryService commentQueryService;
-
-    /**
-     * Page query service.
-     */
-    private PageQueryService pageQueryService = PageQueryService.getInstance();
 
     /**
      * Shows page with the specified context.
