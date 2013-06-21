@@ -113,7 +113,7 @@ public final class PermalinkFilter implements Filter {
                 page = pageRepository.getByPermalink(permalink);
             }
 
-            if (null == page) {
+            if (null == page && null == article) {
                 LOGGER.log(Level.DEBUG, "Not found article/page with permalink[{0}]", permalink);
                 chain.doFilter(request, response);
 
