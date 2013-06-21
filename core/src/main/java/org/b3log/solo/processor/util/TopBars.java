@@ -159,9 +159,4 @@ public final class TopBars {
             Stopwatchs.end();
         }
     }
-
-    /**
-     * Private default constructor.
-     */
-    private TopBars() {}
 }
