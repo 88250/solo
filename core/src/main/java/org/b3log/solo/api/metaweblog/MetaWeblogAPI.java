@@ -57,8 +57,7 @@ import org.jsoup.Jsoup;
 
 
 /**
- * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> 
- * requests processing.
+ * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> requests processing.
  * 
  * <p>
  * Implemented the following APIs:
@@ -94,7 +93,8 @@ public final class MetaWeblogAPI {
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Article query service.

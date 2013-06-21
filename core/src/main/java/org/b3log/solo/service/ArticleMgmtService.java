@@ -49,8 +49,6 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.TimeZones;
@@ -95,7 +93,8 @@ public final class ArticleMgmtService {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Archive date repository.
@@ -112,7 +111,8 @@ public final class ArticleMgmtService {
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Comment repository.
@@ -159,6 +159,12 @@ public final class ArticleMgmtService {
     private StatisticQueryService statisticQueryService;
 
     /**
+     * Tag management service.
+     */
+    @Inject
+    private TagMgmtService tagMgmtService;
+
+    /**
      * Article comment count +1 for an article specified by the given article id.
      *
      * @param articleId the given article id
@@ -188,7 +194,7 @@ public final class ArticleMgmtService {
             final JSONObject article = articleRepository.get(articleId);
 
             article.put(ARTICLE_IS_PUBLISHED, false);
-            tagUtils.decTagPublishedRefCount(articleId);
+            tagMgmtService.decTagPublishedRefCount(articleId);
             decArchiveDatePublishedRefCount(articleId);
 
             articleRepository.update(articleId, article);
@@ -1310,5 +1316,32 @@ public final class ArticleMgmtService {
      */
     public void setStatisticQueryService(final StatisticQueryService statisticQueryService) {
         this.statisticQueryService = statisticQueryService;
+    }
+
+    /**
+     * Sets the tag repository with the specified tag repository.
+     * 
+     * @param tagRepository the specified tag repository
+     */
+    public void setTagRepository(final TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
+
+    /**
+     * Sets the tag article repository with the specified tag article repository.
+     * 
+     * @param tagArticleRepository the specified tag article repository
+     */
+    public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
+        this.tagArticleRepository = tagArticleRepository;
+    }
+
+    /**
+     * Sets tag management service with the specified tag management service.
+     * 
+     * @param tagMgmtService the specified tag management service
+     */
+    public void setTagMgmtService(final TagMgmtService tagMgmtService) {
+        this.tagMgmtService = tagMgmtService;
     }
 }

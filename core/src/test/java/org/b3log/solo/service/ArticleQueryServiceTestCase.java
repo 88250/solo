@@ -130,7 +130,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getArticlesByTag() throws Exception {
-        final TagQueryService tagQueryService = TagQueryService.getInstance();
+        final TagQueryService tagQueryService = getTagQueryService();
 
         JSONObject result = tagQueryService.getTagByTitle("B3log");
         Assert.assertNotNull(result);

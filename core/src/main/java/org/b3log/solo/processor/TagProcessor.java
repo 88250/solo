@@ -106,7 +106,8 @@ public final class TagProcessor {
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Tag utilities.

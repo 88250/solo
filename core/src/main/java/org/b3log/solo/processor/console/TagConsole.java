@@ -57,12 +57,14 @@ public final class TagConsole {
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Tag management service.
      */
-    private TagMgmtService tagMgmtService = TagMgmtService.getInstance();
+    @Inject
+    private TagMgmtService tagMgmtService;
 
     /**
      * User query service.

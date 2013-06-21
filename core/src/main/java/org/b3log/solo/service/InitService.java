@@ -93,7 +93,8 @@ public final class InitService {
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Archive date repository.
@@ -110,7 +111,8 @@ public final class InitService {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Article repository.
@@ -643,5 +645,23 @@ public final class InitService {
      */
     public void setStatisticRepository(final StatisticRepository statisticRepository) {
         this.statisticRepository = statisticRepository;
+    }
+
+    /**
+     * Sets the tag repository with the specified tag repository.
+     * 
+     * @param tagRepository the specified tag repository
+     */
+    public void setTagRepository(final TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
+
+    /**
+     * Sets the tag article repository with the specified tag article repository.
+     * 
+     * @param tagArticleRepository the specified tag article repository
+     */
+    public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
+        this.tagArticleRepository = tagArticleRepository;
     }
 }

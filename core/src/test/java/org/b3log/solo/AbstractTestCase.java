@@ -255,8 +255,9 @@ public abstract class AbstractTestCase {
         userRepository = new UserRepositoryImpl();
         linkRepository = new LinkRepositoryImpl();
         articleRepository = new ArticleRepositoryImpl();
-        tagRepository = TagRepositoryImpl.getInstance();
-        tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+        tagArticleRepository = new TagArticleRepositoryImpl();
+        tagRepository = new TagRepositoryImpl();
+        ((TagRepositoryImpl)tagRepository).setTagArticleRepository(tagArticleRepository);
         pageRepository = new PageRepositoryImpl();
         commentRepository = CommentRepositoryImpl.getInstance();
         archiveDateRepository = new ArchiveDateRepositoryImpl();
@@ -277,6 +278,8 @@ public abstract class AbstractTestCase {
         initService.setArticleRepository(articleRepository);
         initService.setPreferenceRepository(preferenceRepository);
         initService.setStatisticRepository(statisticRepository);
+        initService.setTagArticleRepository(tagArticleRepository);
+        initService.setTagRepository(tagRepository);
 
         userMgmtService = new UserMgmtService();
         userMgmtService.setUserRepository(userRepository);
@@ -291,9 +294,16 @@ public abstract class AbstractTestCase {
 
         statisticMgmtService = new StatisticMgmtService();
         statisticMgmtService.setStatisticRepository(statisticRepository);
-        
+
         statisticQueryService = new StatisticQueryService();
         statisticQueryService.setStatisticRepository(statisticRepository);
+
+        tagQueryService = new TagQueryService();
+        tagQueryService.setTagRepository(tagRepository);
+
+        tagMgmtService = new TagMgmtService();
+        tagMgmtService.setTagQueryService(tagQueryService);
+        tagMgmtService.setTagRepository(tagRepository);
 
         articleQueryService = new ArticleQueryService();
         articleQueryService.setArchiveDateArticleRepository(archiveDateArticleRepository);
@@ -301,6 +311,8 @@ public abstract class AbstractTestCase {
         articleQueryService.setUserRepository(userRepository);
         articleQueryService.setPreferenceQueryService(preferenceQueryService);
         articleQueryService.setStatisticQueryService(statisticQueryService);
+        articleQueryService.setTagArticleRepository(tagArticleRepository);
+        articleQueryService.setTagRepository(tagRepository);
 
         articleMgmtService = new ArticleMgmtService();
         articleMgmtService.setArchiveDateArticleRepository(archiveDateArticleRepository);
@@ -313,6 +325,9 @@ public abstract class AbstractTestCase {
         articleMgmtService.setPreferenceQueryService(preferenceQueryService);
         articleMgmtService.setStatisticMgmtService(statisticMgmtService);
         articleMgmtService.setStatisticQueryService(statisticQueryService);
+        articleMgmtService.setTagArticleRepository(tagArticleRepository);
+        articleMgmtService.setTagRepository(tagRepository);
+        articleMgmtService.setTagMgmtService(tagMgmtService);
 
         pageMgmtService = new PageMgmtService();
         pageMgmtService.setPermalinkQueryService(permalinkQueryService);
@@ -332,10 +347,6 @@ public abstract class AbstractTestCase {
 
         preferenceMgmtService = new PreferenceMgmtService();
         preferenceMgmtService.setPreferenceRepository(preferenceRepository);
-
-        tagQueryService = TagQueryService.getInstance();
-
-        tagMgmtService = TagMgmtService.getInstance();
 
         commentQueryService = new CommentQueryService();
         commentQueryService.setArticleRepository(articleRepository);

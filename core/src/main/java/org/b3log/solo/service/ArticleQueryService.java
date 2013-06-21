@@ -52,8 +52,6 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
@@ -103,12 +101,14 @@ public final class ArticleQueryService {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Archive date-Article repository.
@@ -1090,5 +1090,23 @@ public final class ArticleQueryService {
      */
     public void setStatisticQueryService(final StatisticQueryService statisticQueryService) {
         this.statisticQueryService = statisticQueryService;
+    }
+
+    /**
+     * Sets the tag repository with the specified tag repository.
+     * 
+     * @param tagRepository the specified tag repository
+     */
+    public void setTagRepository(final TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
+
+    /**
+     * Sets the tag article repository with the specified tag article repository.
+     * 
+     * @param tagArticleRepository the specified tag article repository
+     */
+    public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
+        this.tagArticleRepository = tagArticleRepository;
     }
 }

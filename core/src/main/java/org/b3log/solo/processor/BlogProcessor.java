@@ -51,7 +51,8 @@ public final class BlogProcessor {
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Statistic query service.

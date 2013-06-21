@@ -87,7 +87,8 @@ public final class ArticleProcessor {
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Comment query service.

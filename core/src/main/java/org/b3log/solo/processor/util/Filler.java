@@ -54,7 +54,6 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.TagQueryService;
@@ -100,7 +99,8 @@ public final class Filler {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Tag utilities.
@@ -145,7 +145,8 @@ public final class Filler {
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * User query service.

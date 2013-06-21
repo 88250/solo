@@ -17,16 +17,17 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,6 +39,7 @@ import org.json.JSONObject;
  * @version 1.0.0.3, Jun 28, 2012
  * @since 0.4.0
  */
+@Service
 public final class TagQueryService {
 
     /**
@@ -48,7 +50,8 @@ public final class TagQueryService {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Gets a tag by the specified tag title.
@@ -132,35 +135,11 @@ public final class TagQueryService {
     }
 
     /**
-     * Gets the {@link TagQueryService} singleton.
-     *
-     * @return the singleton
+     * Sets the tag repository with the specified tag repository.
+     * 
+     * @param tagRepository the specified tag repository
      */
-    public static TagQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private TagQueryService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 24, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final TagQueryService SINGLETON = new TagQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setTagRepository(final TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
     }
 }

@@ -106,12 +106,14 @@ public final class RepairProcessor {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Article repository.
@@ -389,8 +391,8 @@ public final class RepairProcessor {
             remove(beanManager.getReference(PageRepositoryImpl.class));
             remove(beanManager.getReference(PreferenceRepositoryImpl.class));
             remove(beanManager.getReference(StatisticRepositoryImpl.class));
-            remove(TagArticleRepositoryImpl.getInstance());
-            remove(TagRepositoryImpl.getInstance());
+            remove(beanManager.getReference(TagArticleRepositoryImpl.class));
+            remove(beanManager.getReference(TagRepositoryImpl.class));
             remove(beanManager.getReference(UserRepositoryImpl.class));
             remove(beanManager.getReference(PluginRepositoryImpl.class));
 

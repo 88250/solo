@@ -56,8 +56,6 @@ import org.b3log.solo.model.feed.rss.Item;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
@@ -108,12 +106,14 @@ public final class FeedProcessor {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Blog articles Atom output.
