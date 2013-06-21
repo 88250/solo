@@ -16,13 +16,14 @@
 package org.b3log.solo.service;
 
 
+import javax.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.json.JSONObject;
 
 
@@ -33,6 +34,7 @@ import org.json.JSONObject;
  * @version 1.0.0.1, Oct 31, 2011
  * @since 0.4.0
  */
+@Service
 public final class PreferenceQueryService {
 
     /**
@@ -43,7 +45,8 @@ public final class PreferenceQueryService {
     /**
      * Preference repository.
      */
-    private PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
+    @Inject
+    private PreferenceRepository preferenceRepository;
 
     /**
      * Gets the reply notification template.
@@ -87,35 +90,11 @@ public final class PreferenceQueryService {
     }
 
     /**
-     * Gets the {@link PreferenceQueryService} singleton.
-     *
-     * @return the singleton
+     * Sets the preference repository with the specified preference repository.
+     * 
+     * @param preferenceRepository the specified preference repository
      */
-    public static PreferenceQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private PreferenceQueryService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 24, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final PreferenceQueryService SINGLETON = new PreferenceQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setPreferenceRepository(final PreferenceRepository preferenceRepository) {
+        this.preferenceRepository = preferenceRepository;
     }
 }

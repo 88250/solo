@@ -123,7 +123,8 @@ public final class ArticleMgmtService {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Statistic utilities.
@@ -1276,5 +1277,14 @@ public final class ArticleMgmtService {
      */
     public void setUserRepository(final UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    /**
+     * Sets the preference query service with the specified preference query service.
+     * 
+     * @param preferenceQueryService the specified preference query service
+     */
+    public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
+        this.preferenceQueryService = preferenceQueryService;
     }
 }

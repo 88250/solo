@@ -23,6 +23,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -58,11 +60,6 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
-     * Preference query service.
-     */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
-
-    /**
      * URL of adding comment to Symphony.
      */
     private static final URL ADD_COMMENT_URL;
@@ -84,6 +81,9 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             new Object[] {event.getType(), data, ArticleSender.class.getName()});
         try {
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
+
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
@@ -117,7 +117,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put("clientHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
             requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
             requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
-            
+
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
 
             urlFetchService.fetchAsync(httpRequest);

@@ -98,7 +98,8 @@ public final class ArticleQueryService {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Tag repository.
@@ -1071,5 +1072,14 @@ public final class ArticleQueryService {
      */
     public void setUserRepository(final UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    /**
+     * Sets the preference query service with the specified preference query service.
+     * 
+     * @param preferenceQueryService the specified preference query service
+     */
+    public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
+        this.preferenceQueryService = preferenceQueryService;
     }
 }

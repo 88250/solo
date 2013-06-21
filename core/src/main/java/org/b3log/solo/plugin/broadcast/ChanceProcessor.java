@@ -85,6 +85,12 @@ public final class ChanceProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
+    
+    /**
+     * Preference query service.
+     */
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * URL of adding article to Rhythm.
@@ -278,7 +284,7 @@ public final class ChanceProcessor {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
             final JSONObject broadcast = requestJSONObject.getJSONObject("broadcast");
-            final JSONObject preference = PreferenceQueryService.getInstance().getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final String b3logKey = preference.getString(Preference.KEY_OF_SOLO);
             final String email = preference.getString(Preference.ADMIN_EMAIL);
             final String clientName = "B3log Solo";

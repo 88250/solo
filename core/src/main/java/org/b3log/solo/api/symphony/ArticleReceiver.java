@@ -60,7 +60,8 @@ public final class ArticleReceiver {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Article management service.
@@ -73,7 +74,7 @@ public final class ArticleReceiver {
      */
     @Inject
     private ArticleQueryService articleQueryService;
-    
+
     /**
      * User query service.
      */

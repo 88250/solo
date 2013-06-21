@@ -21,6 +21,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -62,11 +64,6 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
      */
     private MailService mailService = MailServiceFactory.getMailService();
 
-    /**
-     * Preference query service.
-     */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
-
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject eventData = event.getData();
@@ -82,6 +79,9 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
             return;
         }
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+        
         try {
             final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
             final JSONObject originalComment = commentRepository.get(originalCommentId);

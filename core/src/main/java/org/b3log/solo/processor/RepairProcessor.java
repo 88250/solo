@@ -89,7 +89,14 @@ public final class RepairProcessor {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
+    
+    /**
+     * Preference management service.
+     */
+    @Inject
+    private PreferenceMgmtService preferenceMgmtService;
 
     /**
      * Mail service.
@@ -244,7 +251,7 @@ public final class RepairProcessor {
 
             preference.put(Preference.SIGNS, Preference.Default.DEFAULT_SIGNS);
 
-            PreferenceMgmtService.getInstance().updatePreference(preference);
+            preferenceMgmtService.updatePreference(preference);
 
             // Sends the sample signs to developer
             final Message msg = new MailService.Message();
@@ -379,7 +386,7 @@ public final class RepairProcessor {
             remove(CommentRepositoryImpl.getInstance());
             remove(beanManager.getReference(LinkRepositoryImpl.class));
             remove(beanManager.getReference(PageRepositoryImpl.class));
-            remove(PreferenceRepositoryImpl.getInstance());
+            remove(beanManager.getReference(PreferenceRepositoryImpl.class));
             remove(StatisticRepositoryImpl.getInstance());
             remove(TagArticleRepositoryImpl.getInstance());
             remove(TagRepositoryImpl.getInstance());

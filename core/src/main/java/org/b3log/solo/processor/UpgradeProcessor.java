@@ -47,7 +47,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
-import org.b3log.solo.repository.impl.*;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -87,7 +86,8 @@ public final class UpgradeProcessor {
     /**
      * Preference repository.
      */
-    private PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
+    @Inject
+    private PreferenceRepository preferenceRepository;
 
     /**
      * Step for article updating.
@@ -97,7 +97,8 @@ public final class UpgradeProcessor {
     /**
      * Preference Query Service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Mail Service.

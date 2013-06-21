@@ -22,6 +22,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.urlfetch.HTTPRequest;
@@ -78,11 +80,14 @@ public final class AddArticleGoogleBlogSearchPinger extends AbstractEventListene
 
         String articleTitle = null;
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+
         try {
             final JSONObject article = eventData.getJSONObject(Article.ARTICLE);
 
             articleTitle = article.getString(Article.ARTICLE_TITLE);
-            final JSONObject preference = PreferenceQueryService.getInstance().getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
 
             if (Latkes.getServePath().contains("localhost")) {

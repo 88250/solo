@@ -85,7 +85,8 @@ public final class PageMgmtService {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Updates a page by the specified request json object.
@@ -417,5 +418,14 @@ public final class PageMgmtService {
      */
     public void setPageRepository(final PageRepository pageRepository) {
         this.pageRepository = pageRepository;
+    }
+
+    /**
+     * Sets the preference query service with the specified preference query service.
+     * 
+     * @param preferenceQueryService the specified preference query service
+     */
+    public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
+        this.preferenceQueryService = preferenceQueryService;
     }
 }

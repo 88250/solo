@@ -100,7 +100,8 @@ public final class CommentMgmtService {
     /**
      * Preference query service.
      */
-    private static PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Event manager.
@@ -768,5 +769,14 @@ public final class CommentMgmtService {
      */
     public void setPageRepository(final PageRepository pageRepository) {
         this.pageRepository = pageRepository;
+    }
+
+    /**
+     * Sets the preference query service with the specified preference query service.
+     * 
+     * @param preferenceQueryService the specified preference query service
+     */
+    public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
+        this.preferenceQueryService = preferenceQueryService;
     }
 }

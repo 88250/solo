@@ -26,8 +26,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
@@ -35,11 +33,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.service.PreferenceMgmtService;
 import static org.b3log.solo.model.Skin.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 
 /**
@@ -118,94 +112,6 @@ public final class Skins {
         } finally {
             Stopwatchs.end();
         }
-    }
-
-    /**
-     * Loads skins for the specified preference and initializes templates 
-     * loading.
-     * 
-     * <p>
-     * If the skins directory has been changed, persists the change into 
-     * preference.
-     * </p>
-     *
-     * @param preference the specified preference
-     * @throws Exception exception
-     */
-    public static void loadSkins(final JSONObject preference) throws Exception {
-        Stopwatchs.start("Load Skins");
-
-        LOGGER.info("Loading skins....");
-
-        final Set<String> skinDirNames = getSkinDirNames();
-
-        LOGGER.log(Level.DEBUG, "Loaded skins[dirNames={0}]", skinDirNames);
-        final JSONArray skinArray = new JSONArray();
-
-        for (final String dirName : skinDirNames) {
-            final JSONObject skin = new JSONObject();
-            final String name = getSkinName(dirName);
-
-            if (null == name) {
-                LOGGER.log(Level.WARN, "The directory[{0}] does not contain any skin, ignored it", dirName);
-                continue;
-            }
-
-            skin.put(SKIN_NAME, name);
-            skin.put(SKIN_DIR_NAME, dirName);
-
-            skinArray.put(skin);
-        }
-
-        final String currentSkinDirName = preference.optString(SKIN_DIR_NAME);
-        final String skinName = preference.optString(SKIN_NAME);
-
-        LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
-
-        if (!skinDirNames.contains(currentSkinDirName)) {
-            LOGGER.log(Level.WARN, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName=ease] instead.",
-                currentSkinDirName);
-            if (!skinDirNames.contains("ease")) {
-                LOGGER.log(Level.ERROR, "Can not find skin[dirName=ease]");
-
-                throw new IllegalStateException(
-                    "Can not find default skin[dirName=ease], please redeploy your B3log Solo and make sure "
-                        + "contains this default skin!");
-            }
-
-            preference.put(SKIN_DIR_NAME, "ease");
-            preference.put(SKIN_NAME, "ease");
-
-            PreferenceMgmtService.getInstance().updatePreference(preference);
-            PageCaches.removeAll(); // Clears cache manually.
-        }
-
-        final String skinsString = skinArray.toString();
-
-        if (!skinsString.equals(preference.getString(SKINS))) {
-            LOGGER.log(Level.INFO, "The skins directory has been changed, persists " + "the change into preference");
-            preference.put(SKINS, skinsString);
-            PreferenceMgmtService.getInstance().updatePreference(preference);
-            PageCaches.removeAll(); // Clears cache manually.
-        }
-
-        if (preference.getBoolean(Preference.PAGE_CACHE_ENABLED)) {
-            Latkes.enablePageCache();
-        } else {
-            Latkes.disablePageCache();
-        }
-
-        setDirectoryForTemplateLoading(preference.getString(SKIN_DIR_NAME));
-
-        final String localeString = preference.getString(Preference.LOCALE_STRING);
-
-        if ("zh_CN".equals(localeString)) {
-            TimeZones.setTimeZone("Asia/Shanghai");
-        }
-
-        LOGGER.info("Loaded skins....");
-
-        Stopwatchs.end();
     }
 
     /**

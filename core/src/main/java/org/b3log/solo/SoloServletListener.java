@@ -49,6 +49,7 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
+import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
@@ -109,7 +110,7 @@ public final class SoloServletListener extends AbstractServletListener {
         // Default to skin "ease", loads from preference later
         Skins.setDirectoryForTemplateLoading("ease");
 
-        final PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
+        final PreferenceRepository preferenceRepository = new PreferenceRepositoryImpl();
 
         final Transaction transaction = preferenceRepository.beginTransaction();
 
@@ -204,7 +205,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         LOGGER.info("Loading preference....");
 
-        final PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
+        final PreferenceRepository preferenceRepository = new PreferenceRepositoryImpl();
         JSONObject preference;
 
         try {
@@ -214,7 +215,7 @@ public final class SoloServletListener extends AbstractServletListener {
                 return;
             }
 
-            Skins.loadSkins(preference);
+            new PreferenceMgmtService().loadSkins(preference);
 
             final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
 
@@ -287,7 +288,7 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
         try {
-            final PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
+            final PreferenceRepository preferenceRepository = new PreferenceRepositoryImpl();
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
             if (null == preference) { // Did not initialize yet

@@ -27,6 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
@@ -52,11 +54,6 @@ public final class InitCheckFilter implements Filter {
      */
     private static final Logger LOGGER = Logger.getLogger(InitCheckFilter.class.getName());
 
-    /**
-     * Preference query service.
-     */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
-
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {}
 
@@ -76,11 +73,11 @@ public final class InitCheckFilter implements Filter {
         final String requestURI = httpServletRequest.getRequestURI();
 
         LOGGER.log(Level.TRACE, "Request[URI={0}]", requestURI);
-        
+
         if (requestURI.startsWith("/latke/remote")) {
             // If requests Latke Remote APIs, skips this filter 
             chain.doFilter(request, response);
-            
+
             return;
         }
 
@@ -97,6 +94,9 @@ public final class InitCheckFilter implements Filter {
 
                 return;
             }
+
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
 
             LOGGER.debug("Try to get preference to confirm whether the preference exixts");
             final JSONObject preference = preferenceQueryService.getPreference();

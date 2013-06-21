@@ -80,7 +80,8 @@ public final class InitService {
     /**
      * Preference repository.
      */
-    private PreferenceRepository preferenceRepository = PreferenceRepositoryImpl.getInstance();
+    @Inject
+    private PreferenceRepository preferenceRepository;
 
     /**
      * User repository.
@@ -623,5 +624,14 @@ public final class InitService {
      */
     public void setUserRepository(final UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+
+    /**
+     * Sets the preference repository with the specified preference repository.
+     * 
+     * @param preferenceRepository the specified preference repository
+     */
+    public void setPreferenceRepository(final PreferenceRepository preferenceRepository) {
+        this.preferenceRepository = preferenceRepository;
     }
 }

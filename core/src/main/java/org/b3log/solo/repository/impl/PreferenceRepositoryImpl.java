@@ -33,9 +33,11 @@ import org.json.JSONObject;
 public final class PreferenceRepositoryImpl extends AbstractRepository implements PreferenceRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final PreferenceRepositoryImpl SINGLETON = new PreferenceRepositoryImpl(Preference.PREFERENCE);
+    public PreferenceRepositoryImpl() {
+        super(Preference.PREFERENCE);
+    }
 
     /**
      * {@inheritDoc}
@@ -63,23 +65,5 @@ public final class PreferenceRepositoryImpl extends AbstractRepository implement
     @Override
     public void update(final String id, final JSONObject jsonObject) throws RepositoryException {
         getUnderlyingRepository().update(id, jsonObject);
-    }
-
-    /**
-     * Gets the {@link PreferenceRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static PreferenceRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private PreferenceRepositoryImpl(final String name) {
-        super(name);
     }
 }

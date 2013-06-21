@@ -88,14 +88,15 @@ public final class TagProcessor {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
-    
+
     /**
      * User query service.
      */

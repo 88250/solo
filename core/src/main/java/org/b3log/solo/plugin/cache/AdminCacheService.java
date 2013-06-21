@@ -68,12 +68,14 @@ public final class AdminCacheService {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Preference management service.
      */
-    private PreferenceMgmtService preferenceMgmtService = PreferenceMgmtService.getInstance();
+    @Inject
+    private PreferenceMgmtService preferenceMgmtService;
 
     /**
      * Gets page cache status with the specified http servlet request and http

@@ -58,12 +58,14 @@ public final class PreferenceConsole {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Preference management service.
      */
-    private PreferenceMgmtService preferenceMgmtService = PreferenceMgmtService.getInstance();
+    @Inject
+    private PreferenceMgmtService preferenceMgmtService;
 
     /**
      * User query service.
