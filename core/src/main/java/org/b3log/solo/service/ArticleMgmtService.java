@@ -52,7 +52,6 @@ import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
@@ -127,11 +126,6 @@ public final class ArticleMgmtService {
     private PreferenceQueryService preferenceQueryService;
 
     /**
-     * Statistic utilities.
-     */
-    private Statistics statistics = Statistics.getInstance();
-
-    /**
      * Permalink query service.
      */
     @Inject
@@ -151,6 +145,18 @@ public final class ArticleMgmtService {
      * Tag utilities.
      */
     private static Tags tagUtils = Tags.getInstance();
+
+    /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
+
+    /**
+     * Statistic query service.
+     */
+    @Inject
+    private StatisticQueryService statisticQueryService;
 
     /**
      * Article comment count +1 for an article specified by the given article id.
@@ -186,11 +192,11 @@ public final class ArticleMgmtService {
             decArchiveDatePublishedRefCount(articleId);
 
             articleRepository.update(articleId, article);
-            statistics.decPublishedBlogArticleCount();
-            final int blogCmtCnt = statistics.getPublishedBlogCommentCount();
+            statisticMgmtService.decPublishedBlogArticleCount();
+            final int blogCmtCnt = statisticQueryService.getPublishedBlogCommentCount();
             final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
 
-            statistics.setPublishedBlogCommentCount(blogCmtCnt - articleCmtCnt);
+            statisticMgmtService.setPublishedBlogCommentCount(blogCmtCnt - articleCmtCnt);
 
             final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
 
@@ -322,11 +328,11 @@ public final class ArticleMgmtService {
             // Set statistic
             if (publishNewArticle) {
                 // This article is updated from unpublished to published
-                statistics.incPublishedBlogArticleCount();
-                final int blogCmtCnt = statistics.getPublishedBlogCommentCount();
+                statisticMgmtService.incPublishedBlogArticleCount();
+                final int blogCmtCnt = statisticQueryService.getPublishedBlogCommentCount();
                 final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
 
-                statistics.setPublishedBlogCommentCount(blogCmtCnt + articleCmtCnt);
+                statisticMgmtService.setPublishedBlogCommentCount(blogCmtCnt + articleCmtCnt);
 
                 final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
 
@@ -483,9 +489,9 @@ public final class ArticleMgmtService {
             // Step 5: Add tag-article relations
             addTagArticleRelation(tags, article);
             // Step 6: Inc blog article count statictis
-            statistics.incBlogArticleCount();
+            statisticMgmtService.incBlogArticleCount();
             if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                statistics.incPublishedBlogArticleCount();
+                statisticMgmtService.incPublishedBlogArticleCount();
             }
             // Step 7: Add archive date-article relations
             archiveDate(article);
@@ -568,9 +574,9 @@ public final class ArticleMgmtService {
 
             articleRepository.remove(articleId);
 
-            statistics.decBlogArticleCount();
+            statisticMgmtService.decBlogArticleCount();
             if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                statistics.decPublishedBlogArticleCount();
+                statisticMgmtService.decPublishedBlogArticleCount();
             }
 
             final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
@@ -1006,18 +1012,18 @@ public final class ArticleMgmtService {
      */
     private void removeArticleComments(final String articleId) throws JSONException, RepositoryException {
         final int removedCnt = commentRepository.removeComments(articleId);
-        int blogCommentCount = statistics.getBlogCommentCount();
+        int blogCommentCount = statisticQueryService.getBlogCommentCount();
 
         blogCommentCount -= removedCnt;
-        statistics.setBlogCommentCount(blogCommentCount);
+        statisticMgmtService.setBlogCommentCount(blogCommentCount);
 
         final JSONObject article = articleRepository.get(articleId);
 
         if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            int publishedBlogCommentCount = statistics.getPublishedBlogCommentCount();
+            int publishedBlogCommentCount = statisticQueryService.getPublishedBlogCommentCount();
 
             publishedBlogCommentCount -= removedCnt;
-            statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
+            statisticMgmtService.setPublishedBlogCommentCount(publishedBlogCommentCount);
         }
     }
 
@@ -1286,5 +1292,23 @@ public final class ArticleMgmtService {
      */
     public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
         this.preferenceQueryService = preferenceQueryService;
+    }
+
+    /**
+     * Sets the statistic management service with the specified statistic management service.
+     * 
+     * @param statisticMgmtService the specified statistic management service
+     */
+    public void setStatisticMgmtService(final StatisticMgmtService statisticMgmtService) {
+        this.statisticMgmtService = statisticMgmtService;
+    }
+
+    /**
+     * Sets the statistic query service with the specified statistic query service.
+     * 
+     * @param statisticQueryService the specified statistic query service
+     */
+    public void setStatisticQueryService(final StatisticQueryService statisticQueryService) {
+        this.statisticQueryService = statisticQueryService;
     }
 }

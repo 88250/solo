@@ -39,9 +39,9 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
+import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -85,6 +85,12 @@ public final class TopBars {
     private UserMgmtService userMgmtService;
 
     /**
+     * Statistic query service.
+     */
+    @Inject
+    private StatisticQueryService statisticQueryService;
+
+    /**
      * Generates top bar HTML.
      * 
      * @param request the specified request
@@ -112,7 +118,7 @@ public final class TopBars {
             topBarModel.put("mobileLabel", langPropsService.get("mobileLabel"));
 
             topBarModel.put("onlineVisitor1Label", langPropsService.get("onlineVisitor1Label"));
-            topBarModel.put(Common.ONLINE_VISITOR_CNT, Statistics.getOnlineVisitorCount());
+            topBarModel.put(Common.ONLINE_VISITOR_CNT, statisticQueryService.getOnlineVisitorCount());
 
             if (null == currentUser) {
                 topBarModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));

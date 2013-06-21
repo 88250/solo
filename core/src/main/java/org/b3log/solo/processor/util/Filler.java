@@ -122,7 +122,8 @@ public final class Filler {
     /**
      * Statistic query service.
      */
-    private StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
+    @Inject
+    private StatisticQueryService statisticQueryService;
 
     /**
      * User repository.

@@ -24,6 +24,8 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.PluginManager;
@@ -50,8 +52,8 @@ import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.PreferenceMgmtService;
+import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Statistics;
 import org.json.JSONObject;
 
 
@@ -169,7 +171,10 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.DEBUG, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", new Object[] {
                 session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), session.isNew()});
             // Online visitor count
-            Statistics.onlineVisitorCount(httpServletRequest);
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
+
+            statisticMgmtService.onlineVisitorCount(httpServletRequest);
         }
 
         resolveSkinDir(httpServletRequest);

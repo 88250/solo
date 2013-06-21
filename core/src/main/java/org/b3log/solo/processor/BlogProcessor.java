@@ -56,7 +56,8 @@ public final class BlogProcessor {
     /**
      * Statistic query service.
      */
-    private StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
+    @Inject
+    private StatisticQueryService statisticQueryService;
 
     /**
      * Gets blog information.

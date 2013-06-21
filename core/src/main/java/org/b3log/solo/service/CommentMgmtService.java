@@ -48,7 +48,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -87,15 +86,16 @@ public final class CommentMgmtService {
     private ArticleRepository articleRepository;
 
     /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
+
+    /**
      * Page repository.
      */
     @Inject
     private PageRepository pageRepository;
-
-    /**
-     * Statistic utilities.
-     */
-    private Statistics statistics = Statistics.getInstance();
 
     /**
      * Preference query service.
@@ -436,8 +436,8 @@ public final class CommentMgmtService {
             // Step 2: Update page comment count
             incPageCommentCount(pageId);
             // Step 3: Update blog statistic comment count
-            statistics.incBlogCommentCount();
-            statistics.incPublishedBlogCommentCount();
+            statisticMgmtService.incBlogCommentCount();
+            statisticMgmtService.incPublishedBlogCommentCount();
             // Step 4: Send an email to admin
             try {
                 sendNotificationMail(page, comment, originalComment, preference);
@@ -557,8 +557,8 @@ public final class CommentMgmtService {
             // Step 2: Update article comment count
             articleMgmtService.incArticleCommentCount(articleId);
             // Step 3: Update blog statistic comment count
-            statistics.incBlogCommentCount();
-            statistics.incPublishedBlogCommentCount();
+            statisticMgmtService.incBlogCommentCount();
+            statisticMgmtService.incPublishedBlogCommentCount();
             // Step 4: Send an email to admin
             try {
                 sendNotificationMail(article, comment, originalComment, preference);
@@ -604,8 +604,8 @@ public final class CommentMgmtService {
             // Step 2: Update page comment count
             decPageCommentCount(pageId);
             // Step 3: Update blog statistic comment count
-            statistics.decBlogCommentCount();
-            statistics.decPublishedBlogCommentCount();
+            statisticMgmtService.decBlogCommentCount();
+            statisticMgmtService.decPublishedBlogCommentCount();
 
             transaction.commit();
         } catch (final Exception e) {
@@ -637,8 +637,8 @@ public final class CommentMgmtService {
             // Step 2: Update article comment count
             decArticleCommentCount(articleId);
             // Step 3: Update blog statistic comment count
-            statistics.decBlogCommentCount();
-            statistics.decPublishedBlogCommentCount();
+            statisticMgmtService.decBlogCommentCount();
+            statisticMgmtService.decPublishedBlogCommentCount();
 
             transaction.commit();
         } catch (final Exception e) {

@@ -55,7 +55,6 @@ import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.util.Markdowns;
-import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -124,9 +123,10 @@ public final class ArticleQueryService {
     private UserQueryService userQueryService;
 
     /**
-     * Statistic utilities.
+     * Statistic query service.
      */
-    private Statistics statistics = Statistics.getInstance();
+    @Inject
+    private StatisticQueryService statisticQueryService;
 
     /**
      * Can the current user access an article specified by the given article id?
@@ -504,12 +504,12 @@ public final class ArticleQueryService {
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING).addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING).setFilter(
                 new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
 
-            int articleCount = statistics.getBlogArticleCount();
+            int articleCount = statisticQueryService.getBlogArticleCount();
 
             if (!articleIsPublished) {
-                articleCount -= statistics.getPublishedBlogArticleCount();
+                articleCount -= statisticQueryService.getPublishedBlogArticleCount();
             } else {
-                articleCount = statistics.getPublishedBlogArticleCount();
+                articleCount = statisticQueryService.getPublishedBlogArticleCount();
             }
 
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);

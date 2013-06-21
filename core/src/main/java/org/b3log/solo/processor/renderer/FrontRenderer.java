@@ -29,7 +29,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.CacheFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.util.TopBars;
-import org.b3log.solo.util.Statistics;
+import org.b3log.solo.service.StatisticMgmtService;
 
 
 /**
@@ -46,11 +46,6 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(FrontRenderer.class.getName());
-
-    /**
-     * Statistic utilities.
-     */
-    private Statistics statistics = Statistics.getInstance();
 
     /**
      * {@inheritDoc}
@@ -99,9 +94,12 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
             output = html.replace(Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
         }
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
+        
         // Inc blog view count
         try {
-            statistics.incBlogViewCount(request, response);
+            statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.WARN, "Incs blog view count failed", e);
         }

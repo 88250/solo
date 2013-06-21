@@ -75,7 +75,8 @@ public final class InitService {
     /**
      * Statistic repository.
      */
-    private StatisticRepository statisticRepository = StatisticRepositoryImpl.getInstance();
+    @Inject
+    private StatisticRepository statisticRepository;
 
     /**
      * Preference repository.
@@ -633,5 +634,14 @@ public final class InitService {
      */
     public void setPreferenceRepository(final PreferenceRepository preferenceRepository) {
         this.preferenceRepository = preferenceRepository;
+    }
+
+    /**
+     * Sets the statistic repository with the specified statistic repository.
+     * 
+     * @param statisticRepository the specified statistic repository
+     */
+    public void setStatisticRepository(final StatisticRepository statisticRepository) {
+        this.statisticRepository = statisticRepository;
     }
 }

@@ -35,7 +35,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,11 +66,6 @@ public final class PageMgmtService {
     private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
 
     /**
-     * Statistic utilities.
-     */
-    private Statistics statistics = Statistics.getInstance();
-
-    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
@@ -87,6 +81,18 @@ public final class PageMgmtService {
      */
     @Inject
     private PreferenceQueryService preferenceQueryService;
+
+    /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
+
+    /**
+     * Statistic query service.
+     */
+    @Inject
+    private StatisticQueryService statisticQueryService;
 
     /**
      * Updates a page by the specified request json object.
@@ -363,15 +369,15 @@ public final class PageMgmtService {
     private void removePageComments(final String pageId) throws JSONException, RepositoryException {
         final int removedCnt = commentRepository.removeComments(pageId);
 
-        int blogCommentCount = statistics.getBlogCommentCount();
+        int blogCommentCount = statisticQueryService.getBlogCommentCount();
 
         blogCommentCount -= removedCnt;
-        statistics.setBlogCommentCount(blogCommentCount);
+        statisticMgmtService.setBlogCommentCount(blogCommentCount);
 
-        int publishedBlogCommentCount = statistics.getPublishedBlogCommentCount();
+        int publishedBlogCommentCount = statisticQueryService.getPublishedBlogCommentCount();
 
         publishedBlogCommentCount -= removedCnt;
-        statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
+        statisticMgmtService.setPublishedBlogCommentCount(publishedBlogCommentCount);
     }
 
     /**

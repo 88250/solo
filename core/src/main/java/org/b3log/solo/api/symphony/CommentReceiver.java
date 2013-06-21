@@ -56,8 +56,8 @@ import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -108,11 +108,6 @@ public final class CommentReceiver {
     private ArticleRepository articleRepository;
 
     /**
-     * Statistic utilities.
-     */
-    private static Statistics statistics = Statistics.getInstance();
-
-    /**
      * Default user thumbnail.
      */
     private static final String DEFAULT_USER_THUMBNAIL = "default-user-thumbnail.png";
@@ -126,6 +121,12 @@ public final class CommentReceiver {
      * Event manager.
      */
     private static EventManager eventManager = EventManager.getInstance();
+
+    /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Adds an article with the specified request.
@@ -263,8 +264,8 @@ public final class CommentReceiver {
             // Step 2: Update article comment count
             articleMgmtService.incArticleCommentCount(articleId);
             // Step 3: Update blog statistic comment count
-            statistics.incBlogCommentCount();
-            statistics.incPublishedBlogCommentCount();
+            statisticMgmtService.incBlogCommentCount();
+            statisticMgmtService.incPublishedBlogCommentCount();
             // Step 4: Send an email to admin
             try {
                 commentMgmtService.sendNotificationMail(article, comment, originalComment, preference);

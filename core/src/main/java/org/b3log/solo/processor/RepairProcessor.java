@@ -91,7 +91,7 @@ public final class RepairProcessor {
      */
     @Inject
     private PreferenceQueryService preferenceQueryService;
-    
+
     /**
      * Preference management service.
      */
@@ -122,7 +122,8 @@ public final class RepairProcessor {
     /**
      * Statistic query service.
      */
-    private StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
+    @Inject
+    private StatisticQueryService statisticQueryService;
 
     /**
      * Statistic management service.
@@ -387,7 +388,7 @@ public final class RepairProcessor {
             remove(beanManager.getReference(LinkRepositoryImpl.class));
             remove(beanManager.getReference(PageRepositoryImpl.class));
             remove(beanManager.getReference(PreferenceRepositoryImpl.class));
-            remove(StatisticRepositoryImpl.getInstance());
+            remove(beanManager.getReference(StatisticRepositoryImpl.class));
             remove(TagArticleRepositoryImpl.getInstance());
             remove(TagRepositoryImpl.getInstance());
             remove(beanManager.getReference(UserRepositoryImpl.class));

@@ -46,7 +46,7 @@ import org.b3log.solo.processor.util.TopBars;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
-import org.b3log.solo.util.Statistics;
+import org.b3log.solo.service.StatisticMgmtService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -64,11 +64,6 @@ public final class PageCacheFilter implements Filter {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PageCacheFilter.class.getName());
-
-    /**
-     * Statistic utilities.
-     */
-    private Statistics statistics = Statistics.getInstance();
 
     /**
      * Language service.
@@ -195,7 +190,9 @@ public final class PageCacheFilter implements Filter {
 
             LOGGER.log(Level.TRACE, "Cached value[key={0}, type={1}, title={2}]", new Object[] {pageCacheKey, cachedType, cachedTitle});
 
-            statistics.incBlogViewCount((HttpServletRequest) request, (HttpServletResponse) response);
+            final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
+
+            statisticMgmtService.incBlogViewCount((HttpServletRequest) request, (HttpServletResponse) response);
 
             final long endimeMillis = System.currentTimeMillis();
             final String dateString = DateFormatUtils.format(endimeMillis, "yyyy/MM/dd HH:mm:ss");

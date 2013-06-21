@@ -226,6 +226,16 @@ public abstract class AbstractTestCase {
     private PermalinkQueryService permalinkQueryService;
 
     /**
+     * Statistic management service.
+     */
+    private StatisticMgmtService statisticMgmtService;
+
+    /**
+     * Statistic query service.
+     */
+    private StatisticQueryService statisticQueryService;
+
+    /**
      * Before class.
      * 
      * <ol>
@@ -253,7 +263,7 @@ public abstract class AbstractTestCase {
         archiveDateArticleRepository = new ArchiveDateArticleRepositoryImpl();
         pluginRepository = new PluginRepositoryImpl();
         preferenceRepository = new PreferenceRepositoryImpl();
-        statisticRepository = StatisticRepositoryImpl.getInstance();
+        statisticRepository = new StatisticRepositoryImpl();
         optionRepository = new OptionRepositoryImpl();
 
         // Services
@@ -266,6 +276,7 @@ public abstract class AbstractTestCase {
         initService.setUserRepository(userRepository);
         initService.setArticleRepository(articleRepository);
         initService.setPreferenceRepository(preferenceRepository);
+        initService.setStatisticRepository(statisticRepository);
 
         userMgmtService = new UserMgmtService();
         userMgmtService.setUserRepository(userRepository);
@@ -277,6 +288,12 @@ public abstract class AbstractTestCase {
         permalinkQueryService = new PermalinkQueryService();
         permalinkQueryService.setArticleRepository(articleRepository);
         permalinkQueryService.setPageRepository(pageRepository);
+
+        statisticMgmtService = new StatisticMgmtService();
+        statisticMgmtService.setStatisticRepository(statisticRepository);
+        
+        statisticQueryService = new StatisticQueryService();
+        statisticQueryService.setStatisticRepository(statisticRepository);
 
         articleQueryService = new ArticleQueryService();
         articleQueryService.setArchiveDateArticleRepository(archiveDateArticleRepository);
@@ -293,6 +310,8 @@ public abstract class AbstractTestCase {
         articleMgmtService.setUserRepository(userRepository);
         articleMgmtService.setArticleQueryService(articleQueryService);
         articleMgmtService.setPreferenceQueryService(preferenceQueryService);
+        articleMgmtService.setStatisticMgmtService(statisticMgmtService);
+        articleMgmtService.setStatisticQueryService(statisticQueryService);
 
         pageMgmtService = new PageMgmtService();
         pageMgmtService.setPermalinkQueryService(permalinkQueryService);
