@@ -16,13 +16,14 @@
 package org.b3log.solo.service;
 
 
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
-import org.b3log.solo.repository.impl.OptionRepositoryImpl;
 import org.json.JSONObject;
 
 
@@ -33,12 +34,14 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Apr 16, 2013
  * @since 0.6.0
  */
+@Service
 public final class OptionMgmtService {
 
     /**
      * Option repository.
      */
-    private OptionRepository optionRepository = OptionRepositoryImpl.getInstance();
+    @Inject
+    private OptionRepository optionRepository;
 
     /**
      * Adds or updates the specified option.
@@ -63,13 +66,13 @@ public final class OptionMgmtService {
                 } else {
                     old.put(Option.OPTION_CATEGORY, option.optString(Option.OPTION_CATEGORY));
                     old.put(Option.OPTION_VALUE, option.optString(Option.OPTION_VALUE));
-                    
+
                     optionRepository.update(id, old);
                 }
             }
 
             transaction.commit();
-            
+
             return id;
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -79,7 +82,7 @@ public final class OptionMgmtService {
             throw new ServiceException(e);
         }
     }
-    
+
     /**
      * Removes the option specified by the given option id. 
      * 
@@ -88,10 +91,10 @@ public final class OptionMgmtService {
      */
     public void removeOption(final String optionId) throws ServiceException {
         final Transaction transaction = optionRepository.beginTransaction();
-        
+
         try {
             optionRepository.remove(optionId);
-            
+
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -103,35 +106,11 @@ public final class OptionMgmtService {
     }
 
     /**
-     * Gets the {@link OptionMgmtService} singleton.
-     *
-     * @return the singleton
+     * Sets the option repository with the specified option repository.
+     * 
+     * @param optionRepository the specified option repository
      */
-    public static OptionMgmtService getInstance() {
-        return OptionMgmtService.SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private OptionMgmtService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Apr 16, 2013
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final OptionMgmtService SINGLETON = new OptionMgmtService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setOptionRepository(final OptionRepository optionRepository) {
+        this.optionRepository = optionRepository;
     }
 }

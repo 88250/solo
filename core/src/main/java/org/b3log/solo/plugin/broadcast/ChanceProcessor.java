@@ -66,12 +66,14 @@ public final class ChanceProcessor {
     /**
      * Option management service.
      */
-    private OptionMgmtService optionMgmtService = OptionMgmtService.getInstance();
+    @Inject
+    private OptionMgmtService optionMgmtService;
 
     /**
      * Option query service.
      */
-    private OptionQueryService optionQueryService = OptionQueryService.getInstance();
+    @Inject
+    private OptionQueryService optionQueryService;
 
     /**
      * URL fetch service.

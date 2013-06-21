@@ -254,7 +254,7 @@ public abstract class AbstractTestCase {
         pluginRepository = PluginRepositoryImpl.getInstance();
         preferenceRepository = PreferenceRepositoryImpl.getInstance();
         statisticRepository = StatisticRepositoryImpl.getInstance();
-        optionRepository = OptionRepositoryImpl.getInstance();
+        optionRepository = new OptionRepositoryImpl();
 
         // Services
         initService = new InitService();
@@ -316,9 +316,11 @@ public abstract class AbstractTestCase {
         archiveDateQueryService = new ArchiveDateQueryService();
         archiveDateQueryService.setArchiveDateRepository(archiveDateRepository);
 
-        optionMgmtService = OptionMgmtService.getInstance();
+        optionMgmtService = new OptionMgmtService();
+        optionMgmtService.setOptionRepository(optionRepository);
 
-        optionQueryService = OptionQueryService.getInstance();
+        optionQueryService = new OptionQueryService();
+        optionQueryService.setOptionRepository(optionRepository);
     }
 
     /**

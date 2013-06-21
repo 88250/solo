@@ -17,6 +17,7 @@ package org.b3log.solo.repository.impl;
 
 
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
 
@@ -28,29 +29,13 @@ import org.b3log.solo.repository.OptionRepository;
  * @version 1.0.0.0, Apr 15, 2013
  * @since 0.6.0
  */
+@Repository
 public final class OptionRepositoryImpl extends AbstractRepository implements OptionRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final OptionRepositoryImpl SINGLETON = new OptionRepositoryImpl(Option.OPTION);
-
-    /**
-     * Gets the {@link OptionRepositoryImpl1} singleton.
-     *
-     * @return the singleton
-     */
-    public static OptionRepositoryImpl getInstance() {
-        return SINGLETON;
+    public OptionRepositoryImpl() {
+        super(Option.OPTION);
     }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private OptionRepositoryImpl(final String name) {
-        super(name);
-    }
-
 }
