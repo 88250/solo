@@ -17,6 +17,7 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -24,6 +25,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Comment;
@@ -34,7 +36,6 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +48,7 @@ import org.json.JSONObject;
  * @version 1.0.0.7, Jun 8, 2012
  * @since 0.4.0
  */
+@Service
 public final class PageMgmtService {
 
     /**
@@ -75,9 +77,10 @@ public final class PageMgmtService {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Permalink utilities.
+     * Permalink query service.
      */
-    private Permalinks permalinks = Permalinks.getInstance();
+    @Inject
+    private PermalinkQueryService permalinkQueryService;
 
     /**
      * Preference query service.
@@ -131,7 +134,7 @@ public final class PageMgmtService {
                         permalink = "/" + permalink;
                     }
 
-                    if (Permalinks.invalidPagePermalinkFormat(permalink)) {
+                    if (PermalinkQueryService.invalidPagePermalinkFormat(permalink)) {
                         if (transaction.isActive()) {
                             transaction.rollback();
                         }
@@ -139,7 +142,7 @@ public final class PageMgmtService {
                         throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
                     }
 
-                    if (!oldPermalink.equals(permalink) && permalinks.exist(permalink)) {
+                    if (!oldPermalink.equals(permalink) && permalinkQueryService.exist(permalink)) {
                         if (transaction.isActive()) {
                             transaction.rollback();
                         }
@@ -246,7 +249,7 @@ public final class PageMgmtService {
                     permalink = "/" + permalink;
                 }
 
-                if (Permalinks.invalidPagePermalinkFormat(permalink)) {
+                if (PermalinkQueryService.invalidPagePermalinkFormat(permalink)) {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
@@ -254,7 +257,7 @@ public final class PageMgmtService {
                     throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
                 }
 
-                if (permalinks.exist(permalink)) {
+                if (permalinkQueryService.exist(permalink)) {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
@@ -309,7 +312,7 @@ public final class PageMgmtService {
             final JSONObject srcPage = pageRepository.get(pageId);
             final int srcPageOrder = srcPage.getInt(Page.PAGE_ORDER);
 
-            JSONObject targetPage = null;
+            JSONObject targetPage;
 
             if ("up".equals(direction)) {
                 targetPage = pageRepository.getUpper(pageId);
@@ -343,15 +346,6 @@ public final class PageMgmtService {
 
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Gets the {@link PageMgmtService} singleton.
-     *
-     * @return the singleton
-     */
-    public static PageMgmtService getInstance() {
-        return SingletonHolder.SINGLETON;
     }
 
     /**
@@ -408,26 +402,11 @@ public final class PageMgmtService {
     }
 
     /**
-     * Private constructor.
+     * Sets the permalink query service with the specified permalink query service.
+     * 
+     * @param permalinkQueryService the specified permalink query service
      */
-    private PageMgmtService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 27, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final PageMgmtService SINGLETON = new PageMgmtService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setPermalinkQueryService(final PermalinkQueryService permalinkQueryService) {
+        this.permalinkQueryService = permalinkQueryService;
     }
 }

@@ -13,44 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.util;
+package org.b3log.solo.service;
 
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 
 
 /**
- * Permalink utilities.
+ * Permalink query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.0.8, Aug 22, 2012
- * @since 0.3.1
+ * @version 1.0.0.0, Jun 21, 2013
+ * @since 0.6.1
  */
-public final class Permalinks {
+@Service
+public final class PermalinkQueryService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Permalinks.class.getName());
-
-    /**
-     * Article repository.
-     */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    private static final Logger LOGGER = Logger.getLogger(PermalinkQueryService.class.getName());
 
     /**
      * Page repository.
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Reserved permalinks.
@@ -66,8 +69,8 @@ public final class Permalinks {
     };
 
     /**
-     * Checks whether the specified article permalink matches the system 
-     * generated format pattern ("/articles/yyyy/MM/dd/${articleId}.html").
+     * Checks whether the specified article permalink matches the system generated format 
+     * pattern ("/articles/yyyy/MM/dd/${articleId}.html").
      * 
      * @param permalink the specified permalink
      * @return {@code true} if matches, returns {@code false} otherwise
@@ -80,8 +83,7 @@ public final class Permalinks {
     }
 
     /**
-     * Checks whether the specified page permalink matches the system generated 
-     * format pattern ("/pages/${pageId}.html").
+     * Checks whether the specified page permalink matches the system generated format pattern ("/pages/${pageId}.html").
      * 
      * @param permalink the specified permalink
      * @return {@code true} if matches, returns {@code false} otherwise
@@ -94,10 +96,8 @@ public final class Permalinks {
     }
 
     /**
-     * Checks whether the specified permalink is a
-     * {@link #invalidArticlePermalinkFormat(java.lang.String) invalid article 
-     * permalink format} and {@link #invalidPagePermalinkFormat(java.lang.String) 
-     * invalid page permalink format}.
+     * Checks whether the specified permalink is a {@link #invalidArticlePermalinkFormat(java.lang.String) invalid article 
+     * permalink format} and {@link #invalidPagePermalinkFormat(java.lang.String) invalid page permalink format}.
      * 
      * @param permalink the specified permalink
      * @return {@code true} if invalid, returns {@code false} otherwise 
@@ -194,8 +194,8 @@ public final class Permalinks {
      * otherwise
      */
     private static boolean isReservedLink(final String requestURI) {
-        for (int i = 0; i < Permalinks.RESERVED_LINKS.length; i++) {
-            final String reservedLink = Permalinks.RESERVED_LINKS[i];
+        for (int i = 0; i < RESERVED_LINKS.length; i++) {
+            final String reservedLink = RESERVED_LINKS[i];
 
             if (reservedLink.startsWith(requestURI)) {
 
@@ -224,35 +224,11 @@ public final class Permalinks {
     }
 
     /**
-     * Gets the {@link Permalinks} singleton.
-     *
-     * @return the singleton
+     * Sets the article repository with the specified article repository.
+     * 
+     * @param articleRepository the specified article repository
      */
-    public static Permalinks getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private default constructor.
-     */
-    private Permalinks() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final Permalinks SINGLETON = new Permalinks();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setArticleRepository(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 }

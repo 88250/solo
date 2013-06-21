@@ -52,12 +52,18 @@ public final class ArticleGenerator {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleGenerator.class.getName());
-    
+
     /**
      * Article management service.
      */
     @Inject
     private ArticleMgmtService articleMgmtService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Generates some dummy articles with the specified context.
@@ -84,7 +90,6 @@ public final class ArticleGenerator {
         final int num = Integer.valueOf(requestURI.substring((Latkes.getContextPath() + "/dev/articles/gen/").length()));
 
         try {
-            final UserQueryService userQueryService = UserQueryService.getInstance();
             final JSONObject admin = userQueryService.getAdmin();
             final String authorEmail = admin.optString(User.USER_EMAIL);
 
@@ -105,15 +110,15 @@ public final class ArticleGenerator {
                 article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
                 article.put(Article.ARTICLE_IS_PUBLISHED, true);
                 article.put(Article.ARTICLE_PUT_TOP, false);
-          
+
                 final int deviationBase = 5;
-                final int deviationDay = -(Integer.valueOf(String.valueOf(i).substring(0, 1)) % deviationBase);           
-                
+                final int deviationDay = -(Integer.valueOf(String.valueOf(i).substring(0, 1)) % deviationBase);
+
                 final Date date = DateUtils.addMonths(new Date(), deviationDay);
 
                 article.put(Article.ARTICLE_CREATE_DATE, date);
                 article.put(Article.ARTICLE_UPDATE_DATE, date);
-                
+
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
                 article.put(Article.ARTICLE_COMMENTABLE, true);
                 article.put(Article.ARTICLE_VIEW_PWD, "");
@@ -130,5 +135,4 @@ public final class ArticleGenerator {
 
         response.sendRedirect(Latkes.getServePath());
     }
-    
 }

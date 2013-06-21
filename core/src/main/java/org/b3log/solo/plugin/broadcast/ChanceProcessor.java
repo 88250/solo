@@ -19,6 +19,7 @@ package org.b3log.solo.plugin.broadcast;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.Future;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -42,8 +43,8 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.OptionMgmtService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
 
@@ -78,9 +79,10 @@ public final class ChanceProcessor {
     private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * URL of adding article to Rhythm.
@@ -184,7 +186,7 @@ public final class ChanceProcessor {
     @RequestProcessing(value = "/console/plugins/b3log-broadcast/chance", method = HTTPRequestMethod.GET)
     public void hasChance(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -198,9 +200,7 @@ public final class ChanceProcessor {
 
         renderer.setJSONObject(ret);
 
-        final Users users = Users.getInstance();
-
-        if (!users.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, 0L);
             ret.put(Keys.STATUS_CODE, false);
 
@@ -258,7 +258,7 @@ public final class ChanceProcessor {
     @RequestProcessing(value = "/console/plugins/b3log-broadcast", method = HTTPRequestMethod.POST)
     public void submitBroadcast(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;

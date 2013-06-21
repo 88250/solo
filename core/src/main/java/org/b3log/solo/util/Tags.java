@@ -41,11 +41,6 @@ public final class Tags {
     private TagRepository tagRepository = TagRepositoryImpl.getInstance();
 
     /**
-     * Article utilities.
-     */
-    private Articles articleUtils = Articles.getInstance();
-
-    /**
      * Decrements reference count of every tag of an published article specified
      * by the given article id.
      *

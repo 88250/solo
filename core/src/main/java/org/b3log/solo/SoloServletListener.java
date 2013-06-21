@@ -236,7 +236,7 @@ public final class SoloServletListener extends AbstractServletListener {
     // XXX: to find a better way (isInited)?
     public static boolean isInited() {
         try {
-            final JSONObject admin = UserRepositoryImpl.getInstance().getAdmin();
+            final JSONObject admin = new UserRepositoryImpl().getAdmin();
 
             return null != admin;
         } catch (final RepositoryException e) {

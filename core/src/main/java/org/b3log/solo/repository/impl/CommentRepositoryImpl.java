@@ -19,11 +19,18 @@ package org.b3log.solo.repository.impl;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.Cache;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.util.CollectionUtils;
@@ -40,6 +47,7 @@ import org.json.JSONObject;
  * @version 1.0.0.8, Oct 18, 2011
  * @since 0.3.1
  */
+@Repository
 public final class CommentRepositoryImpl extends AbstractRepository implements CommentRepository {
 
     /**
@@ -55,7 +63,8 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Recent comments query results cache key.

@@ -44,7 +44,6 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -111,12 +110,14 @@ public final class MetaWeblogAPI {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Key of method call.

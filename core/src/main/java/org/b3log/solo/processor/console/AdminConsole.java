@@ -48,7 +48,7 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.Users;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 
@@ -78,9 +78,10 @@ public final class AdminConsole {
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Filler.
@@ -113,7 +114,7 @@ public final class AdminConsole {
 
         dataModel.putAll(langs);
 
-        final JSONObject currentUser = userUtils.getCurrentUser(request);
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
         final String userName = currentUser.optString(User.USER_NAME);
         final String roleName = currentUser.optString(User.USER_ROLE);
 

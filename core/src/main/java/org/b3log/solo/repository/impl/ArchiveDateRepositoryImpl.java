@@ -19,7 +19,6 @@ package org.b3log.solo.repository.impl;
 import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
-import javax.inject.Singleton;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -46,7 +45,6 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @Repository
-@Singleton
 public final class ArchiveDateRepositoryImpl extends AbstractRepository implements ArchiveDateRepository {
 
     /**

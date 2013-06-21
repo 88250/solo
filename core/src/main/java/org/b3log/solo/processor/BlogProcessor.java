@@ -16,6 +16,7 @@
 package org.b3log.solo.processor;
 
 
+import javax.inject.Inject;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -25,9 +26,9 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Statistic;
+import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.util.Articles;
 import org.json.JSONObject;
 
 
@@ -42,9 +43,10 @@ import org.json.JSONObject;
 public final class BlogProcessor {
 
     /**
-     * Article utilities.
+     * Article query service.
      */
-    private Articles articleUtils = Articles.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * Tag query service.
@@ -84,7 +86,7 @@ public final class BlogProcessor {
 
         renderer.setJSONObject(jsonObject);
 
-        jsonObject.put("recentArticleTime", articleUtils.getRecentArticleTime());
+        jsonObject.put("recentArticleTime", articleQueryService.getRecentArticleTime());
         final JSONObject statistic = statisticQueryService.getStatistic();
 
         jsonObject.put("articleCount", statistic.getLong(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT));

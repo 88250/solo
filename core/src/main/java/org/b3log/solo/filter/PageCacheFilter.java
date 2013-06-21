@@ -30,6 +30,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -43,7 +45,7 @@ import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.processor.util.TopBars;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.util.Articles;
+import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -69,19 +71,9 @@ public final class PageCacheFilter implements Filter {
     private Statistics statistics = Statistics.getInstance();
 
     /**
-     * Article repository.
-     */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
-
-    /**
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
-
-    /**
-     * Article utilities.
-     */
-    private Articles articles = Articles.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {}
@@ -152,6 +144,9 @@ public final class PageCacheFilter implements Filter {
 
         final String cachedType = cachedPageContentObject.optString(PageCaches.CACHED_TYPE);
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
+
         try {
             // If cached an article that has view password, dispatches the password form
             if (langPropsService.get(PageTypes.ARTICLE.getLangeLabel()).equals(cachedType)
@@ -163,7 +158,9 @@ public final class PageCacheFilter implements Filter {
                 article.put(Keys.OBJECT_ID, articleId);
                 article.put(Article.ARTICLE_VIEW_PWD, cachedPageContentObject.optString(PageCaches.CACHED_PWD));
 
-                if (articles.needViewPwd(httpServletRequest, article)) {
+                if (articleQueryService.needViewPwd(httpServletRequest, article)) {
+                    final ArticleRepository articleRepository = beanManager.getReference(ArticleRepositoryImpl.class);
+
                     article = articleRepository.get(articleId); // Loads the article entity
 
                     final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
@@ -189,7 +186,8 @@ public final class PageCacheFilter implements Filter {
             response.setCharacterEncoding("UTF-8");
             final PrintWriter writer = response.getWriter();
             String cachedPageContent = cachedPageContentObject.getString(PageCaches.CACHED_CONTENT);
-            final String topBarHTML = TopBars.getTopBarHTML((HttpServletRequest) request, (HttpServletResponse) response);
+            final TopBars topbars = beanManager.getReference(TopBars.class);
+            final String topBarHTML = topbars.getTopBarHTML((HttpServletRequest) request, (HttpServletResponse) response);
 
             cachedPageContent = cachedPageContent.replace(Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
 

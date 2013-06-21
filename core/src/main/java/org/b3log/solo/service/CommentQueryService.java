@@ -19,6 +19,7 @@ package org.b3log.solo.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
@@ -27,6 +28,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -37,7 +39,6 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.json.JSONArray;
@@ -51,6 +52,7 @@ import org.json.JSONObject;
  * @version 1.0.0.4, Dec 20, 2011
  * @since 0.3.5
  */
+@Service
 public final class CommentQueryService {
 
     /**
@@ -66,21 +68,13 @@ public final class CommentQueryService {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Page repository.
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
-
-    /**
-     * Gets the {@link CommentQueryService} singleton.
-     *
-     * @return the singleton
-     */
-    public static CommentQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
 
     /**
      * Gets comments with the specified request json object, request and response.
@@ -212,26 +206,11 @@ public final class CommentQueryService {
     }
 
     /**
-     * Private constructor.
+     * Sets the article repository with the specified article repository.
+     * 
+     * @param articleRepository the specified article repository
      */
-    private CommentQueryService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 18, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final CommentQueryService SINGLETON = new CommentQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setArticleRepository(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 }

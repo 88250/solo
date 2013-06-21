@@ -16,6 +16,7 @@
 package org.b3log.solo.processor.console;
 
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -32,8 +33,8 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Users;
 import org.b3log.latke.util.Requests;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 
@@ -53,9 +54,10 @@ public final class LinkConsole {
     private static final Logger LOGGER = Logger.getLogger(LinkConsole.class.getName());
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Link query service.
@@ -93,7 +95,7 @@ public final class LinkConsole {
     @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.DELETE)
     public void removeLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -152,7 +154,7 @@ public final class LinkConsole {
     @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.PUT)
     public void updateLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -211,7 +213,7 @@ public final class LinkConsole {
         final HttpServletResponse response,
         final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -274,7 +276,7 @@ public final class LinkConsole {
     @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.POST)
     public void addLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -343,7 +345,7 @@ public final class LinkConsole {
     public void getLinks(final HttpServletRequest request,
         final HttpServletResponse response,
         final HTTPRequestContext context) throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -399,7 +401,7 @@ public final class LinkConsole {
     @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.GET)
     public void getLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

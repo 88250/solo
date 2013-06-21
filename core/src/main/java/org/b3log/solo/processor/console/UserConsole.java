@@ -16,6 +16,7 @@
 package org.b3log.solo.processor.console;
 
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -35,7 +36,6 @@ import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
 
@@ -58,17 +58,14 @@ public final class UserConsole {
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * User management service.
      */
-    private UserMgmtService userMgmtService = UserMgmtService.getInstance();
-
-    /**
-     * User utilities.
-     */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Language service.
@@ -106,7 +103,7 @@ public final class UserConsole {
     @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.PUT)
     public void updateUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -177,7 +174,7 @@ public final class UserConsole {
         try {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
-            if (userUtils.isAdminLoggedIn(request)) { // if the administrator register a new user, treats the new user as a normal user
+            if (userQueryService.isAdminLoggedIn(request)) { // if the administrator register a new user, treats the new user as a normal user
                 // (defaultRole) who could post article
                 requestJSONObject.put(User.USER_ROLE, Role.DEFAULT_ROLE);
             } else { // if a normal user or a visitor register a new user, treates the new user as a visitor (visitorRole) who couldn't 
@@ -223,7 +220,7 @@ public final class UserConsole {
     @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.DELETE)
     public void removeUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -291,7 +288,7 @@ public final class UserConsole {
 
         context.setRenderer(renderer);
 
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -343,7 +340,7 @@ public final class UserConsole {
     @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.GET)
     public void getUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -398,7 +395,7 @@ public final class UserConsole {
     @RequestProcessing(value = "/console/changeRole/*", method = HTTPRequestMethod.GET)
     public void changeUserRole(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

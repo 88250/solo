@@ -19,13 +19,13 @@ package org.b3log.solo.plugin.cache;
 import org.b3log.solo.model.Common;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.model.Pagination;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.util.Users;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -39,6 +39,7 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 
@@ -59,9 +60,10 @@ public final class AdminCacheService {
     private static final Logger LOGGER = Logger.getLogger(AdminCacheService.class.getName());
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Preference query service.
@@ -95,7 +97,7 @@ public final class AdminCacheService {
     @RequestProcessing(value = "/console/plugins/admin-cache/status/", method = HTTPRequestMethod.GET)
     public void getPageCache(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -167,7 +169,7 @@ public final class AdminCacheService {
         method = HTTPRequestMethod.GET)
     public void getPages(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -258,7 +260,7 @@ public final class AdminCacheService {
     @RequestProcessing(value = "/console/plugins/admin-cache/enable/*", method = HTTPRequestMethod.PUT)
     public void setPageCache(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;

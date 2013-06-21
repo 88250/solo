@@ -48,14 +48,10 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Permalinks;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.TimeZones;
@@ -80,14 +76,22 @@ public final class ArticleMgmtService {
     private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class.getName());
 
     /**
+     * Article query service.
+     */
+    @Inject
+    private ArticleQueryService articleQueryService;
+
+    /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Tag repository.
@@ -127,9 +131,10 @@ public final class ArticleMgmtService {
     private Statistics statistics = Statistics.getInstance();
 
     /**
-     * Permalink utilities.
+     * Permalink query service.
      */
-    private Permalinks permalinks = Permalinks.getInstance();
+    @Inject
+    private PermalinkQueryService permalinkQueryService;
 
     /**
      * Event manager.
@@ -142,14 +147,26 @@ public final class ArticleMgmtService {
     private LangPropsService langPropsService = LangPropsService.getInstance();
 
     /**
-     * Article utilities.
-     */
-    private static Articles articleUtils = Articles.getInstance();
-
-    /**
      * Tag utilities.
      */
     private static Tags tagUtils = Tags.getInstance();
+
+    /**
+     * Article comment count +1 for an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void incArticleCommentCount(final String articleId) throws JSONException, RepositoryException {
+        final JSONObject article = articleRepository.get(articleId);
+        final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
+        final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
+
+        newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt + 1);
+
+        articleRepository.update(articleId, newArticle);
+    }
 
     /**
      * Cancels publish an article by the specified article id.
@@ -277,7 +294,7 @@ public final class ArticleMgmtService {
             }
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
-                if (articleUtils.hadBeenPublished(oldArticle)) {
+                if (articleQueryService.hadBeenPublished(oldArticle)) {
                     // Edit update date only for published article
                     article.put(ARTICLE_UPDATE_DATE, date);
                 } else { // This article is a draft and this is the first time to publish it
@@ -286,7 +303,7 @@ public final class ArticleMgmtService {
                     article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
                 }
             } else { // Save as draft
-                if (articleUtils.hadBeenPublished(oldArticle)) {
+                if (articleQueryService.hadBeenPublished(oldArticle)) {
                     // Save update date only for published article
                     article.put(ARTICLE_UPDATE_DATE, date);
                 } else {
@@ -1118,11 +1135,11 @@ public final class ArticleMgmtService {
             ret = "/" + ret;
         }
 
-        if (Permalinks.invalidArticlePermalinkFormat(ret)) {
+        if (PermalinkQueryService.invalidArticlePermalinkFormat(ret)) {
             throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
         }
 
-        if (permalinks.exist(ret)) {
+        if (permalinkQueryService.exist(ret)) {
             throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
         }
 
@@ -1156,11 +1173,11 @@ public final class ArticleMgmtService {
                 ret = "/" + ret;
             }
 
-            if (Permalinks.invalidArticlePermalinkFormat(ret)) {
+            if (PermalinkQueryService.invalidArticlePermalinkFormat(ret)) {
                 throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
             }
 
-            if (!oldPermalink.equals(ret) && permalinks.exist(ret)) {
+            if (!oldPermalink.equals(ret) && permalinkQueryService.exist(ret)) {
                 throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
             }
         }
@@ -1223,5 +1240,41 @@ public final class ArticleMgmtService {
      */
     public void setArchiveDateRepository(final ArchiveDateRepository archiveDateRepository) {
         this.archiveDateRepository = archiveDateRepository;
+    }
+
+    /**
+     * Sets the article repository with the specified article repository.
+     * 
+     * @param articleRepository the specified article repository
+     */
+    public void setArticleRepository(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
+
+    /**
+     * Sets the article query service with the specified article query service.
+     * 
+     * @param articleQueryService the specified article query service
+     */
+    public void setArticleQueryService(final ArticleQueryService articleQueryService) {
+        this.articleQueryService = articleQueryService;
+    }
+
+    /**
+     * Sets the permalink query service with the specified permalink query service.
+     * 
+     * @param permalinkQueryService the specified permalink query service
+     */
+    public void setPermalinkQueryService(final PermalinkQueryService permalinkQueryService) {
+        this.permalinkQueryService = permalinkQueryService;
+    }
+
+    /**
+     * Sets the user repository with the specified user repository.
+     * 
+     * @param userRepository the specified user repository
+     */
+    public void setUserRepository(final UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

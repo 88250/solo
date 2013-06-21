@@ -26,7 +26,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -54,18 +53,15 @@ import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.util.Articles;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Tags;
-import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,7 +85,8 @@ public final class Filler {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Comment repository.
@@ -106,11 +103,6 @@ public final class Filler {
      * Tag repository.
      */
     private TagRepository tagRepository = TagRepositoryImpl.getInstance();
-
-    /**
-     * Article utilities.
-     */
-    private Articles articleUtils = Articles.getInstance();
 
     /**
      * Tag utilities.
@@ -135,7 +127,8 @@ public final class Filler {
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Article query service.
@@ -152,6 +145,12 @@ public final class Filler {
      * Tag query service.
      */
     private TagQueryService tagQueryService = TagQueryService.getInstance();
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * default page.
@@ -245,13 +244,13 @@ public final class Filler {
 
             final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
 
-            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
                 setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
-                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                     setArticlesExProperties(articles, author, preference);
                 }
@@ -886,7 +885,7 @@ public final class Filler {
             article.put(Common.AUTHOR_ID, authorId);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+                article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
             } else {
                 article.put(Common.HAS_UPDATED, false);
             }
@@ -921,7 +920,7 @@ public final class Filler {
      */
     private void setArticleExProperties(final JSONObject article, final JSONObject preference) throws ServiceException {
         try {
-            final JSONObject author = articleUtils.getAuthor(article);
+            final JSONObject author = articleQueryService.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
 
             article.put(Common.AUTHOR_NAME, authorName);
@@ -930,7 +929,7 @@ public final class Filler {
             article.put(Common.AUTHOR_ID, authorId);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+                article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
             } else {
                 article.put(Common.HAS_UPDATED, false);
             }

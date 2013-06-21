@@ -21,6 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -51,11 +52,10 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
+import org.b3log.solo.service.ArticleMgmtService;
+import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.Articles;
-import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
@@ -79,14 +79,15 @@ public final class CommentReceiver {
     private static final Logger LOGGER = Logger.getLogger(CommentReceiver.class.getName());
 
     /**
+     * Comment management service.
+     */
+    @Inject
+    private CommentMgmtService commentMgmtService;
+
+    /**
      * Comment repository.
      */
     private static CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
-
-    /**
-     * Article utilities.
-     */
-    private static Articles articleUtils = Articles.getInstance();
 
     /**
      * Preference query service.
@@ -94,9 +95,16 @@ public final class CommentReceiver {
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     /**
+     * Article management service.
+     */
+    @Inject
+    private ArticleMgmtService articleMgmtService;
+
+    /**
      * Article repository.
      */
-    private static ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Statistic utilities.
@@ -252,13 +260,13 @@ public final class CommentReceiver {
 
             commentRepository.add(comment);
             // Step 2: Update article comment count
-            articleUtils.incArticleCommentCount(articleId);
+            articleMgmtService.incArticleCommentCount(articleId);
             // Step 3: Update blog statistic comment count
             statistics.incBlogCommentCount();
             statistics.incPublishedBlogCommentCount();
             // Step 4: Send an email to admin
             try {
-                Comments.sendNotificationMail(article, comment, originalComment, preference);
+                commentMgmtService.sendNotificationMail(article, comment, originalComment, preference);
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Send mail failed", e);
             }

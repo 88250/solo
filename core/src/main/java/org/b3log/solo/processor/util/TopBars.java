@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -31,15 +32,16 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.processor.LoginProcessor;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
+import org.b3log.solo.service.UserMgmtService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Statistics;
-import org.b3log.solo.util.Users;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -52,6 +54,7 @@ import org.json.JSONObject;
  * @version 1.0.1.5, Apr 10, 2013
  * @since 0.3.5
  */
+@Service
 public final class TopBars {
 
     /**
@@ -60,19 +63,26 @@ public final class TopBars {
     private static final Logger LOGGER = Logger.getLogger(TopBars.class.getName());
 
     /**
-     * User utilities.
-     */
-    private static Users userUtils = Users.getInstance();
-
-    /**
      * User service.
      */
     private static UserService userService = UserServiceFactory.getUserService();
 
     /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
      * Language service.
      */
     private static LangPropsService langPropsService = LangPropsService.getInstance();
+
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Generates top bar HTML.
@@ -82,7 +92,7 @@ public final class TopBars {
      * @return top bar HTML
      * @throws ServiceException service exception 
      */
-    public static String getTopBarHTML(final HttpServletRequest request, final HttpServletResponse response)
+    public String getTopBarHTML(final HttpServletRequest request, final HttpServletResponse response)
         throws ServiceException {
         Stopwatchs.start("Gens Top Bar HTML");
 
@@ -92,8 +102,8 @@ public final class TopBars {
 
             final Map<String, Object> topBarModel = new HashMap<String, Object>();
 
-            LoginProcessor.tryLogInWithCookie(request, response);
-            final JSONObject currentUser = userUtils.getCurrentUser(request);
+            userMgmtService.tryLogInWithCookie(request, response);
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
 
             Keys.fillServer(topBarModel);
             topBarModel.put(Common.IS_LOGGED_IN, false);

@@ -20,6 +20,8 @@ import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
@@ -44,15 +46,13 @@ public final class RemoveCacheListener extends AbstractEventListener<Void> {
      */
     private static final Logger LOGGER = Logger.getLogger(RemoveCacheListener.class.getName());
 
-    /**
-     * Statistic management service.
-     */
-    private StatisticMgmtService statisticMgmtService = StatisticMgmtService.getInstance();
-
     @Override
     public void action(final Event<Void> event) throws EventException {
         LOGGER.log(Level.DEBUG, "Processing an event[type={0} in listener[className={2}]",
             new Object[] {event.getType(), RemoveCacheListener.class.getName()});
+
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
 
         try {
             statisticMgmtService.flushStatistic();

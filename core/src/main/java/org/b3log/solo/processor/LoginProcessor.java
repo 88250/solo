@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
 import javax.inject.Inject;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -79,7 +78,8 @@ public final class LoginProcessor {
     /**
      * User query service.
      */
-    private static UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * User service.
@@ -94,7 +94,8 @@ public final class LoginProcessor {
     /**
      * User management service.
      */
-    private UserMgmtService userMgmtService = UserMgmtService.getInstance();
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Language service.
@@ -130,7 +131,7 @@ public final class LoginProcessor {
 
         final HttpServletResponse response = context.getResponse();
 
-        LoginProcessor.tryLogInWithCookie(request, response);
+        userMgmtService.tryLogInWithCookie(request, response);
 
         if (null != userService.getCurrentUser(request)) { // User has already logged in
             response.sendRedirect(destinationURL);
@@ -300,61 +301,6 @@ public final class LoginProcessor {
             sendRandomPwd(user, userEmail, jsonObject);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Tries to login with cookie.
-     *
-     * @param request the specified request
-     * @param response the specified response
-     */
-    public static void tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
-        final Cookie[] cookies = request.getCookies();
-
-        if (null == cookies || 0 == cookies.length) {
-            return;
-        }
-
-        try {
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
-
-                if (!"b3log-latke".equals(cookie.getName())) {
-                    continue;
-                }
-
-                final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
-
-                final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
-
-                if (Strings.isEmptyOrNull(userEmail)) {
-                    break;
-                }
-
-                final JSONObject user = userQueryService.getUserByEmail(userEmail.toLowerCase().trim());
-
-                if (null == user) {
-                    break;
-                }
-
-                final String userPassword = user.optString(User.USER_PASSWORD);
-                final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
-
-                if (userPassword.equals(hashPassword)) {
-                    Sessions.login(request, response, user);
-                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userEmail);
-                }
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
-
-            final Cookie cookie = new Cookie("b3log-latke", null);
-
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
-
-            response.addCookie(cookie);
         }
     }
 

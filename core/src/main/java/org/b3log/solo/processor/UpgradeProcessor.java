@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
@@ -74,12 +75,14 @@ public final class UpgradeProcessor {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Preference repository.
@@ -173,7 +176,7 @@ public final class UpgradeProcessor {
 
         try {
             transaction = userRepository.beginTransaction();
-            
+
             final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
             if (RuntimeEnv.LOCAL == runtimeEnv || RuntimeEnv.BAE == runtimeEnv) {
@@ -200,7 +203,7 @@ public final class UpgradeProcessor {
                     LOGGER.log(Level.ERROR, "createTable[" + tableName + "] error", e);
                 }
             }
-            
+
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 

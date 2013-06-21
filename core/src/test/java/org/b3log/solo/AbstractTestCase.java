@@ -221,6 +221,11 @@ public abstract class AbstractTestCase {
     private OptionQueryService optionQueryService;
 
     /**
+     * Permalink query service.
+     */
+    private PermalinkQueryService permalinkQueryService;
+
+    /**
      * Before class.
      * 
      * <ol>
@@ -237,9 +242,9 @@ public abstract class AbstractTestCase {
         Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
 
         // Repositories
-        userRepository = UserRepositoryImpl.getInstance();
+        userRepository = new UserRepositoryImpl();
         linkRepository = LinkRepositoryImpl.getInstance();
-        articleRepository = ArticleRepositoryImpl.getInstance();
+        articleRepository = new ArticleRepositoryImpl();
         tagRepository = TagRepositoryImpl.getInstance();
         tagArticleRepository = TagArticleRepositoryImpl.getInstance();
         pageRepository = PageRepositoryImpl.getInstance();
@@ -255,43 +260,62 @@ public abstract class AbstractTestCase {
         initService = new InitService();
         initService.setArchiveDateArticleRepository(archiveDateArticleRepository);
         initService.setArchiveDateRepository(archiveDateRepository);
-        
-        userMgmtService = UserMgmtService.getInstance();
-        
-        userQueryService = UserQueryService.getInstance();
-        
+        initService.setUserRepository(userRepository);
+        initService.setArticleRepository(articleRepository);
+
+        userMgmtService = new UserMgmtService();
+        userMgmtService.setUserRepository(userRepository);
+
+        userQueryService = new UserQueryService();
+        userQueryService.setUserMgmtService(userMgmtService);
+        userQueryService.setUserRepository(userRepository);
+
+        permalinkQueryService = new PermalinkQueryService();
+        permalinkQueryService.setArticleRepository(articleRepository);
+
+        articleQueryService = new ArticleQueryService();
+        articleQueryService.setArchiveDateArticleRepository(archiveDateArticleRepository);
+        articleQueryService.setArticleRepository(articleRepository);
+        articleQueryService.setUserRepository(userRepository);
+
         articleMgmtService = new ArticleMgmtService();
         articleMgmtService.setArchiveDateArticleRepository(archiveDateArticleRepository);
         articleMgmtService.setArchiveDateRepository(archiveDateRepository);
-        
-        articleQueryService = new ArticleQueryService();
-        articleQueryService.setArchiveDateArticleRepository(archiveDateArticleRepository);
-        
-        pageMgmtService = PageMgmtService.getInstance();
-        
+        articleMgmtService.setArticleRepository(articleRepository);
+        articleMgmtService.setPermalinkQueryService(permalinkQueryService);
+        articleMgmtService.setArticleQueryService(articleQueryService);
+        articleMgmtService.setUserRepository(userRepository);
+        articleMgmtService.setArticleQueryService(articleQueryService);
+
+        pageMgmtService = new PageMgmtService();
+        pageMgmtService.setPermalinkQueryService(permalinkQueryService);
+
         pageQueryService = PageQueryService.getInstance();
-        
+
         linkMgmtService = LinkMgmtService.getInstance();
-        
+
         linkQueryService = LinkQueryService.getInstance();
-        
+
         preferenceMgmtService = PreferenceMgmtService.getInstance();
-        
+
         preferenceQueryService = PreferenceQueryService.getInstance();
-        
+
         tagQueryService = TagQueryService.getInstance();
-        
+
         tagMgmtService = TagMgmtService.getInstance();
-        
-        commentQueryService = CommentQueryService.getInstance();
-        
-        commentMgmtService = CommentMgmtService.getInstance();
-        
-        archiveDateQueryService = new  ArchiveDateQueryService();
+
+        commentQueryService = new CommentQueryService();
+        commentQueryService.setArticleRepository(articleRepository);
+
+        commentMgmtService = new CommentMgmtService();
+        commentMgmtService.setArticleRepository(articleRepository);
+        commentMgmtService.setArticleMgmtService(articleMgmtService);
+
+        archiveDateQueryService = new ArchiveDateQueryService();
         archiveDateQueryService.setArchiveDateRepository(archiveDateRepository);
-        
+
         optionMgmtService = OptionMgmtService.getInstance();
-        
+
         optionQueryService = OptionQueryService.getInstance();
     }
 
@@ -306,7 +330,7 @@ public abstract class AbstractTestCase {
     @AfterClass
     public void afterClass() {
         // XXX: NPE, localServiceTestHelper.tearDown();
-        
+
         Latkes.shutdown();
     }
 

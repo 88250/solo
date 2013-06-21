@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -89,8 +91,10 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
         String output = html;
 
         if (null != pageContent) {
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final TopBars topbars = beanManager.getReference(TopBars.class);
             // Adds the top bar HTML content for output
-            final String topBarHTML = TopBars.getTopBarHTML(request, response);
+            final String topBarHTML = topbars.getTopBarHTML(request, response);
 
             output = html.replace(Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
         }

@@ -75,7 +75,8 @@ public final class SitemapProcessor {
     /**
      * Article repository.
      */
-    private ArticleRepositoryImpl articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepositoryImpl articleRepository;
 
     /**
      * Page repository.

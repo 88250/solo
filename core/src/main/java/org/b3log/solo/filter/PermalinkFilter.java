@@ -28,6 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -40,8 +42,8 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
-import org.b3log.solo.util.Articles;
-import org.b3log.solo.util.Permalinks;
+import org.b3log.solo.service.ArticleQueryService;
+import org.b3log.solo.service.PermalinkQueryService;
 import org.json.JSONObject;
 
 
@@ -63,19 +65,9 @@ public final class PermalinkFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(PermalinkFilter.class.getName());
 
     /**
-     * Article repository.
-     */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
-
-    /**
      * Page repository.
      */
     private PageRepository pageRepository = PageRepositoryImpl.getInstance();
-
-    /**
-     * Article utilities.
-     */
-    private Articles articles = Articles.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {}
@@ -102,7 +94,7 @@ public final class PermalinkFilter implements Filter {
         final String contextPath = Latkes.getContextPath();
         final String permalink = StringUtils.substringAfter(requestURI, contextPath);
 
-        if (Permalinks.invalidPermalinkFormat(permalink)) {
+        if (PermalinkQueryService.invalidPermalinkFormat(permalink)) {
             LOGGER.log(Level.DEBUG, "Skip filter request[URI={0}]", permalink);
             chain.doFilter(request, response);
 
@@ -112,7 +104,12 @@ public final class PermalinkFilter implements Filter {
         JSONObject article;
         JSONObject page = null;
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+
         try {
+
+            final ArticleRepository articleRepository = beanManager.getReference(ArticleRepositoryImpl.class);
+
             article = articleRepository.getByPermalink(permalink);
             if (null == article) {
                 page = pageRepository.getByPermalink(permalink);
@@ -132,7 +129,9 @@ public final class PermalinkFilter implements Filter {
         }
 
         // If requests an article and the article need view passowrd, sends redirect to the password form
-        if (null != article && articles.needViewPwd(httpServletRequest, article)) {
+        final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
+
+        if (null != article && articleQueryService.needViewPwd(httpServletRequest, article)) {
             try {
                 httpServletResponse.sendRedirect(
                     Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));

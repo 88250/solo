@@ -82,7 +82,8 @@ public final class PageProcessor {
     /**
      * Comment query service.
      */
-    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * Page query service.

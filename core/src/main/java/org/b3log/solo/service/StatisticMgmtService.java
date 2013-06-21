@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.inject.Inject;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.logging.Level;
@@ -29,6 +30,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.PageTypes;
@@ -36,7 +38,6 @@ import org.json.JSONObject;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.util.Statistics;
 
@@ -48,6 +49,7 @@ import org.b3log.solo.util.Statistics;
  * @version 1.0.0.0, Jul 18, 2012
  * @since 0.5.0
  */
+@Service
 public final class StatisticMgmtService {
 
     /**
@@ -73,7 +75,8 @@ public final class StatisticMgmtService {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Flushes the statistic to repository.
@@ -191,36 +194,11 @@ public final class StatisticMgmtService {
     }
 
     /**
-     * Gets the {@link StatisticMgmtService} singleton.
-     *
-     * @return the singleton
+     * Sets the article repository with the specified article repository.
+     * 
+     * @param articleRepository the specified article repository
      */
-    public static StatisticMgmtService getInstance() {
-        return SingletonHolder.SINGLETON;
-
-    }
-
-    /**
-     * Private constructor.
-     */
-    private StatisticMgmtService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 24, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final StatisticMgmtService SINGLETON = new StatisticMgmtService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setArticleRepository(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 }

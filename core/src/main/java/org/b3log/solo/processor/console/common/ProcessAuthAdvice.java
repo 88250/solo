@@ -20,12 +20,14 @@ import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.servlet.advice.RequestReturnAdviceException;
-import org.b3log.solo.util.Users;
+import org.b3log.solo.service.UserQueryService;
 
 
 /**
@@ -36,15 +38,12 @@ import org.b3log.solo.util.Users;
  */
 public class ProcessAuthAdvice extends BeforeRequestProcessAdvice {
 
-    /**
-     * User utilities.
-     */
-    private Users userUtils = Users.getInstance();
-
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
-
-        if (!userUtils.isLoggedIn(context.getRequest(), context.getResponse())) {
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+        
+        if (!userQueryService.isLoggedIn(context.getRequest(), context.getResponse())) {
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_FORBIDDEN);
             } catch (final IOException e) {

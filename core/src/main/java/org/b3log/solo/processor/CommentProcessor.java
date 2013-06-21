@@ -17,6 +17,7 @@ package org.b3log.solo.processor;
 
 
 import java.io.IOException;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,8 +36,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.service.CommentMgmtService;
-import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Users;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 
@@ -64,7 +64,14 @@ public final class CommentProcessor {
     /**
      * Comment management service.
      */
-    private CommentMgmtService commentMgmtService = CommentMgmtService.getInstance();
+    @Inject
+    private CommentMgmtService commentMgmtService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Adds a comment to a page.
@@ -105,7 +112,7 @@ public final class CommentProcessor {
 
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
-        final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);
+        final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
 
         final JSONRenderer renderer = new JSONRenderer();
 
@@ -130,7 +137,7 @@ public final class CommentProcessor {
 
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
-        if (!Users.getInstance().isLoggedIn(httpServletRequest, httpServletResponse)) {
+        if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
 
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
@@ -197,7 +204,7 @@ public final class CommentProcessor {
 
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
-        final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);
+        final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
 
         final JSONRenderer renderer = new JSONRenderer();
 
@@ -222,7 +229,7 @@ public final class CommentProcessor {
 
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
         
-        if (!Users.getInstance().isLoggedIn(httpServletRequest, httpServletResponse)) {
+        if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
             
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 

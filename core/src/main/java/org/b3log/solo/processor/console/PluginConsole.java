@@ -37,7 +37,6 @@ import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
 
@@ -57,11 +56,6 @@ public final class PluginConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PluginConsole.class.getName());
-
-    /**
-     * User utilities.
-     */
-    private Users userUtils = Users.getInstance();
 
     /**
      * Plugin query service.
@@ -243,5 +237,4 @@ public final class PluginConsole {
         renderer.setJSONObject(ret);
 
     }
-
 }

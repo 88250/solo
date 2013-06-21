@@ -85,7 +85,8 @@ public final class InitService {
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Tag-Article repository.
@@ -112,7 +113,8 @@ public final class InitService {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Comment repository.
@@ -603,5 +605,23 @@ public final class InitService {
      */
     public void setArchiveDateRepository(final ArchiveDateRepository archiveDateRepository) {
         this.archiveDateRepository = archiveDateRepository;
+    }
+
+    /**
+     * Sets the article repository with the specified article repository.
+     * 
+     * @param articleRepository the specified article repository
+     */
+    public void setArticleRepository(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
+
+    /**
+     * Sets the user repository with the specified user repository.
+     * 
+     * @param userRepository the specified user repository
+     */
+    public void setUserRepository(final UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 }

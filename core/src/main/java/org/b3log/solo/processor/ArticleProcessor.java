@@ -56,9 +56,7 @@ import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
-import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Users;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,7 +92,8 @@ public final class ArticleProcessor {
     /**
      * Comment query service.
      */
-    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * Filler.
@@ -106,11 +105,6 @@ public final class ArticleProcessor {
      * Language service.
      */
     private LangPropsService langPropsService = LangPropsService.getInstance();
-
-    /**
-     * Article utilities.
-     */
-    private Articles articleUtils = Articles.getInstance();
 
     /**
      * Preference query service.
@@ -126,7 +120,8 @@ public final class ArticleProcessor {
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Article management service.
@@ -399,13 +394,13 @@ public final class ArticleProcessor {
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
             final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
 
-            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
-                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                     filler.setArticlesExProperties(articles, author, preference);
                 }
@@ -467,13 +462,13 @@ public final class ArticleProcessor {
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
 
-            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
-                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                     filler.setArticlesExProperties(articles, author, preference);
                 }
@@ -538,13 +533,13 @@ public final class ArticleProcessor {
 
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
 
-            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
-                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                     filler.setArticlesExProperties(articles, author, preference);
                 }
@@ -810,13 +805,13 @@ public final class ArticleProcessor {
                 }
             }
 
-            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
-                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                     filler.setArticlesExProperties(articles, author, preference);
                 }
@@ -932,12 +927,12 @@ public final class ArticleProcessor {
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+                article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
             } else {
                 article.put(Common.HAS_UPDATED, false);
             }
 
-            final JSONObject author = articleUtils.getAuthor(article);
+            final JSONObject author = articleQueryService.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
 
             article.put(Common.AUTHOR_NAME, authorName);
@@ -1289,7 +1284,7 @@ public final class ArticleProcessor {
 
         Stopwatchs.start("Get Article Sign");
         LOGGER.debug("Getting article sign....");
-        article.put(Common.ARTICLE_SIGN, articleUtils.getSign(article.getString(Article.ARTICLE_SIGN_ID), preference));
+        article.put(Common.ARTICLE_SIGN, articleQueryService.getSign(article.getString(Article.ARTICLE_SIGN_ID), preference));
         LOGGER.debug("Got article sign");
         Stopwatchs.end();
 

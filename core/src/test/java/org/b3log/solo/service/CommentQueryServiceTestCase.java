@@ -55,7 +55,7 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
 
         initService.init(requestJSONObject);
 
-        final UserQueryService userQueryService = UserQueryService.getInstance();
+        final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByEmail("test@gmail.com"));
     }
 
@@ -68,10 +68,8 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
     public void getComments() throws Exception {
         final CommentQueryService commentQueryService = getCommentQueryService();
 
-        final JSONObject paginationRequest =
-                Requests.buildPaginationRequest("1/10/20");
-        final JSONObject result =
-                commentQueryService.getComments(paginationRequest);
+        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
+        final JSONObject result = commentQueryService.getComments(paginationRequest);
 
         Assert.assertNotNull(result);
         Assert.assertEquals(result.getJSONArray(Comment.COMMENTS).length(), 1);
@@ -85,13 +83,11 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
     @Test(dependsOnMethods = "init")
     public void getCommentsOnId() throws Exception {
         final ArticleQueryService articleQueryService = getArticleQueryService();
-        final JSONObject result =
-                articleQueryService.getArticles(Requests.buildPaginationRequest(
-                "1/10/20"));
+        final JSONObject result = articleQueryService.getArticles(Requests.buildPaginationRequest("1/10/20"));
         Assert.assertNotNull(result);
         Assert.assertEquals(result.getJSONArray(Article.ARTICLES).length(), 1);
 
-        final JSONObject article = 
+        final JSONObject article =
                 result.getJSONArray(Article.ARTICLES).getJSONObject(0);
         final String articleId = article.getString(Keys.OBJECT_ID);
 

@@ -79,7 +79,7 @@ public final class RepairProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(RepairProcessor.class.getName());
-    
+
     /**
      * Bean manager.
      */
@@ -109,7 +109,8 @@ public final class RepairProcessor {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Statistic query service.
@@ -119,7 +120,8 @@ public final class RepairProcessor {
     /**
      * Statistic management service.
      */
-    private StatisticMgmtService statisticMgmtService = StatisticMgmtService.getInstance();
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Removes unused properties of each article.
@@ -371,9 +373,9 @@ public final class RepairProcessor {
         boolean succeed = false;
 
         try {
-            remove((Repository) beanManager.getReference(ArchiveDateArticleRepositoryImpl.class));
-            remove((Repository) beanManager.getReference(ArchiveDateRepositoryImpl.class));
-            remove(ArticleRepositoryImpl.getInstance());
+            remove(beanManager.getReference(ArchiveDateArticleRepositoryImpl.class));
+            remove(beanManager.getReference(ArchiveDateRepositoryImpl.class));
+            remove(beanManager.getReference(ArticleRepositoryImpl.class));
             remove(CommentRepositoryImpl.getInstance());
             remove(LinkRepositoryImpl.getInstance());
             remove(PageRepositoryImpl.getInstance());
@@ -381,7 +383,7 @@ public final class RepairProcessor {
             remove(StatisticRepositoryImpl.getInstance());
             remove(TagArticleRepositoryImpl.getInstance());
             remove(TagRepositoryImpl.getInstance());
-            remove(UserRepositoryImpl.getInstance());
+            remove(beanManager.getReference(UserRepositoryImpl.class));
             remove(PluginRepositoryImpl.getInstance());
 
             succeed = true;

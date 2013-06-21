@@ -19,6 +19,7 @@ package org.b3log.solo.processor.console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -34,7 +35,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.TagMgmtService;
 import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.util.Users;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 
@@ -64,9 +65,10 @@ public final class TagConsole {
     private TagMgmtService tagMgmtService = TagMgmtService.getInstance();
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Language service.
@@ -99,7 +101,7 @@ public final class TagConsole {
         final HttpServletResponse response,
         final HTTPRequestContext context)
         throws IOException {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -151,7 +153,7 @@ public final class TagConsole {
         final HttpServletResponse response,
         final HTTPRequestContext context)
         throws IOException {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -212,7 +214,7 @@ public final class TagConsole {
         final HttpServletResponse response,
         final HTTPRequestContext context)
         throws IOException {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

@@ -16,6 +16,7 @@
 package org.b3log.solo.processor;
 
 
+import javax.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
@@ -54,7 +55,8 @@ public final class StatProcessor {
     /**
      * Statistic management service.
      */
-    private StatisticMgmtService statisticMgmtService = StatisticMgmtService.getInstance();
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Online visitor count refresher.

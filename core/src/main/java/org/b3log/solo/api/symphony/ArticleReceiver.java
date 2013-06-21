@@ -73,6 +73,12 @@ public final class ArticleReceiver {
      */
     @Inject
     private ArticleQueryService articleQueryService;
+    
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Article abstract length.
@@ -132,7 +138,6 @@ public final class ArticleReceiver {
             }
             article.remove("userB3Key");
 
-            final UserQueryService userQueryService = UserQueryService.getInstance();
             final JSONObject admin = userQueryService.getAdmin();
 
             article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.getString(User.USER_EMAIL));

@@ -17,6 +17,7 @@ package org.b3log.solo.processor.console;
 
 
 import java.util.List;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
@@ -33,8 +34,8 @@ import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.CommentQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
 
@@ -54,19 +55,22 @@ public final class CommentConsole {
     private static final Logger LOGGER = Logger.getLogger(CommentConsole.class.getName());
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Comment query service.
      */
-    private CommentQueryService commentQueryService = CommentQueryService.getInstance();
+    @Inject
+    private CommentQueryService commentQueryService;
 
     /**
      * Comment management service.
      */
-    private CommentMgmtService commentMgmtService = CommentMgmtService.getInstance();
+    @Inject
+    private CommentMgmtService commentMgmtService;
 
     /**
      * Language service.
@@ -94,7 +98,7 @@ public final class CommentConsole {
     @RequestProcessing(value = "/console/page/comment/*", method = HTTPRequestMethod.DELETE)
     public void removePageComment(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -143,7 +147,7 @@ public final class CommentConsole {
     @RequestProcessing(value = "/console/article/comment/*", method = HTTPRequestMethod.DELETE)
     public void removeArticleComment(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -209,10 +213,11 @@ public final class CommentConsole {
      * @param context the specified http request context
      * @throws Exception exception 
      */
-    @RequestProcessing(value = "/console/comments/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/comments/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
+        method = HTTPRequestMethod.GET)
     public void getComments(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -273,7 +278,7 @@ public final class CommentConsole {
     @RequestProcessing(value = "/console/comments/article/*", method = HTTPRequestMethod.GET)
     public void getArticleComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -335,7 +340,7 @@ public final class CommentConsole {
     @RequestProcessing(value = "/console/comments/page/*", method = HTTPRequestMethod.GET)
     public void getPageComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

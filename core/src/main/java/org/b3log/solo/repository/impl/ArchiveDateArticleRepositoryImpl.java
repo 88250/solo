@@ -16,7 +16,6 @@
 package org.b3log.solo.repository.impl;
 
 
-import javax.inject.Singleton;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.FilterOperator;
@@ -40,7 +39,6 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @Repository
-@Singleton
 public final class ArchiveDateArticleRepositoryImpl extends AbstractRepository implements ArchiveDateArticleRepository {
 
     /**

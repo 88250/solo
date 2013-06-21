@@ -51,10 +51,9 @@ import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.util.Articles;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Tags;
-import org.b3log.solo.util.Users;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -92,15 +91,16 @@ public final class TagProcessor {
     private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     /**
-     * Article utilities.
-     */
-    private Articles articleUtils = Articles.getInstance();
-
-    /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
+    
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Tag query service.
@@ -187,13 +187,13 @@ public final class TagProcessor {
                 }
             }
 
-            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 // All articles composed by the same author
-                final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                 filler.setArticlesExProperties(articles, author, preference);
             }
