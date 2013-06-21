@@ -779,4 +779,13 @@ public final class CommentMgmtService {
     public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
         this.preferenceQueryService = preferenceQueryService;
     }
+
+    /**
+     * Sets the statistic management service with the specified statistic management service.
+     * 
+     * @param statisticMgmtService the specified statistic management service
+     */
+    public void setStatisticMgmtService(final StatisticMgmtService statisticMgmtService) {
+        this.statisticMgmtService = statisticMgmtService;
+    }
 }

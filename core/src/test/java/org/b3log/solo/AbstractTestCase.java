@@ -300,6 +300,7 @@ public abstract class AbstractTestCase {
         articleQueryService.setArticleRepository(articleRepository);
         articleQueryService.setUserRepository(userRepository);
         articleQueryService.setPreferenceQueryService(preferenceQueryService);
+        articleQueryService.setStatisticQueryService(statisticQueryService);
 
         articleMgmtService = new ArticleMgmtService();
         articleMgmtService.setArchiveDateArticleRepository(archiveDateArticleRepository);
@@ -317,6 +318,8 @@ public abstract class AbstractTestCase {
         pageMgmtService.setPermalinkQueryService(permalinkQueryService);
         pageMgmtService.setPageRepository(pageRepository);
         pageMgmtService.setPreferenceQueryService(preferenceQueryService);
+        pageMgmtService.setStatisticQueryService(statisticQueryService);
+        pageMgmtService.setStatisticMgmtService(statisticMgmtService);
 
         pageQueryService = new PageQueryService();
         pageQueryService.setPageRepository(pageRepository);
@@ -343,6 +346,7 @@ public abstract class AbstractTestCase {
         commentMgmtService.setArticleMgmtService(articleMgmtService);
         commentMgmtService.setPageRepository(pageRepository);
         commentMgmtService.setPreferenceQueryService(preferenceQueryService);
+        commentMgmtService.setStatisticMgmtService(statisticMgmtService);
 
         archiveDateQueryService = new ArchiveDateQueryService();
         archiveDateQueryService.setArchiveDateRepository(archiveDateRepository);

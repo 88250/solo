@@ -1082,4 +1082,13 @@ public final class ArticleQueryService {
     public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
         this.preferenceQueryService = preferenceQueryService;
     }
+
+    /**
+     * Sets the statistic query service with the specified statistic query service.
+     * 
+     * @param statisticQueryService the specified statistic query service
+     */
+    public void setStatisticQueryService(final StatisticQueryService statisticQueryService) {
+        this.statisticQueryService = statisticQueryService;
+    }
 }

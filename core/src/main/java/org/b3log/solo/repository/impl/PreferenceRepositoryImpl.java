@@ -18,6 +18,7 @@ package org.b3log.solo.repository.impl;
 
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.json.JSONObject;
@@ -30,6 +31,7 @@ import org.json.JSONObject;
  * @version 1.0.0.3, Feb 28, 2012
  * @since 0.3.1
  */
+@Repository
 public final class PreferenceRepositoryImpl extends AbstractRepository implements PreferenceRepository {
 
     /**
