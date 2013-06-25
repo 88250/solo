@@ -70,7 +70,8 @@ public final class AdminConsole {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Preference query service.

@@ -82,7 +82,8 @@ public final class UserTemplateProcessor {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Shows the user template page.

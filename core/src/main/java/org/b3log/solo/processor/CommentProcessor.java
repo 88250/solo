@@ -59,7 +59,8 @@ public final class CommentProcessor {
     /**
      * Language service.
      */
-    private static LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Comment management service.

@@ -75,7 +75,8 @@ public final class TagConsole {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Gets all tags.

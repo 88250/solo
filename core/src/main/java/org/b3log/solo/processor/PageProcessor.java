@@ -65,7 +65,8 @@ public final class PageProcessor {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Filler.

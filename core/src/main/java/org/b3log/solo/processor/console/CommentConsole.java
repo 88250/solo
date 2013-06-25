@@ -75,7 +75,8 @@ public final class CommentConsole {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Removes a comment of an article by the specified request.

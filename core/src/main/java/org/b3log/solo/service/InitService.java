@@ -138,7 +138,8 @@ public final class InitService {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Initializes B3log Solo.

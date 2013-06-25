@@ -113,7 +113,8 @@ public final class UpgradeProcessor {
     /**
      * Language service.
      */
-    private static LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Checks upgrade.

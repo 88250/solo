@@ -70,7 +70,8 @@ public final class UserConsole {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Updates a user by the specified request.

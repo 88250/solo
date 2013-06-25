@@ -79,7 +79,8 @@ public final class StatisticMgmtService {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Article repository.

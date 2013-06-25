@@ -105,7 +105,8 @@ public final class ArticleProcessor {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Preference query service.

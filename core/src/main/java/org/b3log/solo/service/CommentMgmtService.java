@@ -121,7 +121,8 @@ public final class CommentMgmtService {
     /**
      * Language service.
      */
-    private static LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Minimum length of comment name.

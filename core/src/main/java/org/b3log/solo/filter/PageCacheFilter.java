@@ -65,11 +65,6 @@ public final class PageCacheFilter implements Filter {
      */
     private static final Logger LOGGER = Logger.getLogger(PageCacheFilter.class.getName());
 
-    /**
-     * Language service.
-     */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
-
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {}
 
@@ -140,7 +135,9 @@ public final class PageCacheFilter implements Filter {
         final String cachedType = cachedPageContentObject.optString(PageCaches.CACHED_TYPE);
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+
         final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
 
         try {
             // If cached an article that has view password, dispatches the password form

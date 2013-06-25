@@ -139,7 +139,8 @@ public final class ArticleMgmtService {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Tag utilities.

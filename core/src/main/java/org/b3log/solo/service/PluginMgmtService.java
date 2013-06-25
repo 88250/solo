@@ -63,7 +63,8 @@ public final class PluginMgmtService {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Updates datastore plugin descriptions with the specified plugins.

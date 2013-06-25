@@ -73,7 +73,8 @@ public final class PluginConsole {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Sets a plugin's status with the specified plugin id, status.

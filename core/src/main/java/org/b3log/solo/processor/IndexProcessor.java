@@ -83,7 +83,8 @@ public final class IndexProcessor {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Shows index with the specified context.

@@ -76,7 +76,8 @@ public final class PreferenceConsole {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Preference URI prefix.

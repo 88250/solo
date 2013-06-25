@@ -76,7 +76,8 @@ public final class TopBars {
     /**
      * Language service.
      */
-    private static LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * User management service.

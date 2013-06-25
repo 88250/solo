@@ -74,7 +74,8 @@ public final class LinkConsole {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Removes a link by the specified request.

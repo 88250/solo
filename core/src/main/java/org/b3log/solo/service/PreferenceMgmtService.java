@@ -78,7 +78,8 @@ public final class PreferenceMgmtService {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Loads skins for the specified preference and initializes templates 
