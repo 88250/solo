@@ -105,9 +105,9 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
-        Stopwatchs.start("Context Initialized");
-
         super.contextInitialized(servletContextEvent);
+        
+        Stopwatchs.start("Context Initialized");
 
         // Default to skin "ease", loads from preference later
         Skins.setDirectoryForTemplateLoading("ease");
