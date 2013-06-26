@@ -49,7 +49,6 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -141,11 +140,6 @@ public final class ArticleMgmtService {
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * Tag utilities.
-     */
-    private static Tags tagUtils = Tags.getInstance();
 
     /**
      * Statistic management service.
@@ -1353,5 +1347,14 @@ public final class ArticleMgmtService {
      */
     public void setCommentRepository(final CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
+    }
+
+    /**
+     * Sets the language service with the specified language service.
+     * 
+     * @param langPropsService the specified language service
+     */
+    public void setLangPropsService(final LangPropsService langPropsService) {
+        this.langPropsService = langPropsService;
     }
 }

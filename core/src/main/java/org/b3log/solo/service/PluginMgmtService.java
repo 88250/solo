@@ -259,4 +259,13 @@ public final class PluginMgmtService {
     public void setPluginRepository(final PluginRepository pluginRepository) {
         this.pluginRepository = pluginRepository;
     }
+
+    /**
+     * Sets the language service with the specified language service.
+     * 
+     * @param langPropsService the specified language service
+     */
+    public void setLangPropsService(final LangPropsService langPropsService) {
+        this.langPropsService = langPropsService;
+    }
 }

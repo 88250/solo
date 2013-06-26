@@ -798,4 +798,13 @@ public final class CommentMgmtService {
     public void setCommentRepository(final CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }
+
+    /**
+     * Sets the language service with the specified language service.
+     * 
+     * @param langPropsService the specified language service
+     */
+    public void setLangPropsService(final LangPropsService langPropsService) {
+        this.langPropsService = langPropsService;
+    }
 }

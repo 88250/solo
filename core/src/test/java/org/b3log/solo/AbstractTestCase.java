@@ -19,6 +19,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.util.Locale;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
@@ -130,6 +131,16 @@ public abstract class AbstractTestCase {
      */
     private OptionRepository optionRepository;
 
+    /**
+     * Language service.
+     */
+    private LangPropsService langPropsService;
+    
+    /**
+     * Plugin management service.
+     */
+    private PluginMgmtService pluginMgmtService;
+    
     /**
      * Initialization service.
      */
@@ -250,7 +261,7 @@ public abstract class AbstractTestCase {
 
         Latkes.initRuntimeEnv();
         Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
-
+        
         // Repositories
         userRepository = new UserRepositoryImpl();
         linkRepository = new LinkRepositoryImpl();
@@ -269,6 +280,12 @@ public abstract class AbstractTestCase {
         optionRepository = new OptionRepositoryImpl();
 
         // Services
+        langPropsService = new LangPropsService();
+        
+        pluginMgmtService = new PluginMgmtService();
+        pluginMgmtService.setPluginRepository(pluginRepository);
+        pluginMgmtService.setLangPropsService(langPropsService);
+        
         preferenceQueryService = new PreferenceQueryService();
         preferenceQueryService.setPreferenceRepository(preferenceRepository);
 
@@ -282,9 +299,11 @@ public abstract class AbstractTestCase {
         initService.setTagArticleRepository(tagArticleRepository);
         initService.setTagRepository(tagRepository);
         initService.setCommentRepository(commentRepository);
+        initService.setLangPropsService(langPropsService);
 
         userMgmtService = new UserMgmtService();
         userMgmtService.setUserRepository(userRepository);
+        userMgmtService.setLangPropsService(langPropsService);
 
         userQueryService = new UserQueryService();
         userQueryService.setUserMgmtService(userMgmtService);
@@ -296,6 +315,7 @@ public abstract class AbstractTestCase {
 
         statisticMgmtService = new StatisticMgmtService();
         statisticMgmtService.setStatisticRepository(statisticRepository);
+        statisticMgmtService.setLangPropsService(langPropsService);
 
         statisticQueryService = new StatisticQueryService();
         statisticQueryService.setStatisticRepository(statisticRepository);
@@ -331,6 +351,7 @@ public abstract class AbstractTestCase {
         articleMgmtService.setTagRepository(tagRepository);
         articleMgmtService.setTagMgmtService(tagMgmtService);
         articleMgmtService.setCommentRepository(commentRepository);
+        articleMgmtService.setLangPropsService(langPropsService);
 
         pageMgmtService = new PageMgmtService();
         pageMgmtService.setPermalinkQueryService(permalinkQueryService);
@@ -339,6 +360,7 @@ public abstract class AbstractTestCase {
         pageMgmtService.setStatisticQueryService(statisticQueryService);
         pageMgmtService.setStatisticMgmtService(statisticMgmtService);
         pageMgmtService.setCommentRepository(commentRepository);
+        pageMgmtService.setLangPropsService(langPropsService);
 
         pageQueryService = new PageQueryService();
         pageQueryService.setPageRepository(pageRepository);
@@ -351,6 +373,7 @@ public abstract class AbstractTestCase {
 
         preferenceMgmtService = new PreferenceMgmtService();
         preferenceMgmtService.setPreferenceRepository(preferenceRepository);
+        preferenceMgmtService.setLangPropsService(langPropsService);
 
         commentQueryService = new CommentQueryService();
         commentQueryService.setArticleRepository(articleRepository);
@@ -364,6 +387,7 @@ public abstract class AbstractTestCase {
         commentMgmtService.setPreferenceQueryService(preferenceQueryService);
         commentMgmtService.setStatisticMgmtService(statisticMgmtService);
         commentMgmtService.setCommentRepository(commentRepository);
+        commentMgmtService.setLangPropsService(langPropsService);
 
         archiveDateQueryService = new ArchiveDateQueryService();
         archiveDateQueryService.setArchiveDateRepository(archiveDateRepository);
