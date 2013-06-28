@@ -35,7 +35,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Checks initialization filter.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, May 17, 2012
+ * @version 1.0.1.0, Jun 28, 2013
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -81,8 +81,11 @@ public final class InitCheckFilter implements Filter {
             return;
         }
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final InitService initService = beanManager.getReference(InitService.class);
+        
         try {
-            if (SoloServletListener.isInited()) {
+            if (initService.isInited()) {
                 chain.doFilter(request, response);
 
                 return;
@@ -95,7 +98,6 @@ public final class InitCheckFilter implements Filter {
                 return;
             }
 
-            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
 
             LOGGER.debug("Try to get preference to confirm whether the preference exixts");

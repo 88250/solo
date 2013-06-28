@@ -33,6 +33,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.user.UserService;
@@ -129,6 +130,12 @@ public final class ArticleQueryService {
     private StatisticQueryService statisticQueryService;
 
     /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
      * Can the current user access an article specified by the given article id?
      *
      * @param articleId the given article id
@@ -176,6 +183,10 @@ public final class ArticleQueryService {
 
         if (Strings.isEmptyOrNull(articleViewPwd)) {
             return false;
+        }
+
+        if (null == request) {
+            return true;
         }
 
         final HttpSession session = request.getSession(false);
@@ -920,11 +931,12 @@ public final class ArticleQueryService {
      * Invoking this method dose not effect on article view count.
      * </p>
      * 
+     * @param request the specified HTTP servlet request
      * @param articleId the specified article id
      * @return article contents, returns {@code null} if not found
      * @throws ServiceException service exception 
      */
-    public String getArticleContent(final String articleId) throws ServiceException {
+    public String getArticleContent(final HttpServletRequest request, final String articleId) throws ServiceException {
         if (Strings.isEmptyOrNull(articleId)) {
             return null;
         }
@@ -936,8 +948,12 @@ public final class ArticleQueryService {
                 return null;
             }
 
-            // Markdown to HTML for content and abstract
-            if ("CodeMirror-Markdown".equals(article.optString(ARTICLE_EDITOR_TYPE))) {
+            if (needViewPwd(request, article)) {
+                final String content = langPropsService.get("articleContentPwd");
+
+                article.put(ARTICLE_CONTENT, content);
+            } else if ("CodeMirror-Markdown".equals(article.optString(ARTICLE_EDITOR_TYPE))) {
+                // Markdown to HTML for content and abstract
                 Stopwatchs.start("Get Article Content [Markdown]");
                 final String content = article.optString(ARTICLE_CONTENT);
 

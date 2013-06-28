@@ -345,7 +345,7 @@ public final class ArticleProcessor {
         if (Strings.isEmptyOrNull(articleId)) {
             return;
         }
-
+        
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
 
         context.setRenderer(renderer);
@@ -353,7 +353,7 @@ public final class ArticleProcessor {
         String content;
 
         try {
-            content = articleQueryService.getArticleContent(articleId);
+            content = articleQueryService.getArticleContent(request, articleId);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Can not get article content", e);
             return;

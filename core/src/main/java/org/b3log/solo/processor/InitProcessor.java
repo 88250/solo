@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Sep 6, 2012
+ * @version 1.0.0.6, Jun 28, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -92,7 +92,7 @@ public final class InitProcessor {
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.GET)
     public void showInit(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        if (SoloServletListener.isInited()) {
+        if (initService.isInited()) {
             response.sendRedirect("/");
 
             return;
@@ -136,7 +136,7 @@ public final class InitProcessor {
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.POST)
     public void initB3logSolo(final HTTPRequestContext context, final HttpServletRequest request,
         final HttpServletResponse response) throws Exception {
-        if (SoloServletListener.isInited()) {
+        if (initService.isInited()) {
             response.sendRedirect("/");
 
             return;

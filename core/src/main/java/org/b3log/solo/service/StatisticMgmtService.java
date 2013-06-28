@@ -344,7 +344,7 @@ public final class StatisticMgmtService {
      * 
      * @param request the specified request
      */
-    public static void onlineVisitorCount(final HttpServletRequest request) {
+    public void onlineVisitorCount(final HttpServletRequest request) {
         final String remoteAddr = Requests.getRemoteAddr(request);
 
         LOGGER.log(Level.DEBUG, "Current request [IP={0}]", remoteAddr);

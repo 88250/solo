@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.6, May 17, 2013
+ * @version 1.0.1.7, Jun 28, 2013
  * @since 0.4.0
  */
 @Service
@@ -142,6 +142,23 @@ public final class InitService {
     private LangPropsService langPropsService;
 
     /**
+     * Determines Solo had been initialized.
+     *
+     * @return {@code true} if it had been initialized, {@code false} otherwise
+     */
+    // XXX: to find a better way (isInited)?
+    public boolean isInited() {
+        try {
+            final JSONObject admin = userRepository.getAdmin();
+
+            return null != admin;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.WARN, "B3log Solo has not been initialized");
+            return false;
+        }
+    }
+
+    /**
      * Initializes B3log Solo.
      * 
      * <p>
@@ -172,7 +189,7 @@ public final class InitService {
      * @throws ServiceException service exception
      */
     public void init(final JSONObject requestJSONObject) throws ServiceException {
-        if (SoloServletListener.isInited()) {
+        if (isInited()) {
             return;
         }
 

@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * {@link ArticleQueryService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 11, 2012
+ * @version 1.0.0.2, Jun 28, 2013
  */
 @Test(suiteName = "service")
 public class ArticleQueryServiceTestCase extends AbstractTestCase {
@@ -120,7 +120,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
         final String articleId = articles.get(0).getString(Keys.OBJECT_ID);
 
-        Assert.assertNotNull(articleQueryService.getArticleContent(articleId));
+        Assert.assertNotNull(articleQueryService.getArticleContent(null, articleId));
     }
 
     /**

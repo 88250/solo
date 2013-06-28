@@ -30,7 +30,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
@@ -50,7 +49,6 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
@@ -61,7 +59,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.9.9, Apr 26, 2013
+ * @version 1.1.0.0, Jun 28, 2013
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -96,6 +94,11 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     public static final String B3LOG_SYMPHONY_SERVE_PATH;
 
+    /**
+     * Bean manager.
+     */
+    private LatkeBeanManager beanManager;
+
     static {
         final ResourceBundle b3log = ResourceBundle.getBundle("b3log");
 
@@ -106,13 +109,15 @@ public final class SoloServletListener extends AbstractServletListener {
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         super.contextInitialized(servletContextEvent);
-        
+
+        beanManager = Lifecycle.getBeanManager();
+
         Stopwatchs.start("Context Initialized");
 
         // Default to skin "ease", loads from preference later
         Skins.setDirectoryForTemplateLoading("ease");
 
-        final PreferenceRepository preferenceRepository = new PreferenceRepositoryImpl();
+        final PreferenceRepository preferenceRepository = beanManager.getReference(PreferenceRepositoryImpl.class);
 
         final Transaction transaction = preferenceRepository.beginTransaction();
 
@@ -137,7 +142,7 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.info("Initialized the context");
 
         Stopwatchs.end();
-        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", new Object[] {Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
     }
 
     @Override
@@ -168,10 +173,9 @@ public final class SoloServletListener extends AbstractServletListener {
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
 
-            LOGGER.log(Level.DEBUG, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", new Object[] {
-                session.getId(), httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), session.isNew()});
+            LOGGER.log(Level.DEBUG, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", session.getId(),
+                httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), session.isNew());
             // Online visitor count
-            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
 
             statisticMgmtService.onlineVisitorCount(httpServletRequest);
@@ -184,7 +188,7 @@ public final class SoloServletListener extends AbstractServletListener {
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
         Stopwatchs.end();
 
-        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", new Object[] {Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat()});
+        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
         Stopwatchs.release();
 
         super.requestDestroyed(servletRequestEvent);
@@ -210,7 +214,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         LOGGER.info("Loading preference....");
 
-        final PreferenceRepository preferenceRepository = new PreferenceRepositoryImpl();
+        final PreferenceRepository preferenceRepository = beanManager.getReference(PreferenceRepositoryImpl.class);
         JSONObject preference;
 
         try {
@@ -220,7 +224,9 @@ public final class SoloServletListener extends AbstractServletListener {
                 return;
             }
 
-            new PreferenceMgmtService().loadSkins(preference);
+            final PreferenceMgmtService preferenceMgmtService = beanManager.getReference(PreferenceMgmtService.class);
+
+            preferenceMgmtService.loadSkins(preference);
 
             final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
 
@@ -232,23 +238,6 @@ public final class SoloServletListener extends AbstractServletListener {
         }
 
         Stopwatchs.end();
-    }
-
-    /**
-     * Determines Solo had been initialized.
-     *
-     * @return {@code true} if it had been initialized, {@code false} otherwise
-     */
-    // XXX: to find a better way (isInited)?
-    public static boolean isInited() {
-        try {
-            final JSONObject admin = new UserRepositoryImpl().getAdmin();
-
-            return null != admin;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "B3log Solo has not been initialized");
-            return false;
-        }
     }
 
     /**
@@ -293,7 +282,7 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
         try {
-            final PreferenceRepository preferenceRepository = new PreferenceRepositoryImpl();
+            final PreferenceRepository preferenceRepository = beanManager.getReference(PreferenceRepositoryImpl.class);
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
             if (null == preference) { // Did not initialize yet
