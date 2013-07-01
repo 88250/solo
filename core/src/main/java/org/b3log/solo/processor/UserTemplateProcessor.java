@@ -131,8 +131,7 @@ public final class UserTemplateProcessor {
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillUserTemplate(template, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
+            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             request.setAttribute(PageCaches.CACHED_TITLE, requestURI);

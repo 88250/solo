@@ -25,6 +25,7 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
@@ -39,6 +40,7 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Oct 27, 2011
  * @since 0.4.0
  */
+@Service
 public final class PageQueryService {
 
     /**

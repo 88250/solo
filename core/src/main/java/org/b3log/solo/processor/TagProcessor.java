@@ -163,8 +163,7 @@ public final class TagProcessor {
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
+            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
@@ -294,8 +293,7 @@ public final class TagProcessor {
                 return;
             }
 
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
+            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());

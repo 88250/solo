@@ -111,8 +111,7 @@ public final class PageProcessor {
                 return;
             }
 
-            Skins.fillSkinLangs(preference.getString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
+            Skins.fillLangs(preference.getString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 

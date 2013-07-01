@@ -26,8 +26,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
@@ -61,15 +65,15 @@ public final class Skins {
     private Skins() {}
 
     /**
-     * Fills the specified data model with the current skink's language 
-     * configurations.
+     * Fills the specified data model with the current skink's (WebRoot/skins/${skinName}/lang/lang_xx_XX.properties) and 
+     * core language (WebRoot/WEB-INF/classes/lang_xx_XX.properties) configurations.
      * 
      * @param localeString the specified locale string
      * @param currentSkinDirName the specified current skin directory name
      * @param dataModel the specified data model
      * @throws ServiceException service exception 
      */
-    public static void fillSkinLangs(final String localeString, final String currentSkinDirName, final Map<String, Object> dataModel)
+    public static void fillLangs(final String localeString, final String currentSkinDirName, final Map<String, Object> dataModel)
         throws ServiceException {
         Stopwatchs.start("Fill Skin Langs");
 
@@ -105,7 +109,13 @@ public final class Skins {
                     new Object[] {currentSkinDirName, localeString, langs.size()});
             }
 
-            dataModel.putAll(langs);
+            dataModel.putAll(langs); // Fills the current skin's language configurations
+            
+            // Fills the core language configurations
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
+
+            dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
         } catch (final IOException e) {
             LOGGER.log(Level.ERROR, "Fills skin langs failed", e);
             throw new ServiceException(e);

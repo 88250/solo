@@ -735,8 +735,7 @@ public final class ArticleProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.AUTHOR_ARTICLES);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
+            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -824,8 +823,7 @@ public final class ArticleProcessor {
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
+            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             final String cachedTitle = prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount,
                 archiveDateString, archiveDate);
@@ -953,8 +951,7 @@ public final class ArticleProcessor {
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
+            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             if (!Requests.hasBeenServed(request, response)) {
                 articleMgmtService.incViewCount(articleId);

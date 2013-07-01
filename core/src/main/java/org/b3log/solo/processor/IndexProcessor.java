@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -108,15 +107,13 @@ public final class IndexProcessor {
             final int currentPageNum = getCurrentPageNum(requestURI);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
-
-            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             request.setAttribute(PageCaches.CACHED_TITLE,
-                langs.get(PageTypes.INDEX.getLangeLabel()) + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.INDEX.getLangeLabel()));
+                langPropsService.get(PageTypes.INDEX.getLangeLabel()) + "  [" + langPropsService.get("pageNumLabel") + "=" + currentPageNum
+                + "]");
+            request.setAttribute(PageCaches.CACHED_TYPE, langPropsService.get(PageTypes.INDEX.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
 
             filler.fillIndexArticles(request, dataModel, currentPageNum, preference);

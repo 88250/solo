@@ -85,8 +85,9 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
         final String pageContent = (String) request.getAttribute(PageCaches.CACHED_CONTENT);
         String output = html;
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        
         if (null != pageContent) {
-            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final TopBars topbars = beanManager.getReference(TopBars.class);
             // Adds the top bar HTML content for output
             final String topBarHTML = topbars.getTopBarHTML(request, response);
@@ -94,7 +95,6 @@ public final class FrontRenderer extends CacheFreeMarkerRenderer {
             output = html.replace(Common.TOP_BAR_REPLACEMENT_FLAG, topBarHTML);
         }
 
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
         
         // Inc blog view count

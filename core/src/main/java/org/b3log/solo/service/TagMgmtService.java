@@ -55,6 +55,7 @@ public final class TagMgmtService {
     /**
      * Tag repository.
      */
+    @Inject
     private TagRepository tagRepository;
 
     /**
