@@ -369,32 +369,6 @@
         <finalName>b3log-solo</finalName>
     </build>
     
-    <pluginRepositories>
-        <pluginRepository>
-            <id>m2-release</id>
-            <name>88250 at Google Maven repository of releases</name>
-            <url>http://m2-repos.googlecode.com/svn/release</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </pluginRepository>
-        <pluginRepository>
-            <id>m2-snapshot</id>
-            <name>88250 at Google Maven repository of snapshots</name>
-            <url>http://m2-repos.googlecode.com/svn/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>interval:10</updatePolicy>
-            </snapshots>
-            <releases>
-                <enabled>false</enabled>
-            </releases>
-        </pluginRepository>
-    </pluginRepositories>
-
     <repositories>
         <repository>
             <id>central</id>
@@ -408,23 +382,11 @@
             </releases>
         </repository>
         <repository>
-            <id>m2-release</id>
-            <name>88250 at Google Maven repository of releases</name>
-            <url>http://m2-repos.googlecode.com/svn/release</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-        <repository>
-            <id>m2-snapshot</id>
-            <name>88250 at Google Maven repository of snapshots</name>
-            <url>http://m2-repos.googlecode.com/svn/snapshot</url>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Snapshots Repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
             <snapshots>
                 <enabled>true</enabled>
-                <updatePolicy>interval:10</updatePolicy>
             </snapshots>
             <releases>
                 <enabled>false</enabled>
