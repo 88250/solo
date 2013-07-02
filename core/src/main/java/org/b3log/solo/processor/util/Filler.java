@@ -22,8 +22,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringEscapeUtils;
@@ -153,6 +151,12 @@ public final class Filler {
      */
     @Inject
     private UserQueryService userQueryService;
+
+    /**
+     * Fill tag article..
+     */
+    @Inject
+    private FillTagArticles fillTagArticles;
 
     /**
      * default page.
@@ -480,54 +484,6 @@ public final class Filler {
     }
 
     /**
-     * Fills tag's articles recently.
-     *
-     * @param dataModel dataModel
-     * @param tagTitle tagTitle
-     * @param tagName tagName user in template
-     * @param pageStr page
-     * @param pageSizeStr pageSize
-     * @throws ServiceException service exception
-     */
-    public void fillRecentTagArticles(final Map<String, Object> dataModel, final String tagTitle,
-        final String tagName, final String pageStr, final String pageSizeStr) throws ServiceException {
-
-        Stopwatchs.start("Fill Recent tag's Articles");
-
-        try {
-
-            final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
-
-            if (null == result) {
-                return;
-            }
-
-            final JSONObject tag = result.getJSONObject(Tag.TAG);
-            final String tagId = tag.getString(Keys.OBJECT_ID);
-
-            int currentPageNum = DEFAULT_PAGE;
-            int pageSize = DEFAULT_PAGESIZE;
-
-            if (!Strings.isEmptyOrNull(pageStr)) {
-                currentPageNum = Integer.parseInt(pageStr);
-            }
-            if (!Strings.isEmptyOrNull(pageSizeStr)) {
-                pageSize = Integer.parseInt(pageSizeStr);
-            }
-            final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
-
-            dataModel.put(tagName, articles);
-
-        } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, "Fills recent articles failed", e);
-            throw new ServiceException(e);
-        } finally {
-            Stopwatchs.end();
-        }
-
-    }
-
-    /**
      * Fills post comments recently.
      *
      * @param dataModel data model
@@ -714,6 +670,8 @@ public final class Filler {
                 }
             }
 
+            dataModel.put("fillTagArticles", fillTagArticles);
+
             if (Templates.hasExpression(template, "<#list recentArticles as article>")) {
                 fillRecentArticles(dataModel, preference);
             }
@@ -740,13 +698,6 @@ public final class Filler {
 
             if (Templates.hasExpression(template, "<#list archiveDates as archiveDate>")) {
                 fillArchiveDates(dataModel, preference);
-            }
-
-            final Pattern p = Pattern.compile("<#-- save (\\S*?) to (\\S*?) page is (\\S*?) and pagesize is (\\S*?) -->");
-            final Matcher matcher = p.matcher(template.toString());
-
-            while (matcher.find()) {
-                fillRecentTagArticles(dataModel, matcher.group(MARCH1), matcher.group(MARCH2), matcher.group(MARCH3), matcher.group(MARCH4));
             }
 
         } catch (final ServiceException e) {
