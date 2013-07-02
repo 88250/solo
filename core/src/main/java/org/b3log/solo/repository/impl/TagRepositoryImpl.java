@@ -18,12 +18,19 @@ package org.b3log.solo.repository.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.repository.TagArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,22 +42,21 @@ import org.json.JSONObject;
  * @version 1.0.1.1, Nov 29, 2011
  * @since 0.3.1
  */
+@Repository
 public final class TagRepositoryImpl extends AbstractRepository implements TagRepository {
 
     /**
-     * Logger.
+     * Public constructor.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagRepositoryImpl.class.getName());
-
-    /**
-     * Singleton.
-     */
-    private static final TagRepositoryImpl SINGLETON = new TagRepositoryImpl(Tag.TAG);
+    public TagRepositoryImpl() {
+        super(Tag.TAG);
+    }
 
     /**
      * Tag-Article relation repository.
      */
-    private TagArticleRepositoryImpl tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     @Override
     public JSONObject getByTitle(final String tagTitle) throws RepositoryException {
@@ -94,20 +100,11 @@ public final class TagRepositoryImpl extends AbstractRepository implements TagRe
     }
 
     /**
-     * Gets the {@link TagRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static TagRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
+     * Sets tag article repository with the specified tag article repository.
      * 
-     * @param name the specified name
+     * @param tagArticleRepository the specified tag article repository
      */
-    private TagRepositoryImpl(final String name) {
-        super(name);
+    public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
+        this.tagArticleRepository = tagArticleRepository;
     }
 }

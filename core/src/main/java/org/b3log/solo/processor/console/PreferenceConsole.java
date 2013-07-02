@@ -16,11 +16,12 @@
 package org.b3log.solo.processor.console;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -33,8 +34,8 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -57,22 +58,26 @@ public final class PreferenceConsole {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Preference management service.
      */
-    private PreferenceMgmtService preferenceMgmtService = PreferenceMgmtService.getInstance();
+    @Inject
+    private PreferenceMgmtService preferenceMgmtService;
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Preference URI prefix.
@@ -105,7 +110,7 @@ public final class PreferenceConsole {
         final HttpServletResponse response,
         final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -124,7 +129,7 @@ public final class PreferenceConsole {
             ret.put(Preference.REPLY_NOTIFICATION_TEMPLATE, replyNotificationTemplate);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -154,7 +159,7 @@ public final class PreferenceConsole {
         final HttpServletResponse response,
         final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -177,7 +182,7 @@ public final class PreferenceConsole {
 
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -210,7 +215,7 @@ public final class PreferenceConsole {
     @RequestProcessing(value = "/console/signs/", method = HTTPRequestMethod.GET)
     public void getSigns(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -238,7 +243,7 @@ public final class PreferenceConsole {
             ret.put(Sign.SIGNS, signs);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -304,7 +309,7 @@ public final class PreferenceConsole {
     @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.GET)
     public void getPreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -328,7 +333,7 @@ public final class PreferenceConsole {
             ret.put(Preference.PREFERENCE, preference);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -382,7 +387,7 @@ public final class PreferenceConsole {
     @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.PUT)
     public void updatePreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -409,7 +414,7 @@ public final class PreferenceConsole {
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

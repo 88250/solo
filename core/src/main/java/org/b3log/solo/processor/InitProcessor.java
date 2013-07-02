@@ -19,12 +19,13 @@ package org.b3log.solo.processor;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
@@ -51,7 +52,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Sep 6, 2012
+ * @version 1.0.0.6, Jun 28, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -65,17 +66,20 @@ public final class InitProcessor {
     /**
      * Initialization service.
      */
-    private InitService initService = InitService.getInstance();
+    @Inject
+    private InitService initService;
 
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Shows initialization page.
@@ -88,7 +92,7 @@ public final class InitProcessor {
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.GET)
     public void showInit(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        if (SoloServletListener.isInited()) {
+        if (initService.isInited()) {
             response.sendRedirect("/");
 
             return;
@@ -132,7 +136,7 @@ public final class InitProcessor {
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.POST)
     public void initB3logSolo(final HTTPRequestContext context, final HttpServletRequest request,
         final HttpServletResponse response) throws Exception {
-        if (SoloServletListener.isInited()) {
+        if (initService.isInited()) {
             response.sendRedirect("/");
 
             return;
@@ -178,7 +182,7 @@ public final class InitProcessor {
 
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             ret.put(Keys.MSG, e.getMessage());
         }

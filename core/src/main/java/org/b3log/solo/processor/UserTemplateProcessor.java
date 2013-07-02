@@ -19,13 +19,14 @@ package org.b3log.solo.processor;
 import freemarker.template.Template;
 import java.io.IOException;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -69,17 +70,20 @@ public final class UserTemplateProcessor {
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Shows the user template page.
@@ -96,7 +100,7 @@ public final class UserTemplateProcessor {
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
 
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-        LOGGER.log(Level.FINE, "Shows page[requestURI={0}, templateName={1}]", new Object[] {requestURI, templateName});
+        LOGGER.log(Level.DEBUG, "Shows page[requestURI={0}, templateName={1}]", new Object[] {requestURI, templateName});
 
         final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
 
@@ -113,7 +117,7 @@ public final class UserTemplateProcessor {
 
                 return;
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         }
 
@@ -127,20 +131,19 @@ public final class UserTemplateProcessor {
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillUserTemplate(template, dataModel, preference);
             filler.fillBlogFooter(dataModel, preference);
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
+            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             request.setAttribute(PageCaches.CACHED_TITLE, requestURI);
             request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.USER_TEMPLATE.getLangeLabel()));
             request.setAttribute(PageCaches.CACHED_LINK, requestURI);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         }
     }

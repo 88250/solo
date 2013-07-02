@@ -16,12 +16,13 @@
 package org.b3log.solo.processor.console;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -34,8 +35,8 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.service.PageMgmtService;
 import org.b3log.solo.service.PageQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -56,24 +57,28 @@ public final class PageConsole {
     private static final Logger LOGGER = Logger.getLogger(PageConsole.class.getName());
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Page query service.
      */
-    private PageQueryService pageQueryService = PageQueryService.getInstance();
+    @Inject
+    private PageQueryService pageQueryService;
 
     /**
      * Page management service.
      */
-    private PageMgmtService pageMgmtService = PageMgmtService.getInstance();
+    @Inject
+    private PageMgmtService pageMgmtService;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Updates a page by the specified request.
@@ -111,7 +116,7 @@ public final class PageConsole {
     @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.PUT)
     public void updatePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -132,7 +137,7 @@ public final class PageConsole {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -162,7 +167,7 @@ public final class PageConsole {
     @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.DELETE)
     public void removePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -183,7 +188,7 @@ public final class PageConsole {
             jsonObject.put(Keys.STATUS_CODE, true);
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
@@ -225,7 +230,7 @@ public final class PageConsole {
     @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.POST)
     public void addPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -247,7 +252,7 @@ public final class PageConsole {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) { // May be permalink check exception
-            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            LOGGER.log(Level.WARN, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -283,7 +288,7 @@ public final class PageConsole {
     @RequestProcessing(value = "/console/page/order/", method = HTTPRequestMethod.PUT)
     public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -306,7 +311,7 @@ public final class PageConsole {
 
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -343,7 +348,7 @@ public final class PageConsole {
     @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.GET)
     public void getPage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -368,7 +373,7 @@ public final class PageConsole {
             result.put(Keys.STATUS_CODE, true);
             result.put(Keys.MSG, langPropsService.get("getSuccLabel"));
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -410,7 +415,7 @@ public final class PageConsole {
         method = HTTPRequestMethod.GET)
     public void getPages(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -444,7 +449,7 @@ public final class PageConsole {
 
             renderer.setJSONObject(result);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

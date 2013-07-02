@@ -19,11 +19,18 @@ package org.b3log.solo.repository.impl;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.cache.Cache;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.latke.util.CollectionUtils;
@@ -40,6 +47,7 @@ import org.json.JSONObject;
  * @version 1.0.0.8, Oct 18, 2011
  * @since 0.3.1
  */
+@Repository
 public final class CommentRepositoryImpl extends AbstractRepository implements CommentRepository {
 
     /**
@@ -48,14 +56,17 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
     private static final Logger LOGGER = Logger.getLogger(CommentRepositoryImpl.class.getName());
 
     /**
-     * Singleton.
-     */
-    private static final CommentRepositoryImpl SINGLETON = new CommentRepositoryImpl(Comment.COMMENT);
-
-    /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * Public constructor.
+     */
+    public CommentRepositoryImpl() {
+        super(Comment.COMMENT);
+    }
 
     /**
      * Recent comments query results cache key.
@@ -72,7 +83,7 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
             remove(commentId);
         }
 
-        LOGGER.log(Level.FINER, "Removed comments[onId={0}, removedCnt={1}]", new Object[] {onId, comments.size()});
+        LOGGER.log(Level.DEBUG, "Removed comments[onId={0}, removedCnt={1}]", new Object[] {onId, comments.size()});
 
         return comments.size();
     }
@@ -131,7 +142,7 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
      * @throws RepositoryException repository exception
      */
     private void removeForUnpublishedArticles(final List<JSONObject> comments) throws RepositoryException {
-        LOGGER.finer("Removing unpublished articles' comments....");
+        LOGGER.debug("Removing unpublished articles' comments....");
         final Iterator<JSONObject> iterator = comments.iterator();
 
         while (iterator.hasNext()) {
@@ -147,24 +158,15 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
             }
         }
 
-        LOGGER.finer("Removed unpublished articles' comments....");
+        LOGGER.debug("Removed unpublished articles' comments....");
     }
 
     /**
-     * Gets the {@link CommentRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static CommentRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
+     * Sets the article repository with the specified article repository.
      * 
-     * @param name the specified name
+     * @param articleRepository the specified article repository
      */
-    private CommentRepositoryImpl(final String name) {
-        super(name);
+    public void setArticleRepository(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
     }
 }

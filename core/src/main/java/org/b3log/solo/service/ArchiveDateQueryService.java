@@ -17,13 +17,14 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
-import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.json.JSONObject;
 
 
@@ -34,6 +35,7 @@ import org.json.JSONObject;
  * @version 1.0.0.0, Feb 7, 2012
  * @since 0.4.0
  */
+@Service
 public final class ArchiveDateQueryService {
 
     /**
@@ -44,7 +46,8 @@ public final class ArchiveDateQueryService {
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateRepository archiveDateRepository;
 
     /**
      * Gets all archive dates.
@@ -56,7 +59,7 @@ public final class ArchiveDateQueryService {
         try {
             return archiveDateRepository.getArchiveDates();
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets archive dates failed", e);
+            LOGGER.log(Level.ERROR, "Gets archive dates failed", e);
             throw new ServiceException("Gets archive dates failed");
         }
     }
@@ -83,50 +86,26 @@ public final class ArchiveDateQueryService {
 
         try {
             final JSONObject archiveDate = archiveDateRepository.getByArchiveDate(archiveDateString);
-            
+
             if (null == archiveDate) {
                 return null;
             }
-            
+
             ret.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets archive date[string=" + archiveDateString + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets archive date[string=" + archiveDateString + "] failed", e);
             throw new ServiceException("Gets archive date[string=" + archiveDateString + "] failed");
         }
     }
 
     /**
-     * Gets the {@link ArchiveDateQueryService} singleton.
-     *
-     * @return the singleton
+     * Sets archive date repository with the specified archive date repository.
+     * 
+     * @param archiveDateRepository the specified archive date repository
      */
-    public static ArchiveDateQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private ArchiveDateQueryService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Feb 7, 2012
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final ArchiveDateQueryService SINGLETON = new ArchiveDateQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setArchiveDateRepository(final ArchiveDateRepository archiveDateRepository) {
+        this.archiveDateRepository = archiveDateRepository;
     }
 }

@@ -19,12 +19,13 @@ package org.b3log.solo.processor;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -43,10 +44,7 @@ import org.b3log.solo.model.sitemap.URL;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -70,27 +68,32 @@ public final class SitemapProcessor {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Article repository.
      */
-    private ArticleRepositoryImpl articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepositoryImpl articleRepository;
 
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    @Inject
+    private PageRepository pageRepository;
 
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateRepository archiveDateRepository;
 
     /**
      * Returns the sitemap.
@@ -117,7 +120,7 @@ public final class SitemapProcessor {
             LOGGER.log(Level.INFO, "Generated sitemap");
             renderer.setContent(content);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Get blog article feed error", e);
+            LOGGER.log(Level.ERROR, "Get blog article feed error", e);
 
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);

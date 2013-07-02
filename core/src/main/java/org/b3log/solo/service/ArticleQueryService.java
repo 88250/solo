@@ -19,16 +19,25 @@ package org.b3log.solo.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
@@ -43,15 +52,11 @@ import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
-import org.b3log.solo.util.Articles;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Markdowns;
-import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -63,6 +68,7 @@ import org.json.JSONObject;
  * @version 1.0.1.2, Jan 30, 2013
  * @since 0.3.5
  */
+@Service
 public final class ArticleQueryService {
 
     /**
@@ -71,39 +77,282 @@ public final class ArticleQueryService {
     private static final Logger LOGGER = Logger.getLogger(ArticleQueryService.class.getName());
 
     /**
+     * User service.
+     */
+    private UserService userService = UserServiceFactory.getUserService();
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
+
+    /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Archive date-Article repository.
      */
-    private ArchiveDateArticleRepository archiveDateArticleRepository = ArchiveDateArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateArticleRepository archiveDateArticleRepository;
 
     /**
-     * Statistic utilities.
+     * User query service.
      */
-    private Statistics statistics = Statistics.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
-     * Article utilities.
+     * Statistic query service.
      */
-    private static Articles articleUtils = Articles.getInstance();
+    @Inject
+    private StatisticQueryService statisticQueryService;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
+     * Can the current user access an article specified by the given article id?
+     *
+     * @param articleId the given article id
+     * @param request the specified request
+     * @return {@code true} if the current user can access the article,
+     * {@code false} otherwise
+     * @throws Exception exception
+     */
+    public boolean canAccessArticle(final String articleId, final HttpServletRequest request) throws Exception {
+        if (Strings.isEmptyOrNull(articleId)) {
+            return false;
+        }
+
+        if (userQueryService.isAdminLoggedIn(request)) {
+            return true;
+        }
+
+        final JSONObject article = articleRepository.get(articleId);
+        final String currentUserEmail = userQueryService.getCurrentUser(request).getString(User.USER_EMAIL);
+
+        if (!article.getString(Article.ARTICLE_AUTHOR_EMAIL).equals(currentUserEmail)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks whether need password to view the specified article with the specified request.
+     * 
+     * <p>
+     * Checks session, if not represents, checks article property {@link Article#ARTICLE_VIEW_PWD view password}.
+     * </p>
+     * 
+     * <p>
+     * The blogger itself dose not need view password never.
+     * </p>
+     * 
+     * @param request the specified request
+     * @param article the specified article
+     * @return {@code true} if need, returns {@code false} otherwise
+     */
+    public boolean needViewPwd(final HttpServletRequest request, final JSONObject article) {
+        final String articleViewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
+
+        if (Strings.isEmptyOrNull(articleViewPwd)) {
+            return false;
+        }
+
+        if (null == request) {
+            return true;
+        }
+
+        final HttpSession session = request.getSession(false);
+
+        if (null != session) {
+            @SuppressWarnings("unchecked")
+            Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
+
+            if (null == viewPwds) {
+                viewPwds = new HashMap<String, String>();
+            }
+
+            if (articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
+                return false;
+            }
+        }
+
+        if (null != userService.getCurrentUser(request)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Gets time of the recent updated article.
+     * 
+     * @return time of the recent updated article, returns {@code 0} if not found
+     * @throws ServiceException service exception
+     */
+    public long getRecentArticleTime() throws ServiceException {
+        try {
+            final List<JSONObject> recentArticles = articleRepository.getRecentArticles(1);
+
+            if (recentArticles.isEmpty()) {
+                return 0;
+            }
+
+            final JSONObject recentArticle = recentArticles.get(0);
+
+            return ((Date) recentArticle.get(Article.ARTICLE_UPDATE_DATE)).getTime();
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            throw new ServiceException("Gets recent article time failed");
+        }
+    }
+
+    /**
+     * Gets the specified article's author. 
+     * 
+     * <p>
+     * The specified article has a property
+     * {@value Article#ARTICLE_AUTHOR_EMAIL}, this method will use this property
+     * to get a user from users.
+     * </p>
+     * 
+     * <p>
+     * If can't find the specified article's author (i.e. the author has been 
+     * removed by administrator), returns administrator.
+     * </p>
+     *
+     * @param article the specified article
+     * @return user, {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getAuthor(final JSONObject article) throws ServiceException {
+        try {
+            final String email = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
+
+            JSONObject ret = userRepository.getByEmail(email);
+
+            if (null == ret) {
+                LOGGER.log(Level.WARN, "Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
+                    article.getString(Keys.OBJECT_ID));
+                // This author may be deleted by admin, use admin as the author
+                // of this article
+                ret = userRepository.getAdmin();
+            }
+
+            return ret;
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
+            throw new ServiceException(e);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.ERROR, "Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets the sign of an article specified by the sign id.
+     *
+     * @param signId the specified article id
+     * @param preference the specified preference
+     * @return article sign, returns the default sign (which oId is "1") if not found
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    public JSONObject getSign(final String signId, final JSONObject preference) throws JSONException, RepositoryException {
+        final JSONArray signs = new JSONArray(preference.getString(Preference.SIGNS));
+
+        JSONObject defaultSign = null;
+
+        for (int i = 0; i < signs.length(); i++) {
+            final JSONObject ret = signs.getJSONObject(i);
+
+            if (signId.equals(ret.optString(Keys.OBJECT_ID))) {
+                return ret;
+            }
+
+            if ("1".equals(ret.optString(Keys.OBJECT_ID))) {
+                defaultSign = ret;
+            }
+        }
+
+        LOGGER.log(Level.WARN, "Can not find the sign[id={0}], returns a default sign[id=1]", signId);
+        if (null == defaultSign) {
+            throw new IllegalStateException("Can not find the default sign which id equals to 1");
+        }
+
+        return defaultSign;
+    }
+
+    /**
+     * Determines the specified article has updated.
+     *
+     * @param article the specified article
+     * @return {@code true} if it has updated, {@code false} otherwise
+     * @throws JSONException json exception
+     */
+    public boolean hasUpdated(final JSONObject article) throws JSONException {
+        final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+        final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
+
+        return !createDate.equals(updateDate);
+    }
+
+    /**
+     * Determines the specified article had been published.
+     *
+     * @param article the specified article
+     * @return {@code true} if it had been published, {@code false} otherwise
+     * @throws JSONException json exception
+     */
+    public boolean hadBeenPublished(final JSONObject article) throws JSONException {
+        return article.getBoolean(Article.ARTICLE_HAD_BEEN_PUBLISHED);
+    }
+
+    /**
+     * Gets all unpublished articles.
+     *
+     * @return articles all unpublished articles
+     * @throws RepositoryException repository exception
+     * @throws JSONException json exception
+     */
+    public List<JSONObject> getUnpublishedArticles() throws RepositoryException, JSONException {
+        final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+
+        sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+        sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+        final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
+        final JSONObject result = articleRepository.get(query);
+        final JSONArray articles = result.getJSONArray(Keys.RESULTS);
+
+        return CollectionUtils.jsonArrayToList(articles);
+    }
 
     /**
      * Gets the recent articles with the specified fetch size.
@@ -117,7 +366,7 @@ public final class ArticleQueryService {
         try {
             return articleRepository.getRecentArticles(fetchSize);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets recent articles failed", e);
+            LOGGER.log(Level.ERROR, "Gets recent articles failed", e);
 
             return Collections.emptyList();
         }
@@ -197,11 +446,11 @@ public final class ArticleQueryService {
             article.remove(ARTICLE_VIEW_COUNT);
             article.remove(ARTICLE_RANDOM_DOUBLE);
 
-            LOGGER.log(Level.FINER, "Got an article[id={0}]", articleId);
+            LOGGER.log(Level.DEBUG, "Got an article[id={0}]", articleId);
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets an article failed", e);
+            LOGGER.log(Level.ERROR, "Gets an article failed", e);
             throw new ServiceException(e);
         }
     }
@@ -266,14 +515,14 @@ public final class ArticleQueryService {
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING).addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING).setFilter(
                 new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
 
-            int articleCount = statistics.getBlogArticleCount();
+            int articleCount = statisticQueryService.getBlogArticleCount();
 
             if (!articleIsPublished) {
-                articleCount -= statistics.getPublishedBlogArticleCount();
+                articleCount -= statisticQueryService.getPublishedBlogArticleCount();
             } else {
-                articleCount = statistics.getPublishedBlogArticleCount();
+                articleCount = statisticQueryService.getPublishedBlogArticleCount();
             }
-            
+
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             query.setPageCount(pageCount);
@@ -295,7 +544,7 @@ public final class ArticleQueryService {
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-                final JSONObject author = articleUtils.getAuthor(article);
+                final JSONObject author = getAuthor(article);
                 final String authorName = author.getString(User.USER_NAME);
 
                 article.put(Common.AUTHOR_NAME, authorName);
@@ -316,7 +565,7 @@ public final class ArticleQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets articles failed", e);
+            LOGGER.log(Level.ERROR, "Gets articles failed", e);
 
             throw new ServiceException(e);
         }
@@ -365,7 +614,7 @@ public final class ArticleQueryService {
                     // Skips the unpublished article
                     continue;
                 }
-                
+
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
 
                 // Markdown to HTML for content and abstract
@@ -376,7 +625,7 @@ public final class ArticleQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets articles by tag[id=" + tagId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets articles by tag[id=" + tagId + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -425,7 +674,7 @@ public final class ArticleQueryService {
                     // Skips the unpublished article
                     continue;
                 }
-                
+
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
 
                 // Markdown to HTML for content and abstract
@@ -436,7 +685,7 @@ public final class ArticleQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets articles by archive date[id=" + archiveDateId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets articles by archive date[id=" + archiveDateId + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -461,7 +710,7 @@ public final class ArticleQueryService {
 
             return ret;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets articles randomly failed[fetchSize=" + fetchSize + "]", e);
+            LOGGER.log(Level.ERROR, "Gets articles randomly failed[fetchSize=" + fetchSize + "]", e);
             throw new ServiceException(e);
         }
     }
@@ -541,7 +790,7 @@ public final class ArticleQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets relevant articles failed", e);
+            LOGGER.log(Level.ERROR, "Gets relevant articles failed", e);
 
             throw new ServiceException(e);
         }
@@ -558,7 +807,7 @@ public final class ArticleQueryService {
         try {
             return articleRepository.isPublished(articleId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Determines the article publish status failed[articleId=" + articleId + "]", e);
+            LOGGER.log(Level.ERROR, "Determines the article publish status failed[articleId=" + articleId + "]", e);
             throw new ServiceException(e);
         }
     }
@@ -585,7 +834,7 @@ public final class ArticleQueryService {
         try {
             return articleRepository.getNextArticle(articleId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets the next article failed[articleId=" + articleId + "]", e);
+            LOGGER.log(Level.ERROR, "Gets the next article failed[articleId=" + articleId + "]", e);
             throw new ServiceException(e);
         }
     }
@@ -612,7 +861,7 @@ public final class ArticleQueryService {
         try {
             return articleRepository.getPreviousArticle(articleId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets the previous article failed[articleId=" + articleId + "]", e);
+            LOGGER.log(Level.ERROR, "Gets the previous article failed[articleId=" + articleId + "]", e);
             throw new ServiceException(e);
         }
     }
@@ -632,7 +881,7 @@ public final class ArticleQueryService {
         try {
             return articleRepository.get(articleId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets an article[articleId=" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets an article[articleId=" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
     }
@@ -657,7 +906,7 @@ public final class ArticleQueryService {
                 final JSONObject article = articles.getJSONObject(i);
 
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
-                
+
                 // Markdown to HTML for content and abstract
                 markdown(article);
 
@@ -666,7 +915,7 @@ public final class ArticleQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE,
+            LOGGER.log(Level.ERROR,
                 "Gets articles by author email failed[authorEmail=" + authorEmail + ", currentPageNum=" + currentPageNum + ", pageSize="
                 + pageSize + "]",
                 e);
@@ -682,11 +931,12 @@ public final class ArticleQueryService {
      * Invoking this method dose not effect on article view count.
      * </p>
      * 
+     * @param request the specified HTTP servlet request
      * @param articleId the specified article id
      * @return article contents, returns {@code null} if not found
      * @throws ServiceException service exception 
      */
-    public String getArticleContent(final String articleId) throws ServiceException {
+    public String getArticleContent(final HttpServletRequest request, final String articleId) throws ServiceException {
         if (Strings.isEmptyOrNull(articleId)) {
             return null;
         }
@@ -698,8 +948,12 @@ public final class ArticleQueryService {
                 return null;
             }
 
-            // Markdown to HTML for content and abstract
-            if ("CodeMirror-Markdown".equals(article.optString(ARTICLE_EDITOR_TYPE))) {
+            if (needViewPwd(request, article)) {
+                final String content = langPropsService.get("articleContentPwd");
+
+                article.put(ARTICLE_CONTENT, content);
+            } else if ("CodeMirror-Markdown".equals(article.optString(ARTICLE_EDITOR_TYPE))) {
+                // Markdown to HTML for content and abstract
                 Stopwatchs.start("Get Article Content [Markdown]");
                 final String content = article.optString(ARTICLE_CONTENT);
 
@@ -709,7 +963,7 @@ public final class ArticleQueryService {
 
             return article.getString(Article.ARTICLE_CONTENT);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets article content failed[articleId=" + articleId + "]", e);
+            LOGGER.log(Level.ERROR, "Gets article content failed[articleId=" + articleId + "]", e);
 
             throw new ServiceException(e);
         }
@@ -810,35 +1064,65 @@ public final class ArticleQueryService {
     }
 
     /**
-     * Gets the {@link ArticleQueryService} singleton.
-     *
-     * @return the singleton
+     * Sets archive date article repository with the specified archive date article repository.
+     * 
+     * @param archiveDateArticleRepository the specified archive date article repository
      */
-    public static ArticleQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
+    public void setArchiveDateArticleRepository(final ArchiveDateArticleRepository archiveDateArticleRepository) {
+        this.archiveDateArticleRepository = archiveDateArticleRepository;
     }
 
     /**
-     * Private constructor.
+     * Sets the article repository with the specified article repository.
+     * 
+     * @param articleRepository the specified article repository
      */
-    private ArticleQueryService() {}
+    public void setArticleRepository(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
     /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 3, 2011
+     * Sets the user repository with the specified user repository.
+     * 
+     * @param userRepository the specified user repository
      */
-    private static final class SingletonHolder {
+    public void setUserRepository(final UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-        /**
-         * Singleton.
-         */
-        private static final ArticleQueryService SINGLETON = new ArticleQueryService();
+    /**
+     * Sets the preference query service with the specified preference query service.
+     * 
+     * @param preferenceQueryService the specified preference query service
+     */
+    public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
+        this.preferenceQueryService = preferenceQueryService;
+    }
 
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    /**
+     * Sets the statistic query service with the specified statistic query service.
+     * 
+     * @param statisticQueryService the specified statistic query service
+     */
+    public void setStatisticQueryService(final StatisticQueryService statisticQueryService) {
+        this.statisticQueryService = statisticQueryService;
+    }
+
+    /**
+     * Sets the tag repository with the specified tag repository.
+     * 
+     * @param tagRepository the specified tag repository
+     */
+    public void setTagRepository(final TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
+
+    /**
+     * Sets the tag article repository with the specified tag article repository.
+     * 
+     * @param tagArticleRepository the specified tag article repository
+     */
+    public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
+        this.tagArticleRepository = tagArticleRepository;
     }
 }

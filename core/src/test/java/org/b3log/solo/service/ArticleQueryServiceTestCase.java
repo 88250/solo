@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * {@link ArticleQueryService} test case.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Sep 11, 2012
+ * @version 1.0.0.2, Jun 28, 2013
  */
 @Test(suiteName = "service")
 public class ArticleQueryServiceTestCase extends AbstractTestCase {
@@ -50,7 +50,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
         initService.init(requestJSONObject);
 
-        final UserQueryService userQueryService = UserQueryService.getInstance();
+        final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByEmail("test@gmail.com"));
     }
 
@@ -61,7 +61,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getRecentArticles() throws Exception {
-        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
         final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 
         Assert.assertEquals(articles.size(), 1);
@@ -74,7 +74,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "getRecentArticles")
     public void getArticle() throws Exception {
-        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
         final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 
         Assert.assertEquals(articles.size(), 1);
@@ -93,7 +93,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "getRecentArticles")
     public void getArticleById() throws Exception {
-        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
         final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 
         Assert.assertEquals(articles.size(), 1);
@@ -112,7 +112,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "getRecentArticles")
     public void getArticleContent() throws Exception {
-        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
 
         final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 
@@ -120,7 +120,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
         final String articleId = articles.get(0).getString(Keys.OBJECT_ID);
 
-        Assert.assertNotNull(articleQueryService.getArticleContent(articleId));
+        Assert.assertNotNull(articleQueryService.getArticleContent(null, articleId));
     }
 
     /**
@@ -130,7 +130,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getArticlesByTag() throws Exception {
-        final TagQueryService tagQueryService = TagQueryService.getInstance();
+        final TagQueryService tagQueryService = getTagQueryService();
 
         JSONObject result = tagQueryService.getTagByTitle("B3log");
         Assert.assertNotNull(result);
@@ -140,7 +140,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
         final String tagId = tag.getString(Keys.OBJECT_ID);
 
-        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
         final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, 1, Integer.MAX_VALUE);
         Assert.assertNotNull(articles);
         Assert.assertEquals(articles.size(), 1);
@@ -153,7 +153,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getArticlesByArchiveDate() throws Exception {
-        final ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
+        final ArchiveDateQueryService archiveDateQueryService = getArchiveDateQueryService();
 
         final List<JSONObject> archiveDates = archiveDateQueryService.getArchiveDates();
 
@@ -162,7 +162,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
         final JSONObject archiveDate = archiveDates.get(0);
 
-        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
         List<JSONObject> articles =
                 articleQueryService.getArticlesByArchiveDate(archiveDate.getString(Keys.OBJECT_ID), 1, Integer.MAX_VALUE);
         Assert.assertNotNull(articles);

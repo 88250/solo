@@ -19,11 +19,12 @@ package org.b3log.solo.processor.console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -34,7 +35,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.TagMgmtService;
 import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.util.Users;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 
@@ -56,22 +57,26 @@ public final class TagConsole {
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Tag management service.
      */
-    private TagMgmtService tagMgmtService = TagMgmtService.getInstance();
+    @Inject
+    private TagMgmtService tagMgmtService;
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Gets all tags.
@@ -99,7 +104,7 @@ public final class TagConsole {
         final HttpServletResponse response,
         final HTTPRequestContext context)
         throws IOException {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -118,7 +123,7 @@ public final class TagConsole {
 
             jsonObject.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets tags failed", e);
+            LOGGER.log(Level.ERROR, "Gets tags failed", e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
         }
@@ -151,7 +156,7 @@ public final class TagConsole {
         final HttpServletResponse response,
         final HTTPRequestContext context)
         throws IOException {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -183,7 +188,7 @@ public final class TagConsole {
 
             jsonObject.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets unused tags failed", e);
+            LOGGER.log(Level.ERROR, "Gets unused tags failed", e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
         }
@@ -212,7 +217,7 @@ public final class TagConsole {
         final HttpServletResponse response,
         final HTTPRequestContext context)
         throws IOException {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -230,7 +235,7 @@ public final class TagConsole {
 
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Removes unused tags failed", e);
+            LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
 
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }

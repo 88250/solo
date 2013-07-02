@@ -21,18 +21,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
@@ -46,18 +48,7 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArchiveDateArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.b3log.solo.util.Articles;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Permalinks;
-import org.b3log.solo.util.Statistics;
-import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,6 +62,7 @@ import org.json.JSONObject;
  * @version 1.0.1.5, Jan 30, 2013
  * @since 0.3.5
  */
+@Service
 public final class ArticleMgmtService {
 
     /**
@@ -79,54 +71,64 @@ public final class ArticleMgmtService {
     private static final Logger LOGGER = Logger.getLogger(ArticleMgmtService.class.getName());
 
     /**
+     * Article query service.
+     */
+    @Inject
+    private ArticleQueryService articleQueryService;
+
+    /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateRepository archiveDateRepository;
 
     /**
      * Archive date-Article repository.
      */
-    private ArchiveDateArticleRepository archiveDateArticleRepository = ArchiveDateArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateArticleRepository archiveDateArticleRepository;
 
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
-     * Statistic utilities.
+     * Permalink query service.
      */
-    private Statistics statistics = Statistics.getInstance();
-
-    /**
-     * Permalink utilities.
-     */
-    private Permalinks permalinks = Permalinks.getInstance();
+    @Inject
+    private PermalinkQueryService permalinkQueryService;
 
     /**
      * Event manager.
@@ -136,17 +138,43 @@ public final class ArticleMgmtService {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
-     * Article utilities.
+     * Statistic management service.
      */
-    private static Articles articleUtils = Articles.getInstance();
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
 
     /**
-     * Tag utilities.
+     * Statistic query service.
      */
-    private static Tags tagUtils = Tags.getInstance();
+    @Inject
+    private StatisticQueryService statisticQueryService;
+
+    /**
+     * Tag management service.
+     */
+    @Inject
+    private TagMgmtService tagMgmtService;
+
+    /**
+     * Article comment count +1 for an article specified by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void incArticleCommentCount(final String articleId) throws JSONException, RepositoryException {
+        final JSONObject article = articleRepository.get(articleId);
+        final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
+        final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
+
+        newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt + 1);
+
+        articleRepository.update(articleId, newArticle);
+    }
 
     /**
      * Cancels publish an article by the specified article id.
@@ -161,15 +189,15 @@ public final class ArticleMgmtService {
             final JSONObject article = articleRepository.get(articleId);
 
             article.put(ARTICLE_IS_PUBLISHED, false);
-            tagUtils.decTagPublishedRefCount(articleId);
+            tagMgmtService.decTagPublishedRefCount(articleId);
             decArchiveDatePublishedRefCount(articleId);
 
             articleRepository.update(articleId, article);
-            statistics.decPublishedBlogArticleCount();
-            final int blogCmtCnt = statistics.getPublishedBlogCommentCount();
+            statisticMgmtService.decPublishedBlogArticleCount();
+            final int blogCmtCnt = statisticQueryService.getPublishedBlogCommentCount();
             final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
 
-            statistics.setPublishedBlogCommentCount(blogCmtCnt - articleCmtCnt);
+            statisticMgmtService.setPublishedBlogCommentCount(blogCmtCnt - articleCmtCnt);
 
             final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
 
@@ -182,7 +210,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Cancels publish article failed", e);
+            LOGGER.log(Level.ERROR, "Cancels publish article failed", e);
 
             throw new ServiceException(e);
         }
@@ -212,7 +240,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Can't put the article[oId{0}] to top", articleId);
+            LOGGER.log(Level.ERROR, "Can't put the article[oId{0}] to top", articleId);
             throw new ServiceException(e);
         }
     }
@@ -274,7 +302,7 @@ public final class ArticleMgmtService {
             }
 
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
-                if (articleUtils.hadBeenPublished(oldArticle)) {
+                if (articleQueryService.hadBeenPublished(oldArticle)) {
                     // Edit update date only for published article
                     article.put(ARTICLE_UPDATE_DATE, date);
                 } else { // This article is a draft and this is the first time to publish it
@@ -283,7 +311,7 @@ public final class ArticleMgmtService {
                     article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
                 }
             } else { // Save as draft
-                if (articleUtils.hadBeenPublished(oldArticle)) {
+                if (articleQueryService.hadBeenPublished(oldArticle)) {
                     // Save update date only for published article
                     article.put(ARTICLE_UPDATE_DATE, date);
                 } else {
@@ -301,11 +329,11 @@ public final class ArticleMgmtService {
             // Set statistic
             if (publishNewArticle) {
                 // This article is updated from unpublished to published
-                statistics.incPublishedBlogArticleCount();
-                final int blogCmtCnt = statistics.getPublishedBlogCommentCount();
+                statisticMgmtService.incPublishedBlogArticleCount();
+                final int blogCmtCnt = statisticQueryService.getPublishedBlogCommentCount();
                 final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
 
-                statistics.setPublishedBlogCommentCount(blogCmtCnt + articleCmtCnt);
+                statisticMgmtService.setPublishedBlogCommentCount(blogCmtCnt + articleCmtCnt);
 
                 final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
 
@@ -335,7 +363,7 @@ public final class ArticleMgmtService {
                 try {
                     eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_ARTICLE, eventData));
                 } catch (final EventException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    LOGGER.log(Level.ERROR, e.getMessage(), e);
                 }
             } else {
                 // Fire update article event
@@ -346,7 +374,7 @@ public final class ArticleMgmtService {
                 try {
                     eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.UPDATE_ARTICLE, eventData));
                 } catch (final EventException e) {
-                    LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                    LOGGER.log(Level.ERROR, e.getMessage(), e);
                 }
             }
 
@@ -356,7 +384,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates an article failed", e);
+            LOGGER.log(Level.ERROR, "Updates an article failed", e);
 
             throw e;
         } catch (final Exception e) {
@@ -364,7 +392,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates an article failed", e);
+            LOGGER.log(Level.ERROR, "Updates an article failed", e);
 
             throw new ServiceException(e.getMessage());
         }
@@ -462,9 +490,9 @@ public final class ArticleMgmtService {
             // Step 5: Add tag-article relations
             addTagArticleRelation(tags, article);
             // Step 6: Inc blog article count statictis
-            statistics.incBlogArticleCount();
+            statisticMgmtService.incBlogArticleCount();
             if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                statistics.incPublishedBlogArticleCount();
+                statisticMgmtService.incPublishedBlogArticleCount();
             }
             // Step 7: Add archive date-article relations
             archiveDate(article);
@@ -516,11 +544,11 @@ public final class ArticleMgmtService {
 
             article.remove(Common.POST_TO_COMMUNITY);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Adds an article failed", e);
+            LOGGER.log(Level.ERROR, "Adds an article failed", e);
 
             throw new ServiceException(e);
         } catch (final EventException e) {
-            LOGGER.log(Level.WARNING, "Adds an article event process failed", e);
+            LOGGER.log(Level.WARN, "Adds an article event process failed", e);
         }
 
         return ret;
@@ -533,7 +561,7 @@ public final class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public void removeArticle(final String articleId) throws ServiceException {
-        LOGGER.log(Level.FINER, "Removing an article[id={0}]", articleId);
+        LOGGER.log(Level.DEBUG, "Removing an article[id={0}]", articleId);
 
         final Transaction transaction = articleRepository.beginTransaction();
 
@@ -547,9 +575,9 @@ public final class ArticleMgmtService {
 
             articleRepository.remove(articleId);
 
-            statistics.decBlogArticleCount();
+            statisticMgmtService.decBlogArticleCount();
             if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                statistics.decPublishedBlogArticleCount();
+                statisticMgmtService.decPublishedBlogArticleCount();
             }
 
             final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
@@ -564,11 +592,11 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes an article[id=" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Removes an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
 
-        LOGGER.log(Level.FINER, "Removed an article[id={0}]", articleId);
+        LOGGER.log(Level.DEBUG, "Removed an article[id={0}]", articleId);
     }
 
     /**
@@ -598,7 +626,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.WARNING, "Updates article random value failed");
+            LOGGER.log(Level.WARN, "Updates article random value failed");
 
             throw new ServiceException(e);
         }
@@ -620,7 +648,7 @@ public final class ArticleMgmtService {
                 return;
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Gets article [id=" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets article [id=" + articleId + "] failed", e);
 
             return;
         }
@@ -638,7 +666,7 @@ public final class ArticleMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.WARNING, "Updates article view count failed");
+            LOGGER.log(Level.WARN, "Updates article view count failed");
 
             throw new ServiceException(e);
         }
@@ -669,17 +697,17 @@ public final class ArticleMgmtService {
                     tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
                 }
                 tagRepository.update(tagId, tag);
-                LOGGER.log(Level.FINEST, "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
+                LOGGER.log(Level.TRACE, "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
                     new Object[] {
                     tag.getString(Tag.TAG_TITLE), tag.getInt(Tag.TAG_REFERENCE_COUNT), tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
                     articleId});
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Decs tag references count of article[id" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Decs tag references count of article[id" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
 
-        LOGGER.log(Level.FINER, "Deced all tag reference count of article[id={0}]", articleId);
+        LOGGER.log(Level.DEBUG, "Deced all tag reference count of article[id={0}]", articleId);
     }
 
     /**
@@ -716,7 +744,7 @@ public final class ArticleMgmtService {
 
             archiveDateArticleRepository.remove(archiveDateArticleRelation.getString(Keys.OBJECT_ID));
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Unarchive date for article[id=" + articleId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Unarchive date for article[id=" + articleId + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -789,7 +817,7 @@ public final class ArticleMgmtService {
             final String newTagTitle = newTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(newTagTitle, oldTags)) {
-                LOGGER.log(Level.FINER, "Tag need to add[title={0}]", newTagTitle);
+                LOGGER.log(Level.DEBUG, "Tag need to add[title={0}]", newTagTitle);
                 tagsNeedToAdd.add(newTag);
             } else {
                 tagsUnchanged.add(newTag);
@@ -799,14 +827,14 @@ public final class ArticleMgmtService {
             final String oldTagTitle = oldTag.getString(Tag.TAG_TITLE);
 
             if (!tagExists(oldTagTitle, newTags)) {
-                LOGGER.log(Level.FINER, "Tag dropped[title={0}]", oldTag);
+                LOGGER.log(Level.DEBUG, "Tag dropped[title={0}]", oldTag);
                 tagsDropped.add(oldTag);
             } else {
                 tagsUnchanged.remove(oldTag);
             }
         }
 
-        LOGGER.log(Level.FINER, "Tags unchanged[{0}]", tagsUnchanged);
+        LOGGER.log(Level.DEBUG, "Tags unchanged[{0}]", tagsUnchanged);
         for (final JSONObject tagUnchanged : tagsUnchanged) {
             final String tagId = tagUnchanged.optString(Keys.OBJECT_ID);
 
@@ -934,7 +962,7 @@ public final class ArticleMgmtService {
             String tagId;
 
             if (null == tag) {
-                LOGGER.log(Level.FINEST, "Found a new tag[title={0}] in article[title={1}]",
+                LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
                     new Object[] {tagTitle, article.optString(Article.ARTICLE_TITLE)});
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
@@ -949,7 +977,7 @@ public final class ArticleMgmtService {
                 tag.put(Keys.OBJECT_ID, tagId);
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
-                LOGGER.log(Level.FINEST, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
+                LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
                     new Object[] {tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE)});
                 final JSONObject tagTmp = new JSONObject();
 
@@ -985,18 +1013,18 @@ public final class ArticleMgmtService {
      */
     private void removeArticleComments(final String articleId) throws JSONException, RepositoryException {
         final int removedCnt = commentRepository.removeComments(articleId);
-        int blogCommentCount = statistics.getBlogCommentCount();
+        int blogCommentCount = statisticQueryService.getBlogCommentCount();
 
         blogCommentCount -= removedCnt;
-        statistics.setBlogCommentCount(blogCommentCount);
+        statisticMgmtService.setBlogCommentCount(blogCommentCount);
 
         final JSONObject article = articleRepository.get(articleId);
 
         if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            int publishedBlogCommentCount = statistics.getPublishedBlogCommentCount();
+            int publishedBlogCommentCount = statisticQueryService.getPublishedBlogCommentCount();
 
             publishedBlogCommentCount -= removedCnt;
-            statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
+            statisticMgmtService.setPublishedBlogCommentCount(publishedBlogCommentCount);
         }
     }
 
@@ -1046,7 +1074,7 @@ public final class ArticleMgmtService {
 
                 archiveDateRepository.add(archiveDate);
             } catch (final ParseException e) {
-                LOGGER.log(Level.SEVERE, e.getMessage(), e);
+                LOGGER.log(Level.ERROR, e.getMessage(), e);
                 throw new RepositoryException(e);
             }
         }
@@ -1115,11 +1143,11 @@ public final class ArticleMgmtService {
             ret = "/" + ret;
         }
 
-        if (Permalinks.invalidArticlePermalinkFormat(ret)) {
+        if (PermalinkQueryService.invalidArticlePermalinkFormat(ret)) {
             throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
         }
 
-        if (permalinks.exist(ret)) {
+        if (permalinkQueryService.exist(ret)) {
             throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
         }
 
@@ -1153,11 +1181,11 @@ public final class ArticleMgmtService {
                 ret = "/" + ret;
             }
 
-            if (Permalinks.invalidArticlePermalinkFormat(ret)) {
+            if (PermalinkQueryService.invalidArticlePermalinkFormat(ret)) {
                 throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
             }
 
-            if (!oldPermalink.equals(ret) && permalinks.exist(ret)) {
+            if (!oldPermalink.equals(ret) && permalinkQueryService.exist(ret)) {
                 throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
             }
         }
@@ -1205,35 +1233,128 @@ public final class ArticleMgmtService {
     }
 
     /**
-     * Gets the {@link ArticleMgmtService} singleton.
-     *
-     * @return the singleton
+     * Sets archive date article repository with the specified archive date article repository.
+     * 
+     * @param archiveDateArticleRepository the specified archive date article repository
      */
-    public static ArticleMgmtService getInstance() {
-        return SingletonHolder.SINGLETON;
+    public void setArchiveDateArticleRepository(final ArchiveDateArticleRepository archiveDateArticleRepository) {
+        this.archiveDateArticleRepository = archiveDateArticleRepository;
     }
 
     /**
-     * Private constructor.
+     * Sets archive date repository with the specified archive date repository.
+     * 
+     * @param archiveDateRepository the specified archive date repository
      */
-    private ArticleMgmtService() {}
+    public void setArchiveDateRepository(final ArchiveDateRepository archiveDateRepository) {
+        this.archiveDateRepository = archiveDateRepository;
+    }
 
     /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 3, 2011
+     * Sets the article repository with the specified article repository.
+     * 
+     * @param articleRepository the specified article repository
      */
-    private static final class SingletonHolder {
+    public void setArticleRepository(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
-        /**
-         * Singleton.
-         */
-        private static final ArticleMgmtService SINGLETON = new ArticleMgmtService();
+    /**
+     * Sets the article query service with the specified article query service.
+     * 
+     * @param articleQueryService the specified article query service
+     */
+    public void setArticleQueryService(final ArticleQueryService articleQueryService) {
+        this.articleQueryService = articleQueryService;
+    }
 
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    /**
+     * Sets the permalink query service with the specified permalink query service.
+     * 
+     * @param permalinkQueryService the specified permalink query service
+     */
+    public void setPermalinkQueryService(final PermalinkQueryService permalinkQueryService) {
+        this.permalinkQueryService = permalinkQueryService;
+    }
+
+    /**
+     * Sets the user repository with the specified user repository.
+     * 
+     * @param userRepository the specified user repository
+     */
+    public void setUserRepository(final UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    /**
+     * Sets the preference query service with the specified preference query service.
+     * 
+     * @param preferenceQueryService the specified preference query service
+     */
+    public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
+        this.preferenceQueryService = preferenceQueryService;
+    }
+
+    /**
+     * Sets the statistic management service with the specified statistic management service.
+     * 
+     * @param statisticMgmtService the specified statistic management service
+     */
+    public void setStatisticMgmtService(final StatisticMgmtService statisticMgmtService) {
+        this.statisticMgmtService = statisticMgmtService;
+    }
+
+    /**
+     * Sets the statistic query service with the specified statistic query service.
+     * 
+     * @param statisticQueryService the specified statistic query service
+     */
+    public void setStatisticQueryService(final StatisticQueryService statisticQueryService) {
+        this.statisticQueryService = statisticQueryService;
+    }
+
+    /**
+     * Sets the tag repository with the specified tag repository.
+     * 
+     * @param tagRepository the specified tag repository
+     */
+    public void setTagRepository(final TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
+    }
+
+    /**
+     * Sets the tag article repository with the specified tag article repository.
+     * 
+     * @param tagArticleRepository the specified tag article repository
+     */
+    public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
+        this.tagArticleRepository = tagArticleRepository;
+    }
+
+    /**
+     * Sets tag management service with the specified tag management service.
+     * 
+     * @param tagMgmtService the specified tag management service
+     */
+    public void setTagMgmtService(final TagMgmtService tagMgmtService) {
+        this.tagMgmtService = tagMgmtService;
+    }
+
+    /**
+     * Sets the comment repository with the specified comment repository.
+     * 
+     * @param commentRepository the specified comment repository
+     */
+    public void setCommentRepository(final CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
+
+    /**
+     * Sets the language service with the specified language service.
+     * 
+     * @param langPropsService the specified language service
+     */
+    public void setLangPropsService(final LangPropsService langPropsService) {
+        this.langPropsService = langPropsService;
     }
 }

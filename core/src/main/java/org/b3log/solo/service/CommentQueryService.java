@@ -19,14 +19,16 @@ package org.b3log.solo.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -37,9 +39,6 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -51,6 +50,7 @@ import org.json.JSONObject;
  * @version 1.0.0.4, Dec 20, 2011
  * @since 0.3.5
  */
+@Service
 public final class CommentQueryService {
 
     /**
@@ -61,26 +61,20 @@ public final class CommentQueryService {
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
-
-    /**
-     * Gets the {@link CommentQueryService} singleton.
-     *
-     * @return the singleton
-     */
-    public static CommentQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
+    @Inject
+    private PageRepository pageRepository;
 
     /**
      * Gets comments with the specified request json object, request and response.
@@ -168,7 +162,7 @@ public final class CommentQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets comments failed", e);
+            LOGGER.log(Level.ERROR, "Gets comments failed", e);
 
             throw new ServiceException(e);
         }
@@ -206,32 +200,35 @@ public final class CommentQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets comments failed", e);
+            LOGGER.log(Level.ERROR, "Gets comments failed", e);
             throw new ServiceException(e);
         }
     }
 
     /**
-     * Private constructor.
+     * Sets the article repository with the specified article repository.
+     * 
+     * @param articleRepository the specified article repository
      */
-    private CommentQueryService() {}
+    public void setArticleRepository(final ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
     /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 18, 2011
+     * Set the page repository with the specified page repository.
+     * 
+     * @param pageRepository the specified page repository
      */
-    private static final class SingletonHolder {
+    public void setPageRepository(final PageRepository pageRepository) {
+        this.pageRepository = pageRepository;
+    }
 
-        /**
-         * Singleton.
-         */
-        private static final CommentQueryService SINGLETON = new CommentQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    /**
+     * Sets the comment repository with the specified comment repository.
+     * 
+     * @param commentRepository the specified comment repository
+     */
+    public void setCommentRepository(final CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
     }
 }

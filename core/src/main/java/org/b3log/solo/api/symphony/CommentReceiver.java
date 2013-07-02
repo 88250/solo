@@ -21,8 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -30,6 +29,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -51,13 +52,11 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
+import org.b3log.solo.service.ArticleMgmtService;
+import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.Articles;
-import org.b3log.solo.util.Comments;
+import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Statistics;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -79,29 +78,33 @@ public final class CommentReceiver {
     private static final Logger LOGGER = Logger.getLogger(CommentReceiver.class.getName());
 
     /**
-     * Comment repository.
+     * Comment management service.
      */
-    private static CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+    @Inject
+    private CommentMgmtService commentMgmtService;
 
     /**
-     * Article utilities.
+     * Comment repository.
      */
-    private static Articles articleUtils = Articles.getInstance();
+    private static CommentRepository commentRepository;
 
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
+
+    /**
+     * Article management service.
+     */
+    @Inject
+    private ArticleMgmtService articleMgmtService;
 
     /**
      * Article repository.
      */
-    private static ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
-
-    /**
-     * Statistic utilities.
-     */
-    private static Statistics statistics = Statistics.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Default user thumbnail.
@@ -117,6 +120,12 @@ public final class CommentReceiver {
      * Event manager.
      */
     private static EventManager eventManager = EventManager.getInstance();
+
+    /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Adds an article with the specified request.
@@ -197,7 +206,7 @@ public final class CommentReceiver {
             try {
                 new URL(commentURL);
             } catch (final MalformedURLException e) {
-                LOGGER.log(Level.WARNING, "The comment URL is invalid [{0}]", commentURL);
+                LOGGER.log(Level.WARN, "The comment URL is invalid [{0}]", commentURL);
                 commentURL = "";
             }
 
@@ -232,7 +241,7 @@ public final class CommentReceiver {
                 } else {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-                    LOGGER.log(Level.WARNING, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
+                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
                         new String[] {originalCommentId, commentName, commentContent});
                 }
             } else {
@@ -252,15 +261,15 @@ public final class CommentReceiver {
 
             commentRepository.add(comment);
             // Step 2: Update article comment count
-            articleUtils.incArticleCommentCount(articleId);
+            articleMgmtService.incArticleCommentCount(articleId);
             // Step 3: Update blog statistic comment count
-            statistics.incBlogCommentCount();
-            statistics.incPublishedBlogCommentCount();
+            statisticMgmtService.incBlogCommentCount();
+            statisticMgmtService.incPublishedBlogCommentCount();
             // Step 4: Send an email to admin
             try {
-                Comments.sendNotificationMail(article, comment, originalComment, preference);
+                commentMgmtService.sendNotificationMail(article, comment, originalComment, preference);
             } catch (final Exception e) {
-                LOGGER.log(Level.WARNING, "Send mail failed", e);
+                LOGGER.log(Level.WARN, "Send mail failed", e);
             }
             // Step 5: Fire add comment event
             final JSONObject eventData = new JSONObject();
@@ -279,7 +288,7 @@ public final class CommentReceiver {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -347,21 +356,21 @@ public final class CommentReceiver {
                     thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=" + size + "&d=" + Latkes.getServePath()
                         + "/images/default-user-thumbnail.png";
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                    LOGGER.log(Level.FINEST, "Comment thumbnail[URL={0}]", thumbnailURL);
+                    LOGGER.log(Level.TRACE, "Comment thumbnail[URL={0}]", thumbnailURL);
 
                     return;
                 }
             } else {
-                LOGGER.log(Level.WARNING, "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
+                LOGGER.log(Level.WARN, "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
                     new Object[] {commentEmail, statusCode});
             }
         } catch (final IOException e) {
-            LOGGER.warning(e.getMessage());
-            LOGGER.log(Level.WARNING, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
+            LOGGER.warn(e.getMessage());
+            LOGGER.log(Level.WARN, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
         }
 
         if (null == thumbnailURL) {
-            LOGGER.log(Level.WARNING, "Not supported yet for comment thumbnail for email[{0}]", commentEmail);
+            LOGGER.log(Level.WARN, "Not supported yet for comment thumbnail for email[{0}]", commentEmail);
             thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
             comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
         }

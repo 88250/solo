@@ -19,12 +19,13 @@ package org.b3log.solo.plugin.broadcast;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -42,8 +43,8 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.OptionMgmtService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
 
@@ -51,7 +52,7 @@ import org.json.JSONObject;
  * Broadcast chance processor.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Apr 24, 2013
+ * @version 1.0.0.9, Jun 13, 2013
  * @since 0.6.0
  */
 @RequestProcessor
@@ -65,12 +66,14 @@ public final class ChanceProcessor {
     /**
      * Option management service.
      */
-    private OptionMgmtService optionMgmtService = OptionMgmtService.getInstance();
+    @Inject
+    private OptionMgmtService optionMgmtService;
 
     /**
      * Option query service.
      */
-    private OptionQueryService optionQueryService = OptionQueryService.getInstance();
+    @Inject
+    private OptionQueryService optionQueryService;
 
     /**
      * URL fetch service.
@@ -78,9 +81,16 @@ public final class ChanceProcessor {
     private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
+    
+    /**
+     * Preference query service.
+     */
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * URL of adding article to Rhythm.
@@ -91,7 +101,7 @@ public final class ChanceProcessor {
         try {
             ADD_BROADCAST_URL = new URL(SoloServletListener.B3LOG_RHYTHM_SERVE_PATH + "/broadcast");
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm add broadcast] error!");
+            LOGGER.log(Level.ERROR, "Creates remote service address[rhythm add broadcast] error!");
             throw new IllegalStateException(e);
         }
     }
@@ -150,7 +160,7 @@ public final class ChanceProcessor {
         } catch (final Exception e) {
             final String msg = "Broadcast plugin exception";
 
-            LOGGER.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.ERROR, msg, e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -184,7 +194,7 @@ public final class ChanceProcessor {
     @RequestProcessing(value = "/console/plugins/b3log-broadcast/chance", method = HTTPRequestMethod.GET)
     public void hasChance(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -198,9 +208,7 @@ public final class ChanceProcessor {
 
         renderer.setJSONObject(ret);
 
-        final Users users = Users.getInstance();
-
-        if (!users.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, 0L);
             ret.put(Keys.STATUS_CODE, false);
 
@@ -220,7 +228,7 @@ public final class ChanceProcessor {
             ret.put(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME, option.getLong(Option.OPTION_VALUE));
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Broadcast plugin exception", e);
+            LOGGER.log(Level.ERROR, "Broadcast plugin exception", e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -258,7 +266,7 @@ public final class ChanceProcessor {
     @RequestProcessing(value = "/console/plugins/b3log-broadcast", method = HTTPRequestMethod.POST)
     public void submitBroadcast(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -276,7 +284,7 @@ public final class ChanceProcessor {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
             final JSONObject broadcast = requestJSONObject.getJSONObject("broadcast");
-            final JSONObject preference = PreferenceQueryService.getInstance().getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final String b3logKey = preference.getString(Preference.KEY_OF_SOLO);
             final String email = preference.getString(Preference.ADMIN_EMAIL);
             final String clientName = "B3log Solo";
@@ -293,7 +301,7 @@ public final class ChanceProcessor {
             broadcastRequest.put("clientTitle", clientTitle);
             broadcastRequest.put("clientVersion", clientVersion);
             broadcastRequest.put("clientName", clientName);
-            broadcastRequest.put("clientHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
+            broadcastRequest.put("clientHost", Latkes.getServePath());
 
             final HTTPRequest httpRequest = new HTTPRequest();
 
@@ -317,7 +325,7 @@ public final class ChanceProcessor {
 
             ret.put(Keys.STATUS_CODE, false);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Submits broadcast failed", e);
+            LOGGER.log(Level.ERROR, "Submits broadcast failed", e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

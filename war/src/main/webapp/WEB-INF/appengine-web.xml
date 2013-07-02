@@ -69,7 +69,11 @@
         <include path="/skins/**/*.swf" />
         <include path="/skins/**.gif" />
         <include path="/skins/**/*.gif" />
-        
+        <include path="/skins/**/*.eot" />
+        <include path="/skins/**/*.svg" />
+        <include path="/skins/**/*.ttf" />
+        <include path="/skins/**/*.woff" />
+
         <include path="/css/**.css" />
         <include path="/css/**/*.css" />
         

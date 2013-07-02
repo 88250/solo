@@ -16,21 +16,28 @@
 package org.b3log.solo.service;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.MD5;
+import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.json.JSONObject;
 
 
@@ -42,6 +49,7 @@ import org.json.JSONObject;
  * @version 1.0.0.6, May 27, 2013
  * @since 0.4.0
  */
+@Service
 public final class UserMgmtService {
 
     /**
@@ -52,17 +60,77 @@ public final class UserMgmtService {
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Length of hashed password.
      */
     private static final int HASHED_PASSWORD_LENGTH = 32;
+
+    /**
+     * Tries to login with cookie.
+     *
+     * @param request the specified request
+     * @param response the specified response
+     */
+    public void tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
+        final Cookie[] cookies = request.getCookies();
+
+        if (null == cookies || 0 == cookies.length) {
+            return;
+        }
+
+        try {
+            for (int i = 0; i < cookies.length; i++) {
+                final Cookie cookie = cookies[i];
+
+                if (!"b3log-latke".equals(cookie.getName())) {
+                    continue;
+                }
+
+                final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
+
+                final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
+
+                if (Strings.isEmptyOrNull(userEmail)) {
+                    break;
+                }
+
+                final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
+
+                final JSONObject user = userQueryService.getUserByEmail(userEmail.toLowerCase().trim());
+
+                if (null == user) {
+                    break;
+                }
+
+                final String userPassword = user.optString(User.USER_PASSWORD);
+                final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
+
+                if (userPassword.equals(hashPassword)) {
+                    Sessions.login(request, response, user);
+                    LOGGER.log(Level.DEBUG, "Logged in with cookie[email={0}]", userEmail);
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
+
+            final Cookie cookie = new Cookie("b3log-latke", null);
+
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+
+            response.addCookie(cookie);
+        }
+    }
 
     /**
      * Updates a user by the specified request json object.
@@ -136,7 +204,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
+            LOGGER.log(Level.ERROR, "Updates a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -173,7 +241,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Updates a user failed", e);
+            LOGGER.log(Level.ERROR, "Updates a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -249,7 +317,7 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Adds a user failed", e);
+            LOGGER.log(Level.ERROR, "Adds a user failed", e);
             throw new ServiceException(e);
         }
     }
@@ -272,42 +340,26 @@ public final class UserMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes a user[id=" + userId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Removes a user[id=" + userId + "] failed", e);
             throw new ServiceException(e);
         }
     }
 
     /**
-     * Gets the {@link UserMgmtService} singleton.
-     *
-     * @return the singleton
+     * Sets the user repository with the specified user repository.
+     * 
+     * @param userRepository the specified user repository
      */
-    public static UserMgmtService getInstance() {
-        return SingletonHolder.SINGLETON;
-
+    public void setUserRepository(final UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     /**
-     * Private constructor.
+     * Sets the language service with the specified language service.
+     * 
+     * @param langPropsService the specified language service
      */
-    private UserMgmtService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 28, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final UserMgmtService SINGLETON = new UserMgmtService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setLangPropsService(final LangPropsService langPropsService) {
+        this.langPropsService = langPropsService;
     }
 }

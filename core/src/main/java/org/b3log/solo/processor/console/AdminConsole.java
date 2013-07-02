@@ -20,8 +20,7 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -29,6 +28,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
@@ -47,7 +48,7 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.Users;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 
@@ -69,22 +70,26 @@ public final class AdminConsole {
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Event manager.
@@ -111,7 +116,7 @@ public final class AdminConsole {
 
         dataModel.putAll(langs);
 
-        final JSONObject currentUser = userUtils.getCurrentUser(request);
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
         final String userName = currentUser.optString(User.USER_NAME);
         final String roleName = currentUser.optString(User.USER_ROLE);
 
@@ -137,7 +142,7 @@ public final class AdminConsole {
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Admin index render failed", e);
+            LOGGER.log(Level.ERROR, "Admin index render failed", e);
         }
 
         fireFreeMarkerActionEvent(templateName, dataModel);
@@ -169,7 +174,7 @@ public final class AdminConsole {
         final String requestURI = request.getRequestURI();
         final String templateName = StringUtils.substringBetween(requestURI, Latkes.getContextPath() + '/', ".") + ".ftl";
 
-        LOGGER.log(Level.FINEST, "Admin function[templateName={0}]", templateName);
+        LOGGER.log(Level.TRACE, "Admin function[templateName={0}]", templateName);
         renderer.setTemplateName(templateName);
 
         final Locale locale = Latkes.getLocale();
@@ -215,7 +220,7 @@ public final class AdminConsole {
         try {
             preference = preferenceQueryService.getPreference();
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, "Loads preference failed", e);
+            LOGGER.log(Level.ERROR, "Loads preference failed", e);
         }
 
         final StringBuilder timeZoneIdOptions = new StringBuilder();
@@ -257,7 +262,7 @@ public final class AdminConsole {
                 dataModel.put(Plugin.PLUGINS, "");
             }
         } catch (final EventException e) {
-            LOGGER.log(Level.WARNING, "Event[FREEMARKER_ACTION] handle failed, ignores this exception for kernel health", e);
+            LOGGER.log(Level.WARN, "Event[FREEMARKER_ACTION] handle failed, ignores this exception for kernel health", e);
         }
     }
 }

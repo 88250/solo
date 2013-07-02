@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- *  index for admin
+ * @description index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.2.2, May 28, 2013
@@ -30,8 +30,8 @@ var Admin = function() {
 };
 
 $.extend(Admin.prototype, {
-    /*
-     * 登出
+    /**
+     * @description  登出
      */
     logout: function() {
         window.location.href = latkeConfig.servePath + "/logout?goto=" + latkeConfig.servePath;
@@ -43,9 +43,9 @@ $.extend(Admin.prototype, {
         $("#tipMsg").text("");
         $("#loadMsg").text("");
     },
-    /*
-     * 根据当前页数设置 hash
-     * @currentPage {string} 当前页
+    /**
+     * @description 根据当前页数设置 hash
+     * @param {Int} currentPage 当前页
      */
     setHashByPage: function(currentPage) {
         var hash = window.location.hash,
@@ -57,15 +57,15 @@ $.extend(Admin.prototype, {
         }
         window.location.hash = hashList.join("/");
     },
-    /*
-     * 设置某个 tab 被选择
-     * @id tab id
+    /**
+     * @description 设置某个 tab 被选择
+     * @param {Stirng} id id tab id
      */
     selectTab: function(id) {
         window.location.hash = "#" + id;
     },
-    /*
-     * 根据当前 hash 解析出当前页数及 hash 数组。
+    /**
+     * @description 根据当前 hash 解析出当前页数及 hash 数组。
      */
     analyseHash: function() {
         var hash = window.location.hash;
@@ -83,8 +83,8 @@ $.extend(Admin.prototype, {
         }
         return tags;
     },
-    /*
-     * 根据当前 hash 设置当前 tab
+    /**
+     * @description 根据当前 hash 设置当前 tab
      */
     setCurByHash: function() {
         $("#tipMsg").text("");
@@ -98,6 +98,14 @@ $.extend(Admin.prototype, {
 
         if (tab === "") {
             return;
+        }
+
+        if (tab !== "article") {
+            admin.article.clearDraftTimer();
+        } else if (tab === "article") {
+            admin.article.autoSaveDraftTimer = setInterval(function() {
+                admin.article._autoSaveToDraft();
+            }, admin.article.AUTOSAVETIME);
         }
 
         // 离开编辑器时进行提示
@@ -191,8 +199,8 @@ $.extend(Admin.prototype, {
             $("#loadMsg").text("");
         }
     },
-    /*
-     * 初始化整个后台
+    /**
+     * @description 初始化整个后台
      */
     init: function() {
         //window.onerror = Util.error;
@@ -213,9 +221,9 @@ $.extend(Admin.prototype, {
         }, 6000);
         $("#loadMsg").text("");
     },
-    /*
+    /**
      * @description tools and article collapse
-     * @param {bom} it 触发事件对象
+     * @param {Bom} it 触发事件对象
      */
     collapseNav: function(it) {
         var subNav = $(it).next();
@@ -227,8 +235,8 @@ $.extend(Admin.prototype, {
             }
         });
     },
-    /*
-     * 后台及当前页面所需插件初始化完后，对权限进行控制及当前页面属于 tools 时，tools 选项需展开。
+    /**
+     * @description 后台及当前页面所需插件初始化完后，对权限进行控制及当前页面属于 tools 时，tools 选项需展开。
      */
     inited: function() {
         // Removes functions with the current user role

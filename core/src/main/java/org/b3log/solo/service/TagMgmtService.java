@@ -17,14 +17,17 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -35,6 +38,7 @@ import org.json.JSONObject;
  * @version 1.0.0.1, Oct 26, 2011
  * @since 0.4.0
  */
+@Service
 public final class TagMgmtService {
 
     /**
@@ -45,12 +49,37 @@ public final class TagMgmtService {
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
+
+    /**
+     * Decrements reference count of every tag of an published article specified
+     * by the given article id.
+     *
+     * @param articleId the given article id
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void decTagPublishedRefCount(final String articleId) throws JSONException, RepositoryException {
+        final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
+
+        for (final JSONObject tag : tags) {
+            final String tagId = tag.getString(Keys.OBJECT_ID);
+            final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
+
+            tag.put(Tag.TAG_REFERENCE_COUNT, refCnt);
+            final int publishedRefCnt = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+
+            tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
+            tagRepository.update(tagId, tag);
+        }
+    }
 
     /**
      * Removes all unused tags.
@@ -80,42 +109,27 @@ public final class TagMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes unused tags failed", e);
+            LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
 
             throw new ServiceException(e);
         }
     }
 
     /**
-     * Gets the {@link TagMgmtService} singleton.
-     *
-     * @return the singleton
+     * Sets the tag repository with the specified tag repository.
+     * 
+     * @param tagRepository the specified tag repository
      */
-    public static TagMgmtService getInstance() {
-        return SingletonHolder.SINGLETON;
+    public void setTagRepository(final TagRepository tagRepository) {
+        this.tagRepository = tagRepository;
     }
 
     /**
-     * Private constructor.
+     * Sets the tag query service with the specified tag query service.
+     * 
+     * @param tagQueryService the specified tag query service
      */
-    private TagMgmtService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 24, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final TagMgmtService SINGLETON = new TagMgmtService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setTagQueryService(final TagQueryService tagQueryService) {
+        this.tagQueryService = tagQueryService;
     }
 }

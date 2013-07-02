@@ -16,8 +16,9 @@
 package org.b3log.solo.processor;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -25,7 +26,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.solo.service.StatisticMgmtService;
-import org.b3log.solo.util.Statistics;
 
 
 /**
@@ -54,7 +54,8 @@ public final class StatProcessor {
     /**
      * Statistic management service.
      */
-    private StatisticMgmtService statisticMgmtService = StatisticMgmtService.getInstance();
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Online visitor count refresher.
@@ -65,7 +66,7 @@ public final class StatProcessor {
     public void onlineVisitorCountRefresher(final HTTPRequestContext context) {
         context.setRenderer(new DoNothingRenderer());
 
-        Statistics.removeExpiredOnlineVisitor();
+        statisticMgmtService.removeExpiredOnlineVisitor();
     }
 
     /**
@@ -82,7 +83,7 @@ public final class StatProcessor {
         try {
             statisticMgmtService.flushStatistic();
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, "Flushes statistic to repository failed", e);
+            LOGGER.log(Level.ERROR, "Flushes statistic to repository failed", e);
         }
     }
 }

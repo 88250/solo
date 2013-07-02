@@ -73,7 +73,7 @@
             </plugin>
 
             <plugin>
-                <groupId>org.b3log.latke</groupId>
+                <groupId>org.b3log</groupId>
                 <artifactId>maven-min-plugin</artifactId>
                 <version>${maven-min-plugin.version}</version>
                 <inherited>false</inherited>

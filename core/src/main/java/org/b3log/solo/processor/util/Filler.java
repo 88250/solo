@@ -22,12 +22,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -35,12 +33,15 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.*;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
@@ -52,19 +53,11 @@ import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.LinkRepositoryImpl;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
-import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.util.Articles;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Tags;
-import org.b3log.solo.util.Users;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,6 +70,7 @@ import org.json.JSONObject;
  * @version 1.0.6.5, May 17, 2013
  * @since 0.3.1
  */
+@Service
 public final class Filler {
 
     /**
@@ -87,27 +81,26 @@ public final class Filler {
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateRepository archiveDateRepository;
 
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
-
-    /**
-     * Article utilities.
-     */
-    private Articles articleUtils = Articles.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Tag utilities.
@@ -117,27 +110,32 @@ public final class Filler {
     /**
      * Link repository.
      */
-    private LinkRepository linkRepository = LinkRepositoryImpl.getInstance();
+    @Inject
+    private LinkRepository linkRepository;
 
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    @Inject
+    private PageRepository pageRepository;
 
     /**
      * Statistic query service.
      */
-    private StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
+    @Inject
+    private StatisticQueryService statisticQueryService;
 
     /**
      * User repository.
      */
-    private UserRepository userRepository = UserRepositoryImpl.getInstance();
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * {@code true} for published.
@@ -147,7 +145,14 @@ public final class Filler {
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * default page.
@@ -209,13 +214,13 @@ public final class Filler {
             boolean isArticles1 = false;
 
             if (null == template) {
-                LOGGER.fine("The skin dose not contain [index.ftl] template");
+                LOGGER.debug("The skin dose not contain [index.ftl] template");
             } else { // See https://github.com/b3log/b3log-solo/issues/179 for more details
                 if (Templates.hasExpression(template, "<#list articles1 as article>")) {
                     isArticles1 = true;
                     query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
 
-                    LOGGER.finest("Query ${articles1} in index.ftl");
+                    LOGGER.trace("Query ${articles1} in index.ftl");
                 } else { // <#list articles as article>
                     query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
                     if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
@@ -241,13 +246,13 @@ public final class Filler {
 
             final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
 
-            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
                 setArticlesExProperties(articles, preference);
             } else {
                 if (!articles.isEmpty()) {
-                    final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                     setArticlesExProperties(articles, author, preference);
                 }
@@ -259,10 +264,10 @@ public final class Filler {
                 dataModel.put(Article.ARTICLES + "1", articles);
             }
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills index articles failed", e);
+            LOGGER.log(Level.ERROR, "Fills index articles failed", e);
             throw new ServiceException(e);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Fills index articles failed", e);
+            LOGGER.log(Level.ERROR, "Fills index articles failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -287,10 +292,10 @@ public final class Filler {
 
             dataModel.put(Link.LINKS, links);
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills links failed", e);
+            LOGGER.log(Level.ERROR, "Fills links failed", e);
             throw new ServiceException(e);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Fills links failed", e);
+            LOGGER.log(Level.ERROR, "Fills links failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -309,7 +314,7 @@ public final class Filler {
         Stopwatchs.start("Fill Most Used Tags");
 
         try {
-            LOGGER.finer("Filling most used tags....");
+            LOGGER.debug("Filling most used tags....");
             final int mostUsedTagDisplayCnt = preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
 
             final List<JSONObject> tags = tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
@@ -318,10 +323,10 @@ public final class Filler {
 
             dataModel.put(Common.MOST_USED_TAGS, tags);
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills most used tags failed", e);
+            LOGGER.log(Level.ERROR, "Fills most used tags failed", e);
             throw new ServiceException(e);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Fills most used tags failed", e);
+            LOGGER.log(Level.ERROR, "Fills most used tags failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -339,7 +344,7 @@ public final class Filler {
         Stopwatchs.start("Fill Archive Dates");
 
         try {
-            LOGGER.finer("Filling archive dates....");
+            LOGGER.debug("Filling archive dates....");
             final List<JSONObject> archiveDates = archiveDateRepository.getArchiveDates();
             final List<JSONObject> archiveDates2 = new ArrayList<JSONObject>();
 
@@ -362,7 +367,7 @@ public final class Filler {
                 if (!dateString.equals(lastDateString)) {
                     archiveDates2.add(archiveDate);
                 } else {
-                    LOGGER.log(Level.WARNING, "Found a duplicated archive date [{0}]", dateString);
+                    LOGGER.log(Level.WARN, "Found a duplicated archive date [{0}]", dateString);
                 }
             }
 
@@ -388,10 +393,10 @@ public final class Filler {
 
             dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates2);
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills archive dates failed", e);
+            LOGGER.log(Level.ERROR, "Fills archive dates failed", e);
             throw new ServiceException(e);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Fills archive dates failed", e);
+            LOGGER.log(Level.ERROR, "Fills archive dates failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -408,14 +413,14 @@ public final class Filler {
     public void fillMostViewCountArticles(final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         Stopwatchs.start("Fill Most View Articles");
         try {
-            LOGGER.finer("Filling the most view count articles....");
+            LOGGER.debug("Filling the most view count articles....");
             final int mostCommentArticleDisplayCnt = preference.getInt(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
             final List<JSONObject> mostViewCountArticles = articleRepository.getMostViewCountArticles(mostCommentArticleDisplayCnt);
 
             dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
 
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Fills most view count articles failed", e);
+            LOGGER.log(Level.ERROR, "Fills most view count articles failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -433,13 +438,13 @@ public final class Filler {
         Stopwatchs.start("Fill Most CMMTs Articles");
 
         try {
-            LOGGER.finer("Filling most comment articles....");
+            LOGGER.debug("Filling most comment articles....");
             final int mostCommentArticleDisplayCnt = preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
             final List<JSONObject> mostCommentArticles = articleRepository.getMostCommentArticles(mostCommentArticleDisplayCnt);
 
             dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Fills most comment articles failed", e);
+            LOGGER.log(Level.ERROR, "Fills most comment articles failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -464,10 +469,10 @@ public final class Filler {
             dataModel.put(Common.RECENT_ARTICLES, recentArticles);
 
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills recent articles failed", e);
+            LOGGER.log(Level.ERROR, "Fills recent articles failed", e);
             throw new ServiceException(e);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Fills recent articles failed", e);
+            LOGGER.log(Level.ERROR, "Fills recent articles failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -514,7 +519,7 @@ public final class Filler {
             dataModel.put(tagName, articles);
 
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills recent articles failed", e);
+            LOGGER.log(Level.ERROR, "Fills recent articles failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -532,7 +537,7 @@ public final class Filler {
     public void fillRecentComments(final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         Stopwatchs.start("Fill Recent Comments");
         try {
-            LOGGER.finer("Filling recent comments....");
+            LOGGER.debug("Filling recent comments....");
             final int recentCommentDisplayCnt = preference.getInt(Preference.RECENT_COMMENT_DISPLAY_CNT);
 
             final List<JSONObject> recentComments = commentRepository.getRecentComments(recentCommentDisplayCnt);
@@ -550,10 +555,10 @@ public final class Filler {
             dataModel.put(Common.RECENT_COMMENTS, recentComments);
 
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills recent comments failed", e);
+            LOGGER.log(Level.ERROR, "Fills recent comments failed", e);
             throw new ServiceException(e);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Fills recent comments failed", e);
+            LOGGER.log(Level.ERROR, "Fills recent comments failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -570,7 +575,7 @@ public final class Filler {
     public void fillBlogFooter(final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         Stopwatchs.start("Fill Footer");
         try {
-            LOGGER.finer("Filling footer....");
+            LOGGER.debug("Filling footer....");
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
 
             dataModel.put(Preference.BLOG_TITLE, blogTitle);
@@ -595,10 +600,10 @@ public final class Filler {
                     dataModel.put(Plugin.PLUGINS, "");
                 }
             } catch (final EventException e) {
-                LOGGER.log(Level.WARNING, "Event[FREEMARKER_ACTION] handle failed, ignores this exception for kernel health", e);
+                LOGGER.log(Level.WARN, "Event[FREEMARKER_ACTION] handle failed, ignores this exception for kernel health", e);
             }
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills blog footer failed", e);
+            LOGGER.log(Level.ERROR, "Fills blog footer failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -617,7 +622,7 @@ public final class Filler {
         throws ServiceException {
         Stopwatchs.start("Fill Header");
         try {
-            LOGGER.fine("Filling header....");
+            LOGGER.debug("Filling header....");
             dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
             dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
@@ -653,10 +658,10 @@ public final class Filler {
             fillPageNavigations(dataModel);
             fillStatistic(dataModel);
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills blog header failed", e);
+            LOGGER.log(Level.ERROR, "Fills blog header failed", e);
             throw new ServiceException(e);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Fills blog header failed", e);
+            LOGGER.log(Level.ERROR, "Fills blog header failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -695,16 +700,16 @@ public final class Filler {
         throws ServiceException {
         Stopwatchs.start("Fill Side");
         try {
-            LOGGER.fine("Filling side....");
+            LOGGER.debug("Filling side....");
 
             Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "side.ftl");
 
             if (null == template) {
-                LOGGER.fine("The skin dose not contain [side.ftl] template");
+                LOGGER.debug("The skin dose not contain [side.ftl] template");
 
                 template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "index.ftl");
                 if (null == template) {
-                    LOGGER.fine("The skin dose not contain [index.ftl] template");
+                    LOGGER.debug("The skin dose not contain [index.ftl] template");
                     return;
                 }
             }
@@ -745,7 +750,7 @@ public final class Filler {
             }
 
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, "Fills side failed", e);
+            LOGGER.log(Level.ERROR, "Fills side failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -764,7 +769,7 @@ public final class Filler {
         throws ServiceException {
         Stopwatchs.start("Fill User Template[name=" + template.getName() + "]");
         try {
-            LOGGER.log(Level.FINE, "Filling user template[name{0}]", template.getName());
+            LOGGER.log(Level.DEBUG, "Filling user template[name{0}]", template.getName());
 
             if (Templates.hasExpression(template, "<#list links as link>")) {
                 fillLinks(dataModel);
@@ -794,7 +799,7 @@ public final class Filler {
 
             dataModel.put(Preference.NOTICE_BOARD, noticeBoard);
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Fills user template failed", e);
+            LOGGER.log(Level.ERROR, "Fills user template failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -810,7 +815,7 @@ public final class Filler {
     private void fillPageNavigations(final Map<String, Object> dataModel) throws ServiceException {
         Stopwatchs.start("Fill Navigations");
         try {
-            LOGGER.finer("Filling page navigations....");
+            LOGGER.debug("Filling page navigations....");
             final List<JSONObject> pages = pageRepository.getPages();
 
             for (final JSONObject page : pages) {
@@ -823,7 +828,7 @@ public final class Filler {
 
             dataModel.put(Common.PAGE_NAVIGATIONS, pages);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, "Fills page navigations failed", e);
+            LOGGER.log(Level.ERROR, "Fills page navigations failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -839,12 +844,12 @@ public final class Filler {
     private void fillStatistic(final Map<String, Object> dataModel) throws ServiceException {
         Stopwatchs.start("Fill Statistic");
         try {
-            LOGGER.finer("Filling statistic....");
+            LOGGER.debug("Filling statistic....");
             final JSONObject statistic = statisticQueryService.getStatistic();
 
             dataModel.put(Statistic.STATISTIC, statistic);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, "Fills statistic failed", e);
+            LOGGER.log(Level.ERROR, "Fills statistic failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -882,7 +887,7 @@ public final class Filler {
             article.put(Common.AUTHOR_ID, authorId);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+                article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
             } else {
                 article.put(Common.HAS_UPDATED, false);
             }
@@ -891,7 +896,7 @@ public final class Filler {
 
             articleQueryService.markdown(article);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Sets article extra properties failed", e);
+            LOGGER.log(Level.ERROR, "Sets article extra properties failed", e);
             throw new ServiceException(e);
         }
     }
@@ -917,7 +922,7 @@ public final class Filler {
      */
     private void setArticleExProperties(final JSONObject article, final JSONObject preference) throws ServiceException {
         try {
-            final JSONObject author = articleUtils.getAuthor(article);
+            final JSONObject author = articleQueryService.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
 
             article.put(Common.AUTHOR_NAME, authorName);
@@ -926,7 +931,7 @@ public final class Filler {
             article.put(Common.AUTHOR_ID, authorId);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                article.put(Common.HAS_UPDATED, articleUtils.hasUpdated(article));
+                article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
             } else {
                 article.put(Common.HAS_UPDATED, false);
             }
@@ -935,7 +940,7 @@ public final class Filler {
 
             articleQueryService.markdown(article);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Sets article extra properties failed", e);
+            LOGGER.log(Level.ERROR, "Sets article extra properties failed", e);
             throw new ServiceException(e);
         }
     }
@@ -1029,38 +1034,5 @@ public final class Filler {
         } else if ("titleAndContent".equals(articleListStyle)) {
             article.put(Article.ARTICLE_ABSTRACT, article.optString(Article.ARTICLE_CONTENT));
         }
-    }
-
-    /**
-     * Gets the {@link Filler} singleton.
-     *
-     * @return the singleton
-     */
-    public static Filler getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private default constructor.
-     */
-    private Filler() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Jan 12, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final Filler SINGLETON = new Filler();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
     }
 }

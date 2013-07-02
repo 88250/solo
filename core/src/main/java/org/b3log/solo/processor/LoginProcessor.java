@@ -19,13 +19,13 @@ package org.b3log.solo.processor;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.Cookie;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
@@ -78,7 +78,8 @@ public final class LoginProcessor {
     /**
      * User query service.
      */
-    private static UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * User service.
@@ -93,22 +94,26 @@ public final class LoginProcessor {
     /**
      * User management service.
      */
-    private UserMgmtService userMgmtService = UserMgmtService.getInstance();
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Shows login page.
@@ -128,7 +133,7 @@ public final class LoginProcessor {
 
         final HttpServletResponse response = context.getResponse();
 
-        LoginProcessor.tryLogInWithCookie(request, response);
+        userMgmtService.tryLogInWithCookie(request, response);
 
         if (null != userService.getCurrentUser(request)) { // User has already logged in
             response.sendRedirect(destinationURL);
@@ -181,7 +186,7 @@ public final class LoginProcessor {
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
 
             if (null == user) {
-                LOGGER.log(Level.WARNING, "Not found user[email={0}]", userEmail);
+                LOGGER.log(Level.WARN, "Not found user[email={0}]", userEmail);
                 return;
             }
 
@@ -197,9 +202,9 @@ public final class LoginProcessor {
                 return;
             }
 
-            LOGGER.log(Level.WARNING, "Wrong password[{0}]", userPwd);
+            LOGGER.log(Level.WARN, "Wrong password[{0}]", userPwd);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -275,7 +280,7 @@ public final class LoginProcessor {
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 
             if (Strings.isEmptyOrNull(userEmail)) {
-                LOGGER.log(Level.WARNING, "Why user's email is empty");
+                LOGGER.log(Level.WARN, "Why user's email is empty");
                 return;
             }
 
@@ -284,75 +289,20 @@ public final class LoginProcessor {
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
 
             if (null == user) {
-                LOGGER.log(Level.WARNING, "Not found user[email={0}]", userEmail);
+                LOGGER.log(Level.WARN, "Not found user[email={0}]", userEmail);
                 jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
                 return;
             }
 
             if (isPwdExpired()) {
-                LOGGER.log(Level.WARNING, "User[email={0}]'s random password has been expired", userEmail);
+                LOGGER.log(Level.WARN, "User[email={0}]'s random password has been expired", userEmail);
                 jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
                 return;
             }
 
             sendRandomPwd(user, userEmail, jsonObject);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Tries to login with cookie.
-     *
-     * @param request the specified request
-     * @param response the specified response
-     */
-    public static void tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
-        final Cookie[] cookies = request.getCookies();
-
-        if (null == cookies || 0 == cookies.length) {
-            return;
-        }
-
-        try {
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
-
-                if (!"b3log-latke".equals(cookie.getName())) {
-                    continue;
-                }
-
-                final JSONObject cookieJSONObject = new JSONObject(cookie.getValue());
-
-                final String userEmail = cookieJSONObject.optString(User.USER_EMAIL);
-
-                if (Strings.isEmptyOrNull(userEmail)) {
-                    break;
-                }
-
-                final JSONObject user = userQueryService.getUserByEmail(userEmail.toLowerCase().trim());
-
-                if (null == user) {
-                    break;
-                }
-
-                final String userPassword = user.optString(User.USER_PASSWORD);
-                final String hashPassword = cookieJSONObject.optString(User.USER_PASSWORD);
-
-                if (userPassword.equals(hashPassword)) {
-                    Sessions.login(request, response, user);
-                    LOGGER.log(Level.INFO, "Logged in with cookie[email={0}]", userEmail);
-                }
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.WARNING, "Parses cookie failed, clears the cookie[name=b3log-latke]", e);
-
-            final Cookie cookie = new Cookie("b3log-latke", null);
-
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
-
-            response.addCookie(cookie);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
     }
 
@@ -375,7 +325,8 @@ public final class LoginProcessor {
      * @throws ServiceException the ServiceException
      * @throws IOException the IOException
      */
-    private void sendRandomPwd(final JSONObject user, final String userEmail, final JSONObject jsonObject) throws JSONException, ServiceException, IOException {
+    private void sendRandomPwd(final JSONObject user, final String userEmail, final JSONObject jsonObject) throws JSONException,
+            ServiceException, IOException {
         final JSONObject preference = preferenceQueryService.getPreference();
         final String randomPwd = new Randoms().nextString();
         final String blogTitle = preference.getString(Preference.BLOG_TITLE);
@@ -399,7 +350,7 @@ public final class LoginProcessor {
         jsonObject.put("to", Latkes.getServePath() + "/login");
         jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
 
-        LOGGER.log(Level.FINER, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[] {mailSubject, mailBody, userEmail});
+        LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[] {mailSubject, mailBody, userEmail});
     }
 
     /**
@@ -411,7 +362,8 @@ public final class LoginProcessor {
      * @throws JSONException the JSONException
      * @throws ServiceException the ServiceException
      */
-    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL) throws JSONException, ServiceException {
+    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL) throws JSONException,
+            ServiceException {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
 
         renderer.setTemplateName(pageTemplate);

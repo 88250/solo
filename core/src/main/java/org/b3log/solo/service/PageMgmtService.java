@@ -17,13 +17,15 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Comment;
@@ -31,11 +33,7 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Permalinks;
-import org.b3log.solo.util.Statistics;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,6 +45,7 @@ import org.json.JSONObject;
  * @version 1.0.0.7, Jun 8, 2012
  * @since 0.4.0
  */
+@Service
 public final class PageMgmtService {
 
     /**
@@ -57,32 +56,44 @@ public final class PageMgmtService {
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    @Inject
+    private PageRepository pageRepository;
 
     /**
      * Comment repository.
      */
-    private CommentRepository commentRepository = CommentRepositoryImpl.getInstance();
-
-    /**
-     * Statistic utilities.
-     */
-    private Statistics statistics = Statistics.getInstance();
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
-     * Permalink utilities.
+     * Permalink query service.
      */
-    private Permalinks permalinks = Permalinks.getInstance();
+    @Inject
+    private PermalinkQueryService permalinkQueryService;
 
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
+
+    /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
+
+    /**
+     * Statistic query service.
+     */
+    @Inject
+    private StatisticQueryService statisticQueryService;
 
     /**
      * Updates a page by the specified request json object.
@@ -131,7 +142,7 @@ public final class PageMgmtService {
                         permalink = "/" + permalink;
                     }
 
-                    if (Permalinks.invalidPagePermalinkFormat(permalink)) {
+                    if (PermalinkQueryService.invalidPagePermalinkFormat(permalink)) {
                         if (transaction.isActive()) {
                             transaction.rollback();
                         }
@@ -139,7 +150,7 @@ public final class PageMgmtService {
                         throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
                     }
 
-                    if (!oldPermalink.equals(permalink) && permalinks.exist(permalink)) {
+                    if (!oldPermalink.equals(permalink) && permalinkQueryService.exist(permalink)) {
                         if (transaction.isActive()) {
                             transaction.rollback();
                         }
@@ -166,9 +177,9 @@ public final class PageMgmtService {
 
             transaction.commit();
 
-            LOGGER.log(Level.FINER, "Updated a page[id={0}]", pageId);
+            LOGGER.log(Level.DEBUG, "Updated a page[id={0}]", pageId);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             if (transaction.isActive()) {
                 transaction.rollback();
             }
@@ -187,7 +198,7 @@ public final class PageMgmtService {
         final Transaction transaction = pageRepository.beginTransaction();
 
         try {
-            LOGGER.log(Level.FINER, "Removing a page[id={0}]", pageId);
+            LOGGER.log(Level.DEBUG, "Removing a page[id={0}]", pageId);
             removePageComments(pageId);
             pageRepository.remove(pageId);
 
@@ -198,7 +209,7 @@ public final class PageMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes a page[id=" + pageId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Removes a page[id=" + pageId + "] failed", e);
 
             throw new ServiceException(e);
         }
@@ -246,7 +257,7 @@ public final class PageMgmtService {
                     permalink = "/" + permalink;
                 }
 
-                if (Permalinks.invalidPagePermalinkFormat(permalink)) {
+                if (PermalinkQueryService.invalidPagePermalinkFormat(permalink)) {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
@@ -254,7 +265,7 @@ public final class PageMgmtService {
                     throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
                 }
 
-                if (permalinks.exist(permalink)) {
+                if (permalinkQueryService.exist(permalink)) {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
@@ -277,14 +288,14 @@ public final class PageMgmtService {
 
             return ret;
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             if (transaction.isActive()) {
                 transaction.rollback();
             }
 
             throw new ServiceException(e);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             if (transaction.isActive()) {
                 transaction.rollback();
             }
@@ -309,7 +320,7 @@ public final class PageMgmtService {
             final JSONObject srcPage = pageRepository.get(pageId);
             final int srcPageOrder = srcPage.getInt(Page.PAGE_ORDER);
 
-            JSONObject targetPage = null;
+            JSONObject targetPage;
 
             if ("up".equals(direction)) {
                 targetPage = pageRepository.getUpper(pageId);
@@ -322,7 +333,7 @@ public final class PageMgmtService {
                     transaction.rollback();
                 }
 
-                LOGGER.log(Level.WARNING, "Cant not find the target page of source page[order={0}]", srcPageOrder);
+                LOGGER.log(Level.WARN, "Cant not find the target page of source page[order={0}]", srcPageOrder);
                 return;
             }
 
@@ -339,19 +350,10 @@ public final class PageMgmtService {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Changes page's order failed", e);
+            LOGGER.log(Level.ERROR, "Changes page's order failed", e);
 
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Gets the {@link PageMgmtService} singleton.
-     *
-     * @return the singleton
-     */
-    public static PageMgmtService getInstance() {
-        return SingletonHolder.SINGLETON;
     }
 
     /**
@@ -368,15 +370,15 @@ public final class PageMgmtService {
     private void removePageComments(final String pageId) throws JSONException, RepositoryException {
         final int removedCnt = commentRepository.removeComments(pageId);
 
-        int blogCommentCount = statistics.getBlogCommentCount();
+        int blogCommentCount = statisticQueryService.getBlogCommentCount();
 
         blogCommentCount -= removedCnt;
-        statistics.setBlogCommentCount(blogCommentCount);
+        statisticMgmtService.setBlogCommentCount(blogCommentCount);
 
-        int publishedBlogCommentCount = statistics.getPublishedBlogCommentCount();
+        int publishedBlogCommentCount = statisticQueryService.getPublishedBlogCommentCount();
 
         publishedBlogCommentCount -= removedCnt;
-        statistics.setPublishedBlogCommentCount(publishedBlogCommentCount);
+        statisticMgmtService.setPublishedBlogCommentCount(publishedBlogCommentCount);
     }
 
     /**
@@ -408,26 +410,65 @@ public final class PageMgmtService {
     }
 
     /**
-     * Private constructor.
+     * Sets the permalink query service with the specified permalink query service.
+     * 
+     * @param permalinkQueryService the specified permalink query service
      */
-    private PageMgmtService() {}
+    public void setPermalinkQueryService(final PermalinkQueryService permalinkQueryService) {
+        this.permalinkQueryService = permalinkQueryService;
+    }
 
     /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 27, 2011
+     * Set the page repository with the specified page repository.
+     * 
+     * @param pageRepository the specified page repository
      */
-    private static final class SingletonHolder {
+    public void setPageRepository(final PageRepository pageRepository) {
+        this.pageRepository = pageRepository;
+    }
 
-        /**
-         * Singleton.
-         */
-        private static final PageMgmtService SINGLETON = new PageMgmtService();
+    /**
+     * Sets the preference query service with the specified preference query service.
+     * 
+     * @param preferenceQueryService the specified preference query service
+     */
+    public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
+        this.preferenceQueryService = preferenceQueryService;
+    }
 
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    /**
+     * Sets the statistic query service with the specified statistic query service.
+     * 
+     * @param statisticQueryService the specified statistic query service
+     */
+    public void setStatisticQueryService(final StatisticQueryService statisticQueryService) {
+        this.statisticQueryService = statisticQueryService;
+    }
+
+    /**
+     * Sets the statistic management service with the specified statistic management service.
+     * 
+     * @param statisticMgmtService the specified statistic management service
+     */
+    public void setStatisticMgmtService(final StatisticMgmtService statisticMgmtService) {
+        this.statisticMgmtService = statisticMgmtService;
+    }
+
+    /**
+     * Sets the comment repository with the specified comment repository.
+     * 
+     * @param commentRepository the specified comment repository
+     */
+    public void setCommentRepository(final CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
+
+    /**
+     * Sets the language service with the specified language service.
+     * 
+     * @param langPropsService the specified language service
+     */
+    public void setLangPropsService(final LangPropsService langPropsService) {
+        this.langPropsService = langPropsService;
     }
 }

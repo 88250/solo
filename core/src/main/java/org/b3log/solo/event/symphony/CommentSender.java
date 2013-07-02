@@ -18,13 +18,15 @@ package org.b3log.solo.event.symphony;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
@@ -58,11 +60,6 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
-     * Preference query service.
-     */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
-
-    /**
      * URL of adding comment to Symphony.
      */
     private static final URL ADD_COMMENT_URL;
@@ -71,7 +68,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
         try {
             ADD_COMMENT_URL = new URL(SoloServletListener.B3LOG_SYMPHONY_SERVE_PATH + "/solo/comment");
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "Creates remote service address[symphony add comment] error!");
+            LOGGER.log(Level.ERROR, "Creates remote service address[symphony add comment] error!");
             throw new IllegalStateException(e);
         }
     }
@@ -80,10 +77,13 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
 
-        LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
             new Object[] {event.getType(), data, ArticleSender.class.getName()});
         try {
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
+
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
@@ -117,15 +117,15 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put("clientHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
             requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
             requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
-            
+
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
 
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Sends a comment to Symphony error: {0}", e.getMessage());
+            LOGGER.log(Level.ERROR, "Sends a comment to Symphony error: {0}", e.getMessage());
         }
 
-        LOGGER.log(Level.FINER, "Sent a comment to Symphony");
+        LOGGER.log(Level.DEBUG, "Sent a comment to Symphony");
     }
 
     /**

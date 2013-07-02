@@ -52,7 +52,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
 
         initService.init(requestJSONObject);
 
-        final UserQueryService userQueryService = UserQueryService.getInstance();
+        final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByEmail("test@gmail.com"));
     }
 
@@ -63,7 +63,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void addArticleComment() throws Exception {
-        final ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+        final ArticleQueryService articleQueryService = getArticleQueryService();
 
         final List<JSONObject> articles = articleQueryService.getRecentArticles(10);
 

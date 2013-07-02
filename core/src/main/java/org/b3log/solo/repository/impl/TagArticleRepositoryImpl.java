@@ -17,12 +17,17 @@ package org.b3log.solo.repository.impl;
 
 
 import java.util.List;
-import java.util.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,17 +40,15 @@ import org.json.JSONObject;
  * @version 1.0.0.9, Nov 9, 2011
  * @since 0.3.1
  */
+@Repository
 public final class TagArticleRepositoryImpl extends AbstractRepository implements TagArticleRepository {
 
     /**
-     * Logger.
+     * Public constructor.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagArticleRepositoryImpl.class.getName());
-
-    /**
-     * Singleton.
-     */
-    private static final TagArticleRepositoryImpl SINGLETON = new TagArticleRepositoryImpl(Tag.TAG + "_" + Article.ARTICLE);
+    public TagArticleRepositoryImpl() {
+        super(Tag.TAG + "_" + Article.ARTICLE);
+    }
 
     @Override
     public List<JSONObject> getByArticleId(final String articleId) throws RepositoryException {
@@ -59,29 +62,10 @@ public final class TagArticleRepositoryImpl extends AbstractRepository implement
     }
 
     @Override
-    public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)
-        throws RepositoryException {
+    public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(
             1);
 
         return get(query);
-    }
-
-    /**
-     * Gets the {@link TagArticleRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static TagArticleRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private TagArticleRepositoryImpl(final String name) {
-        super(name);
     }
 }

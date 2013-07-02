@@ -17,11 +17,12 @@ package org.b3log.solo.processor;
 
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -30,7 +31,8 @@ import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.util.Users;
+import org.b3log.solo.service.UserMgmtService;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 
@@ -50,9 +52,16 @@ public final class CacheProcessor {
     private static final Logger LOGGER = Logger.getLogger(CacheProcessor.class.getName());
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Clears cache with the specified context.
@@ -65,9 +74,9 @@ public final class CacheProcessor {
     @RequestProcessing(value = "/clear-cache.do", method = HTTPRequestMethod.POST)
     public void clearCache(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws IOException {
-        LoginProcessor.tryLogInWithCookie(request, response);
+        userMgmtService.tryLogInWithCookie(request, response);
 
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -86,7 +95,7 @@ public final class CacheProcessor {
 
             context.setRenderer(new DoNothingRenderer());
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
     }
 

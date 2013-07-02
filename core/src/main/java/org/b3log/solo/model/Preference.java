@@ -16,11 +16,11 @@
 package org.b3log.solo.model;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -429,7 +429,7 @@ public final class Preference {
                     DEFAULT_PAGE_CACHE_ENABLED = true;
                 }
             } catch (final Exception e) {
-                LOGGER.log(Level.SEVERE, "Creates sign error!", e);
+                LOGGER.log(Level.ERROR, "Creates sign error!", e);
                 throw new IllegalStateException(e);
             }
         }

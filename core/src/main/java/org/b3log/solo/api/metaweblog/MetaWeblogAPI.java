@@ -19,8 +19,7 @@ package org.b3log.solo.api.metaweblog;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +29,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
@@ -43,7 +44,6 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -57,8 +57,7 @@ import org.jsoup.Jsoup;
 
 
 /**
- * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> 
- * requests processing.
+ * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> requests processing.
  * 
  * <p>
  * Implemented the following APIs:
@@ -88,32 +87,38 @@ public final class MetaWeblogAPI {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
 
     /**
      * Article management service.
      */
-    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+    @Inject
+    private ArticleMgmtService articleMgmtService;
 
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * User query service.
      */
-    private UserQueryService userQueryService = UserQueryService.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Key of method call.
@@ -290,7 +295,7 @@ public final class MetaWeblogAPI {
                 throw new UnsupportedOperationException("Unsupported method[name=" + methodName + "]");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<fault><value><struct>").append("<member><name>faultCode</name><value><int>500</int></value></member>").append("<member><name>faultString</name><value><string>").append(e.getMessage()).append(
                 "</string></value></member></struct></value></fault></methodResponse>");
@@ -367,7 +372,7 @@ public final class MetaWeblogAPI {
                 try {
                     date = (Date) DateFormatUtils.ISO_DATETIME_FORMAT.parseObject(dateString);
                 } catch (final ParseException e) {
-                    LOGGER.log(Level.WARNING,
+                    LOGGER.log(Level.WARN,
                         "Parses article create date failed with ISO8601, retry to parse with "
                         + "pattern[yyyy-MM-dd'T'HH:mm:ss, yyyyMMdd'T'HH:mm:ss'Z']");
                     date = DateUtils.parseDate(dateString, new String[] {"yyyyMMdd'T'HH:mm:ss", "yyyyMMdd'T'HH:mm:ss'Z'"});

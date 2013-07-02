@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 /**
- *  index for admin
+ * @description index for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @version 1.0.2.2, May 28, 2013
@@ -30,8 +30,8 @@ var Admin = function() {
 };
 
 $.extend(Admin.prototype, {
-    /*
-     * 登出
+    /**
+     * @description  登出
      */
     logout: function() {
         window.location.href = latkeConfig.servePath + "/logout?goto=" + latkeConfig.servePath;
@@ -43,9 +43,9 @@ $.extend(Admin.prototype, {
         $("#tipMsg").text("");
         $("#loadMsg").text("");
     },
-    /*
-     * 根据当前页数设置 hash
-     * @currentPage {string} 当前页
+    /**
+     * @description 根据当前页数设置 hash
+     * @param {Int} currentPage 当前页
      */
     setHashByPage: function(currentPage) {
         var hash = window.location.hash,
@@ -57,15 +57,15 @@ $.extend(Admin.prototype, {
         }
         window.location.hash = hashList.join("/");
     },
-    /*
-     * 设置某个 tab 被选择
-     * @id tab id
+    /**
+     * @description 设置某个 tab 被选择
+     * @param {Stirng} id id tab id
      */
     selectTab: function(id) {
         window.location.hash = "#" + id;
     },
-    /*
-     * 根据当前 hash 解析出当前页数及 hash 数组。
+    /**
+     * @description 根据当前 hash 解析出当前页数及 hash 数组。
      */
     analyseHash: function() {
         var hash = window.location.hash;
@@ -83,8 +83,8 @@ $.extend(Admin.prototype, {
         }
         return tags;
     },
-    /*
-     * 根据当前 hash 设置当前 tab
+    /**
+     * @description 根据当前 hash 设置当前 tab
      */
     setCurByHash: function() {
         $("#tipMsg").text("");
@@ -98,6 +98,14 @@ $.extend(Admin.prototype, {
 
         if (tab === "") {
             return;
+        }
+
+        if (tab !== "article") {
+            admin.article.clearDraftTimer();
+        } else if (tab === "article") {
+            admin.article.autoSaveDraftTimer = setInterval(function() {
+                admin.article._autoSaveToDraft();
+            }, admin.article.AUTOSAVETIME);
         }
 
         // 离开编辑器时进行提示
@@ -191,8 +199,8 @@ $.extend(Admin.prototype, {
             $("#loadMsg").text("");
         }
     },
-    /*
-     * 初始化整个后台
+    /**
+     * @description 初始化整个后台
      */
     init: function() {
         //window.onerror = Util.error;
@@ -213,9 +221,9 @@ $.extend(Admin.prototype, {
         }, 6000);
         $("#loadMsg").text("");
     },
-    /*
+    /**
      * @description tools and article collapse
-     * @param {bom} it 触发事件对象
+     * @param {Bom} it 触发事件对象
      */
     collapseNav: function(it) {
         var subNav = $(it).next();
@@ -227,8 +235,8 @@ $.extend(Admin.prototype, {
             }
         });
     },
-    /*
-     * 后台及当前页面所需插件初始化完后，对权限进行控制及当前页面属于 tools 时，tools 选项需展开。
+    /**
+     * @description 后台及当前页面所需插件初始化完后，对权限进行控制及当前页面属于 tools 时，tools 选项需展开。
      */
     inited: function() {
         // Removes functions with the current user role
@@ -867,7 +875,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.2, May 28, 2013
+ * @version 1.0.3.3, Jun 4, 2013
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -878,16 +886,26 @@ admin.article = {
         articleHadBeenPublished: undefined
     },
     content: "",
-    /* 
-     * 获取文章并把值塞入发布文章页面 
-     * @id 文章 id
-     * @isArticle 文章或者草稿
+    // 自动保存草稿定时器
+    autoSaveDraftTimer: "",
+    // 自动保存间隔
+    AUTOSAVETIME: 1000 * 60,
+    /**
+     * @description 获取文章并把值塞入发布文章页面 
+     * @param {String} id 文章 id
+     * @param {Boolean} isArticle 文章或者草稿
      */
     get: function(id, isArticle) {
         this.status.id = id;
-        this.status.isArticle = isArticle
+        this.status.isArticle = isArticle;
         admin.selectTab("article/article");
     },
+<<<<<<< HEAD
+=======
+    /**
+     * @description 获取文章内容
+     */
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
     getAndSet: function() {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
@@ -941,11 +959,19 @@ admin.article = {
             }
         });
     },
+<<<<<<< HEAD
     /*
      * 删除文章
      * @id 文章 id
      * @fromId 文章来自草稿夹(draft)/文件夹(article)
      * @title 文章标题
+=======
+    /**
+     * @description 删除文章
+     * @param {String} id 文章 id
+     * @param {String} fromId 文章来自草稿夹(draft)/文件夹(article)
+     * @param {String} title 文章标题
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      */
     del: function(id, fromId, title) {
         var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + title + '"?');
@@ -969,11 +995,20 @@ admin.article = {
             });
         }
     },
+<<<<<<< HEAD
     /*
      * 添加文章
      * @articleIsPublished 文章是否发布过
      */
     add: function(articleIsPublished) {
+=======
+    /**
+     * @@description 添加文章
+     * @param {Boolean} articleIsPublished 文章是否发布过
+     * @param {Boolean} isAuto 是否为自动保存
+     */
+    add: function(articleIsPublished, isAuto) {
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
         if (admin.article.validate()) {
             var that = this;
             that._addDisabled();
@@ -1011,9 +1046,17 @@ admin.article = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus) {
+<<<<<<< HEAD
+=======
+                    if (isAuto) {
+                        $("#tipMsg").text(Label.autoSaveLabel);
+                        admin.article.status.id = result.oId;
+                        return;
+                    }
+
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
-                        $("#loadMsg").text("");
                         return;
                     }
 
@@ -1025,11 +1068,15 @@ admin.article = {
                     }
 
                     admin.article.isConfirm = false;
+<<<<<<< HEAD
 
                     $("#loadMsg").text("");
+=======
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
                 },
                 complete: function(jqXHR, textStatus) {
                     that._removeDisabled();
+                    $("#loadMsg").text("");
                     if (jqXHR.status === 403) {
                         $.get("/admin-index.do");
                         that.add(articleIsPublished);
@@ -1038,11 +1085,20 @@ admin.article = {
             });
         }
     },
+<<<<<<< HEAD
     /*
      * 更新文章
      * @articleIsPublished 文章是否发布过 
      */
     update: function(articleIsPublished) {
+=======
+    /**
+     * @description 更新文章
+     * @param {Boolean} articleIsPublished 文章是否发布过
+     * @param {Boolean} isAuto 是否为自动保存
+     */
+    update: function(articleIsPublished, isAuto) {
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
         if (admin.article.validate()) {
             var that = this;
             that._addDisabled();
@@ -1081,9 +1137,16 @@ admin.article = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus) {
+<<<<<<< HEAD
+=======
+                    if (isAuto) {
+                        $("#tipMsg").text(Label.autoSaveLabel);
+                        return;
+                    }
+
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
-                        $("#loadMsg").text("");
                         return;
                     }
 
@@ -1097,11 +1160,15 @@ admin.article = {
 
                     admin.article.status.id = undefined;
                     admin.article.isConfirm = false;
+<<<<<<< HEAD
 
                     $("#loadMsg").text("");
+=======
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
                 },
                 complete: function(jqXHR, textStatus) {
                     that._removeDisabled();
+                    $("#loadMsg").text("");
                     if (jqXHR.status === 403) {
                         $.get("/admin-index.do");
                         that.update(articleIsPublished);
@@ -1110,8 +1177,13 @@ admin.article = {
             });
         }
     },
+<<<<<<< HEAD
     /*
      * 发布文章页面设置文章按钮、发布到社区等状态的显示
+=======
+    /**
+     * @description 发布文章页面设置文章按钮、发布到社区等状态的显示
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      */
     setStatus: function() {
         // set button status
@@ -1136,8 +1208,13 @@ admin.article = {
 
         $("#postToCommunity").attr("checked", "checked");
     },
+<<<<<<< HEAD
     /*
      * 清除发布文章页面的输入框的内容
+=======
+    /**
+     * @description 清除发布文章页面的输入框的内容
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      */
     clear: function() {
         this.status = {
@@ -1169,8 +1246,14 @@ admin.article = {
 
         $(".markdown-preview-main").html("");
     },
+<<<<<<< HEAD
     /*
      * 初始化发布文章页面
+=======
+    /**
+     * @description 初始化发布文章页面
+     * @param {Function} fun 切面函数
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      */
     init: function(fun) {
         // Inits Signs.
@@ -1191,7 +1274,8 @@ admin.article = {
                         $("#articleSign1").addClass("selected");
                     } else {
                         $("#articleSign" + result.signs[i].oId).tip({
-                            content: result.signs[i].signHTML === "" ? Label.signIsNullLabel : result.signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
+                            content: result.signs[i].signHTML === "" ? Label.signIsNullLabel :
+                                    result.signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
                             position: "top"
                         });
                     }
@@ -1271,10 +1355,52 @@ admin.article = {
             kind: "simple",
             height: 200
         });
+
+        admin.article.clearDraftTimer();
+        admin.article.autoSaveDraftTimer = setInterval(function() {
+            admin.article._autoSaveToDraft();
+        }, admin.article.AUTOSAVETIME);
     },
+<<<<<<< HEAD
     /*
      * 验证发布文章字段的合法性
      */
+=======
+    /**
+     * @description 自动保存草稿件
+     */
+    _autoSaveToDraft: function() {
+        if ($("#title").val().replace(/\s/g, "") === "" ||
+                admin.editors.articleEditor.getContent().replace(/\s/g, "") === "" ||
+                $("#tag").val().replace(/\s/g, "") === "") {
+            return;
+        }
+        if (admin.article.status.id) {
+            if (admin.article.status.isArticle) {
+                admin.article.status.isArticle = false;
+                admin.article.setStatus();
+                admin.article.unPublish(true);
+            } else {
+                admin.article.update(false, true);
+            }
+        } else {
+            admin.article.add(false, true);
+            admin.article.status.isArticle = false;
+        }
+    },
+    /**
+     * @description 关闭定时器
+     */
+    clearDraftTimer: function() {
+        if (admin.article.autoSaveDraftTimer !== "") {
+            window.clearInterval(admin.article.autoSaveDraftTimer);
+            admin.article.autoSaveDraftTimer = "";
+        }
+    },
+    /**
+     * @description 验证发布文章字段的合法性
+     */
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
     validate: function() {
         var articleContent = admin.editors.articleEditor.getContent();
 
@@ -1291,10 +1417,18 @@ admin.article = {
         }
         return false;
     },
+<<<<<<< HEAD
     /*
      * 取消发布 
      */
     unPublish: function() {
+=======
+    /**
+     * @description 取消发布 
+     * @param {Boolean} isAuto 是否为自动保存
+     */
+    unPublish: function(isAuto) {
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
         var that = this;
         that._addDisabled();
         $.ajax({
@@ -1302,9 +1436,16 @@ admin.article = {
             type: "PUT",
             cache: false,
             success: function(result, textStatus) {
+<<<<<<< HEAD
+=======
+                if (isAuto) {
+                    $("#tipMsg").text(Label.autoSaveLabel);
+                    return;
+                }
+
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
-                    $("#loadMsg").text("");
                     return;
                 }
 
@@ -1314,6 +1455,7 @@ admin.article = {
             },
             complete: function(jqXHR, textStatus) {
                 that._removeDisabled();
+                $("#loadMsg").text("");
                 if (jqXHR.status === 403) {
                     $.get("/admin-index.do");
                     that.unPublish();
@@ -1321,6 +1463,14 @@ admin.article = {
             }
         });
     },
+<<<<<<< HEAD
+=======
+    /**
+     * @description 数组中无重复
+     * @param {String} str 被解析的字符串
+     * @returns {String} 无重复的字符串
+     */
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
     trimUniqueArray: function(str) {
         str = str.toString();
         var arr = str.split(",");
@@ -1334,8 +1484,13 @@ admin.article = {
         var unique = $.unique(arr);
         return unique.toString();
     },
+<<<<<<< HEAD
     /*
      * 点击发文文章时的处理
+=======
+    /**
+     * @description 点击发文文章时的处理
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      */
     prePost: function() {
         $("#loadMsg").text(Label.loadingLabel);
@@ -1355,7 +1510,11 @@ admin.article = {
         $("#tipMsg").text("");
         $("#loadMsg").text("");
     },
+<<<<<<< HEAD
     /*
+=======
+    /**
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      * @description: 仿重复提交，点击一次后，按钮设置为 disabled
      */
     _addDisabled: function() {
@@ -1363,7 +1522,11 @@ admin.article = {
         $("#saveArticle").attr("disabled", "disabled");
         $("#submitArticle").attr("disabled", "disabled");
     },
+<<<<<<< HEAD
     /*
+=======
+    /**
+>>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      * @description: 仿重复提交，当后台有数据返回后，按钮移除 disabled 状态
      */
     _removeDisabled: function() {
@@ -1373,8 +1536,8 @@ admin.article = {
     }
 };
 
-/*
- * 注册到 admin 进行管理 
+/**
+ * @description 注册到 admin 进行管理 
  */
 admin.register.article = {
     "obj": admin.article,

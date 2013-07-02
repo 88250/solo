@@ -18,12 +18,14 @@ package org.b3log.solo.event.ping;
 
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
@@ -78,11 +80,14 @@ public final class AddArticleGoogleBlogSearchPinger extends AbstractEventListene
 
         String articleTitle = null;
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+
         try {
             final JSONObject article = eventData.getJSONObject(Article.ARTICLE);
 
             articleTitle = article.getString(Article.ARTICLE_TITLE);
-            final JSONObject preference = PreferenceQueryService.getInstance().getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
 
             if (Latkes.getServePath().contains("localhost")) {
@@ -96,7 +101,7 @@ public final class AddArticleGoogleBlogSearchPinger extends AbstractEventListene
             final String spec = "http://blogsearch.google.com/ping?name=" + URLEncoder.encode(blogTitle, "UTF-8") + "&url="
                 + URLEncoder.encode(Latkes.getServePath(), "UTF-8") + "&changesURL=" + URLEncoder.encode(articlePermalink, "UTF-8");
 
-            LOGGER.log(Level.FINER, "Request Google Blog Search Service API[{0}] while adding an " + "article[title=" + articleTitle + "]",
+            LOGGER.log(Level.DEBUG, "Request Google Blog Search Service API[{0}] while adding an " + "article[title=" + articleTitle + "]",
                 spec);
             final HTTPRequest request = new HTTPRequest();
 
@@ -104,7 +109,7 @@ public final class AddArticleGoogleBlogSearchPinger extends AbstractEventListene
 
             URL_FETCH_SERVICE.fetchAsync(request);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Ping Google Blog Search Service fail while adding an article[title=" + articleTitle + "]", e);
+            LOGGER.log(Level.ERROR, "Ping Google Blog Search Service fail while adding an article[title=" + articleTitle + "]", e);
         }
     }
 }

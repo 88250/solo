@@ -49,7 +49,7 @@ public class TagQueryServiceTestCase extends AbstractTestCase {
 
         initService.init(requestJSONObject);
 
-        final UserQueryService userQueryService = UserQueryService.getInstance();
+        final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByEmail("test@gmail.com"));
     }
 

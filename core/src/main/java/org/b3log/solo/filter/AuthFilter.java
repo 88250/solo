@@ -16,8 +16,6 @@
 package org.b3log.solo.filter;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -27,11 +25,15 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.user.GeneralUser;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
-import org.b3log.solo.processor.LoginProcessor;
-import org.b3log.solo.util.Users;
+import org.b3log.solo.service.UserMgmtService;
+import org.b3log.solo.service.UserQueryService;
 
 
 /**
@@ -53,11 +55,6 @@ public final class AuthFilter implements Filter {
      */
     private UserService userService = UserServiceFactory.getUserService();
 
-    /**
-     * User utilities.
-     */
-    private Users users = Users.getInstance();
-
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {}
 
@@ -72,20 +69,22 @@ public final class AuthFilter implements Filter {
      * @throws ServletException servlet exception
      */
     @Override
-    public void doFilter(final ServletRequest request,
-        final ServletResponse response,
-        final FilterChain chain) throws IOException,
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException,
             ServletException {
         final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final UserMgmtService userMgmtService = beanManager.getReference(UserMgmtService.class);
+        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
 
         try {
-            LoginProcessor.tryLogInWithCookie(httpServletRequest, httpServletResponse);
+            userMgmtService.tryLogInWithCookie(httpServletRequest, httpServletResponse);
 
             final GeneralUser currentUser = userService.getCurrentUser(httpServletRequest);
 
             if (null == currentUser) {
-                LOGGER.warning("The request has been forbidden");
+                LOGGER.warn("The request has been forbidden");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                 return;
@@ -93,14 +92,14 @@ public final class AuthFilter implements Filter {
 
             final String currentUserEmail = currentUser.getEmail();
 
-            LOGGER.log(Level.FINER, "Current user email[{0}]", currentUserEmail);
-            if (users.isSoloUser(currentUserEmail)) {
+            LOGGER.log(Level.DEBUG, "Current user email[{0}]", currentUserEmail);
+            if (userQueryService.isSoloUser(currentUserEmail)) {
                 chain.doFilter(request, response);
 
                 return;
             }
 
-            LOGGER.warning("The request has been forbidden");
+            LOGGER.warn("The request has been forbidden");
             httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
         } catch (final Exception e) {
             httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);

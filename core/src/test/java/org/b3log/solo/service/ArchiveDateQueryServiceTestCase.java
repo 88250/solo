@@ -61,7 +61,7 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getArchiveDates() throws Exception {
-        final ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
+        final ArchiveDateQueryService archiveDateQueryService = getArchiveDateQueryService();
 
         final List<JSONObject> archiveDates = archiveDateQueryService.getArchiveDates();
 
@@ -76,7 +76,7 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getByArchiveDateString() throws Exception {
-        final ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
+        final ArchiveDateQueryService archiveDateQueryService = getArchiveDateQueryService();
 
         final String archiveDateString = DateFormatUtils.format(new Date(), "yyyy/MM");
         final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);

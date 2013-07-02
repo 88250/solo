@@ -16,12 +16,13 @@
 package org.b3log.solo.processor.console;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -32,8 +33,8 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Users;
 import org.b3log.latke.util.Requests;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 
@@ -53,24 +54,28 @@ public final class LinkConsole {
     private static final Logger LOGGER = Logger.getLogger(LinkConsole.class.getName());
 
     /**
-     * User utilities.
+     * User query service.
      */
-    private Users userUtils = Users.getInstance();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Link query service.
      */
-    private LinkQueryService linkQueryService = LinkQueryService.getInstance();
+    @Inject
+    private LinkQueryService linkQueryService;
 
     /**
      * Link management service.
      */
-    private LinkMgmtService linkMgmtService = LinkMgmtService.getInstance();
+    @Inject
+    private LinkMgmtService linkMgmtService;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Removes a link by the specified request.
@@ -93,7 +98,7 @@ public final class LinkConsole {
     @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.DELETE)
     public void removeLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -114,7 +119,7 @@ public final class LinkConsole {
             jsonObject.put(Keys.STATUS_CODE, true);
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
@@ -152,7 +157,7 @@ public final class LinkConsole {
     @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.PUT)
     public void updateLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -173,7 +178,7 @@ public final class LinkConsole {
 
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -211,7 +216,7 @@ public final class LinkConsole {
         final HttpServletResponse response,
         final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -234,7 +239,7 @@ public final class LinkConsole {
 
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -274,7 +279,7 @@ public final class LinkConsole {
     @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.POST)
     public void addLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isAdminLoggedIn(request)) {
+        if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -296,7 +301,7 @@ public final class LinkConsole {
 
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -343,7 +348,7 @@ public final class LinkConsole {
     public void getLinks(final HttpServletRequest request,
         final HttpServletResponse response,
         final HTTPRequestContext context) throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -364,7 +369,7 @@ public final class LinkConsole {
 
             renderer.setJSONObject(result);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -399,7 +404,7 @@ public final class LinkConsole {
     @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.GET)
     public void getLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
         throws Exception {
-        if (!userUtils.isLoggedIn(request, response)) {
+        if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
@@ -423,7 +428,7 @@ public final class LinkConsole {
             renderer.setJSONObject(result);
             result.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
