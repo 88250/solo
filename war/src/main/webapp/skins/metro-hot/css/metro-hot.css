@@ -29,6 +29,7 @@ body {
     font-family: Verdana, arial, '\5fae\8f6f\96c5\9ed1';
     font-size: 12px;
     background-color: #292929;
+    min-height: 1090px;
     margin: 0;
 }
 
@@ -44,7 +45,7 @@ a:hover {
 }
 
 a:focus {
-    color: #9E0B0E;
+    color: #9E0B0E !important;
 }
 
 sub,
@@ -183,15 +184,16 @@ textarea {
     position: relative;
 }
 
-.title {
-    color: #CA1B1E;
+.header .title {
+    color: #E61E1E;
 }
 
-.title:hover {
+.header .title:hover {
+    color: #CA1B1E;
     text-decoration: none;
 }
 
-.title > span:before {
+.header .title > span:before {
     color: inherit;
 }
 
@@ -212,7 +214,12 @@ textarea {
     width: 1px;
 }
 
+.top-info a {
+    color: #FFF;
+}
+
 .top-info a:hover {
+    color: #CA1B1E;
     text-decoration: none;
 }
 
@@ -254,16 +261,35 @@ textarea {
 }
 
 .navigation {
-    background-color: #FFFFFF;
+    background-color: #FFF;
     border: 2px solid #BABABA;
     left: 0;
     list-style: none outside none;
     margin: 0;
-    min-width: 226px;
+    min-width: 223px;
     padding: 0;
     position: absolute;
     top: 100%;
     z-index: 1;
+    display: none;
+}
+
+.navigation a {
+    background-color: #FFF;
+    border-bottom: 1px solid #BABABA;
+    color: #333;
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+}
+
+.navigation a:hover {
+    background-color: #E61E1E;
+    color: #FFFFFF;
+}
+
+.navigation a.lats {
+    border-bottom-width: 0;
 }
 
 /* end header */
@@ -393,6 +419,10 @@ textarea {
 
 .online-count {
     background-color: #20608E;
+}
+
+.online-count > span {
+    margin-top: 10px;
 }
 
 .notice-board {

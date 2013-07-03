@@ -22,6 +22,7 @@
  */
 
 var MetroHot = {
+    headerH: 240,
     goTranslate: function() {
         window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);
     },
@@ -40,7 +41,7 @@ var MetroHot = {
         $("#login, .login").attr("href", $("#admin > a").first().attr("href"));
         // 当先用户在线数目
         var onlineVisitorCnt = $("#top > span").first().text();
-        $(".online-count .text").append(onlineVisitorCnt.substr(1,onlineVisitorCnt.length));
+        $(".online-count .text").append(onlineVisitorCnt.substr(1, onlineVisitorCnt.length));
         // logout
         var logoutHref = "";
         $("#admin a").each(function() {
@@ -50,29 +51,15 @@ var MetroHot = {
         });
         $("#logout, .logout").attr("href", logoutHref);
 
+        // 头部标题点击事件
+        $(".header .title").click(function() {
+            $(".navigation").slideToggle();
+        });
+
         // 滚动处理
         $(window).scroll(function() {
             var y = $(window).scrollTop();
-            if (y > 240) {
-                if (isLogin) {
-                    $(".side > div").css({
-                        "position": "fixed",
-                        "bottom": "10px",
-                        "width": "240px"
-                    });
-                } else {
-                    $(".side > div").css({
-                        "position": "fixed",
-                        "top": "0px",
-                        "width": "240px"
-                    });
-                }
-            } else {
-                $(".side > div").css("position", "static");
-
-            }
-
-            if (y > 120) {
+            if (y > MetroHot.headerH) {
                 if (isLogin) {
                     $(".logout, .settings").show();
                 } else {
@@ -85,14 +72,34 @@ var MetroHot = {
                     $(".login, .register").hide();
                 }
             }
+
+            if (!isLogin) {
+                if (y > MetroHot.headerH) {
+                    $(".side > div").css({
+                        "position": "fixed",
+                        "top": "0px",
+                        "width": "240px"
+                    });
+                } else {
+                    $(".side > div").css("position", "static");
+                }
+            } else {
+                if (y + window.innerHeight > $(".side > div").height() + MetroHot.headerH) {
+                    $(".side > div").css({
+                        "position": "fixed",
+                        "bottom": "10px",
+                        "width": "240px"
+                    });
+                } else {
+                    $(".side > div").css("position", "static");
+                }
+            }
         });
 
         $(window).scroll();
     },
 
 
-    $header: $(".header"),
-    headerH: 103,
     $body: $(".main > .wrapper"),
     $nav: $(".nav"),
     getCurrentPage: function() {

@@ -1,6 +1,6 @@
 <div class="fn-clear header">
     <h1 class="fn-left">
-        <a class="title" href="${servePath}">
+        <a class="title" href="javascript: void(0)">
         ${blogTitle}
             <span data-ico="&#xe0f3;"></span>
         </a>
@@ -32,12 +32,8 @@
         <li>
             <a href="${servePath}/archives.html">${archiveLabel}</a>
         </li>
-        <li>
+        <li class="last">
             <a href="${servePath}/links.html">${linkLabel}</a>
-        </li>
-        <li>
-            <a rel="alternate" href="${servePath}/blog-articles-feed.do">Atom<img
-                    src="${staticServePath}/images/feed.png" alt="Atom" /></a>
         </li>
     </ul>
 </div>

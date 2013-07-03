@@ -1,5 +1,5 @@
 <div class="side">
-    <div>
+    <div class="fn-clear">
         <form class="right" target="_blank" method="get" action="http://www.google.com/search">
             <input placeholder="Search" id="search" type="text" name="q" /><span data-ico="&#x0067;"></span>
             <input type="submit" name="btnG" value="" class="fn-none" />
@@ -11,19 +11,18 @@
 
         <#if "" != noticeBoard>
         <div class="notice-board side-tile">
-            <span data-ico="&#xe0d9;"></span>
+            <span data-ico="&#xe1e9;"></span>
             <div class="title">
-                ${noticeBoard}
+                  ${noticeBoard}
             </div>
             <div class="text">
-                {noticeBoard}
+                 ${noticeBoardLabel}
             </div>
         </div>
         </#if>
 
         <div class="online-count side-tile">
-            <span data-ico="&#xe129;"></span>
-            <div class="title">{Info}</div>
+            <span data-ico="&#xe037;"></span>
             <div class="text">
                 ${viewCount1Label}
                 ${statistic.statisticBlogViewCount}<br/>
@@ -76,7 +75,7 @@
                 ${clearCacheLabel}
             </div>
             <div class="text">
-                <a href="javascript:Util.clearCache();">{clearCachePageLabel}</a>
+                <a href="javascript:Util.clearCache();">${clearCachePageLabel}</a>
                 <br />
                 <a href="javascript:Util.clearCache('all');">${clearAllCacheLabel}</a>
             </div>
