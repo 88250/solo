@@ -78,9 +78,11 @@
             ${clearCacheLabel}
         </a>
         </#if>
+        <#if !isVisitor>
         <a href="${contextPath}/admin-index.do#main" title="${adminLabel}">
             ${adminLabel}
         </a>
+        </#if>
         <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
         <#else>
         <a href="${loginURL}" title="${loginLabel}">${loginLabel}</a>

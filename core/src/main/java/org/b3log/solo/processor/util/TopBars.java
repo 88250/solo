@@ -134,6 +134,7 @@ public final class TopBars {
             topBarModel.put(Common.IS_LOGGED_IN, true);
             topBarModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
             topBarModel.put(Common.IS_ADMIN, Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
+            topBarModel.put(Common.IS_VISITOR, Role.VISITOR_ROLE.equals(currentUser.getString(User.USER_ROLE)));
 
             topBarModel.put("clearAllCacheLabel", langPropsService.get("clearAllCacheLabel"));
             topBarModel.put("clearCacheLabel", langPropsService.get("clearCacheLabel"));
