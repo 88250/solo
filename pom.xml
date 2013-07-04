@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.3.0, Jun 18, 2013
+    Version: 2.0.3.1, Jul 4, 2013
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -35,7 +35,9 @@
         <org.b3log.latke-bae.version>0.5.0-SNAPSHOT</org.b3log.latke-bae.version>
         <org.b3log.latke-repository-mysql.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-mysql.version>
         <org.b3log.latke-repository-h2.version>0.5.0-SNAPSHOT</org.b3log.latke-repository-h2.version>
-        <gae.version>1.7.7</gae.version>
+
+        <maven-gae-plugin.version>0.9.0</maven-gae-plugin.version>
+        <gae.version>1.8.1.1</gae.version>
         
         <freemarker-gae.version>2.3.19</freemarker-gae.version>
         <jsoup.version>1.5.2</jsoup.version>
