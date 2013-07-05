@@ -17,7 +17,7 @@
 * skin ease style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.1, Jul 26, 2013
+* @version 1.0.0.3, Jul 5, 2013
 */
 /* start base */
 html {
@@ -31,6 +31,7 @@ body {
     background-color: #292929;
     min-height: 1090px;
     margin: 0;
+    color: #D1D2D1;
 }
 
 a {
@@ -51,7 +52,7 @@ a:focus {
 sub,
 sup {
     position: relative;
-    font-size: 75%;
+    font-size: 70%;
     line-height: 0;
     vertical-align: baseline;
 }
@@ -163,18 +164,18 @@ textarea {
 .wrapper {
     height: auto;
     margin: 35px auto 10px;
-    width: 1240px;
+    width: 1190px;
 }
 
 .footer {
-    background-color: #000;
+    background-color: #141414;
     color: #FFF;
     padding: 30px;
 }
 
 .main {
     float: left;
-    width: 960px;
+    width: 920px;
 }
 
 /* end frame */
@@ -304,13 +305,93 @@ textarea {
 }
 
 .article-list > div {
+    background-color: #323232;
     float: left;
+    height: 220px;
     margin: 5px 10px 5px 0;
-    width: 290px;
-    background-color: #3E3E3E;
-    padding: 10px;
+    overflow: hidden;
+    position: relative;
+    width: 450px;
 }
 
+.article-list > div > img {
+    min-width: 100%;
+    max-width: 100%;
+    transition: all 1.2s;
+}
+
+.article-list > div:hover > img {
+    transform: scale(1.2);
+}
+
+.article-list > div:hover .article-image {
+    top: 0;
+}
+
+.article-list > div:hover .fn-right {
+    display: block;
+}
+
+.article-image {
+    background-color: #3E3E3E;
+    opacity: 0.8;
+    position: absolute;
+    top: 163px;
+    width: 100%;
+    transition: all 1.2s;
+}
+
+.article-date {
+    float: left;
+    margin: 10px 0 0 10px;
+}
+
+.article-title {
+    height: 30px;
+    line-height: 30px;
+    margin: 0 0 0 10px;
+}
+
+.article-title a {
+    color: #F8F7F7;
+}
+
+.article-title sup {
+    color: #9E0B0E;
+}
+
+.article-abstract {
+    height: 100%;
+}
+
+.article-abstract .fn-right {
+    background-color: #EA4040;
+    position: absolute;
+    right: 0;
+    display: none;
+    top: 0;
+}
+
+.article-abstract .fn-right > a {
+    padding: 15px;
+    float: left;
+}
+
+.article-abstract .fn-right > a:hover {
+    text-decoration: none;
+}
+
+.article-abstract > .article-tags {
+    margin: 10px 0 0 10px;
+}
+
+.article-abstract > .article-body {
+    height: 115px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 10px 0 0 10px;
+    word-wrap: normal;
+}
 /* end article list*/
 
 /* start side */
@@ -451,10 +532,13 @@ textarea {
 
 /* start others */
 #goTop {
-    bottom: 0;
-    font-size: 25px;
+    background-color: #141414;
+    bottom: 10px;
+    font-size: 30px;
+    height: 35px;
+    padding: 5px 7px;
     position: fixed;
-    right: 0;
+    right: 30px;
+    width: 30px;
 }
-
 /* end others */

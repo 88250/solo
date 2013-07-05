@@ -18,7 +18,7 @@
  * @fileoverview metro-hot js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.1, Jun 27, 2013
+ * @version 1.0.0.3, Jul 5, 2013
  */
 
 var MetroHot = {
@@ -26,7 +26,6 @@ var MetroHot = {
     goTranslate: function() {
         window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);
     },
-
     init: function() {
         // 登录与否的显示设置
         var isLogin = $("#admin").data("login");
@@ -94,12 +93,35 @@ var MetroHot = {
                     $(".side > div").css("position", "static");
                 }
             }
+
+            if (y > MetroHot.headerH) {
+                $("#goTop").fadeIn("slow");
+            } else {
+                $("#goTop").hide();
+            }
+        }).click(function(event) {
+            if (event.target.className === "title" || event.target.parentElement.className === "title") {
+                return;
+            }
+            $(".navigation").slideUp();
         });
 
         $(window).scroll();
     },
-
-
+    
+    initArticleList: function () {
+        $(".article-list .article-abstract").each(function () {
+            var $it = $(this);
+            var $images = $it.find("img");
+           if ($images.length > 0) {
+               $it.addClass("article-image");
+               $images.hide();
+               
+                $it.before("<img src='" + $($images[0]).attr("src") + "'/>");
+           } 
+        });
+    },
+            
     $body: $(".main > .wrapper"),
     $nav: $(".nav"),
     getCurrentPage: function() {
@@ -108,7 +130,6 @@ var MetroHot = {
             window.currentPage = $next.data("page");
         }
     },
-
     setNavCurrent: function() {
         $(".nav ul a").each(function() {
             var $this = $(this);
@@ -119,13 +140,11 @@ var MetroHot = {
             }
         });
     },
-
     initCommon: function() {
         Util.init();
         Util.replaceSideEm($(".recent-comments-content"));
         Util.buildTags("tagsSide");
     },
-
     initArchives: function() {
         var $archives = $(".archives");
         if ($archives.length < 1) {
@@ -217,18 +236,10 @@ var MetroHot = {
         $(".article-body").each(function() {
             this.innerHTML = Util.replaceEmString($(this).html());
         });
-    },
-
-    /**
-     * @description 纠正评论滚动位置偏差
-     */
-    scrollToCmt: function() {
-        if ($(window.location.hash).length == 1) {
-            $(window).scrollTop($(window.location.hash).offset().top - 60);
-        }
     }
 };
 
 (function() {
     MetroHot.init();
+    MetroHot.initArticleList();
 })();

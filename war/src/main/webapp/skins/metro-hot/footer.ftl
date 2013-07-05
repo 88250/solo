@@ -1,3 +1,4 @@
+<span id="goTop" onclick="Util.goTop()" data-ico="&#xe042;" class="side-tile"></span>
 <script type="text/javascript">
     var latkeConfig = {
         "servePath": "${servePath}",
