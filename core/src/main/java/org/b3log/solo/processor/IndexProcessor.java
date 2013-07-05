@@ -169,7 +169,6 @@ public final class IndexProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             filler.fillBlogFooter(dataModel, preference);
-            Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
 
@@ -216,8 +215,6 @@ public final class IndexProcessor {
 
             filler.fillBlogFooter(dataModel, preference);
             filler.fillMinified(dataModel);
-            Keys.fillServer(dataModel);
-
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

@@ -138,7 +138,6 @@ public final class AdminConsole {
             dataModel.put(Preference.EDITOR_TYPE, preference.getString(Preference.EDITOR_TYPE));
             dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
 
-            Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
@@ -183,7 +182,6 @@ public final class AdminConsole {
 
         dataModel.putAll(langs);
 
-        Keys.fillServer(dataModel);
         Keys.fillRuntime(dataModel);
 
         dataModel.put(Preference.LOCALE_STRING, locale.toString());
@@ -212,7 +210,6 @@ public final class AdminConsole {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.putAll(langs);
-        Keys.fillServer(dataModel);
         dataModel.put(Preference.LOCALE_STRING, locale.toString());
 
         JSONObject preference = null;

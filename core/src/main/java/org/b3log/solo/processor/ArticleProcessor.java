@@ -185,7 +185,6 @@ public final class ArticleProcessor {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
-        Keys.fillServer(dataModel);
         Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
     }

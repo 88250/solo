@@ -199,7 +199,6 @@ public final class PluginConsole {
             renderer.setTemplateName("admin-plugin-setting.ftl");
             final Map<String, Object> dataModel = renderer.getDataModel();
 
-            Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
 
             dataModel.put(Plugin.PLUGIN_SETTING, setting);

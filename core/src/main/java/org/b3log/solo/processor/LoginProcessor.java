@@ -387,7 +387,6 @@ public final class LoginProcessor {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
 
-        Keys.fillServer(dataModel);
         Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
     }

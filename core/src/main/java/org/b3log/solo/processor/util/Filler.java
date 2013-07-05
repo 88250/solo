@@ -608,7 +608,6 @@ public final class Filler {
 
             dataModel.put(Skin.SKIN_DIR_NAME, skinDirName);
 
-            Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
             fillMinified(dataModel);
             fillPageNavigations(dataModel);
