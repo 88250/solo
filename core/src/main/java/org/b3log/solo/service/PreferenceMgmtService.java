@@ -62,7 +62,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * @since 0.4.0
  */
 @Service
-public final class PreferenceMgmtService {
+public class PreferenceMgmtService {
 
     /**
      * Logger.

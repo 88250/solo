@@ -36,7 +36,7 @@ import org.b3log.solo.repository.PageRepository;
  * @since 0.6.1
  */
 @Service
-public final class PermalinkQueryService {
+public class PermalinkQueryService {
 
     /**
      * Logger.

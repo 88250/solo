@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * @since 0.4.5
  */
 @RequestProcessor
-public final class UserTemplateProcessor {
+public class UserTemplateProcessor {
 
     /**
      * Logger.

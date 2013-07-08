@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * @since 0.6.0
  */
 @RequestProcessor
-public final class ChanceProcessor {
+public class ChanceProcessor {
 
     /**
      * Logger.

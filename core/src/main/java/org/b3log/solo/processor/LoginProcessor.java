@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @RequestProcessor
-public final class LoginProcessor {
+public class LoginProcessor {
 
     /**
      * Logger.

@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @RequestProcessor
-public final class AdminCacheService {
+public class AdminCacheService {
 
     /**
      * Logger.

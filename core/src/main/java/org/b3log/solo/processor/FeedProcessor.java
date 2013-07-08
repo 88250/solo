@@ -72,7 +72,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @RequestProcessor
-public final class FeedProcessor {
+public class FeedProcessor {
 
     /**
      * Logger.

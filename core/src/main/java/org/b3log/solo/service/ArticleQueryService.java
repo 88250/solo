@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * @since 0.3.5
  */
 @Service
-public final class ArticleQueryService {
+public class ArticleQueryService {
 
     /**
      * Logger.

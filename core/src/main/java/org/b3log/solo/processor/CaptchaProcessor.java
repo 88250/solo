@@ -58,7 +58,7 @@ import org.b3log.solo.SoloServletListener;
  * @since 0.3.1
  */
 @RequestProcessor
-public final class CaptchaProcessor {
+public class CaptchaProcessor {
 
     /**
      * Logger.

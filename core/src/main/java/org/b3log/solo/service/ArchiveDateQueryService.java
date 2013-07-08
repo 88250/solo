@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * @since 0.4.0
  */
 @Service
-public final class ArchiveDateQueryService {
+public class ArchiveDateQueryService {
 
     /**
      * Logger.

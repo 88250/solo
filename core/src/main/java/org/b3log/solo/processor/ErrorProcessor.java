@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * @since 0.4.5
  */
 @RequestProcessor
-public final class ErrorProcessor {
+public class ErrorProcessor {
 
     /**
      * Logger.

@@ -35,7 +35,7 @@ import org.json.JSONObject;
  * @since 0.6.0
  */
 @Service
-public final class OptionMgmtService {
+public class OptionMgmtService {
 
     /**
      * Option repository.

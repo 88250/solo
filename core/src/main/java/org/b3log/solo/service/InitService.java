@@ -64,7 +64,7 @@ import org.json.JSONObject;
  * @since 0.4.0
  */
 @Service
-public final class InitService {
+public class InitService {
 
     /**
      * Logger.

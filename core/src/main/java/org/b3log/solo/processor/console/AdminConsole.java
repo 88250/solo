@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * @since 0.4.1
  */
 @RequestProcessor
-public final class AdminConsole {
+public class AdminConsole {
 
     /**
      * Logger.

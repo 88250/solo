@@ -58,7 +58,7 @@ import org.json.JSONException;
  * @since 0.5.0
  */
 @Service
-public final class StatisticMgmtService {
+public class StatisticMgmtService {
 
     /**
      * Logger.

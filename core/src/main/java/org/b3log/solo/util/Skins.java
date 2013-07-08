@@ -32,6 +32,7 @@ import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
@@ -113,7 +114,7 @@ public final class Skins {
             
             // Fills the core language configurations
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-            final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
+            final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
 
             dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
         } catch (final IOException e) {

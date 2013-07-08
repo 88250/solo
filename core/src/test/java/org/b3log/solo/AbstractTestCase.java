@@ -20,6 +20,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.util.Locale;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
@@ -54,7 +55,7 @@ import org.testng.annotations.BeforeClass;
  * Abstract test case.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Apr 19, 2013
+ * @version 1.0.0.7, Jul 8, 2013
  * @see #beforeClass() 
  * @see #afterClass() 
  */
@@ -280,7 +281,7 @@ public abstract class AbstractTestCase {
         optionRepository = new OptionRepositoryImpl();
 
         // Services
-        langPropsService = new LangPropsService();
+        langPropsService = new LangPropsServiceImpl();
         
         pluginMgmtService = new PluginMgmtService();
         pluginMgmtService.setPluginRepository(pluginRepository);

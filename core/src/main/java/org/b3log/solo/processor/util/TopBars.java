@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * @since 0.3.5
  */
 @Service
-public final class TopBars {
+public class TopBars {
 
     /**
      * Logger.

@@ -50,7 +50,7 @@ import org.jsoup.Jsoup;
  * @since 0.5.5
  */
 @RequestProcessor
-public final class ArticleReceiver {
+public class ArticleReceiver {
 
     /**
      * Logger.

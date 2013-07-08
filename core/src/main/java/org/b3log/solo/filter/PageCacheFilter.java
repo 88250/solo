@@ -36,6 +36,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.StaticResources;
 import org.b3log.latke.util.Strings;
@@ -137,7 +138,7 @@ public final class PageCacheFilter implements Filter {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
 
         final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
-        final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
+        final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
 
         try {
             // If cached an article that has view password, dispatches the password form

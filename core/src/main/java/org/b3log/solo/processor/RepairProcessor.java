@@ -73,7 +73,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @RequestProcessor
-public final class RepairProcessor {
+public class RepairProcessor {
 
     /**
      * Logger.

@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * @since 0.6.0
  */
 @Service
-public final class OptionQueryService {
+public class OptionQueryService {
 
     /**
      * Option repository.

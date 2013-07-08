@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * @since 0.5.5
  */
 @RequestProcessor
-public final class CommentReceiver {
+public class CommentReceiver {
 
     /**
      * Logger.

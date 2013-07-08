@@ -51,7 +51,7 @@ import org.json.JSONObject;
  * @since 0.3.5
  */
 @Service
-public final class CommentQueryService {
+public class CommentQueryService {
 
     /**
      * Logger.

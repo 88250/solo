@@ -51,7 +51,7 @@ import org.json.JSONObject;
  */
 @RequestProcessor
 @Before(adviceClass = ProcessAuthAdvice.class)
-public final class PluginConsole {
+public class PluginConsole {
 
     /**
      * Logger.

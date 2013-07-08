@@ -77,7 +77,7 @@ import org.jsoup.Jsoup;
  * @since 0.4.0
  */
 @RequestProcessor
-public final class MetaWeblogAPI {
+public class MetaWeblogAPI {
 
     /**
      * Logger.

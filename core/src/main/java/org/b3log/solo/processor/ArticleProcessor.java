@@ -71,7 +71,7 @@ import org.jsoup.Jsoup;
  * @since 0.3.1
  */
 @RequestProcessor
-public final class ArticleProcessor {
+public class ArticleProcessor {
 
     /**
      * Logger.

@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * @since 0.4.0
  */
 @RequestProcessor
-public final class LinkConsole {
+public class LinkConsole {
 
     /**
      * Logger.

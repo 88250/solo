@@ -44,7 +44,7 @@ import org.b3log.solo.service.StatisticMgmtService;
  * @since 0.4.0
  */
 @RequestProcessor
-public final class StatProcessor {
+public class StatProcessor {
 
     /**
      * Logger.

@@ -36,7 +36,7 @@ import org.json.JSONObject;
  * @since 0.5.0
  */
 @Service
-public final class StatisticQueryService {
+public class StatisticQueryService {
 
     /**
      * Logger.
