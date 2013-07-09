@@ -3,7 +3,7 @@
     <div>
         <div class="article-abstract">
             <div class="fn-clear">
-                <div class="article-date">
+                <div class="article-date" data-ico="&#xe200;">
                     <#if article.hasUpdated>
                     ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
                     <#else>

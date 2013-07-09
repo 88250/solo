@@ -14,10 +14,10 @@
  * limitations under the License.
 */
 /*
-* skin ease style
+* skin metro-hot style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.3, Jul 5, 2013
+* @version 1.0.0.5, Jul 9, 2013
 */
 /* start base */
 html {
@@ -29,20 +29,20 @@ body {
     font-family: Verdana, arial, '\5fae\8f6f\96c5\9ed1';
     font-size: 12px;
     background-color: #292929;
-    min-height: 1090px;
+    min-height: 1990px;
     margin: 0;
     color: #D1D2D1;
 }
 
 a {
     outline: 0;
-    text-decoration: none;
+    text-decoration: underline;
     color: #BDBEBD;
 }
 
 a:hover {
     color: #FFF;
-    text-decoration: underline;
+    text-decoration: none;
 }
 
 a:focus {
@@ -158,6 +158,69 @@ textarea {
     word-wrap: normal;
 }
 
+
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
+.em10, .em11, .em12, .em13, .em14 {
+    cursor: pointer;
+    background-image: url("../../ease/images/emotions/emotions-ease.png");
+    float: left;
+    height: 24px;
+    margin-right: 5px;
+    width: 24px;
+    transition: all .2s ease-out;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+}
+
+#emotions span:hover {
+    transform: scale(1.2) rotate(360deg);
+    -webkit-transform: scale(1.2) rotate(360deg);
+    -moz-transform: scale(1.2) rotate(360deg);
+}
+
+.em01 {
+    background-position: -24px 0;
+}
+.em02 {
+    background-position: -48px 0;
+}
+.em03 {
+    background-position: -72px 0;
+}
+.em04 {
+    background-position: -96px 1px;
+}
+.em05 {
+    background-position: 0 -24px;
+}
+.em06 {
+    background-position: -24px -24px;
+}
+.em07 {
+    background-position: -48px -24px;
+}
+.em08 {
+    background-position: -72px -24px;
+}
+.em09 {
+    background-position: -96px -24px;
+}
+.em10 {
+    background-position: 0 -48px;
+}
+.em11 {
+    background-position: -24px -48px ;
+}
+.em12 {
+    background-position: -48px -48px;
+}
+.em13 {
+    background-position: -72px -48px;
+}
+.em14 {
+    background-position: -96px -48px;
+}
+
 /* end base */
 
 /* start frame */
@@ -171,6 +234,7 @@ textarea {
     background-color: #141414;
     color: #FFF;
     padding: 30px;
+    margin-right: 10px;
 }
 
 .main {
@@ -187,11 +251,11 @@ textarea {
 
 .header .title {
     color: #E61E1E;
+    text-decoration: none;
 }
 
 .header .title:hover {
     color: #CA1B1E;
-    text-decoration: none;
 }
 
 .header .title > span:before {
@@ -217,25 +281,25 @@ textarea {
 
 .top-info a {
     color: #FFF;
+    text-decoration: none;
 }
 
 .top-info a:hover {
     color: #CA1B1E;
-    text-decoration: none;
 }
 
 #showTop {
     display: none;
 }
 
-.articles-header {
+.sub-nav {
     background-color: #E61E1E;
     color: #FFF;
     padding: 30px;
     margin: 30px 0;
 }
 
-.articles-header > h2 {
+.sub-nav > h2 {
     float: left;
     margin: 0;
 }
@@ -270,7 +334,7 @@ textarea {
     min-width: 223px;
     padding: 0;
     position: absolute;
-    top: 100%;
+    top: 63px;
     z-index: 1;
     display: none;
 }
@@ -301,7 +365,8 @@ textarea {
     float: none;
     padding-bottom: 30px;
     padding-top: 30px;
-    text-align: end;
+    text-align: right;
+    margin-right: 10px;
 }
 
 .article-list > div {
@@ -365,7 +430,6 @@ textarea {
 }
 
 .article-abstract .fn-right {
-    background-color: #EA4040;
     position: absolute;
     right: 0;
     display: none;
@@ -375,10 +439,15 @@ textarea {
 .article-abstract .fn-right > a {
     padding: 15px;
     float: left;
+    background-color: #E61E1E;
+    color: #FFF;
+    text-decoration: none;
 }
 
 .article-abstract .fn-right > a:hover {
+    background-color: #FFF;
     text-decoration: none;
+    color: #E61E1E;
 }
 
 .article-abstract > .article-tags {
@@ -387,10 +456,11 @@ textarea {
 
 .article-abstract > .article-body {
     height: 115px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    margin: 10px 0 0 10px;
-    word-wrap: normal;
+    margin: 10px 10px 0;
+    overflow: hidden;
+    white-space: inherit;
+    word-wrap: break-word;
+    padding: 0;
 }
 /* end article list*/
 
@@ -428,14 +498,25 @@ textarea {
     padding: 15px 25px 10px 25px;
     position: relative;
     background-color: #F09609;
-    height: 90px;
     width: 65px;
     transition: all 0.3s ease-out 0s;
 }
 
+.side a,
+.article-abstract a,
+.article-header a {
+    text-decoration: none;
+}
+
+.clear a:hover,
+.article-relative a:hover,
+.article-abstract a:hover,
+.article-header a:hover {
+    text-decoration: underline;
+}
+
 .side-tile:hover,
 .side form input:focus {
-    text-decoration: none;
     outline: 3px solid #BABABA;
 }
 
@@ -446,11 +527,7 @@ textarea {
     width: 60px;;
 }
 
-.side-tile > div.title {
-    color: #FFF;
-}
-
-.side-tile > div.text {
+.side-tile > .text {
     font-size: 15px;
     font-weight: bold;
     left: 93px;
@@ -459,20 +536,24 @@ textarea {
     top: 20px;
 }
 
-.side-tile > div.text a {
+.side-tile > .text a {
     color: #FFF;
 }
 
 .online-count,
 .user,
 .clear,
-.notice-board {
+.notice-board,
+.share,
+.article-relative {
     width: 188px;
 }
 
 .translate,
 .register,
-.logout {
+.logout,
+.prev,
+.prev-disabled {
     margin-left: 10px;
 }
 
@@ -490,21 +571,62 @@ textarea {
     background-color: #7B4F9D;
 }
 
-.clear {
+.clear,
+.next,
+.prev {
     background-color: #E61E1E;
+}
+
+.next-disabled,
+.prev-disabled {
+    color: #BDBEBD;
+    background-color: #EA4040;
 }
 
 .user {
     background-color: #393;
 }
 
-.online-count {
+.online-count,
+.share {
     background-color: #20608E;
 }
 
-.online-count > span {
-    margin-top: 10px;
+.share div.text {
+    color: #BDBEBD;
+    font-size: 43px;
+    font-weight: normal;
+    left: 128px;
+    line-height: 54px;
+    top: 5px;
 }
+
+.share .text span:hover {
+    color: #FFF;
+}
+
+.online-count .text,
+.article-relative .text {
+    font-size: 12px;
+    font-weight: normal;
+    left: 104px;
+    line-height: 19px;
+    text-align: left;
+    top: 12px;
+}
+
+.article-relative .text { 
+    left: 70px;
+    overflow: hidden;
+    top: 10px;
+    white-space: nowrap;
+    width: 158px;
+    word-break: keep-all;
+}
+
+.article-relative .text ul {
+    margin: 0;
+} 
 
 .notice-board {
     background-color: #2E8BCC;
@@ -512,21 +634,11 @@ textarea {
     height: auto;
 }
 
-.user div.text,
-.notice-board div.text {
-    text-align: center;
-    top: 35px;
-    width: 120px;
+.user .text,
+.notice-board .text {
+    top: 36px;
 }
 
-.online-count div.text {
-    font-size: 13px;
-    font-weight: normal;
-    left: 100px;
-    line-height: 22px;
-    text-align: left;
-    top: 15px;
-}
 
 /* end side */
 
@@ -542,3 +654,69 @@ textarea {
     width: 30px;
 }
 /* end others */
+
+/* start article */
+.article-info {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.article-info > a {
+    padding: 15px;
+    float: left;
+    background-color: #FFF;
+    color: #E61E1E;
+    transition: all 0.8s;
+    text-decoration: none;
+}
+
+.article-info > a:hover {
+    background-color: #E61E1E;
+    color: #FFF;
+    text-decoration: none;
+}
+
+.article-header {
+    background-color: #E61E1E;
+    margin: 30px 0;
+    padding: 20px 30px;
+    position: relative;
+}
+
+.article-header h2 {
+    color: #FFF;
+}
+
+.article-header .article-date {
+    float: none;
+    margin: 0;
+}
+
+.article-body {
+    background-color: #323232;
+    margin: 20px 0 50px;
+    overflow: hidden;
+    padding: 10px;
+    white-space: normal;
+    word-break: break-all;
+    font-size: 14px;
+    word-wrap: break-word;
+}
+/* end article */
+
+/* start comment */
+#comments .article-body {
+    margin: 10px 0;
+}
+
+#comments .user-name {
+    color: #E61E1E;
+    font-weight: bold;
+}
+
+.comment-main {
+    float: right;
+    width: 840px;
+}
+/* end comment */

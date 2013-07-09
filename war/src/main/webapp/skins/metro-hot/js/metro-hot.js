@@ -18,11 +18,12 @@
  * @fileoverview metro-hot js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.3, Jul 5, 2013
+ * @version 1.0.0.5, Jul 9, 2013
  */
 
 var MetroHot = {
     headerH: 240,
+    responsiveType: "large",
     goTranslate: function() {
         window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);
     },
@@ -53,6 +54,8 @@ var MetroHot = {
         // 头部标题点击事件
         $(".header .title").click(function() {
             $(".navigation").slideToggle();
+        }).dblclick(function() {
+            window.location.href = latkeConfig.servePath;
         });
 
         // 滚动处理
@@ -72,7 +75,13 @@ var MetroHot = {
                 }
             }
 
-            if (!isLogin) {
+            if (y > MetroHot.headerH) {
+                $("#goTop").fadeIn("slow");
+            } else {
+                $("#goTop").hide();
+            }
+
+            if ($(".side > div").height() < 620) {
                 if (y > MetroHot.headerH) {
                     $(".side > div").css({
                         "position": "fixed",
@@ -86,6 +95,7 @@ var MetroHot = {
                 if (y + window.innerHeight > $(".side > div").height() + MetroHot.headerH) {
                     $(".side > div").css({
                         "position": "fixed",
+                        "top": "auto",
                         "bottom": "10px",
                         "width": "240px"
                     });
@@ -93,35 +103,162 @@ var MetroHot = {
                     $(".side > div").css("position", "static");
                 }
             }
-
-            if (y > MetroHot.headerH) {
-                $("#goTop").fadeIn("slow");
-            } else {
-                $("#goTop").hide();
-            }
         }).click(function(event) {
             if (event.target.className === "title" || event.target.parentElement.className === "title") {
                 return;
             }
             $(".navigation").slideUp();
+        }).resize(function() {
+            var windowW = window.innerWidth,
+                    type = "large";
+            if (windowW > 460 && windowW <= 860) {
+                type = "mid";
+            } else if (window < 460) {
+                type = "small";
+            }
+            if (MetroHot.responsiveType !== type) {
+                $(window).scroll();
+                MetroHot.responsiveType === type;
+            }
         });
 
         $(window).scroll();
     },
-    
-    initArticleList: function () {
-        $(".article-list .article-abstract").each(function () {
+    initArticleList: function() {
+        $(".article-list .article-abstract").each(function() {
             var $it = $(this);
             var $images = $it.find("img");
-           if ($images.length > 0) {
-               $it.addClass("article-image");
-               $images.hide();
-               
+            if ($images.length > 0) {
+                $it.addClass("article-image");
+                $images.hide();
+
                 $it.before("<img src='" + $($images[0]).attr("src") + "'/>");
-           } 
+            }
         });
     },
-            
+    /**
+     * @description 分享按钮
+     */
+    share: function() {
+        var title = encodeURIComponent($("title").text()),
+                url = window.location.href,
+                pic = $(".article-body img").attr("src");
+        var urls = {};
+        urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
+                "&url=" + url + "&pic=" + pic;
+        urls.sina = "http://v.t.sina.com.cn/share/share.php?title=" +
+                title + "&url=" + url + "&pic=" + pic;
+        urls.google = "https://plus.google.com/share?url=" + url;
+        urls.twitter = "https://twitter.com/intent/tweet?status=" + title + " " + url;
+        $(".share span").click(function() {
+            var key = $(this).attr("title").toLowerCase();
+            window.open(urls[key], "_blank", "top=100,left=200,width=648,height=618");
+        });
+    },
+    /*
+     * @description 加载随机文章
+     */
+    loadRandomArticles: function() {
+        // getRandomArticles
+        $.ajax({
+            url: latkeConfig.servePath + "/get-random-articles.do",
+            type: "POST",
+            success: function(result, textStatus) {
+                var randomArticles = result.randomArticles;
+                if (!randomArticles || 0 === randomArticles.length) {
+                    $("#randomArticles").remove();
+                    return;
+                }
+
+                var listHtml = "";
+                for (var i = 0; i < randomArticles.length && i < 5; i++) {
+                    var article = randomArticles[i];
+                    var title = article.articleTitle;
+                    var randomArticleLiHtml = "<li>" + "<a rel='nofollow' title='" + title + "' href='" + latkeConfig.servePath +
+                            article.articlePermalink + "'>" + title + "</a></li>";
+                    listHtml += randomArticleLiHtml;
+                }
+
+                var randomArticleListHtml = "<ul>" + listHtml + "</ul>";
+                $("#randomArticles .text").append(randomArticleListHtml);
+            }
+        });
+    },
+    /*
+     * @description 加载相关文章
+     * @param {String} id 文章 id
+     */
+    loadRelevantArticles: function(id) {
+        $.ajax({
+            url: latkeConfig.servePath + "/article/id/" + id + "/relevant/articles",
+            type: "GET",
+            success: function(data, textStatus) {
+                var articles = data.relevantArticles;
+                if (!articles || 0 === articles.length) {
+                    $("#relevantArticles").remove();
+                    return;
+                }
+                var listHtml = "";
+                for (var i = 0; i < articles.length && i < 5; i++) {
+                    var article = articles[i];
+                    var title = article.articleTitle;
+                    var articleLiHtml = "<li>"
+                            + "<a rel='nofollow' title='" + title + "' href='"
+                            + latkeConfig.servePath + article.articlePermalink + "'>"
+                            + title + "</a></li>";
+                    listHtml += articleLiHtml;
+                }
+
+                var relevantArticleListHtml = "<ul>"
+                        + listHtml + "</ul>";
+                $("#relevantArticles .text").append(relevantArticleListHtml);
+            },
+            error: function() {
+                $("#relevantArticles").remove();
+            }
+        });
+    },
+    /*
+     * @description 加载站外相关文章
+     * @param {String} tags 文章 tags
+     */
+    loadExternalRelevantArticles: function(tags) {
+        var tips = this.tips;
+        try {
+            $.ajax({
+                url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
+                        + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
+                type: "GET",
+                cache: true,
+                dataType: "jsonp",
+                error: function() {
+                    $("#externalRelevantArticles").remove();
+                },
+                success: function(data, textStatus) {
+                    var articles = data.articles;
+                    if (!articles || 0 === articles.length) {
+                        $("#externalRelevantArticles").remove();
+                        return;
+                    }
+                    var listHtml = "";
+                    for (var i = 0; i < articles.length && i < 5; i++) {
+                        var article = articles[i];
+                        var title = article.articleTitle;
+                        var articleLiHtml = "<li>"
+                                + "<a rel='nofollow' title='" + title + "' target='_blank' href='" + article.articlePermalink + "'>"
+                                + title + "</a></li>";
+                        listHtml += articleLiHtml;
+                    }
+
+                    var randomArticleListHtml = "<ul>" + listHtml + "</ul>";
+                    $("#externalRelevantArticles .text").append(randomArticleListHtml);
+                }
+            });
+        } catch (e) {
+            // 忽略相关文章加载异常：load script error
+            $("#externalRelevantArticles").remove();
+        }
+    },
     $body: $(".main > .wrapper"),
     $nav: $(".nav"),
     getCurrentPage: function() {
@@ -241,5 +378,9 @@ var MetroHot = {
 
 (function() {
     MetroHot.init();
-    MetroHot.initArticleList();
+    if ($(".article-header").length > 0) {
+        MetroHot.share();
+    } else {
+        MetroHot.initArticleList();
+    }
 })();
