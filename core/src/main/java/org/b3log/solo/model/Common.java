@@ -15,9 +15,12 @@
  */
 package org.b3log.solo.model;
 
+<<<<<<< HEAD
 
 import org.b3log.solo.util.Thumbnails;
 
+=======
+>>>>>>> 权限检查逻辑简化
 
 /**
  * This class defines all common model relevant keys.

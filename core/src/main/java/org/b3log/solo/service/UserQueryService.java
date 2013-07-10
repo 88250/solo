@@ -24,7 +24,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
@@ -44,7 +43,7 @@ import org.json.JSONObject;
  * User query service.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Feb 24, 2012
+ * @version 1.0.0.3, Jul 10, 2013
  * @since 0.4.0
  */
 @Service
@@ -114,11 +113,7 @@ public class UserQueryService {
 
         final GeneralUser currentUser = userService.getCurrentUser(request);
 
-        if (null == currentUser) {
-            return false;
-        }
-
-        return isSoloUser(currentUser.getEmail()) || userService.isUserAdmin(request);
+        return null != currentUser;
     }
 
     /**
@@ -154,68 +149,6 @@ public class UserQueryService {
 
             return null;
         }
-    }
-
-    /**
-     * Determines whether the specified email is a user's email of this Solo
-     * application.
-     *
-     * @param email the specified email
-     * @return {@code true} if it is, {@code false} otherwise
-     */
-    public boolean isSoloUser(final String email) {
-        try {
-            final Query query = new Query().setPageCount(1);
-            final JSONObject result = userRepository.get(query);
-            final JSONArray users = result.getJSONArray(Keys.RESULTS);
-
-            return existEmail(email, users);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-            return false;
-        }
-    }
-
-    /**
-     * Determines whether the specified email exits in the specified users.
-     * 
-     * <p>
-     * If the email is a visitor's, returns {@code false}.
-     * </p>
-     *
-     * @param email the specified email
-     * @param users the specified user
-     * @return {@code true} if exists, {@code false} otherwise
-     * @throws JSONException json exception
-     */
-    private boolean existEmail(final String email, final JSONArray users) throws JSONException {
-        for (int i = 0; i < users.length(); i++) {
-            final JSONObject user = users.getJSONObject(i);
-
-            if (isVisitor(user)) {
-                return false;
-            }
-
-            if (user.getString(User.USER_EMAIL).equalsIgnoreCase(email)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Check the user is visitor or not.
-     *
-     * @param user the specified user
-     * @return {@code true} if is visitor, {@code false} otherwise
-     * @throws JSONException json exception
-     */
-    private boolean isVisitor(final JSONObject user) throws JSONException {
-        if (user.getString(User.USER_ROLE).equals(Role.VISITOR_ROLE)) {
-            return true;
-        }
-        return false;
     }
 
     /**
