@@ -55,7 +55,7 @@ import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.Tags;
+import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.5, May 17, 2013
+ * @version 1.0.6.6, Jul 10, 2013
  * @since 0.3.1
  */
 @Service
@@ -99,11 +99,6 @@ public class Filler {
      */
     @Inject
     private TagRepository tagRepository;
-
-    /**
-     * Tag utilities.
-     */
-    private Tags tagUtils = Tags.getInstance();
 
     /**
      * Link repository.
@@ -157,36 +152,6 @@ public class Filler {
      */
     @Inject
     private FillTagArticles fillTagArticles;
-
-    /**
-     * default page.
-     */
-    private static final int DEFAULT_PAGE = 0;
-
-    /**
-     * default page size.
-     */
-    private static final int DEFAULT_PAGESIZE = 10;
-
-    /**
-     * march1.
-     */
-    private static final int MARCH1 = 1;
-
-    /**
-     * march2.
-     */
-    private static final int MARCH2 = 2;
-
-    /**
-     * march3.
-     */
-    private static final int MARCH3 = 3;
-
-    /**
-     * march4.
-     */
-    private static final int MARCH4 = 4;
 
     /**
      * Fills articles in index.ftl.
@@ -323,7 +288,7 @@ public class Filler {
 
             final List<JSONObject> tags = tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
 
-            tagUtils.removeForUnpublishedArticles(tags);
+            tagQueryService.removeForUnpublishedArticles(tags);
 
             dataModel.put(Common.MOST_USED_TAGS, tags);
         } catch (final JSONException e) {
@@ -543,6 +508,8 @@ public class Filler {
 
             dataModel.put(Keys.Server.STATIC_SERVER, Latkes.getStaticServer());
             dataModel.put(Keys.Server.SERVER, Latkes.getServer());
+            
+            dataModel.put(Common.GRAVATAR, Thumbnails.GRAVATAR);
 
             // Activates plugins
             try {

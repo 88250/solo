@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.model;
 
+import org.b3log.solo.util.Thumbnails;
+
 
 /**
  * This class defines all common model relevant keys.
@@ -310,6 +312,11 @@ public final class Common {
      * Key of articles view password.
      */
     public static final String ARTICLES_VIEW_PWD = "articlesViewPwd";
+    
+    /**
+     * Key of Gravatar.
+     */
+    public static final String GRAVATAR = "gravatar";
 
     /**
      * Private default constructor.

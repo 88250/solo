@@ -53,7 +53,6 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -109,11 +108,6 @@ public class TagProcessor {
      */
     @Inject
     private TagQueryService tagQueryService;
-
-    /**
-     * Tag utilities.
-     */
-    private Tags tagUtils = Tags.getInstance();
 
     /**
      * Shows articles related with a tag with the specified context.
@@ -304,7 +298,7 @@ public class TagProcessor {
 
             final List<JSONObject> tags = tagQueryService.getTags();
 
-            tagUtils.removeForUnpublishedArticles(tags);
+            tagQueryService.removeForUnpublishedArticles(tags);
             Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
 
             dataModel.put(Tag.TAGS, tags);

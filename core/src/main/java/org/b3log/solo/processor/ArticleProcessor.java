@@ -45,7 +45,6 @@ import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
@@ -57,6 +56,7 @@ import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Thumbnails;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -344,7 +344,7 @@ public class ArticleProcessor {
         if (Strings.isEmptyOrNull(articleId)) {
             return;
         }
-        
+
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
 
         context.setRenderer(renderer);
@@ -1191,8 +1191,7 @@ public class ArticleProcessor {
         dataModel.put(Keys.OBJECT_ID, authorId);
 
         dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
-        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(author.optString(User.USER_EMAIL)) + "?s=60&d="
-            + Latkes.getStaticServePath() + "/images/default-user-thumbnail.png";
+        final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
 
         dataModel.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
 

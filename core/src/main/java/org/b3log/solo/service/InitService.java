@@ -50,6 +50,7 @@ import org.b3log.solo.model.Preference.Default;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Thumbnails;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -295,7 +296,7 @@ public class InitService {
         comment.put(Comment.COMMENT_CONTENT, StringEscapeUtils.escapeHtml(langPropsService.get("helloWorld.comment.content")));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-        comment.put(Comment.COMMENT_THUMBNAIL_URL, "http://secure.gravatar.com/avatar/59a5e8209c780307dbe9c9ba728073f5??s=60&r=G");
+        comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.GRAVATAR + "59a5e8209c780307dbe9c9ba728073f5??s=60&r=G");
         comment.put(Comment.COMMENT_DATE, date);
         comment.put(Comment.COMMENT_ON_ID, articleId);
         comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
