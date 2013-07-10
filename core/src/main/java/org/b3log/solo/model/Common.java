@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model;
 
+
 import org.b3log.solo.util.Thumbnails;
 
 

@@ -17,7 +17,7 @@
 * skin metro-hot style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.5, Jul 9, 2013
+* @version 1.0.0.6, Jul 10, 2013
 */
 /* start base */
 html {
@@ -36,13 +36,12 @@ body {
 
 a {
     outline: 0;
-    text-decoration: underline;
+    text-decoration: none;
     color: #BDBEBD;
 }
 
 a:hover {
     color: #FFF;
-    text-decoration: none;
 }
 
 a:focus {
@@ -162,10 +161,10 @@ textarea {
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
 .em10, .em11, .em12, .em13, .em14 {
     cursor: pointer;
-    background-image: url("../../ease/images/emotions/emotions-ease.png");
+    background-image: url("../../metro-hot/images/emotions/emotions-black.png");
     float: left;
     height: 24px;
-    margin-right: 5px;
+    margin-right: 8px;
     width: 24px;
     transition: all .2s ease-out;
     -webkit-transition: all .2s ease-out;
@@ -221,6 +220,18 @@ textarea {
     background-position: -96px -48px;
 }
 
+.footer a:hover,
+.clear a:hover,
+.article-relative a:hover,
+.article-abstract .article-title a:hover,
+.article-abstract .article-tags a:hover,
+.article-body a {
+    text-decoration: underline;
+}
+
+.article-body a:hover {
+    text-decoration: none;
+}
 /* end base */
 
 /* start frame */
@@ -251,7 +262,6 @@ textarea {
 
 .header .title {
     color: #E61E1E;
-    text-decoration: none;
 }
 
 .header .title:hover {
@@ -281,7 +291,6 @@ textarea {
 
 .top-info a {
     color: #FFF;
-    text-decoration: none;
 }
 
 .top-info a:hover {
@@ -315,7 +324,6 @@ textarea {
     color: #FFF;
     padding: 6px 7px;
     text-align: center;
-    text-decoration: none;
     font-weight: bold;
 }
 
@@ -345,7 +353,6 @@ textarea {
     color: #333;
     display: block;
     padding: 10px 15px;
-    text-decoration: none;
 }
 
 .navigation a:hover {
@@ -436,18 +443,30 @@ textarea {
     top: 0;
 }
 
-.article-abstract .fn-right > a {
+.article-abstract .fn-right > a,
+.article-info > a {
     padding: 15px;
     float: left;
     background-color: #E61E1E;
     color: #FFF;
-    text-decoration: none;
+    font-size: 14px;
 }
 
-.article-abstract .fn-right > a:hover {
+.article-info > a {
     background-color: #FFF;
-    text-decoration: none;
     color: #E61E1E;
+    transition: all 0.8s;
+}
+
+.article-abstract .fn-right > a:hover,
+.article-info > a:hover {
+    background-color: #FFF;
+    color: #E61E1E;
+}
+
+.article-info > a:hover {
+    background-color: #E61E1E;
+    color: #FFF;
 }
 
 .article-abstract > .article-tags {
@@ -502,21 +521,11 @@ textarea {
     transition: all 0.3s ease-out 0s;
 }
 
-.side a,
-.article-abstract a,
-.article-header a {
-    text-decoration: none;
-}
-
-.clear a:hover,
-.article-relative a:hover,
-.article-abstract a:hover,
-.article-header a:hover {
-    text-decoration: underline;
-}
-
 .side-tile:hover,
-.side form input:focus {
+.side form input:focus,
+.form input:focus,
+.form textarea:focus,
+.form button:hover {
     outline: 3px solid #BABABA;
 }
 
@@ -643,15 +652,20 @@ textarea {
 /* end side */
 
 /* start others */
+#goCmt,
 #goTop {
     background-color: #141414;
-    bottom: 10px;
+    bottom: 55px;
     font-size: 30px;
     height: 35px;
     padding: 5px 7px;
     position: fixed;
     right: 30px;
     width: 30px;
+}
+
+#goCmt {
+    bottom: 10px;
 }
 /* end others */
 
@@ -660,21 +674,6 @@ textarea {
     position: absolute;
     right: 0;
     top: 0;
-}
-
-.article-info > a {
-    padding: 15px;
-    float: left;
-    background-color: #FFF;
-    color: #E61E1E;
-    transition: all 0.8s;
-    text-decoration: none;
-}
-
-.article-info > a:hover {
-    background-color: #E61E1E;
-    color: #FFF;
-    text-decoration: none;
 }
 
 .article-header {
@@ -703,9 +702,22 @@ textarea {
     font-size: 14px;
     word-wrap: break-word;
 }
+
+.main > .article-body {
+    margin-right: 10px;
+}
 /* end article */
 
 /* start comment */
+#comments {
+    position: relative;
+}
+
+#comments > div {
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
+
 #comments .article-body {
     margin: 10px 0;
 }
@@ -715,8 +727,68 @@ textarea {
     font-weight: bold;
 }
 
+#comments .user-name:hover {
+    color: #CA1B1E;
+}
+
+.at {
+    font-size: 15px;
+    color: #FFF;
+    font-weight: bold;
+}
+
 .comment-main {
     float: right;
-    width: 840px;
+    width: 830px;
+}
+
+.comment-body-ref {
+    background-color: #EA4040;
+    left: 79px;
+    padding: 10px;
+    position: absolute;
+    width: 900px;
+    z-index: 1;
+}
+
+.comment-disabled {
+    background-color: #EA4040;
+    color: #FFFFFF;
+    margin: 0 10px 30px 0;
+    padding: 5px 20px;
+}
+
+.form  {
+    width: 600px;
+    margin-bottom: 30px;
+}
+
+.form input,
+.form textarea {
+    height: 30px;
+    margin: 5px 10px 5px 0;
+    padding: 0 5px;
+    transition: all 0.3s ease-out 0s;
+    width: 456px;
+}
+
+.form textarea {
+    width: 600px;
+    height: 300px;
+    margin: 0 0 10px;
+}
+
+.form button {
+    background-color: #E61E1E;
+    border: 0 none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all 0.3s ease-out 0s;
+    padding: 10px 50px;
+}
+
+.tip {
+    color: #CA1B1E;
 }
 /* end comment */

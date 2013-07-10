@@ -42,6 +42,7 @@
                 <@side isArticle=false />
             </div>
         </div>
+        <span id="goTop" onclick="Util.goTop()" data-ico="&#xe042;" class="side-tile"></span>
         <#include "footer.ftl"/>
     </body>
 </html>

@@ -147,7 +147,9 @@
         </a>
 
         <div class="user side-tile">
-            <span data-ico="&#x0060;"></span>
+            <span data-ico="&#x0060;">
+                <img src="${gravatar}"/>
+            </span>
             <div class="fn-clear title">
                 ${commentNameLabel}
             </div>

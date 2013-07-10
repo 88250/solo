@@ -18,7 +18,7 @@
  * @fileoverview metro-hot js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.5, Jul 9, 2013
+ * @version 1.0.0.6, Jul 10, 2013
  */
 
 var MetroHot = {
@@ -259,120 +259,10 @@ var MetroHot = {
             $("#externalRelevantArticles").remove();
         }
     },
-    $body: $(".main > .wrapper"),
-    $nav: $(".nav"),
-    getCurrentPage: function() {
-        var $next = $(".article-next");
-        if ($next.length > 0) {
-            window.currentPage = $next.data("page");
-        }
-    },
-    setNavCurrent: function() {
-        $(".nav ul a").each(function() {
-            var $this = $(this);
-            if ($this.attr("href") === latkeConfig.servePath + location.pathname) {
-                $this.addClass("current");
-            } else if (/\/[0-9]+$/.test(location.pathname)) {
-                $(".nav ul li")[0].className = "current";
-            }
-        });
-    },
-    initCommon: function() {
-        Util.init();
-        Util.replaceSideEm($(".recent-comments-content"));
-        Util.buildTags("tagsSide");
-    },
-    initArchives: function() {
-        var $archives = $(".archives");
-        if ($archives.length < 1) {
-            return;
-        }
-
-        $(".footer").css("marginTop", "30px");
-        var years = [], $archiveList = $archives.find("span").each(function() {
-            var year = $(this).data("year"), tag = true;
-            for (var i = 0; i < years.length; i++) {
-                if (year === years[i]) {
-                    tag = false;
-                    break;
-                }
-            }
-            if (tag) {
-                years.push(year);
-            }
-        });
-
-        var yearsHTML = "";
-        for (var j = 0; j < years.length; j++) {
-            var monthsHTML = "";
-            for (var l = 0; l < $archiveList.length; l++) {
-                var $month = $($archiveList[l]);
-                if ($month.data("year") === years[j]) {
-                    monthsHTML += $month.html();
-                }
-            }
-
-            yearsHTML += "<div><h3 class='ft-gray'>" + years[j] + "</h3>" + monthsHTML + "</div>";
-        }
-
-        $archives.html(yearsHTML);
-
-        // position
-        var $items = $(".archives>div"), line = 0, top = 0, heights = [];
-
-        for (var m = 0; m < $items.length; m++) {
-            for (var n = 0; n < 3; n++) {
-                if (m >= $items.length) {
-                    break;
-                }
-
-                $items[m].style.left = (n * 310) + "px";
-
-                if (line > 0) {
-                    if ($items[m - 3].style.top !== "") {
-                        top = parseInt($items[m - 3].style.top);
-                    }
-                    $items[m].style.top = $($items[m - 3]).height() + 60 + top + "px";
-
-                    heights[n] = parseInt($items[m].style.top) + $($items[m]).height() + 60;
-                } else {
-                    heights[n] = $($items[m]).height() + 60;
-                }
-
-                if (n < 2) {
-                    m += 1;
-                }
-            }
-            line += 1;
-        }
-
-        // archive height
-        $archives.height(heights.sort()[heights.length - 1]);
-    },
-    setDynamic: function() {
-        var $dynamic = $(".dynamic");
-        if ($(".dynamic").length < 1) {
-            return;
-        }
-
-        var $comments = $dynamic.find(".side-comments"), $tags = $dynamic.find(".side-tags"), $mostComment = $dynamic.find(".side-most-comment"), $mostView = $dynamic.find(".side-most-view");
-
-        if ($comments.height() > $tags.height()) {
-            $tags.height($comments.height());
-        } else {
-            $comments.height($tags.height());
-        }
-
-        if ($mostComment.height() > $mostView.height()) {
-            $mostView.height($mostComment.height());
-        } else {
-            $mostComment.height($mostView.height());
-        }
-
-        // emotions
-        $(".article-body").each(function() {
-            this.innerHTML = Util.replaceEmString($(this).html());
-        });
+    goCmt: function() {
+       $("html, body").animate({
+           scrollTop: $(".comment-disabled").get(0).offsetTop
+       });
     }
 };
 
