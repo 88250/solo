@@ -50,7 +50,7 @@ import org.json.JSONObject;
 /**
  * Article/Page permalink filter.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.7, Jan 8, 2013
  * @since 0.3.1
  * @see org.b3log.solo.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.HTTPRequestContext, 

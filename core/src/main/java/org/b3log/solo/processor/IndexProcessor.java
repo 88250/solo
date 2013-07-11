@@ -54,9 +54,9 @@ import org.json.JSONObject;
 /**
  * Index processor.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.1.1.2, Apr 1, 2013
+ * @version 1.1.1.3, Jul 11, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -121,7 +121,7 @@ public class IndexProcessor {
 
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
@@ -168,7 +168,7 @@ public class IndexProcessor {
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
 
@@ -213,7 +213,7 @@ public class IndexProcessor {
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
             filler.fillMinified(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -242,9 +242,9 @@ public class IndexProcessor {
     /**
      * Kill browser (kill-browser.ftl) HTTP response renderer.
      * 
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @author <a href="http://88250.b3log.org">Liang Ding</a>
      * @version 1.0.0.0, Sep 18, 2011
-     * @see 0.3.1
+     * @since 0.3.1
      */
     private static final class KillBrowserRenderer extends AbstractFreeMarkerRenderer {
 

@@ -62,7 +62,7 @@ import org.json.JSONObject;
 /**
  * Article query service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @version 1.0.1.3, Jul 10, 2013
  * @since 0.3.5

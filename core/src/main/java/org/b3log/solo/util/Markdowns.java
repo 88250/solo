@@ -30,7 +30,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * 
  * <p>Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Feb 8, 2013
  * @since 0.4.5
  */

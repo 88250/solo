@@ -47,7 +47,7 @@ import org.json.JSONObject;
  *   </li>
  * </p>
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.3, May 17, 2013
  * @see UpdateArticleGoogleBlogSearchPinger
  * @since 0.3.1

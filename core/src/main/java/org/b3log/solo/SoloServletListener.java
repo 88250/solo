@@ -58,7 +58,7 @@ import org.json.JSONObject;
 /**
  * B3log Solo servlet listener.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.0, Jun 28, 2013
  * @since 0.3.1
  */
@@ -198,15 +198,13 @@ public final class SoloServletListener extends AbstractServletListener {
      * Loads preference.
      * 
      * <p>
-     *   Loads preference from repository, loads skins from skin directory then
-     *   sets it into preference if the skins changed. Puts preference into 
-     *   cache and persists it to repository finally.
+     *   Loads preference from repository, loads skins from skin directory then sets it into preference if the skins changed. 
+     *   Puts preference into cache and persists it to repository finally.
      * </p>
      * 
      * <p>
-     *   <b>Note</b>: Do NOT use method 
-     *   {@linkplain org.b3log.solo.util.Preferences#getPreference()}
-     *   to load it, caused by the method may retrieve it from cache.
+     *   <b>Note</b>: Do NOT use method {@link org.b3log.solo.service.PreferenceQueryService#getPreference() } to load it, caused by the 
+     *   method may retrieve it from cache.
      * </p>
      */
     private void loadPreference() {

@@ -56,7 +56,7 @@ import org.json.JSONObject;
 /**
  * Upgrader.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @version 1.1.1.9, Apr 26, 2013
  * @since 0.3.1

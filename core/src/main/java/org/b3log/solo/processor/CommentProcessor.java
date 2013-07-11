@@ -43,7 +43,7 @@ import org.json.JSONObject;
 /**
  * Comment processor.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
  * @version 1.1.0.11, Jan 30, 2013
  * @since 0.3.1

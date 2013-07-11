@@ -43,7 +43,7 @@ import org.json.JSONObject;
 /**
  * This listener is responsible for processing article comment reply.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.6, May 17, 2013
  * @since 0.3.1
  */

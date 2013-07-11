@@ -49,7 +49,7 @@ import org.json.JSONObject;
 /**
  * Top bar utilities.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @version 1.0.1.5, Apr 10, 2013
  * @since 0.3.5

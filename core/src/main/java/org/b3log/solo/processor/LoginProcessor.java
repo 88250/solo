@@ -62,7 +62,7 @@ import org.json.JSONObject;
  *
  * <p>Initializes administrator</p>.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @version 1.1.1.5, Jul 4, 2013
