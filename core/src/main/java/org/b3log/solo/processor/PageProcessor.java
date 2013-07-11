@@ -152,7 +152,7 @@ public class PageProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.PAGE);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

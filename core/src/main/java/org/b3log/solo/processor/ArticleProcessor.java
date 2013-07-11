@@ -67,7 +67,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.10, Mar 26, 2013
+ * @version 1.1.2.11, Jul 11, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -730,9 +730,10 @@ public class ArticleProcessor {
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
-            prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author, preference);
+            prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author);
             dataModel.put(Keys.PAGE_TYPE, PageTypes.AUTHOR_ARTICLES);
             filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
         } catch (final ServiceException e) {
@@ -829,6 +830,7 @@ public class ArticleProcessor {
 
             dataModel.put(Keys.PAGE_TYPE, PageTypes.DATE_ARTICLES);
             filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
@@ -948,7 +950,7 @@ public class ArticleProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.ARTICLE);
 
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
@@ -1157,7 +1159,6 @@ public class ArticleProcessor {
      * @param currentPageNum the specified  current page number 
      * @param articles the specified articles
      * @param author the specified author
-     * @param preference the specified preference
      * @throws ServiceException service exception
      */
     private void prepareShowAuthorArticles(final List<Integer> pageNums,
@@ -1165,8 +1166,7 @@ public class ArticleProcessor {
         final int pageCount,
         final int currentPageNum,
         final List<JSONObject> articles,
-        final JSONObject author,
-        final JSONObject preference) throws ServiceException {
+        final JSONObject author) throws ServiceException {
         if (0 != pageNums.size()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
@@ -1196,8 +1196,6 @@ public class ArticleProcessor {
         dataModel.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-
-        filler.fillBlogFooter(dataModel, preference);
     }
 
     /**
@@ -1242,7 +1240,6 @@ public class ArticleProcessor {
         dataModel.put(Common.PATH, "/archives/" + archiveDateString);
         dataModel.put(Keys.OBJECT_ID, archiveDate.getString(Keys.OBJECT_ID));
 
-        filler.fillBlogFooter(dataModel, preference);
         final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
         final String dateString = DateFormatUtils.format(time, "yyyy/MM");
         final String[] dateStrings = dateString.split("/");

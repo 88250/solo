@@ -62,7 +62,7 @@ import org.json.JSONObject;
  * Tag processor.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.0, Aug 30, 2012
+ * @version 1.1.1.1, Jul 11, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -213,7 +213,7 @@ public class TagProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.TAG_ARTICLES);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -306,7 +306,7 @@ public class TagProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.TAGS);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

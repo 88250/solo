@@ -49,6 +49,7 @@ import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.Thumbnails;
 import org.json.JSONObject;
 
 
@@ -56,7 +57,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  * 
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Sep 6, 2012
+ * @version 1.0.0.7, Jul 11, 2013
  * @since 0.4.1
  */
 @RequestProcessor
@@ -118,10 +119,17 @@ public class AdminConsole {
 
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         final String userName = currentUser.optString(User.USER_NAME);
-        final String roleName = currentUser.optString(User.USER_ROLE);
 
         dataModel.put(User.USER_NAME, userName);
+
+        final String roleName = currentUser.optString(User.USER_ROLE);
+
         dataModel.put(User.USER_ROLE, roleName);
+
+        final String email = currentUser.optString(User.USER_EMAIL);
+        final String gravatar = Thumbnails.getGravatarURL(email, "60");
+
+        dataModel.put(Common.GRAVATAR, gravatar);
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();

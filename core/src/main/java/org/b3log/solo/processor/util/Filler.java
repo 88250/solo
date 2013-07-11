@@ -65,7 +65,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.6.6, Jul 10, 2013
+ * @version 1.0.6.7, Jul 11, 2013
  * @since 0.3.1
  */
 @Service
@@ -489,11 +489,13 @@ public class Filler {
     /**
      * Fills footer.ftl.
      *
+     * @param request the specified HTTP servlet request
      * @param dataModel data model
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillBlogFooter(final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
+    public void fillBlogFooter(final HttpServletRequest request, final Map<String, Object> dataModel, final JSONObject preference)
+        throws ServiceException {
         Stopwatchs.start("Fill Footer");
         try {
             LOGGER.debug("Filling footer....");
@@ -508,8 +510,15 @@ public class Filler {
 
             dataModel.put(Keys.Server.STATIC_SERVER, Latkes.getStaticServer());
             dataModel.put(Keys.Server.SERVER, Latkes.getServer());
-            
-            dataModel.put(Common.GRAVATAR, Thumbnails.GRAVATAR);
+
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+
+            if (null != currentUser) {
+                final String email = currentUser.optString(User.USER_EMAIL);
+                final String gravatar = Thumbnails.getGravatarURL(email, "60");
+
+                dataModel.put(Common.GRAVATAR, gravatar);
+            }
 
             // Activates plugins
             try {
