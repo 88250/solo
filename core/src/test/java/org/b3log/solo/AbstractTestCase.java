@@ -54,7 +54,7 @@ import org.testng.annotations.BeforeClass;
 /**
  * Abstract test case.
  * 
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.7, Jul 8, 2013
  * @see #beforeClass() 
  * @see #afterClass() 

@@ -54,7 +54,7 @@ import org.json.JSONObject;
 /**
  * Index processor.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
  * @version 1.1.1.3, Jul 11, 2013
  * @since 0.3.1
@@ -242,9 +242,9 @@ public class IndexProcessor {
     /**
      * Kill browser (kill-browser.ftl) HTTP response renderer.
      * 
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+     * @author <a href="http://88250.b3log.org">Liang Ding</a>
      * @version 1.0.0.0, Sep 18, 2011
-     * @see 0.3.1
+     * @since 0.3.1
      */
     private static final class KillBrowserRenderer extends AbstractFreeMarkerRenderer {
 

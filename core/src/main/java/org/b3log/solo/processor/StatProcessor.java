@@ -39,7 +39,7 @@ import org.b3log.solo.service.StatisticMgmtService;
  *   </ul>
  * <p>
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.9, Mar 6, 2013
  * @since 0.4.0
  */

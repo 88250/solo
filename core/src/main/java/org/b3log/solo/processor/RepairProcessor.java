@@ -68,7 +68,7 @@ import org.json.JSONObject;
  * 
  * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.8, Dec 25, 2012
  * @since 0.3.1
  */
