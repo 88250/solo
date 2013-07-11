@@ -63,6 +63,8 @@
                 <span data-ico="&#xe08e;" title="Google"></span>
             </div>
         </div>
+        
+        <#if relevantArticlesDisplayCount??>
         <#if nextArticlePermalink??>
         <a class="next side-tile" title="${nextArticleTitle}"
            href="${servePath}${nextArticlePermalink}">
@@ -96,8 +98,7 @@
             </div>
         </div>
         </#if>
-
-
+        
         <#if 0 != relevantArticlesDisplayCount>
         <div id="relevantArticles" class="side-tile article-relative">
             <span data-ico="&#xe020;"></span>
@@ -131,6 +132,7 @@
         </div>
         </#if>
         </#if>
+        </#if>
 
         <a class="login side-tile">
             <span data-ico="&#xe03f;"></span>
@@ -147,7 +149,7 @@
         </a>
 
         <div class="user side-tile">
-            <span data-ico="&#x0060;">
+            <span>
                 <img src="${gravatar}"/>
             </span>
             <div class="fn-clear title">

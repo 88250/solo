@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "macro-side.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,26 +10,30 @@
     </head>
     <body>
         ${topBarReplacement}
-        <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper">
-                <ul id="tags" class="other-main">
-                    <#list tags as tag>
-                    <li>
-                        <a rel="tag" data-count="${tag.tagPublishedRefCount}"
-                           href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
-                            <span>${tag.tagTitle}</span>
-                            (<b>${tag.tagPublishedRefCount}</b>)
-                        </a>
-                    </li>
-                    </#list>
-                </ul>
-                <div class="clear"></div>
+        <div class="wrapper">
+            <#include "header.ftl" />
+            <div class="sub-nav fn-clear">
+                <h2>${allTagsLabel}</h2>
+            </div>
+            <div class="fn-clear">
+                <div class="main">
+                    <ul id="tags" class="archives fn-clear">
+                        <#list tags as tag>
+                        <li>
+                            <a rel="tag" data-count="${tag.tagPublishedRefCount}"
+                               href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
+                                <span>${tag.tagTitle}</span>
+                                (<b>${tag.tagPublishedRefCount}</b>)
+                            </a>
+                        </li>
+                        </#list>
+                    </ul>
+                    <#include "copyright.ftl"/>
+                </div>
+                <@side isArticle=false />
             </div>
         </div>
-        <#include "footer.ftl">
-        <script type="text/javascript">
-            Util.buildTags();
-        </script>
+        <span id="goTop" onclick="Util.goTop()" data-ico="&#xe042;" class="side-tile"></span>
+        <#include "footer.ftl"/>
     </body>
 </html>

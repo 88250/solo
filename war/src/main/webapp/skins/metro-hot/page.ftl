@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "macro-side.ftl">
 <#include "macro-comments.ftl">
 <!DOCTYPE html>
 <html>
@@ -9,14 +10,18 @@
         </@head>
     </head>
     <body>
-        ${topBarReplacement}
-        <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper">
-                <div class="article-body article">
+         ${topBarReplacement}
+        <div class="wrapper">
+            <#include "header.ftl">
+            <div class="fn-clear">
+                <div class="main">
+                    <div class="article-body">
                     ${page.pageContent}
+                    </div>
+                    <@comments commentList=pageComments article=page></@comments>
+                    <#include "copyright.ftl"/>
                 </div>
-                <@comments commentList=pageComments article=page></@comments>
+                <@side isArticle=true />
             </div>
         </div>
         <#include "footer.ftl">

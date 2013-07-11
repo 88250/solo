@@ -17,7 +17,7 @@
 * skin metro-hot responsive style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.3, Jul 9, 2013
+* @version 1.0.0.4, Jul 11, 2013
 */
 @media (max-width: 860px) and (min-width: 460px) {
     .wrapper {
@@ -28,12 +28,32 @@
         width: 460px;
     }
 
+    .form {
+        width: auto;
+    }
+
+    .form input {
+        width: 395px;
+    }
+
+    .form textarea {
+        width: 434px;
+    }
+
+    .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
+        margin-right: 4px;
+    }
+
+    #comments .article-body {
+        width: 350px;
+    }
 }
 
 @media (max-width: 460px) {
     .side,
     .top-info,
-    .header > .fn-left {
+    .header > .fn-left,
+    .comment-main {
         float: none;
     }
 
@@ -44,8 +64,10 @@
         width: 300px;
     }
 
-    .articles-header > .pagination,
-    .footer {
+    .sub-nav > .pagination,
+    .footer,
+    #comments > div > img,
+    #emotions {
         display: none;
     }
 
@@ -53,24 +75,47 @@
         width: 237px;
     }
 
-    
+
     .side-tile {
         width: 94px;
     }
-    
+
     .online-count, 
     .user, 
     .clear, 
-    .notice-board {
+    .notice-board,
+    .share,
+    .article-relative {
         width: 249px;   
     }
-    
-    .main .pagination {
+
+    .main .pagination,
+    .main > .article-body,
+    .comment-disabled,
+    #comments > div {
         margin-right: 0;
     }
-    
-    .side > div {
+
+    .side > div,
+    #comments .article-body {
         position: static !important;
         width: auto !important;
+    }
+
+    .share div.text {
+        left: 173px;
+    }
+
+    .form {
+        width: auto;
+    }
+    
+    .form input {
+        width: 240px;
+    }
+
+    .form textarea {
+        width: 285px;
+        height: 150px;
     }
 }

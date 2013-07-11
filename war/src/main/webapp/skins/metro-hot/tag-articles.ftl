@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "macro-side.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,9 +10,9 @@
     </head>
     <body>
         ${topBarReplacement}
-        <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper">
+        <div class="wrapper">
+            <#include "header.ftl" />
+            <div class="sub-nav fn-clear">
                 <h2>
                     <a id="tag" rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}">
                         ${tag1Label}
@@ -19,9 +20,16 @@
                         (${tag.tagPublishedRefCount})
                     </a>
                 </h2>
-                <#include "article-list.ftl">
+            </div>
+            <div class="fn-clear">
+                <div class="main">
+                    <#include "article-list.ftl"/>
+                    <#include "copyright.ftl"/>
+                </div>
+                <@side isArticle=false />
             </div>
         </div>
-        <#include "footer.ftl">
+        <span id="goTop" onclick="Util.goTop()" data-ico="&#xe042;" class="side-tile"></span>
+        <#include "footer.ftl"/>
     </body>
 </html>

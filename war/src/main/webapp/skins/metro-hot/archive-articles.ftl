@@ -1,4 +1,5 @@
 <#include "macro-head.ftl">
+<#include "macro-side.ftl">
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,19 +10,27 @@
     </head>
     <body>
         ${topBarReplacement}
-        <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper">
-                <h2 id="archive">${archive1Label}
+        <div class="wrapper">
+            <#include "header.ftl" />
+            <div class="sub-nav fn-clear">
+                <h2>
+                    ${archive1Label}
                     <#if "en" == localeString?substring(0, 2)>
                     ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
                     <#else>
                     ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
                     </#if>
                 </h2>
-                <#include "article-list.ftl">
             </div>
-        </div> 
-        <#include "footer.ftl">
+            <div class="fn-clear">
+                <div class="main">
+                    <#include "article-list.ftl"/>
+                    <#include "copyright.ftl"/>
+                </div>
+                <@side isArticle=false />
+            </div>
+        </div>
+        <span id="goTop" onclick="Util.goTop()" data-ico="&#xe042;" class="side-tile"></span>
+        <#include "footer.ftl"/>
     </body>
 </html>
