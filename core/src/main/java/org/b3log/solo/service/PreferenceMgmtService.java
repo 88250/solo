@@ -58,7 +58,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Apr 1, 2013
+ * @version 1.0.0.7, Jul 18, 2013
  * @since 0.4.0
  */
 @Service
@@ -149,8 +149,15 @@ public class PreferenceMgmtService {
             updatePreference(preference);
             PageCaches.removeAll(); // Clears cache manually.
         }
+        
+        boolean prefsPageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
 
-        if (preference.getBoolean(Preference.PAGE_CACHE_ENABLED)) {
+        if (!Latkes.isPageCacheEnabled() && prefsPageCacheEnabled) {
+            preference.put(Preference.PAGE_CACHE_ENABLED, false);
+        }
+
+        prefsPageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
+        if (prefsPageCacheEnabled) {
             Latkes.enablePageCache();
         } else {
             Latkes.disablePageCache();

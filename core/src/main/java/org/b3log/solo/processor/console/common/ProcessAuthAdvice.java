@@ -18,6 +18,8 @@ package org.b3log.solo.processor.console.common;
 
 import java.io.IOException;
 import java.util.Map;
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.ioc.LatkeBeanManager;
@@ -31,11 +33,13 @@ import org.b3log.solo.service.UserQueryService;
 
 
 /**
- *  the common auth check before advice for admin console.
+ *  The common auth check before advice for admin console.
  * 
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
- * @version 1.0.0.0, Jan 17, 2013
+ * @version 1.0.0.1, Jal 18, 2013
  */
+@Named
+@Singleton
 public class ProcessAuthAdvice extends BeforeRequestProcessAdvice {
 
     @Override
