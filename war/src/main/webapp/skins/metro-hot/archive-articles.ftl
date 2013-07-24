@@ -11,17 +11,37 @@
     <body>
         ${topBarReplacement}
         <div class="wrapper">
-            <#include "header.ftl" />
-            <div class="sub-nav fn-clear">
-                <h2>
-                    ${archive1Label}
-                    <#if "en" == localeString?substring(0, 2)>
-                    ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
-                    <#else>
-                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
+            <div id="header">
+                <#include "header.ftl" />
+                <div class="sub-nav fn-clear">
+                    <h2>
+                        ${archive1Label}
+                        <#if "en" == localeString?substring(0, 2)>
+                        ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} (${archiveDate.archiveDatePublishedArticleCount})
+                        <#else>
+                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel} (${archiveDate.archiveDatePublishedArticleCount})
+                        </#if>
+                    </h2>
+                    <#if 0 != paginationPageCount>
+                    <div class="pagination">
+                        <#if 1 != paginationPageNums?first>
+                        <a id="previousPage" href="${servePath}${path}/${paginationPreviousPageNum}"
+                           title="${previousPageLabel}"><</a>
+                        </#if>
+                        <#list paginationPageNums as paginationPageNum>
+                        <#if paginationPageNum == paginationCurrentPageNum>
+                        <span>${paginationPageNum}</span>
+                        <#else>
+                        <a href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
+                        </#if>
+                        </#list>
+                        <#if paginationPageNums?last != paginationPageCount>
+                        <a id="nextPage" href="${servePath}${path}/${paginationNextPageNum}" title="${nextPagePabel}">></a>
+                        </#if>
+                    </div>
                     </#if>
-                </h2>
-            </div>
+                </div>
+            </div> 
             <div class="fn-clear">
                 <div class="main">
                     <#include "article-list.ftl"/>

@@ -12,44 +12,46 @@
     <body>
         ${topBarReplacement}
         <div class="wrapper">
-            <#include "header.ftl">
-            <div class="article-header">
-                <span class="article-date" data-ico="&#xe200;">
-                    <#if article.hasUpdated>
-                    ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
-                    <#else>
-                    ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
-                    </#if>
-                </span>
+            <div id="header">
+                <#include "header.ftl">
+                <div class="article-header">
+                    <span class="article-date" data-ico="&#xe200;">
+                        <#if article.hasUpdated>
+                        ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
+                        <#else>
+                        ${article.articleCreateDate?string("yy-MM-dd HH:mm")}
+                        </#if>
+                    </span>
 
-                <h2>
-                    ${article.articleTitle}
-                    <#if article.hasUpdated>
-                    <sup>
-                        ${updatedLabel}
-                    </sup>
-                    </#if>
-                    <#if article.articlePutTop>
-                    <sup>
-                        ${topArticleLabel}
-                    </sup>
-                    </#if>
-                </h2>
-                <div data-ico="&#x003b;" title="${tagLabel}">
-                    <#list article.articleTags?split(",") as articleTag>
-                    <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
-                    </#list>
-                </div>
-                <div class="article-info">
-                    <a rel="nofollow" data-ico="&#xe14e;" href="${servePath}${article.articlePermalink}#comments">
-                        ${article.articleCommentCount}
-                    </a>
-                    <a rel="nofollow" data-ico="&#xe185;" href="${servePath}${article.articlePermalink}">
-                        ${article.articleViewCount}
-                    </a>
-                    <a rel="nofollow" data-ico="&#x0060;" href="${servePath}/authors/${article.authorId}">
-                        ${article.authorName}
-                    </a>
+                    <h2>
+                        ${article.articleTitle}
+                        <#if article.hasUpdated>
+                        <sup>
+                            ${updatedLabel}
+                        </sup>
+                        </#if>
+                        <#if article.articlePutTop>
+                        <sup>
+                            ${topArticleLabel}
+                        </sup>
+                        </#if>
+                    </h2>
+                    <div data-ico="&#x003b;" title="${tagLabel}">
+                        <#list article.articleTags?split(",") as articleTag>
+                        <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a><#if articleTag_has_next>,</#if>
+                        </#list>
+                    </div>
+                    <div class="article-info">
+                        <a rel="nofollow" data-ico="&#xe14e;" href="${servePath}${article.articlePermalink}#comments">
+                            ${article.articleCommentCount}
+                        </a>
+                        <a rel="nofollow" data-ico="&#xe185;" href="${servePath}${article.articlePermalink}">
+                            ${article.articleViewCount}
+                        </a>
+                        <a rel="nofollow" data-ico="&#x0060;" href="${servePath}/authors/${article.authorId}">
+                            ${article.authorName}
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="fn-clear">

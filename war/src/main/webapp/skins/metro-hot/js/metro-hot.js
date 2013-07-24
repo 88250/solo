@@ -18,30 +18,16 @@
  * @fileoverview metro-hot js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Jul 10, 2013
+ * @version 1.0.0.8, Jul 24, 2013
  */
 
 var MetroHot = {
-    headerH: 240,
+    headerH: $("#header").height() + 30 + ($("#header > div").get(1) ? 30 : 0),
     responsiveType: "large",
     goTranslate: function() {
         window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);
     },
     init: function() {
-        // 登录与否的显示设置
-        var isLogin = $("#admin").data("login");
-        if (isLogin) {
-            $(".user .text").html($("#admin > span").text());
-            $(".login, .register, #login, #register, .logout, .settings").hide();
-        } else {
-            $(".login, .register, .user, .clear, .logout, .settings, #logout, #settings").hide();
-        }
-
-        // 侧边栏点击事件
-        $("#login, .login").attr("href", $("#admin > a").first().attr("href"));
-        // 当先用户在线数目
-        var onlineVisitorCnt = $("#top > span").first().text();
-        $(".online-count .text").append(onlineVisitorCnt.substr(1, onlineVisitorCnt.length));
         // logout
         var logoutHref = "";
         $("#admin a").each(function() {
@@ -57,6 +43,42 @@ var MetroHot = {
         }).dblclick(function() {
             window.location.href = latkeConfig.servePath;
         });
+
+        // 当先用户在线数目
+        var onlineVisitorCnt = $("#top > span").first().text();
+        $(".online-count .text").append(onlineVisitorCnt.substr(1, onlineVisitorCnt.length));
+
+        // 登录与否的显示设置
+        var isLogin = $("#admin").data("login");
+        if (isLogin) {
+            $(".user .text").html($("#admin > span").text());
+            $(".login, .register, #login, #register, .logout, .settings").hide();
+        } else {
+            $(".login, .register, .user, .clear, .logout, .settings, #logout, #settings").hide();
+        }
+
+        if ($("#dynamic").length === 1) {
+            // 滚动处理
+            $(window).scroll(function() {
+                var y = $(window).scrollTop();
+                if (y > MetroHot.headerH) {
+                    $("#goTop").fadeIn("slow");
+                } else {
+                    $("#goTop").hide();
+                }
+            }).click(function(event) {
+                if (event.target.className === "title" || event.target.parentElement.className === "title") {
+                    return;
+                }
+                $(".navigation").slideUp();
+            });
+
+            $("body").css("min-height", "inherit");
+            return;
+        }
+
+        // 侧边栏点击事件
+        $("#login, .login").attr("href", $("#admin > a").first().attr("href"));
 
         // 滚动处理
         $(window).scroll(function() {
@@ -92,7 +114,7 @@ var MetroHot = {
                     $(".side > div").css("position", "static");
                 }
             } else {
-                if (y + window.innerHeight > $(".side > div").height() + MetroHot.headerH) {
+                if (y + Util.getWinHeight() > $(".side > div").height() + MetroHot.headerH) {
                     $(".side > div").css({
                         "position": "fixed",
                         "top": "auto",
@@ -260,9 +282,9 @@ var MetroHot = {
         }
     },
     goCmt: function() {
-       $("html, body").animate({
-           scrollTop: $(".comment-disabled").get(0).offsetTop
-       });
+        $("html, body").animate({
+            scrollTop: $(".comment-disabled").get(0).offsetTop
+        });
     }
 };
 

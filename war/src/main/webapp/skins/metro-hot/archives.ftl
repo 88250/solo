@@ -11,9 +11,11 @@
     <body>
         ${topBarReplacement}
         <div class="wrapper">
-            <#include "header.ftl" />
-            <div class="sub-nav fn-clear">
-                <h2>${dateArticlesLabel}</h2>
+            <div id="header">
+                <#include "header.ftl" />
+                <div class="sub-nav fn-clear">
+                    <h2>${dateArticlesLabel}</h2>
+                </div>
             </div>
             <div class="fn-clear">
                 <div class="main">

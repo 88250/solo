@@ -9,100 +9,215 @@
     </head>
     <body>
         ${topBarReplacement}
-        <#include "header.ftl">
-        <div class="main">
-            <div class="wrapper dynamic">
-                <div class="other-main">
+        <div class="wrapper">
+            <div id="header">
+                <#include "header.ftl" />
+                <div class="article-header">
+                    <h2>${blogSubtitle}</h2>
+                </div>
+            </div>
+
+            <div class="fn-clear" id="dynamic">
+                <div class="main">
                     <#if 0 != recentComments?size>
-                    <div class="module side-comments">
-                        <h3 class="ft-gray">${recentCommentsLabel}</h3>
-                        <ul>
-                            <#list recentComments as comment>
-                            <li>
-                                <img class='comment-header'
-                                     alt='${comment.commentName}'
-                                     src='${comment.commentThumbnailURL}'/>
-                                <div class='comment-panel'>
-                                    <span class="left">
-                                        <#if "http://" == comment.commentURL>
-                                        ${comment.commentName}
-                                        <#else>
-                                        <a target="_blank" href="${comment.commentURL}">${comment.commentName}</a>
-                                        </#if>
-                                    </span>
-                                    <div class="right ft-gray">
-                                        ${comment.commentDate?string("yyyy-MM-dd HH:mm:ss")}
-                                        <a rel="nofollow" href="${servePath}${comment.commentSharpURL}">${viewLabel}</a>
-                                    </div>
-                                    <span class="clear"></span>
-                                    <div class="article-body">   
-                                        ${comment.commentContent}
+                    <div id="comments">
+                        <#list recentComments as comment>
+                        <#if comment_index < 6>
+                        <div id="${comment.oId}" class="fn-clear">
+                            <img title="${comment.commentName}"
+                                 alt="${comment.commentName}" src="${comment.commentThumbnailURL}"/>
+                            <div class="comment-main">
+                                <div class="fn-clear">
+                                    <#if "http://" == comment.commentURL>
+                                    <span>${comment.commentName}</span>
+                                    <#else>
+                                    <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
+                                    </#if>
+                                    <div class="fn-right" data-ico="&#xe200;">
+                                        ${comment.commentDate?string("yy-MM-dd HH:mm")}
                                     </div>
                                 </div>
-                                <div class='clear'></div>
-                            </li>
-                            </#list>
-                        </ul>
+                                <div class="article-body">${comment.commentContent}</div>
+                            </div>
+                        </div>
+                        </#if>
+                        </#list>
                     </div>
                     </#if>
-                    <#if 0 != mostUsedTags?size>
-                    <div class="module side-tags">
-                        <h3 class="ft-gray">${popTagsLabel}</h3>
-                        <ul>
-                            <#list mostUsedTags as tag>
-                            <li>
-                                <a rel="tag" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" 
-                                   title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
-                                    <span>${tag.tagTitle}</span>
-                                </a>
-                            </li>
-                            </#list>
-                        </ul>
-                        <div class="clear"></div>
+                </div>
+                <div class="side">
+                    <form target="_blank" method="get" action="http://www.google.com/search">
+                        <input placeholder="Search" id="search" type="text" name="q" /><span data-ico="&#x0067;"></span>
+                        <input type="submit" name="btnG" value="" class="fn-none" />
+                        <input type="hidden" name="oe" value="UTF-8" />
+                        <input type="hidden" name="ie" value="UTF-8" />
+                        <input type="hidden" name="newwindow" value="0" />
+                        <input type="hidden" name="sitesearch" value="${blogHost}" />
+                    </form>
+
+                    <#if "" != noticeBoard>
+                    <div class="notice-board side-tile">
+                        <span data-ico="&#xe1e9;"></span>
+                        <div class="title">
+                            ${noticeBoard}
+                        </div>
+                        <div class="text">
+                            ${noticeBoardLabel}
+                        </div>
                     </div>
                     </#if>
-                    <div class="clear"></div>
-                    <#if 0 != mostCommentArticles?size>
-                    <div class="module side-most-comment">
-                        <h3 class="ft-gray">${mostCommentArticlesLabel}</h3>
+
+                    <a rel="alternate" href="${servePath}/blog-articles-feed.do" class="user side-tile">
+                        <span data-ico="&#xe135;"></span>
+                        <div class="text">
+                            ${atomLabel}
+                        </div>
+                    </a>
+
+                    <div class="online-count side-tile">
+                        <span data-ico="&#xe037;"></span>
+                        <div class="text">
+                            ${viewCount1Label}
+                            ${statistic.statisticBlogViewCount}<br/>
+                            ${articleCount1Label}
+                            ${statistic.statisticPublishedBlogArticleCount}<br/>
+                            ${commentCount1Label}
+                            ${statistic.statisticPublishedBlogCommentCount}<br/>
+                        </div>
+                    </div>
+
+                    <#include "copyright.ftl">
+                </div>
+            </div>
+
+            <div class="fn-clear">
+                <#if 0 != mostCommentArticles?size>
+                <div class="side-tile most-comment">
+                    <span data-ico="&#xe14e;"></span>
+                    <div class="title">
+                        ${mostCommentArticlesLabel}
+                    </div>
+                    <div class="text">
                         <ul>
                             <#list mostCommentArticles as article>
                             <li>
-                                <a rel="nofollow" class="left" title="${article.articleTitle}" 
-                                   href="${servePath}${article.articlePermalink}">
+                                <a href="${servePath}${article.articlePermalink}" title="${article.articleTitle}" rel="nofollow">
                                     ${article.articleTitle}
                                 </a>
-                                <a rel="nofollow" class="ft-gray right" href="${servePath}${article.articlePermalink}#comments">
-                                    ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
-                                </a>
-                                <span class="clear"></span>
+                                <span data-ico="&#xe14e;">
+                                    ${article.articleCommentCount}
+                                </span>
                             </li>
                             </#list>
                         </ul>
                     </div>
-                    </#if>
-                    <#if 0 != mostViewCountArticles?size>
-                    <div class="module side-most-view">
-                        <h3 class="ft-gray">${mostViewCountArticlesLabel}</h3>
+                </div>
+                </#if>
+
+
+                <#if 0 != mostViewCountArticles?size>
+                <div class="side-tile most-view">
+                    <span data-ico="&#xe185;"></span>
+                    <div class="title">
+                        ${mostViewCountArticlesLabel}
+                    </div>
+                    <div class="text">
                         <ul>
                             <#list mostViewCountArticles as article>
                             <li>
-                                <a rel="nofollow" class="left" title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
+                                <a href="${servePath}${article.articlePermalink}" title="${article.articleTitle}" rel="nofollow">
                                     ${article.articleTitle}
                                 </a>
-                                <a rel="nofollow" class="ft-gray right" href="${servePath}${article.articlePermalink}">
-                                    ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
-                                </a>
-                                <span class="clear"></span>
+                                <span data-ico="&#xe185;">
+                                    ${article.articleViewCount}
+                                </span>
                             </li>
                             </#list>
                         </ul>
                     </div>
-                    </#if>
-                    <div class="clear"></div>
                 </div>
+                </#if>
+            </div>
+
+            <div class="fn-clear">
+                <#if 0 != archiveDates?size>
+                <div class="side-tile archives-tile fn-clear">
+                    <div class="fn-left">
+                        <span data-ico="&#xe110;"></span>
+                        <div class="title">
+                            ${dateArticlesLabel}
+                        </div>
+                    </div>
+                    <div class="text fn-right">
+                        <#list archiveDates as archiveDate>
+                        <#if "en" == localeString?substring(0, 2)>
+                        <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                           title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
+                            ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
+                        <#else>
+                        <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                           title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
+                            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
+                        </#if>
+                        </#list>
+                    </div>
+                </div>
+                </#if>
+
+                <#if 0 != links?size>
+                <div class="side-tile links-tile fn-clear">
+                    <div class="fn-left">
+                        <span data-ico="&#xe14a;"></span>
+                        <div class="title">
+                            ${linkLabel}
+                        </div>
+                    </div>
+                    <div class="text fn-right">
+                        <#list links as link>
+                        <a rel="friend" href="${link.linkAddress}" title="${link.linkDescription}" target="_blank">
+                            <img src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" />
+                            ${link.linkTitle}
+                        </a>
+                        </#list>
+                    </div>
+                </div>
+                </#if>
+
+                <#if 0 != mostUsedTags?size>
+                <div class="side-tile tags-tile fn-clear">
+                    <div class="fn-left">
+                        <span data-ico="&#x003b;"></span>
+                        <div class="title">
+                            ${popTagsLabel}
+                        </div>
+                    </div>
+                    <div class="text fn-right">
+                        <#list mostUsedTags as tag>
+                        <a rel="tag" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" 
+                           title="${tag.tagTitle}(${tag.tagPublishedRefCount})">
+                            ${tag.tagTitle}
+                        </a>
+                        </#list>
+                    </div>
+                </div>
+                </#if>
             </div>
         </div>
-        <#include "footer.ftl">
+        <span id="goTop" onclick="Util.goTop()" data-ico="&#xe042;" class="side-tile"></span>
+        <#include "footer.ftl"/>
+        <script>
+            $("#comments .article-body").each(function() {
+                this.innerHTML = Util.replaceEmString($(this).html());
+            });
+
+            if ($(".side").height() < $(".main").height()) {
+                $(".main").height($(".side").height() - 5).css({
+                    "overflow": "auto",
+                    "margin-top": "5px"
+                });
+
+                $("#comments").css("margin-top", "0");
+            }
+        </script> 
     </body>
 </html>

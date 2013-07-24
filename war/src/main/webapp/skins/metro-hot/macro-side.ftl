@@ -150,11 +150,8 @@
 
         <div class="user side-tile">
             <span>
-                <img src="${gravatar}"/>
+                <img src="<#if gravatar??>${gravatar}</#if>"/>
             </span>
-            <div class="fn-clear title">
-                ${commentNameLabel}
-            </div>
             <div class="text"></div>
         </div>
 

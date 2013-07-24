@@ -10,13 +10,25 @@
         </@head>
     </head>
     <body>
-         ${topBarReplacement}
+        ${topBarReplacement}
         <div class="wrapper">
-            <#include "header.ftl">
+            <div id="header">
+                <#include "header.ftl">
+                <div class="article-header">
+                    <h2>${blogSubtitle}</h2>
+                    
+                    <div class="article-info">
+                        <a rel="nofollow" data-ico="&#xe14e;" href="${servePath}${page.pagePermalink}#comments">
+                            ${page.pageCommentCount}
+                        </a>
+                       
+                    </div>
+                </div>
+            </div>
             <div class="fn-clear">
                 <div class="main">
                     <div class="article-body">
-                    ${page.pageContent}
+                        ${page.pageContent}
                     </div>
                     <@comments commentList=pageComments article=page></@comments>
                     <#include "copyright.ftl"/>

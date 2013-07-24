@@ -17,7 +17,7 @@
 * skin metro-hot style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.7, Jul 11, 2013
+* @version 1.0.0.9, Jul 24, 2013
 */
 /* start base */
 html {
@@ -237,7 +237,7 @@ textarea {
 /* start frame */
 .wrapper {
     height: auto;
-    margin: 35px auto 10px;
+    margin: 30px auto 10px;
     width: 1190px;
 }
 
@@ -458,14 +458,13 @@ textarea {
     transition: all 0.8s;
 }
 
-.article-abstract .fn-right > a:hover,
-.article-info > a:hover {
+.article-abstract .fn-right > a:hover {
     background-color: #FFF;
     color: #E61E1E;
 }
 
 .article-info > a:hover {
-    background-color: #E61E1E;
+    background-color: #EA4040;
     color: #FFF;
 }
 
@@ -525,7 +524,8 @@ textarea {
 .side form input:focus,
 .form input:focus,
 .form textarea:focus,
-.form button:hover {
+.form button:hover,
+#dynamic .footer:hover {
     outline: 3px solid #BABABA;
 }
 
@@ -534,6 +534,10 @@ textarea {
     font-size: 60px;
     text-align: center;
     width: 60px;;
+}
+
+.side-tile > .title {
+    line-height: 17px;
 }
 
 .side-tile > .text {
@@ -679,7 +683,7 @@ textarea {
 .archives {
     background-color: #323232;
     padding: 10px;
-    margin-bottom: 30px;
+    margin: 5px 10px 30px 0;
 }
 
 .archives li {
@@ -739,6 +743,7 @@ textarea {
 
 .main > .article-body {
     margin-right: 10px;
+    margin-top: 20px;
 }
 /* end article */
 
@@ -826,3 +831,120 @@ textarea {
     color: #CA1B1E;
 }
 /* end comment */
+
+/* start dynamic */
+#dynamic #comments {
+    background-color: #EA4040;
+    margin-top: 5px;
+    padding: 25px 15px 15px 25px;
+}
+
+#dynamic #comments .article-body {
+    width: 770px;
+}
+
+#dynamic .article-relative .text {
+    left: 110px;
+}
+
+#dynamic .footer {
+    margin: 20px 0 0;
+    float: left;
+    transition: all 0.3s ease-out 0s;
+}
+
+.most-comment,
+.most-view {
+    height: 170px;
+    width: 535px;
+    margin: 100px 0;
+}
+
+.most-comment .text,
+.most-view .text {
+    left: 115px;
+    line-height: 24px;
+}
+
+.most-comment .text a:hover,
+.most-view .text a:hover {
+    text-decoration: underline;
+}
+
+.most-comment > span,
+.most-view > span {
+    margin-top: 30px;
+}
+
+.most-comment .text span,
+.most-view .text span {
+    color: #D1D2D1;
+    font-size: 13px;
+    font-weight: normal;
+    margin-left: 20px;
+}
+
+.most-view {
+    margin-left: 20px;
+    background-color: #2E8BCC;
+}
+
+.archives-tile,
+.links-tile,
+.tags-tile {
+    margin-left: 0;
+    width: 333px;
+    background-color: #008641;
+    margin-bottom: 20px;
+    position: static;
+}
+
+.tags-tile {
+    margin-left: 20px;
+    background-color: #339933;
+}
+
+.links-tile {
+    margin-left: 20px;
+    background-color: #7B4F9D;
+}
+
+.tags-tile span,
+.links-tile span,
+.archives-tile span {
+    display: block;
+    font-size: 60px;
+    text-align: center;
+    width: 60px;
+}
+
+.tags-tile .text,
+.links-tile .text,
+.archives-tile .text {
+    position: static;
+    width: 253px;
+}
+
+
+.tags-tile a,
+.links-tile a,
+.archives-tile a {
+    background-color: #EA4040;
+    color: #D1D2D1;
+    float: left;
+    font-size: 12px;
+    line-height: 20px;
+    margin: 6px 10px;
+    padding: 5px 10px;
+    transition: all 0.8s ease 0s;
+    white-space: nowrap;
+}
+
+
+.tags-tile a:hover,
+.links-tile a:hover,
+.archives-tile a:hover {
+    background-color: #FFF;
+    color: #EA4040;
+}
+/* end dynamic */
