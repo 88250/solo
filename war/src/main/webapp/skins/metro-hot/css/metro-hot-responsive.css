@@ -17,7 +17,7 @@
 * skin metro-hot responsive style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.4, Jul 11, 2013
+* @version 1.0.0.5, Jul 24, 2013
 */
 @media (max-width: 860px) and (min-width: 460px) {
     .wrapper {
@@ -46,6 +46,39 @@
 
     #comments .article-body {
         width: 350px;
+    }
+
+    #dynamic #comments .article-body {
+        width: 293px;
+    }
+
+    .most-comment,
+    .most-view {
+        width: 300px;
+        margin-bottom: 20px;
+        margin-top: 40px;
+    }
+
+    .most-comment .text,
+    .most-view .text {
+        width: 195px;
+    }
+
+    .tags-tile,
+    .links-tile,
+    .archives-tile {
+        width: 670px;
+    }
+
+    .tags-tile .text,
+    .links-tile .text,
+    .archives-tile .text {
+        width: 580px;
+    }
+
+    .links-tile,
+    .tags-tile {
+        margin-left: 0;
     }
 }
 
@@ -109,7 +142,7 @@
     .form {
         width: auto;
     }
-    
+
     .form input {
         width: 240px;
     }
@@ -117,5 +150,49 @@
     .form textarea {
         width: 285px;
         height: 150px;
+    }
+
+    #dynamic .main {
+        margin-bottom: 20px;
+    }
+
+    .most-comment,
+    .most-view {
+        width: 249px;
+        margin-bottom: 0;
+        margin-top: 20px;
+    }
+
+    .most-comment .text,
+    .most-view .text {
+        margin-right: 0;
+        width: 274px;
+    }
+    
+    .most-view {
+        margin-left: 0;
+    }
+
+    .tags-tile,
+    .links-tile,
+    .archives-tile {
+        width: 249px;
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+
+    .tags-tile .text,
+    .links-tile .text,
+    .archives-tile .text {
+        width: 274px;
+    }
+
+    .links-tile,
+    .tags-tile {
+        margin-left: 0;
+    }
+    
+    .tags-tile {
+        margin-bottom: 50px;
     }
 }

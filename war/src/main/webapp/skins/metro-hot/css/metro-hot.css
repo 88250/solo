@@ -513,7 +513,7 @@ textarea {
     color: #FFF;
     float: left;
     margin-top: 20px;
-    padding: 15px 25px 10px 25px;
+    padding: 15px 25px 15px 25px;
     position: relative;
     background-color: #F09609;
     width: 65px;
@@ -853,45 +853,11 @@ textarea {
     transition: all 0.3s ease-out 0s;
 }
 
-.most-comment,
-.most-view {
-    height: 170px;
-    width: 535px;
-    margin: 100px 0;
-}
-
-.most-comment .text,
-.most-view .text {
-    left: 115px;
-    line-height: 24px;
-}
-
-.most-comment .text a:hover,
-.most-view .text a:hover {
-    text-decoration: underline;
-}
-
-.most-comment > span,
-.most-view > span {
-    margin-top: 30px;
-}
-
-.most-comment .text span,
-.most-view .text span {
-    color: #D1D2D1;
-    font-size: 13px;
-    font-weight: normal;
-    margin-left: 20px;
-}
-
-.most-view {
-    margin-left: 20px;
-    background-color: #2E8BCC;
-}
-
 .archives-tile,
 .links-tile,
-.tags-tile {
+.tags-tile,
+.most-comment,
+.most-view {
     margin-left: 0;
     width: 333px;
     background-color: #008641;
@@ -911,20 +877,20 @@ textarea {
 
 .tags-tile span,
 .links-tile span,
-.archives-tile span {
-    display: block;
+.archives-tile span,
+.most-comment span,
+.most-view span {
     font-size: 60px;
-    text-align: center;
-    width: 60px;
 }
 
 .tags-tile .text,
 .links-tile .text,
-.archives-tile .text {
+.archives-tile .text,
+.most-comment .text,
+.most-view .text {
     position: static;
     width: 253px;
 }
-
 
 .tags-tile a,
 .links-tile a,
@@ -940,11 +906,41 @@ textarea {
     white-space: nowrap;
 }
 
-
 .tags-tile a:hover,
 .links-tile a:hover,
 .archives-tile a:hover {
     background-color: #FFF;
     color: #EA4040;
+}
+
+.most-comment,
+.most-view {
+    background-color: #F09609;
+    width: 535px;
+    margin: 100px 0;
+}
+
+.most-comment .text,
+.most-view .text {
+    margin-right: 20px;
+    line-height: 24px;
+    width: 430px;
+}
+
+.most-comment .text a:hover,
+.most-view .text a:hover {
+    text-decoration: underline;
+}
+
+.most-comment .text span,
+.most-view .text span {
+    color: #D1D2D1;
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.most-view {
+    margin-left: 20px;
+    background-color: #2E8BCC;
 }
 /* end dynamic */

@@ -46,58 +46,62 @@
                     </#if>
                 </div>
                 <div class="side">
-                    <form target="_blank" method="get" action="http://www.google.com/search">
-                        <input placeholder="Search" id="search" type="text" name="q" /><span data-ico="&#x0067;"></span>
-                        <input type="submit" name="btnG" value="" class="fn-none" />
-                        <input type="hidden" name="oe" value="UTF-8" />
-                        <input type="hidden" name="ie" value="UTF-8" />
-                        <input type="hidden" name="newwindow" value="0" />
-                        <input type="hidden" name="sitesearch" value="${blogHost}" />
-                    </form>
+                    <div>
+                        <form target="_blank" method="get" action="http://www.google.com/search">
+                            <input placeholder="Search" id="search" type="text" name="q" /><span data-ico="&#x0067;"></span>
+                            <input type="submit" name="btnG" value="" class="fn-none" />
+                            <input type="hidden" name="oe" value="UTF-8" />
+                            <input type="hidden" name="ie" value="UTF-8" />
+                            <input type="hidden" name="newwindow" value="0" />
+                            <input type="hidden" name="sitesearch" value="${blogHost}" />
+                        </form>
 
-                    <#if "" != noticeBoard>
-                    <div class="notice-board side-tile">
-                        <span data-ico="&#xe1e9;"></span>
-                        <div class="title">
-                            ${noticeBoard}
+                        <#if "" != noticeBoard>
+                        <div class="notice-board side-tile">
+                            <span data-ico="&#xe1e9;"></span>
+                            <div class="title">
+                                ${noticeBoard}
+                            </div>
+                            <div class="text">
+                                ${noticeBoardLabel}
+                            </div>
                         </div>
-                        <div class="text">
-                            ${noticeBoardLabel}
+                        </#if>
+
+                        <a rel="alternate" href="${servePath}/blog-articles-feed.do" class="user side-tile">
+                            <span data-ico="&#xe135;"></span>
+                            <div class="text">
+                                ${atomLabel}
+                            </div>
+                        </a>
+
+                        <div class="online-count side-tile">
+                            <span data-ico="&#xe037;"></span>
+                            <div class="text">
+                                ${viewCount1Label}
+                                ${statistic.statisticBlogViewCount}<br/>
+                                ${articleCount1Label}
+                                ${statistic.statisticPublishedBlogArticleCount}<br/>
+                                ${commentCount1Label}
+                                ${statistic.statisticPublishedBlogCommentCount}<br/>
+                            </div>
                         </div>
+
+                        <#include "copyright.ftl">
                     </div>
-                    </#if>
-
-                    <a rel="alternate" href="${servePath}/blog-articles-feed.do" class="user side-tile">
-                        <span data-ico="&#xe135;"></span>
-                        <div class="text">
-                            ${atomLabel}
-                        </div>
-                    </a>
-
-                    <div class="online-count side-tile">
-                        <span data-ico="&#xe037;"></span>
-                        <div class="text">
-                            ${viewCount1Label}
-                            ${statistic.statisticBlogViewCount}<br/>
-                            ${articleCount1Label}
-                            ${statistic.statisticPublishedBlogArticleCount}<br/>
-                            ${commentCount1Label}
-                            ${statistic.statisticPublishedBlogCommentCount}<br/>
-                        </div>
-                    </div>
-
-                    <#include "copyright.ftl">
                 </div>
             </div>
 
             <div class="fn-clear">
                 <#if 0 != mostCommentArticles?size>
-                <div class="side-tile most-comment">
-                    <span data-ico="&#xe14e;"></span>
-                    <div class="title">
-                        ${mostCommentArticlesLabel}
+                <div class="side-tile most-comment fn-clear">
+                    <div class="fn-left">
+                        <span data-ico="&#xe14e;"></span>
+                        <div class="title">
+                            ${mostCommentArticlesLabel}
+                        </div>
                     </div>
-                    <div class="text">
+                    <div class="text fn-right">
                         <ul>
                             <#list mostCommentArticles as article>
                             <li>
@@ -116,12 +120,14 @@
 
 
                 <#if 0 != mostViewCountArticles?size>
-                <div class="side-tile most-view">
-                    <span data-ico="&#xe185;"></span>
-                    <div class="title">
-                        ${mostViewCountArticlesLabel}
+                <div class="side-tile most-view fn-clear">
+                    <div class="fn-left">
+                        <span data-ico="&#xe185;"></span>
+                        <div class="title">
+                            ${mostViewCountArticlesLabel}
+                        </div>
                     </div>
-                    <div class="text">
+                    <div class="text fn-right">
                         <ul>
                             <#list mostViewCountArticles as article>
                             <li>
@@ -175,7 +181,7 @@
                     <div class="text fn-right">
                         <#list links as link>
                         <a rel="friend" href="${link.linkAddress}" title="${link.linkDescription}" target="_blank">
-                            <img src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" />
+                            <!--img src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" /-->
                             ${link.linkTitle}
                         </a>
                         </#list>
