@@ -540,7 +540,7 @@ public class CommentMgmtService {
                         new String[] {originalCommentId, commentName, commentContent});
                 }
             }
-            CommentMgmtService.setCommentThumbnailURL(comment);
+            setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL, comment.getString(Comment.COMMENT_THUMBNAIL_URL));
             // Sets comment on article....
             comment.put(Comment.COMMENT_ON_ID, articleId);
