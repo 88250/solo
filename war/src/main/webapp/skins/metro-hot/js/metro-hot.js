@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 /**
  * @fileoverview metro-hot js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.8, Jul 24, 2013
+ * @version 1.0.0.9, Jul 31, 2013
  */
 
 var MetroHot = {
@@ -154,9 +153,16 @@ var MetroHot = {
                 $it.addClass("article-image");
                 $images.hide();
 
-                $it.before("<img src='" + $($images[0]).attr("src") + "'/>");
+                $it.before("<img onload='MetroHot.loadImg(this);' src='" + $($images[0]).attr("src") + "'/>");
             }
         });
+    },
+    /**
+     * @description 计算图片 margin-top
+     * @param {BOM} it 图片元素
+     */
+    loadImg: function(it) {
+        it.style.marginTop = ("margin-top", (220 - it.height) / 2 + "px");
     },
     /**
      * @description 分享按钮

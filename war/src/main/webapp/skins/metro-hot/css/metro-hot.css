@@ -1,5 +1,5 @@
-/*
- * Copyright (c) 2009, 2010, 2011, 2012, B3log Team
+/**
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -12,14 +12,34 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
-*/
+ */
+@charset "utf-8";
 /*
 * skin metro-hot style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.9, Jul 24, 2013
+* @version 1.0.1.0, Jul 31, 2013
 */
 /* start base */
+@font-face {
+    font-family: 'IcoMoon';
+    src: url('font/IcoMoon.eot');
+    src: url('font/IcoMoon.eot?#iefix') format('embedded-opentype'),
+    url('font/IcoMoon.svg#IcoMoon') format('svg'),
+    url('font/IcoMoon.woff') format('woff'),
+    url('font/IcoMoon.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icos */
+[data-ico]:before {
+    font-family: 'IcoMoon';
+    content: attr(data-ico);
+    speak: none;
+    cursor: pointer;
+}
+
 html {
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
@@ -387,9 +407,10 @@ textarea {
 }
 
 .article-list > div > img {
-    min-width: 100%;
     max-width: 100%;
     transition: all 1.2s;
+    display: block;
+    margin: 0 auto;
 }
 
 .article-list > div:hover > img {
@@ -479,6 +500,11 @@ textarea {
     white-space: inherit;
     word-wrap: break-word;
     padding: 0;
+}
+
+.article-image .article-body {
+    padding: 10px;
+    height: 95px;
 }
 /* end article list*/
 
@@ -900,7 +926,7 @@ textarea {
     float: left;
     font-size: 12px;
     line-height: 20px;
-    margin: 6px 10px;
+    margin: 6px;
     padding: 5px 10px;
     transition: all 0.8s ease 0s;
     white-space: nowrap;
