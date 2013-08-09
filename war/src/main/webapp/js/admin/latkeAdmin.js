@@ -900,12 +900,9 @@ admin.article = {
         this.status.isArticle = isArticle;
         admin.selectTab("article/article");
     },
-<<<<<<< HEAD
-=======
     /**
      * @description 获取文章内容
      */
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
     getAndSet: function() {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
@@ -959,19 +956,11 @@ admin.article = {
             }
         });
     },
-<<<<<<< HEAD
-    /*
-     * 删除文章
-     * @id 文章 id
-     * @fromId 文章来自草稿夹(draft)/文件夹(article)
-     * @title 文章标题
-=======
     /**
      * @description 删除文章
      * @param {String} id 文章 id
      * @param {String} fromId 文章来自草稿夹(draft)/文件夹(article)
      * @param {String} title 文章标题
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      */
     del: function(id, fromId, title) {
         var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + title + '"?');
@@ -995,20 +984,12 @@ admin.article = {
             });
         }
     },
-<<<<<<< HEAD
-    /*
-     * 添加文章
-     * @articleIsPublished 文章是否发布过
-     */
-    add: function(articleIsPublished) {
-=======
     /**
      * @@description 添加文章
      * @param {Boolean} articleIsPublished 文章是否发布过
      * @param {Boolean} isAuto 是否为自动保存
      */
     add: function(articleIsPublished, isAuto) {
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
         if (admin.article.validate()) {
             var that = this;
             that._addDisabled();
@@ -1046,15 +1027,12 @@ admin.article = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus) {
-<<<<<<< HEAD
-=======
                     if (isAuto) {
                         $("#tipMsg").text(Label.autoSaveLabel);
                         admin.article.status.id = result.oId;
                         return;
                     }
 
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
                         return;
@@ -1068,11 +1046,6 @@ admin.article = {
                     }
 
                     admin.article.isConfirm = false;
-<<<<<<< HEAD
-
-                    $("#loadMsg").text("");
-=======
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
                 },
                 complete: function(jqXHR, textStatus) {
                     that._removeDisabled();
@@ -1085,20 +1058,12 @@ admin.article = {
             });
         }
     },
-<<<<<<< HEAD
-    /*
-     * 更新文章
-     * @articleIsPublished 文章是否发布过 
-     */
-    update: function(articleIsPublished) {
-=======
     /**
      * @description 更新文章
      * @param {Boolean} articleIsPublished 文章是否发布过
      * @param {Boolean} isAuto 是否为自动保存
      */
     update: function(articleIsPublished, isAuto) {
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
         if (admin.article.validate()) {
             var that = this;
             that._addDisabled();
@@ -1137,14 +1102,11 @@ admin.article = {
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus) {
-<<<<<<< HEAD
-=======
                     if (isAuto) {
                         $("#tipMsg").text(Label.autoSaveLabel);
                         return;
                     }
 
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
                         return;
@@ -1160,11 +1122,6 @@ admin.article = {
 
                     admin.article.status.id = undefined;
                     admin.article.isConfirm = false;
-<<<<<<< HEAD
-
-                    $("#loadMsg").text("");
-=======
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
                 },
                 complete: function(jqXHR, textStatus) {
                     that._removeDisabled();
@@ -1177,13 +1134,8 @@ admin.article = {
             });
         }
     },
-<<<<<<< HEAD
-    /*
-     * 发布文章页面设置文章按钮、发布到社区等状态的显示
-=======
     /**
      * @description 发布文章页面设置文章按钮、发布到社区等状态的显示
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      */
     setStatus: function() {
         // set button status
@@ -1208,13 +1160,8 @@ admin.article = {
 
         $("#postToCommunity").attr("checked", "checked");
     },
-<<<<<<< HEAD
-    /*
-     * 清除发布文章页面的输入框的内容
-=======
     /**
      * @description 清除发布文章页面的输入框的内容
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      */
     clear: function() {
         this.status = {
@@ -1246,14 +1193,9 @@ admin.article = {
 
         $(".markdown-preview-main").html("");
     },
-<<<<<<< HEAD
-    /*
-     * 初始化发布文章页面
-=======
     /**
      * @description 初始化发布文章页面
      * @param {Function} fun 切面函数
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      */
     init: function(fun) {
         // Inits Signs.
@@ -1361,11 +1303,6 @@ admin.article = {
             admin.article._autoSaveToDraft();
         }, admin.article.AUTOSAVETIME);
     },
-<<<<<<< HEAD
-    /*
-     * 验证发布文章字段的合法性
-     */
-=======
     /**
      * @description 自动保存草稿件
      */
@@ -1400,7 +1337,6 @@ admin.article = {
     /**
      * @description 验证发布文章字段的合法性
      */
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
     validate: function() {
         var articleContent = admin.editors.articleEditor.getContent();
 
@@ -1417,18 +1353,11 @@ admin.article = {
         }
         return false;
     },
-<<<<<<< HEAD
-    /*
-     * 取消发布 
-     */
-    unPublish: function() {
-=======
     /**
      * @description 取消发布 
      * @param {Boolean} isAuto 是否为自动保存
      */
     unPublish: function(isAuto) {
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
         var that = this;
         that._addDisabled();
         $.ajax({
@@ -1436,14 +1365,11 @@ admin.article = {
             type: "PUT",
             cache: false,
             success: function(result, textStatus) {
-<<<<<<< HEAD
-=======
                 if (isAuto) {
                     $("#tipMsg").text(Label.autoSaveLabel);
                     return;
                 }
 
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     return;
@@ -1463,14 +1389,11 @@ admin.article = {
             }
         });
     },
-<<<<<<< HEAD
-=======
     /**
      * @description 数组中无重复
      * @param {String} str 被解析的字符串
      * @returns {String} 无重复的字符串
      */
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
     trimUniqueArray: function(str) {
         str = str.toString();
         var arr = str.split(",");
@@ -1484,13 +1407,8 @@ admin.article = {
         var unique = $.unique(arr);
         return unique.toString();
     },
-<<<<<<< HEAD
-    /*
-     * 点击发文文章时的处理
-=======
     /**
      * @description 点击发文文章时的处理
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      */
     prePost: function() {
         $("#loadMsg").text(Label.loadingLabel);
@@ -1510,11 +1428,7 @@ admin.article = {
         $("#tipMsg").text("");
         $("#loadMsg").text("");
     },
-<<<<<<< HEAD
-    /*
-=======
     /**
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      * @description: 仿重复提交，点击一次后，按钮设置为 disabled
      */
     _addDisabled: function() {
@@ -1522,11 +1436,7 @@ admin.article = {
         $("#saveArticle").attr("disabled", "disabled");
         $("#submitArticle").attr("disabled", "disabled");
     },
-<<<<<<< HEAD
-    /*
-=======
     /**
->>>>>>> b980b37921b9363ca7aa78c40f2569e607ac3f86
      * @description: 仿重复提交，当后台有数据返回后，按钮移除 disabled 状态
      */
     _removeDisabled: function() {
