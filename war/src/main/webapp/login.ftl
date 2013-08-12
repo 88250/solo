@@ -38,7 +38,7 @@
                             </label>
                             <input type="password" id="userPassword" tabindex="2" />
                             <button onclick='login();'>${loginLabel}</button>
-                            <span id="tip"></span>
+                            <span id="tip">${resetMsg}</span>
                         </div>
                         <a href="http://b3log.org" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>

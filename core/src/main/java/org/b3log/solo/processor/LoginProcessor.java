@@ -16,12 +16,6 @@
 package org.b3log.solo.processor;
 
 
-import java.io.IOException;
-import java.util.Calendar;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -30,6 +24,8 @@ import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -46,20 +42,27 @@ import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.service.UserMgmtService;
-import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.repository.OptionRepository;
+import org.b3log.solo.service.*;
 import org.b3log.solo.util.Randoms;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Map;
+
 
 /**
  * Login/logout processor.
- *
+ * <p/>
  * <p>Initializes administrator</p>.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -117,6 +120,24 @@ public class LoginProcessor {
     private PreferenceQueryService preferenceQueryService;
 
     /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
+     * Option management service.
+     */
+    @Inject
+    private OptionMgmtService optionMgmtService;
+
+    /**
+     * Option repository.
+     */
+    @Inject
+    private OptionRepository optionRepository;
+
+    /**
      * Shows login page.
      *
      * @param context the specified context
@@ -141,12 +162,12 @@ public class LoginProcessor {
 
             return;
         }
-        renderPage(context, "login.ftl", destinationURL);
+        renderPage(context, "login.ftl", destinationURL, request);
     }
 
     /**
      * Logins.
-     *
+     * <p/>
      * <p> Renders the response with a json object, for example,
      * <pre>
      * {
@@ -157,7 +178,7 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/login"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = {"/login"}, method = HTTPRequestMethod.POST)
     public void login(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
@@ -221,7 +242,7 @@ public class LoginProcessor {
      * @param context the specified context
      * @throws IOException io exception
      */
-    @RequestProcessing(value = { "/logout"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/logout"}, method = HTTPRequestMethod.GET)
     public void logout(final HTTPRequestContext context) throws IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
@@ -252,12 +273,12 @@ public class LoginProcessor {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         }
 
-        renderPage(context, "reset-pwd.ftl", destinationURL);
+        renderPage(context, "reset-pwd.ftl", destinationURL, request);
     }
 
     /**
      * reset forgotten password.
-     *
+     * <p/>
      * <p> Renders the response with a json object, for example,
      * <pre>
      * {
@@ -268,7 +289,7 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/forgot"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = {"/forgot"}, method = HTTPRequestMethod.POST)
     public void forgot(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
@@ -301,17 +322,55 @@ public class LoginProcessor {
                 return;
             }
 
-            if (isPwdExpired()) {
-                LOGGER.log(Level.WARN, "User[email={0}]'s random password has been expired", userEmail);
-                jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
-                return;
-            }
-
-            sendRandomPwd(user, userEmail, jsonObject);
+            sendResetUrl(userEmail, jsonObject);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
     }
+
+    /**
+     * reset forgotten password.
+     * <p/>
+     * <p> Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "isLoggedIn": boolean,
+     *     "msg": "" // optional, exists if isLoggedIn equals to false
+     * }
+     * </pre> </p>
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = {"/reset"}, method = HTTPRequestMethod.POST)
+    public void reset(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final JSONRenderer renderer = new JSONRenderer();
+
+        context.setRenderer(renderer);
+        final JSONObject jsonObject = new JSONObject();
+
+        renderer.setJSONObject(jsonObject);
+
+
+        try {
+            final JSONObject requestJSONObject;
+            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
+            final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
+            final String newPwd = requestJSONObject.getString("newPwd");
+            final JSONObject user = userQueryService.getUserByEmail(userEmail);
+
+            user.put(User.USER_PASSWORD, newPwd);
+            userMgmtService.updateUser(user);
+            LOGGER.log(Level.DEBUG, "[{0}]'s password updated successfully.", new Object[]{userEmail});
+
+            jsonObject.put("succeed", true);
+            jsonObject.put("to", Latkes.getServePath() + "/login?from=reset");
+            jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+        }
+    }
+
 
     /**
      * Whether user is going to update an expired password out of 24 hours.
@@ -322,15 +381,60 @@ public class LoginProcessor {
         return false;
     }
 
+
+    /**
+     * Send the password resetting URL with a random token.
+     *
+     * @param userEmail  the given email
+     * @param jsonObject return code and message object
+     * @throws JSONException       the JSONException
+     * @throws ServiceException    the ServiceException
+     * @throws IOException         the IOException
+     * @throws RepositoryException the RepositoryException
+     */
+    private void sendResetUrl(final String userEmail, final JSONObject jsonObject) throws JSONException,
+            ServiceException, IOException, RepositoryException {
+        final JSONObject preference = preferenceQueryService.getPreference();
+        final String token = new Randoms().nextStringWithMD5();
+        final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+        final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
+        final String mailSubject = langPropsService.get("resetPwdMailSubject");
+        final String mailBody = langPropsService.get("resetPwdMailBody") + " " + Latkes.getServePath() + "/forgot?token=" + token + "&login=" + userEmail;
+        final MailService.Message message = new MailService.Message();
+
+
+        final JSONObject option = new JSONObject();
+        option.put(Keys.OBJECT_ID, token);
+        option.put(Option.OPTION_CATEGORY, "passwordReset");
+        option.put(Option.OPTION_VALUE, System.currentTimeMillis());
+
+        final Transaction transaction = optionRepository.beginTransaction();
+        optionRepository.add(option);
+        transaction.commit();
+
+        message.setFrom(adminEmail);
+        message.addRecipient(userEmail);
+        message.setSubject(mailSubject);
+        message.setHtmlBody(mailBody);
+
+        mailService.send(message);
+
+        jsonObject.put("succeed", true);
+        jsonObject.put("to", Latkes.getServePath() + "/login?from=forgot");
+        jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessSend"));
+
+        LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[]{mailSubject, mailBody, userEmail});
+    }
+
     /**
      * Send the random password to the given address and update the ever one.
      *
-     * @param user the user relative to the given email below
-     * @param userEmail the given email
+     * @param user       the user relative to the given email below
+     * @param userEmail  the given email
      * @param jsonObject return code and message object
-     * @throws JSONException the JSONException
+     * @throws JSONException    the JSONException
      * @throws ServiceException the ServiceException
-     * @throws IOException the IOException
+     * @throws IOException      the IOException
      */
     private void sendRandomPwd(final JSONObject user, final String userEmail, final JSONObject jsonObject) throws JSONException,
             ServiceException, IOException {
@@ -354,22 +458,23 @@ public class LoginProcessor {
         mailService.send(message);
 
         jsonObject.put("succeed", true);
-        jsonObject.put("to", Latkes.getServePath() + "/login");
+        jsonObject.put("to", Latkes.getServePath() + "/login?");
         jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
 
-        LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[] {mailSubject, mailBody, userEmail});
+        LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[]{mailSubject, mailBody, userEmail});
     }
 
     /**
      * Render a page template with the destination URL.
      *
-     * @param context the context
-     * @param pageTemplate the page template
+     * @param context        the context
+     * @param pageTemplate   the page template
      * @param destinationURL the destination URL
-     * @throws JSONException the JSONException
+     * @param request        for reset password page
+     * @throws JSONException    the JSONException
      * @throws ServiceException the ServiceException
      */
-    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL) throws JSONException,
+    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL, final HttpServletRequest request) throws JSONException,
             ServiceException {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
 
@@ -386,6 +491,27 @@ public class LoginProcessor {
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
+
+
+        final String token = request.getParameter("token");
+        final String email = request.getParameter("login");
+        final JSONObject tokenObj = optionQueryService.getOptionById(token);
+        if (tokenObj == null) {
+            dataModel.put("inputType", "email");
+        } else {
+            //TODO verify the expired time in the tokenObj
+            dataModel.put("inputType", "password");
+            dataModel.put("userEmailHidden", email);
+        }
+
+        final String from = request.getParameter("from");
+        if ("forgot".equals(from)) {
+            dataModel.put("resetMsg", langPropsService.get("resetPwdSuccessSend"));
+        } else if ("reset".equals(from)) {
+            dataModel.put("resetMsg", langPropsService.get("resetPwdSuccessMsg"));
+        } else {
+            dataModel.put("resetMsg", "");
+        }
 
         Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
