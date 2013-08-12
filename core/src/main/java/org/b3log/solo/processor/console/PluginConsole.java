@@ -44,14 +44,14 @@ import org.json.JSONObject;
 /**
  * Plugin console request processing.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @version 1.1.0.0, Jan 17, 2013
  * @since 0.4.0
  */
 @RequestProcessor
 @Before(adviceClass = ProcessAuthAdvice.class)
-public final class PluginConsole {
+public class PluginConsole {
 
     /**
      * Logger.
@@ -199,7 +199,6 @@ public final class PluginConsole {
             renderer.setTemplateName("admin-plugin-setting.ftl");
             final Map<String, Object> dataModel = renderer.getDataModel();
 
-            Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
 
             dataModel.put(Plugin.PLUGIN_SETTING, setting);

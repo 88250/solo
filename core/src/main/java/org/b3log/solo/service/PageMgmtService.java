@@ -41,12 +41,12 @@ import org.json.JSONObject;
 /**
  * Page management service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.7, Jun 8, 2012
  * @since 0.4.0
  */
 @Service
-public final class PageMgmtService {
+public class PageMgmtService {
 
     /**
      * Logger.

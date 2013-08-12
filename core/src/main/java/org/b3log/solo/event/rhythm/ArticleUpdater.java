@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * The B3log Rhythm article update interface: http://rhythm.b3log.org/article (PUT).
  * </p>
  * 
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, May 17, 2013
  * @since 0.6.0
  */

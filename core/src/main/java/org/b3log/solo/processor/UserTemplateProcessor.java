@@ -55,12 +55,12 @@ import org.json.JSONObject;
  * See <a href="https://code.google.com/p/b3log-solo/issues/detail?id=409">issue 409</a> for more details.
  * </p>
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, May 28, 2012
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.3, Jul 11, 2012
  * @since 0.4.5
  */
 @RequestProcessor
-public final class UserTemplateProcessor {
+public class UserTemplateProcessor {
 
     /**
      * Logger.
@@ -130,7 +130,7 @@ public final class UserTemplateProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.USER_TEMPLATE);
             filler.fillBlogHeader(request, dataModel, preference);
             filler.fillUserTemplate(template, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");

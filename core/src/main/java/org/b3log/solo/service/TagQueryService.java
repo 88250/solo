@@ -16,6 +16,7 @@
 package org.b3log.solo.service;
 
 
+import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
@@ -29,18 +30,19 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
 /**
  * Tag query service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.3, Jun 28, 2012
  * @since 0.4.0
  */
 @Service
-public final class TagQueryService {
+public class TagQueryService {
 
     /**
      * Logger.
@@ -131,6 +133,25 @@ public final class TagQueryService {
             LOGGER.log(Level.ERROR, "Gets tags failed", e);
 
             throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Removes tags of unpublished articles from the specified tags.
+     *
+     * @param tags the specified tags
+     * @throws JSONException json exception
+     * @throws RepositoryException repository exception
+     */
+    public void removeForUnpublishedArticles(final List<JSONObject> tags) throws JSONException, RepositoryException {
+        final Iterator<JSONObject> iterator = tags.iterator();
+
+        while (iterator.hasNext()) {
+            final JSONObject tag = iterator.next();
+
+            if (0 == tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
+                iterator.remove();
+            }
         }
     }
 

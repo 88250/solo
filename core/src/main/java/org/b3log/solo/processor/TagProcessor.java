@@ -53,7 +53,6 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Tags;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,12 +61,12 @@ import org.json.JSONObject;
 /**
  * Tag processor.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.0, Aug 30, 2012
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.1.1.1, Jul 11, 2013
  * @since 0.3.1
  */
 @RequestProcessor
-public final class TagProcessor {
+public class TagProcessor {
 
     /**
      * Logger.
@@ -109,11 +108,6 @@ public final class TagProcessor {
      */
     @Inject
     private TagQueryService tagQueryService;
-
-    /**
-     * Tag utilities.
-     */
-    private Tags tagUtils = Tags.getInstance();
 
     /**
      * Shows articles related with a tag with the specified context.
@@ -219,7 +213,7 @@ public final class TagProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.TAG_ARTICLES);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -304,7 +298,7 @@ public final class TagProcessor {
 
             final List<JSONObject> tags = tagQueryService.getTags();
 
-            tagUtils.removeForUnpublishedArticles(tags);
+            tagQueryService.removeForUnpublishedArticles(tags);
             Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
 
             dataModel.put(Tag.TAGS, tags);
@@ -312,7 +306,7 @@ public final class TagProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.TAGS);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

@@ -30,7 +30,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
  * for more details.
  * </p>
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.1, Nov 19, 2011
  * @see Item
  * @see Category

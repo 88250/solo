@@ -45,7 +45,6 @@ import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
@@ -57,6 +56,7 @@ import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Thumbnails;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -66,12 +66,12 @@ import org.jsoup.Jsoup;
 /**
  * Article processor.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.2.10, Mar 26, 2013
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.1.2.11, Jul 11, 2013
  * @since 0.3.1
  */
 @RequestProcessor
-public final class ArticleProcessor {
+public class ArticleProcessor {
 
     /**
      * Logger.
@@ -185,7 +185,6 @@ public final class ArticleProcessor {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
-        Keys.fillServer(dataModel);
         Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
     }
@@ -345,7 +344,7 @@ public final class ArticleProcessor {
         if (Strings.isEmptyOrNull(articleId)) {
             return;
         }
-        
+
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
 
         context.setRenderer(renderer);
@@ -731,9 +730,10 @@ public final class ArticleProcessor {
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
-            prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author, preference);
+            prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author);
             dataModel.put(Keys.PAGE_TYPE, PageTypes.AUTHOR_ARTICLES);
             filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
         } catch (final ServiceException e) {
@@ -830,6 +830,7 @@ public final class ArticleProcessor {
 
             dataModel.put(Keys.PAGE_TYPE, PageTypes.DATE_ARTICLES);
             filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
@@ -949,7 +950,7 @@ public final class ArticleProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.ARTICLE);
 
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
@@ -1158,7 +1159,6 @@ public final class ArticleProcessor {
      * @param currentPageNum the specified  current page number 
      * @param articles the specified articles
      * @param author the specified author
-     * @param preference the specified preference
      * @throws ServiceException service exception
      */
     private void prepareShowAuthorArticles(final List<Integer> pageNums,
@@ -1166,8 +1166,7 @@ public final class ArticleProcessor {
         final int pageCount,
         final int currentPageNum,
         final List<JSONObject> articles,
-        final JSONObject author,
-        final JSONObject preference) throws ServiceException {
+        final JSONObject author) throws ServiceException {
         if (0 != pageNums.size()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
@@ -1192,14 +1191,11 @@ public final class ArticleProcessor {
         dataModel.put(Keys.OBJECT_ID, authorId);
 
         dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
-        final String thumbnailURL = "http://secure.gravatar.com/avatar/" + MD5.hash(author.optString(User.USER_EMAIL)) + "?s=60&d="
-            + Latkes.getStaticServePath() + "/images/default-user-thumbnail.png";
+        final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
 
         dataModel.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-
-        filler.fillBlogFooter(dataModel, preference);
     }
 
     /**
@@ -1244,7 +1240,6 @@ public final class ArticleProcessor {
         dataModel.put(Common.PATH, "/archives/" + archiveDateString);
         dataModel.put(Keys.OBJECT_ID, archiveDate.getString(Keys.OBJECT_ID));
 
-        filler.fillBlogFooter(dataModel, preference);
         final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
         final String dateString = DateFormatUtils.format(time, "yyyy/MM");
         final String[] dateStrings = dateString.split("/");

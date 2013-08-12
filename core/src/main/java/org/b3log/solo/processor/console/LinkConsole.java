@@ -41,12 +41,12 @@ import org.json.JSONObject;
 /**
  * Link console request processing.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.3, Aug 9, 2012
  * @since 0.4.0
  */
 @RequestProcessor
-public final class LinkConsole {
+public class LinkConsole {
 
     /**
      * Logger.

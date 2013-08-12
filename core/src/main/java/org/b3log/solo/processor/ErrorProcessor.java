@@ -43,12 +43,12 @@ import org.json.JSONObject;
 /**
  * Error processor.
  * 
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jun 20, 2012
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.2, Jul 11, 2012
  * @since 0.4.5
  */
 @RequestProcessor
-public final class ErrorProcessor {
+public class ErrorProcessor {
 
     /**
      * Logger.
@@ -109,7 +109,7 @@ public final class ErrorProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
 
             dataModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
         } catch (final Exception e) {

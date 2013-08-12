@@ -38,7 +38,6 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.urlfetch.*;
 import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
@@ -47,6 +46,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.Comments;
+import org.b3log.solo.util.Thumbnails;
 import org.b3log.solo.util.TimeZones;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,12 +55,12 @@ import org.json.JSONObject;
 /**
  * Comment management service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.4, Jan 18, 2013
  * @since 0.3.5
  */
 @Service
-public final class CommentMgmtService {
+public class CommentMgmtService {
 
     /**
      * Logger.
@@ -415,8 +415,8 @@ public final class CommentMgmtService {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                     ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                 } else {
-                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
-                        new String[] {originalCommentId, commentName, commentContent});
+                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]", originalCommentId,
+                        commentName, commentContent);
                 }
             }
             setCommentThumbnailURL(comment);
@@ -540,7 +540,7 @@ public final class CommentMgmtService {
                         new String[] {originalCommentId, commentName, commentContent});
                 }
             }
-            CommentMgmtService.setCommentThumbnailURL(comment);
+            setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL, comment.getString(Comment.COMMENT_THUMBNAIL_URL));
             // Sets comment on article....
             comment.put(Comment.COMMENT_ON_ID, articleId);
@@ -592,8 +592,7 @@ public final class CommentMgmtService {
      * @param commentId the given comment id
      * @throws ServiceException service exception
      */
-    public void removePageComment(final String commentId)
-        throws ServiceException {
+    public void removePageComment(final String commentId) throws ServiceException {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
@@ -719,10 +718,7 @@ public final class CommentMgmtService {
     public static void setCommentThumbnailURL(final JSONObject comment) throws Exception {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
 
-        final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
-        String thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=60&d=" + Latkes.getStaticServePath()
-            + "/images/default-user-thumbnail.png";
-
+        String thumbnailURL = Thumbnails.getGravatarURL(commentEmail.toLowerCase(), "60");
         final URL gravatarURL = new URL(thumbnailURL);
 
         int statusCode = HttpServletResponse.SC_OK;

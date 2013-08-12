@@ -31,12 +31,12 @@ import org.b3log.solo.repository.PageRepository;
 /**
  * Permalink query service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Jun 21, 2013
  * @since 0.6.1
  */
 @Service
-public final class PermalinkQueryService {
+public class PermalinkQueryService {
 
     /**
      * Logger.
@@ -185,13 +185,12 @@ public final class PermalinkQueryService {
      * Determines whether the specified request URI is a reserved link.
      * 
      * <p>
-     * A URI starts with one of {@link Permalinks#RESERVED_LINKS reserved links}
+     * A URI starts with one of {@link PermalinkQueryService#RESERVED_LINKS reserved links}
      * will be treated as reserved link.
      * </p>
      * 
      * @param requestURI the specified request URI
-     * @return {@code true} if it is a reserved link, returns {@code false}
-     * otherwise
+     * @return {@code true} if it is a reserved link, returns {@code false} otherwise
      */
     private static boolean isReservedLink(final String requestURI) {
         for (int i = 0; i < RESERVED_LINKS.length; i++) {

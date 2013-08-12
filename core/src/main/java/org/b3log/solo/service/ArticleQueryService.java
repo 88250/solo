@@ -31,13 +31,12 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
@@ -63,13 +62,13 @@ import org.json.JSONObject;
 /**
  * Article query service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
- * @version 1.0.1.2, Jan 30, 2013
+ * @version 1.0.1.3, Jul 10, 2013
  * @since 0.3.5
  */
 @Service
-public final class ArticleQueryService {
+public class ArticleQueryService {
 
     /**
      * Logger.
@@ -79,7 +78,8 @@ public final class ArticleQueryService {
     /**
      * User service.
      */
-    private UserService userService = UserServiceFactory.getUserService();
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * User repository.
@@ -116,12 +116,6 @@ public final class ArticleQueryService {
      */
     @Inject
     private ArchiveDateArticleRepository archiveDateArticleRepository;
-
-    /**
-     * User query service.
-     */
-    @Inject
-    private UserQueryService userQueryService;
 
     /**
      * Statistic query service.
@@ -204,11 +198,13 @@ public final class ArticleQueryService {
             }
         }
 
-        if (null != userService.getCurrentUser(request)) {
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+
+        if (null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
             return false;
         }
 
-        return true;
+        return true; // Visitor or NOT logged in
     }
 
     /**

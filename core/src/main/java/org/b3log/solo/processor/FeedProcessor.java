@@ -67,12 +67,12 @@ import org.json.JSONObject;
 /**
  * Feed (Atom/RSS) processor.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.4, May 17, 2013
  * @since 0.3.1
  */
 @RequestProcessor
-public final class FeedProcessor {
+public class FeedProcessor {
 
     /**
      * Logger.

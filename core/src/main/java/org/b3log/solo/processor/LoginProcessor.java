@@ -28,6 +28,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -61,14 +62,14 @@ import org.json.JSONObject;
  *
  * <p>Initializes administrator</p>.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.1.4, Mar 11, 2013
+ * @version 1.1.1.5, Jul 4, 2013
  * @since 0.3.1
  */
 @RequestProcessor
-public final class LoginProcessor {
+public class LoginProcessor {
 
     /**
      * Logger.
@@ -196,7 +197,13 @@ public final class LoginProcessor {
                 LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
-                jsonObject.put("to", Latkes.getServePath() + Common.ADMIN_INDEX_URI);
+
+                if (Role.VISITOR_ROLE.equals(user.optString(User.USER_ROLE))) {
+                    jsonObject.put("to", Latkes.getServePath());
+                } else {
+                    jsonObject.put("to", Latkes.getServePath() + Common.ADMIN_INDEX_URI);
+                }
+
                 jsonObject.remove(Keys.MSG);
 
                 return;
@@ -380,7 +387,6 @@ public final class LoginProcessor {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
 
-        Keys.fillServer(dataModel);
         Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
     }

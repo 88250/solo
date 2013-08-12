@@ -16,17 +16,14 @@
 package org.b3log.solo.api.symphony;
 
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
-import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.logging.Level;
@@ -38,12 +35,8 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.urlfetch.HTTPHeader;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.HTTPResponse;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
@@ -56,21 +49,21 @@ import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
+import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.TimeZones;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 
 /**
  * Comment receiver (from B3log Symphony).
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Mar 18, 2013
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.7, Jul 10, 2013
  * @since 0.5.5
  */
 @RequestProcessor
-public final class CommentReceiver {
+public class CommentReceiver {
 
     /**
      * Logger.
@@ -249,13 +242,13 @@ public final class CommentReceiver {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             }
 
-            setCommentThumbnailURL(comment);
+            CommentMgmtService.setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL, comment.getString(Comment.COMMENT_THUMBNAIL_URL));
             // Sets comment on article....
             comment.put(Comment.COMMENT_ON_ID, articleId);
             comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
 
-            final String commentSharpURL = getCommentSharpURLForArticle(article, commentId);
+            final String commentSharpURL = Comments.getCommentSharpURLForArticle(article, commentId);
 
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
@@ -294,85 +287,6 @@ public final class CommentReceiver {
 
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
-        }
-    }
-
-    /**
-     * Gets comment sharp URL with the specified article and comment id.
-     *
-     * @param article the specified article
-     * @param commentId the specified comment id
-     * @return comment sharp URL
-     * @throws JSONException json exception
-     */
-    private static String getCommentSharpURLForArticle(final JSONObject article,
-        final String commentId)
-        throws JSONException {
-        final String articleLink = article.getString(Article.ARTICLE_PERMALINK);
-
-        return articleLink + "#" + commentId;
-    }
-
-    /**
-     * Sets commenter thumbnail URL for the specified comment.
-     *
-     * @param comment the specified comment
-     * @throws Exception exception
-     */
-    private static void setCommentThumbnailURL(final JSONObject comment)
-        throws Exception {
-        final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
-        final String id = commentEmail.split("@")[0];
-        final String domain = commentEmail.split("@")[1];
-        String thumbnailURL = null;
-
-        // Try to set thumbnail URL using Gravatar service
-        final String hashedEmail = MD5.hash(commentEmail.toLowerCase());
-        final int size = 60;
-        final URL gravatarURL = new URL(
-            "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=" + size + "&d=" + Latkes.getServePath()
-            + "/images/default-user-thumbnail.png");
-
-        try {
-            final HTTPRequest request = new HTTPRequest();
-
-            request.setURL(gravatarURL);
-            final HTTPResponse response = urlFetchService.fetch(request);
-            final int statusCode = response.getResponseCode();
-
-            if (HttpServletResponse.SC_OK == statusCode) {
-                final List<HTTPHeader> headers = response.getHeaders();
-                boolean defaultFileLengthMatched = false;
-
-                for (final HTTPHeader httpHeader : headers) {
-                    if ("Content-Length".equalsIgnoreCase(httpHeader.getName())) {
-                        if (httpHeader.getValue().equals("2147")) {
-                            defaultFileLengthMatched = true;
-                        }
-                    }
-                }
-
-                if (!defaultFileLengthMatched) {
-                    thumbnailURL = "http://secure.gravatar.com/avatar/" + hashedEmail + "?s=" + size + "&d=" + Latkes.getServePath()
-                        + "/images/default-user-thumbnail.png";
-                    comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
-                    LOGGER.log(Level.TRACE, "Comment thumbnail[URL={0}]", thumbnailURL);
-
-                    return;
-                }
-            } else {
-                LOGGER.log(Level.WARN, "Can not fetch thumbnail from Gravatar[commentEmail={0}, statusCode={1}]",
-                    new Object[] {commentEmail, statusCode});
-            }
-        } catch (final IOException e) {
-            LOGGER.warn(e.getMessage());
-            LOGGER.log(Level.WARN, "Can not fetch thumbnail from Gravatar[commentEmail={0}]", commentEmail);
-        }
-
-        if (null == thumbnailURL) {
-            LOGGER.log(Level.WARN, "Not supported yet for comment thumbnail for email[{0}]", commentEmail);
-            thumbnailURL = "/images/" + DEFAULT_USER_THUMBNAIL;
-            comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
         }
     }
 }

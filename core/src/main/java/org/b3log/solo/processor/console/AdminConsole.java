@@ -49,18 +49,19 @@ import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.Thumbnails;
 import org.json.JSONObject;
 
 
 /**
  * Admin console render processing.
  * 
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.6, Sep 6, 2012
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.7, Jul 11, 2013
  * @since 0.4.1
  */
 @RequestProcessor
-public final class AdminConsole {
+public class AdminConsole {
 
     /**
      * Logger.
@@ -118,10 +119,17 @@ public final class AdminConsole {
 
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         final String userName = currentUser.optString(User.USER_NAME);
-        final String roleName = currentUser.optString(User.USER_ROLE);
 
         dataModel.put(User.USER_NAME, userName);
+
+        final String roleName = currentUser.optString(User.USER_ROLE);
+
         dataModel.put(User.USER_ROLE, roleName);
+
+        final String email = currentUser.optString(User.USER_EMAIL);
+        final String gravatar = Thumbnails.getGravatarURL(email, "60");
+
+        dataModel.put(Common.GRAVATAR, gravatar);
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
@@ -138,7 +146,6 @@ public final class AdminConsole {
             dataModel.put(Preference.EDITOR_TYPE, preference.getString(Preference.EDITOR_TYPE));
             dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
 
-            Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
         } catch (final Exception e) {
@@ -183,7 +190,6 @@ public final class AdminConsole {
 
         dataModel.putAll(langs);
 
-        Keys.fillServer(dataModel);
         Keys.fillRuntime(dataModel);
 
         dataModel.put(Preference.LOCALE_STRING, locale.toString());
@@ -212,7 +218,6 @@ public final class AdminConsole {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.putAll(langs);
-        Keys.fillServer(dataModel);
         dataModel.put(Preference.LOCALE_STRING, locale.toString());
 
         JSONObject preference = null;

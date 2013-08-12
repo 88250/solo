@@ -1,0 +1,198 @@
+/**
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+/*
+* skin metro-hot responsive style
+*
+* @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+* @version 1.0.0.5, Jul 24, 2013
+*/
+@media (max-width: 860px) and (min-width: 460px) {
+    .wrapper {
+        width: 720px;
+    }
+
+    .main {
+        width: 460px;
+    }
+
+    .form {
+        width: auto;
+    }
+
+    .form input {
+        width: 395px;
+    }
+
+    .form textarea {
+        width: 434px;
+    }
+
+    .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
+        margin-right: 4px;
+    }
+
+    #comments .article-body {
+        width: 350px;
+    }
+
+    #dynamic #comments .article-body {
+        width: 293px;
+    }
+
+    .most-comment,
+    .most-view {
+        width: 300px;
+        margin-bottom: 20px;
+        margin-top: 40px;
+    }
+
+    .most-comment .text,
+    .most-view .text {
+        width: 195px;
+    }
+
+    .tags-tile,
+    .links-tile,
+    .archives-tile {
+        width: 670px;
+    }
+
+    .tags-tile .text,
+    .links-tile .text,
+    .archives-tile .text {
+        width: 580px;
+    }
+
+    .links-tile,
+    .tags-tile {
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 460px) {
+    .side,
+    .top-info,
+    .header > .fn-left,
+    .comment-main {
+        float: none;
+    }
+
+    .wrapper,
+    .article-list > div,
+    .main,
+    .side {
+        width: 300px;
+    }
+
+    .sub-nav > .pagination,
+    .footer,
+    #comments > div > img,
+    #emotions {
+        display: none;
+    }
+
+    #search {
+        width: 237px;
+    }
+
+
+    .side-tile {
+        width: 94px;
+    }
+
+    .online-count, 
+    .user, 
+    .clear, 
+    .notice-board,
+    .share,
+    .article-relative {
+        width: 249px;   
+    }
+
+    .main .pagination,
+    .main > .article-body,
+    .comment-disabled,
+    #comments > div {
+        margin-right: 0;
+    }
+
+    .side > div,
+    #comments .article-body {
+        position: static !important;
+        width: auto !important;
+    }
+
+    .share div.text {
+        left: 173px;
+    }
+
+    .form {
+        width: auto;
+    }
+
+    .form input {
+        width: 240px;
+    }
+
+    .form textarea {
+        width: 285px;
+        height: 150px;
+    }
+
+    #dynamic .main {
+        margin-bottom: 20px;
+    }
+
+    .most-comment,
+    .most-view {
+        width: 249px;
+        margin-bottom: 0;
+        margin-top: 20px;
+    }
+
+    .most-comment .text,
+    .most-view .text {
+        margin-right: 0;
+        width: 274px;
+    }
+    
+    .most-view {
+        margin-left: 0;
+    }
+
+    .tags-tile,
+    .links-tile,
+    .archives-tile {
+        width: 249px;
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+
+    .tags-tile .text,
+    .links-tile .text,
+    .archives-tile .text {
+        width: 274px;
+    }
+
+    .links-tile,
+    .tags-tile {
+        margin-left: 0;
+    }
+    
+    .tags-tile {
+        margin-bottom: 50px;
+    }
+}

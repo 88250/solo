@@ -51,12 +51,12 @@ import org.json.JSONObject;
 /**
  * B3log Solo initialization service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.6, Jun 28, 2013
  * @since 0.4.0
  */
 @RequestProcessor
-public final class InitProcessor {
+public class InitProcessor {
 
     /**
      * Logger.
@@ -113,7 +113,6 @@ public final class InitProcessor {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
-        Keys.fillServer(dataModel);
         Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
     }

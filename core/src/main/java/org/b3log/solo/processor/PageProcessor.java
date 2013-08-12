@@ -50,12 +50,12 @@ import org.json.JSONObject;
 /**
  * Page processor.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.2, Apr 29, 2012
  * @since 0.3.1
  */
 @RequestProcessor
-public final class PageProcessor {
+public class PageProcessor {
 
     /**
      * Logger.
@@ -152,7 +152,7 @@ public final class PageProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.PAGE);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
