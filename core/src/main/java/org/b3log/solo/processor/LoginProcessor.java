@@ -427,44 +427,6 @@ public class LoginProcessor {
     }
 
     /**
-     * Send the random password to the given address and update the ever one.
-     *
-     * @param user       the user relative to the given email below
-     * @param userEmail  the given email
-     * @param jsonObject return code and message object
-     * @throws JSONException    the JSONException
-     * @throws ServiceException the ServiceException
-     * @throws IOException      the IOException
-     */
-    private void sendRandomPwd(final JSONObject user, final String userEmail, final JSONObject jsonObject) throws JSONException,
-            ServiceException, IOException {
-        final JSONObject preference = preferenceQueryService.getPreference();
-        final String randomPwd = new Randoms().nextString();
-        final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-        final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
-        final String mailSubject = langPropsService.get("resetPwdMailSubject");
-        final String mailBody = langPropsService.get("resetPwdMailBody") + randomPwd;
-        final MailService.Message message = new MailService.Message();
-
-        // FIXME whether we should put the ever-hashed password here, rather during updating?
-        user.put(User.USER_PASSWORD, randomPwd);
-        userMgmtService.updateUser(user);
-
-        message.setFrom(adminEmail);
-        message.addRecipient(userEmail);
-        message.setSubject(mailSubject);
-        message.setHtmlBody(mailBody);
-
-        mailService.send(message);
-
-        jsonObject.put("succeed", true);
-        jsonObject.put("to", Latkes.getServePath() + "/login?");
-        jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
-
-        LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[]{mailSubject, mailBody, userEmail});
-    }
-
-    /**
      * Render a page template with the destination URL.
      *
      * @param context        the context
