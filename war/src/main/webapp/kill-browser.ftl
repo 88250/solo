@@ -17,14 +17,17 @@
     <body>
         <div class="wrapper">
             <div class="wrap">
-                <div class="content">
+                <div class="content" style="top:-6px">
                     <div class="logo">
                         <a href="http://b3log.org" target="_blank">
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
-                    <div class="main kill">
+                    <div class="main kill" style="height: 385px;">
                         ${killBrowserLabel}
+                        <br/>
+                         &nbsp; &nbsp;&nbsp; <button onclick="closeIframe();">${closeLabel}</button> &nbsp; &nbsp; 
+                        <button onclick="closeIframeForever();">${closeForeverLabel}</button>
                         <img src='${staticServePath}/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
                         <a href="http://b3log.org" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
@@ -33,17 +36,17 @@
                     <span class="clear"></span>
                 </div>
             </div>
-
-            <div class="footerWrapper">
-                <div class="footer">
-                    &copy; ${year} - <a href="${servePath}">${blogTitle}</a><br/>
-                    Powered by
-                    <a href="http://b3log.org" target="_blank">
-                        ${b3logLabel}&nbsp;
-                        <span class="solo">Solo</span></a>,
-                    ver ${version}
-                </div>
-            </div>
         </div>
+        <script>
+            var closeIframe = function () {
+                window.parent.$("iframe").prev().remove();
+                window.parent.$("iframe").remove();
+            };
+            
+            var closeIframeForever = function () {
+                window.parent.Cookie.createCookie("showKill", true, 365);
+                closeIframe();
+            };
+        </script>
     </body>
 </html>

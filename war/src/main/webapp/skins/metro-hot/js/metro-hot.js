@@ -296,6 +296,7 @@ var MetroHot = {
 
 (function() {
     MetroHot.init();
+    Util.killIE();
     if ($(".article-header").length > 0) {
         MetroHot.share();
     } else {

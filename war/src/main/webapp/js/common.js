@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, Nov 13, 2012
+ * @version 1.0.2.5, Aug 20, 2013
  */
 
 /**
@@ -39,10 +39,19 @@ var Util = {
      * @description 非 IE6/7 的浏览器，跳转到 kill-browser 页面
      */
     killIE: function() {
+        var addKillPanel = function() {
+            if (Cookie.readCookie("showKill") === "") {
+                var left = ($(window).width() - 701) / 2,
+                top = ($(window).height() - 420) / 2;
+                $("body").append("<div style='display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6; top: 0px;z-index:11'></div>"
+                        + "<iframe style='left:" + left + "px;z-index:20;top: " + top + "px; position: fixed; border: 0px none; width: 701px; height: 420px;' src='" + latkeConfig.servePath + "/kill-browser.html'></iframe>");
+            }
+        };
+
         if ($.browser.msie) {
             // kill IE6 and IE7
             if ($.browser.version === "6.0" || $.browser.version === "7.0") {
-                window.location = latkeConfig.servePath + "/kill-browser.html";
+                addKillPanel();
                 return;
             }
 
@@ -51,7 +60,7 @@ var Util = {
                 var path = external.twGetRunPath();
                 if (path && path.toLowerCase().indexOf("360se") > -1 &&
                         window.location.href.indexOf("admin-index") > -1) {
-                    window.location = latkeConfig.servePath + "/kill-browser.html";
+                    addKillPanel();
                     return;
                 }
             }
@@ -106,12 +115,10 @@ var Util = {
         var $top = $("#top");
         if ($top.length === 1) {
             var $showTop = $("#showTop");
-
             $showTop.click(function() {
                 $top.slideDown();
                 $showTop.hide();
             });
-
             $("#hideTop").click(function() {
                 $top.slideUp();
                 $showTop.show();
@@ -123,11 +130,9 @@ var Util = {
      */
     goTop: function() {
         var acceleration = acceleration || 0.1;
-
         var y = $(window).scrollTop();
         var speed = 1 + acceleration;
         window.scrollTo(0, Math.floor(y / speed));
-
         if (y > 0) {
             var invokeFunction = "Util.goTop(" + acceleration + ")";
             window.setTimeout(invokeFunction, 16);
@@ -146,7 +151,7 @@ var Util = {
      * @description 页面初始化执行的函数 
      */
     init: function() {
-        //window.onerror = Util.error;
+//window.onerror = Util.error;
         Util.killIE();
         Util.setTopBar();
     },
@@ -188,13 +193,11 @@ var Util = {
      */
     buildTags: function(id) {
         id = id || "tags";
-
         // 根据引用次数添加样式，产生云效果
         var classes = ["tags1", "tags2", "tags3", "tags4", "tags5"],
                 bList = $("#" + id + " b").get();
         var max = parseInt($("#" + id + " b").last().text());
         var distance = Math.ceil(max / classes.length);
-
         for (var i = 0; i < bList.length; i++) {
             var num = parseInt(bList[i].innerHTML);
             // 算出当前 tag 数目所在的区间，加上 class
@@ -206,7 +209,7 @@ var Util = {
             }
         }
 
-        // 按字母或者中文拼音进行排序
+// 按字母或者中文拼音进行排序
         $("#" + id).html($("#" + id + " li").get().sort(function(a, b) {
             var valA = $(a).find("span").text().toLowerCase();
             var valB = $(b).find("span").text().toLowerCase();
@@ -257,7 +260,6 @@ var Util = {
         return window.document.body.clientHeight;
     }
 };
-
 if (!Cookie) {
     /**
      * @description Cookie 相关操作
