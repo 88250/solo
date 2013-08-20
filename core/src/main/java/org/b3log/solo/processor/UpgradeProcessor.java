@@ -18,10 +18,7 @@ package org.b3log.solo.processor;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.Map;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -32,10 +29,7 @@ import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
-import org.b3log.latke.repository.jdbc.JdbcFactory;
 import org.b3log.latke.repository.jdbc.util.Connections;
-import org.b3log.latke.repository.jdbc.util.FieldDefinition;
-import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -58,12 +52,10 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.1.9, Apr 26, 2013
+ * @version 1.1.1.10, Aug 20, 2013
  * @since 0.3.1
  */
 @RequestProcessor
-// TODO:
-// 1. Removes preference.blogHost from repository
 public class UpgradeProcessor {
 
     /**
@@ -117,6 +109,16 @@ public class UpgradeProcessor {
     private LangPropsService langPropsService;
 
     /**
+     * Old version.
+     */
+    private static final String FROM_VER = "0.6.0";
+
+    /**
+     * New version.
+     */
+    private static final String TO_VER = SoloServletListener.VERSION;
+
+    /**
      * Checks upgrade.
      *
      * @param context the specified context
@@ -139,22 +141,25 @@ public class UpgradeProcessor {
 
             renderer.setContent("Upgrade successfully ;-)");
 
-            final String version = preference.getString(Preference.VERSION);
+            final String currentVer = preference.getString(Preference.VERSION);
 
-            if (SoloServletListener.VERSION.equals(version)) {
+            if (SoloServletListener.VERSION.equals(currentVer)) {
                 return;
             }
 
-            if ("0.5.6".equals(version)) {
-                v056ToV060();
-            } else {
-                LOGGER.log(Level.WARN, "Attempt to skip more than one version to upgrade. Expected: 0.5.6; Actually: {0}", version);
-                if (!sent) {
-                    notifyUserByEmail();
-                    sent = true;
-                }
-                renderer.setContent(langPropsService.get("skipVersionAlert"));
+            if (FROM_VER.equals(currentVer)) {
+                upgrade();
+
+                return;
             }
+
+            LOGGER.log(Level.WARN, "Attempt to skip more than one version to upgrade. Expected: {0}; Actually: {1}", FROM_VER, currentVer);
+            if (!sent) {
+                notifyUserByEmail();
+                sent = true;
+            }
+
+            renderer.setContent(langPropsService.get("skipVersionAlert"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent(
@@ -165,15 +170,14 @@ public class UpgradeProcessor {
     }
 
     /**
-     * Upgrades from version 056 to version 060.
+     * Upgrades.
      *
      * @throws Exception upgrade fails
      */
-    private void v056ToV060() throws Exception {
-        LOGGER.info("Upgrading from version 056 to version 060....");
+    private void upgrade() throws Exception {
+        LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
         articleRepository.setCacheEnabled(false);
-
         Transaction transaction = null;
 
         try {
@@ -186,50 +190,34 @@ public class UpgradeProcessor {
                 final Statement statement = connection.createStatement();
 
                 final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix");
+                final String tableName = Strings.isEmptyOrNull(tablePrefix) ? "preference" : tablePrefix + "_preference";
 
-                String tableName = Strings.isEmptyOrNull(tablePrefix) ? "preference" : tablePrefix + "_preference";
-
-                statement.execute("ALTER TABLE " + tableName + " ADD feedOutputCnt int");
-
-                tableName = Strings.isEmptyOrNull(tablePrefix) ? "user" : tablePrefix + "_user";
-                statement.execute("ALTER TABLE " + tableName + " ADD userURL varchar(255)");
+                statement.execute("ALTER TABLE " + tableName + " DROP COLUMN blogHost");
 
                 connection.commit();
-
-                tableName = Strings.isEmptyOrNull(tablePrefix) ? "option" : tablePrefix + "_option";
-                final Map<String, List<FieldDefinition>> map = JdbcRepositories.getRepositoriesMap();
-
-                try {
-                    JdbcFactory.createJdbcFactory().createTable(tableName, map.get(tableName));
-                } catch (final SQLException e) {
-                    LOGGER.log(Level.ERROR, "createTable[" + tableName + "] error", e);
-                }
             }
 
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
-            preference.put(Preference.VERSION, "0.6.0");
-            preference.put(Preference.FEED_OUTPUT_CNT, Preference.Default.DEFAULT_FEED_OUTPUT_CNT);
+            preference.put(Preference.VERSION, TO_VER);
             preferenceRepository.update(Preference.PREFERENCE, preference);
-
-            upgradeUsers();
 
             transaction.commit();
 
             LOGGER.log(Level.TRACE, "Updated preference");
         } catch (final Exception e) {
-            if (transaction.isActive()) {
+            if (null != transaction && transaction.isActive()) {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.ERROR, "Upgrade failed.", e);
-            throw new Exception("Upgrade failed from version 056 to version 060");
+            LOGGER.log(Level.ERROR, "Upgrade failed!", e);
+            throw new Exception("Upgrade failed from version [" + FROM_VER + "] to version [" + TO_VER + ']');
         } finally {
             articleRepository.setCacheEnabled(true);
         }
 
-        LOGGER.info("Upgraded from version 056 to version 060 successfully :-)");
+        LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
     }
 
     /**
