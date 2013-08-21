@@ -29,7 +29,6 @@
     <properties>
         <servlet.version>2.5</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <org.b3log.solo.version>0.6.0</org.b3log.solo.version>
         <org.b3log.latke.version>0.5.0-SNAPSHOT</org.b3log.latke.version>
         <org.b3log.latke-gae.version>0.5.0-SNAPSHOT</org.b3log.latke-gae.version>
         <org.b3log.latke-bae.version>0.5.0-SNAPSHOT</org.b3log.latke-bae.version>
@@ -158,7 +157,7 @@
             <dependency>
                 <groupId>org.b3log</groupId>
                 <artifactId>solo-core</artifactId>
-                <version>${org.b3log.solo.version}</version>
+                <version>${project.version}</version>
             </dependency>
             
             <dependency>
