@@ -18,12 +18,12 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.3, May 3, 2012
+ * @version 1.0.1.4, May 28, 2013
  */
 
 /* plugin-list 相关操作 */
 admin.pluginList = {
-    tablePagination:  new TablePaginate("plugin"),
+    tablePagination: new TablePaginate("plugin"),
     pageInfo: {
         currentCount: 1,
         pageCount: 1,
@@ -32,29 +32,29 @@ admin.pluginList = {
     /* 
      * 初始化 table, pagination
      */
-    init: function (page) {
+    init: function(page) {
         this.tablePagination.buildTable([{
-            style: "padding-left: 12px;",
-            text: Label.pluginNameLabel,
-            index: "name",
-            width: 230
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.statusLabel,
-            index: "status",
-            minWidth: 180
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.authorLabel,
-            index: "author",
-            width: 200
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.versionLabel,
-            index: "version",
-            width: 120
-        }]);
-    
+                style: "padding-left: 12px;",
+                text: Label.pluginNameLabel,
+                index: "name",
+                width: 230
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.statusLabel,
+                index: "status",
+                minWidth: 180
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.authorLabel,
+                index: "author",
+                width: 200
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.versionLabel,
+                index: "version",
+                width: 120
+            }]);
+
         this.tablePagination.initPagination();
         $("#pluginSetting").dialog({
             width: 700,
@@ -64,31 +64,31 @@ admin.pluginList = {
         });
         this.getList(page);
     },
-
     /* 
      * 根据当前页码获取列表
      * @pagNum 当前页码
      */
-    getList: function (pageNum) {
+    getList: function(pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         var that = this;
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/plugins/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
-            success: function(result, textStatus){
+            success: function(result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 admin.pluginList.pageInfo.currentPage = pageNum;
                 var datas = result.plugins;
                 for (var i = 0; i < datas.length; i++) {
-                    datas[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.pluginList.changeStatus('" + 
-                    datas[i].oId + "', '" + datas[i].status + "')\">";
+                    datas[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.pluginList.changeStatus('" +
+                            datas[i].oId + "', '" + datas[i].status + "')\">";
                     if (datas[i].status === "ENABLED") {
                         datas[i].status = Label.enabledLabel;
                         datas[i].expendRow += Label.disableLabel;
@@ -97,67 +97,66 @@ admin.pluginList = {
                         datas[i].expendRow += Label.enableLabel;
                     }
                     datas[i].expendRow += "</a>  ";
-                    
-                    if(datas[i].setting!="{}"){
-                        datas[i].expendRow +="<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('"+datas[i].oId+"')\"> "+Label.settingLabel+" </a>  ";
+
+                    if (datas[i].setting != "{}") {
+                        datas[i].expendRow += "<a href='javascript:void(0)' onclick=\"admin.pluginList.toSetting('" + datas[i].oId + "')\"> " + Label.settingLabel + " </a>  ";
                     }
                 }
-                
+
                 that.tablePagination.updateTablePagination(result.plugins, pageNum, result.pagination);
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
- 
-    toSetting:function(pluginId){
+    toSetting: function(pluginId) {
         $("#loadMsg").text(Label.loadingLabel);
-                
+        $("#tipMsg").text("");
         var requestJSONObject = {
             "oId": pluginId
         };
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/plugin/toSetting",
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus){
+            success: function(result, textStatus) {
                 $("#tipMsg").text(result.msg);
 
                 $("#pluginSetting").html(result);
                 $("#pluginSetting").dialog("open");
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
-    
-    changeStatus: function (pluginId, status) {
+    changeStatus: function(pluginId, status) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         if (status === "ENABLED") {
             status = "DISABLED";
         } else {
             status = "ENABLED";
         }
-        
+
         var requestJSONObject = {
             "oId": pluginId,
             "status": status
         };
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/plugin/status/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus){
+            success: function(result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 $("#loadMsg").text("");
                 window.location.reload();
             }
@@ -166,12 +165,12 @@ admin.pluginList = {
 };
 
 /*
-* 注册到 admin 进行管理 
-*/
-admin.register["plugin-list"] =  {
+ * 注册到 admin 进行管理 
+ */
+admin.register["plugin-list"] = {
     "obj": admin.pluginList,
     "init": admin.pluginList.init,
-    "refresh": function () {
-        $("#loadMsg").text("");
+    "refresh": function() {
+        admin.claerTip();
     }
-}
+};

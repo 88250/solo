@@ -17,7 +17,7 @@
             <input type="hidden" name="oe" value="UTF-8" />
             <input type="hidden" name="ie" value="UTF-8" />
             <input type="hidden" name="newwindow" value="0" />
-            <input type="hidden" name="sitesearch" value="${blogHost}" />
+            <input type="hidden" name="sitesearch" value="${serverHost}" />
             <input type="text" placeholder="Search..." id="search" name="q" /> 
             <input name="submit" type="submit" tabindex="1" id="search-submit" placeholder="Search..."  />
             <a href="javascript:void(0)"><img class="head-close" src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/head-close.png" alt="close" /></a>

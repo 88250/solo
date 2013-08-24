@@ -25,27 +25,26 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.Preference;
-import org.b3log.solo.service.PreferenceMgmtService;
 import static org.b3log.solo.model.Skin.*;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 
 /**
  * Skin utilities.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.2.6, Jun 12, 2012
  * @since 0.3.1
  */
@@ -67,15 +66,15 @@ public final class Skins {
     private Skins() {}
 
     /**
-     * Fills the specified data model with the current skink's language 
-     * configurations.
+     * Fills the specified data model with the current skink's (WebRoot/skins/${skinName}/lang/lang_xx_XX.properties) and 
+     * core language (WebRoot/WEB-INF/classes/lang_xx_XX.properties) configurations.
      * 
      * @param localeString the specified locale string
      * @param currentSkinDirName the specified current skin directory name
      * @param dataModel the specified data model
      * @throws ServiceException service exception 
      */
-    public static void fillSkinLangs(final String localeString, final String currentSkinDirName, final Map<String, Object> dataModel)
+    public static void fillLangs(final String localeString, final String currentSkinDirName, final Map<String, Object> dataModel)
         throws ServiceException {
         Stopwatchs.start("Fill Skin Langs");
 
@@ -86,7 +85,7 @@ public final class Skins {
             if (null == langs) {
                 LANG_MAP.clear(); // Collect unused skin languages
 
-                LOGGER.log(Level.INFO, "Loading skin[dirName={0}, locale={1}]", new Object[] {currentSkinDirName, localeString});
+                LOGGER.log(Level.INFO, "Loading skin [dirName={0}, locale={1}]", new Object[] {currentSkinDirName, localeString});
                 langs = new HashMap<String, String>();
 
                 final String webRootPath = SoloServletListener.getWebRoot();
@@ -111,101 +110,19 @@ public final class Skins {
                     new Object[] {currentSkinDirName, localeString, langs.size()});
             }
 
-            dataModel.putAll(langs);
+            dataModel.putAll(langs); // Fills the current skin's language configurations
+            
+            // Fills the core language configurations
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+
+            dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
         } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, "Fills skin langs failed", e);
+            LOGGER.log(Level.ERROR, "Fills skin langs failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
         }
-    }
-
-    /**
-     * Loads skins for the specified preference and initializes templates 
-     * loading.
-     * 
-     * <p>
-     * If the skins directory has been changed, persists the change into 
-     * preference.
-     * </p>
-     *
-     * @param preference the specified preference
-     * @throws Exception exception
-     */
-    public static void loadSkins(final JSONObject preference) throws Exception {
-        Stopwatchs.start("Load Skins");
-
-        LOGGER.info("Loading skins....");
-
-        final Set<String> skinDirNames = getSkinDirNames();
-
-        LOGGER.log(Level.FINER, "Loaded skins[dirNames={0}]", skinDirNames);
-        final JSONArray skinArray = new JSONArray();
-
-        for (final String dirName : skinDirNames) {
-            final JSONObject skin = new JSONObject();
-            final String name = getSkinName(dirName);
-
-            if (null == name) {
-                LOGGER.log(Level.WARNING, "The directory[{0}] does not contain any skin, ignored it", dirName);
-                continue;
-            }
-
-            skin.put(SKIN_NAME, name);
-            skin.put(SKIN_DIR_NAME, dirName);
-
-            skinArray.put(skin);
-        }
-
-        final String currentSkinDirName = preference.optString(SKIN_DIR_NAME);
-        final String skinName = preference.optString(SKIN_NAME);
-
-        LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
-
-        if (!skinDirNames.contains(currentSkinDirName)) {
-            LOGGER.log(Level.WARNING, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName=ease] instead.",
-                currentSkinDirName);
-            if (!skinDirNames.contains("ease")) {
-                LOGGER.log(Level.SEVERE, "Can not find skin[dirName=ease]");
-
-                throw new IllegalStateException(
-                    "Can not find default skin[dirName=ease], please redeploy your B3log Solo and make sure "
-                        + "contains this default skin!");
-            }
-
-            preference.put(SKIN_DIR_NAME, "ease");
-            preference.put(SKIN_NAME, "ease");
-
-            PreferenceMgmtService.getInstance().updatePreference(preference);
-            PageCaches.removeAll(); // Clears cache manually.
-        }
-
-        final String skinsString = skinArray.toString();
-
-        if (!skinsString.equals(preference.getString(SKINS))) {
-            LOGGER.log(Level.INFO, "The skins directory has been changed, persists " + "the change into preference");
-            preference.put(SKINS, skinsString);
-            PreferenceMgmtService.getInstance().updatePreference(preference);
-            PageCaches.removeAll(); // Clears cache manually.
-        }
-
-        if (preference.getBoolean(Preference.PAGE_CACHE_ENABLED)) {
-            Latkes.enablePageCache();
-        } else {
-            Latkes.disablePageCache();
-        }
-
-        setDirectoryForTemplateLoading(preference.getString(SKIN_DIR_NAME));
-
-        final String localeString = preference.getString(Preference.LOCALE_STRING);
-
-        if ("zh_CN".equals(localeString)) {
-            TimeZones.setTimeZone("Asia/Shanghai");
-        }
-
-        LOGGER.info("Loaded skins....");
-
-        Stopwatchs.end();
     }
 
     /**
@@ -223,7 +140,7 @@ public final class Skins {
 
             Templates.MOBILE_CFG.setDirectoryForTemplateLoading(new File(webRootPath + SKINS + File.separator + "mobile"));
         } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, "Loads skins error!", e);
+            LOGGER.log(Level.ERROR, "Loads skins error!", e);
             throw new IllegalStateException(e);
         }
     }
@@ -257,7 +174,7 @@ public final class Skins {
         final Set<String> ret = new HashSet<String>();
 
         if (null == skinDirs) {
-            LOGGER.severe("Skin directory is null");
+            LOGGER.error("Skin directory is null");
 
             return ret;
         }
@@ -292,13 +209,13 @@ public final class Skins {
         });
 
         if (null == skinDirs) {
-            LOGGER.severe("Skin directory is null");
+            LOGGER.error("Skin directory is null");
 
             return null;
         }
 
         if (1 != skinDirs.length) {
-            LOGGER.log(Level.SEVERE, "Skin directory count[{0}]", skinDirs.length);
+            LOGGER.log(Level.ERROR, "Skin directory count[{0}]", skinDirs.length);
 
             return null;
         }
@@ -311,7 +228,7 @@ public final class Skins {
 
             return ret.getProperty("name");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Read skin configuration error[msg={0}]", e.getMessage());
+            LOGGER.log(Level.ERROR, "Read skin configuration error[msg={0}]", e.getMessage());
 
             return null;
         }

@@ -19,13 +19,15 @@ package org.b3log.solo.event.rhythm;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
@@ -46,8 +48,8 @@ import org.json.JSONObject;
  * The B3log Rhythm article update interface: http://rhythm.b3log.org/article (PUT).
  * </p>
  * 
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.0, Mar 19, 2013
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.1, May 17, 2013
  * @since 0.6.0
  */
 public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
@@ -63,11 +65,6 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
     private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
-     * Preference query service.
-     */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
-
-    /**
      * URL of updating article to Rhythm.
      */
     private static final URL UPDATE_ARTICLE_URL;
@@ -76,7 +73,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
         try {
             UPDATE_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_SERVE_PATH + "/article");
         } catch (final MalformedURLException e) {
-            LOGGER.log(Level.SEVERE, "Creates remote service address[rhythm update article] error!");
+            LOGGER.log(Level.ERROR, "Creates remote service address[rhythm update article] error!");
             throw new IllegalStateException(e);
         }
     }
@@ -85,16 +82,19 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
 
-        LOGGER.log(Level.FINER, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
             new Object[] {event.getType(), data, ArticleUpdater.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                LOGGER.log(Level.FINER, "Ignores post article[title={0}] to Rhythm", originalArticle.getString(Article.ARTICLE_TITLE));
+                LOGGER.log(Level.DEBUG, "Ignores post article[title={0}] to Rhythm", originalArticle.getString(Article.ARTICLE_TITLE));
 
                 return;
             }
+
+            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
@@ -102,9 +102,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
-            final String blogHost = Latkes.getServePath();
-
-            if (blogHost.contains("localhost")) {
+            if (Latkes.getServePath().contains("localhost")) {
                 LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
                     new Object[] {originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
                 return;
@@ -133,7 +131,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Common.BLOG_VERSION, SoloServletListener.VERSION);
             requestJSONObject.put(Common.BLOG, "B3log Solo");
             requestJSONObject.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
-            requestJSONObject.put(Preference.BLOG_HOST, blogHost);
+            requestJSONObject.put("blogHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
             requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
             requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());
@@ -142,10 +140,10 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
             urlFetchService.fetchAsync(httpRequest);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Sends an article to Rhythm error: {0}", e.getMessage());
+            LOGGER.log(Level.ERROR, "Sends an article to Rhythm error: {0}", e.getMessage());
         }
 
-        LOGGER.log(Level.FINER, "Sent an article to Rhythm");
+        LOGGER.log(Level.DEBUG, "Sent an article to Rhythm");
     }
 
     /**

@@ -20,13 +20,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
@@ -66,12 +68,12 @@ import org.json.JSONObject;
  * 
  * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.0.8, Dec 25, 2012
  * @since 0.3.1
  */
 @RequestProcessor
-public final class RepairProcessor {
+public class RepairProcessor {
 
     /**
      * Logger.
@@ -79,9 +81,22 @@ public final class RepairProcessor {
     private static final Logger LOGGER = Logger.getLogger(RepairProcessor.class.getName());
 
     /**
+     * Bean manager.
+     */
+    @Inject
+    private LatkeBeanManager beanManager;
+
+    /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
+
+    /**
+     * Preference management service.
+     */
+    @Inject
+    private PreferenceMgmtService preferenceMgmtService;
 
     /**
      * Mail service.
@@ -91,27 +106,32 @@ public final class RepairProcessor {
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Tag-Article repository.
      */
-    private TagArticleRepository tagArticleRepository = TagArticleRepositoryImpl.getInstance();
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Article repository.
      */
-    private ArticleRepository articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepository articleRepository;
 
     /**
      * Statistic query service.
      */
-    private StatisticQueryService statisticQueryService = StatisticQueryService.getInstance();
+    @Inject
+    private StatisticQueryService statisticQueryService;
 
     /**
      * Statistic management service.
      */
-    private StatisticMgmtService statisticMgmtService = StatisticMgmtService.getInstance();
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Removes unused properties of each article.
@@ -163,7 +183,7 @@ public final class RepairProcessor {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent("Removes unused article properties failed, error msg[" + e.getMessage() + "]");
         }
     }
@@ -212,7 +232,7 @@ public final class RepairProcessor {
 
             renderer.setContent("Restores statistic succeeded.");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent("Restores statistics failed, error msg[" + e.getMessage() + "]");
         }
     }
@@ -234,7 +254,7 @@ public final class RepairProcessor {
 
             preference.put(Preference.SIGNS, Preference.Default.DEFAULT_SIGNS);
 
-            PreferenceMgmtService.getInstance().updatePreference(preference);
+            preferenceMgmtService.updatePreference(preference);
 
             // Sends the sample signs to developer
             final Message msg = new MailService.Message();
@@ -247,7 +267,7 @@ public final class RepairProcessor {
             MAIL_SVC.send(msg);
             renderer.setContent("Restores signs succeeded.");
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent("Restores signs failed, error msg[" + e.getMessage() + "]");
         }
     }
@@ -305,7 +325,7 @@ public final class RepairProcessor {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent("Repairs failed, error msg[" + e.getMessage() + "]");
         }
     }
@@ -339,7 +359,7 @@ public final class RepairProcessor {
 
             renderer.setContent(htmlBuilder.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -354,7 +374,7 @@ public final class RepairProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/rm-all-data.do"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/rm-all-data.do", method = HTTPRequestMethod.POST)
     public void removeAllDataPOST(final HTTPRequestContext context) {
         LOGGER.info("Removing all data....");
 
@@ -363,23 +383,22 @@ public final class RepairProcessor {
         boolean succeed = false;
 
         try {
-            remove(ArchiveDateArticleRepositoryImpl.getInstance());
-            remove(ArchiveDateRepositoryImpl.getInstance());
-            remove(ArticleRepositoryImpl.getInstance());
-            remove(CommentRepositoryImpl.getInstance());
-            remove(LinkRepositoryImpl.getInstance());
-            remove(PageRepositoryImpl.getInstance());
-            remove(PreferenceRepositoryImpl.getInstance());
-            remove(StatisticRepositoryImpl.getInstance());
-            remove(TagArticleRepositoryImpl.getInstance());
-            remove(TagRepositoryImpl.getInstance());
-            remove(UserRepositoryImpl.getInstance());
-            remove(PluginRepositoryImpl.getInstance());
+            remove(beanManager.getReference(ArchiveDateArticleRepositoryImpl.class));
+            remove(beanManager.getReference(ArchiveDateRepositoryImpl.class));
+            remove(beanManager.getReference(ArticleRepositoryImpl.class));
+            remove(beanManager.getReference(CommentRepositoryImpl.class));
+            remove(beanManager.getReference(LinkRepositoryImpl.class));
+            remove(beanManager.getReference(PageRepositoryImpl.class));
+            remove(beanManager.getReference(PreferenceRepositoryImpl.class));
+            remove(beanManager.getReference(StatisticRepositoryImpl.class));
+            remove(beanManager.getReference(TagArticleRepositoryImpl.class));
+            remove(beanManager.getReference(TagRepositoryImpl.class));
+            remove(beanManager.getReference(UserRepositoryImpl.class));
+            remove(beanManager.getReference(PluginRepositoryImpl.class));
 
             succeed = true;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
-            LOGGER.log(Level.WARNING, "Removed partial data only");
+            LOGGER.log(Level.WARN, "Removed partial data only", e);
         }
 
         final StringBuilder htmlBuilder = new StringBuilder();
@@ -399,7 +418,7 @@ public final class RepairProcessor {
 
             renderer.setContent(htmlBuilder.toString());
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             } catch (final IOException ex) {
@@ -443,7 +462,7 @@ public final class RepairProcessor {
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.SEVERE, "Removes all data in repository[name=" + repository.getName() + "] failed", e);
+            LOGGER.log(Level.ERROR, "Removes all data in repository[name=" + repository.getName() + "] failed", e);
         }
     }
 }

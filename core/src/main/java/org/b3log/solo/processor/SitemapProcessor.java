@@ -19,11 +19,13 @@ package org.b3log.solo.processor;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
@@ -36,17 +38,13 @@ import org.b3log.latke.servlet.renderer.TextXMLRenderer;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.model.sitemap.Sitemap;
 import org.b3log.solo.model.sitemap.URL;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
-import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -55,12 +53,12 @@ import org.json.JSONObject;
 /**
  * Site map (sitemap) processor.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.5, Jan 18, 2013
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.6, May 17, 2013
  * @since 0.3.1
  */
 @RequestProcessor
-public final class SitemapProcessor {
+public class SitemapProcessor {
 
     /**
      * Logger.
@@ -70,34 +68,39 @@ public final class SitemapProcessor {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Article repository.
      */
-    private ArticleRepositoryImpl articleRepository = ArticleRepositoryImpl.getInstance();
+    @Inject
+    private ArticleRepositoryImpl articleRepository;
 
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    @Inject
+    private PageRepository pageRepository;
 
     /**
      * Tag repository.
      */
-    private TagRepository tagRepository = TagRepositoryImpl.getInstance();
+    @Inject
+    private TagRepository tagRepository;
 
     /**
      * Archive date repository.
      */
-    private ArchiveDateRepository archiveDateRepository = ArchiveDateRepositoryImpl.getInstance();
+    @Inject
+    private ArchiveDateRepository archiveDateRepository;
 
     /**
      * Returns the sitemap.
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/sitemap.xml"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/sitemap.xml", method = HTTPRequestMethod.GET)
     public void sitemap(final HTTPRequestContext context) {
         final TextXMLRenderer renderer = new TextXMLRenderer();
 
@@ -106,12 +109,10 @@ public final class SitemapProcessor {
         final Sitemap sitemap = new Sitemap();
 
         try {
-            final JSONObject preference = preferenceQueryService.getPreference();
-
-            addArticles(sitemap, preference);
-            addNavigations(sitemap, preference);
-            addTags(sitemap, preference);
-            addArchives(sitemap, preference);
+            addArticles(sitemap);
+            addNavigations(sitemap);
+            addTags(sitemap);
+            addArchives(sitemap);
 
             LOGGER.log(Level.INFO, "Generating sitemap....");
             final String content = sitemap.toString();
@@ -119,7 +120,7 @@ public final class SitemapProcessor {
             LOGGER.log(Level.INFO, "Generated sitemap");
             renderer.setContent(content);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Get blog article feed error", e);
+            LOGGER.log(Level.ERROR, "Get blog article feed error", e);
 
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
@@ -133,12 +134,9 @@ public final class SitemapProcessor {
      * Adds articles into the specified sitemap.
      * 
      * @param sitemap the specified sitemap
-     * @param preference the specified preference
      * @throws Exception exception
      */
-    private void addArticles(final Sitemap sitemap, final JSONObject preference) throws Exception {
-        final String host = preference.getString(Preference.BLOG_HOST);
-
+    private void addArticles(final Sitemap sitemap) throws Exception {
         // XXX: query all articles?
         final Query query = new Query().setCurrentPageNum(1).setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).addSort(
             Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
@@ -158,7 +156,7 @@ public final class SitemapProcessor {
 
             final URL url = new URL();
 
-            url.setLoc("http://" + host + permalink);
+            url.setLoc(Latkes.getServePath() + permalink);
 
             final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
             final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updateDate);
@@ -173,12 +171,9 @@ public final class SitemapProcessor {
      * Adds navigations into the specified sitemap.
      * 
      * @param sitemap the specified sitemap
-     * @param preference the specified preference
      * @throws Exception exception 
      */
-    private void addNavigations(final Sitemap sitemap, final JSONObject preference) throws Exception {
-        final String host = preference.getString(Preference.BLOG_HOST);
-
+    private void addNavigations(final Sitemap sitemap) throws Exception {
         final JSONObject result = pageRepository.get(new Query());
         final JSONArray pages = result.getJSONArray(Keys.RESULTS);
 
@@ -191,7 +186,7 @@ public final class SitemapProcessor {
             // The navigation maybe a page or a link
             // Just filters for user mistakes tolerance
             if (!permalink.contains("://")) {
-                url.setLoc("http://" + host + permalink);
+                url.setLoc(Latkes.getServePath() + permalink);
             } else {
                 url.setLoc(permalink);
             }
@@ -201,16 +196,12 @@ public final class SitemapProcessor {
     }
 
     /**
-     * Adds tags (tag-articles) and tags wall (/tags.html) into the specified 
-     * sitemap.
+     * Adds tags (tag-articles) and tags wall (/tags.html) into the specified sitemap.
      * 
      * @param sitemap the specified sitemap
-     * @param preference the specified preference
      * @throws Exception exception
      */
-    private void addTags(final Sitemap sitemap, final JSONObject preference) throws Exception {
-        final String host = preference.getString(Preference.BLOG_HOST);
-
+    private void addTags(final Sitemap sitemap) throws Exception {
         final JSONObject result = tagRepository.get(new Query());
         final JSONArray tags = result.getJSONArray(Keys.RESULTS);
 
@@ -220,7 +211,7 @@ public final class SitemapProcessor {
 
             final URL url = new URL();
 
-            url.setLoc("http://" + host + "/tags/" + link);
+            url.setLoc(Latkes.getServePath() + "/tags/" + link);
 
             sitemap.addURL(url);
         }
@@ -228,7 +219,7 @@ public final class SitemapProcessor {
         // Tags wall
         final URL url = new URL();
 
-        url.setLoc("http://" + host + "/tags.html");
+        url.setLoc(Latkes.getServePath() + "/tags.html");
         sitemap.addURL(url);
     }
 
@@ -236,12 +227,9 @@ public final class SitemapProcessor {
      * Adds archives (archive-articles) into the specified sitemap.
      * 
      * @param sitemap the specified sitemap
-     * @param preference the specified preference
      * @throws Exception exception
      */
-    private void addArchives(final Sitemap sitemap, final JSONObject preference) throws Exception {
-        final String host = preference.getString(Preference.BLOG_HOST);
-
+    private void addArchives(final Sitemap sitemap) throws Exception {
         final JSONObject result = archiveDateRepository.get(new Query());
         final JSONArray archiveDates = result.getJSONArray(Keys.RESULTS);
 
@@ -252,7 +240,7 @@ public final class SitemapProcessor {
 
             final URL url = new URL();
 
-            url.setLoc("http://" + host + "/archives/" + dateString);
+            url.setLoc(Latkes.getServePath() + "/archives/" + dateString);
 
             sitemap.addURL(url);
         }

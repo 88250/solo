@@ -17,17 +17,18 @@ package org.b3log.solo.service;
 
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,11 +36,12 @@ import org.json.JSONObject;
 /**
  * Page query service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Oct 27, 2011
  * @since 0.4.0
  */
-public final class PageQueryService {
+@Service
+public class PageQueryService {
 
     /**
      * Logger.
@@ -49,7 +51,8 @@ public final class PageQueryService {
     /**
      * Page repository.
      */
-    private PageRepository pageRepository = PageRepositoryImpl.getInstance();
+    @Inject
+    private PageRepository pageRepository;
 
     /**
      * Gets a page by the specified page id.
@@ -87,7 +90,7 @@ public final class PageQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             throw new ServiceException(e);
         }
@@ -158,42 +161,18 @@ public final class PageQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Gets pages failed", e);
+            LOGGER.log(Level.ERROR, "Gets pages failed", e);
 
             throw new ServiceException(e);
         }
     }
 
     /**
-     * Gets the {@link PageQueryService} singleton.
-     *
-     * @return the singleton
+     * Set the page repository with the specified page repository.
+     * 
+     * @param pageRepository the specified page repository
      */
-    public static PageQueryService getInstance() {
-        return SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private PageQueryService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 27, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final PageQueryService SINGLETON = new PageQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setPageRepository(final PageRepository pageRepository) {
+        this.pageRepository = pageRepository;
     }
 }

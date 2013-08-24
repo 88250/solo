@@ -19,7 +19,6 @@ import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.json.JSONObject;
@@ -29,7 +28,7 @@ import org.testng.annotations.Test;
 /**
  * {@link PageRepositoryImpl} test case.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.2, May 1, 2012
  */
 @Test(suiteName = "repository")

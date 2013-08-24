@@ -18,13 +18,14 @@ package org.b3log.solo.dev;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -40,17 +41,29 @@ import org.json.JSONObject;
 /**
  * Generates some dummy articles for development testing.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.4, Feb 1, 2013
  * @since 0.4.0
  */
 @RequestProcessor
-public final class ArticleGenerator {
+public class ArticleGenerator {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ArticleGenerator.class.getName());
+
+    /**
+     * Article management service.
+     */
+    @Inject
+    private ArticleMgmtService articleMgmtService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Generates some dummy articles with the specified context.
@@ -64,7 +77,7 @@ public final class ArticleGenerator {
     public void genArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws IOException {
         if (RuntimeMode.DEVELOPMENT != Latkes.getRuntimeMode()) {
-            LOGGER.log(Level.WARNING, "Article generation just for development mode, " + "current runtime mode is [{0}]",
+            LOGGER.log(Level.WARN, "Article generation just for development mode, " + "current runtime mode is [{0}]",
                 Latkes.getRuntimeMode());
             response.sendRedirect(Latkes.getServePath());
 
@@ -77,8 +90,6 @@ public final class ArticleGenerator {
         final int num = Integer.valueOf(requestURI.substring((Latkes.getContextPath() + "/dev/articles/gen/").length()));
 
         try {
-            final ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
-            final UserQueryService userQueryService = UserQueryService.getInstance();
             final JSONObject admin = userQueryService.getAdmin();
             final String authorEmail = admin.optString(User.USER_EMAIL);
 
@@ -99,15 +110,15 @@ public final class ArticleGenerator {
                 article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
                 article.put(Article.ARTICLE_IS_PUBLISHED, true);
                 article.put(Article.ARTICLE_PUT_TOP, false);
-          
+
                 final int deviationBase = 5;
-                final int deviationDay = -(Integer.valueOf(String.valueOf(i).substring(0, 1)) % deviationBase);           
-                
+                final int deviationDay = -(Integer.valueOf(String.valueOf(i).substring(0, 1)) % deviationBase);
+
                 final Date date = DateUtils.addMonths(new Date(), deviationDay);
 
                 article.put(Article.ARTICLE_CREATE_DATE, date);
                 article.put(Article.ARTICLE_UPDATE_DATE, date);
-                
+
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
                 article.put(Article.ARTICLE_COMMENTABLE, true);
                 article.put(Article.ARTICLE_VIEW_PWD, "");
@@ -117,12 +128,11 @@ public final class ArticleGenerator {
             }
 
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
 
         Stopwatchs.end();
 
         response.sendRedirect(Latkes.getServePath());
     }
-    
 }

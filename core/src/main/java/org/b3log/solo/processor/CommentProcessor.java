@@ -17,13 +17,14 @@ package org.b3log.solo.processor;
 
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -35,21 +36,20 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.service.CommentMgmtService;
-import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Users;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 
 /**
  * Comment processor.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
  * @version 1.1.0.11, Jan 30, 2013
  * @since 0.3.1
  */
 @RequestProcessor
-public final class CommentProcessor {
+public class CommentProcessor {
 
     /**
      * Logger.
@@ -59,12 +59,20 @@ public final class CommentProcessor {
     /**
      * Language service.
      */
-    private static LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Comment management service.
      */
-    private CommentMgmtService commentMgmtService = CommentMgmtService.getInstance();
+    @Inject
+    private CommentMgmtService commentMgmtService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Adds a comment to a page.
@@ -105,7 +113,7 @@ public final class CommentProcessor {
 
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
-        final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);
+        final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
 
         final JSONRenderer renderer = new JSONRenderer();
 
@@ -113,7 +121,7 @@ public final class CommentProcessor {
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARNING, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
+            LOGGER.log(Level.WARN, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
             return;
         }
 
@@ -130,7 +138,7 @@ public final class CommentProcessor {
 
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
-        if (!Users.getInstance().isLoggedIn(httpServletRequest, httpServletResponse)) {
+        if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
 
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
@@ -150,7 +158,7 @@ public final class CommentProcessor {
 
             renderer.setJSONObject(addResult);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Can not add comment on page", e);
+            LOGGER.log(Level.ERROR, "Can not add comment on page", e);
 
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
@@ -197,7 +205,7 @@ public final class CommentProcessor {
 
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
-        final JSONObject jsonObject = Comments.checkAddCommentRequest(requestJSONObject);
+        final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
 
         final JSONRenderer renderer = new JSONRenderer();
 
@@ -205,7 +213,7 @@ public final class CommentProcessor {
         renderer.setJSONObject(jsonObject);
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARNING, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
+            LOGGER.log(Level.WARN, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
             return;
         }
 
@@ -222,7 +230,7 @@ public final class CommentProcessor {
 
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
         
-        if (!Users.getInstance().isLoggedIn(httpServletRequest, httpServletResponse)) {
+        if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
             
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
@@ -242,7 +250,7 @@ public final class CommentProcessor {
             renderer.setJSONObject(addResult);
         } catch (final Exception e) {
 
-            LOGGER.log(Level.SEVERE, "Can not add comment on article", e);
+            LOGGER.log(Level.ERROR, "Can not add comment on article", e);
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
         }

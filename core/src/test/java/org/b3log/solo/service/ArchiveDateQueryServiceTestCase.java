@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 /**
  * {@link ArchiveDateQueryService} test case.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Sep 11, 2012
  */
 public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
@@ -61,7 +61,7 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getArchiveDates() throws Exception {
-        final ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
+        final ArchiveDateQueryService archiveDateQueryService = getArchiveDateQueryService();
 
         final List<JSONObject> archiveDates = archiveDateQueryService.getArchiveDates();
 
@@ -76,7 +76,7 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getByArchiveDateString() throws Exception {
-        final ArchiveDateQueryService archiveDateQueryService = ArchiveDateQueryService.getInstance();
+        final ArchiveDateQueryService archiveDateQueryService = getArchiveDateQueryService();
 
         final String archiveDateString = DateFormatUtils.format(new Date(), "yyyy/MM");
         final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);

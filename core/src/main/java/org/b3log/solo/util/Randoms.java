@@ -17,6 +17,8 @@
 package org.b3log.solo.util;
 
 
+import org.b3log.latke.util.MD5;
+
 import java.util.Random;
 
 
@@ -95,5 +97,14 @@ public class Randoms {
             buf[idx] = table[random.nextInt(table.length)];
         }
         return new String(buf);
+    }
+
+    /**
+     * Generate next random MD5 string.
+     *
+     * @return next random string with MD5
+     */
+    public String nextStringWithMD5() {
+        return MD5.hash(nextString());
     }
 }

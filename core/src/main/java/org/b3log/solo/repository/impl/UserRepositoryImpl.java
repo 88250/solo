@@ -16,11 +16,15 @@
 package org.b3log.solo.repository.impl;
 
 
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,21 +33,19 @@ import org.json.JSONObject;
 /**
  * User repository.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.8, Nov 10, 2011
  * @since 0.3.1
  */
+@Repository
 public final class UserRepositoryImpl extends AbstractRepository implements UserRepository {
 
     /**
-     * Logger.
+     * Public constructor.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserRepositoryImpl.class.getName());
-
-    /**
-     * Singleton.
-     */
-    private static final UserRepositoryImpl SINGLETON = new UserRepositoryImpl(User.USER);
+    public UserRepositoryImpl() {
+        super(User.USER);
+    }
 
     @Override
     public JSONObject getByEmail(final String email) throws RepositoryException {
@@ -83,23 +85,5 @@ public final class UserRepositoryImpl extends AbstractRepository implements User
         }
 
         return Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE));
-    }
-
-    /**
-     * Gets the {@link UserRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static UserRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private UserRepositoryImpl(final String name) {
-        super(name);
     }
 }

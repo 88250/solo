@@ -16,46 +16,39 @@
 package org.b3log.solo.repository.impl;
 
 
-import java.util.logging.Logger;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.service.StatisticMgmtService;
+import org.json.JSONObject;
 
 
 /**
  * Statistic repository.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.1, Jan 12, 2011
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.2, May 15, 2013
  * @since 0.3.1
  */
+@Repository
 public final class StatisticRepositoryImpl extends AbstractRepository implements StatisticRepository {
 
     /**
-     * Logger.
+     * Public constructor.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatisticRepositoryImpl.class.getName());
-
-    /**
-     * Singleton.
-     */
-    private static final StatisticRepositoryImpl SINGLETON = new StatisticRepositoryImpl(Statistic.STATISTIC);
-
-    /**
-     * Gets the {@link StatisticRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static StatisticRepositoryImpl getInstance() {
-        return SINGLETON;
+    public StatisticRepositoryImpl() {
+        super(Statistic.STATISTIC);
     }
 
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private StatisticRepositoryImpl(final String name) {
-        super(name);
+    @Override
+    public void update(final String id, final JSONObject jsonObject) throws RepositoryException {
+        super.update(id, jsonObject);
+
+        if (Latkes.isDataCacheEnabled()) {
+            getCache().put(StatisticMgmtService.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC, jsonObject);
+        }
     }
 }

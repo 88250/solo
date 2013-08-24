@@ -19,11 +19,17 @@ package org.b3log.solo.repository.impl;
 import java.text.ParseException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
@@ -34,10 +40,11 @@ import org.json.JSONObject;
 /**
  * Archive date repository.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.8, Jan 31, 2013
  * @since 0.3.1
  */
+@Repository
 public final class ArchiveDateRepositoryImpl extends AbstractRepository implements ArchiveDateRepository {
 
     /**
@@ -46,9 +53,11 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
     private static final Logger LOGGER = Logger.getLogger(ArchiveDateRepositoryImpl.class.getName());
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final ArchiveDateRepositoryImpl SINGLETON = new ArchiveDateRepositoryImpl(ArchiveDate.ARCHIVE_DATE);
+    public ArchiveDateRepositoryImpl() {
+        super(ArchiveDate.ARCHIVE_DATE);
+    }
 
     @Override
     public JSONObject getByArchiveDate(final String archiveDate) throws RepositoryException {
@@ -57,11 +66,11 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
         try {
             time = DateUtils.parseDate(archiveDate, new String[] {"yyyy/MM"}).getTime();
         } catch (final ParseException e) {
-            LOGGER.log(Level.SEVERE, "Can not parse archive date [" + archiveDate + "]", e);
+            LOGGER.log(Level.ERROR, "Can not parse archive date [" + archiveDate + "]", e);
             throw new RepositoryException("Can not parse archive date [" + archiveDate + "]");
         }
 
-        LOGGER.log(Level.FINEST, "Archive date [{0}] parsed to time [{1}]", new Object[] {archiveDate, time});
+        LOGGER.log(Level.TRACE, "Archive date [{0}] parsed to time [{1}]", new Object[] {archiveDate, time});
 
         final Query query = new Query();
 
@@ -108,23 +117,5 @@ public final class ArchiveDateRepositoryImpl extends AbstractRepository implemen
                 iterator.remove();
             }
         }
-    }
-
-    /**
-     * Gets the {@link ArchiveDateRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static ArchiveDateRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     *
-     * @param name the specified name
-     */
-    private ArchiveDateRepositoryImpl(final String name) {
-        super(name);
     }
 }

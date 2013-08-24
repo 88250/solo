@@ -17,9 +17,14 @@ package org.b3log.solo.repository.impl;
 
 
 import java.util.List;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
@@ -30,21 +35,19 @@ import org.json.JSONObject;
 /**
  * Page repository.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.9, Dec 31, 2011
  * @since 0.3.1
  */
+@Repository
 public final class PageRepositoryImpl extends AbstractRepository implements PageRepository {
 
     /**
-     * Logger.
+     * Public constructor.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageRepositoryImpl.class.getName());
-
-    /**
-     * Singleton.
-     */
-    private static final PageRepositoryImpl SINGLETON = new PageRepositoryImpl(Page.PAGE);
+    public PageRepositoryImpl() {
+        super(Page.PAGE);
+    }
 
     @Override
     public JSONObject getByPermalink(final String permalink) throws RepositoryException {
@@ -133,23 +136,5 @@ public final class PageRepositoryImpl extends AbstractRepository implements Page
         final JSONObject result = get(query);
 
         return CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
-    }
-
-    /**
-     * Gets the {@link PageRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static PageRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private PageRepositoryImpl(final String name) {
-        super(name);
     }
 }

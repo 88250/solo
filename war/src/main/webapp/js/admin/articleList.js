@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.1.4, Feb 23, 2013
+ * @version 1.0.1.5, May 28, 2013
  */
 
 /* article-list 相关操作 */
@@ -67,7 +67,6 @@ admin.articleList = {
     getList: function (pageNum) {
         var that = this;
         $("#loadMsg").text(Label.loadingLabel);
-        
         $.ajax({
             url: latkeConfig.servePath + "/console/articles/status/published/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
             type: "GET",

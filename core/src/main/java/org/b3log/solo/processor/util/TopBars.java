@@ -22,24 +22,26 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.processor.LoginProcessor;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
-import org.b3log.solo.util.Statistics;
-import org.b3log.solo.util.Users;
+import org.b3log.solo.service.StatisticQueryService;
+import org.b3log.solo.service.UserMgmtService;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -47,12 +49,13 @@ import org.json.JSONObject;
 /**
  * Top bar utilities.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @version 1.0.1.5, Apr 10, 2013
  * @since 0.3.5
  */
-public final class TopBars {
+@Service
+public class TopBars {
 
     /**
      * Logger.
@@ -60,19 +63,33 @@ public final class TopBars {
     private static final Logger LOGGER = Logger.getLogger(TopBars.class.getName());
 
     /**
-     * User utilities.
-     */
-    private static Users userUtils = Users.getInstance();
-
-    /**
      * User service.
      */
     private static UserService userService = UserServiceFactory.getUserService();
 
     /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
      * Language service.
      */
-    private static LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
+
+    /**
+     * Statistic query service.
+     */
+    @Inject
+    private StatisticQueryService statisticQueryService;
 
     /**
      * Generates top bar HTML.
@@ -82,7 +99,7 @@ public final class TopBars {
      * @return top bar HTML
      * @throws ServiceException service exception 
      */
-    public static String getTopBarHTML(final HttpServletRequest request, final HttpServletResponse response)
+    public String getTopBarHTML(final HttpServletRequest request, final HttpServletResponse response)
         throws ServiceException {
         Stopwatchs.start("Gens Top Bar HTML");
 
@@ -92,8 +109,8 @@ public final class TopBars {
 
             final Map<String, Object> topBarModel = new HashMap<String, Object>();
 
-            LoginProcessor.tryLogInWithCookie(request, response);
-            final JSONObject currentUser = userUtils.getCurrentUser(request);
+            userMgmtService.tryLogInWithCookie(request, response);
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
 
             Keys.fillServer(topBarModel);
             topBarModel.put(Common.IS_LOGGED_IN, false);
@@ -102,7 +119,7 @@ public final class TopBars {
             topBarModel.put("mobileLabel", langPropsService.get("mobileLabel"));
 
             topBarModel.put("onlineVisitor1Label", langPropsService.get("onlineVisitor1Label"));
-            topBarModel.put(Common.ONLINE_VISITOR_CNT, Statistics.getOnlineVisitorCount());
+            topBarModel.put(Common.ONLINE_VISITOR_CNT, statisticQueryService.getOnlineVisitorCount());
 
             if (null == currentUser) {
                 topBarModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
@@ -117,6 +134,7 @@ public final class TopBars {
             topBarModel.put(Common.IS_LOGGED_IN, true);
             topBarModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
             topBarModel.put(Common.IS_ADMIN, Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
+            topBarModel.put(Common.IS_VISITOR, Role.VISITOR_ROLE.equals(currentUser.getString(User.USER_ROLE)));
 
             topBarModel.put("clearAllCacheLabel", langPropsService.get("clearAllCacheLabel"));
             topBarModel.put("clearCacheLabel", langPropsService.get("clearCacheLabel"));
@@ -131,21 +149,16 @@ public final class TopBars {
 
             return stringWriter.toString();
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
+            LOGGER.log(Level.ERROR, "Gens top bar HTML failed", e);
             throw new ServiceException(e);
         } catch (final IOException e) {
-            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
+            LOGGER.log(Level.ERROR, "Gens top bar HTML failed", e);
             throw new ServiceException(e);
         } catch (final TemplateException e) {
-            LOGGER.log(Level.SEVERE, "Gens top bar HTML failed", e);
+            LOGGER.log(Level.ERROR, "Gens top bar HTML failed", e);
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
         }
     }
-
-    /**
-     * Private default constructor.
-     */
-    private TopBars() {}
 }

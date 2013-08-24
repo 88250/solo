@@ -17,7 +17,13 @@ package org.b3log.solo.repository.impl;
 
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
@@ -28,17 +34,19 @@ import org.json.JSONObject;
 /**
  * Archive date-Article relation repository.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.6, Nov 9, 2011
  * @since 0.3.1
  */
+@Repository
 public final class ArchiveDateArticleRepositoryImpl extends AbstractRepository implements ArchiveDateArticleRepository {
 
     /**
-     * Singleton.
+     * Public constructor.
      */
-    private static final ArchiveDateArticleRepositoryImpl SINGLETON = new ArchiveDateArticleRepositoryImpl(
-        ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE);
+    public ArchiveDateArticleRepositoryImpl() {
+        super(ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE);
+    }
 
     @Override
     public JSONObject getByArchiveDateId(final String archiveDateId, final int currentPageNum, final int pageSize)
@@ -63,23 +71,5 @@ public final class ArchiveDateArticleRepositoryImpl extends AbstractRepository i
         }
 
         return array.optJSONObject(0);
-    }
-
-    /**
-     * Gets the {@link ArchiveDateArticleRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static ArchiveDateArticleRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private ArchiveDateArticleRepositoryImpl(final String name) {
-        super(name);
     }
 }

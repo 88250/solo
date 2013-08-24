@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo GAE POM.
-    Version: 2.0.2.2, Jan 4, 2013
+    Version: 2.0.2.3, Aug 20, 2013
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -19,11 +19,10 @@
     <parent>
         <groupId>org.b3log</groupId>
         <artifactId>solo-war</artifactId>
-        <version>0.6.0</version>
+        <version>0.6.1</version>
     </parent>
     
     <properties>
-        <maven-gae-plugin.version>0.9.5</maven-gae-plugin.version>    
         <gae.dev_sever.port>8080</gae.dev_sever.port>
         <webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
         <gae.home>${settings.localRepository}/com/google/appengine/appengine-java-sdk/${gae.version}/appengine-java-sdk-${gae.version}</gae.home>
@@ -74,6 +73,24 @@
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-gae</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>solo-core</artifactId>
+            <exclusions>
+                <!-- Logging -->
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j.version}</version>
         </dependency>
 
         <dependency>
@@ -146,7 +163,10 @@
                             <resources>          
                                 <resource>
                                     <directory>src/main/resources</directory>
-                                    <filtering>true</filtering>
+                                    <excludes>
+                                        <!-- GAE uses JDK logger  -->
+                                        <exclude>log4j.properties</exclude>
+                                    </excludes>
                                 </resource>
                             </resources>              
                         </configuration>            

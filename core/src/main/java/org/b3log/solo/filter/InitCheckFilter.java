@@ -17,8 +17,6 @@ package org.b3log.solo.filter;
 
 
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -29,11 +27,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
@@ -41,8 +43,8 @@ import org.json.JSONObject;
 /**
  * Checks initialization filter.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.9, May 17, 2012
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.1.0, Jun 28, 2013
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -51,11 +53,6 @@ public final class InitCheckFilter implements Filter {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InitCheckFilter.class.getName());
-
-    /**
-     * Preference query service.
-     */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {}
@@ -75,17 +72,20 @@ public final class InitCheckFilter implements Filter {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
 
-        LOGGER.log(Level.FINEST, "Request[URI={0}]", requestURI);
-        
+        LOGGER.log(Level.TRACE, "Request[URI={0}]", requestURI);
+
         if (requestURI.startsWith("/latke/remote")) {
             // If requests Latke Remote APIs, skips this filter 
             chain.doFilter(request, response);
-            
+
             return;
         }
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final InitService initService = beanManager.getReference(InitService.class);
+        
         try {
-            if (SoloServletListener.isInited()) {
+            if (initService.isInited()) {
                 chain.doFilter(request, response);
 
                 return;
@@ -98,11 +98,13 @@ public final class InitCheckFilter implements Filter {
                 return;
             }
 
-            LOGGER.finer("Try to get preference to confirm whether the preference exixts");
+            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+
+            LOGGER.debug("Try to get preference to confirm whether the preference exixts");
             final JSONObject preference = preferenceQueryService.getPreference();
 
             if (null == preference) {
-                LOGGER.log(Level.WARNING, "B3log Solo has not been initialized, so redirects to /init");
+                LOGGER.log(Level.WARN, "B3log Solo has not been initialized, so redirects to /init");
 
                 final HTTPRequestContext context = new HTTPRequestContext();
 

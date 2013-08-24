@@ -19,7 +19,7 @@ package org.b3log.solo.util.comparator;
 /**
  * Comparators utilities.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Dec 30, 2010
  */
 public final class Comparators {

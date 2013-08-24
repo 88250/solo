@@ -26,7 +26,7 @@ import org.testng.annotations.Test;
 /**
  * {@link LinkQueryService} test case.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Sep 11, 2012
  */
 @Test(suiteName = "service")
@@ -48,7 +48,7 @@ public class LinkQueryServiceTestCase extends AbstractTestCase {
 
         initService.init(requestJSONObject);
 
-        final UserQueryService userQueryService = UserQueryService.getInstance();
+        final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByEmail("test@gmail.com"));
     }
 

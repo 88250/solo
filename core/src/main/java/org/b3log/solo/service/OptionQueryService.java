@@ -16,16 +16,16 @@
 package org.b3log.solo.service;
 
 
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
-import org.b3log.solo.repository.impl.OptionRepositoryImpl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -33,21 +33,18 @@ import org.json.JSONObject;
 /**
  * Option query service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Apr 16, 2013
  * @since 0.6.0
  */
-public final class OptionQueryService {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(OptionQueryService.class.getName());
+@Service
+public class OptionQueryService {
 
     /**
      * Option repository.
      */
-    private OptionRepository optionRepository = OptionRepositoryImpl.getInstance();
+    @Inject
+    private OptionRepository optionRepository;
 
     /**
      * Gets an option with the specified option id.
@@ -109,35 +106,11 @@ public final class OptionQueryService {
     }
 
     /**
-     * Gets the {@link OptionQueryService} singleton.
-     *
-     * @return the singleton
+     * Sets the option repository with the specified option repository.
+     * 
+     * @param optionRepository the specified option repository
      */
-    public static OptionQueryService getInstance() {
-        return OptionQueryService.SingletonHolder.SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private OptionQueryService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Apr 16, 2013
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final OptionQueryService SINGLETON = new OptionQueryService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setOptionRepository(final OptionRepository optionRepository) {
+        this.optionRepository = optionRepository;
     }
 }

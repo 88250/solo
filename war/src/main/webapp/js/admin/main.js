@@ -17,7 +17,7 @@
  * main for admin
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Aug 9, 2011
+ * @version 1.0.0.3, May 28, 2013
  */
 
 /* main 相关操作 */
@@ -30,9 +30,9 @@ admin.main = {
 admin.register.main =  {
     "obj": admin.main,
     "init": function () {
-        $("#loadMsg").text("");
+        admin.clearTip();
     },
     "refresh": function () {
-        $("#loadMsg").text("");
+        admin.clearTip();
     }
-}
+};

@@ -18,12 +18,14 @@ package org.b3log.solo.event.ping;
 
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
@@ -45,8 +47,8 @@ import org.json.JSONObject;
  *   </li>
  * </p>
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.2, Jun 23, 2011
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.3, May 17, 2013
  * @see AddArticleGoogleBlogSearchPinger
  * @since 0.3.1
  */
@@ -78,34 +80,35 @@ public final class UpdateArticleGoogleBlogSearchPinger extends AbstractEventList
 
         String articleTitle = null;
 
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+
         try {
             final JSONObject article = eventData.getJSONObject(Article.ARTICLE);
 
             articleTitle = article.getString(Article.ARTICLE_TITLE);
-            final JSONObject preference = PreferenceQueryService.getInstance().getPreference();
+            final JSONObject preference = preferenceQueryService.getPreference();
             final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            String blogHost = preference.getString(Preference.BLOG_HOST).toLowerCase().trim();
 
-            if ("localhost".equals(blogHost.split(":")[0].trim())) {
+            if (Latkes.getServePath().contains("localhost")) {
                 LOGGER.log(Level.INFO,
                     "Blog Solo runs on local server, so should not ping " + "Google Blog Search Service for the article[title={0}]",
                     new Object[] {article.getString(Article.ARTICLE_TITLE)});
                 return;
             }
-            blogHost = StringUtils.removeEnd("http://" + blogHost, "/");
 
-            final String articlePermalink = blogHost + article.getString(Article.ARTICLE_PERMALINK);
+            final String articlePermalink = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
             final String spec = "http://blogsearch.google.com/ping?name=" + URLEncoder.encode(blogTitle, "UTF-8") + "&url="
-                + URLEncoder.encode(blogHost, "UTF-8") + "&changesURL=" + URLEncoder.encode(articlePermalink, "UTF-8");
+                + URLEncoder.encode(Latkes.getServePath(), "UTF-8") + "&changesURL=" + URLEncoder.encode(articlePermalink, "UTF-8");
 
-            LOGGER.log(Level.FINER,
+            LOGGER.log(Level.DEBUG,
                 "Request Google Blog Search Service API[{0}] while updateing " + "an article[title=" + articleTitle + "]", spec);
             final HTTPRequest request = new HTTPRequest();
 
             request.setURL(new URL(spec));
             URL_FETCH_SERVICE.fetchAsync(request);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, "Ping Google Blog Search Service fail while updating an " + "article[title=" + articleTitle + "]", e);
+            LOGGER.log(Level.ERROR, "Ping Google Blog Search Service fail while updating an " + "article[title=" + articleTitle + "]", e);
         }
     }
 }

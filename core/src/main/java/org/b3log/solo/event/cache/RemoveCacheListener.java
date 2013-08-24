@@ -16,12 +16,14 @@
 package org.b3log.solo.event.cache;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.service.StatisticMgmtService;
 
@@ -33,7 +35,7 @@ import org.b3log.solo.service.StatisticMgmtService;
  * Flush the statistic to repository.
  * </p>
  * 
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Nov 28, 2011
  * @since 0.3.1
  */
@@ -44,20 +46,18 @@ public final class RemoveCacheListener extends AbstractEventListener<Void> {
      */
     private static final Logger LOGGER = Logger.getLogger(RemoveCacheListener.class.getName());
 
-    /**
-     * Statistic management service.
-     */
-    private StatisticMgmtService statisticMgmtService = StatisticMgmtService.getInstance();
-
     @Override
     public void action(final Event<Void> event) throws EventException {
-        LOGGER.log(Level.FINER, "Processing an event[type={0} in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0} in listener[className={2}]",
             new Object[] {event.getType(), RemoveCacheListener.class.getName()});
+
+        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
 
         try {
             statisticMgmtService.flushStatistic();
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, "Flushes statistic to repository failed", e);
+            LOGGER.log(Level.ERROR, "Flushes statistic to repository failed", e);
         }
     }
 

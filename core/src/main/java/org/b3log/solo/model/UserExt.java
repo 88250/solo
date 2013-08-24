@@ -19,7 +19,7 @@ package org.b3log.solo.model;
 /**
  * This class defines ext of user model relevant keys.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Feb 21, 2012
  * @since 0.4.1
  * @see org.b3log.latke.model.User

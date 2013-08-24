@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.0.8, Feb 23, 2013
+ * @version 1.0.0.9, May 28, 2013
  */
 
 admin.comment = { 
@@ -40,6 +40,7 @@ admin.comment = {
      */
     getList: function (onId, fromId) {
         $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
         $("#" + fromId + "Comments").html("");
         
         var from = "article";

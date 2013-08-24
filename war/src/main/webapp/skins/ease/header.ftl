@@ -48,7 +48,7 @@
                 <input type="hidden" name="oe" value="UTF-8" />
                 <input type="hidden" name="ie" value="UTF-8" />
                 <input type="hidden" name="newwindow" value="0" />
-                <input type="hidden" name="sitesearch" value="${blogHost}" />
+                <input type="hidden" name="sitesearch" value="${serverHost}" />
             </form>
             <div class="clear"></div>
         </div>

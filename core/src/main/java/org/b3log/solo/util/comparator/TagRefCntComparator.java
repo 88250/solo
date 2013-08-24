@@ -24,7 +24,7 @@ import org.json.JSONObject;
 /**
  * Tag comparator by reference count.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Dec 30, 2010
  */
 public final class TagRefCntComparator

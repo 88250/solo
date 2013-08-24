@@ -19,10 +19,17 @@ package org.b3log.solo.repository.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.CompositeFilterOperator;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
@@ -34,10 +41,11 @@ import org.json.JSONObject;
 /**
  * Article repository.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.3.10, Jan 31, 2013
  * @since 0.3.1
  */
+@Repository
 public final class ArticleRepositoryImpl extends AbstractRepository implements ArticleRepository {
 
     /**
@@ -46,14 +54,16 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
     private static final Logger LOGGER = Logger.getLogger(ArticleRepositoryImpl.class.getName());
 
     /**
-     * Singleton.
-     */
-    private static final ArticleRepositoryImpl SINGLETON = new ArticleRepositoryImpl(Article.ARTICLE);
-
-    /**
      * Random range.
      */
     private static final double RANDOM_RANGE = 0.1D;
+
+    /**
+     * Public constructor.
+     */
+    public ArticleRepositoryImpl() {
+        super(Article.ARTICLE);
+    }
 
     @Override
     public JSONObject getByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
@@ -199,7 +209,7 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
 
         final double mid = Math.random() + RANDOM_RANGE;
 
-        LOGGER.log(Level.FINEST, "Random mid[{0}]", mid);
+        LOGGER.log(Level.TRACE, "Random mid[{0}]", mid);
 
         Query query = new Query();
 
@@ -239,23 +249,5 @@ public final class ArticleRepositoryImpl extends AbstractRepository implements A
         }
 
         return ret;
-    }
-
-    /**
-     * Gets the {@link ArticleRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static ArticleRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private ArticleRepositoryImpl(final String name) {
-        super(name);
     }
 }

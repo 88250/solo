@@ -16,11 +16,12 @@
 package org.b3log.solo.api.symphony;
 
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -44,12 +45,12 @@ import org.jsoup.Jsoup;
 /**
  * Article receiver (from B3log Symphony).
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.5, Mar 18, 2013
  * @since 0.5.5
  */
 @RequestProcessor
-public final class ArticleReceiver {
+public class ArticleReceiver {
 
     /**
      * Logger.
@@ -59,17 +60,26 @@ public final class ArticleReceiver {
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Article management service.
      */
-    private ArticleMgmtService articleMgmtService = ArticleMgmtService.getInstance();
+    @Inject
+    private ArticleMgmtService articleMgmtService;
 
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Article abstract length.
@@ -123,13 +133,12 @@ public final class ArticleReceiver {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             if (!userB3Key.equals(preference.optString(Preference.KEY_OF_SOLO))) {
-                LOGGER.log(Level.WARNING, "B3 key not match, ignored add article");
+                LOGGER.log(Level.WARN, "B3 key not match, ignored add article");
 
                 return;
             }
             article.remove("userB3Key");
 
-            final UserQueryService userQueryService = UserQueryService.getInstance();
             final JSONObject admin = userQueryService.getAdmin();
 
             article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.getString(User.USER_EMAIL));
@@ -159,7 +168,7 @@ public final class ArticleReceiver {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -216,7 +225,7 @@ public final class ArticleReceiver {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             if (!userB3Key.equals(preference.optString(Preference.KEY_OF_SOLO))) {
-                LOGGER.log(Level.WARNING, "B3 key not match, ignored update article");
+                LOGGER.log(Level.WARN, "B3 key not match, ignored update article");
 
                 return;
             }
@@ -253,7 +262,7 @@ public final class ArticleReceiver {
             ret.put(Keys.MSG, "update article succ");
             ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

@@ -14,7 +14,6 @@
         "miniPostfix": "${miniPostfix}",
         "reportIssueLabel": "please report this issue on https://github.com/b3log/b3log-solo/issues/new",
         "noDataLabel": "${noDataLabel}",
-        "resetBlogHostLabel": "${resetBlogHostLabel}",
         "linkDescriptionLabel": "${linkDescriptionLabel}",
         "addressInvalidLabel": "${addressInvalidLabel}",
         "selectLabel": "${selectLabel}",
@@ -115,7 +114,8 @@
         "navLabel": "${navLabel}",
         "userLabel": "${userLabel}",
         "changeRoleLabel": "${changeRoleLabel}",
-        "visitorUserLabel": "${visitorUserLabel}"
+        "visitorUserLabel": "${visitorUserLabel}",
+        "autoSaveLabel": "${autoSaveLabel}"
     };    
     
     admin.init();

@@ -22,13 +22,14 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.cache.PageCaches;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -50,10 +51,8 @@ import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.util.Articles;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Tags;
-import org.b3log.solo.util.Users;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,12 +61,12 @@ import org.json.JSONObject;
 /**
  * Tag processor.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.1.0, Aug 30, 2012
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.1.1.1, Jul 11, 2013
  * @since 0.3.1
  */
 @RequestProcessor
-public final class TagProcessor {
+public class TagProcessor {
 
     /**
      * Logger.
@@ -77,37 +76,38 @@ public final class TagProcessor {
     /**
      * Filler.
      */
-    private Filler filler = Filler.getInstance();
+    @Inject
+    private Filler filler;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Preference query service.
      */
-    private PreferenceQueryService preferenceQueryService = PreferenceQueryService.getInstance();
-
-    /**
-     * Article utilities.
-     */
-    private Articles articleUtils = Articles.getInstance();
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Article query service.
      */
-    private ArticleQueryService articleQueryService = ArticleQueryService.getInstance();
+    @Inject
+    private ArticleQueryService articleQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Tag query service.
      */
-    private TagQueryService tagQueryService = TagQueryService.getInstance();
-
-    /**
-     * Tag utilities.
-     */
-    private Tags tagUtils = Tags.getInstance();
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Shows articles related with a tag with the specified context.
@@ -142,7 +142,7 @@ public final class TagProcessor {
                 return;
             }
 
-            LOGGER.log(Level.FINER, "Tag[title={0}, currentPageNum={1}]", new Object[] {tagTitle, currentPageNum});
+            LOGGER.log(Level.DEBUG, "Tag[title={0}, currentPageNum={1}]", new Object[] {tagTitle, currentPageNum});
 
             tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
@@ -157,8 +157,7 @@ public final class TagProcessor {
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
+            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
@@ -180,17 +179,17 @@ public final class TagProcessor {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     return;
                 } catch (final IOException ex) {
-                    LOGGER.severe(ex.getMessage());
+                    LOGGER.error(ex.getMessage());
                 }
             }
 
-            final boolean hasMultipleUsers = Users.getInstance().hasMultipleUsers();
+            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(articles, preference);
             } else {
                 // All articles composed by the same author
-                final JSONObject author = articleUtils.getAuthor(articles.get(0));
+                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                 filler.setArticlesExProperties(articles, author, preference);
             }
@@ -198,14 +197,14 @@ public final class TagProcessor {
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
 
-            LOGGER.log(Level.FINEST, "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
+            LOGGER.log(Level.TRACE, "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
                 new Object[] {currentPageNum, pageSize, pageCount, windowSize});
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
-            LOGGER.log(Level.FINEST, "tag-articles[pageNums={0}]", pageNums);
-            
+            LOGGER.log(Level.TRACE, "tag-articles[pageNums={0}]", pageNums);
+
             Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-         
+
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
             dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle, "UTF-8"));
             dataModel.put(Keys.OBJECT_ID, tagId);
@@ -214,22 +213,22 @@ public final class TagProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.TAG_ARTICLES);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         } catch (final JSONException e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         }
     }
@@ -288,8 +287,7 @@ public final class TagProcessor {
                 return;
             }
 
-            Skins.fillSkinLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME),
-                dataModel);
+            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             request.setAttribute(PageCaches.CACHED_OID, "No id");
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
@@ -300,7 +298,7 @@ public final class TagProcessor {
 
             final List<JSONObject> tags = tagQueryService.getTags();
 
-            tagUtils.removeForUnpublishedArticles(tags);
+            tagQueryService.removeForUnpublishedArticles(tags);
             Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
 
             dataModel.put(Tag.TAGS, tags);
@@ -308,15 +306,14 @@ public final class TagProcessor {
             dataModel.put(Keys.PAGE_TYPE, PageTypes.TAGS);
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
             } catch (final IOException ex) {
-                LOGGER.severe(ex.getMessage());
+                LOGGER.error(ex.getMessage());
             }
         }
     }
@@ -333,7 +330,7 @@ public final class TagProcessor {
         if (Strings.isEmptyOrNull(tagTitle)) {
             return -1;
         }
-        
+
         final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/tags/" + tagTitle + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);

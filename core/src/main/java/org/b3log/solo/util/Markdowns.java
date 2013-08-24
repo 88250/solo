@@ -18,8 +18,8 @@ package org.b3log.solo.util;
 
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
 import org.tautua.markdownpapers.Markdown;
 import org.tautua.markdownpapers.parser.ParseException;
@@ -30,7 +30,7 @@ import org.tautua.markdownpapers.parser.ParseException;
  * 
  * <p>Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Feb 8, 2013
  * @since 0.4.5
  */
@@ -59,7 +59,7 @@ public final class Markdowns {
         try {
             markdown.transform(new StringReader(markdownText), writer);
         } catch (final ParseException e) {
-            LOGGER.log(Level.SEVERE, "Markdown error", e);
+            LOGGER.log(Level.ERROR, "Markdown error", e);
             
             return "Markdown error";
         }

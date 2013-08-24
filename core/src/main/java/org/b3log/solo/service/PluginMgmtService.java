@@ -18,30 +18,36 @@ package org.b3log.solo.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import javax.inject.Inject;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.PluginStatus;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
+import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.repository.PluginRepository;
-import org.b3log.solo.repository.impl.PluginRepositoryImpl;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
 /**
  * Plugin management service.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Oct 27, 2011
  * @since 0.4.0
  */
-public final class PluginMgmtService {
+@Service
+public class PluginMgmtService {
 
     /**
      * Logger.
@@ -51,12 +57,88 @@ public final class PluginMgmtService {
     /**
      * Plugin repository.
      */
-    private PluginRepository pluginRepository = PluginRepositoryImpl.getInstance();
+    @Inject
+    private PluginRepository pluginRepository;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
+     * Updates datastore plugin descriptions with the specified plugins.
+     * 
+     * @param plugins the specified plugins
+     * @throws Exception exception 
+     */
+    public void refresh(final List<AbstractPlugin> plugins) throws Exception {
+        final JSONObject result = pluginRepository.get(new Query());
+        final JSONArray pluginArray = result.getJSONArray(Keys.RESULTS);
+        final List<JSONObject> persistedPlugins = CollectionUtils.jsonArrayToList(pluginArray);
+
+        // Disables plugin repository cache to avoid remove all cache
+        pluginRepository.setCacheEnabled(false);
+
+        try {
+            // Reads plugin status from datastore and clear plugin datastore
+            for (final JSONObject oldPluginDesc : persistedPlugins) {
+                final String descId = oldPluginDesc.getString(Keys.OBJECT_ID);
+                final AbstractPlugin plugin = get(plugins, descId);
+
+                pluginRepository.remove(descId);
+
+                if (null != plugin) {
+                    final String status = oldPluginDesc.getString(Plugin.PLUGIN_STATUS);
+                    final String setting = oldPluginDesc.optString(Plugin.PLUGIN_SETTING);
+
+                    plugin.setStatus(PluginStatus.valueOf(status));
+                    try {
+                        if (StringUtils.isNotBlank(setting)) {
+                            plugin.setSetting(new JSONObject(setting));
+                        }
+                    } catch (final JSONException e) {
+                        LOGGER.log(Level.WARN, "the formatter of the old config failed to convert to json", e);
+                    }
+                }
+            }
+
+            // Adds these plugins into datastore
+            for (final AbstractPlugin plugin : plugins) {
+                final JSONObject pluginDesc = plugin.toJSONObject();
+
+                pluginRepository.add(pluginDesc);
+
+                LOGGER.log(Level.TRACE, "Refreshed plugin[{0}]", pluginDesc);
+            }
+
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Refresh plugins failed", e);
+        }
+
+        pluginRepository.setCacheEnabled(true);
+    }
+
+    /**
+     * Gets a plugin in the specified plugins with the specified id.
+     * 
+     * @param plugins the specified plugins
+     * @param id the specified id, must NOT be {@code null}
+     * @return a plugin, returns {@code null} if not found
+     */
+    private AbstractPlugin get(final List<AbstractPlugin> plugins, final String id) {
+        if (null == id) {
+            throw new IllegalArgumentException("id must not be null");
+        }
+
+        for (final AbstractPlugin plugin : plugins) {
+            if (id.equals(plugin.getId())) {
+                return plugin;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Sets a plugin's status with the specified plugin id, status.
@@ -101,7 +183,7 @@ public final class PluginMgmtService {
                         transaction.rollback();
                     }
 
-                    LOGGER.log(Level.SEVERE, "Set plugin status error", e);
+                    LOGGER.log(Level.ERROR, "Set plugin status error", e);
 
                     ret.put(Keys.STATUS_CODE, false);
                     ret.put(Keys.MSG, langs.get("setFailLabel"));
@@ -153,7 +235,7 @@ public final class PluginMgmtService {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
-                    LOGGER.log(Level.SEVERE, "Set plugin status error", e);
+                    LOGGER.log(Level.ERROR, "Set plugin status error", e);
                     ret.put(Keys.STATUS_CODE, false);
                     ret.put(Keys.MSG, langs.get("setFailLabel"));
 
@@ -166,40 +248,24 @@ public final class PluginMgmtService {
         ret.put(Keys.MSG, langs.get("refreshAndRetryLabel"));
 
         return ret;
-        
+
     }
 
     /**
-     * Gets the {@link PluginMgmtService} singleton.
-     *
-     * @return the singleton
+     * Sets the plugin repository with the specified plugin repository.
+     * 
+     * @param pluginRepository the specified plugin repository
      */
-    public static PluginMgmtService getInstance() {
-        return SingletonHolder.SINGLETON;
+    public void setPluginRepository(final PluginRepository pluginRepository) {
+        this.pluginRepository = pluginRepository;
     }
 
     /**
-     * Private constructor.
+     * Sets the language service with the specified language service.
+     * 
+     * @param langPropsService the specified language service
      */
-    private PluginMgmtService() {}
-
-    /**
-     * Singleton holder.
-     *
-     * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
-     * @version 1.0.0.0, Oct 27, 2011
-     */
-    private static final class SingletonHolder {
-
-        /**
-         * Singleton.
-         */
-        private static final PluginMgmtService SINGLETON = new PluginMgmtService();
-
-        /**
-         * Private default constructor.
-         */
-        private SingletonHolder() {}
+    public void setLangPropsService(final LangPropsService langPropsService) {
+        this.langPropsService = langPropsService;
     }
-
 }

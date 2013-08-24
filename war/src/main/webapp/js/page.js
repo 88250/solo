@@ -402,7 +402,7 @@ $.extend(Page.prototype, {
         // cookie
         var $top = $("#top #admin");
         if ($top.length === 1) {
-            if ($top.find("a").length > 2) {
+            if ($top.find("a").length > 3) {
                 Cookie.createCookie("commentName", $top.find("span").text(), 365); 
                 Cookie.createCookie("commentURL", window.location.host, 365);
             }

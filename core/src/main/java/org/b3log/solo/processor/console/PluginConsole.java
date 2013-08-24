@@ -17,14 +17,13 @@ package org.b3log.solo.processor.console;
 
 
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -39,21 +38,20 @@ import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.Users;
 import org.json.JSONObject;
 
 
 /**
  * Plugin console request processing.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @version 1.1.0.0, Jan 17, 2013
  * @since 0.4.0
  */
 @RequestProcessor
 @Before(adviceClass = ProcessAuthAdvice.class)
-public final class PluginConsole {
+public class PluginConsole {
 
     /**
      * Logger.
@@ -61,24 +59,22 @@ public final class PluginConsole {
     private static final Logger LOGGER = Logger.getLogger(PluginConsole.class.getName());
 
     /**
-     * User utilities.
-     */
-    private Users userUtils = Users.getInstance();
-
-    /**
      * Plugin query service.
      */
-    private PluginQueryService pluginQueryService = PluginQueryService.getInstance();
+    @Inject
+    private PluginQueryService pluginQueryService;
 
     /**
      * Plugin management service.
      */
-    private PluginMgmtService pluginMgmtService = PluginMgmtService.getInstance();
+    @Inject
+    private PluginMgmtService pluginMgmtService;
 
     /**
      * Language service.
      */
-    private LangPropsService langPropsService = LangPropsService.getInstance();
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Sets a plugin's status with the specified plugin id, status.
@@ -171,7 +167,7 @@ public final class PluginConsole {
 
             result.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 
@@ -203,14 +199,13 @@ public final class PluginConsole {
             renderer.setTemplateName("admin-plugin-setting.ftl");
             final Map<String, Object> dataModel = renderer.getDataModel();
 
-            Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
 
             dataModel.put(Plugin.PLUGIN_SETTING, setting);
             dataModel.put(Keys.OBJECT_ID, pluginId);
 
         } catch (final Exception e) {
-            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
             final JSONRenderer jsonRenderer = new JSONRenderer();
@@ -245,5 +240,4 @@ public final class PluginConsole {
         renderer.setJSONObject(ret);
 
     }
-
 }

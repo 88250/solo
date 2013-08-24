@@ -16,9 +16,14 @@
 package org.b3log.solo.repository.impl;
 
 
-import java.util.logging.Logger;
 import org.b3log.latke.Keys;
-import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.json.JSONArray;
@@ -28,21 +33,19 @@ import org.json.JSONObject;
 /**
  * Link repository.
  *
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.5, Nov 10, 2011
  * @since 0.3.1
  */
+@Repository
 public final class LinkRepositoryImpl extends AbstractRepository implements LinkRepository {
 
     /**
-     * Logger.
+     * Public constructor.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkRepositoryImpl.class.getName());
-
-    /**
-     * Singleton.
-     */
-    private static final LinkRepositoryImpl SINGLETON = new LinkRepositoryImpl(Link.LINK);
+    public LinkRepositoryImpl() {
+        super(Link.LINK);
+    }
 
     @Override
     public JSONObject getByAddress(final String address) throws RepositoryException {
@@ -138,23 +141,5 @@ public final class LinkRepositoryImpl extends AbstractRepository implements Link
         }
 
         return array.optJSONObject(0);
-    }
-
-    /**
-     * Gets the {@link LinkRepositoryImpl} singleton.
-     *
-     * @return the singleton
-     */
-    public static LinkRepositoryImpl getInstance() {
-        return SINGLETON;
-    }
-
-    /**
-     * Private constructor.
-     * 
-     * @param name the specified name
-     */
-    private LinkRepositoryImpl(final String name) {
-        super(name);
     }
 }
