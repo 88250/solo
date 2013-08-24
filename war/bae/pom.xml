@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo BAE POM.
-    Version: 1.0.1.4, Aug 20, 2013
+    Version: 1.0.1.5, Aug 24, 2013
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -96,6 +96,7 @@
                 <directory>../src/main/resources</directory>
                 <excludes>
                     <exclude>etc/</exclude>
+                    <exclude>log4j.properties</exclude>
                 </excludes>
             </resource>
         </resources>
