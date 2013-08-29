@@ -75,7 +75,7 @@
                                     } else if (2 > userName.length || userName.length > 20) {
                                         $("#tip").text("${nameTooLongLabel}");
                                         $("#userName").focus();
-                                    } else if ($("#userPassword").val().replace(/\s/g, "") === "") {
+                                    } else if ($("#userPassword").val() === "") {
                                         $("#tip").text("${passwordEmptyLabel}");
                                         $("#userPassword").focus();
                                     } else if ($("#userPassword").val() !== $("#userPasswordConfirm").val()) {

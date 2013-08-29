@@ -84,7 +84,7 @@
                                         return;
                                     }
 
-                                    if ($("#userPassword").val().replace(/\s/g, "") === "") {
+                                    if ($("#userPassword").val() === "") {
                                         $("#tip").text("${passwordEmptyLabel}");
                                         $("#userPassword").focus();
                                         return;
