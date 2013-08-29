@@ -162,6 +162,7 @@ public class LoginProcessor {
 
             return;
         }
+        
         renderPage(context, "login.ftl", destinationURL, request);
     }
 
