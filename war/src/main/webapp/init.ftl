@@ -202,7 +202,7 @@
 
                                         if (confirm("${confirmInitLabel}")) {
                                             $(window).unbind();
-                                            $("#tip").html("<img src='${staticServePath}/images/loading.gif'/> loading...")
+                                            $("#tip").html("<img src='${staticServePath}/images/loading.gif'/> loading...");
                                             $.ajax({
                                                 url: "${contextPath}/init",
                                                 type: "POST",
@@ -210,7 +210,6 @@
                                                 success: function(result, textStatus) {
                                                     if (!result.sc) {
                                                         $("#tip").text(result.msg);
-                                                        ;
                                                         return;
                                                     }
 
