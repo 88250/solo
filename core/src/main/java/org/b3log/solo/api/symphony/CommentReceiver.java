@@ -59,7 +59,7 @@ import org.json.JSONObject;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Jul 10, 2013
+ * @version 1.0.0.8, Aug 29, 2013
  * @since 0.5.5
  */
 @RequestProcessor
@@ -79,6 +79,7 @@ public class CommentReceiver {
     /**
      * Comment repository.
      */
+    @Inject
     private static CommentRepository commentRepository;
 
     /**
