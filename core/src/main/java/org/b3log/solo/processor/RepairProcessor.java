@@ -33,6 +33,7 @@ import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -69,7 +70,7 @@ import org.json.JSONObject;
  * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.8, Dec 25, 2012
+ * @version 1.1.0.9, Sep 7, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -278,12 +279,11 @@ public class RepairProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/fix/tag-article-counter-repair.do", method = HTTPRequestMethod.GET)
+    @Transactional
     public void repairTagArticleCounter(final HTTPRequestContext context) {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
 
         context.setRenderer(renderer);
-
-        final Transaction transaction = tagRepository.beginTransaction();
 
         try {
             final JSONObject result = tagRepository.get(new Query());
@@ -301,9 +301,14 @@ public class RepairProcessor {
                     final JSONObject tagArticle = tagArticles.getJSONObject(i);
                     final String articleId = tagArticle.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
                     final JSONObject article = articleRepository.get(articleId);
-                    final boolean isPublished = article.getBoolean(Article.ARTICLE_IS_PUBLISHED);
-
-                    if (isPublished) {
+                    
+                    if (null == article) {
+                        tagArticleRepository.remove(tagArticle.optString(Keys.OBJECT_ID));
+                        
+                        continue;
+                    }
+                    
+                    if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                         publishedTagRefCnt++;
                     }
                 }
@@ -317,14 +322,8 @@ public class RepairProcessor {
                     new Object[] {tag.getString(Tag.TAG_TITLE), tagRefCnt, publishedTagRefCnt});
             }
 
-            transaction.commit();
-
             renderer.setContent("Repair sucessfully!");
         } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent("Repairs failed, error msg[" + e.getMessage() + "]");
         }
