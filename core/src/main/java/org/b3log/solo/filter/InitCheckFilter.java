@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * Checks initialization filter.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Jun 28, 2013
+ * @version 1.0.1.1, Sep 10, 2013
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -74,7 +74,7 @@ public final class InitCheckFilter implements Filter {
 
         LOGGER.log(Level.TRACE, "Request[URI={0}]", requestURI);
 
-        if (requestURI.startsWith("/latke/remote")) {
+        if (requestURI.startsWith(Latkes.getContextPath() + "/latke/remote")) {
             // If requests Latke Remote APIs, skips this filter 
             chain.doFilter(request, response);
 
