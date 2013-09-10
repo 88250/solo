@@ -74,8 +74,8 @@ public final class InitCheckFilter implements Filter {
 
         LOGGER.log(Level.TRACE, "Request[URI={0}]", requestURI);
 
+        // If requests Latke Remote APIs, skips this filter 
         if (requestURI.startsWith(Latkes.getContextPath() + "/latke/remote")) {
-            // If requests Latke Remote APIs, skips this filter 
             chain.doFilter(request, response);
 
             return;
