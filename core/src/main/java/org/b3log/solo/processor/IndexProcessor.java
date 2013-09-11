@@ -56,7 +56,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.1.1.3, Jul 11, 2013
+ * @version 1.1.1.4, Sep 11, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -234,7 +234,7 @@ public class IndexProcessor {
      * can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI) {
-        final String pageNumString = StringUtils.substringAfter(requestURI, "/");
+        final String pageNumString = StringUtils.substringAfterLast(requestURI, "/");
 
         return Requests.getCurrentPageNum(pageNumString);
     }
