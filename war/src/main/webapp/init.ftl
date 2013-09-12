@@ -22,6 +22,7 @@
 
             html {
                 height: 100%;
+                overflow: hidden;
             }
 
             body {
@@ -30,6 +31,7 @@
                 font-family: \5fae\8f6f\96c5\9ed1;
                 font-size: small;
                 height: 100%;
+                 overflow: hidden;
             }
 
             .wrapper {
@@ -106,6 +108,7 @@
                                 ${initIntroLabel}
                                 <button onclick='initSys();' id="initButton">${initLabel}</button>
                                 <button onclick='returnTo();'>${previousStepLabel}</button>
+                                <span id="tipInit"></span>
                                 <span class="clear"></span>
                             </div>
                         </div>
@@ -154,7 +157,7 @@
                                     var getUserInfo = function() {
                                         if (validate()) {
                                             $("#init").animate({
-                                                "top": -190
+                                                "top": -178
                                             });
 
                                             $("#user").animate({
@@ -165,7 +168,7 @@
                                                 "display": "block",
                                                 "opacity": 1
                                             });
-                                            
+
                                             $(window).unbind().keydown(function(e) {
                                                 if (e.keyCode === 27) {// esc
                                                     returnTo();
@@ -202,14 +205,16 @@
 
                                         if (confirm("${confirmInitLabel}")) {
                                             $(window).unbind();
-                                            $("#tip").html("<img src='${staticServePath}/images/loading.gif'/> loading...");
+                                            $("#tipInit").html("<img src='${staticServePath}/images/loading.gif'/> loading...");
+                                            $("#tipInit").text(result.msg);
+                                            return;
                                             $.ajax({
                                                 url: "${contextPath}/init",
                                                 type: "POST",
                                                 data: JSON.stringify(requestJSONObject),
                                                 success: function(result, textStatus) {
                                                     if (!result.sc) {
-                                                        $("#tip").text(result.msg);
+                                                        $("#tipInit").text(result.msg);
                                                         return;
                                                     }
 
