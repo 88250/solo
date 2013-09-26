@@ -206,8 +206,7 @@
                                         if (confirm("${confirmInitLabel}")) {
                                             $(window).unbind();
                                             $("#tipInit").html("<img src='${staticServePath}/images/loading.gif'/> loading...");
-                                            $("#tipInit").text(result.msg);
-                                            return;
+                                            
                                             $.ajax({
                                                 url: "${contextPath}/init",
                                                 type: "POST",
