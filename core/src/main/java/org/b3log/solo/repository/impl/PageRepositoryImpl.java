@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @Repository
-public final class PageRepositoryImpl extends AbstractRepository implements PageRepository {
+public class PageRepositoryImpl extends AbstractRepository implements PageRepository {
 
     /**
      * Public constructor.

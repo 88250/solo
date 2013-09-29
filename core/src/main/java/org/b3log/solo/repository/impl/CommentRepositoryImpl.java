@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @Repository
-public final class CommentRepositoryImpl extends AbstractRepository implements CommentRepository {
+public class CommentRepositoryImpl extends AbstractRepository implements CommentRepository {
 
     /**
      * Logger.

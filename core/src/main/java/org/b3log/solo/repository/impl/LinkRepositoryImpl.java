@@ -38,7 +38,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @Repository
-public final class LinkRepositoryImpl extends AbstractRepository implements LinkRepository {
+public class LinkRepositoryImpl extends AbstractRepository implements LinkRepository {
 
     /**
      * Public constructor.

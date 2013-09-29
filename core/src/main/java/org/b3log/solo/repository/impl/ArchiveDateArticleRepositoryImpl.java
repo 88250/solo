@@ -39,7 +39,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @Repository
-public final class ArchiveDateArticleRepositoryImpl extends AbstractRepository implements ArchiveDateArticleRepository {
+public class ArchiveDateArticleRepositoryImpl extends AbstractRepository implements ArchiveDateArticleRepository {
 
     /**
      * Public constructor.

@@ -45,7 +45,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @Repository
-public final class ArchiveDateRepositoryImpl extends AbstractRepository implements ArchiveDateRepository {
+public class ArchiveDateRepositoryImpl extends AbstractRepository implements ArchiveDateRepository {
 
     /**
      * Logger.

@@ -30,7 +30,7 @@ import org.b3log.solo.repository.OptionRepository;
  * @since 0.6.0
  */
 @Repository
-public final class OptionRepositoryImpl extends AbstractRepository implements OptionRepository {
+public class OptionRepositoryImpl extends AbstractRepository implements OptionRepository {
 
     /**
      * Public constructor.

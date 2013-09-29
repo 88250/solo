@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @Repository
-public final class PreferenceRepositoryImpl extends AbstractRepository implements PreferenceRepository {
+public class PreferenceRepositoryImpl extends AbstractRepository implements PreferenceRepository {
 
     /**
      * Public constructor.
