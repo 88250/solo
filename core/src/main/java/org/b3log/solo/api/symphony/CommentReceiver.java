@@ -113,7 +113,8 @@ public class CommentReceiver {
     /**
      * Event manager.
      */
-    private static EventManager eventManager = EventManager.getInstance();
+    @Inject
+    private static EventManager eventManager;
 
     /**
      * Statistic management service.

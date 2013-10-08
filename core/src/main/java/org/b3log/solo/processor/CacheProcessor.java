@@ -64,6 +64,12 @@ public class CacheProcessor {
     private UserMgmtService userMgmtService;
 
     /**
+     * Page caches.
+     */
+    @Inject
+    private PageCaches pageCaches;
+
+    /**
      * Clears cache with the specified context.
      * 
      * @param context the specified context
@@ -116,6 +122,6 @@ public class CacheProcessor {
      * Clears all page cache.
      */
     private void clearAllPageCache() {
-        PageCaches.removeAll();
+        pageCaches.removeAll();
     }
 }

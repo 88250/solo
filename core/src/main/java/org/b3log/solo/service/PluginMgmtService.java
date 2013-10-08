@@ -65,6 +65,18 @@ public class PluginMgmtService {
      */
     @Inject
     private LangPropsService langPropsService;
+    
+    /**
+     * Initialization service.
+     */
+    @Inject
+    private InitService initService;
+    
+    /**
+     * Plugin manager.
+     */
+    @Inject
+    private PluginManager pluginManager;
 
     /**
      * Updates datastore plugin descriptions with the specified plugins.
@@ -73,6 +85,10 @@ public class PluginMgmtService {
      * @throws Exception exception 
      */
     public void refresh(final List<AbstractPlugin> plugins) throws Exception {
+        if (!initService.isInited()) {
+            return;
+        }
+        
         final JSONObject result = pluginRepository.get(new Query());
         final JSONArray pluginArray = result.getJSONArray(Keys.RESULTS);
         final List<JSONObject> persistedPlugins = CollectionUtils.jsonArrayToList(pluginArray);
@@ -156,7 +172,6 @@ public class PluginMgmtService {
     public JSONObject setPluginStatus(final String pluginId, final String status) {
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 
-        final PluginManager pluginManager = PluginManager.getInstance();
         final List<AbstractPlugin> plugins = pluginManager.getPlugins();
 
         final JSONObject ret = new JSONObject();
@@ -210,7 +225,6 @@ public class PluginMgmtService {
 
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 
-        final PluginManager pluginManager = PluginManager.getInstance();
         final List<AbstractPlugin> plugins = pluginManager.getPlugins();
 
         final JSONObject ret = new JSONObject();

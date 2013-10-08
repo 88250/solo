@@ -76,6 +76,12 @@ public class AdminCacheService {
      */
     @Inject
     private PreferenceMgmtService preferenceMgmtService;
+    
+    /**
+     * Page caches.
+     */
+    @Inject
+    private PageCaches pageCaches;
 
     /**
      * Gets page cache status with the specified http servlet request and http
@@ -121,7 +127,7 @@ public class AdminCacheService {
 
             ret.put(Preference.PAGE_CACHE_ENABLED, pageCacheEnabled);
 
-            ret.put(Common.PAGE_CACHED_CNT, PageCaches.getKeys().size());
+            ret.put(Common.PAGE_CACHED_CNT, pageCaches.getKeys().size());
 
             ret.put(Keys.STATUS_CODE, true);
 
@@ -194,7 +200,7 @@ public class AdminCacheService {
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
-            List<String> keys = new ArrayList<String>(PageCaches.getKeys());
+            List<String> keys = new ArrayList<String>(pageCaches.getKeys());
             // Paginates
             final int pageCount = (int) Math.ceil((double) keys.size() / (double) pageSize);
             final JSONObject pagination = new JSONObject();

@@ -82,6 +82,12 @@ public class PreferenceMgmtService {
     private LangPropsService langPropsService;
 
     /**
+     * Page caches.
+     */
+    @Inject
+    private PageCaches pageCaches;
+
+    /**
      * Loads skins for the specified preference and initializes templates loading.
      * 
      * <p>
@@ -107,7 +113,7 @@ public class PreferenceMgmtService {
 
             if (null == name) {
                 LOGGER.log(Level.WARN, "The directory[{0}] does not contain any skin, ignored it", dirName);
-                
+
                 continue;
             }
 
@@ -136,7 +142,7 @@ public class PreferenceMgmtService {
             preference.put(SKIN_NAME, "ease");
 
             updatePreference(preference);
-            PageCaches.removeAll(); // Clears cache manually
+            pageCaches.removeAll(); // Clears cache manually
         }
 
         final String skinsString = skinArray.toString();
@@ -145,9 +151,9 @@ public class PreferenceMgmtService {
             LOGGER.log(Level.INFO, "The skins directory has been changed, persists " + "the change into preference");
             preference.put(SKINS, skinsString);
             updatePreference(preference);
-            PageCaches.removeAll(); // Clears cache manually
+            pageCaches.removeAll(); // Clears cache manually
         }
-        
+
         boolean prefsPageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
 
         if (!Latkes.isPageCacheEnabled() && prefsPageCacheEnabled) {
@@ -219,7 +225,7 @@ public class PreferenceMgmtService {
         try {
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
             final String skinName = Skins.getSkinName(skinDirName);
-            
+
             preference.put(Skin.SKIN_NAME, skinName);
             final Set<String> skinDirNames = Skins.getSkinDirNames();
             final JSONArray skinArray = new JSONArray();

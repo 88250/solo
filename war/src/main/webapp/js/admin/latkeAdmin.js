@@ -875,7 +875,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.3, Jun 4, 2013
+ * @version 1.0.3.3, Sep 30, 2013
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -889,7 +889,7 @@ admin.article = {
     // 自动保存草稿定时器
     autoSaveDraftTimer: "",
     // 自动保存间隔
-    AUTOSAVETIME: 1000 * 60,
+    AUTOSAVETIME: 1000 * 6,
     /**
      * @description 获取文章并把值塞入发布文章页面 
      * @param {String} id 文章 id
@@ -1313,11 +1313,7 @@ admin.article = {
             return;
         }
         if (admin.article.status.id) {
-            if (admin.article.status.isArticle) {
-                admin.article.status.isArticle = false;
-                admin.article.setStatus();
-                admin.article.unPublish(true);
-            } else {
+            if (!admin.article.status.isArticle) {
                 admin.article.update(false, true);
             }
         } else {

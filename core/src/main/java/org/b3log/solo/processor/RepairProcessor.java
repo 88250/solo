@@ -135,6 +135,12 @@ public class RepairProcessor {
     private StatisticMgmtService statisticMgmtService;
 
     /**
+     * Page caches.
+     */
+    @Inject
+    private PageCaches pageCaches;
+
+    /**
      * Removes unused properties of each article.
      * 
      * @param context the specified context
@@ -210,7 +216,7 @@ public class RepairProcessor {
         context.setRenderer(renderer);
 
         try {
-            PageCaches.removeAll(); // Clears all first
+            pageCaches.removeAll(); // Clears all first
 
             final JSONObject statistic = statisticQueryService.getStatistic();
 
@@ -301,13 +307,13 @@ public class RepairProcessor {
                     final JSONObject tagArticle = tagArticles.getJSONObject(i);
                     final String articleId = tagArticle.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
                     final JSONObject article = articleRepository.get(articleId);
-                    
+
                     if (null == article) {
                         tagArticleRepository.remove(tagArticle.optString(Keys.OBJECT_ID));
-                        
+
                         continue;
                     }
-                    
+
                     if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                         publishedTagRefCnt++;
                     }
@@ -377,7 +383,7 @@ public class RepairProcessor {
     public void removeAllDataPOST(final HTTPRequestContext context) {
         LOGGER.info("Removing all data....");
 
-        PageCaches.removeAll();
+        pageCaches.removeAll();
 
         boolean succeed = false;
 

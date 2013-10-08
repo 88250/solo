@@ -89,6 +89,12 @@ public class StatisticMgmtService {
     private ArticleRepository articleRepository;
 
     /**
+     * Page caches.
+     */
+    @Inject
+    private PageCaches pageCaches;
+
+    /**
      * Repository cache prefix, refers to GAERepository#CACHE_KEY_PREFIX.
      */
     public static final String REPOSITORY_CACHE_KEY_PREFIX = "repository";
@@ -401,7 +407,7 @@ public class StatisticMgmtService {
             statisticRepository.update(Statistic.STATISTIC, statistic);
 
             // For article view counter
-            final Set<String> keys = PageCaches.getKeys();
+            final Set<String> keys = pageCaches.getKeys();
             final List<String> keyList = new ArrayList<String>(keys);
 
             final int size = keys.size() > FLUSH_SIZE ? FLUSH_SIZE : keys.size(); // Flush FLUSH_SIZE articles at most

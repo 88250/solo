@@ -154,6 +154,12 @@ public class Filler {
     private FillTagArticles fillTagArticles;
 
     /**
+     * Event manager.
+     */
+    @Inject
+    private EventManager eventManager;
+
+    /**
      * Fills articles in index.ftl.
      *
      * @param request the specified HTTP servlet request
@@ -526,7 +532,7 @@ public class Filler {
 
                 data.setViewName("footer.ftl");
                 data.setDataModel(dataModel);
-                EventManager.getInstance().fireEventSynchronously(new Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));
+                eventManager.fireEventSynchronously(new Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));
                 if (Strings.isEmptyOrNull((String) dataModel.get(Plugin.PLUGINS))) {
                     // There is no plugin for this template, fill ${plugins} with blank.
                     dataModel.put(Plugin.PLUGINS, "");

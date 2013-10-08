@@ -137,7 +137,9 @@ public final class SoloServletListener extends AbstractServletListener {
 
         registerEventProcessor();
 
-        PluginManager.getInstance().load();
+        final PluginManager pluginManager = beanManager.getReference(PluginManager.class);
+
+        pluginManager.load();
 
         LOGGER.info("Initialized the context");
 
@@ -246,7 +248,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         LOGGER.log(Level.INFO, "Registering event processors....");
         try {
-            final EventManager eventManager = EventManager.getInstance();
+            final EventManager eventManager = beanManager.getReference(EventManager.class);
 
             // Comment
             eventManager.registerListener(new ArticleCommentReplyNotifier());

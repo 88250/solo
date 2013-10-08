@@ -95,7 +95,8 @@ public class AdminConsole {
     /**
      * Event manager.
      */
-    private EventManager eventManager = EventManager.getInstance();
+    @Inject
+    private EventManager eventManager;
 
     /**
      * Shows administrator index with the specified context.

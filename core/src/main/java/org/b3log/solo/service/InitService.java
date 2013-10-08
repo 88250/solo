@@ -33,6 +33,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
@@ -141,6 +142,12 @@ public class InitService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Plugin manager.
+     */
+    @Inject
+    private PluginManager pluginManager;
 
     /**
      * Determines Solo had been initialized.
@@ -252,6 +259,8 @@ public class InitService {
 
             LOGGER.log(Level.ERROR, "Hello World error?!", e);
         }
+
+        pluginManager.load();
     }
 
     /**

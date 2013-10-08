@@ -106,7 +106,8 @@ public class CommentMgmtService {
     /**
      * Event manager.
      */
-    private static EventManager eventManager = EventManager.getInstance();
+    @Inject
+    private static EventManager eventManager;
 
     /**
      * Default user thumbnail.
