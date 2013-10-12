@@ -17,8 +17,6 @@ package org.b3log.solo.model;
 
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.json.JSONArray;
@@ -148,11 +146,6 @@ public final class Preference {
      * Key of key of Solo.
      */
     public static final String KEY_OF_SOLO = "keyOfSolo";
-
-    /**
-     * Key of page cache enabled.
-     */
-    public static final String PAGE_CACHE_ENABLED = "pageCacheEnabled";
 
     /**
      * Key of allow visit draft via permalink.
@@ -346,11 +339,6 @@ public final class Preference {
         public static final String DEFAULT_SIGNS;
 
         /**
-         * Default page cache enabled.
-         */
-        public static final boolean DEFAULT_PAGE_CACHE_ENABLED;
-
-        /**
          * Default allow visit draft via permalink.
          */
         public static final boolean DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK = false;
@@ -422,12 +410,6 @@ public final class Preference {
                     "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"
                     + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
                 DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
-
-                if (RuntimeEnv.BAE == Latkes.getRuntimeEnv()) {
-                    DEFAULT_PAGE_CACHE_ENABLED = false; // https://github.com/b3log/b3log-solo/issues/73
-                } else {
-                    DEFAULT_PAGE_CACHE_ENABLED = true;
-                }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Creates sign error!", e);
                 throw new IllegalStateException(e);

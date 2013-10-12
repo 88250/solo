@@ -32,12 +32,6 @@
     </cron>
     
     <cron>
-        <url>/console/stat/viewcnt</url>
-        <description>Async Blog/Article counter</description>
-        <schedule>every 30 minutes</schedule>
-    </cron>
-    
-    <cron>
         <url>/console/stat/onlineVisitorRefresh</url>
         <description>Online Visitor Refresher</description>
         <schedule>every 1 minutes</schedule>

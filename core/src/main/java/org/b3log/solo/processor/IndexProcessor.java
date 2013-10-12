@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -38,13 +37,12 @@ import org.b3log.latke.servlet.URIPatternMode;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
-import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Skins;
@@ -94,7 +92,7 @@ public class IndexProcessor {
      */
     @RequestProcessing(value = { "/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
-        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
         context.setRenderer(renderer);
 
@@ -109,18 +107,10 @@ public class IndexProcessor {
 
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            request.setAttribute(PageCaches.CACHED_OID, "No id");
-            request.setAttribute(PageCaches.CACHED_TITLE,
-                langPropsService.get(PageTypes.INDEX.getLangeLabel()) + "  [" + langPropsService.get("pageNumLabel") + "=" + currentPageNum
-                + "]");
-            request.setAttribute(PageCaches.CACHED_TYPE, langPropsService.get(PageTypes.INDEX.getLangeLabel()));
-            request.setAttribute(PageCaches.CACHED_LINK, requestURI);
-
             filler.fillIndexArticles(request, dataModel, currentPageNum, preference);
-            dataModel.put(Keys.PAGE_TYPE, PageTypes.INDEX);
 
             filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
@@ -171,13 +161,6 @@ public class IndexProcessor {
             filler.fillBlogFooter(request, dataModel, preference);
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
-
-            dataModel.put(Keys.PAGE_TYPE, PageTypes.KILL_BROWSER);
-
-            request.setAttribute(PageCaches.CACHED_OID, "No id");
-            request.setAttribute(PageCaches.CACHED_TITLE, "Kill Browser Page");
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.KILL_BROWSER.getLangeLabel()));
-            request.setAttribute(PageCaches.CACHED_LINK, request.getRequestURI());
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -271,8 +254,6 @@ public class IndexProcessor {
                 template.process(getDataModel(), stringWriter);
 
                 final String pageContent = stringWriter.toString();
-
-                context.getRequest().setAttribute(PageCaches.CACHED_CONTENT, pageContent);
 
                 writer.write(pageContent);
                 writer.flush();

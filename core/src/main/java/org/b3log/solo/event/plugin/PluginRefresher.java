@@ -58,7 +58,6 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
         
         final Transaction transaction = pluginRepository.beginTransaction();
         
-        transaction.clearQueryCache(false);
         try {
             final PluginMgmtService pluginMgmtService = beanManager.getReference(PluginMgmtService.class);
             

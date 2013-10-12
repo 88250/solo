@@ -70,14 +70,6 @@
     <span class="right" id="admin" data-login="${isLoggedIn?string}">
         <#if isLoggedIn>
         <span>${userName}</span>
-        <#if isAdmin>
-        <a href="javascript:Util.clearCache('all');">
-            ${clearAllCacheLabel}
-        </a>
-        <a href="javascript:Util.clearCache();">
-            ${clearCacheLabel}
-        </a>
-        </#if>
         <#if !isVisitor>
         <a href="${contextPath}/admin-index.do#main" title="${adminLabel}">
             ${adminLabel}

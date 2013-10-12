@@ -132,7 +132,7 @@ public class PluginQueryService {
     }
 
     /**
-     * get the setting(json formatter) of the plugin(from database not cache which does not contains it) by the specified pluginoId.
+     * get the setting(json formatter) of the plugin by the specified pluginoId.
      * 
      * @param pluginId the specified pluginId
      * @return the {@link AbstractPlugin}

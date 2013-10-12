@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -75,6 +76,12 @@ public class Filler {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
+
+    /**
+     * Topbar utilities.
+     */
+    @Inject
+    private TopBars topBars;
 
     /**
      * Article repository.
@@ -552,15 +559,21 @@ public class Filler {
      * Fills header.ftl.
      *
      * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
      * @param dataModel data model
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillBlogHeader(final HttpServletRequest request, final Map<String, Object> dataModel, final JSONObject preference)
+    public void fillBlogHeader(final HttpServletRequest request, final HttpServletResponse response,
+        final Map<String, Object> dataModel, final JSONObject preference)
         throws ServiceException {
         Stopwatchs.start("Fill Header");
         try {
             LOGGER.debug("Filling header....");
+            final String topBarHTML = topBars.getTopBarHTML(request, response);
+
+            dataModel.put(Common.TOP_BAR, topBarHTML);
+            
             dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
             dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));

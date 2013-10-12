@@ -33,9 +33,11 @@ import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.servlet.DispatcherServlet;
 import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpControl;
+import org.b3log.latke.servlet.renderer.HTTP500Renderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
@@ -173,7 +175,15 @@ public final class PermalinkFilter implements Filter {
 
         request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HTTPRequestMethod.GET.name());
 
-        HTTPRequestDispatcher.dispatch(context);
+        final HttpControl httpControl = new HttpControl(DispatcherServlet.SYS_HANDLER.iterator(), context);
+
+        try {
+            httpControl.nextHandler();
+        } catch (final Exception e) {
+            context.setRenderer(new HTTP500Renderer(e));
+        }
+
+        DispatcherServlet.result(context);
     }
 
     @Override

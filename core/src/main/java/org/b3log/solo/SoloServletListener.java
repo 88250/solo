@@ -35,8 +35,6 @@ import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
-import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.event.cache.RemoveCacheListener;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
@@ -121,8 +119,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final Transaction transaction = preferenceRepository.beginTransaction();
 
-        // Cache will be cleared manaully if necessary, see loadPreference.
-        transaction.clearQueryCache(false);
         try {
             loadPreference();
 
@@ -201,12 +197,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * 
      * <p>
      *   Loads preference from repository, loads skins from skin directory then sets it into preference if the skins changed. 
-     *   Puts preference into cache and persists it to repository finally.
-     * </p>
-     * 
-     * <p>
-     *   <b>Note</b>: Do NOT use method {@link org.b3log.solo.service.PreferenceQueryService#getPreference() } to load it, caused by the 
-     *   method may retrieve it from cache.
      * </p>
      */
     private void loadPreference() {
@@ -227,10 +217,6 @@ public final class SoloServletListener extends AbstractServletListener {
             final PreferenceMgmtService preferenceMgmtService = beanManager.getReference(PreferenceMgmtService.class);
 
             preferenceMgmtService.loadSkins(preference);
-
-            final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
-
-            Templates.enableCache(pageCacheEnabled);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -263,8 +249,6 @@ public final class SoloServletListener extends AbstractServletListener {
             eventManager.registerListener(new ArticleSender());
             eventManager.registerListener(new ArticleUpdater());
             eventManager.registerListener(new CommentSender());
-            // Cache
-            eventManager.registerListener(new RemoveCacheListener());
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Register event processors error", e);
             throw new IllegalStateException(e);

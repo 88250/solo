@@ -47,8 +47,6 @@
         "updatedLabel": "${updatedLabel}",
         "contentLabel": "${contentLabel}",
         "abstractLabel": "${abstractLabel}",
-        "clearAllCacheLabel": "${clearAllCacheLabel}",
-        "clearCacheLabel": "${clearCacheLabel}",
         "adminLabel": "${adminLabel}",
         "logoutLabel": "${logoutLabel}",
         "skinDirName": "${skinDirName}",

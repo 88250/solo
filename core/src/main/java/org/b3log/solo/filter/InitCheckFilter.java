@@ -31,13 +31,12 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.servlet.DispatcherServlet;
 import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestDispatcher;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpControl;
+import org.b3log.latke.servlet.renderer.HTTP500Renderer;
 import org.b3log.solo.service.InitService;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.json.JSONObject;
 
 
 /**
@@ -83,45 +82,39 @@ public final class InitCheckFilter implements Filter {
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final InitService initService = beanManager.getReference(InitService.class);
-        
-        try {
-            if (initService.isInited()) {
-                chain.doFilter(request, response);
 
-                return;
-            }
+        if (initService.isInited()) {
+            chain.doFilter(request, response);
 
-            if ("POST".equalsIgnoreCase(httpServletRequest.getMethod()) && (Latkes.getContextPath() + "/init").equals(requestURI)) {
-                // Do initailization
-                chain.doFilter(request, response);
-
-                return;
-            }
-
-            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
-
-            LOGGER.debug("Try to get preference to confirm whether the preference exixts");
-            final JSONObject preference = preferenceQueryService.getPreference();
-
-            if (null == preference) {
-                LOGGER.log(Level.WARN, "B3log Solo has not been initialized, so redirects to /init");
-
-                final HTTPRequestContext context = new HTTPRequestContext();
-
-                context.setRequest((HttpServletRequest) request);
-                context.setResponse((HttpServletResponse) response);
-
-                request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/init");
-                request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HTTPRequestMethod.GET.name());
-
-                HTTPRequestDispatcher.dispatch(context);
-            } else {
-                // XXX: Wrong state of SoloServletListener.isInited()
-                chain.doFilter(request, response);
-            }
-        } catch (final ServiceException e) {
-            ((HttpServletResponse) response).sendError(HttpServletResponse.SC_NOT_FOUND);
+            return;
         }
+
+        if ("POST".equalsIgnoreCase(httpServletRequest.getMethod()) && (Latkes.getContextPath() + "/init").equals(requestURI)) {
+            // Do initailization
+            chain.doFilter(request, response);
+
+            return;
+        }
+
+        LOGGER.log(Level.WARN, "B3log Solo has not been initialized, so redirects to /init");
+
+        final HTTPRequestContext context = new HTTPRequestContext();
+
+        context.setRequest((HttpServletRequest) request);
+        context.setResponse((HttpServletResponse) response);
+
+        request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/init");
+        request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HTTPRequestMethod.GET.name());
+
+        final HttpControl httpControl = new HttpControl(DispatcherServlet.SYS_HANDLER.iterator(), context);
+
+        try {
+            httpControl.nextHandler();
+        } catch (final Exception e) {
+            context.setRenderer(new HTTP500Renderer(e));
+        }
+
+        DispatcherServlet.result(context);
     }
 
     @Override

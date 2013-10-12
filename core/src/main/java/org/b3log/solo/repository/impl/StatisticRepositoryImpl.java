@@ -16,14 +16,10 @@
 package org.b3log.solo.repository.impl;
 
 
-import org.b3log.latke.Latkes;
 import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.service.StatisticMgmtService;
-import org.json.JSONObject;
 
 
 /**
@@ -41,14 +37,5 @@ public class StatisticRepositoryImpl extends AbstractRepository implements Stati
      */
     public StatisticRepositoryImpl() {
         super(Statistic.STATISTIC);
-    }
-
-    @Override
-    public void update(final String id, final JSONObject jsonObject) throws RepositoryException {
-        super.update(id, jsonObject);
-
-        if (Latkes.isDataCacheEnabled()) {
-            getCache().put(StatisticMgmtService.REPOSITORY_CACHE_KEY_PREFIX + Statistic.STATISTIC, jsonObject);
-        }
     }
 }

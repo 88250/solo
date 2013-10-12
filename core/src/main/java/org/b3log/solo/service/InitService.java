@@ -561,7 +561,6 @@ public class InitService {
         ret.put(ENABLE_ARTICLE_UPDATE_HINT, Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
         ret.put(SIGNS, Default.DEFAULT_SIGNS);
         ret.put(TIME_ZONE_ID, Default.DEFAULT_TIME_ZONE);
-        ret.put(PAGE_CACHE_ENABLED, Default.DEFAULT_PAGE_CACHE_ENABLED);
         ret.put(ALLOW_VISIT_DRAFT_VIA_PERMALINK, Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
         ret.put(COMMENTABLE, Default.DEFAULT_COMMENTABLE);
         ret.put(VERSION, SoloServletListener.VERSION);
@@ -606,12 +605,6 @@ public class InitService {
         }
 
         TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
-
-        if (Default.DEFAULT_PAGE_CACHE_ENABLED) {
-            Latkes.enablePageCache();
-        } else {
-            Latkes.disablePageCache();
-        }
 
         ret.put(Keys.OBJECT_ID, PREFERENCE);
         preferenceRepository.add(ret);

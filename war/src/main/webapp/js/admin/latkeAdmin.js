@@ -889,7 +889,7 @@ admin.article = {
     // 自动保存草稿定时器
     autoSaveDraftTimer: "",
     // 自动保存间隔
-    AUTOSAVETIME: 1000 * 6,
+    AUTOSAVETIME: 1000 * 60,
     /**
      * @description 获取文章并把值塞入发布文章页面 
      * @param {String} id 文章 id

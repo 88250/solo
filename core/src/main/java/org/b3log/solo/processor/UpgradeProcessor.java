@@ -177,7 +177,6 @@ public class UpgradeProcessor {
     private void upgrade() throws Exception {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
-        articleRepository.setCacheEnabled(false);
         Transaction transaction = null;
 
         try {
@@ -213,8 +212,6 @@ public class UpgradeProcessor {
 
             LOGGER.log(Level.ERROR, "Upgrade failed!", e);
             throw new Exception("Upgrade failed from version [" + FROM_VER + "] to version [" + TO_VER + ']');
-        } finally {
-            articleRepository.setCacheEnabled(true);
         }
 
         LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);

@@ -27,8 +27,6 @@ import java.util.Locale;
 import java.util.Set;
 import javax.inject.Inject;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeEnv;
-import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -80,12 +78,6 @@ public class PreferenceMgmtService {
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * Page caches.
-     */
-    @Inject
-    private PageCaches pageCaches;
 
     /**
      * Loads skins for the specified preference and initializes templates loading.
@@ -142,7 +134,6 @@ public class PreferenceMgmtService {
             preference.put(SKIN_NAME, "ease");
 
             updatePreference(preference);
-            pageCaches.removeAll(); // Clears cache manually
         }
 
         final String skinsString = skinArray.toString();
@@ -151,20 +142,6 @@ public class PreferenceMgmtService {
             LOGGER.log(Level.INFO, "The skins directory has been changed, persists " + "the change into preference");
             preference.put(SKINS, skinsString);
             updatePreference(preference);
-            pageCaches.removeAll(); // Clears cache manually
-        }
-
-        boolean prefsPageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
-
-        if (!Latkes.isPageCacheEnabled() && prefsPageCacheEnabled) {
-            preference.put(Preference.PAGE_CACHE_ENABLED, false);
-        }
-
-        prefsPageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
-        if (prefsPageCacheEnabled) {
-            Latkes.enablePageCache();
-        } else {
-            Latkes.disablePageCache();
         }
 
         setDirectoryForTemplateLoading(preference.getString(SKIN_DIR_NAME));
@@ -244,7 +221,6 @@ public class PreferenceMgmtService {
             final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
 
             LOGGER.log(Level.DEBUG, "Skin path[{0}]", skinPath);
-            Templates.CACHE.clear();
 
             preference.put(Skin.SKINS, skinArray.toString());
 
@@ -258,25 +234,6 @@ public class PreferenceMgmtService {
             final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
 
             preference.put(ADMIN_EMAIL, adminEmail);
-
-            if (!preference.has(PAGE_CACHE_ENABLED)) {
-                preference.put(PAGE_CACHE_ENABLED, oldPreference.getBoolean(PAGE_CACHE_ENABLED));
-            } else {
-                if (RuntimeEnv.BAE == Latkes.getRuntimeEnv()) {
-                    // Ignores user's setting, uses default (https://github.com/b3log/b3log-solo/issues/73)
-                    preference.put(PAGE_CACHE_ENABLED, Default.DEFAULT_PAGE_CACHE_ENABLED);
-                }
-            }
-
-            final String maxPageCntStr = Latkes.getMaxPageCacheCnt();
-
-            if (Integer.valueOf(maxPageCntStr) <= 0) {
-                preference.put(PAGE_CACHE_ENABLED, false);
-            }
-
-            final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
-
-            Templates.enableCache(pageCacheEnabled);
 
             final String version = oldPreference.optString(VERSION);
 
@@ -294,12 +251,6 @@ public class PreferenceMgmtService {
             transaction.commit();
 
             Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
-
-            if (preference.getBoolean(PAGE_CACHE_ENABLED)) {
-                Latkes.enablePageCache();
-            } else {
-                Latkes.disablePageCache();
-            }
         } catch (final JSONException e) {
             if (transaction.isActive()) {
                 transaction.rollback();

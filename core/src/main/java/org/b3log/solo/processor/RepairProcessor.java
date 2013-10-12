@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -135,12 +134,6 @@ public class RepairProcessor {
     private StatisticMgmtService statisticMgmtService;
 
     /**
-     * Page caches.
-     */
-    @Inject
-    private PageCaches pageCaches;
-
-    /**
      * Removes unused properties of each article.
      * 
      * @param context the specified context
@@ -216,8 +209,6 @@ public class RepairProcessor {
         context.setRenderer(renderer);
 
         try {
-            pageCaches.removeAll(); // Clears all first
-
             final JSONObject statistic = statisticQueryService.getStatistic();
 
             if (statistic.has(Statistic.STATISTIC_BLOG_COMMENT_COUNT) && statistic.has(Statistic.STATISTIC_BLOG_ARTICLE_COUNT)) {
@@ -382,8 +373,6 @@ public class RepairProcessor {
     @RequestProcessing(value = "/rm-all-data.do", method = HTTPRequestMethod.POST)
     public void removeAllDataPOST(final HTTPRequestContext context) {
         LOGGER.info("Removing all data....");
-
-        pageCaches.removeAll();
 
         boolean succeed = false;
 

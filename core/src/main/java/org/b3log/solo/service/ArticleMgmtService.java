@@ -611,7 +611,6 @@ public class ArticleMgmtService {
         throws ServiceException {
         final Transaction transaction = articleRepository.beginTransaction();
 
-        transaction.clearQueryCache(false);
         try {
             final List<JSONObject> randomArticles = articleRepository.getRandomly(updateCnt);
 

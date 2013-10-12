@@ -156,28 +156,6 @@ var Util = {
         Util.setTopBar();
     },
     /**
-     * @description topbar 清除缓存按钮事件
-     */
-    clearCache: function(all) {
-        var data = '';
-        if (all === "all") {
-            data = '{"all": "all", "URI": ""}';
-        } else {
-            data = '{"all": "all", "URI": "' + window.location.pathname + '"}';
-        }
-
-        $.ajax({
-            type: "POST",
-            url: latkeConfig.servePath + "/clear-cache.do",
-            cache: false,
-            contentType: "application/json",
-            data: data,
-            success: function(result) {
-                window.location.reload();
-            }
-        });
-    },
-    /**
      * @description 替换侧边栏表情为图片
      * @param {Dom} comments 评论内容元素
      */

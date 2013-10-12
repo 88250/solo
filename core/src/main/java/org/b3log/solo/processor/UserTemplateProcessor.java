@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
@@ -33,11 +32,10 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Skins;
@@ -102,7 +100,7 @@ public class UserTemplateProcessor {
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
         LOGGER.log(Level.DEBUG, "Shows page[requestURI={0}, templateName={1}]", new Object[] {requestURI, templateName});
 
-        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
         context.setRenderer(renderer);
         renderer.setTemplateName(templateName);
@@ -127,16 +125,10 @@ public class UserTemplateProcessor {
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            dataModel.put(Keys.PAGE_TYPE, PageTypes.USER_TEMPLATE);
-            filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillUserTemplate(template, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
-
-            request.setAttribute(PageCaches.CACHED_OID, "No id");
-            request.setAttribute(PageCaches.CACHED_TITLE, requestURI);
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.USER_TEMPLATE.getLangeLabel()));
-            request.setAttribute(PageCaches.CACHED_LINK, requestURI);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

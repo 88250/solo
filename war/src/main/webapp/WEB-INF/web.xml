@@ -66,14 +66,6 @@
         <url-pattern>/fix/*</url-pattern>
     </filter-mapping>
     <filter>
-        <filter-name>PageCacheFilter</filter-name>
-        <filter-class>org.b3log.solo.filter.PageCacheFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>PageCacheFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter>
         <filter-name>PermalinkFilter</filter-name>
         <filter-class>org.b3log.solo.filter.PermalinkFilter</filter-class>
     </filter>

@@ -93,9 +93,6 @@ public class PluginMgmtService {
         final JSONArray pluginArray = result.getJSONArray(Keys.RESULTS);
         final List<JSONObject> persistedPlugins = CollectionUtils.jsonArrayToList(pluginArray);
 
-        // Disables plugin repository cache to avoid remove all cache
-        pluginRepository.setCacheEnabled(false);
-
         try {
             // Reads plugin status from datastore and clear plugin datastore
             for (final JSONObject oldPluginDesc : persistedPlugins) {
@@ -131,8 +128,6 @@ public class PluginMgmtService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Refresh plugins failed", e);
         }
-
-        pluginRepository.setCacheEnabled(true);
     }
 
     /**

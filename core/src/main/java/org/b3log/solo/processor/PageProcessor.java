@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
@@ -33,12 +32,11 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
-import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -93,7 +91,7 @@ public class PageProcessor {
      */
     @RequestProcessing(value = "/page", method = HTTPRequestMethod.GET)
     public void showPage(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
         context.setRenderer(renderer);
 
@@ -115,8 +113,6 @@ public class PageProcessor {
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.PAGE.getLangeLabel()));
-
             // See PermalinkFiler#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
 
@@ -126,10 +122,6 @@ public class PageProcessor {
             }
 
             final String pageId = page.getString(Keys.OBJECT_ID);
-
-            request.setAttribute(PageCaches.CACHED_OID, pageId);
-            request.setAttribute(PageCaches.CACHED_TITLE, page.getString(Page.PAGE_TITLE));
-            request.setAttribute(PageCaches.CACHED_LINK, page.getString(Page.PAGE_PERMALINK));
 
             page.put(Common.COMMENTABLE, page.getBoolean(Page.PAGE_COMMENTABLE));
             page.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
@@ -149,9 +141,8 @@ public class PageProcessor {
                 Stopwatchs.end();
             }
 
-            dataModel.put(Keys.PAGE_TYPE, PageTypes.PAGE);
             filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
