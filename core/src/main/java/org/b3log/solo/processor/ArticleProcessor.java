@@ -66,7 +66,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.11, Jul 11, 2013
+ * @version 1.1.2.12, Oct 14, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -1244,7 +1244,7 @@ public class ArticleProcessor {
      */
     private void prepareShowArticle(final JSONObject preference, final Map<String, Object> dataModel, final JSONObject article)
         throws Exception {
-        article.put(Common.COMMENTABLE, article.getBoolean(Article.ARTICLE_COMMENTABLE));
+        article.put(Common.COMMENTABLE, preference.getBoolean(Preference.COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));
         article.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);

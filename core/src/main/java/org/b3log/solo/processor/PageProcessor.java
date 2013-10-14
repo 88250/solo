@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Page processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Apr 29, 2012
+ * @version 1.1.0.3, Oct 14, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -123,7 +123,7 @@ public class PageProcessor {
 
             final String pageId = page.getString(Keys.OBJECT_ID);
 
-            page.put(Common.COMMENTABLE, page.getBoolean(Page.PAGE_COMMENTABLE));
+            page.put(Common.COMMENTABLE, preference.getBoolean(Preference.COMMENTABLE) && page.getBoolean(Page.PAGE_COMMENTABLE));
             page.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
             dataModel.put(Page.PAGE, page);
             final List<JSONObject> comments = commentQueryService.getComments(pageId);
