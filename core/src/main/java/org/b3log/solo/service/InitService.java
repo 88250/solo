@@ -703,4 +703,13 @@ public class InitService {
     public void setLangPropsService(final LangPropsService langPropsService) {
         this.langPropsService = langPropsService;
     }
+    
+    /**
+     * Sets the plugin manager with the specified plugin manager.
+     * 
+     * @param pluginManager the specified plugin manager
+     */
+    public void setPluginManager(final PluginManager pluginManager) {
+        this.pluginManager = pluginManager;
+    }
 }

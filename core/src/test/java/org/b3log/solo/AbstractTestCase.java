@@ -17,10 +17,12 @@ package org.b3log.solo;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import java.util.Collection;
 import java.util.Locale;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.LangPropsServiceImpl;
+import org.b3log.latke.ioc.LatkeBeanManager;
+import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.config.Discoverer;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
@@ -55,7 +57,7 @@ import org.testng.annotations.BeforeClass;
  * Abstract test case.
  * 
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Jul 8, 2013
+ * @version 1.0.0.8, Oct 14, 2013
  * @see #beforeClass() 
  * @see #afterClass() 
  */
@@ -68,184 +70,9 @@ public abstract class AbstractTestCase {
             new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
     /**
-     * User repository.
+     * Bean manager.
      */
-    private UserRepository userRepository;
-
-    /**
-     * Link repository.
-     */
-    private LinkRepository linkRepository;
-
-    /**
-     * Article repository.
-     */
-    private ArticleRepository articleRepository;
-
-    /**
-     * Tag repository.
-     */
-    private TagRepository tagRepository;
-
-    /**
-     * Tag-Article repository.
-     */
-    private TagArticleRepository tagArticleRepository;
-
-    /**
-     * Page repository.
-     */
-    private PageRepository pageRepository;
-
-    /**
-     * Comment repository.
-     */
-    private CommentRepository commentRepository;
-
-    /**
-     * Archive date repository.
-     */
-    private ArchiveDateRepository archiveDateRepository;
-
-    /**
-     * Archive date article repository.
-     */
-    private ArchiveDateArticleRepository archiveDateArticleRepository;
-
-    /**
-     * Plugin repository.
-     */
-    private PluginRepository pluginRepository;
-
-    /**
-     * Preference repository.
-     */
-    private PreferenceRepository preferenceRepository;
-
-    /**
-     * Statistic repository.
-     */
-    private StatisticRepository statisticRepository;
-
-    /**
-     * Option repository.
-     */
-    private OptionRepository optionRepository;
-
-    /**
-     * Language service.
-     */
-    private LangPropsService langPropsService;
-    
-    /**
-     * Plugin management service.
-     */
-    private PluginMgmtService pluginMgmtService;
-    
-    /**
-     * Initialization service.
-     */
-    private InitService initService;
-
-    /**
-     * User management service.
-     */
-    private UserMgmtService userMgmtService;
-
-    /**
-     * User query service.
-     */
-    private UserQueryService userQueryService;
-
-    /**
-     * Article management service.
-     */
-    private ArticleMgmtService articleMgmtService;
-
-    /**
-     * Article query service.
-     */
-    private ArticleQueryService articleQueryService;
-
-    /**
-     * Page management service.
-     */
-    private PageMgmtService pageMgmtService;
-
-    /**
-     * Page query service.
-     */
-    private PageQueryService pageQueryService;
-
-    /**
-     * Link management service.
-     */
-    private LinkMgmtService linkMgmtService;
-
-    /**
-     * Link query service.
-     */
-    private LinkQueryService linkQueryService;
-
-    /**
-     * Preference management service.
-     */
-    private PreferenceMgmtService preferenceMgmtService;
-
-    /**
-     * Preference query service.
-     */
-    private PreferenceQueryService preferenceQueryService;
-
-    /**
-     * Tag query service.
-     */
-    private TagQueryService tagQueryService;
-
-    /**
-     * Tag management service.
-     */
-    private TagMgmtService tagMgmtService;
-
-    /**
-     * Comment query service.
-     */
-    private CommentQueryService commentQueryService;
-
-    /**
-     * Comment management service.
-     */
-    private CommentMgmtService commentMgmtService;
-
-    /**
-     * Archive date query service.
-     */
-    private ArchiveDateQueryService archiveDateQueryService;
-
-    /**
-     * Option management service.
-     */
-    private OptionMgmtService optionMgmtService;
-
-    /**
-     * Option query service.
-     */
-    private OptionQueryService optionQueryService;
-
-    /**
-     * Permalink query service.
-     */
-    private PermalinkQueryService permalinkQueryService;
-
-    /**
-     * Statistic management service.
-     */
-    private StatisticMgmtService statisticMgmtService;
-
-    /**
-     * Statistic query service.
-     */
-    private StatisticQueryService statisticQueryService;
+    private LatkeBeanManager beanManager;
 
     /**
      * Before class.
@@ -255,149 +82,19 @@ public abstract class AbstractTestCase {
      *   <li>Initializes Latke runtime</li>
      *   <li>Instantiates repositories</li>
      * </ol>
+     * @throws Exception exception
      */
     @BeforeClass
-    public void beforeClass() {
+    public void beforeClass() throws Exception {
         localServiceTestHelper.setUp();
 
         Latkes.initRuntimeEnv();
         Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
-        
-        // Repositories
-        userRepository = new UserRepositoryImpl();
-        linkRepository = new LinkRepositoryImpl();
-        articleRepository = new ArticleRepositoryImpl();
-        tagArticleRepository = new TagArticleRepositoryImpl();
-        tagRepository = new TagRepositoryImpl();
-        ((TagRepositoryImpl)tagRepository).setTagArticleRepository(tagArticleRepository);
-        pageRepository = new PageRepositoryImpl();
-        commentRepository = new CommentRepositoryImpl();
-        ((CommentRepositoryImpl)commentRepository).setArticleRepository(articleRepository);
-        archiveDateRepository = new ArchiveDateRepositoryImpl();
-        archiveDateArticleRepository = new ArchiveDateArticleRepositoryImpl();
-        pluginRepository = new PluginRepositoryImpl();
-        preferenceRepository = new PreferenceRepositoryImpl();
-        statisticRepository = new StatisticRepositoryImpl();
-        optionRepository = new OptionRepositoryImpl();
 
-        // Services
-        langPropsService = new LangPropsServiceImpl();
-        
-        pluginMgmtService = new PluginMgmtService();
-        pluginMgmtService.setPluginRepository(pluginRepository);
-        pluginMgmtService.setLangPropsService(langPropsService);
-        
-        preferenceQueryService = new PreferenceQueryService();
-        preferenceQueryService.setPreferenceRepository(preferenceRepository);
+        final Collection<Class<?>> classes = Discoverer.discover("org.b3log.solo");
+        Lifecycle.startApplication(classes);
 
-        initService = new InitService();
-        initService.setArchiveDateArticleRepository(archiveDateArticleRepository);
-        initService.setArchiveDateRepository(archiveDateRepository);
-        initService.setUserRepository(userRepository);
-        initService.setArticleRepository(articleRepository);
-        initService.setPreferenceRepository(preferenceRepository);
-        initService.setStatisticRepository(statisticRepository);
-        initService.setTagArticleRepository(tagArticleRepository);
-        initService.setTagRepository(tagRepository);
-        initService.setCommentRepository(commentRepository);
-        initService.setLangPropsService(langPropsService);
-
-        userMgmtService = new UserMgmtService();
-        userMgmtService.setUserRepository(userRepository);
-        userMgmtService.setLangPropsService(langPropsService);
-
-        userQueryService = new UserQueryService();
-        userQueryService.setUserMgmtService(userMgmtService);
-        userQueryService.setUserRepository(userRepository);
-
-        permalinkQueryService = new PermalinkQueryService();
-        permalinkQueryService.setArticleRepository(articleRepository);
-        permalinkQueryService.setPageRepository(pageRepository);
-
-        statisticMgmtService = new StatisticMgmtService();
-        statisticMgmtService.setStatisticRepository(statisticRepository);
-        statisticMgmtService.setLangPropsService(langPropsService);
-
-        statisticQueryService = new StatisticQueryService();
-        statisticQueryService.setStatisticRepository(statisticRepository);
-
-        tagQueryService = new TagQueryService();
-        tagQueryService.setTagRepository(tagRepository);
-
-        tagMgmtService = new TagMgmtService();
-        tagMgmtService.setTagQueryService(tagQueryService);
-        tagMgmtService.setTagRepository(tagRepository);
-
-        articleQueryService = new ArticleQueryService();
-        articleQueryService.setArchiveDateArticleRepository(archiveDateArticleRepository);
-        articleQueryService.setArticleRepository(articleRepository);
-        articleQueryService.setUserRepository(userRepository);
-        articleQueryService.setPreferenceQueryService(preferenceQueryService);
-        articleQueryService.setStatisticQueryService(statisticQueryService);
-        articleQueryService.setTagArticleRepository(tagArticleRepository);
-        articleQueryService.setTagRepository(tagRepository);
-
-        articleMgmtService = new ArticleMgmtService();
-        articleMgmtService.setArchiveDateArticleRepository(archiveDateArticleRepository);
-        articleMgmtService.setArchiveDateRepository(archiveDateRepository);
-        articleMgmtService.setArticleRepository(articleRepository);
-        articleMgmtService.setPermalinkQueryService(permalinkQueryService);
-        articleMgmtService.setArticleQueryService(articleQueryService);
-        articleMgmtService.setUserRepository(userRepository);
-        articleMgmtService.setArticleQueryService(articleQueryService);
-        articleMgmtService.setPreferenceQueryService(preferenceQueryService);
-        articleMgmtService.setStatisticMgmtService(statisticMgmtService);
-        articleMgmtService.setStatisticQueryService(statisticQueryService);
-        articleMgmtService.setTagArticleRepository(tagArticleRepository);
-        articleMgmtService.setTagRepository(tagRepository);
-        articleMgmtService.setTagMgmtService(tagMgmtService);
-        articleMgmtService.setCommentRepository(commentRepository);
-        articleMgmtService.setLangPropsService(langPropsService);
-
-        pageMgmtService = new PageMgmtService();
-        pageMgmtService.setPermalinkQueryService(permalinkQueryService);
-        pageMgmtService.setPageRepository(pageRepository);
-        pageMgmtService.setPreferenceQueryService(preferenceQueryService);
-        pageMgmtService.setStatisticQueryService(statisticQueryService);
-        pageMgmtService.setStatisticMgmtService(statisticMgmtService);
-        pageMgmtService.setCommentRepository(commentRepository);
-        pageMgmtService.setLangPropsService(langPropsService);
-
-        pageQueryService = new PageQueryService();
-        pageQueryService.setPageRepository(pageRepository);
-
-        linkMgmtService = new LinkMgmtService();
-        linkMgmtService.setLinkRepository(linkRepository);
-
-        linkQueryService = new LinkQueryService();
-        linkQueryService.setLinkRepository(linkRepository);
-
-        preferenceMgmtService = new PreferenceMgmtService();
-        preferenceMgmtService.setPreferenceRepository(preferenceRepository);
-        preferenceMgmtService.setLangPropsService(langPropsService);
-
-        commentQueryService = new CommentQueryService();
-        commentQueryService.setArticleRepository(articleRepository);
-        commentQueryService.setPageRepository(pageRepository);
-        commentQueryService.setCommentRepository(commentRepository);
-
-        commentMgmtService = new CommentMgmtService();
-        commentMgmtService.setArticleRepository(articleRepository);
-        commentMgmtService.setArticleMgmtService(articleMgmtService);
-        commentMgmtService.setPageRepository(pageRepository);
-        commentMgmtService.setPreferenceQueryService(preferenceQueryService);
-        commentMgmtService.setStatisticMgmtService(statisticMgmtService);
-        commentMgmtService.setCommentRepository(commentRepository);
-        commentMgmtService.setLangPropsService(langPropsService);
-
-        archiveDateQueryService = new ArchiveDateQueryService();
-        archiveDateQueryService.setArchiveDateRepository(archiveDateRepository);
-
-        optionMgmtService = new OptionMgmtService();
-        optionMgmtService.setOptionRepository(optionRepository);
-
-        optionQueryService = new OptionQueryService();
-        optionQueryService.setOptionRepository(optionRepository);
+        beanManager = Lifecycle.getBeanManager();
     }
 
     /**
@@ -421,7 +118,7 @@ public abstract class AbstractTestCase {
      * @return user repository
      */
     public UserRepository getUserRepository() {
-        return userRepository;
+        return beanManager.getReference(UserRepositoryImpl.class);
     }
 
     /**
@@ -430,7 +127,7 @@ public abstract class AbstractTestCase {
      * @return link repository
      */
     public LinkRepository getLinkRepository() {
-        return linkRepository;
+        return beanManager.getReference(LinkRepositoryImpl.class);
     }
 
     /**
@@ -439,7 +136,7 @@ public abstract class AbstractTestCase {
      * @return article repository
      */
     public ArticleRepository getArticleRepository() {
-        return articleRepository;
+        return beanManager.getReference(ArticleRepositoryImpl.class);
     }
 
     /**
@@ -448,7 +145,7 @@ public abstract class AbstractTestCase {
      * @return tag repository
      */
     public TagRepository getTagRepository() {
-        return tagRepository;
+        return beanManager.getReference(TagRepositoryImpl.class);
     }
 
     /**
@@ -457,7 +154,7 @@ public abstract class AbstractTestCase {
      * @return tag-article repository
      */
     public TagArticleRepository getTagArticleRepository() {
-        return tagArticleRepository;
+        return beanManager.getReference(TagArticleRepositoryImpl.class);
     }
 
     /**
@@ -466,7 +163,7 @@ public abstract class AbstractTestCase {
      * @return page repository
      */
     public PageRepository getPageRepository() {
-        return pageRepository;
+        return beanManager.getReference(PageRepositoryImpl.class);
     }
 
     /**
@@ -475,7 +172,7 @@ public abstract class AbstractTestCase {
      * @return comment repository
      */
     public CommentRepository getCommentRepository() {
-        return commentRepository;
+        return beanManager.getReference(CommentRepositoryImpl.class);
     }
 
     /**
@@ -484,7 +181,7 @@ public abstract class AbstractTestCase {
      * @return archive date repository
      */
     public ArchiveDateRepository getArchiveDateRepository() {
-        return archiveDateRepository;
+        return beanManager.getReference(ArchiveDateRepositoryImpl.class);
     }
 
     /**
@@ -493,7 +190,7 @@ public abstract class AbstractTestCase {
      * @return archive date article repository
      */
     public ArchiveDateArticleRepository getArchiveDateArticleRepository() {
-        return archiveDateArticleRepository;
+        return beanManager.getReference(ArchiveDateArticleRepositoryImpl.class);
     }
 
     /**
@@ -502,7 +199,7 @@ public abstract class AbstractTestCase {
      * @return plugin repository
      */
     public PluginRepository getPluginRepository() {
-        return pluginRepository;
+        return beanManager.getReference(PluginRepositoryImpl.class);
     }
 
     /**
@@ -511,7 +208,7 @@ public abstract class AbstractTestCase {
      * @return preference repository
      */
     public PreferenceRepository getPreferenceRepository() {
-        return preferenceRepository;
+        return beanManager.getReference(PreferenceRepositoryImpl.class);
     }
 
     /**
@@ -520,7 +217,7 @@ public abstract class AbstractTestCase {
      * @return statistic repository
      */
     public StatisticRepository getStatisticRepository() {
-        return statisticRepository;
+        return beanManager.getReference(StatisticRepositoryImpl.class);
     }
 
     /**
@@ -529,7 +226,7 @@ public abstract class AbstractTestCase {
      * @return option repository
      */
     public OptionRepository getOptionRepository() {
-        return optionRepository;
+        return beanManager.getReference(OptionRepositoryImpl.class);
     }
 
     /**
@@ -538,7 +235,7 @@ public abstract class AbstractTestCase {
      * @return initialization service
      */
     public InitService getInitService() {
-        return initService;
+        return beanManager.getReference(InitService.class);
     }
 
     /**
@@ -547,7 +244,7 @@ public abstract class AbstractTestCase {
      * @return user management service
      */
     public UserMgmtService getUserMgmtService() {
-        return userMgmtService;
+        return beanManager.getReference(UserMgmtService.class);
     }
 
     /**
@@ -556,7 +253,7 @@ public abstract class AbstractTestCase {
      * @return user query service
      */
     public UserQueryService getUserQueryService() {
-        return userQueryService;
+        return beanManager.getReference(UserQueryService.class);
     }
 
     /**
@@ -565,7 +262,7 @@ public abstract class AbstractTestCase {
      * @return article management service
      */
     public ArticleMgmtService getArticleMgmtService() {
-        return articleMgmtService;
+        return beanManager.getReference(ArticleMgmtService.class);
     }
 
     /**
@@ -574,7 +271,7 @@ public abstract class AbstractTestCase {
      * @return article query service
      */
     public ArticleQueryService getArticleQueryService() {
-        return articleQueryService;
+        return beanManager.getReference(ArticleQueryService.class);
     }
 
     /**
@@ -583,7 +280,7 @@ public abstract class AbstractTestCase {
      * @return page management service
      */
     public PageMgmtService getPageMgmtService() {
-        return pageMgmtService;
+        return beanManager.getReference(PageMgmtService.class);
     }
 
     /**
@@ -592,7 +289,7 @@ public abstract class AbstractTestCase {
      * @return page query service
      */
     public PageQueryService getPageQueryService() {
-        return pageQueryService;
+        return beanManager.getReference(PageQueryService.class);
     }
 
     /**
@@ -601,7 +298,7 @@ public abstract class AbstractTestCase {
      * @return link management service
      */
     public LinkMgmtService getLinkMgmtService() {
-        return linkMgmtService;
+        return beanManager.getReference(LinkMgmtService.class);
     }
 
     /**
@@ -610,7 +307,7 @@ public abstract class AbstractTestCase {
      * @return link query service 
      */
     public LinkQueryService getLinkQueryService() {
-        return linkQueryService;
+        return beanManager.getReference(LinkQueryService.class);
     }
 
     /**
@@ -619,7 +316,7 @@ public abstract class AbstractTestCase {
      * @return preference management service
      */
     public PreferenceMgmtService getPreferenceMgmtService() {
-        return preferenceMgmtService;
+        return beanManager.getReference(PreferenceMgmtService.class);
     }
 
     /**
@@ -628,7 +325,7 @@ public abstract class AbstractTestCase {
      * @return preference query service
      */
     public PreferenceQueryService getPreferenceQueryService() {
-        return preferenceQueryService;
+        return beanManager.getReference(PreferenceQueryService.class);
     }
 
     /**
@@ -637,7 +334,7 @@ public abstract class AbstractTestCase {
      * @return tag query service
      */
     public TagQueryService getTagQueryService() {
-        return tagQueryService;
+        return beanManager.getReference(TagQueryService.class);
     }
 
     /**
@@ -646,7 +343,7 @@ public abstract class AbstractTestCase {
      * @return tag management service
      */
     public TagMgmtService getTagMgmtService() {
-        return tagMgmtService;
+        return beanManager.getReference(TagMgmtService.class);
     }
 
     /**
@@ -655,7 +352,7 @@ public abstract class AbstractTestCase {
      * @return comment query service
      */
     public CommentQueryService getCommentQueryService() {
-        return commentQueryService;
+        return beanManager.getReference(CommentQueryService.class);
     }
 
     /**
@@ -664,7 +361,7 @@ public abstract class AbstractTestCase {
      * @return comment management service
      */
     public CommentMgmtService getCommentMgmtService() {
-        return commentMgmtService;
+        return beanManager.getReference(CommentMgmtService.class);
     }
 
     /**
@@ -673,7 +370,7 @@ public abstract class AbstractTestCase {
      * @return archive date query service
      */
     public ArchiveDateQueryService getArchiveDateQueryService() {
-        return archiveDateQueryService;
+        return beanManager.getReference(ArchiveDateQueryService.class);
     }
 
     /**
@@ -682,7 +379,7 @@ public abstract class AbstractTestCase {
      * @return option management service
      */
     public OptionMgmtService getOptionMgmtService() {
-        return optionMgmtService;
+        return beanManager.getReference(OptionMgmtService.class);
     }
 
     /**
@@ -691,6 +388,6 @@ public abstract class AbstractTestCase {
      * @return option query service
      */
     public OptionQueryService getOptionQueryService() {
-        return optionQueryService;
+        return beanManager.getReference(OptionQueryService.class);
     }
 }
