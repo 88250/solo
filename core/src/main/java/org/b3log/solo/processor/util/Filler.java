@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.6.7, Jul 11, 2013
+ * @version 1.0.6.8, Oct 17, 2013
  * @since 0.3.1
  */
 @Service
@@ -583,6 +583,7 @@ public class Filler {
             dataModel.put(Preference.META_KEYWORDS, preference.getString(Preference.META_KEYWORDS));
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+            dataModel.put(Common.IS_LOGGED_IN, null != userQueryService.getCurrentUser(request));
 
             final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);
 
