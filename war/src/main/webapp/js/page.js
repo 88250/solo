@@ -24,7 +24,6 @@ var Page = function(tips) {
     this.currentCommentId = "";
     this.tips = tips;
 };
-
 $.extend(Page.prototype, {
     /*
      * @description 评论时点击表情，在评论内容中插入相关代码
@@ -43,7 +42,6 @@ $.extend(Page.prototype, {
                     textValue = $comment[0].value;
             textValue = textValue.substring(0, endPosition) + key + textValue.substring(endPosition, textValue.length);
             $("#comment" + name).val(textValue);
-
             if ($.browser.msie) {
                 endPosition -= textValue.split('\n').length - 1;
                 var oR = $comment[0].createTextRange();
@@ -83,6 +81,18 @@ $.extend(Page.prototype, {
      * @param {String} state 用于区别回复评论还是对文章的评论
      */
     validateComment: function(state) {
+        if ($("#admin").data("login")) {
+            var commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
+            if (2 > commenterContent.length || commenterContent.length > 500) {
+                $("#commentErrorTip" + state).html(this.tips.commentContentCannotEmptyLabel);
+                $("#comment" + state).focus();
+            } else {
+                return true;
+            }
+            $("#commentErrorTip" + state).show();
+            return false;
+        }
+
         var commentName = $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
                 commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
         if (2 > commentName.length || commentName.length > 20) {
@@ -97,7 +107,7 @@ $.extend(Page.prototype, {
         } else if (2 > commenterContent.length || commenterContent.length > 500) {
             $("#commentErrorTip" + state).html(this.tips.commentContentCannotEmptyLabel);
             $("#comment" + state).focus();
-        } else if (!$("#admin").data("login") && $("#commentValidate" + state).val().replace(/\s/g, "") === "") {
+        } else if ($("#commentValidate" + state).val().replace(/\s/g, "") === "") {
             $("#commentErrorTip" + state).html(this.tips.captchaCannotEmptyLabel);
             $("#commentValidate" + state).focus();
         } else {
@@ -255,7 +265,7 @@ $.extend(Page.prototype, {
             }
         }
 
-        // code high lighter
+// code high lighter
         SyntaxHighlighter.autoloader.apply(null, languages);
         SyntaxHighlighter.config.stripBrs = true;
         SyntaxHighlighter.all();
@@ -275,19 +285,18 @@ $.extend(Page.prototype, {
                     + cssName + ".css' type='text/css' charset='utf-8' />"));
         }
 
-        // load js
+// load js
         $.ajax({
             url: latkeConfig.staticServePath + "/js/lib/SyntaxHighlighter/scripts/shCore.js",
             dataType: "script",
             cache: true,
             success: function() {
-                // get brush settings
+// get brush settings
                 var languages = [],
                         isScrip = false;
                 $(".article-body pre").each(function() {
                     var name = this.className.split(";")[0];
                     var language = name.substr(7, name.length - 1);
-
                     if (this.className.indexOf("html-script: true") > -1 &&
                             (language !== "xml" && language !== "xhtml" &&
                                     language !== "xslt" && language != "html")) {
@@ -296,7 +305,6 @@ $.extend(Page.prototype, {
 
                     languages.push(language);
                 });
-
                 // when html-script is true, need shBrushXml.js
                 if (isScrip) {
                     $.ajax({
@@ -321,7 +329,6 @@ $.extend(Page.prototype, {
     parseLanguage: function(obj) {
         var isPrettify = false,
                 isSH = false;
-
         $(".article-body pre").each(function() {
             if (this.className.indexOf("brush") > -1) {
                 isSH = true;
@@ -331,21 +338,19 @@ $.extend(Page.prototype, {
                 isPrettify = true;
             }
         });
-
-
         if (isSH) {
             this._loadSyntaxHighlighter(obj ? (obj.SHTheme ? obj.SHTheme : undefined) : undefined);
         }
 
         if (isPrettify) {
-            // load css
+// load css
             if (document.createStyleSheet) {
                 document.createStyleSheet(latkeConfig.staticServePath + "/js/lib/google-code-prettify/prettify.css");
             } else {
                 $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/google-code-prettify/prettify.css'>"));
             }
 
-            // load js
+// load js
             $.ajax({
                 url: latkeConfig.staticServePath + "/js/lib/google-code-prettify/prettify.js",
                 dataType: "script",
@@ -363,17 +368,10 @@ $.extend(Page.prototype, {
      */
     load: function(obj) {
         var that = this;
-        // if login, remove captcha
-        if ($("#admin").data("login")) {
-            $("#commentValidate").parent().parent().hide();
-        }
-
         // emotions
         that.insertEmotions();
-
         // language
         that.parseLanguage(obj ? (obj.language ? obj.language : undefined) : undefined);
-
         // submit comment
         $("#commentValidate").keypress(function(event) {
             if (event.keyCode === 13) {
@@ -386,25 +384,16 @@ $.extend(Page.prototype, {
                 that.submitComment();
             }
         });
-
         // captcha
         $("#captcha").click(function() {
             $(this).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
         });
-
         // cookie
-        var $top = $("#top #admin");
-        if ($top.length === 1) {
-            if ($top.find("a").length > 3) {
-                Cookie.createCookie("commentName", $top.find("span").text(), 365);
-                Cookie.createCookie("commentURL", window.location.host, 365);
-            }
+        if (!$("#admin").data("login")) {
+            $("#commentEmail").val(Cookie.readCookie("commentEmail"));
+            $("#commentURL").val(Cookie.readCookie("commentURL"));
+            $("#commentName").val(Cookie.readCookie("commentName"));
         }
-
-        $("#commentEmail").val(Cookie.readCookie("commentEmail"));
-        $("#commentURL").val(Cookie.readCookie("commentURL"));
-        $("#commentName").val(Cookie.readCookie("commentName"));
-
         // if no JSON, add it.
         try {
             JSON
@@ -521,7 +510,7 @@ $.extend(Page.prototype, {
                 }
             });
         } catch (e) {
-            // 忽略相关文章加载异常：load script error
+// 忽略相关文章加载异常：load script error
         }
     },
     /*
@@ -543,18 +532,26 @@ $.extend(Page.prototype, {
         if (this.validateComment(state)) {
             $("#submitCommentButton" + state).attr("disabled", "disabled");
             $("#commentErrorTip" + state).show().html(this.tips.loadingLabel);
-
             var requestJSONObject = {
                 "oId": tips.oId,
-                "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
-                "commentEmail": $("#commentEmail" + state).val(),
-                "commentURL": Util.proessURL($("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, "")),
-                "commentName": $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
-                "captcha": $("#commentValidate" + state).val()
+                "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "")
             };
-
             if (state === "Reply") {
                 requestJSONObject.commentOriginalCommentId = commentId;
+            }
+
+            if (!$("#admin").data("login")) {
+                requestJSONObject = {
+                    "oId": tips.oId,
+                    "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
+                    "commentEmail": $("#commentEmail" + state).val(),
+                    "commentURL": Util.proessURL($("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, "")),
+                    "commentName": $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
+                    "captcha": $("#commentValidate" + state).val()
+                };
+                Cookie.createCookie("commentName", requestJSONObject.commentName, 365);
+                Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
+                Cookie.createCookie("commentURL", $("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
             }
             $.ajax({
                 type: "POST",
@@ -565,32 +562,32 @@ $.extend(Page.prototype, {
                 success: function(result) {
                     if (!result.sc) {
                         $("#commentErrorTip" + state).html(result.msg);
-                        $("#commentValidate" + state).val("").focus();
-
+                        $("#comment" + state).val("").focus();
                         $("#submitCommentButton" + state).removeAttr("disabled");
-                        $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
-
+                        if (!$("#admin").data("login")) {
+                            $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+                        }
                         return;
                     }
 
                     result.replyNameHTML = "";
-                    if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-                        result.replyNameHTML = '<a>' + $("#commentName" + state).val() + '</a>';
+                    if (!$("#admin").data("login")) {
+                        $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+                        if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
+                            result.replyNameHTML = '<a>' + $("#commentName" + state).val() + '</a>';
+                        } else {
+                            result.replyNameHTML = '<a href="' + Util.proessURL($("#commentURL" + state).val()) +
+                                    '" target="_blank">' + $("#commentName" + state).val() + '</a>';
+                        }
                     } else {
-                        result.replyNameHTML = '<a href="' + Util.proessURL($("#commentURL" + state).val()) +
-                                '" target="_blank">' + $("#commentName" + state).val() + '</a>';
+                        result.replyNameHTML = '<a href="' + window.location.host +
+                                '" target="_blank">' + $("#adminName").val() + '</a>';
                     }
 
                     that.addCommentAjax(addComment(result, state), state);
-
                     $("#submitCommentButton" + state).removeAttr("disabled");
-                    $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
                 }
             });
-
-            Cookie.createCookie("commentName", requestJSONObject.commentName, 365);
-            Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
-            Cookie.createCookie("commentURL", $("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
         }
     },
     /*
@@ -623,29 +620,22 @@ $.extend(Page.prototype, {
         $("#replyForm input, #replyForm textarea").each(function() {
             this.id = this.id + "Reply";
         });
-
         $("#commentNameReply").val(Cookie.readCookie("commentName"));
-
         $("#commentEmailReply").val(Cookie.readCookie("commentEmail"));
-
         var $label = $("#replyForm #commentURLLabel");
         if ($label.length === 1) {
             $label.attr("id", "commentURLLabelReply");
         }
 
         $("#commentURLReply").val(Cookie.readCookie("commentURL"));
-
         $("#replyForm #emotions").attr("id", "emotionsReply");
-
         this.insertEmotions("Reply");
-
         $("#commentReply").unbind().keypress(function(event) {
             if (event.keyCode === 13 && event.ctrlKey) {
                 that.submitComment(id, 'Reply');
                 event.preventDefault();
             }
         });
-
         $("#commentValidateReply").unbind().keypress(function(event) {
             if (event.keyCode === 13) {
                 that.submitComment(id, 'Reply');
@@ -656,14 +646,11 @@ $.extend(Page.prototype, {
                 attr("src", latkeConfig.servePath + "/captcha.do?" + new Date().getTime()).click(function() {
             $(this).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
         });
-
         $("#replyForm #commentErrorTip").attr("id", "commentErrorTipReply").html("").hide();
-
         $("#replyForm #submitCommentButton").attr("id", "submitCommentButtonReply");
         $("#replyForm #submitCommentButtonReply").unbind("click").removeAttr("onclick").click(function() {
             that.submitComment(id, 'Reply');
         });
-
         if ($("#commentNameReply").val() === "") {
             $("#commentNameReply").focus();
         } else if ($("#commentEmailReply").val() === "") {

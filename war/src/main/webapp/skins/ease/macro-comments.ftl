@@ -34,6 +34,7 @@
 <div class="form">
     <table id="commentForm">
         <tbody>
+            <#if !isLoggedIn>
             <tr>
                 <td colspan="2">
                     <input type="text" class="normalInput" id="commentName"/>
@@ -52,6 +53,7 @@
                     <label for="commentURL">${commentURLLabel}</label>
                 </td>
             </tr>
+            </#if>
             <tr>
                 <td id="emotions" colspan="2">
                     <span class="em00" title="${em00Label}"></span>
@@ -76,12 +78,14 @@
                     <textarea rows="10" cols="96" id="comment"></textarea>
                 </td>
             </tr>
+            <#if !isLoggedIn>
             <tr>
                 <td colspan="2">
                     <input type="text" class="normalInput" id="commentValidate"/>
                     <img id="captcha" alt="validate" src="${servePath}/captcha.do" />
                 </td>
             </tr>
+            </#if>
             <tr>
                 <td>
                     <span class="ft-gray" id="commentErrorTip"></span>
@@ -103,57 +107,57 @@
 <#macro comment_script oId>
 <script type="text/javascript" src="${staticServePath}/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
-    var page = new Page({
-        "nameTooLongLabel": "${nameTooLongLabel}",
-        "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
-        "mailInvalidLabel": "${mailInvalidLabel}",
-        "commentContentCannotEmptyLabel": "${commentContentCannotEmptyLabel}",
-        "captchaCannotEmptyLabel": "${captchaCannotEmptyLabel}",
-        "captchaErrorLabel": "${captchaErrorLabel}",
-        "loadingLabel": "${loadingLabel}",
-        "oId": "${oId}",
-        "skinDirName": "${skinDirName}",
-        "blogHost": "${blogHost}",
-        "randomArticles1Label": "${randomArticlesLabel}",
-        "externalRelevantArticles1Label": "${externalRelevantArticlesLabel}"
-    });
+                       var page = new Page({
+                           "nameTooLongLabel": "${nameTooLongLabel}",
+                           "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
+                           "mailInvalidLabel": "${mailInvalidLabel}",
+                           "commentContentCannotEmptyLabel": "${commentContentCannotEmptyLabel}",
+                           "captchaCannotEmptyLabel": "${captchaCannotEmptyLabel}",
+                           "captchaErrorLabel": "${captchaErrorLabel}",
+                           "loadingLabel": "${loadingLabel}",
+                           "oId": "${oId}",
+                           "skinDirName": "${skinDirName}",
+                           "blogHost": "${blogHost}",
+                           "randomArticles1Label": "${randomArticlesLabel}",
+                           "externalRelevantArticles1Label": "${externalRelevantArticlesLabel}"
+                       });
 
-    var addComment = function (result, state) {
-        var commentHTML = '<div id="' + result.oId + '"><img class="comment-header" \
-            title="' + $("#commentName" + state).val() + '" alt="' + $("#commentName" + state).val() + 
-            '" src="' + result.commentThumbnailURL + '"/><div class="comment-panel"><div class="left">' + result.replyNameHTML;
+                       var addComment = function(result, state) {
+                           var commentHTML = '<div id="' + result.oId + '"><img class="comment-header" \
+            title="' + $("#commentName" + state).val() + '" alt="' + $("#commentName" + state).val() +
+                                   '" src="' + result.commentThumbnailURL + '"/><div class="comment-panel"><div class="left">' + result.replyNameHTML;
 
-        if (state !== "") {
-            var commentOriginalCommentName = $("#" + page.currentCommentId + " .comment-panel>.left a").first().text();
-            commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
-                + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 20);"'
-                + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
-        }
-            
-        commentHTML += '</div><div class="right ft-gray">' +  result.commentDate.substring(2, 16)
-            + '&nbsp;<a rel="nofollow" href="javascript:replyTo(\'' + result.oId 
-            + '\');">${replyLabel}</a></div><span class="clear"></span><div class="article-body">' + 
-            Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g,"<br/>"))
-            + '</div></div><span class="clear"></span></div>';
+                           if (state !== "") {
+                               var commentOriginalCommentName = $("#" + page.currentCommentId + " .comment-panel>.left a").first().text();
+                               commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
+                                       + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 20);"'
+                                       + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
+                           }
 
-        return commentHTML;
-    }
+                           commentHTML += '</div><div class="right ft-gray">' + result.commentDate.substring(2, 16)
+                                   + '&nbsp;<a rel="nofollow" href="javascript:replyTo(\'' + result.oId
+                                   + '\');">${replyLabel}</a></div><span class="clear"></span><div class="article-body">' +
+                                   Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>"))
+                                   + '</div></div><span class="clear"></span></div>';
 
-    var replyTo = function (id) {
-        var commentFormHTML = "<table class='form' id='replyForm'>";
-        page.addReplyForm(id, commentFormHTML);
-        $("#replyForm label").each(function () {
-            $this = $(this);
-            $this.attr("for", $this.attr("for") + "Reply");
-        });
-    };
+                           return commentHTML;
+                       }
 
-    $(document).ready(function () {
-        page.load();
-        ease.scrollToCmt();
-        // emotions
-        page.replaceCommentsEm("#comments .article-body");
-            <#nested>
-        });
+                       var replyTo = function(id) {
+                           var commentFormHTML = "<table class='form' id='replyForm'>";
+                           page.addReplyForm(id, commentFormHTML);
+                           $("#replyForm label").each(function() {
+                               $this = $(this);
+                               $this.attr("for", $this.attr("for") + "Reply");
+                           });
+                       };
+
+                       $(document).ready(function() {
+                           page.load();
+                           ease.scrollToCmt();
+                           // emotions
+                           page.replaceCommentsEm("#comments .article-body");
+                           <#nested>
+                       });
 </script>
 </#macro>
