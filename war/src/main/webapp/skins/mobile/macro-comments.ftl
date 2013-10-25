@@ -48,6 +48,7 @@
         </div>
         <div id="commentForm">
             <h3 id="respond">${postCommentsLabel}</h3>
+            <#if !isLoggedIn>
             <p>
                 <input type="text" id="commentName" size="22" tabindex="1"/>
                 <label for="author">${commentNameLabel} *</label>
@@ -62,17 +63,18 @@
                 <input type="text" id="commentURL" size="22" tabindex="3" />
                 <label for="url">${commentURLLabel}</label>
             </p>
-
+            </#if>
             <p>
                 <span id="commentErrorTip" style="display:none;"></span>
             </p>
             <p><textarea id="comment" tabindex="4"></textarea></p>
-
+            <#if !isLoggedIn>
             <p>
                 <input type="text" id="commentValidate" tabindex="5" />
                 <label for="url">${captchaLabel}</label>
                 <img id="captcha" alt="validate" src="${servePath}/captcha.do" />
             </p>
+            </#if>
             <p>
                 <input class="reply-button" id="submitCommentButton" type="submit" onclick="page.submitComment();" value="${submmitCommentLabel}"  tabindex="6" />
             <div id="loading" style="display:none">
