@@ -160,6 +160,9 @@ public final class SoloServletListener extends AbstractServletListener {
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
+
+        Requests.log(httpServletRequest, Level.DEBUG, LOGGER);
+
         final String requestURI = httpServletRequest.getRequestURI();
 
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
