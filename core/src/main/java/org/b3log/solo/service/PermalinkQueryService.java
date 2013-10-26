@@ -19,6 +19,7 @@ package org.b3log.solo.service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -32,7 +33,7 @@ import org.b3log.solo.repository.PageRepository;
  * Permalink query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 21, 2013
+ * @version 1.0.0.1, Oct 26, 2013
  * @since 0.6.1
  */
 @Service
@@ -148,8 +149,7 @@ public class PermalinkQueryService {
      * @param permalink the specified user-defined permalink
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
-    private static boolean invalidUserDefinedPermalinkFormat(
-        final String permalink) {
+    private static boolean invalidUserDefinedPermalinkFormat(final String permalink) {
         if (Strings.isEmptyOrNull(permalink)) {
             return true;
         }
@@ -159,8 +159,7 @@ public class PermalinkQueryService {
         }
 
         if (Strings.isNumeric(permalink.substring(1))) {
-            // See issue 120 (http://code.google.com/p/b3log-solo/issues/detail?id=120#c4)
-            // for more details
+            // See issue 120 (http://code.google.com/p/b3log-solo/issues/detail?id=120#c4) for more details
             return true;
         }
 
@@ -176,9 +175,7 @@ public class PermalinkQueryService {
             }
         }
 
-        // FIXME: URL format check
-
-        return false;
+        return !Strings.isURL(Latkes.getServer() + permalink);
     }
 
     /**

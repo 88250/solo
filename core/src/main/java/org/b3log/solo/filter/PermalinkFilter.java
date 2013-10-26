@@ -104,7 +104,6 @@ public final class PermalinkFilter implements Filter {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
 
         try {
-
             final ArticleRepository articleRepository = beanManager.getReference(ArticleRepositoryImpl.class);
 
             article = articleRepository.getByPermalink(permalink);

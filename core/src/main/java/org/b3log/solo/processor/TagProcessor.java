@@ -254,7 +254,7 @@ public class TagProcessor {
      * 
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/tags.html"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/tags.html", method = HTTPRequestMethod.GET)
     public void showTags(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 

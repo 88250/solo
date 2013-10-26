@@ -59,7 +59,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Jan 30, 2013
+ * @version 1.0.1.6, Oct 26, 2013
  * @since 0.3.5
  */
 @Service
@@ -438,18 +438,12 @@ public class ArticleMgmtService {
             transaction.commit();
 
             return ret;
-        } catch (final ServiceException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            throw e;
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
 
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -1151,7 +1145,6 @@ public class ArticleMgmtService {
             throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
         }
 
-        // TODO: SBC case
         return ret.replaceAll(" ", "-");
     }
 
@@ -1190,7 +1183,6 @@ public class ArticleMgmtService {
             }
         }
 
-        // TODO: SBC case
         return ret.replaceAll(" ", "-");
     }
 
