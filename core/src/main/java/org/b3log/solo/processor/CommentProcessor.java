@@ -25,6 +25,7 @@ import javax.servlet.http.HttpSession;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -33,6 +34,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.service.CommentMgmtService;
@@ -45,7 +47,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.1.0.11, Jan 30, 2013
+ * @version 1.1.0.12, Oct 26, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -112,6 +114,8 @@ public class CommentProcessor {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
 
         requestJSONObject.put(Common.TYPE, Page.PAGE);
+
+        fillCommenter(requestJSONObject, httpServletRequest);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
 
@@ -196,7 +200,7 @@ public class CommentProcessor {
      * @throws ServletException servlet exception
      * @throws IOException io exception
      */
-    @RequestProcessing(value = { "/add-article-comment.do"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/add-article-comment.do", method = HTTPRequestMethod.POST)
     public void addArticleComment(final HTTPRequestContext context) throws ServletException, IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
@@ -204,6 +208,8 @@ public class CommentProcessor {
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
 
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
+
+        fillCommenter(requestJSONObject, httpServletRequest);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
 
@@ -229,9 +235,9 @@ public class CommentProcessor {
         final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
 
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
-        
+
         if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
-            
+
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
@@ -254,5 +260,23 @@ public class CommentProcessor {
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
         }
+    }
+
+    /**
+     * Fills commenter info if logged in.
+     *
+     * @param requestJSONObject the specified request json object
+     * @param httpServletRequest the specified HTTP servlet request
+     */
+    private void fillCommenter(final JSONObject requestJSONObject, final HttpServletRequest httpServletRequest) {
+        final JSONObject currentUser = userQueryService.getCurrentUser(httpServletRequest);
+
+        if (null == currentUser) {
+            return;
+        }
+
+        requestJSONObject.put(Comment.COMMENT_NAME, currentUser.optString(User.USER_NAME));
+        requestJSONObject.put(Comment.COMMENT_EMAIL, currentUser.optString(User.USER_EMAIL));
+        requestJSONObject.put(Comment.COMMENT_URL, currentUser.optString(User.USER_URL));
     }
 }
