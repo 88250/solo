@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -57,6 +58,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
+
 
 /**
  * Login/logout processor.
@@ -366,7 +368,7 @@ public class LoginProcessor {
 
             user.put(User.USER_PASSWORD, newPwd);
             userMgmtService.updateUser(user);
-            LOGGER.log(Level.DEBUG, "[{0}]'s password updated successfully.", new Object[]{userEmail});
+            LOGGER.log(Level.DEBUG, "[{0}]'s password updated successfully.", new Object[] {userEmail});
 
             jsonObject.put("succeed", true);
             jsonObject.put("to", Latkes.getServePath() + "/login?from=reset");
@@ -402,7 +404,7 @@ public class LoginProcessor {
         final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
         final String mailSubject = langPropsService.get("resetPwdMailSubject");
         final String mailBody = langPropsService.get("resetPwdMailBody") + " " + Latkes.getServePath() + "/forgot?token=" + token
-                + "&login=" + userEmail;
+            + "&login=" + userEmail;
         final MailService.Message message = new MailService.Message();
 
         final JSONObject option = new JSONObject();
@@ -427,7 +429,7 @@ public class LoginProcessor {
         jsonObject.put("to", Latkes.getServePath() + "/login?from=forgot");
         jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessSend"));
 
-        LOGGER.log(Level.DEBUG, "Sent a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[]{mailSubject, mailBody, userEmail});
+        LOGGER.log(Level.DEBUG, "Sent a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[] {mailSubject, mailBody, userEmail});
     }
 
     /**
@@ -441,7 +443,7 @@ public class LoginProcessor {
      * @throws ServiceException the ServiceException
      */
     private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL,
-            final HttpServletRequest request) throws JSONException, ServiceException {
+        final HttpServletRequest request) throws JSONException, ServiceException {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
 
         renderer.setTemplateName(pageTemplate);
