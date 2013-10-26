@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, Sep 7, 2013
+ * @version 1.1.0.10, Oct 26, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -343,7 +343,7 @@ public class RepairProcessor {
 
             htmlBuilder.append("<html><head><title>WARNING!</title>");
             htmlBuilder.append("<script type='text/javascript'");
-            htmlBuilder.append("src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js'");
+            htmlBuilder.append("src='").append(Latkes.getStaticServer()).append("/js/lib/jquery/jquery.min.js'");
             htmlBuilder.append("></script></head><body>");
             htmlBuilder.append("<button id='ok' onclick='removeData()'>");
             htmlBuilder.append("Continue to delete ALL DATA</button></body>");

@@ -66,7 +66,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.12, Oct 14, 2013
+ * @version 1.1.2.13, Oct 26, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -692,9 +692,6 @@ public class ArticleProcessor {
             }
 
             final JSONObject author = result.getJSONObject(User.USER);
-
-            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
             final String authorEmail = author.getString(User.USER_EMAIL);
             final List<JSONObject> articles = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
 
@@ -816,6 +813,7 @@ public class ArticleProcessor {
 
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
+            prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount, archiveDateString, archiveDate);
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
