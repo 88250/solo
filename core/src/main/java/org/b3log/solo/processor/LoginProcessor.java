@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -59,7 +58,6 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
 
-
 /**
  * Login/logout processor.
  * <p/>
@@ -68,7 +66,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.1.5, Jul 4, 2013
+ * @version 1.1.1.6, Oct 26, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -162,24 +160,26 @@ public class LoginProcessor {
 
             return;
         }
-        
+
         renderPage(context, "login.ftl", destinationURL, request);
     }
 
     /**
      * Logins.
-     * <p/>
-     * <p> Renders the response with a json object, for example,
+     * 
+     * <p> 
+     * Renders the response with a json object, for example,
      * <pre>
      * {
      *     "isLoggedIn": boolean,
      *     "msg": "" // optional, exists if isLoggedIn equals to false
      * }
-     * </pre> </p>
+     * </pre>
+     * </p>
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/login"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
     public void login(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
@@ -243,7 +243,7 @@ public class LoginProcessor {
      * @param context the specified context
      * @throws IOException io exception
      */
-    @RequestProcessing(value = { "/logout"}, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/logout", method = HTTPRequestMethod.GET)
     public void logout(final HTTPRequestContext context) throws IOException {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
@@ -278,19 +278,21 @@ public class LoginProcessor {
     }
 
     /**
-     * reset forgotten password.
-     * <p/>
-     * <p> Renders the response with a json object, for example,
+     * Resets forgotten password.
+     * 
+     * <p>
+     * Renders the response with a json object, for example,
      * <pre>
      * {
      *     "isLoggedIn": boolean,
      *     "msg": "" // optional, exists if isLoggedIn equals to false
      * }
-     * </pre> </p>
+     * </pre>
+     * </p>
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/forgot"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/forgot", method = HTTPRequestMethod.POST)
     public void forgot(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
@@ -330,19 +332,21 @@ public class LoginProcessor {
     }
 
     /**
-     * reset forgotten password.
-     * <p/>
-     * <p> Renders the response with a json object, for example,
+     * Resets forgotten password.
+     *
+     * <p>
+     * Renders the response with a json object, for example,
      * <pre>
      * {
      *     "isLoggedIn": boolean,
      *     "msg": "" // optional, exists if isLoggedIn equals to false
      * }
-     * </pre> </p>
+     * </pre>
+     * </p>
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/reset"}, method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/reset", method = HTTPRequestMethod.POST)
     public void reset(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final JSONRenderer renderer = new JSONRenderer();
@@ -362,7 +366,7 @@ public class LoginProcessor {
 
             user.put(User.USER_PASSWORD, newPwd);
             userMgmtService.updateUser(user);
-            LOGGER.log(Level.DEBUG, "[{0}]'s password updated successfully.", new Object[] {userEmail});
+            LOGGER.log(Level.DEBUG, "[{0}]'s password updated successfully.", new Object[]{userEmail});
 
             jsonObject.put("succeed", true);
             jsonObject.put("to", Latkes.getServePath() + "/login?from=reset");
@@ -382,7 +386,7 @@ public class LoginProcessor {
     }
 
     /**
-     * Send the password resetting URL with a random token.
+     * Sends the password resetting URL with a random token.
      *
      * @param userEmail  the given email
      * @param jsonObject return code and message object
@@ -395,11 +399,10 @@ public class LoginProcessor {
             ServiceException, IOException, RepositoryException {
         final JSONObject preference = preferenceQueryService.getPreference();
         final String token = new Randoms().nextStringWithMD5();
-        final String blogTitle = preference.getString(Preference.BLOG_TITLE);
         final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
         final String mailSubject = langPropsService.get("resetPwdMailSubject");
         final String mailBody = langPropsService.get("resetPwdMailBody") + " " + Latkes.getServePath() + "/forgot?token=" + token
-            + "&login=" + userEmail;
+                + "&login=" + userEmail;
         final MailService.Message message = new MailService.Message();
 
         final JSONObject option = new JSONObject();
@@ -424,7 +427,7 @@ public class LoginProcessor {
         jsonObject.put("to", Latkes.getServePath() + "/login?from=forgot");
         jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessSend"));
 
-        LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[] {mailSubject, mailBody, userEmail});
+        LOGGER.log(Level.DEBUG, "Sent a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[]{mailSubject, mailBody, userEmail});
     }
 
     /**
@@ -437,8 +440,8 @@ public class LoginProcessor {
      * @throws JSONException    the JSONException
      * @throws ServiceException the ServiceException
      */
-    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL, final HttpServletRequest request) throws JSONException,
-            ServiceException {
+    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL,
+            final HttpServletRequest request) throws JSONException, ServiceException {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
 
         renderer.setTemplateName(pageTemplate);
