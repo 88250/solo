@@ -90,94 +90,97 @@
 <#macro comment_script oId>
 <script type="text/javascript" src="${staticServePath}/js/page${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript">
-    Page.prototype.submitComment = function (commentId, state) {
-        if (!state) {
-            state = '';
-        }
-        var tips = this.tips,
-        type = "article";
-        if (tips.externalRelevantArticlesDisplayCount === undefined) {
-            type = "page";
-        }
-        
-        if (this.validateComment(state)) {
-            $("#submitCommentButton" + state).attr("disabled", "disabled");
-            $("#commentErrorTip" + state).html(this.tips.loadingLabel);
-            
-            var requestJSONObject = {
-                "oId": tips.oId,
-                "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
-                "commentEmail": $("#commentEmail" + state).val(),
-                "commentURL": Util.proessURL($("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, "")),
-                "commentName": $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
-                "captcha": $("#commentValidate" + state).val()
-            };
-
-            if (state === "Reply") {
-                requestJSONObject.commentOriginalCommentId = commentId;
+        Page.prototype.submitComment = function(commentId, state) {
+            if (!state) {
+                state = '';
             }
-                
-            $wpt("#loading").fadeIn(400);
-                
-            $.ajax({
-                type: "POST",
-                url: "/add-" + type + "-comment.do",
-                contentType: "application/json",
-                data: JSON.stringify(requestJSONObject),
-                success: function(result){
-                    $("#submitCommentButton" + state).removeAttr("disabled");
+            var tips = this.tips,
+                    type = "article";
+            if (tips.externalRelevantArticlesDisplayCount === undefined) {
+                type = "page";
+            }
 
-                    if (!result.sc) {
-                        $("#commentValidate" + state).val("").focus();
-                        $("#commentErrorTip" + state).html(result.msg);
-                        $("#captcha" + state).attr("src", "/captcha.do?code=" + Math.random());
-                        $wpt('#commentErrorTip' + state).show();
+            if (this.validateComment(state)) {
+                $("#submitCommentButton" + state).attr("disabled", "disabled");
+                $("#commentErrorTip" + state).show().html(this.tips.loadingLabel);
+                var requestJSONObject = {
+                    "oId": tips.oId,
+                    "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "")
+                };
+
+                if (!$("#admin").data("login")) {
+                    requestJSONObject = {
+                        "oId": tips.oId,
+                        "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "commentEmail": $("#commentEmail" + state).val(),
+                        "commentURL": Util.proessURL($("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, "")),
+                        "commentName": $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
+                        "captcha": $("#commentValidate" + state).val()
+                    };
+                    Cookie.createCookie("commentName", requestJSONObject.commentName, 365);
+                    Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
+                    Cookie.createCookie("commentURL", $("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
+                }
+                
+                if (state === "Reply") {
+                    requestJSONObject.commentOriginalCommentId = commentId;
+                }
+                $.ajax({
+                    type: "POST",
+                    url: latkeConfig.servePath + "/add-" + type + "-comment.do",
+                    cache: false,
+                    contentType: "application/json",
+                    data: JSON.stringify(requestJSONObject),
+                    success: function(result) {
+                        $("#submitCommentButton" + state).removeAttr("disabled");
+
+                        if (!result.sc) {
+                            $("#commentValidate" + state).val("").focus();
+                            $("#commentErrorTip" + state).html(result.msg);
+                            $("#captcha" + state).attr("src", "/captcha.do?code=" + Math.random());
+                            $wpt('#commentErrorTip' + state).show();
+                            $wpt("#loading").fadeOut(400);
+                            return;
+                        }
+
+                        $wpt("#commentForm").hide();
                         $wpt("#loading").fadeOut(400);
-                        return;
-                    }
-                        
-                    $wpt("#commentForm").hide();
-                    $wpt("#loading").fadeOut(400);
-                    $wpt("#refresher").fadeIn(400);
-                    $("#comment" + state).val("");
-                    $("#commentValidate" + state).val("");
-                    $("#replyForm").remove();
-                        
-                }, // end success 
-                error:  function() {
-                       
-                } //end error
-            });
+                        $wpt("#refresher").fadeIn(400);
+                        $("#comment" + state).val("");
+                        $("#commentValidate" + state).val("");
+                        $("#replyForm").remove();
 
-            Cookie.createCookie("commentName", requestJSONObject.commentName, 365);
-            Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
-            Cookie.createCookie("commentURL", $("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
-        }
-    };
-    
-    var replyTo = function (id) {
-        var commentFormHTML = "<div id='replyForm'>";
-        page.addReplyForm(id, commentFormHTML, "</div>");
-    };
-    
-    var page = new Page({
-        "nameTooLongLabel": "${nameTooLongLabel}",
-        "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
-        "mailInvalidLabel": "${mailInvalidLabel}",
-        "commentContentCannotEmptyLabel": "${commentContentCannotEmptyLabel}",
-        "captchaCannotEmptyLabel": "${captchaCannotEmptyLabel}",
-        "loadingLabel": "${loadingLabel}",
-        "oId": "${oId}",
-        "skinDirName": "${skinDirName}",
-        "blogHost": "${blogHost}",
-        "randomArticles1Label": "${randomArticles1Label}",
-        "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
-    });
+                    }, // end success 
+                    error: function() {
+                    } //end error
+                });
+            }
 
-    (function () {
-        page.load();
-        // emotions
-        page.replaceCommentsEm("#commentlist .combody");
+        };
+
+        var replyTo = function(id) {
+            var commentFormHTML = "<div id='replyForm'>";
+            page.addReplyForm(id, commentFormHTML, "</div>");
+        };
+
+        var page = new Page({
+            "nameTooLongLabel": "${nameTooLongLabel}",
+            "mailCannotEmptyLabel": "${mailCannotEmptyLabel}",
+            "mailInvalidLabel": "${mailInvalidLabel}",
+            "commentContentCannotEmptyLabel": "${commentContentCannotEmptyLabel}",
+            "captchaCannotEmptyLabel": "${captchaCannotEmptyLabel}",
+            "loadingLabel": "${loadingLabel}",
+            "oId": "${oId}",
+            "skinDirName": "${skinDirName}",
+            "blogHost": "${blogHost}",
+            "randomArticles1Label": "${randomArticles1Label}",
+            "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
+        });
+
+        (function() {
+            page.load();
+            // emotions
+            page.replaceCommentsEm("#commentlist .combody");
             <#nested>
         })();
 </script>

@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.4, Sep 12, 2013
+ * @version 1.0.3.5, Oct 26, 2013
  */
 var Page = function(tips) {
     this.currentCommentId = "";
@@ -265,7 +265,7 @@ $.extend(Page.prototype, {
             }
         }
 
-// code high lighter
+        // code high lighter
         SyntaxHighlighter.autoloader.apply(null, languages);
         SyntaxHighlighter.config.stripBrs = true;
         SyntaxHighlighter.all();
@@ -285,13 +285,13 @@ $.extend(Page.prototype, {
                     + cssName + ".css' type='text/css' charset='utf-8' />"));
         }
 
-// load js
+        // load js
         $.ajax({
             url: latkeConfig.staticServePath + "/js/lib/SyntaxHighlighter/scripts/shCore.js",
             dataType: "script",
             cache: true,
             success: function() {
-// get brush settings
+                // get brush settings
                 var languages = [],
                         isScrip = false;
                 $(".article-body pre").each(function() {
@@ -343,14 +343,14 @@ $.extend(Page.prototype, {
         }
 
         if (isPrettify) {
-// load css
+            // load css
             if (document.createStyleSheet) {
                 document.createStyleSheet(latkeConfig.staticServePath + "/js/lib/google-code-prettify/prettify.css");
             } else {
                 $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/google-code-prettify/prettify.css'>"));
             }
 
-// load js
+            // load js
             $.ajax({
                 url: latkeConfig.staticServePath + "/js/lib/google-code-prettify/prettify.js",
                 dataType: "script",
@@ -510,7 +510,7 @@ $.extend(Page.prototype, {
                 }
             });
         } catch (e) {
-// 忽略相关文章加载异常：load script error
+            // 忽略相关文章加载异常：load script error
         }
     },
     /*
@@ -536,10 +536,7 @@ $.extend(Page.prototype, {
                 "oId": tips.oId,
                 "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "")
             };
-            if (state === "Reply") {
-                requestJSONObject.commentOriginalCommentId = commentId;
-            }
-
+            
             if (!$("#admin").data("login")) {
                 requestJSONObject = {
                     "oId": tips.oId,
@@ -553,6 +550,11 @@ $.extend(Page.prototype, {
                 Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
                 Cookie.createCookie("commentURL", $("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
             }
+            
+            if (state === "Reply") {
+                requestJSONObject.commentOriginalCommentId = commentId;
+            }
+
             $.ajax({
                 type: "POST",
                 url: latkeConfig.servePath + "/add-" + type + "-comment.do",
@@ -579,9 +581,11 @@ $.extend(Page.prototype, {
                             result.replyNameHTML = '<a href="' + Util.proessURL($("#commentURL" + state).val()) +
                                     '" target="_blank">' + $("#commentName" + state).val() + '</a>';
                         }
+                        result.userName = $("#commentName" + state).val();
                     } else {
                         result.replyNameHTML = '<a href="' + window.location.host +
-                                '" target="_blank">' + $("#adminName").val() + '</a>';
+                                '" target="_blank">' + $("#adminName").text() + '</a>';
+                        result.userName = $("#adminName").text();
                     }
 
                     that.addCommentAjax(addComment(result, state), state);

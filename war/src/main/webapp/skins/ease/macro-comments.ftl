@@ -124,14 +124,18 @@
 
                        var addComment = function(result, state) {
                            var commentHTML = '<div id="' + result.oId + '"><img class="comment-header" \
-            title="' + $("#commentName" + state).val() + '" alt="' + $("#commentName" + state).val() +
-                                   '" src="' + result.commentThumbnailURL + '"/><div class="comment-panel"><div class="left">' + result.replyNameHTML;
+                                    title="' + result.userName + '" alt="' + result.userName +
+                                   '" src="' + result.commentThumbnailURL 
+                                   + '"/><div class="comment-panel"><div class="left">' + result.replyNameHTML;
 
                            if (state !== "") {
-                               var commentOriginalCommentName = $("#" + page.currentCommentId + " .comment-panel>.left a").first().text();
-                               commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
+                               var commentOriginalCommentName = $("#" + page.currentCommentId 
+                                       + " .comment-panel>.left a").first().text();
+                               commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' 
+                                       + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                                        + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 20);"'
-                                       + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
+                                       + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' 
+                                       + commentOriginalCommentName + '</a>';
                            }
 
                            commentHTML += '</div><div class="right ft-gray">' + result.commentDate.substring(2, 16)
@@ -141,7 +145,7 @@
                                    + '</div></div><span class="clear"></span></div>';
 
                            return commentHTML;
-                       }
+                       };
 
                        var replyTo = function(id) {
                            var commentFormHTML = "<table class='form' id='replyForm'>";

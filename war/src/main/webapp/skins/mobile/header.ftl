@@ -34,7 +34,7 @@
             </div>
 
             <ul id="head-pages">
-                <li><a href="${servePath}/admin-index.do#main"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Home.png" alt=""/>Admin</a></li>
+                <li id="admin" data-login="${isLoggedIn?string}"><a href="${servePath}/admin-index.do#main"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Home.png" alt=""/>Admin</a></li>
                 <#list pageNavigations as page>
                 <li><a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Apps.png" alt=""/>${page.pageTitle}</a></li>
                 </#list>           
