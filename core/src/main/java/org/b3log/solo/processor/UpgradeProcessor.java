@@ -17,19 +17,15 @@ package org.b3log.solo.processor;
 
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Statement;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
-import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -37,7 +33,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
@@ -52,7 +47,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.1.10, Aug 20, 2013
+ * @version 1.1.1.11, Oct 27, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -111,7 +106,7 @@ public class UpgradeProcessor {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "0.6.0";
+    private static final String FROM_VER = "0.6.1";
 
     /**
      * New version.
@@ -181,20 +176,6 @@ public class UpgradeProcessor {
 
         try {
             transaction = userRepository.beginTransaction();
-
-            final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
-
-            if (RuntimeEnv.LOCAL == runtimeEnv || RuntimeEnv.BAE == runtimeEnv) {
-                final Connection connection = Connections.getConnection();
-                final Statement statement = connection.createStatement();
-
-                final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix");
-                final String tableName = Strings.isEmptyOrNull(tablePrefix) ? "preference" : tablePrefix + "_preference";
-
-                statement.execute("ALTER TABLE " + tableName + " DROP COLUMN blogHost");
-
-                connection.commit();
-            }
 
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);

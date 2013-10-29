@@ -96,7 +96,7 @@ public final class InitCheckFilter implements Filter {
             return;
         }
 
-        LOGGER.log(Level.WARN, "B3log Solo has not been initialized, so redirects to /init");
+        LOGGER.log(Level.INFO, "B3log Solo has not been initialized, so redirects to /init");
 
         final HTTPRequestContext context = new HTTPRequestContext();
 

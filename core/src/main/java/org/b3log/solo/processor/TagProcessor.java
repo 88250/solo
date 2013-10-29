@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Tag processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Jul 11, 2013
+ * @version 1.1.1.2, Oct 29, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -109,9 +109,9 @@ public class TagProcessor {
 
     /**
      * Shows articles related with a tag with the specified context.
-     * 
+     *
      * @param context the specified context
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/tags/**", method = HTTPRequestMethod.GET)
     public void showTagArticles(final HTTPRequestContext context) throws IOException {
@@ -222,7 +222,7 @@ public class TagProcessor {
 
     /**
      * Fills pagination.
-     * 
+     *
      * @param dataModel the specified data model
      * @param pageCount the specified page count
      * @param currentPageNum the specified current page number
@@ -250,60 +250,11 @@ public class TagProcessor {
     }
 
     /**
-     * Shows tags with the specified context.
-     * 
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/tags.html", method = HTTPRequestMethod.GET)
-    public void showTags(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
-
-        context.setRenderer(renderer);
-
-        renderer.setTemplateName("tags.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        try {
-            final JSONObject preference = preferenceQueryService.getPreference();
-
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
-
-            final List<JSONObject> tags = tagQueryService.getTags();
-
-            tagQueryService.removeForUnpublishedArticles(tags);
-            Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
-
-            dataModel.put(Tag.TAGS, tags);
-
-            filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
-        }
-    }
-
-    /**
      * Gets the request page number from the specified request URI and tag title.
-     * 
+     *
      * @param requestURI the specified request URI
      * @param tagTitle the specified tag title
-     * @return page number, returns {@code -1} if the specified request URI
-     * can not convert to an number
+     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI, final String tagTitle) {
         if (Strings.isEmptyOrNull(tagTitle)) {
@@ -317,7 +268,7 @@ public class TagProcessor {
 
     /**
      * Gets tag title from the specified URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return tag title
      */
