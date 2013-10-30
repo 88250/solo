@@ -16,7 +16,6 @@
 package org.b3log.solo.util;
 
 
-import java.util.Date;
 import java.util.TimeZone;
 import org.b3log.latke.util.freemarker.Templates;
 
@@ -25,27 +24,9 @@ import org.b3log.latke.util.freemarker.Templates;
  * Time zone utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jan 18, 2013
+ * @version 1.0.0.5, Oct 30, 2013
  */
 public final class TimeZones {
-
-    /**
-     * Gets the current date with the specified time zone id.
-     *
-     * @param timeZoneId the specified time zone id
-     * @return date
-     */
-    public static Date getTime(final String timeZoneId) {
-        final TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-        final TimeZone defaultTimeZone = TimeZone.getDefault();
-
-        TimeZone.setDefault(timeZone);
-        final Date ret = new Date();
-
-        TimeZone.setDefault(defaultTimeZone);
-
-        return ret;
-    }
 
     /**
      * Sets time zone by the specified time zone id.

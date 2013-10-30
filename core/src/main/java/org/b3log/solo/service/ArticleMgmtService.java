@@ -49,7 +49,6 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -294,8 +293,7 @@ public class ArticleMgmtService {
             // Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = TimeZones.getTime(timeZoneId);
+            final Date date = new Date();
 
             // The article to update has no sign
             if (!article.has(Article.ARTICLE_SIGN_ID)) {
@@ -473,8 +471,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_VIEW_COUNT, 0);
             // Step 3: Set create/updat date
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String timeZoneId = preference.optString(Preference.TIME_ZONE_ID);
-            final Date date = TimeZones.getTime(timeZoneId);
+            final Date date = new Date();
 
             if (!article.has(Article.ARTICLE_CREATE_DATE)) {
                 article.put(Article.ARTICLE_CREATE_DATE, date);

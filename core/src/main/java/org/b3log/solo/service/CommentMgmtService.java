@@ -47,7 +47,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Thumbnails;
-import org.b3log.solo.util.TimeZones;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -402,8 +401,7 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = TimeZones.getTime(timeZoneId);
+            final Date date = new Date();
 
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd hh:mm:ss"));
@@ -522,8 +520,7 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME));
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = TimeZones.getTime(timeZoneId);
+            final Date date = new Date();
 
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd hh:mm:ss"));

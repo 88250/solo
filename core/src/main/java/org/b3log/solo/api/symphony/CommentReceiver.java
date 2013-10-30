@@ -51,7 +51,6 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.TimeZones;
 import org.json.JSONObject;
 
 
@@ -220,8 +219,7 @@ public class CommentReceiver {
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = TimeZones.getTime(timeZoneId);
+            final Date date = new Date();
 
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd hh:mm:ss"));

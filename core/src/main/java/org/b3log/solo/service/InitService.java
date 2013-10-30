@@ -283,7 +283,7 @@ public class InitService {
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 1);
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
-        final Date date = TimeZones.getTime(INIT_TIME_ZONE_ID);
+        final Date date = new Date();
 
         article.put(Article.ARTICLE_CREATE_DATE, date);
         article.put(Article.ARTICLE_UPDATE_DATE, date);
