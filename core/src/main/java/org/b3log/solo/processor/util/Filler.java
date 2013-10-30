@@ -736,13 +736,14 @@ public class Filler {
     /**
      * Fills the specified template.
      *
+     * @param request the specified HTTP servlet request
      * @param template the specified template
      * @param dataModel data model
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillUserTemplate(final Template template, final Map<String, Object> dataModel, final JSONObject preference)
-        throws ServiceException {
+    public void fillUserTemplate(final HttpServletRequest request, final Template template,
+        final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         Stopwatchs.start("Fill User Template[name=" + template.getName() + "]");
         try {
             LOGGER.log(Level.DEBUG, "Filling user template[name{0}]", template.getName());
@@ -773,6 +774,10 @@ public class Filler {
 
             if (Templates.hasExpression(template, "<#list archiveDates as archiveDate>")) {
                 fillArchiveDates(dataModel, preference);
+            }
+
+            if (Templates.hasExpression(template, "<#include \"side.ftl\"/>")) {
+                fillSide(request, dataModel, preference);
             }
 
             final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);

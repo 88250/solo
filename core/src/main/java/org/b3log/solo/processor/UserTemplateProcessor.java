@@ -126,7 +126,7 @@ public class UserTemplateProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillUserTemplate(template, dataModel, preference);
+            filler.fillUserTemplate(request, template, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
         } catch (final Exception e) {
