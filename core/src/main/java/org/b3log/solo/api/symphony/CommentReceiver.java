@@ -51,7 +51,6 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.QueryResults;
-import org.b3log.solo.util.TimeZones;
 import org.json.JSONObject;
 
 
@@ -59,7 +58,7 @@ import org.json.JSONObject;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Jul 10, 2013
+ * @version 1.0.0.8, Aug 29, 2013
  * @since 0.5.5
  */
 @RequestProcessor
@@ -79,6 +78,7 @@ public class CommentReceiver {
     /**
      * Comment repository.
      */
+    @Inject
     private static CommentRepository commentRepository;
 
     /**
@@ -112,7 +112,8 @@ public class CommentReceiver {
     /**
      * Event manager.
      */
-    private static EventManager eventManager = EventManager.getInstance();
+    @Inject
+    private static EventManager eventManager;
 
     /**
      * Statistic management service.
@@ -218,8 +219,7 @@ public class CommentReceiver {
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = TimeZones.getTime(timeZoneId);
+            final Date date = new Date();
 
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd hh:mm:ss"));

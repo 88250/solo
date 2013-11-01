@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.3, Jun 4, 2013
+ * @version 1.0.3.3, Sep 30, 2013
  */
 admin.article = {
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -456,11 +456,7 @@ admin.article = {
             return;
         }
         if (admin.article.status.id) {
-            if (admin.article.status.isArticle) {
-                admin.article.status.isArticle = false;
-                admin.article.setStatus();
-                admin.article.unPublish(true);
-            } else {
+            if (!admin.article.status.isArticle) {
                 admin.article.update(false, true);
             }
         } else {

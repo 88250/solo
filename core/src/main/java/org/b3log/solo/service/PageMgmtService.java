@@ -160,7 +160,6 @@ public class PageMgmtService {
                 }
             }
 
-            // TODO: SBC case
             newPage.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));
 
             if (!oldPage.getString(Page.PAGE_PERMALINK).equals(permalink)) { // The permalink has been updated
@@ -274,9 +273,8 @@ public class PageMgmtService {
                 }
             }
 
-            // TODO: SBC case
             page.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));
-
+            
             // Editor type
             final JSONObject preference = preferenceQueryService.getPreference();
 

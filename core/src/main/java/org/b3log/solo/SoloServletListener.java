@@ -35,8 +35,6 @@ import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
-import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.event.cache.RemoveCacheListener;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
@@ -59,7 +57,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Aug 20, 2013
+ * @version 1.1.0.2, Oct 27, 2013
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -67,7 +65,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * B3log Solo version.
      */
-    public static final String VERSION = "0.6.1";
+    public static final String VERSION = "0.6.5";
 
     /**
      * Logger.
@@ -121,8 +119,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final Transaction transaction = preferenceRepository.beginTransaction();
 
-        // Cache will be cleared manaully if necessary, see loadPreference.
-        transaction.clearQueryCache(false);
         try {
             loadPreference();
 
@@ -137,7 +133,9 @@ public final class SoloServletListener extends AbstractServletListener {
 
         registerEventProcessor();
 
-        PluginManager.getInstance().load();
+        final PluginManager pluginManager = beanManager.getReference(PluginManager.class);
+
+        pluginManager.load();
 
         LOGGER.info("Initialized the context");
 
@@ -162,6 +160,9 @@ public final class SoloServletListener extends AbstractServletListener {
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
+
+        Requests.log(httpServletRequest, Level.DEBUG, LOGGER);
+
         final String requestURI = httpServletRequest.getRequestURI();
 
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
@@ -199,12 +200,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * 
      * <p>
      *   Loads preference from repository, loads skins from skin directory then sets it into preference if the skins changed. 
-     *   Puts preference into cache and persists it to repository finally.
-     * </p>
-     * 
-     * <p>
-     *   <b>Note</b>: Do NOT use method {@link org.b3log.solo.service.PreferenceQueryService#getPreference() } to load it, caused by the 
-     *   method may retrieve it from cache.
      * </p>
      */
     private void loadPreference() {
@@ -225,10 +220,6 @@ public final class SoloServletListener extends AbstractServletListener {
             final PreferenceMgmtService preferenceMgmtService = beanManager.getReference(PreferenceMgmtService.class);
 
             preferenceMgmtService.loadSkins(preference);
-
-            final boolean pageCacheEnabled = preference.getBoolean(Preference.PAGE_CACHE_ENABLED);
-
-            Templates.enableCache(pageCacheEnabled);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -246,7 +237,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         LOGGER.log(Level.INFO, "Registering event processors....");
         try {
-            final EventManager eventManager = EventManager.getInstance();
+            final EventManager eventManager = beanManager.getReference(EventManager.class);
 
             // Comment
             eventManager.registerListener(new ArticleCommentReplyNotifier());
@@ -261,8 +252,6 @@ public final class SoloServletListener extends AbstractServletListener {
             eventManager.registerListener(new ArticleSender());
             eventManager.registerListener(new ArticleUpdater());
             eventManager.registerListener(new CommentSender());
-            // Cache
-            eventManager.registerListener(new RemoveCacheListener());
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Register event processors error", e);
             throw new IllegalStateException(e);

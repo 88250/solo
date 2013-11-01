@@ -141,12 +141,8 @@ public class SitemapProcessor {
         final Query query = new Query().setCurrentPageNum(1).setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).addSort(
             Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
 
-        // Closes cache avoid Java heap space out of memory while caching query results
-        articleRepository.setCacheEnabled(false);
-
+        // XXX: maybe out of memory 
         final JSONObject articleResult = articleRepository.get(query);
-
-        articleRepository.setCacheEnabled(true); // Restores cache
 
         final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
 

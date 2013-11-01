@@ -671,7 +671,7 @@ public class ArticleConsole {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            LOGGER.log(Level.ERROR, e.getMessage());
 
             final JSONObject jsonObject = QueryResults.defaultResult();
 

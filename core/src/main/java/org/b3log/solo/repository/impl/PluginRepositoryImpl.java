@@ -30,7 +30,7 @@ import org.b3log.solo.repository.PluginRepository;
  * @since 0.3.1
  */
 @Repository
-public final class PluginRepositoryImpl extends AbstractRepository implements PluginRepository {
+public class PluginRepositoryImpl extends AbstractRepository implements PluginRepository {
 
     /**
      * Public constructor.

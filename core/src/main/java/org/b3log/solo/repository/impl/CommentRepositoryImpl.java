@@ -16,12 +16,10 @@
 package org.b3log.solo.repository.impl;
 
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
-import org.b3log.latke.cache.Cache;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.AbstractRepository;
@@ -48,7 +46,7 @@ import org.json.JSONObject;
  * @since 0.3.1
  */
 @Repository
-public final class CommentRepositoryImpl extends AbstractRepository implements CommentRepository {
+public class CommentRepositoryImpl extends AbstractRepository implements CommentRepository {
 
     /**
      * Logger.
@@ -67,11 +65,6 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
     public CommentRepositoryImpl() {
         super(Comment.COMMENT);
     }
-
-    /**
-     * Recent comments query results cache key.
-     */
-    public static final String RECENT_CMTS_CACHE_KEY = "recentCMTs";
 
     @Override
     public int removeComments(final String onId) throws RepositoryException {
@@ -104,15 +97,6 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
     @Override
     @SuppressWarnings("unchecked")
     public List<JSONObject> getRecentComments(final int num) throws RepositoryException {
-        if (isCacheEnabled()) {
-            final Cache<String, Serializable> cache = getCache();
-            final Object ret = cache.get(RECENT_CMTS_CACHE_KEY);
-
-            if (null != ret) {
-                return (List<JSONObject>) ret;
-            }
-        }
-
         final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(num).setPageCount(
             1);
 
@@ -125,12 +109,6 @@ public final class CommentRepositoryImpl extends AbstractRepository implements C
 
         // Removes unpublished article related comments
         removeForUnpublishedArticles(ret);
-
-        if (isCacheEnabled()) {
-            final Cache<String, Serializable> cache = getCache();
-
-            cache.put(RECENT_CMTS_CACHE_KEY, (Serializable) ret);
-        }
 
         return ret;
     }

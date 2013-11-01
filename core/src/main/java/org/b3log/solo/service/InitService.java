@@ -33,6 +33,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
@@ -141,6 +142,12 @@ public class InitService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Plugin manager.
+     */
+    @Inject
+    private PluginManager pluginManager;
 
     /**
      * Determines Solo had been initialized.
@@ -252,6 +259,8 @@ public class InitService {
 
             LOGGER.log(Level.ERROR, "Hello World error?!", e);
         }
+
+        pluginManager.load();
     }
 
     /**
@@ -274,7 +283,7 @@ public class InitService {
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 1);
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
-        final Date date = TimeZones.getTime(INIT_TIME_ZONE_ID);
+        final Date date = new Date();
 
         article.put(Article.ARTICLE_CREATE_DATE, date);
         article.put(Article.ARTICLE_UPDATE_DATE, date);
@@ -552,7 +561,6 @@ public class InitService {
         ret.put(ENABLE_ARTICLE_UPDATE_HINT, Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
         ret.put(SIGNS, Default.DEFAULT_SIGNS);
         ret.put(TIME_ZONE_ID, Default.DEFAULT_TIME_ZONE);
-        ret.put(PAGE_CACHE_ENABLED, Default.DEFAULT_PAGE_CACHE_ENABLED);
         ret.put(ALLOW_VISIT_DRAFT_VIA_PERMALINK, Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
         ret.put(COMMENTABLE, Default.DEFAULT_COMMENTABLE);
         ret.put(VERSION, SoloServletListener.VERSION);
@@ -597,12 +605,6 @@ public class InitService {
         }
 
         TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
-
-        if (Default.DEFAULT_PAGE_CACHE_ENABLED) {
-            Latkes.enablePageCache();
-        } else {
-            Latkes.disablePageCache();
-        }
 
         ret.put(Keys.OBJECT_ID, PREFERENCE);
         preferenceRepository.add(ret);
@@ -700,5 +702,14 @@ public class InitService {
      */
     public void setLangPropsService(final LangPropsService langPropsService) {
         this.langPropsService = langPropsService;
+    }
+    
+    /**
+     * Sets the plugin manager with the specified plugin manager.
+     * 
+     * @param pluginManager the specified plugin manager
+     */
+    public void setPluginManager(final PluginManager pluginManager) {
+        this.pluginManager = pluginManager;
     }
 }

@@ -54,6 +54,12 @@ public class PluginQueryService {
      */
     @Inject
     private PluginRepository pluginRepository;
+    
+    /**
+     * Plugin manager.
+     */
+    @Inject
+    private PluginManager pluginManager;
 
     /**
      * Gets plugins by the specified request json object.
@@ -94,7 +100,7 @@ public class PluginQueryService {
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
             final List<JSONObject> pluginJSONObjects = new ArrayList<JSONObject>();
-            final List<AbstractPlugin> plugins = PluginManager.getInstance().getPlugins();
+            final List<AbstractPlugin> plugins = pluginManager.getPlugins();
 
             for (final AbstractPlugin plugin : plugins) {
                 final JSONObject jsonObject = plugin.toJSONObject();
@@ -126,7 +132,7 @@ public class PluginQueryService {
     }
 
     /**
-     * get the setting(json formatter) of the plugin(from database not cache which does not contains it) by the specified pluginoId.
+     * get the setting(json formatter) of the plugin by the specified pluginoId.
      * 
      * @param pluginId the specified pluginId
      * @return the {@link AbstractPlugin}

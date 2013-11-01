@@ -49,7 +49,6 @@ import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +58,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Jan 30, 2013
+ * @version 1.0.1.6, Oct 26, 2013
  * @since 0.3.5
  */
 @Service
@@ -133,7 +132,8 @@ public class ArticleMgmtService {
     /**
      * Event manager.
      */
-    private EventManager eventManager = EventManager.getInstance();
+    @Inject
+    private EventManager eventManager;
 
     /**
      * Language service.
@@ -293,8 +293,7 @@ public class ArticleMgmtService {
             // Set date
             article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String timeZoneId = preference.getString(Preference.TIME_ZONE_ID);
-            final Date date = TimeZones.getTime(timeZoneId);
+            final Date date = new Date();
 
             // The article to update has no sign
             if (!article.has(Article.ARTICLE_SIGN_ID)) {
@@ -437,18 +436,12 @@ public class ArticleMgmtService {
             transaction.commit();
 
             return ret;
-        } catch (final ServiceException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            throw e;
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
 
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
     }
 
@@ -478,8 +471,7 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_VIEW_COUNT, 0);
             // Step 3: Set create/updat date
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String timeZoneId = preference.optString(Preference.TIME_ZONE_ID);
-            final Date date = TimeZones.getTime(timeZoneId);
+            final Date date = new Date();
 
             if (!article.has(Article.ARTICLE_CREATE_DATE)) {
                 article.put(Article.ARTICLE_CREATE_DATE, date);
@@ -610,7 +602,6 @@ public class ArticleMgmtService {
         throws ServiceException {
         final Transaction transaction = articleRepository.beginTransaction();
 
-        transaction.clearQueryCache(false);
         try {
             final List<JSONObject> randomArticles = articleRepository.getRandomly(updateCnt);
 
@@ -1151,7 +1142,6 @@ public class ArticleMgmtService {
             throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
         }
 
-        // TODO: SBC case
         return ret.replaceAll(" ", "-");
     }
 
@@ -1190,7 +1180,6 @@ public class ArticleMgmtService {
             }
         }
 
-        // TODO: SBC case
         return ret.replaceAll(" ", "-");
     }
 

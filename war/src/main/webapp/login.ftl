@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8" />
         <title>${welcomeToSoloLabel} B3log Solo!</title>
-        <meta name="keywords" content="GAE 博客,GAE blog,b3log" />
+        <meta name="keywords" content="Java 博客,GAE blog,b3log" />
         <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客" />
         <meta name="owner" content="B3log Team" />
         <meta name="author" content="B3log Team" />
@@ -84,7 +84,7 @@
                                         return;
                                     }
 
-                                    if ($("#userPassword").val().replace(/\s/g, "") === "") {
+                                    if ($("#userPassword").val() === "") {
                                         $("#tip").text("${passwordEmptyLabel}");
                                         $("#userPassword").focus();
                                         return;

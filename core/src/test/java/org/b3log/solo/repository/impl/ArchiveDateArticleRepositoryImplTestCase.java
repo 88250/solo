@@ -41,27 +41,21 @@ public class ArchiveDateArticleRepositoryImplTestCase extends AbstractTestCase {
      */
     @Test
     public void add() throws Exception {
-        final ArchiveDateArticleRepository archiveDateArticleRepository =
-                getArchiveDateArticleRepository();
+        final ArchiveDateArticleRepository archiveDateArticleRepository = getArchiveDateArticleRepository();
 
         final JSONObject archiveDateArticle = new JSONObject();
 
-        archiveDateArticle.put(ArchiveDate.ARCHIVE_DATE + "_"
-                               + Keys.OBJECT_ID, "archiveDateId");
-        archiveDateArticle.put(Article.ARTICLE + "_"
-                               + Keys.OBJECT_ID, "articleId");
+        archiveDateArticle.put(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, "archiveDateId");
+        archiveDateArticle.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, "articleId");
 
-        final Transaction transaction = archiveDateArticleRepository.
-                beginTransaction();
+        final Transaction transaction = archiveDateArticleRepository.beginTransaction();
         archiveDateArticleRepository.add(archiveDateArticle);
         transaction.commit();
 
-        final JSONObject found =
-                archiveDateArticleRepository.getByArticleId("articleId");
+        final JSONObject found = archiveDateArticleRepository.getByArticleId("articleId");
         Assert.assertNotNull(found);
 
-        final JSONObject notFound =
-                archiveDateArticleRepository.getByArticleId("not found");
+        final JSONObject notFound = archiveDateArticleRepository.getByArticleId("not found");
         Assert.assertNull(notFound);
     }
 

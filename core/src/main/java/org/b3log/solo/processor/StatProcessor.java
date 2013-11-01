@@ -17,9 +17,7 @@ package org.b3log.solo.processor;
 
 
 import javax.inject.Inject;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -40,7 +38,7 @@ import org.b3log.solo.service.StatisticMgmtService;
  * <p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.9, Mar 6, 2013
+ * @version 1.0.2.0, Oct 12, 2013
  * @since 0.4.0
  */
 @RequestProcessor
@@ -67,23 +65,5 @@ public class StatProcessor {
         context.setRenderer(new DoNothingRenderer());
 
         statisticMgmtService.removeExpiredOnlineVisitor();
-    }
-
-    /**
-     * Increments Blog/Articles view counter.
-     * 
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/console/stat/viewcnt", method = HTTPRequestMethod.GET)
-    public void viewCounter(final HTTPRequestContext context) {
-        LOGGER.log(Level.INFO, "Sync statistic from memcache to repository");
-
-        context.setRenderer(new DoNothingRenderer());
-
-        try {
-            statisticMgmtService.flushStatistic();
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "Flushes statistic to repository failed", e);
-        }
     }
 }

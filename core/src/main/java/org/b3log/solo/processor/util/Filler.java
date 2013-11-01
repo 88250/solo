@@ -19,11 +19,13 @@ package org.b3log.solo.processor.util;
 import freemarker.template.Template;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -56,6 +58,7 @@ import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Thumbnails;
+import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,7 +68,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.6.7, Jul 11, 2013
+ * @version 1.0.6.9, Oct 29, 2013
  * @since 0.3.1
  */
 @Service
@@ -75,6 +78,12 @@ public class Filler {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
+
+    /**
+     * Topbar utilities.
+     */
+    @Inject
+    private TopBars topBars;
 
     /**
      * Article repository.
@@ -152,6 +161,12 @@ public class Filler {
      */
     @Inject
     private FillTagArticles fillTagArticles;
+
+    /**
+     * Event manager.
+     */
+    @Inject
+    private EventManager eventManager;
 
     /**
      * Fills articles in index.ftl.
@@ -269,6 +284,34 @@ public class Filler {
         } finally {
             Stopwatchs.end();
         }
+        Stopwatchs.end();
+    }
+
+    /**
+     * Fills tags.
+     *
+     * @param dataModel data model
+     * @throws ServiceException service exception
+     */
+    public void fillTags(final Map<String, Object> dataModel) throws ServiceException {
+        Stopwatchs.start("Fill Tags");
+        try {
+            final List<JSONObject> tags = tagQueryService.getTags();
+
+            tagQueryService.removeForUnpublishedArticles(tags);
+            Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
+
+            dataModel.put(Tag.TAGS, tags);
+        } catch (final JSONException e) {
+            LOGGER.log(Level.ERROR, "Fills tags failed", e);
+            throw new ServiceException(e);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Fills tagss failed", e);
+            throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
+        }
+
         Stopwatchs.end();
     }
 
@@ -526,7 +569,7 @@ public class Filler {
 
                 data.setViewName("footer.ftl");
                 data.setDataModel(dataModel);
-                EventManager.getInstance().fireEventSynchronously(new Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));
+                eventManager.fireEventSynchronously(new Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));
                 if (Strings.isEmptyOrNull((String) dataModel.get(Plugin.PLUGINS))) {
                     // There is no plugin for this template, fill ${plugins} with blank.
                     dataModel.put(Plugin.PLUGINS, "");
@@ -546,15 +589,21 @@ public class Filler {
      * Fills header.ftl.
      *
      * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
      * @param dataModel data model
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillBlogHeader(final HttpServletRequest request, final Map<String, Object> dataModel, final JSONObject preference)
+    public void fillBlogHeader(final HttpServletRequest request, final HttpServletResponse response,
+        final Map<String, Object> dataModel, final JSONObject preference)
         throws ServiceException {
         Stopwatchs.start("Fill Header");
         try {
             LOGGER.debug("Filling header....");
+            final String topBarHTML = topBars.getTopBarHTML(request, response);
+
+            dataModel.put(Common.TOP_BAR, topBarHTML);
+
             dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
             dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
@@ -564,6 +613,7 @@ public class Filler {
             dataModel.put(Preference.META_KEYWORDS, preference.getString(Preference.META_KEYWORDS));
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+            dataModel.put(Common.IS_LOGGED_IN, null != userQueryService.getCurrentUser(request));
 
             final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);
 
@@ -686,19 +736,24 @@ public class Filler {
     /**
      * Fills the specified template.
      *
+     * @param request the specified HTTP servlet request
      * @param template the specified template
      * @param dataModel data model
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillUserTemplate(final Template template, final Map<String, Object> dataModel, final JSONObject preference)
-        throws ServiceException {
+    public void fillUserTemplate(final HttpServletRequest request, final Template template,
+        final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         Stopwatchs.start("Fill User Template[name=" + template.getName() + "]");
         try {
             LOGGER.log(Level.DEBUG, "Filling user template[name{0}]", template.getName());
 
             if (Templates.hasExpression(template, "<#list links as link>")) {
                 fillLinks(dataModel);
+            }
+
+            if (Templates.hasExpression(template, "<#list tags as tag>")) {
+                fillTags(dataModel);
             }
 
             if (Templates.hasExpression(template, "<#list recentComments as comment>")) {
@@ -719,6 +774,10 @@ public class Filler {
 
             if (Templates.hasExpression(template, "<#list archiveDates as archiveDate>")) {
                 fillArchiveDates(dataModel, preference);
+            }
+
+            if (Templates.hasExpression(template, "<#include \"side.ftl\"/>")) {
+                fillSide(request, dataModel, preference);
             }
 
             final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);
@@ -783,10 +842,11 @@ public class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified
-     * author and preference, performs content and abstract editor processing.
+     * Sets some extra properties into the specified article with the specified author and preference, performs content and abstract editor
+     * processing.
      *
-     * <p> Article ext properties:
+     * <p>
+     * Article ext properties:
      * <pre>
      * {
      *     ....,
@@ -828,10 +888,10 @@ public class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified
-     * preference, performs content and abstract editor processing.
+     * Sets some extra properties into the specified article with the specified preference, performs content and abstract editor processing.
      *
-     * <p> Article ext properties:
+     * <p>
+     * Article ext properties:
      * <pre>
      * {
      *     ....,
@@ -872,14 +932,14 @@ public class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified
-     * author and preference.
+     * Sets some extra properties into the specified article with the specified author and preference.
      *
-     * <p> The batch version of method
-     * {@linkplain #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)}.
+     * <p>
+     * The batch version of method {@linkplain #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)}.
      * </p>
      *
-     * <p> Article ext properties:
+     * <p>
+     * Article ext properties:
      * <pre>
      * {
      *     ....,
@@ -903,14 +963,14 @@ public class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified
-     * preference.
+     * Sets some extra properties into the specified article with the specified preference.
      *
-     * <p> The batch version of method
-     * {@linkplain #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)}.
+     * <p>
+     * The batch version of method {@linkplain #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)}.
      * </p>
      *
-     * <p> Article ext properties:
+     * <p>
+     * Article ext properties:
      * <pre>
      * {
      *     ....,
@@ -935,12 +995,12 @@ public class Filler {
     /**
      * Processes the abstract of the specified article with the specified preference.
      *
-     * <p> 
-     *   <ul> 
-     *     <li>If the abstract is {@code null}, sets it with ""</li> 
-     *     <li>If user configured preference "titleOnly", sets the abstract with ""</li>
-     *     <li>If user configured preference "titleAndContent", sets the abstract with the content of the article</li> 
-     *   </ul> 
+     * <p>
+     * <ul>
+     * <li>If the abstract is {@code null}, sets it with ""</li>
+     * <li>If user configured preference "titleOnly", sets the abstract with ""</li>
+     * <li>If user configured preference "titleAndContent", sets the abstract with the content of the article</li>
+     * </ul>
      * </p>
      *
      * @param preference the specified preference

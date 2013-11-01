@@ -28,7 +28,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -43,6 +42,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Dates;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Paginator;
@@ -52,7 +52,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
-import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
@@ -67,7 +66,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.11, Jul 11, 2013
+ * @version 1.1.2.13, Oct 26, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -647,7 +646,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/authors/**", method = HTTPRequestMethod.GET)
     public void showAuthorArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws IOException, JSONException {
-        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
         context.setRenderer(renderer);
 
@@ -693,16 +692,6 @@ public class ArticleProcessor {
             }
 
             final JSONObject author = result.getJSONObject(User.USER);
-
-            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.AUTHOR_ARTICLES.getLangeLabel()));
-            request.setAttribute(PageCaches.CACHED_OID, "No id");
-            request.setAttribute(PageCaches.CACHED_TITLE,
-                langs.get(PageTypes.AUTHOR_ARTICLES.getLangeLabel()) + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
-                + langs.get("authorLabel") + "=" + author.getString(User.USER_NAME) + "]");
-            request.setAttribute(PageCaches.CACHED_LINK, requestURI);
-
             final String authorEmail = author.getString(User.USER_EMAIL);
             final List<JSONObject> articles = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
 
@@ -731,8 +720,7 @@ public class ArticleProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author);
-            dataModel.put(Keys.PAGE_TYPE, PageTypes.AUTHOR_ARTICLES);
-            filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
@@ -757,7 +745,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/archives/**", method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context,
         final HttpServletRequest request, final HttpServletResponse response) {
-        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
         context.setRenderer(renderer);
 
@@ -825,20 +813,10 @@ public class ArticleProcessor {
 
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            final String cachedTitle = prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount,
-                archiveDateString, archiveDate);
-
-            dataModel.put(Keys.PAGE_TYPE, PageTypes.DATE_ARTICLES);
-            filler.fillBlogHeader(request, dataModel, preference);
+            prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount, archiveDateString, archiveDate);
+            filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-
-            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.DATE_ARTICLES.getLangeLabel()));
-            request.setAttribute(PageCaches.CACHED_OID, archiveDateId);
-            request.setAttribute(PageCaches.CACHED_TITLE, cachedTitle + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + "]");
-            request.setAttribute(PageCaches.CACHED_LINK, requestURI);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -895,7 +873,7 @@ public class ArticleProcessor {
         final String articleId = article.optString(Keys.OBJECT_ID);
 
         LOGGER.log(Level.DEBUG, "Article[id={0}]", articleId);
-        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
         context.setRenderer(renderer);
         renderer.setTemplateName("article.ftl");
@@ -916,12 +894,6 @@ public class ArticleProcessor {
             articleQueryService.markdown(article);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.ARTICLE.getLangeLabel()));
-            request.setAttribute(PageCaches.CACHED_OID, articleId);
-            request.setAttribute(PageCaches.CACHED_TITLE, article.getString(Article.ARTICLE_TITLE));
-            request.setAttribute(PageCaches.CACHED_LINK, article.getString(Article.ARTICLE_PERMALINK));
-            request.setAttribute(PageCaches.CACHED_PWD, article.optString(Article.ARTICLE_VIEW_PWD));
 
             // For <meta name="description" content="${article.articleAbstract}"/>
             final String metaDescription = Jsoup.parse(article.optString(Article.ARTICLE_ABSTRACT)).text();
@@ -947,9 +919,7 @@ public class ArticleProcessor {
 
             prepareShowArticle(preference, dataModel, article);
 
-            dataModel.put(Keys.PAGE_TYPE, PageTypes.ARTICLE);
-
-            filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
@@ -1272,7 +1242,7 @@ public class ArticleProcessor {
      */
     private void prepareShowArticle(final JSONObject preference, final Map<String, Object> dataModel, final JSONObject article)
         throws Exception {
-        article.put(Common.COMMENTABLE, article.getBoolean(Article.ARTICLE_COMMENTABLE));
+        article.put(Common.COMMENTABLE, preference.getBoolean(Preference.COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));
         article.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);

@@ -27,7 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.cache.PageCaches;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -38,15 +37,14 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.PageTypes;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.processor.renderer.FrontRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -62,7 +60,7 @@ import org.json.JSONObject;
  * Tag processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Jul 11, 2013
+ * @version 1.1.1.2, Oct 29, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -111,13 +109,13 @@ public class TagProcessor {
 
     /**
      * Shows articles related with a tag with the specified context.
-     * 
+     *
      * @param context the specified context
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/tags/**", method = HTTPRequestMethod.GET)
     public void showTagArticles(final HTTPRequestContext context) throws IOException {
-        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
+        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
         context.setRenderer(renderer);
 
@@ -162,16 +160,6 @@ public class TagProcessor {
             final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-            request.setAttribute(PageCaches.CACHED_OID, tagId);
-
-            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
-            request.setAttribute(PageCaches.CACHED_TITLE,
-                langs.get(PageTypes.TAG_ARTICLES.getLangeLabel()) + "  [" + langs.get("pageNumLabel") + "=" + currentPageNum + ", "
-                + langs.get("tagLabel") + "=" + tagTitle + "]");
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.TAG_ARTICLES.getLangeLabel()));
-            request.setAttribute(PageCaches.CACHED_LINK, requestURI);
-
             final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
 
             if (articles.isEmpty()) {
@@ -210,9 +198,8 @@ public class TagProcessor {
             dataModel.put(Keys.OBJECT_ID, tagId);
             dataModel.put(Tag.TAG, tag);
 
-            dataModel.put(Keys.PAGE_TYPE, PageTypes.TAG_ARTICLES);
             filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(request, dataModel, preference);
+            filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -235,7 +222,7 @@ public class TagProcessor {
 
     /**
      * Fills pagination.
-     * 
+     *
      * @param dataModel the specified data model
      * @param pageCount the specified page count
      * @param currentPageNum the specified current page number
@@ -263,68 +250,11 @@ public class TagProcessor {
     }
 
     /**
-     * Shows tags with the specified context.
-     * 
-     * @param context the specified context
-     */
-    @RequestProcessing(value = { "/tags.html"}, method = HTTPRequestMethod.GET)
-    public void showTags(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new FrontRenderer();
-
-        context.setRenderer(renderer);
-
-        renderer.setTemplateName("tags.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        try {
-            final JSONObject preference = preferenceQueryService.getPreference();
-
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
-
-            request.setAttribute(PageCaches.CACHED_OID, "No id");
-            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
-            request.setAttribute(PageCaches.CACHED_TITLE, langs.get(PageTypes.TAGS.getLangeLabel()));
-            request.setAttribute(PageCaches.CACHED_TYPE, langs.get(PageTypes.TAGS.getLangeLabel()));
-            request.setAttribute(PageCaches.CACHED_LINK, "/tags.html");
-
-            final List<JSONObject> tags = tagQueryService.getTags();
-
-            tagQueryService.removeForUnpublishedArticles(tags);
-            Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
-
-            dataModel.put(Tag.TAGS, tags);
-
-            dataModel.put(Keys.PAGE_TYPE, PageTypes.TAGS);
-            filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(request, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
-        }
-    }
-
-    /**
      * Gets the request page number from the specified request URI and tag title.
-     * 
+     *
      * @param requestURI the specified request URI
      * @param tagTitle the specified tag title
-     * @return page number, returns {@code -1} if the specified request URI
-     * can not convert to an number
+     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI, final String tagTitle) {
         if (Strings.isEmptyOrNull(tagTitle)) {
@@ -338,7 +268,7 @@ public class TagProcessor {
 
     /**
      * Gets tag title from the specified URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return tag title
      */

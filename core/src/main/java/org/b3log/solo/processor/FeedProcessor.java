@@ -59,7 +59,6 @@ import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -137,7 +136,7 @@ public class FeedProcessor {
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
-            feed.setUpdated(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
+            feed.setUpdated(new Date());
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
             feed.setLink(Latkes.getServePath() + "/blog-articles-feed.do");
             feed.setId(Latkes.getServePath() + "/");
@@ -263,7 +262,7 @@ public class FeedProcessor {
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
-            feed.setUpdated(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
+            feed.setUpdated(new Date());
             feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
             feed.setLink(Latkes.getServePath() + "/tag-articles-feed.do");
             feed.setId(Latkes.getServePath() + "/");
@@ -375,7 +374,7 @@ public class FeedProcessor {
             final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
-            channel.setLastBuildDate(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
+            channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/blog-articles-rss.do");
             channel.setGenerator("B3log Solo, ver " + SoloServletListener.VERSION);
@@ -508,7 +507,7 @@ public class FeedProcessor {
             final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
-            channel.setLastBuildDate(TimeZones.getTime(preference.getString(Preference.TIME_ZONE_ID)));
+            channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/tag-articles-rss.do");
             channel.setGenerator("B3log Solo, ver " + SoloServletListener.VERSION);

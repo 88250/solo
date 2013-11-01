@@ -222,11 +222,6 @@ public final class Common {
     public static final String POST_TO_COMMUNITY = "postToCommunity";
 
     /**
-     * Key of page cached count.
-     */
-    public static final String PAGE_CACHED_CNT = "pageCachedCnt";
-
-    /**
      * Key of mini postfix.
      */
     public static final String MINI_POSTFIX = "miniPostfix";
@@ -269,12 +264,7 @@ public final class Common {
     /**
      * Key of top bar replacement flag.
      */
-    public static final String TOP_BAR_REPLACEMENT_FLAG_KEY = "topBarReplacement";
-
-    /**
-     * Top bar replacement flag.
-     */
-    public static final String TOP_BAR_REPLACEMENT_FLAG = "#B3logSolo#topBarReplacement#B3logSolo#";
+    public static final String TOP_BAR = "topBarReplacement";
 
     /**
      * Key of unused tags.
