@@ -25,7 +25,6 @@
     <properties>
         <!-- JDBC Drivers -->
         <h2.version>1.3.170</h2.version>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 
     <dependencies>

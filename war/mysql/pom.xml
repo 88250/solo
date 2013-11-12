@@ -25,7 +25,6 @@
     <properties>
         <!-- JDBC Drivers -->
         <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
-        <netbeans.hint.deploy.server>Tomcat</netbeans.hint.deploy.server>
     </properties>
 
     <dependencies>
