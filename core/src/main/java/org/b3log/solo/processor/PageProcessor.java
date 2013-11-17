@@ -40,6 +40,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
@@ -49,7 +50,7 @@ import org.json.JSONObject;
  * Page processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Oct 14, 2013
+ * @version 1.1.0.4, Nov 17, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -85,8 +86,14 @@ public class PageProcessor {
     private CommentQueryService commentQueryService;
 
     /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
+
+    /**
      * Shows page with the specified context.
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/page", method = HTTPRequestMethod.GET)
@@ -144,6 +151,8 @@ public class PageProcessor {
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
+
+            statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

@@ -38,23 +38,24 @@ import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
 
 /**
  * User template processor.
- * 
+ *
  * <p>
  * User can add a template (for example "links.ftl") then visits the page ("links.html").
  * </p>
- * 
+ *
  * <p>
  * See <a href="https://code.google.com/p/b3log-solo/issues/detail?id=409">issue 409</a> for more details.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Jul 11, 2012
+ * @version 1.0.0.4, Nov 17, 2013
  * @since 0.4.5
  */
 @RequestProcessor
@@ -84,12 +85,18 @@ public class UserTemplateProcessor {
     private LangPropsService langPropsService;
 
     /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
+
+    /**
      * Shows the user template page.
-     * 
+     *
      * @param context the specified context
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/*.html", method = HTTPRequestMethod.GET)
     public void showPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -129,6 +136,8 @@ public class UserTemplateProcessor {
             filler.fillUserTemplate(request, template, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+
+            statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

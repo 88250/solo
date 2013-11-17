@@ -39,9 +39,9 @@ import org.json.JSONException;
 
 /**
  * Statistic management service.
- * 
+ *
  * <p>
- *   <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is NOT cluster-safe.
+ * <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is NOT cluster-safe.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -76,7 +76,7 @@ public class StatisticMgmtService {
 
     /**
      * Online visitor cache.
-     * 
+     *
      * <p>
      * &lt;ip, recentTime&gt;
      * </p>
@@ -90,23 +90,21 @@ public class StatisticMgmtService {
 
     /**
      * Blog statistic view count +1.
-     * 
+     *
      * <p>
      * If it is a search engine bot made the specified request, will NOT increment blog statistic view count.
      * </p>
-     * 
+     *
      * <p>
      * There is a cron job (/console/stat/viewcnt) to flush the blog view count from cache to datastore.
      * </p>
-     * 
+     *
      * @param request the specified request
      * @param response the specified response
-     * @throws RepositoryException repository exception
-     * @throws JSONException json exception 
-     * @see Requests#searchEngineBotRequest(javax.servlet.http.HttpServletRequest) 
+     * @throws ServiceException service exception
+     * @see Requests#searchEngineBotRequest(javax.servlet.http.HttpServletRequest)
      */
-    public void incBlogViewCount(final HttpServletRequest request, final HttpServletResponse response)
-        throws RepositoryException, JSONException {
+    public void incBlogViewCount(final HttpServletRequest request, final HttpServletResponse response) throws ServiceException {
         if (Requests.searchEngineBotRequest(request)) {
             return;
         }
@@ -115,22 +113,22 @@ public class StatisticMgmtService {
             return;
         }
 
-        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
-
-        if (null == statistic) {
-            return;
-        }
-
-        LOGGER.log(Level.TRACE, "Before inc blog view count[statistic={0}]", statistic);
-
-        int blogViewCnt = statistic.getInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
-
-        ++blogViewCnt;
-        statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
-
         final Transaction transaction = statisticRepository.beginTransaction();
+        JSONObject statistic = null;
 
         try {
+            statistic = statisticRepository.get(Statistic.STATISTIC);
+            if (null == statistic) {
+                return;
+            }
+
+            LOGGER.log(Level.TRACE, "Before inc blog view count[statistic={0}]", statistic);
+
+            int blogViewCnt = statistic.optInt(Statistic.STATISTIC_BLOG_VIEW_COUNT);
+
+            ++blogViewCnt;
+            statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, blogViewCnt);
+
             statisticRepository.update(Statistic.STATISTIC, statistic);
 
             transaction.commit();
@@ -140,9 +138,11 @@ public class StatisticMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Updates blog view count failed", e);
+            
+            return;
         }
 
-        LOGGER.log(Level.DEBUG, "Inced blog view count[statistic={0}]", statistic);
+        LOGGER.log(Level.TRACE, "Inced blog view count[statistic={0}]", statistic);
     }
 
     /**
@@ -317,7 +317,7 @@ public class StatisticMgmtService {
 
     /**
      * Refreshes online visitor count for the specified request.
-     * 
+     *
      * @param request the specified request
      */
     public void onlineVisitorCount(final HttpServletRequest request) {
@@ -373,7 +373,7 @@ public class StatisticMgmtService {
 
     /**
      * Sets the article repository with the specified article repository.
-     * 
+     *
      * @param articleRepository the specified article repository
      */
     public void setArticleRepository(final ArticleRepository articleRepository) {
@@ -382,7 +382,7 @@ public class StatisticMgmtService {
 
     /**
      * Sets the statistic repository with the specified statistic repository.
-     * 
+     *
      * @param statisticRepository the specified statistic repository
      */
     public void setStatisticRepository(final StatisticRepository statisticRepository) {
@@ -391,7 +391,7 @@ public class StatisticMgmtService {
 
     /**
      * Sets the language service with the specified language service.
-     * 
+     *
      * @param langPropsService the specified language service
      */
     public void setLangPropsService(final LangPropsService langPropsService) {

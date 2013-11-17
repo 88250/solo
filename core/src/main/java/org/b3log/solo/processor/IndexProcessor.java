@@ -45,6 +45,7 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.1.1.4, Sep 11, 2013
+ * @version 1.1.1.5, Nov 17, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -82,6 +83,12 @@ public class IndexProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
+    
+    /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Shows index with the specified context.
@@ -126,6 +133,8 @@ public class IndexProcessor {
             }
 
             dataModel.put(Common.PATH, "");
+            
+            statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

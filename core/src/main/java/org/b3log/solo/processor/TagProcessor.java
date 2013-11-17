@@ -48,6 +48,7 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Skins;
@@ -60,7 +61,7 @@ import org.json.JSONObject;
  * Tag processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.2, Oct 29, 2013
+ * @version 1.1.1.3, Nov 17, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -106,6 +107,12 @@ public class TagProcessor {
      */
     @Inject
     private TagQueryService tagQueryService;
+
+    /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Shows articles related with a tag with the specified context.
@@ -201,6 +208,8 @@ public class TagProcessor {
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
+            
+            statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

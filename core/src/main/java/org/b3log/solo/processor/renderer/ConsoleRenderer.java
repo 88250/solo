@@ -28,11 +28,11 @@ import org.b3log.solo.SoloServletListener;
 
 
 /**
- * <a href="http://freemarker.org">FreeMarker</a> HTTP response 
+ * <a href="http://freemarker.org">FreeMarker</a> HTTP response
  * renderer for administrator console and initialization rendering.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 29, 2012
+ * @version 1.0.0.1, Nov 17, 2013
  * @since 0.4.1
  */
 public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
@@ -60,9 +60,12 @@ public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
     }
 
     @Override
-    protected Template getTemplate(final String templateDirName, final String templateName)
-        throws IOException {
-        return TEMPLATE_CFG.getTemplate(templateName);
+    protected Template getTemplate(final String templateDirName, final String templateName) {
+        try {
+            return TEMPLATE_CFG.getTemplate(templateName);
+        } catch (final IOException e) {
+            return null;
+        }
     }
 
     @Override

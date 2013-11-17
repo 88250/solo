@@ -66,7 +66,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.13, Oct 26, 2013
+ * @version 1.1.2.14, Nov 17, 2013
  * @since 0.3.1
  */
 @RequestProcessor
@@ -130,6 +130,12 @@ public class ArticleProcessor {
      */
     @Inject
     private ArticleMgmtService articleMgmtService;
+    
+    /**
+     * Statistic management service.
+     */
+    @Inject
+    private StatisticMgmtService statisticMgmtService;
 
     /**
      * Shows the article view password form.
@@ -724,6 +730,8 @@ public class ArticleProcessor {
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            
+            statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -817,6 +825,8 @@ public class ArticleProcessor {
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
+            
+            statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -927,6 +937,8 @@ public class ArticleProcessor {
             if (!Requests.hasBeenServed(request, response)) {
                 articleMgmtService.incViewCount(articleId);
             }
+            
+            statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
