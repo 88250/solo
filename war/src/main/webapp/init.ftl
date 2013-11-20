@@ -208,7 +208,7 @@
                                             $("#tipInit").html("<img src='${staticServePath}/images/loading.gif'/> loading...");
                                             
                                             $.ajax({
-                                                url: "${contextPath}/init",
+                                                url: "${servePath}/init",
                                                 type: "POST",
                                                 data: JSON.stringify(requestJSONObject),
                                                 success: function(result, textStatus) {

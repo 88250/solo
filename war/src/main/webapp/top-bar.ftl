@@ -32,7 +32,7 @@
     }
 
     #showTop {
-        background-image: url("${contextPath}/images/arrow-right.png");
+        background-image: url("${staticServePath}/images/arrow-right.png");
         cursor: pointer;
         height: 26px;
         right: 0;
@@ -44,11 +44,11 @@
     }
 
     #showTop:hover {
-        background-image: url("${contextPath}/images/arrow-right.gif");
+        background-image: url("${staticServePath}/images/arrow-right.gif");
     }
 
     #top #hideTop {
-        background-image: url("${contextPath}/images/arrow-left.png");
+        background-image: url("${staticServePath}/images/arrow-left.png");
         height: 26px;
         margin: 0;
         padding: 0;
@@ -57,7 +57,7 @@
     }
 
     #top #hideTop:hover {
-        background-image: url("${contextPath}/images/arrow-left.gif");
+        background-image: url("${staticServePath}/images/arrow-left.gif");
         border-radius: 0;    
     }
 </style>
@@ -71,14 +71,14 @@
         <#if isLoggedIn>
             <span id="adminName">${userName}</span>
             <#if !isVisitor>
-            <a href="${contextPath}/admin-index.do#main" title="${adminLabel}">
+            <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
                 ${adminLabel}
             </a>
             </#if>
             <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
         <#else>
             <a href="${loginURL}" title="${loginLabel}">${loginLabel}</a>
-            <a href="/register" title="${registerLabel}">${registerLabel}</a>
+            <a href="${servePath}/register" title="${registerLabel}">${registerLabel}</a>
             </#if>
             <#if isMobileRequest>
             <a href="javascript:void(0)" onclick="Util.switchMobile('mobile');" title="${mobileLabel}">${mobileLabel}</a>

@@ -99,7 +99,7 @@
 
                                         $("#tip").html("<img src='${staticServePath}/images/loading.gif'/> loading...")
                                         $.ajax({
-                                            url: "${contextPath}" + "/console/user/",
+                                            url: "${servePath}" + "/console/user/",
                                             type: "POST",
                                             cache: false,
                                             data: JSON.stringify(requestJSONObject),
