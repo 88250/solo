@@ -17,7 +17,7 @@
  * @fileoverview ease js.
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.1.5, Jan 29, 2013
+ * @version 1.0.1.6, Nov 28, 2013
  */
 var goTranslate = function () {
     window.open("http://translate.google.com/translate?sl=auto&tl=auto&u=" + location.href);  
@@ -147,7 +147,7 @@ var ease = {
     setNavCurrent: function () {
         $(".nav ul a").each(function () {
             var $this = $(this);
-            if ($this.attr("href") === latkeConfig.servePath + location.pathname) {
+            if ($this.attr("href") === location.href) {
                 $this.addClass("current");
             } else if (/\/[0-9]+$/.test(location.pathname)) {
                 $(".nav ul li")[0].className = "current";
