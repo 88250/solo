@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.5, Aug 20, 2013
+ * @version 1.0.2.6, Nov 28, 2013
  */
 
 /**
@@ -145,7 +145,8 @@ var Util = {
         if (!bottom) {
             bottom = 0;
         }
-        window.scrollTo(0, $("body").height() - $(window).height() - bottom);
+        var wHeight = $("body").height() > $(document).height() ? $("body").height() : $(document).height();
+        window.scrollTo(0, wHeight - $(window).height() - bottom);
     },
     /**
      * @description 页面初始化执行的函数 
