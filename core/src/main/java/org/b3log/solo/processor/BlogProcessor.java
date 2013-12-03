@@ -79,7 +79,7 @@ public class BlogProcessor {
      * @throws Exception exception 
      */
     @RequestProcessing(value = "/blog/info", method = HTTPRequestMethod.GET)
-    public void getRecentArticleTime(final HTTPRequestContext context) throws Exception {
+    public void getBlogInfo(final HTTPRequestContext context) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
 
         context.setRenderer(renderer);
