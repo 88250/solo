@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import javax.inject.Inject;
+import javax.mail.internet.MimeUtility;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jan 18, 2013
+ * @version 1.0.0.5, Jan 3, 2014
  * @since 0.3.5
  */
 @Service
@@ -221,7 +222,7 @@ public class CommentMgmtService {
             mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Page");
         }
 
-        message.setSubject(mailSubject);
+        message.setSubject(MimeUtility.encodeText(mailSubject, "UTF-8", "B"));
         final String commentName = comment.getString(Comment.COMMENT_NAME);
         final String commentURL = comment.getString(Comment.COMMENT_URL);
         String commenter;
