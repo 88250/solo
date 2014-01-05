@@ -203,7 +203,7 @@ public class InitService {
 
         final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
-        if (RuntimeEnv.LOCAL == runtimeEnv || RuntimeEnv.BAE == runtimeEnv) {
+        if (RuntimeEnv.LOCAL == runtimeEnv) {
             LOGGER.log(Level.INFO, "B3log Solo is running on [" + runtimeEnv + "] environment, database [{0}], creates all tables",
                 Latkes.getRuntimeDatabase());
             final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();

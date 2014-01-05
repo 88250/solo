@@ -24,7 +24,6 @@
 
     <modules>
         <module>gae</module>
-        <module>bae</module>
         <module>mysql</module>
         <module>h2</module>
     </modules>
