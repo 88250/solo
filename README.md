@@ -18,6 +18,7 @@ B3log Index: http://b3log.org
 B3log Team: https://github.com/b3log/b3log-solo/wiki/About_us
 
 Join B3log Team: https://github.com/b3log/b3log-solo/wiki/Join_us
+
 ===
 
 平等，自由，奔放
