@@ -1,4 +1,4 @@
-# b3log [![Build Status](https://travis-ci.org/b3log/b3log-solo.png?branch=master)](https://travis-ci.org/b3log/b3log-solo)
+# b3log-solo [![Build Status](https://travis-ci.org/b3log/b3log-solo.png?branch=master)](https://travis-ci.org/b3log/b3log-solo)
 
 B3log Solo is an open source Java blogging program.
 
