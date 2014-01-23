@@ -102,11 +102,11 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
-            // if (Latkes.getServePath().contains("localhost")) {
-            // LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-            // new Object[] {originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
-            // return;
-            // }
+            if (Latkes.getServePath().contains("localhost")) {
+                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
+                    new Object[] {originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
+                return;
+            }
 
             final HTTPRequest httpRequest = new HTTPRequest();
 
