@@ -36,7 +36,7 @@ var Util = {
         $("#loadMsg").text("");
     },
     /**
-     * @description 非 IE6/7 的浏览器，跳转到 kill-browser 页面
+     * @description IE6/7，跳转到 kill-browser 页面
      */
     killIE: function() {
         var addKillPanel = function() {
