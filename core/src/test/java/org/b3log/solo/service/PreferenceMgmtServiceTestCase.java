@@ -90,8 +90,7 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
                 preferenceQueryService.getReplyNotificationTemplate();
 
         Assert.assertEquals(replyNotificationTemplate.toString(),
-                Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE.
-                toString());
+                Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
 
         replyNotificationTemplate.put("subject", "updated subject");
         preferenceMgmtService.updateReplyNotificationTemplate(

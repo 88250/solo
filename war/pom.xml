@@ -71,8 +71,6 @@
                     <webAppSourceDirectory>../src/main/webapp</webAppSourceDirectory>
                     <classesDirectory>${basedir}/target/${project.build.finalName}/WEB-INF/classes</classesDirectory>
                     
-                    <contextPath>/</contextPath>
-                    
                     <systemProperties>
                         <systemProperty>
                             <name>org.eclipse.jetty.server.Request.maxFormContentSize</name>

@@ -5,22 +5,21 @@
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.5.10" level="project" />
-    <orderEntry type="library" name="Maven: org.b3log:latke:0.5.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: org.b3log:latke:1.0.0" level="project" />
     <orderEntry type="library" name="Maven: javax.enterprise:cdi-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.interceptor:jboss-interceptor-api:1.1" level="project" />
     <orderEntry type="library" name="Maven: javax.annotation:jsr250-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
     <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.5" level="project" />
     <orderEntry type="library" name="Maven: javax.el:el-api:1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.19" level="project" />
+    <orderEntry type="library" name="Maven: org.freemarker:freemarker:2.3.20" level="project" />
     <orderEntry type="library" name="Maven: javax.mail:mail:1.4" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:1.4" level="project" />
@@ -39,7 +38,7 @@
     <orderEntry type="library" scope="TEST" name="Maven: com.beust:jcommander:1.12" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.yaml:snakeyaml:1.6" level="project" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.5.2" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.b3log:latke-gae:0.5.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="TEST" name="Maven: org.b3log:latke-gae:1.0.0" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.google.appengine:appengine-api-1.0-sdk:1.8.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.google.appengine:appengine-api-labs:1.8.1.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: com.google.appengine:appengine-api-stubs:1.8.1.1" level="project" />

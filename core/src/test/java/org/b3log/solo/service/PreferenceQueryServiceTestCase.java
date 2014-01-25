@@ -79,7 +79,6 @@ public class PreferenceQueryServiceTestCase extends AbstractTestCase {
                 preferenceQueryService.getReplyNotificationTemplate();
 
         Assert.assertEquals(replyNotificationTemplate.toString(),
-                            Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE.
-                toString());
+                Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
     }
 }

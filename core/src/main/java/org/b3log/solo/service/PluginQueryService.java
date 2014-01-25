@@ -156,7 +156,7 @@ public class PluginQueryService {
             throw new ServiceException("can not find plugin[" + pluginId + "]");
         }
 
-        return ret.optString(Plugin.PLUGIN_SETTING).toString();
+        return ret.optString(Plugin.PLUGIN_SETTING);
     }
 
     /**
