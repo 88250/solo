@@ -64,7 +64,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
- * @version 1.0.1.3, Jul 10, 2013
+ * @version 1.0.2.3, Feb 10, 2014
  * @since 0.3.5
  */
 @Service
@@ -159,15 +159,15 @@ public class ArticleQueryService {
 
     /**
      * Checks whether need password to view the specified article with the specified request.
-     * 
+     *
      * <p>
      * Checks session, if not represents, checks article property {@link Article#ARTICLE_VIEW_PWD view password}.
      * </p>
-     * 
+     *
      * <p>
      * The blogger itself dose not need view password never.
      * </p>
-     * 
+     *
      * @param request the specified request
      * @param article the specified article
      * @return {@code true} if need, returns {@code false} otherwise
@@ -209,7 +209,7 @@ public class ArticleQueryService {
 
     /**
      * Gets time of the recent updated article.
-     * 
+     *
      * @return time of the recent updated article, returns {@code 0} if not found
      * @throws ServiceException service exception
      */
@@ -231,16 +231,16 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets the specified article's author. 
-     * 
+     * Gets the specified article's author.
+     *
      * <p>
      * The specified article has a property
      * {@value Article#ARTICLE_AUTHOR_EMAIL}, this method will use this property
      * to get a user from users.
      * </p>
-     * 
+     *
      * <p>
-     * If can't find the specified article's author (i.e. the author has been 
+     * If can't find the specified article's author (i.e. the author has been
      * removed by administrator), returns administrator.
      * </p>
      *
@@ -352,11 +352,11 @@ public class ArticleQueryService {
 
     /**
      * Gets the recent articles with the specified fetch size.
-     * 
+     *
      * @param fetchSize the specified fetch size
      * @return a list of json object, its size less or equal to the specified
      * fetch size
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getRecentArticles(final int fetchSize) throws ServiceException {
         try {
@@ -370,9 +370,9 @@ public class ArticleQueryService {
 
     /**
      * Gets an article by the specified article id.
-     * 
+     *
      * <p>
-     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * <b>Note</b>: The article content and abstract is raw (no editor type processing).
      * </p>
      *
      * @param articleId the specified article id
@@ -401,6 +401,7 @@ public class ArticleQueryService {
      *     }
      * }
      * </pre>, returns {@code null} if not found
+     *
      * @throws ServiceException service exception
      */
     public JSONObject getArticle(final String articleId) throws ServiceException {
@@ -456,14 +457,14 @@ public class ArticleQueryService {
      * object.
      *
      * <p>
-     * If the property "articleIsPublished" of the specified request json object is {@code true}, the returned articles all are published, 
+     * If the property "articleIsPublished" of the specified request json object is {@code true}, the returned articles all are published,
      * {@code false} otherwise.
      * </p>
-     * 
+     *
      * <p>
      * Specified the "excludes" for results properties exclusion.
      * </p>
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -474,6 +475,7 @@ public class ArticleQueryService {
      *     "excludes": ["", ....] // Optional
      * }, see {@link Pagination} for more details
      * </pre>
+     *
      * @return for example,
      * <pre>
      * {
@@ -496,6 +498,7 @@ public class ArticleQueryService {
      *      }, ....]
      * }
      * </pre>, order by article update date and sticky(put top).
+     *
      * @throws ServiceException service exception
      * @see Pagination
      */
@@ -569,7 +572,7 @@ public class ArticleQueryService {
 
     /**
      * Gets a list of published articles with the specified tag id, current page number and page size.
-     * 
+     *
      * @param tagId the specified tag id
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
@@ -628,7 +631,7 @@ public class ArticleQueryService {
 
     /**
      * Gets a list of published articles with the specified archive date id, current page number and page size.
-     * 
+     *
      * @param archiveDateId the specified archive date id
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
@@ -688,15 +691,15 @@ public class ArticleQueryService {
 
     /**
      * Gets a list of articles randomly with the specified fetch size.
-     * 
+     *
      * <p>
-     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * <b>Note</b>: The article content and abstract is raw (no editor type processing).
      * </p>
      *
      * @param fetchSize the specified fetch size
      * @return a list of json objects, its size less or equal to the specified
      * fetch size
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesRandomly(final int fetchSize) throws ServiceException {
         try {
@@ -713,9 +716,9 @@ public class ArticleQueryService {
 
     /**
      * Gets the relevant published articles of the specified article.
-     * 
+     *
      * <p>
-     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * <b>Note</b>: The article content and abstract is raw (no editor type processing).
      * </p>
      *
      * @param article the specified article
@@ -794,10 +797,10 @@ public class ArticleQueryService {
 
     /**
      * Determines an article specified by the given article id is published.
-     * 
+     *
      * @param articleId the given article id
      * @return {@code true} if it is published
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public boolean isArticlePublished(final String articleId) throws ServiceException {
         try {
@@ -810,9 +813,9 @@ public class ArticleQueryService {
 
     /**
      * Gets the next article(by create date) by the specified article id.
-     * 
+     *
      * <p>
-     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * <b>Note</b>: The article content and abstract is raw (no editor type processing).
      * </p>
      *
      * @param articleId the specified article id
@@ -824,7 +827,8 @@ public class ArticleQueryService {
      * }
      * </pre>
      * returns {@code null} if not found
-     * @throws ServiceException service exception 
+     *
+     * @throws ServiceException service exception
      */
     public JSONObject getNextArticle(final String articleId) throws ServiceException {
         try {
@@ -837,9 +841,9 @@ public class ArticleQueryService {
 
     /**
      * Gets the previous article(by create date) by the specified article id.
-     * 
+     *
      * <p>
-     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * <b>Note</b>: The article content and abstract is raw (no editor type processing).
      * </p>
      *
      * @param articleId the specified article id
@@ -851,7 +855,8 @@ public class ArticleQueryService {
      * }
      * </pre>
      * returns {@code null} if not found
-     * @throws ServiceException service exception 
+     *
+     * @throws ServiceException service exception
      */
     public JSONObject getPreviousArticle(final String articleId) throws ServiceException {
         try {
@@ -864,14 +869,14 @@ public class ArticleQueryService {
 
     /**
      * Gets an article by the specified article id.
-     * 
+     *
      * <p>
-     *   <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * <b>Note</b>: The article content and abstract is raw (no editor type processing).
      * </p>
-     * 
+     *
      * @param articleId the specified article id
      * @return an article, returns {@code null} if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public JSONObject getArticleById(final String articleId) throws ServiceException {
         try {
@@ -883,13 +888,33 @@ public class ArticleQueryService {
     }
 
     /**
+     * Gets an article by the specified article permalink.
+     *
+     * <p>
+     * <b>Note</b>: The article content and abstract is raw (no editor type processing).
+     * </p>
+     *
+     * @param articlePermalink the specified article permalink
+     * @return an article, returns {@code null} if not found
+     * @throws ServiceException service exception
+     */
+    public JSONObject getArticleByPermalink(final String articlePermalink) throws ServiceException {
+        try {
+            return articleRepository.getByPermalink(articlePermalink);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets an article[articlePermalink=" + articlePermalink + "] failed", e);
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets <em>published</em> articles by the specified author email, current page number and page size.
-     * 
+     *
      * @param authorEmail the specified author email
      * @param currentPageNum the specified current page number
      * @param pageSize the specified page size
      * @return a list of articles, returns an empty list if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
         throws ServiceException {
@@ -922,15 +947,15 @@ public class ArticleQueryService {
 
     /**
      * Gets article contents with the specified article id.
-     * 
+     *
      * <p>
      * Invoking this method dose not effect on article view count.
      * </p>
-     * 
+     *
      * @param request the specified HTTP servlet request
      * @param articleId the specified article id
      * @return article contents, returns {@code null} if not found
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public String getArticleContent(final HttpServletRequest request, final String articleId) throws ServiceException {
         if (Strings.isEmptyOrNull(articleId)) {
@@ -967,9 +992,9 @@ public class ArticleQueryService {
 
     /**
      * Converts the content and abstract for each of the specified articles to HTML if that is saved by Markdown editor.
-     * 
+     *
      * @param articles the specified articles
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     public void markdowns(final List<JSONObject> articles) throws Exception {
         for (final JSONObject article : articles) {
@@ -979,9 +1004,9 @@ public class ArticleQueryService {
 
     /**
      * Converts the content and abstract for the specified article to HTML if it is saved by Markdown editor.
-     * 
+     *
      * @param article the specified article
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     public void markdown(final JSONObject article) throws Exception {
         if ("CodeMirror-Markdown".equals(article.optString(ARTICLE_EDITOR_TYPE))) {
@@ -1007,21 +1032,21 @@ public class ArticleQueryService {
 
     /**
      * Removes unused properties of each article in the specified articles.
-     * 
+     *
      * <p>
      * Remains the following properties:
      * <ul>
-     *   <li>{@link Article#ARTICLE_TITLE article title}</li>
-     *   <li>{@link Article#ARTICLE_PERMALINK article permalink}</li>
+     * <li>{@link Article#ARTICLE_TITLE article title}</li>
+     * <li>{@link Article#ARTICLE_PERMALINK article permalink}</li>
      * </ul>
      * </p>
-     * 
+     *
      * <p>
      * The batch version of method {@link #removeUnusedProperties(org.json.JSONObject)}.
      * </p>
-     * 
+     *
      * @param articles the specified articles
-     * @see #removeUnusedProperties(org.json.JSONObject) 
+     * @see #removeUnusedProperties(org.json.JSONObject)
      */
     public void removeUnusedProperties(final List<JSONObject> articles) {
         for (final JSONObject article : articles) {
@@ -1031,17 +1056,17 @@ public class ArticleQueryService {
 
     /**
      * Removes unused properties of the specified article.
-     * 
+     *
      * <p>
      * Remains the following properties:
      * <ul>
-     *   <li>{@link Article#ARTICLE_TITLE article title}</li>
-     *   <li>{@link Article#ARTICLE_PERMALINK article permalink}</li>
+     * <li>{@link Article#ARTICLE_TITLE article title}</li>
+     * <li>{@link Article#ARTICLE_PERMALINK article permalink}</li>
      * </ul>
      * </p>
-     * 
+     *
      * @param article the specified article
-     * @see #removeUnusedProperties(java.util.List) 
+     * @see #removeUnusedProperties(java.util.List)
      */
     public void removeUnusedProperties(final JSONObject article) {
         article.remove(Keys.OBJECT_ID);
@@ -1061,7 +1086,7 @@ public class ArticleQueryService {
 
     /**
      * Sets archive date article repository with the specified archive date article repository.
-     * 
+     *
      * @param archiveDateArticleRepository the specified archive date article repository
      */
     public void setArchiveDateArticleRepository(final ArchiveDateArticleRepository archiveDateArticleRepository) {
@@ -1070,7 +1095,7 @@ public class ArticleQueryService {
 
     /**
      * Sets the article repository with the specified article repository.
-     * 
+     *
      * @param articleRepository the specified article repository
      */
     public void setArticleRepository(final ArticleRepository articleRepository) {
@@ -1079,7 +1104,7 @@ public class ArticleQueryService {
 
     /**
      * Sets the user repository with the specified user repository.
-     * 
+     *
      * @param userRepository the specified user repository
      */
     public void setUserRepository(final UserRepository userRepository) {
@@ -1088,7 +1113,7 @@ public class ArticleQueryService {
 
     /**
      * Sets the preference query service with the specified preference query service.
-     * 
+     *
      * @param preferenceQueryService the specified preference query service
      */
     public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
@@ -1097,7 +1122,7 @@ public class ArticleQueryService {
 
     /**
      * Sets the statistic query service with the specified statistic query service.
-     * 
+     *
      * @param statisticQueryService the specified statistic query service
      */
     public void setStatisticQueryService(final StatisticQueryService statisticQueryService) {
@@ -1106,7 +1131,7 @@ public class ArticleQueryService {
 
     /**
      * Sets the tag repository with the specified tag repository.
-     * 
+     *
      * @param tagRepository the specified tag repository
      */
     public void setTagRepository(final TagRepository tagRepository) {
@@ -1115,7 +1140,7 @@ public class ArticleQueryService {
 
     /**
      * Sets the tag article repository with the specified tag article repository.
-     * 
+     *
      * @param tagArticleRepository the specified tag article repository
      */
     public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
