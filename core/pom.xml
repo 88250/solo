@@ -148,7 +148,21 @@
                     <header>../src/main/resources/etc/header.txt</header>
                 </configuration>
             </plugin>
-
+            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${maven-javadoc-plugin.version}</version>
+                <configuration>
+                    <show>private</show>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-sources</phase>
+                    </execution>
+                </executions>
+            </plugin>
+            
             <!-- For source code style check -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -176,15 +190,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <configuration>
-                    <show>private</show>
-                </configuration>
             </plugin>
             
             <plugin>
