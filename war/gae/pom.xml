@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo GAE POM.
-    Version: 2.0.2.4, Oct 29, 2013
+    Version: 2.0.2.5, Feb 11, 2014
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -56,6 +56,10 @@
                 <exclusion>
                     <groupId>c3p0</groupId>
                     <artifactId>c3p0</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.alibaba</groupId>
+                    <artifactId>druid</artifactId>
                 </exclusion>
                 <!-- GAE container is not JBoss -->
                 <exclusion>
