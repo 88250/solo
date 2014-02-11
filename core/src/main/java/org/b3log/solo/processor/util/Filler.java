@@ -68,7 +68,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.6.9, Oct 29, 2013
+ * @version 1.0.6.10, Feb 11, 2014
  * @since 0.3.1
  */
 @Service
@@ -368,18 +368,19 @@ public class Filler {
 
             archiveDates2.add(archiveDates.get(0));
 
-            // XXX: Workaround, remove the duplicated archive dates
-            for (final JSONObject archiveDate : archiveDates) {
-                final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
-                final String dateString = DateFormatUtils.format(time, "yyyy/MM");
+            if (1 < archiveDates.size()) { // XXX: Workaround, remove the duplicated archive dates
+                for (final JSONObject archiveDate : archiveDates) {
+                    final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+                    final String dateString = DateFormatUtils.format(time, "yyyy/MM");
 
-                final JSONObject last = archiveDates2.get(archiveDates2.size() - 1);
-                final String lastDateString = DateFormatUtils.format(last.getLong(ArchiveDate.ARCHIVE_TIME), "yyyy/MM");
+                    final JSONObject last = archiveDates2.get(archiveDates2.size() - 1);
+                    final String lastDateString = DateFormatUtils.format(last.getLong(ArchiveDate.ARCHIVE_TIME), "yyyy/MM");
 
-                if (!dateString.equals(lastDateString)) {
-                    archiveDates2.add(archiveDate);
-                } else {
-                    LOGGER.log(Level.WARN, "Found a duplicated archive date [{0}]", dateString);
+                    if (!dateString.equals(lastDateString)) {
+                        archiveDates2.add(archiveDate);
+                    } else {
+                        LOGGER.log(Level.WARN, "Found a duplicated archive date [{0}]", dateString);
+                    }
                 }
             }
 
