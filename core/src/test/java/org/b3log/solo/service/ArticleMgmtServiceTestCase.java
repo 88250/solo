@@ -209,8 +209,6 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         final String articleId = article.getString(Keys.OBJECT_ID);
         articleMgmtService.topArticle(articleId, true);
         articleMgmtService.topArticle(articleId, false);
-
-        // TODO: assertions
     }
 
     /**

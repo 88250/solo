@@ -60,7 +60,5 @@ public class TagMgmtServiceTestCase extends AbstractTestCase {
         final TagMgmtService tagMgmtService = getTagMgmtService();
 
         tagMgmtService.removeUnusedTags();
-
-        // TODO: assertions
     }
 }

@@ -145,7 +145,7 @@
                     <sdkDir>${gae.home}</sdkDir>
                     <port>${gae.dev_sever.port}</port>
                     <passIn>true</passIn>
-                    <!-- TODO: http://code.google.com/p/googleappengine/issues/detail?id=6928#c7 -->
+                    <!-- XXX: http://code.google.com/p/googleappengine/issues/detail?id=6928#c7 -->
                     <jvmFlags>
                         <jvmFlag>-Dappengine.user.timezone=UTC</jvmFlag>
                     </jvmFlags>

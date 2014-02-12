@@ -172,5 +172,4 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
         Assert.assertNotNull(articles);
         Assert.assertTrue(articles.isEmpty());
     }
-    // TODO: getByXXX
 }
