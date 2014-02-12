@@ -96,7 +96,6 @@ public class ArticleGenerator {
             for (int i = 0; i < num; i++) {
                 final JSONObject article = new JSONObject();
 
-                // XXX: http://en.wikipedia.org/wiki/Markov_chain
                 article.put(Article.ARTICLE_TITLE, "article title" + i);
                 article.put(Article.ARTICLE_ABSTRACT, "article" + i + " abstract");
                 final int deviationTag = 3;
