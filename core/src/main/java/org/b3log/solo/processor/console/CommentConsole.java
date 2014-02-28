@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * Comment console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Oct 28, 2011
+ * @version 1.0.0.1, Feb 28, 2014
  * @since 0.4.0
  */
 @RequestProcessor
@@ -80,7 +80,7 @@ public class CommentConsole {
 
     /**
      * Removes a comment of an article by the specified request.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -108,28 +108,35 @@ public class CommentConsole {
 
         context.setRenderer(renderer);
 
-        final JSONObject jsonObject = new JSONObject();
+        final JSONObject ret = new JSONObject();
 
-        renderer.setJSONObject(jsonObject);
+        renderer.setJSONObject(ret);
 
         try {
             final String commentId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/page/comment/").length());
 
+            if (!commentQueryService.canAccessComment(commentId, request)) {
+                ret.put(Keys.STATUS_CODE, false);
+                ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+
+                return;
+            }
+
             commentMgmtService.removePageComment(commentId);
 
-            jsonObject.put(Keys.STATUS_CODE, true);
-            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
     }
 
     /**
      * Removes a comment of an article by the specified request.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -157,34 +164,41 @@ public class CommentConsole {
 
         context.setRenderer(renderer);
 
-        final JSONObject jsonObject = new JSONObject();
+        final JSONObject ret = new JSONObject();
 
-        renderer.setJSONObject(jsonObject);
+        renderer.setJSONObject(ret);
 
         try {
             final String commentId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/comment/").length());
 
+            if (!commentQueryService.canAccessComment(commentId, request)) {
+                ret.put(Keys.STATUS_CODE, false);
+                ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
+
+                return;
+            }
+
             commentMgmtService.removeArticleComment(commentId);
 
-            jsonObject.put(Keys.STATUS_CODE, true);
-            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+            ret.put(Keys.STATUS_CODE, false);
+            ret.put(Keys.MSG, langPropsService.get("removeFailLabel"));
         }
     }
 
     /**
      * Gets comments by the specified request.
-     * 
+     *
      * <p>
-     * The request URI contains the pagination arguments. For example, the 
+     * The request URI contains the pagination arguments. For example, the
      * request URI is /console/comments/1/10/20, means the current page is 1, the
      * page size is 10, and the window size is 20.
      * </p>
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -212,7 +226,7 @@ public class CommentConsole {
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param context the specified http request context
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/comments/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
         method = HTTPRequestMethod.GET)
@@ -250,7 +264,7 @@ public class CommentConsole {
 
     /**
      * Gets comments of an article specified by the article id for administrator.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -312,7 +326,7 @@ public class CommentConsole {
 
     /**
      * Gets comments of a page specified by the article id for administrator.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>

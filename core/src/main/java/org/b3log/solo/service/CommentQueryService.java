@@ -20,11 +20,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
@@ -47,7 +49,7 @@ import org.json.JSONObject;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Dec 20, 2011
+ * @version 1.0.0.5, Feb 28, 2014
  * @since 0.3.5
  */
 @Service
@@ -57,6 +59,12 @@ public class CommentQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentQueryService.class.getName());
+
+    /**
+     * User service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Comment repository.
@@ -77,8 +85,51 @@ public class CommentQueryService {
     private PageRepository pageRepository;
 
     /**
+     * Can the current user access a comment specified by the given comment id?
+     *
+     * @param commentId the given comment id
+     * @param request the specified request
+     * @return {@code true} if the current user can access the comment, {@code false} otherwise
+     * @throws Exception exception
+     */
+    public boolean canAccessComment(final String commentId, final HttpServletRequest request) throws Exception {
+        if (Strings.isEmptyOrNull(commentId)) {
+            return false;
+        }
+
+        if (userQueryService.isAdminLoggedIn(request)) {
+            return true;
+        }
+        
+        // Here, you are not admin
+
+        final JSONObject comment = commentRepository.get(commentId);
+
+        if (null == comment) {
+            return false;
+        }
+        
+        final String onId = comment.optString(Comment.COMMENT_ON_ID);
+        final String onType = comment.optString(Comment.COMMENT_ON_TYPE);
+
+        if (Page.PAGE.equals(onType)) {
+            return false; // Only admin can access page comment
+        }
+        
+        final JSONObject article = articleRepository.get(onId);
+
+        if (null == article) {
+            return false;
+        }
+        
+        final String currentUserEmail = userQueryService.getCurrentUser(request).getString(User.USER_EMAIL);
+
+        return article.getString(Article.ARTICLE_AUTHOR_EMAIL).equals(currentUserEmail);
+    }
+
+    /**
      * Gets comments with the specified request json object, request and response.
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -87,6 +138,7 @@ public class CommentQueryService {
      *     "paginationWindowSize": 10
      * }, see {@link Pagination} for more details
      * </pre>
+     *
      * @return for example,
      * <pre>
      * {
@@ -104,6 +156,7 @@ public class CommentQueryService {
      *     "sc": "GET_COMMENTS_SUCC"
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      * @see Pagination
      */
@@ -207,7 +260,7 @@ public class CommentQueryService {
 
     /**
      * Sets the article repository with the specified article repository.
-     * 
+     *
      * @param articleRepository the specified article repository
      */
     public void setArticleRepository(final ArticleRepository articleRepository) {
@@ -216,7 +269,7 @@ public class CommentQueryService {
 
     /**
      * Set the page repository with the specified page repository.
-     * 
+     *
      * @param pageRepository the specified page repository
      */
     public void setPageRepository(final PageRepository pageRepository) {
@@ -225,7 +278,7 @@ public class CommentQueryService {
 
     /**
      * Sets the comment repository with the specified comment repository.
-     * 
+     *
      * @param commentRepository the specified comment repository
      */
     public void setCommentRepository(final CommentRepository commentRepository) {
