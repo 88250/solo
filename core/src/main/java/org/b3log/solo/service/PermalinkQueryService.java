@@ -33,7 +33,7 @@ import org.b3log.solo.repository.PageRepository;
  * Permalink query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Oct 26, 2013
+ * @version 1.0.0.2, Mar 4, 2014
  * @since 0.6.1
  */
 @Service
@@ -61,7 +61,7 @@ public class PermalinkQueryService {
      */
     public static final String[] RESERVED_LINKS = new String[] {
         "/", "/article", "/tags.html", "/tags", "/page", "/blog-articles-feed.do", "/tag-articles-feed.do", "/blog-articles-rss.do",
-        "/tag-articles-rss.do", "/get-random-articles.do", "/article-random-double-gen.do", "/captcha.do", "/kill-browser.html",
+        "/tag-articles-rss.do", "/get-random-articles.do", "/article-random-double-gen.do", "/captcha.do", "/kill-browser",
         "/add-article-comment.do", "/add-article-from-symphony-comment.do", "/add-page-comment.do", "/get-article-content", "/sitemap.xml",
         "/login", "/logout", "/forgot", "/get-article-content", "/admin-index.do", "/admin-article.do", "/admin-article-list.do",
         "/admin-link-list.do", "/admin-preference.do", "/admin-file-list.do", "/admin-page-list.do", "/admin-others.do",

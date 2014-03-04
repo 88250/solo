@@ -153,7 +153,7 @@ public class IndexProcessor {
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response 
      */
-    @RequestProcessing(value = "/kill-browser.html", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
     public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new KillBrowserRenderer();
 
