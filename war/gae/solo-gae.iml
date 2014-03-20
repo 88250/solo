@@ -8,7 +8,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.b3log:latke:1.0.6" level="project" />
+    <orderEntry type="library" name="Maven: org.b3log:latke:1.0.7" level="project" />
     <orderEntry type="library" name="Maven: javax.enterprise:cdi-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.jboss.interceptor:jboss-interceptor-api:1.1" level="project" />
     <orderEntry type="library" name="Maven: javax.annotation:jsr250-api:1.0" level="project" />
@@ -18,7 +18,7 @@
     <orderEntry type="library" name="Maven: commons-io:commons-io:1.4" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.5" level="project" />
     <orderEntry type="library" name="Maven: javassist:javassist:3.12.1.GA" level="project" />
-    <orderEntry type="library" name="Maven: org.b3log:latke-gae:1.0.6" level="project" />
+    <orderEntry type="library" name="Maven: org.b3log:latke-gae:1.0.7" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: com.google.appengine:appengine-api-1.0-sdk:1.8.1.1" level="project" />
     <orderEntry type="module" module-name="solo-core" />
     <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.5.2" level="project" />
