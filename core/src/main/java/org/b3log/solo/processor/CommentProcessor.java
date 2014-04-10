@@ -38,6 +38,7 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.service.CommentMgmtService;
+import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
@@ -47,7 +48,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.1.0.12, Oct 26, 2013
+ * @version 1.1.1.12, Apr 10, 2014
  * @since 0.3.1
  */
 @RequestProcessor
@@ -75,6 +76,12 @@ public class CommentProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
+    
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Adds a comment to a page.
@@ -115,7 +122,7 @@ public class CommentProcessor {
 
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
-        fillCommenter(requestJSONObject, httpServletRequest);
+        fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
 
@@ -209,7 +216,7 @@ public class CommentProcessor {
 
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
-        fillCommenter(requestJSONObject, httpServletRequest);
+        fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
 
@@ -267,8 +274,12 @@ public class CommentProcessor {
      *
      * @param requestJSONObject the specified request json object
      * @param httpServletRequest the specified HTTP servlet request
+     * @param httpServletResponse the specified HTTP servlet response
      */
-    private void fillCommenter(final JSONObject requestJSONObject, final HttpServletRequest httpServletRequest) {
+    private void fillCommenter(final JSONObject requestJSONObject, 
+        final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) {
+        userMgmtService.tryLogInWithCookie(httpServletRequest, httpServletResponse);
+        
         final JSONObject currentUser = userQueryService.getCurrentUser(httpServletRequest);
 
         if (null == currentUser) {
