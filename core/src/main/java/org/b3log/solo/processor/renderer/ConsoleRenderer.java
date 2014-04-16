@@ -18,9 +18,8 @@ package org.b3log.solo.processor.renderer;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
-import java.io.File;
 import java.io.IOException;
-import org.b3log.latke.logging.Level;
+import javax.servlet.ServletContext;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
@@ -32,7 +31,7 @@ import org.b3log.solo.SoloServletListener;
  * renderer for administrator console and initialization rendering.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Nov 17, 2013
+ * @version 1.0.1.1, Apr 15, 2014
  * @since 0.4.1
  */
 public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
@@ -50,13 +49,10 @@ public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
     static {
         TEMPLATE_CFG = new Configuration();
         TEMPLATE_CFG.setDefaultEncoding("UTF-8");
-        try {
-            final String webRootPath = SoloServletListener.getWebRoot();
 
-            TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(webRootPath));
-        } catch (final IOException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-        }
+        final ServletContext servletContext = SoloServletListener.getServletContext();
+
+        TEMPLATE_CFG.setServletContextForTemplateLoading(servletContext, "");
     }
 
     @Override

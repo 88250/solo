@@ -16,16 +16,14 @@
 package org.b3log.solo.util;
 
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import org.b3log.latke.Keys;
+import javax.servlet.ServletContext;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
@@ -38,14 +36,13 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
-import static org.b3log.solo.model.Skin.*;
 
 
 /**
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.6, Jun 12, 2012
+ * @version 1.0.3.6, Apr 15, 2014
  * @since 0.3.1
  */
 public final class Skins {
@@ -66,13 +63,13 @@ public final class Skins {
     private Skins() {}
 
     /**
-     * Fills the specified data model with the current skink's (WebRoot/skins/${skinName}/lang/lang_xx_XX.properties) and 
+     * Fills the specified data model with the current skink's (WebRoot/skins/${skinName}/lang/lang_xx_XX.properties) and
      * core language (WebRoot/WEB-INF/classes/lang_xx_XX.properties) configurations.
-     * 
+     *
      * @param localeString the specified locale string
      * @param currentSkinDirName the specified current skin directory name
      * @param dataModel the specified data model
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public static void fillLangs(final String localeString, final String currentSkinDirName, final Map<String, Object> dataModel)
         throws ServiceException {
@@ -88,17 +85,16 @@ public final class Skins {
                 LOGGER.log(Level.INFO, "Loading skin [dirName={0}, locale={1}]", new Object[] {currentSkinDirName, localeString});
                 langs = new HashMap<String, String>();
 
-                final String webRootPath = SoloServletListener.getWebRoot();
-
                 final String language = Locales.getLanguage(localeString);
                 final String country = Locales.getCountry(localeString);
 
+                final ServletContext servletContext = SoloServletListener.getServletContext();
+                final InputStream inputStream = servletContext.getResourceAsStream(
+                    "/skins/" + currentSkinDirName + "/lang/lang_" + language + '_' + country + ".properties");
+
                 final Properties props = new Properties();
 
-                props.load(
-                    new FileReader(
-                        webRootPath + "skins" + File.separator + currentSkinDirName + File.separator + Keys.LANGUAGE + File.separator
-                        + Keys.LANGUAGE + '_' + language + '_' + country + ".properties"));
+                props.load(inputStream);
                 final Set<Object> keys = props.keySet();
 
                 for (final Object key : keys) {
@@ -111,7 +107,7 @@ public final class Skins {
             }
 
             dataModel.putAll(langs); // Fills the current skin's language configurations
-            
+
             // Fills the core language configurations
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
@@ -128,109 +124,45 @@ public final class Skins {
     /**
      * Sets the directory for template loading with the specified skin directory
      * name, and sets the directory for mobile request template loading.
-     * 
+     *
      * @param skinDirName the specified skin directory name
      */
     public static void setDirectoryForTemplateLoading(final String skinDirName) {
-        try {
-            final String webRootPath = SoloServletListener.getWebRoot();
-            final String skinPath = webRootPath + SKINS + File.separator + skinDirName;
+        final ServletContext servletContext = SoloServletListener.getServletContext();
 
-            Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
-
-            Templates.MOBILE_CFG.setDirectoryForTemplateLoading(new File(webRootPath + SKINS + File.separator + "mobile"));
-        } catch (final IOException e) {
-            LOGGER.log(Level.ERROR, "Loads skins error!", e);
-            throw new IllegalStateException(e);
-        }
+        Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + skinDirName);
+        Templates.MOBILE_CFG.setServletContextForTemplateLoading(servletContext, "/skins/mobile");
     }
 
     /**
-     * Gets all skin directory names. Scans the
-     * {@linkplain SoloServletListener#getWebRoot() Web root}/skins/ directory,
+     * Gets all skin directory names. Scans the /skins/ directory,
      * using the subdirectory of it as the skin directory name, for example,
      * <pre>
      * ${Web root}/skins/
      *     <b>default</b>/
      *     <b>mobile</b>/
      *     <b>classic</b>/
-     * </pre>
-     * Skips files that name starts with . and {@linkplain File#isHidden() 
-     * hidden} files.
+     * </pre>.
      *
      * @return a set of skin name, returns an empty set if not found
      */
     public static Set<String> getSkinDirNames() {
-        final String webRootPath = SoloServletListener.getWebRoot();
-        final File skins = new File(webRootPath + "skins" + File.separator);
-        final File[] skinDirs = skins.listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(final File file) {
-                return file.isDirectory() && !file.getName().startsWith(".");
-            }
-        });
+        final ServletContext servletContext = SoloServletListener.getServletContext();
 
         final Set<String> ret = new HashSet<String>();
 
-        if (null == skinDirs) {
-            LOGGER.error("Skin directory is null");
+        @SuppressWarnings("unchecked")
+        final Set<String> resourcePaths = servletContext.getResourcePaths("/skins");
 
-            return ret;
-        }
+        for (final String path : resourcePaths) {
+            if (path.startsWith(".")) {
+                continue;
+            }
 
-        for (int i = 0; i < skinDirs.length; i++) {
-            final File file = skinDirs[i];
-
-            ret.add(file.getName());
+            ret.add(path.substring("/skins".length() + 1, path.length() - 1));
         }
 
         return ret;
     }
 
-    /**
-     * Gets the skin name for the specified skin directory name. The skin name
-     * was configured in skin.properties file({@code name} as the key) under
-     * skin directory specified by the given skin directory name.
-     *
-     * @param skinDirName the given skin directory name
-     * @return skin name, returns {@code null} if not found or error occurs
-     * @see #getSkinDirNames()
-     */
-    public static String getSkinName(final String skinDirName) {
-        final String webRootPath = SoloServletListener.getWebRoot();
-        final File skins = new File(webRootPath + "skins" + File.separator);
-        final File[] skinDirs = skins.listFiles(new FileFilter() {
-
-            @Override
-            public boolean accept(final File pathname) {
-                return pathname.isDirectory() && pathname.getName().equals(skinDirName) ? true : false;
-            }
-        });
-
-        if (null == skinDirs) {
-            LOGGER.error("Skin directory is null");
-
-            return null;
-        }
-
-        if (1 != skinDirs.length) {
-            LOGGER.log(Level.ERROR, "Skin directory count[{0}]", skinDirs.length);
-
-            return null;
-        }
-
-        try {
-            final Properties ret = new Properties();
-            final String skinPropsPath = skinDirs[0].getPath() + File.separator + "skin.properties";
-
-            ret.load(new FileReader(skinPropsPath));
-
-            return ret.getProperty("name");
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Read skin configuration error[msg={0}]", e.getMessage());
-
-            return null;
-        }
-    }
 }

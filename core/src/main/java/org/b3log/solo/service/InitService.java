@@ -16,13 +16,12 @@
 package org.b3log.solo.service;
 
 
-import java.io.File;
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -62,7 +61,7 @@ import org.json.JSONObject;
  * B3log Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.7, Jun 28, 2013
+ * @version 1.0.2.7, Apr 15, 2014
  * @since 0.4.0
  */
 @Service
@@ -168,24 +167,24 @@ public class InitService {
 
     /**
      * Initializes B3log Solo.
-     * 
+     *
      * <p>
      * Initializes the followings in sequence:
-     *   <ol>
-     *     <li>Statistic.</li>
-     *     <li>Preference.</li>
-     *     <li>Administrator.</li>
-     *   </ol>
+     * <ol>
+     * <li>Statistic.</li>
+     * <li>Preference.</li>
+     * <li>Administrator.</li>
+     * </ol>
      * </p>
-     * 
+     *
      * <p>
-     *   We will try to initialize B3log Solo 3 times at most.
+     * We will try to initialize B3log Solo 3 times at most.
      * </p>
-     * 
+     *
      * <p>
-     *   Posts "Hello World!" article and its comment while B3log Solo initialized.
+     * Posts "Hello World!" article and its comment while B3log Solo initialized.
      * </p>
-     * 
+     *
      * @param requestJSONObject the specified request json object, for example,
      * <pre>
      * {
@@ -194,6 +193,7 @@ public class InitService {
      *     "userPassword": "", // Unhashed
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public void init(final JSONObject requestJSONObject) throws ServiceException {
@@ -323,7 +323,7 @@ public class InitService {
 
     /**
      * Adds the specified "Hello World" article.
-     * 
+     *
      * @param article the specified "Hello World" article
      * @return generated article id
      * @throws RepositoryException repository exception
@@ -380,6 +380,7 @@ public class InitService {
      *     ....
      * }
      * </pre>
+     *
      * @throws RepositoryException repository exception
      */
     public void archiveDate(final JSONObject article) throws RepositoryException {
@@ -457,7 +458,7 @@ public class InitService {
     }
 
     /**
-     * Initializes administrator with the specified request json object, and 
+     * Initializes administrator with the specified request json object, and
      * then logins it.
      *
      * @param requestJSONObject the specified request json object, for example,
@@ -468,6 +469,7 @@ public class InitService {
      *     "userPassowrd": "" // Unhashed
      * }
      * </pre>
+     *
      * @throws Exception exception
      */
     private void initAdmin(final JSONObject requestJSONObject) throws Exception {
@@ -513,7 +515,7 @@ public class InitService {
 
     /**
      * Initializes reply notification template.
-     * 
+     *
      * @throws Exception exception
      */
     private void initReplyNotificationTemplate() throws Exception {
@@ -574,7 +576,7 @@ public class InitService {
 
         ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
-        final String skinName = Skins.getSkinName(skinDirName);
+        final String skinName = Latkes.getSkinName(skinDirName);
 
         ret.put(Skin.SKIN_NAME, skinName);
 
@@ -586,7 +588,7 @@ public class InitService {
 
             skinArray.put(skin);
 
-            final String name = Skins.getSkinName(dirName);
+            final String name = Latkes.getSkinName(dirName);
 
             skin.put(Skin.SKIN_NAME, name);
             skin.put(Skin.SKIN_DIR_NAME, dirName);
@@ -594,15 +596,9 @@ public class InitService {
 
         ret.put(Skin.SKINS, skinArray.toString());
 
-        try {
-            final String webRootPath = SoloServletListener.getWebRoot();
-            final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
+        final ServletContext servletContext = SoloServletListener.getServletContext();
 
-            Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
-        } catch (final IOException e) {
-            LOGGER.log(Level.ERROR, "Loads skins error!", e);
-            throw new IllegalStateException(e);
-        }
+        Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, skinDirName);
 
         TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
 
@@ -616,7 +612,7 @@ public class InitService {
 
     /**
      * Sets archive date article repository with the specified archive date article repository.
-     * 
+     *
      * @param archiveDateArticleRepository the specified archive date article repository
      */
     public void setArchiveDateArticleRepository(final ArchiveDateArticleRepository archiveDateArticleRepository) {
@@ -625,7 +621,7 @@ public class InitService {
 
     /**
      * Sets archive date repository with the specified archive date repository.
-     * 
+     *
      * @param archiveDateRepository the specified archive date repository
      */
     public void setArchiveDateRepository(final ArchiveDateRepository archiveDateRepository) {
@@ -634,7 +630,7 @@ public class InitService {
 
     /**
      * Sets the article repository with the specified article repository.
-     * 
+     *
      * @param articleRepository the specified article repository
      */
     public void setArticleRepository(final ArticleRepository articleRepository) {
@@ -643,7 +639,7 @@ public class InitService {
 
     /**
      * Sets the user repository with the specified user repository.
-     * 
+     *
      * @param userRepository the specified user repository
      */
     public void setUserRepository(final UserRepository userRepository) {
@@ -652,7 +648,7 @@ public class InitService {
 
     /**
      * Sets the preference repository with the specified preference repository.
-     * 
+     *
      * @param preferenceRepository the specified preference repository
      */
     public void setPreferenceRepository(final PreferenceRepository preferenceRepository) {
@@ -661,7 +657,7 @@ public class InitService {
 
     /**
      * Sets the statistic repository with the specified statistic repository.
-     * 
+     *
      * @param statisticRepository the specified statistic repository
      */
     public void setStatisticRepository(final StatisticRepository statisticRepository) {
@@ -670,7 +666,7 @@ public class InitService {
 
     /**
      * Sets the tag repository with the specified tag repository.
-     * 
+     *
      * @param tagRepository the specified tag repository
      */
     public void setTagRepository(final TagRepository tagRepository) {
@@ -679,7 +675,7 @@ public class InitService {
 
     /**
      * Sets the tag article repository with the specified tag article repository.
-     * 
+     *
      * @param tagArticleRepository the specified tag article repository
      */
     public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
@@ -688,7 +684,7 @@ public class InitService {
 
     /**
      * Sets the comment repository with the specified comment repository.
-     * 
+     *
      * @param commentRepository the specified comment repository
      */
     public void setCommentRepository(final CommentRepository commentRepository) {
@@ -697,16 +693,16 @@ public class InitService {
 
     /**
      * Sets the language service with the specified language service.
-     * 
+     *
      * @param langPropsService the specified language service
      */
     public void setLangPropsService(final LangPropsService langPropsService) {
         this.langPropsService = langPropsService;
     }
-    
+
     /**
      * Sets the plugin manager with the specified plugin manager.
-     * 
+     *
      * @param pluginManager the specified plugin manager
      */
     public void setPluginManager(final PluginManager pluginManager) {

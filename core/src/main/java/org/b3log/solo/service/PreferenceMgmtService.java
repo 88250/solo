@@ -16,20 +16,17 @@
 package org.b3log.solo.service;
 
 
-import java.io.IOException;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Skins;
-import org.json.JSONException;
-import java.io.File;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -48,7 +45,6 @@ import static org.b3log.solo.model.Skin.SKINS;
 import static org.b3log.solo.model.Skin.SKIN_DIR_NAME;
 import static org.b3log.solo.model.Skin.SKIN_NAME;
 import static org.b3log.solo.util.Skins.getSkinDirNames;
-import static org.b3log.solo.util.Skins.getSkinName;
 import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
 
 
@@ -56,7 +52,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Jul 18, 2013
+ * @version 1.0.1.7, Apr 15, 2014
  * @since 0.4.0
  */
 @Service
@@ -81,7 +77,7 @@ public class PreferenceMgmtService {
 
     /**
      * Loads skins for the specified preference and initializes templates loading.
-     * 
+     *
      * <p>
      * If the skins directory has been changed, persists the change into preference.
      * </p>
@@ -101,7 +97,7 @@ public class PreferenceMgmtService {
 
         for (final String dirName : skinDirNames) {
             final JSONObject skin = new JSONObject();
-            final String name = getSkinName(dirName);
+            final String name = Latkes.getSkinName(dirName);
 
             if (null == name) {
                 LOGGER.log(Level.WARN, "The directory[{0}] does not contain any skin, ignored it", dirName);
@@ -159,7 +155,7 @@ public class PreferenceMgmtService {
 
     /**
      * Updates the reply notification template with the specified reply notification template.
-     * 
+     *
      * @param replyNotificationTemplate the specified reply notification template
      * @throws ServiceException service exception
      */
@@ -201,7 +197,7 @@ public class PreferenceMgmtService {
 
         try {
             final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            final String skinName = Skins.getSkinName(skinDirName);
+            final String skinName = Latkes.getSkinName(skinDirName);
 
             preference.put(Skin.SKIN_NAME, skinName);
             final Set<String> skinDirNames = Skins.getSkinDirNames();
@@ -212,15 +208,11 @@ public class PreferenceMgmtService {
 
                 skinArray.put(skin);
 
-                final String name = Skins.getSkinName(dirName);
+                final String name = Latkes.getSkinName(dirName);
 
                 skin.put(Skin.SKIN_NAME, name);
                 skin.put(Skin.SKIN_DIR_NAME, dirName);
             }
-            final String webRootPath = SoloServletListener.getWebRoot();
-            final String skinPath = webRootPath + Skin.SKINS + "/" + skinDirName;
-
-            LOGGER.log(Level.DEBUG, "Skin path[{0}]", skinPath);
 
             preference.put(Skin.SKINS, skinArray.toString());
 
@@ -250,23 +242,14 @@ public class PreferenceMgmtService {
 
             transaction.commit();
 
-            Templates.MAIN_CFG.setDirectoryForTemplateLoading(new File(skinPath));
-        } catch (final JSONException e) {
+            final ServletContext servletContext = SoloServletListener.getServletContext();
+
+            Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, skinDirName);
+        } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            LOGGER.log(Level.ERROR, "Updates preference failed", e);
-            throw new ServiceException(langPropsService.get("updateFailLabel"));
-        } catch (final RepositoryException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.ERROR, "Updates preference failed", e);
-            throw new ServiceException(langPropsService.get("updateFailLabel"));
-        } catch (final IOException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
+
             LOGGER.log(Level.ERROR, "Updates preference failed", e);
             throw new ServiceException(langPropsService.get("updateFailLabel"));
         }
@@ -276,7 +259,7 @@ public class PreferenceMgmtService {
 
     /**
      * Sets the preference repository with the specified preference repository.
-     * 
+     *
      * @param preferenceRepository the specified preference repository
      */
     public void setPreferenceRepository(final PreferenceRepository preferenceRepository) {
@@ -285,7 +268,7 @@ public class PreferenceMgmtService {
 
     /**
      * Sets the language service with the specified language service.
-     * 
+     *
      * @param langPropsService the specified language service
      */
     public void setLangPropsService(final LangPropsService langPropsService) {
