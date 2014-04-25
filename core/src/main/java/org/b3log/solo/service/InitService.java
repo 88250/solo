@@ -598,7 +598,7 @@ public class InitService {
 
         final ServletContext servletContext = SoloServletListener.getServletContext();
 
-        Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, skinDirName);
+        Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + skinDirName);
 
         TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
 

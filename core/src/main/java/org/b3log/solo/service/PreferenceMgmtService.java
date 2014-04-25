@@ -244,7 +244,7 @@ public class PreferenceMgmtService {
 
             final ServletContext servletContext = SoloServletListener.getServletContext();
 
-            Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, skinDirName);
+            Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + skinDirName);
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
