@@ -12,3 +12,7 @@
 .DS_Store
 /target/
 *.iml
+
+war/src/main/webapp/skins/*
+!war/src/main/webapp/skins/ease
+!war/src/main/webapp/skins/mobile
