@@ -95,7 +95,7 @@ public class UpgradeProcessor {
     /**
      * Whether the email has been sent.
      */
-    private boolean sent = false;
+    private static boolean sent = false;
 
     /**
      * Language service.
