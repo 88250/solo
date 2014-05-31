@@ -1,0 +1,47 @@
+/*
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014 B3log Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+*/
+
+/**
+* 403, 404, 500, article-pwd, init, login and kill-browser page style.
+*
+* @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+* @version 1.0.0.0, May 31, 2014
+*/
+
+.b3-solo-list {
+    margin: 20px 30px;
+    list-style: none;
+}
+
+.b3-solo-list-h1 {
+
+}
+
+.b3-solo-list-h2 {
+    margin-left: 16px;
+}
+
+.b3-solo-list-h3 {
+    margin-left: 32px;
+}
+
+.b3-solo-list-h4 {
+    margin-left: 48px;
+}
+
+.b3-solo-list-h5 {
+    margin-left: 62px;
+}

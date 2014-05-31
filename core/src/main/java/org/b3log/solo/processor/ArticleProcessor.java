@@ -28,6 +28,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.event.Event;
+import org.b3log.latke.event.EventException;
+import org.b3log.latke.event.EventManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -50,6 +53,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
@@ -66,7 +70,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.14, Nov 17, 2013
+ * @version 1.2.2.14, May 30, 2014
  * @since 0.3.1
  */
 @RequestProcessor
@@ -130,7 +134,7 @@ public class ArticleProcessor {
      */
     @Inject
     private ArticleMgmtService articleMgmtService;
-    
+
     /**
      * Statistic management service.
      */
@@ -138,12 +142,18 @@ public class ArticleProcessor {
     private StatisticMgmtService statisticMgmtService;
 
     /**
+     * Event manager.
+     */
+    @Inject
+    private EventManager eventManager;
+
+    /**
      * Shows the article view password form.
-     * 
+     *
      * @param context the specified context
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article-pwd", method = HTTPRequestMethod.GET)
     public void showArticlePwdForm(final HTTPRequestContext context,
@@ -196,11 +206,11 @@ public class ArticleProcessor {
 
     /**
      * Processes the article view password form submits.
-     * 
+     *
      * @param context the specified context
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article-pwd", method = HTTPRequestMethod.POST)
     public void onArticlePwdForm(final HTTPRequestContext context,
@@ -242,9 +252,9 @@ public class ArticleProcessor {
 
     /**
      * Gets random articles with the specified context.
-     * 
+     *
      * @param context the specified context
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/get-random-articles.do", method = HTTPRequestMethod.POST)
     public void getRandomArticles(final HTTPRequestContext context) throws Exception {
@@ -279,11 +289,11 @@ public class ArticleProcessor {
 
     /**
      * Gets relevant articles with the specified context.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/article/id/*/relevant/articles", method = HTTPRequestMethod.GET)
     public void getRelevantArticles(final HTTPRequestContext context,
@@ -338,9 +348,9 @@ public class ArticleProcessor {
 
     /**
      * Gets article content with the specified context.
-     * 
+     *
      * @param context the specified context
-     * @param request the specified request 
+     * @param request the specified request
      */
     @RequestProcessing(value = "/get-article-content", method = HTTPRequestMethod.GET)
     public void getArticleContent(final HTTPRequestContext context, final HttpServletRequest request) {
@@ -372,7 +382,7 @@ public class ArticleProcessor {
 
     /**
      * Gets articles paged with the specified context.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      */
@@ -429,7 +439,7 @@ public class ArticleProcessor {
 
     /**
      * Gets tag articles paged with the specified context.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      */
@@ -507,7 +517,7 @@ public class ArticleProcessor {
 
     /**
      * Gets tag articles paged with the specified context.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      */
@@ -578,7 +588,7 @@ public class ArticleProcessor {
 
     /**
      * Gets author articles paged with the specified context.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      */
@@ -642,12 +652,12 @@ public class ArticleProcessor {
 
     /**
      * Shows author articles with the specified context.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
      * @param response the specified response
      * @throws IOException io exception
-     * @throws JSONException json exception 
+     * @throws JSONException json exception
      */
     @RequestProcessing(value = "/authors/**", method = HTTPRequestMethod.GET)
     public void showAuthorArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -730,7 +740,7 @@ public class ArticleProcessor {
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
-            
+
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -745,10 +755,10 @@ public class ArticleProcessor {
 
     /**
      * Shows archive articles with the specified context.
-     * 
+     *
      * @param context the specified context
      * @param request the specified request
-     * @param response the specified response 
+     * @param response the specified response
      */
     @RequestProcessing(value = "/archives/**", method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context,
@@ -825,7 +835,7 @@ public class ArticleProcessor {
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            
+
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -840,7 +850,7 @@ public class ArticleProcessor {
 
     /**
      * Updates article random double value.
-     * 
+     *
      * @param request the specified request
      */
     @RequestProcessing(value = "/article-random-double-gen.do", method = HTTPRequestMethod.GET)
@@ -863,11 +873,11 @@ public class ArticleProcessor {
 
     /**
      * Shows an article with the specified context.
-     * 
+     *
      * @param context the specified context
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -903,8 +913,6 @@ public class ArticleProcessor {
 
             articleQueryService.markdown(article);
 
-            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
             // For <meta name="description" content="${article.articleAbstract}"/>
             final String metaDescription = Jsoup.parse(article.optString(Article.ARTICLE_ABSTRACT)).text();
 
@@ -937,8 +945,18 @@ public class ArticleProcessor {
             if (!Requests.hasBeenServed(request, response)) {
                 articleMgmtService.incViewCount(articleId);
             }
-            
+
             statisticMgmtService.incBlogViewCount(request, response);
+
+            // Fire [Before Render Article] event
+            final JSONObject eventData = new JSONObject();
+
+            eventData.put(Article.ARTICLE, article);
+            try {
+                eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.BEFORE_RENDER_ARTICLE, eventData));
+            } catch (final EventException e) {
+                LOGGER.log(Level.ERROR, "Fires [" + EventTypes.BEFORE_RENDER_ARTICLE + "] event failed", e);
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -952,7 +970,7 @@ public class ArticleProcessor {
 
     /**
      * Sorts the specified articles by the specified preference.
-     * 
+     *
      * @param preference the specified preference
      * @param articles the specified articles
      * @throws JSONException json exception
@@ -969,7 +987,7 @@ public class ArticleProcessor {
 
     /**
      * Gets archive date from the specified URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return archive date
      */
@@ -981,7 +999,7 @@ public class ArticleProcessor {
 
     /**
      * Gets the request page number from the specified request URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return page number, returns {@code -1} if the specified request URI
      * can not convert to an number
@@ -994,7 +1012,7 @@ public class ArticleProcessor {
 
     /**
      * Gets author id from the specified URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return author id
      */
@@ -1012,7 +1030,7 @@ public class ArticleProcessor {
 
     /**
      * Gets the request page number from the specified request URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return page number
      */
@@ -1024,7 +1042,7 @@ public class ArticleProcessor {
 
     /**
      * Gets the request page number from the specified request URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return page number
      */
@@ -1034,7 +1052,7 @@ public class ArticleProcessor {
 
     /**
      * Gets the request tag from the specified request URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return tag
      */
@@ -1050,7 +1068,7 @@ public class ArticleProcessor {
 
     /**
      * Gets the request page number from the specified request URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return page number
      */
@@ -1060,7 +1078,7 @@ public class ArticleProcessor {
 
     /**
      * Gets the request archive from the specified request URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return archive, for example "2012/05"
      */
@@ -1076,7 +1094,7 @@ public class ArticleProcessor {
 
     /**
      * Gets the request page number from the specified request URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return page number
      */
@@ -1086,7 +1104,7 @@ public class ArticleProcessor {
 
     /**
      * Gets the request author id from the specified request URI.
-     * 
+     *
      * @param requestURI the specified request URI
      * @return author id
      */
@@ -1102,7 +1120,7 @@ public class ArticleProcessor {
 
     /**
      * Gets the request page number from the specified request URI and author id.
-     * 
+     *
      * @param requestURI the specified request URI
      * @param authorId the specified author id
      * @return page number
@@ -1134,11 +1152,11 @@ public class ArticleProcessor {
 
     /**
      * Prepares the specified data model for rendering author articles.
-     * 
+     *
      * @param pageNums the specified page numbers
      * @param dataModel the specified data model
      * @param pageCount the specified page count
-     * @param currentPageNum the specified  current page number 
+     * @param currentPageNum the specified current page number
      * @param articles the specified articles
      * @param author the specified author
      * @throws ServiceException service exception
@@ -1182,7 +1200,7 @@ public class ArticleProcessor {
 
     /**
      * Prepares the specified data model for rendering archive articles.
-     * 
+     *
      * @param preference the specified preference
      * @param dataModel the specified data model
      * @param articles the specified articles
@@ -1191,7 +1209,7 @@ public class ArticleProcessor {
      * @param archiveDateString the specified archive data string
      * @param archiveDate the specified archive date
      * @return page title for caching
-     * @throws Exception  exception
+     * @throws Exception exception
      */
     private String prepareShowArchiveArticles(final JSONObject preference,
         final Map<String, Object> dataModel,
@@ -1246,7 +1264,7 @@ public class ArticleProcessor {
 
     /**
      * Prepares the specified data model for rendering article.
-     * 
+     *
      * @param preference the specified preference
      * @param dataModel the specified data model
      * @param article the specified article

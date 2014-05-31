@@ -158,7 +158,6 @@
 
                        $(document).ready(function() {
                            page.load();
-                           ease.scrollToCmt();
                            // emotions
                            page.replaceCommentsEm("#comments .article-body");
                            <#nested>

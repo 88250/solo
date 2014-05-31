@@ -237,20 +237,7 @@ var ease = {
     scrollEvent: function () {
         var _it = this;
         $(window).scroll(function () {
-            var y = $(window).scrollTop(),
-            topH = 0;
-            if ($("#top").css("display") === "block") {
-                topH = $("#top").height();
-            }
-        
-            // header event
-            if (y >= _it.headerH + topH) {
-                _it.$nav.css("position", "fixed");
-                _it.$body.css("marginTop", "55px");
-            } else {
-                _it.$nav.css("position" ,"inherit");
-                _it.$body.css("marginTop", "0");
-            }
+            var y = $(window).scrollTop();
             
             // go top icon show or hide
             if (y > _it.headerH) {
@@ -293,15 +280,6 @@ var ease = {
         $(".article-body").each(function () {
             this.innerHTML = Util.replaceEmString($(this).html());
         });
-    },
-    
-    /**
-     * @description 纠正评论滚动位置偏差
-     */
-    scrollToCmt: function () {
-        if ($(window.location.hash).length == 1) {
-            $(window).scrollTop($(window.location.hash).offset().top - 60);
-        }    
     }
 };
     
