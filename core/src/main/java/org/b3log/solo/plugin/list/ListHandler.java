@@ -43,24 +43,10 @@ public class ListHandler extends AbstractEventListener<JSONObject> {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(ListHandler.class.getName());
-    
-    /**
-     * Instance.
-     */
-    private static final ListHandler INSTANCE = new ListHandler();
 
     @Override
     public String getEventType() {
         return EventTypes.BEFORE_RENDER_ARTICLE;
-    }
-    
-    /**
-     * Gets the instance.
-     * 
-     * @return instance
-     */
-    public static ListHandler getInstance() {
-        return INSTANCE;
     }
 
     @Override
@@ -73,7 +59,7 @@ public class ListHandler extends AbstractEventListener<JSONObject> {
         final Document doc = Jsoup.parse(content);
 
         final StringBuilder listBuilder = new StringBuilder();
-        
+
         listBuilder.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + Latkes.getStaticPath() + "/plugins/list/style.css\" />");
 
         final Elements hs = doc.select("h1, h2, h3, h4, h5");

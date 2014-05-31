@@ -181,8 +181,8 @@ public class PluginMgmtService {
                     pluginRepository.update(pluginId, plugin.toJSONObject());
 
                     transaction.commit();
-
-                    pluginManager.update(plugin);
+                    
+                    plugin.changeStatus();
 
                     ret.put(Keys.STATUS_CODE, true);
                     ret.put(Keys.MSG, langs.get("setSuccLabel"));
