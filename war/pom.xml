@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo WAR POM.
-    Version: 2.0.1.10, Apr 24, 2014
+    Version: 2.0.2.10, Jul 9, 2014
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -62,7 +62,7 @@
                 <version>8.1.14.v20131031</version>
                 <configuration>
                     <connectors>
-                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                        <connector implementation="org.eclipse.jetty.server.bio.SocketConnector">
                             <port>8080</port>
                         </connector>
                     </connectors>  
