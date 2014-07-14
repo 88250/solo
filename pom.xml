@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo parent POM.
-    Version: 2.0.4.12, Jul 1, 2014
+    Version: 2.0.4.13, Jul 14, 2014
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -267,6 +267,7 @@
                         <include>**/src/*/webapp/css/*.css</include>
                         <include>**/src/*/webapp/skins/*/js/*.js</include>
                         <include>**/src/*/webapp/skins/*/css/*.css</include>
+                        <include>**/src/*/webapp/skins/**/*.properties</include>
                         <include>**/src/*/webapp/js/admin/*.js</include>
                         <include>**/src/*/resources/*.properties</include>
                         <include>**/src/*/webapp/WEB-INF/*.xml</include>
