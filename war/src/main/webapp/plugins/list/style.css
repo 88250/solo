@@ -15,15 +15,17 @@
 */
 
 /**
-* 403, 404, 500, article-pwd, init, login and kill-browser page style.
-*
-* @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.0.0, May 31, 2014
-*/
+ * List plugin style.
+ *
+ * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.1.0.0, Jul 14, 2014
+ */
 
 .b3-solo-list {
     margin: 20px 30px;
     list-style: none;
+    font-size: 0.8em;
 }
 
 .b3-solo-list-h1 {
