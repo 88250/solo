@@ -18,7 +18,7 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.5, Oct 26, 2013
+ * @version 1.1.3.5, Jul 23, 2014
  */
 var Page = function(tips) {
     this.currentCommentId = "";
@@ -294,7 +294,7 @@ $.extend(Page.prototype, {
                 // get brush settings
                 var languages = [],
                         isScrip = false;
-                $(".article-body pre").each(function() {
+                $(".article-body pre, .code-highlight pre").each(function() {
                     var name = this.className.split(";")[0];
                     var language = name.substr(7, name.length - 1);
                     if (this.className.indexOf("html-script: true") > -1 &&
@@ -329,7 +329,7 @@ $.extend(Page.prototype, {
     parseLanguage: function(obj) {
         var isPrettify = false,
                 isSH = false;
-        $(".article-body pre").each(function() {
+        $(".article-body pre, .code-highlight pre").each(function() {
             if (this.className.indexOf("brush") > -1) {
                 isSH = true;
             }
