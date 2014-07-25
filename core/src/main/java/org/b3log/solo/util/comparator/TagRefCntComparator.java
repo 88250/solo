@@ -22,13 +22,12 @@ import org.json.JSONObject;
 
 
 /**
- * Tag comparator by reference count.
+ * Tag comparator by reference count descent.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Dec 30, 2010
+ * @version 1.0.0.2, Jul 24, 2014
  */
-public final class TagRefCntComparator
-    implements Comparator<JSONObject> {
+public final class TagRefCntComparator implements Comparator<JSONObject> {
 
     /**
      * Package default constructor.
@@ -41,7 +40,7 @@ public final class TagRefCntComparator
             final Integer refCnt1 = tag1.getInt(Tag.TAG_REFERENCE_COUNT);
             final Integer refCnt2 = tag2.getInt(Tag.TAG_REFERENCE_COUNT);
 
-            return refCnt1.compareTo(refCnt2);
+            return refCnt2.compareTo(refCnt1);
         } catch (final Exception e) {
             throw new IllegalStateException(e);
         }
