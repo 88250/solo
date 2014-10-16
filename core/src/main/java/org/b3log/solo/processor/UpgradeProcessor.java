@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.1.12, Apr 24, 2014
+ * @version 1.1.1.13, Oct 16, 2014
  * @since 0.3.1
  */
 @RequestProcessor
@@ -95,7 +95,7 @@ public class UpgradeProcessor {
     /**
      * Whether the email has been sent.
      */
-    private boolean sent = false;
+    private static boolean sent = false;
 
     /**
      * Language service.
@@ -106,7 +106,7 @@ public class UpgradeProcessor {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "0.6.5";
+    private static final String FROM_VER = "0.6.6";
 
     /**
      * New version.

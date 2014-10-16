@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -58,7 +59,7 @@ import org.json.JSONObject;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Aug 29, 2013
+ * @version 1.1.0.8, Jul 10, 2014
  * @since 0.5.5
  */
 @RequestProcessor
@@ -149,6 +150,7 @@ public class CommentReceiver {
      *     }
      * }
      * </pre>
+     *
      * @param response the specified http servlet response
      * @param context the specified http request context
      * @throws Exception exception
@@ -207,8 +209,9 @@ public class CommentReceiver {
             final String commentId = symphonyCmt.optString(Keys.OBJECT_ID);
             String commentContent = symphonyCmt.getString(Comment.COMMENT_CONTENT);
 
-            commentContent += "<br/><br/><p style='font-size: 12px;'><i>该评论同步自 <a href='http://symphony.b3log.org/article/"
-                + symphonyCmt.optString("commentSymphonyArticleId") + "#" + commentId + "' target='_blank'>B3log 社区</a></i></p>";
+            commentContent += "<p class='cmtFromSym'><i>该评论同步自 <a href='" + SoloServletListener.B3LOG_SYMPHONY_SERVE_PATH
+                + "/article/" + symphonyCmt.optString("commentSymphonyArticleId") + "#" + commentId
+                + "' target='_blank'>B3log 社区</a></i></p>";
             final String originalCommentId = symphonyCmt.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();

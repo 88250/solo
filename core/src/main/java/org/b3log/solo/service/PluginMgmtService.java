@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -181,8 +181,8 @@ public class PluginMgmtService {
                     pluginRepository.update(pluginId, plugin.toJSONObject());
 
                     transaction.commit();
-
-                    pluginManager.update(plugin);
+                    
+                    plugin.changeStatus();
 
                     ret.put(Keys.STATUS_CODE, true);
                     ret.put(Keys.MSG, langs.get("setSuccLabel"));

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ package org.b3log.solo.event;
  * Event types.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Oct 17, 2012
+ * @version 1.1.0.7, May 30, 2014
  * @since 0.3.1
  */
 public final class EventTypes {
@@ -39,6 +39,11 @@ public final class EventTypes {
      * Indicates a remove article event.
      */
     public static final String REMOVE_ARTICLE = "Remove Article";
+    
+    /**
+     * Indicates a before render article event.
+     */
+    public static final String BEFORE_RENDER_ARTICLE = "Before Render Article";
 
     /**
      * Indicates an add comment to article event.

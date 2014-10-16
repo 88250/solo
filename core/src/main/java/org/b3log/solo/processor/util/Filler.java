@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, B3log Team
+ * Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014, B3log Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.6.10, Feb 11, 2014
+ * @version 1.0.7.10, Jul 3, 2014
  * @since 0.3.1
  */
 @Service
@@ -369,7 +369,9 @@ public class Filler {
             archiveDates2.add(archiveDates.get(0));
 
             if (1 < archiveDates.size()) { // XXX: Workaround, remove the duplicated archive dates
-                for (final JSONObject archiveDate : archiveDates) {
+                for (int i = 1; i < archiveDates.size(); i++) {
+                    final JSONObject archiveDate = archiveDates.get(i);
+                    
                     final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
                     final String dateString = DateFormatUtils.format(time, "yyyy/MM");
 
