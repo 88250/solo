@@ -15,6 +15,7 @@
  */
 package org.b3log.solo;
 
+
 import java.util.ResourceBundle;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
@@ -50,6 +51,7 @@ import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
+
 
 /**
  * B3log Solo servlet listener.
@@ -149,13 +151,11 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     @Override
-    public void sessionCreated(final HttpSessionEvent httpSessionEvent) {
-    }
+    public void sessionCreated(final HttpSessionEvent httpSessionEvent) {}
 
     // Note: This method will never invoked on GAE production environment
     @Override
-    public void sessionDestroyed(final HttpSessionEvent httpSessionEvent) {
-    }
+    public void sessionDestroyed(final HttpSessionEvent httpSessionEvent) {}
 
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
@@ -175,7 +175,7 @@ public final class SoloServletListener extends AbstractServletListener {
             final HttpSession session = httpServletRequest.getSession();
 
             LOGGER.log(Level.DEBUG, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", session.getId(),
-                       httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), session.isNew());
+                httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), session.isNew());
             // Online visitor count
             final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
 
