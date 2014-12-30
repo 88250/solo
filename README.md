@@ -22,7 +22,7 @@ Solo 是一个专业、简约、稳定、极速的开源 Java 博客程序。你
 ## Contact Us
 
 * QQ Group: 13139268
-* support@liuyun.io
+* support@liuyun.io (purchase purpose)
 
 ----
 
