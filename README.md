@@ -8,7 +8,7 @@ Request Features/Report Bugs: https://github.com/b3log/b3log-solo/issues/new
 
 * QQ Group: 13139268
 * [User Guide](https://github.com/b3log/b3log-solo/wiki/Pre_installation)
-* [Dev Guide[(https://github.com/b3log/b3log-solo/wiki/Pre_dev)
+* [Dev Guide](https://github.com/b3log/b3log-solo/wiki/Pre_dev)
   * [Skin Dev Guide](https://github.com/b3log/b3log-solo/wiki/Develop_steps)
   * [Plugin Dev Guide](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
 
