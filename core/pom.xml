@@ -192,12 +192,6 @@
                 </executions>
             </plugin>
             
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>${maven-cobertura-plugin.version}</version>
-            </plugin>
-            
         </plugins>
     </build>
     
