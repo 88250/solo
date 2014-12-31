@@ -27,8 +27,8 @@ Solo 是一个专业、简约、稳定、极速的开源 Java 博客程序。你
 
 * **Index - Skin (ease)**
 ![skin-ease](https://cloud.githubusercontent.com/assets/873584/5584735/e1634c80-90d1-11e4-80a9-bae4ca8eb37d.png)
-* **Admin - Post (TinyMCE)**
-![post_tinymce](https://cloud.githubusercontent.com/assets/873584/5584725/848cdf58-90d1-11e4-8d8a-f186e05db2cd.png)
+* **Admin - Post (TinyMCE/Markdown)**
+<img src="https://cloud.githubusercontent.com/assets/873584/5584725/848cdf58-90d1-11e4-8d8a-f186e05db2cd.png" width="40%" /><img src="https://cloud.githubusercontent.com/assets/873584/5584835/69328840-90d4-11e4-8875-744b56c33360.png" width="40%" />
 * **Admin - Post (Markdown)**
 ![post_markdown](https://cloud.githubusercontent.com/assets/873584/5584835/69328840-90d4-11e4-8875-744b56c33360.png)
 * **Admin - Skins**
