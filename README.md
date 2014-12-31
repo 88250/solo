@@ -1,4 +1,4 @@
-# Solo [![Build Status](https://travis-ci.org/b3log/b3log-solo.png?branch=master)](https://travis-ci.org/b3log/b3log-solo)
+# Solo [![Build Status](https://img.shields.io/travis/b3log/b3log-solo.svg?style=flat)](https://travis-ci.org/b3log/b3log-solo)[![Coverage Status](https://img.shields.io/coveralls/b3log/b3log-solo.svg?style=flat)](https://coveralls.io/r/b3log/b3log-solo)
 
 ## Intro
 
