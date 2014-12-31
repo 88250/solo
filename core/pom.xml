@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo core.
-    Version: 2.0.1.7, Oct 16, 2014
+    Version: 2.1.1.7, Dec 31, 2014
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -130,6 +130,19 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${coveralls-maven-plugin.version}</version>
+                <configuration>
+                    <repoToken>PmmgdTzVuYQAsiOHNZ67bNDuqwDRSKvlm</repoToken>
+                    <format>xml</format>
+                    <maxmem>256m</maxmem>
+                    <!-- aggregated reports for multi-module projects -->
+                    <aggregate>true</aggregate>
+                </configuration>
             </plugin>
             
             <plugin>
