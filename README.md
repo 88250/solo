@@ -6,6 +6,17 @@ Solo is a professional, simple, stable and good performance open source Java blo
 
 Solo 是一个专业、简约、稳定、极速的开源 Java 博客程序。你可以自己搭建使用，也可以通过购买我们搭建好的服务来直接使用，详情请看[这里](http://b3log.org/services)。
 
+## Screenshots
+
+* **Index - Skin (ease)**
+![skin-ease](https://cloud.githubusercontent.com/assets/873584/5584735/e1634c80-90d1-11e4-80a9-bae4ca8eb37d.png)
+* **Admin - Index**
+![admin-index](https://cloud.githubusercontent.com/assets/873584/5584727/855ab0ea-90d1-11e4-8504-c485a8f791df.png)
+* **Admin - Post**
+![post_tinymce](https://cloud.githubusercontent.com/assets/873584/5584725/848cdf58-90d1-11e4-8d8a-f186e05db2cd.png)
+* **Admin - Preference**
+![pref](https://cloud.githubusercontent.com/assets/873584/5584724/8484c8c2-90d1-11e4-9e28-71c30dc8bfda.png)
+
 ## Top Cases
 
 * [Lanr](http://lanr.b3log.org)
