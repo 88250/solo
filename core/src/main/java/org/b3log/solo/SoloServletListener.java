@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Oct 16, 2014
+ * @version 1.2.0.4, Jan 12, 2015
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -86,11 +86,16 @@ public final class SoloServletListener extends AbstractServletListener {
      * B3log Rhythm address.
      */
     public static final String B3LOG_RHYTHM_SERVE_PATH;
-
+    
     /**
      * B3log Symphony address.
      */
     public static final String B3LOG_SYMPHONY_SERVE_PATH;
+    
+    /**
+     * Favicon API.
+     */
+    public static final String FAVICON_API;
 
     /**
      * Bean manager.
@@ -102,6 +107,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         B3LOG_RHYTHM_SERVE_PATH = b3log.getString("rhythm.servePath");
         B3LOG_SYMPHONY_SERVE_PATH = b3log.getString("symphony.servePath");
+        FAVICON_API = b3log.getString("faviconAPI");
     }
 
     @Override

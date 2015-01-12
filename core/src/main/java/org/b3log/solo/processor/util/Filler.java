@@ -617,6 +617,7 @@ public class Filler {
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Common.IS_LOGGED_IN, null != userQueryService.getCurrentUser(request));
+            dataModel.put(Common.FAVICON_API, SoloServletListener.FAVICON_API);
 
             final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);
 
