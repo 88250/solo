@@ -34,7 +34,12 @@ Solo 是一个专业、简约、稳定、极速的开源 Java 博客程序。你
 
 ## Top Cases
 
+Here are some our most valuable business users' cases:
+
+以下是我们的最有价值商业用户案例：
+
 * [Lanr](http://lanr.b3log.org)
+* [木子](http://369595.b3log.org)
 * [Vanessa](http://vanessa.b3log.org)
 * [简约设计の艺术](http://88250.b3log.org)
 
