@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -258,7 +258,7 @@ $.extend(Admin.prototype, {
 });
 
 var admin = new Admin();/*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -349,7 +349,7 @@ admin.editors.articleEditor = {};
 admin.editors.abstractEditor = {};
 admin.editors.pageEditor = {};
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -474,7 +474,7 @@ admin.editors.tinyMCE = {
     }
 };
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -573,7 +573,7 @@ admin.editors.KindEditor = {
     }
 };
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -742,7 +742,7 @@ admin.editors.CodeMirror = {
         this[id].setValue(content);
     }
 };/*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -856,7 +856,7 @@ $.extend(TablePaginate.prototype, {
     }
 });
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1453,7 +1453,7 @@ admin.register.article = {
         $("#tipMsg").text("");
     }
 };/*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1583,7 +1583,7 @@ admin.comment = {
     }
 };
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1732,7 +1732,7 @@ admin.register["article-list"] =  {
     "init": admin.articleList.init,
     "refresh": admin.articleList.getList
 }/*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1845,7 +1845,7 @@ admin.register["draft-list"] =  {
     "init": admin.draftList.init,
     "refresh": admin.draftList.getList
 };/*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2284,7 +2284,7 @@ admin.register["page-list"] =  {
     "refresh": admin.pageList.getList
 }
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2411,7 +2411,7 @@ admin.register.others =  {
     }
 };
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -2761,7 +2761,7 @@ admin.register["link-list"] =  {
     "init": admin.linkList.init,
     "refresh": admin.linkList.getList
 }/*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3023,7 +3023,7 @@ admin.register["preference"] =  {
     }
 };
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3199,7 +3199,7 @@ admin.register["plugin-list"] = {
     }
 };
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3558,7 +3558,7 @@ admin.register["user-list"] = {
         admin.clearTip();
     }
 }/*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3708,7 +3708,7 @@ admin.register["comment-list"] =  {
     "init": admin.commentList.init,
     "refresh": admin.commentList.getList
 }/*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3842,7 +3842,7 @@ admin.plugin = {
     }
 };
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -3880,7 +3880,7 @@ admin.register.main =  {
     }
 };
 /*
- * Copyright (c) 2015, b3log.org
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
