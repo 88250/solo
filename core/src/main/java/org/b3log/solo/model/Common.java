@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014, B3log Team
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.0.5.1, Jul 2, 2013
+ * @version 1.1.5.1, Jan 12, 2015
  * @since 0.3.1
  */
 public final class Common {
@@ -175,6 +175,11 @@ public final class Common {
      * Key of is logged in.
      */
     public static final String IS_LOGGED_IN = "isLoggedIn";
+    
+    /**
+     * Key of favicon API.
+     */
+    public static final String FAVICON_API = "faviconAPI";
 
     /**
      * Key of is mobile request.

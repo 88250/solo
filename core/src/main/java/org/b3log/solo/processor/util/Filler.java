@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2009, 2010, 2011, 2012, 2013, 2014, B3log Team
+ * Copyright (c) 2010-2015, b3log.org
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -617,6 +617,7 @@ public class Filler {
             dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Common.IS_LOGGED_IN, null != userQueryService.getCurrentUser(request));
+            dataModel.put(Common.FAVICON_API, SoloServletListener.FAVICON_API);
 
             final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);
 

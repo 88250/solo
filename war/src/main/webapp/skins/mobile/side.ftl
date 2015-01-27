@@ -99,7 +99,7 @@
                 <li>
                      <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">
                         <img alt="${link.linkTitle}"
-                             src="http://www.google.com/s2/u/0/favicons?domain=<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" /></a>
+                             src="${faviconAPI}<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" width="16" height="16" /></a>
                     <a rel="friend" href="${link.linkAddress}" title="${link.linkTitle}" target="_blank">${link.linkTitle}
                     </a>
                     <#-- ${link.linkDescription} -->
