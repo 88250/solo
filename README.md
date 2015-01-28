@@ -55,6 +55,16 @@ Here are some our most valuable business users' cases:
 * QQ Group: 13139268
 * support@liuyun.io (purchase purpose)
 
+## Terms
+
+* Solo is open sourced under the [Apache License 2.0](https://github.com/b3log/wide/blob/master/LICENSE)
+* If you want to use Solo for commercial purpose, please mail to support@liuyun.io for request a commercial license
+* Copyright (c) [b3log.org](http://b3log.org), all rights reserved
+
+## Credits
+
+* [Latke](https://github.com/b3log/b3log-latke)
+
 ----
 
 **平等，自由，奔放**
