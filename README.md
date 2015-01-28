@@ -65,12 +65,4 @@ Here are some our most valuable business users' cases:
 ## Credits
 
 * [Latke](https://github.com/b3log/b3log-latke)
-
-----
-
-**平等，自由，奔放**
-
-**Equality, Freedom, Passion**
-
-----
-Thanks To http://www.jetbrains.com/idea/index.html 
+* [IntelliJ IDEA](http://www.jetbrains.com/idea/index.html)
