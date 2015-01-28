@@ -2,9 +2,9 @@
 
 ## Intro
 
-Solo is a professional, simple, stable and good performance open source Java blogging program. You can setup it by yourself or buy our provided service, see [here](http://b3log.org/services) for more details.
+Solo is a professional, simple, stable and good performance open source Java blogging program. You can setup it by yourself or buy our provided service, see [here](http://b3log.org/services/#solo) for more details.
 
-Solo 是一个专业、简约、稳定、极速的开源 Java 博客程序。你可以自己搭建使用，也可以通过购买我们搭建好的服务来直接使用，详情请看[这里](http://b3log.org/services)。
+Solo 是一个专业、简约、稳定、极速的开源 Java 博客程序。你可以自己搭建使用，也可以通过购买我们搭建好的服务来直接使用，详情请看[这里](http://b3log.org/services/#solo)。
 
 ## Features 
 
@@ -34,7 +34,12 @@ Solo 是一个专业、简约、稳定、极速的开源 Java 博客程序。你
 
 ## Top Cases
 
+Here are some our most valuable business users' cases:
+
+以下是我们的最有价值商业用户案例：
+
 * [Lanr](http://lanr.b3log.org)
+* [木子](http://369595.b3log.org)
 * [Vanessa](http://vanessa.b3log.org)
 * [简约设计の艺术](http://88250.b3log.org)
 
@@ -49,6 +54,16 @@ Solo 是一个专业、简约、稳定、极速的开源 Java 博客程序。你
 
 * QQ Group: 13139268
 * support@liuyun.io (purchase purpose)
+
+## Terms
+
+* Solo is open sourced under the [Apache License 2.0](https://github.com/b3log/b3log-solo/blob/master/LICENSE)
+* If you want to use Solo for commercial purpose, please mail to support@liuyun.io for request a commercial license
+* Copyright (c) [b3log.org](http://b3log.org), all rights reserved
+
+## Credits
+
+* [Latke](https://github.com/b3log/b3log-latke)
 
 ----
 
