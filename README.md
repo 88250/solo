@@ -57,7 +57,7 @@ Here are some our most valuable business users' cases:
 
 ## Terms
 
-* Solo is open sourced under the [Apache License 2.0](https://github.com/b3log/wide/blob/master/LICENSE)
+* Solo is open sourced under the [Apache License 2.0](https://github.com/b3log/b3log-solo/blob/master/LICENSE)
 * If you want to use Solo for commercial purpose, please mail to support@liuyun.io for request a commercial license
 * Copyright (c) [b3log.org](http://b3log.org), all rights reserved
 
