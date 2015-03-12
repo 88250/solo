@@ -567,7 +567,8 @@ public class InitService {
         ret.put(COMMENTABLE, Default.DEFAULT_COMMENTABLE);
         ret.put(VERSION, SoloServletListener.VERSION);
         ret.put(ARTICLE_LIST_STYLE, Default.DEFAULT_ARTICLE_LIST_STYLE);
-        ret.put(KEY_OF_SOLO, Default.DEFAULT_KEY_OF_SOLO);
+        // ret.put(KEY_OF_SOLO, Default.DEFAULT_KEY_OF_SOLO);
+        ret.put(KEY_OF_SOLO, Ids.genTimeMillisId());
         ret.put(FEED_OUTPUT_MODE, Default.DEFAULT_FEED_OUTPUT_MODE);
         ret.put(FEED_OUTPUT_CNT, Default.DEFAULT_FEED_OUTPUT_CNT);
         ret.put(EDITOR_TYPE, Default.DEFAULT_EDITOR_TYPE);

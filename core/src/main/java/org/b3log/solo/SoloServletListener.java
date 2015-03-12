@@ -37,8 +37,6 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
-import org.b3log.solo.event.ping.AddArticleGoogleBlogSearchPinger;
-import org.b3log.solo.event.ping.UpdateArticleGoogleBlogSearchPinger;
 import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.event.rhythm.ArticleUpdater;
@@ -57,7 +55,7 @@ import org.json.JSONObject;
  * B3log Solo servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.4, Jan 12, 2015
+ * @version 1.2.0.5, Mar 12, 2015
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -86,12 +84,12 @@ public final class SoloServletListener extends AbstractServletListener {
      * B3log Rhythm address.
      */
     public static final String B3LOG_RHYTHM_SERVE_PATH;
-    
+
     /**
      * B3log Symphony address.
      */
     public static final String B3LOG_SYMPHONY_SERVE_PATH;
-    
+
     /**
      * Favicon API.
      */
@@ -248,12 +246,14 @@ public final class SoloServletListener extends AbstractServletListener {
             // Comment
             eventManager.registerListener(new ArticleCommentReplyNotifier());
             eventManager.registerListener(new PageCommentReplyNotifier());
+
             // Article
-            eventManager.registerListener(new AddArticleGoogleBlogSearchPinger());
-            eventManager.registerListener(new UpdateArticleGoogleBlogSearchPinger());
+            // eventManager.registerListener(new AddArticleGoogleBlogSearchPinger());
+            // eventManager.registerListener(new UpdateArticleGoogleBlogSearchPinger());
             // Plugin
             eventManager.registerListener(new PluginRefresher());
             eventManager.registerListener(new ViewLoadEventHandler());
+
             // Sync
             eventManager.registerListener(new ArticleSender());
             eventManager.registerListener(new ArticleUpdater());
