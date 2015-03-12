@@ -111,7 +111,8 @@
                         <input id="keyOfSolo" class="normalInput" type="text" readonly="readonly"/>
                     </td>
                     <td>
-                        <button onclick="admin.preference.update()">${updateLabel}</button>
+<!--                        <button onclick="admin.preference.update()">${updateLabel}</button>-->
+<label></label>
                     </td>
                 </tr>
             </tbody>

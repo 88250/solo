@@ -38,7 +38,7 @@
     <cron>
         <url>/blog/symphony/user</url>
         <description>Sync user to http://symphony.b3log.org</description>
-        <schedule>every 1 minutes</schedule>
+        <schedule>every 24 hours</schedule>
     </cron>
     
     <!-- http://code.google.com/p/b3log-solo/issues/detail?id=308#c4
