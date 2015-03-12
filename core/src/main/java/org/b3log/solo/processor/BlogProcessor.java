@@ -16,12 +16,14 @@
 package org.b3log.solo.processor;
 
 
+import java.net.URL;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -29,12 +31,17 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.service.ArticleQueryService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
@@ -46,11 +53,16 @@ import org.json.JSONObject;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Jul 18, 2014
+ * @version 1.2.0.3, Mar 12, 2015
  * @since 0.4.6
  */
 @RequestProcessor
 public class BlogProcessor {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(BlogProcessor.class.getName());
 
     /**
      * Article query service.
@@ -75,6 +87,17 @@ public class BlogProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
+
+    /**
+     * Preference query service.
+     */
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
+
+    /**
+     * URL fetch service.
+     */
+    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
      * Gets blog information.
@@ -121,6 +144,51 @@ public class BlogProcessor {
         if (RuntimeEnv.LOCAL == runtimeEnv) {
             jsonObject.put("runtimeDatabase", Latkes.getRuntimeDatabase());
         }
+    }
+
+    /**
+     * Sync user to http://symphony.b3log.org.
+     *
+     * @param context the specified context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/blog/symphony/user", method = HTTPRequestMethod.GET)
+    public void syncUser(final HTTPRequestContext context) throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+
+        renderer.setJSONObject(jsonObject);
+
+        if (Latkes.getServePath().contains("localhost")) {
+            return;
+        }
+        
+        final JSONObject preference = preferenceQueryService.getPreference();
+
+        if (null == preference) {
+            return; // not init yet
+        }
+
+        final HTTPRequest httpRequest = new HTTPRequest();
+
+        httpRequest.setURL(new URL(SoloServletListener.B3LOG_SYMPHONY_SERVE_PATH + "/apis/user"));
+        httpRequest.setRequestMethod(HTTPRequestMethod.POST);
+        final JSONObject requestJSONObject = new JSONObject();
+
+        final JSONObject admin = userQueryService.getAdmin();        
+
+        requestJSONObject.put(User.USER_NAME, admin.getString(User.USER_NAME));
+        requestJSONObject.put(User.USER_EMAIL, admin.getString(User.USER_EMAIL));
+        requestJSONObject.put(User.USER_PASSWORD, admin.getString(User.USER_PASSWORD));
+        requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
+        requestJSONObject.put("clientHost", Latkes.getServePath());
+
+        httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
+
+        urlFetchService.fetchAsync(httpRequest);
     }
 
     /**

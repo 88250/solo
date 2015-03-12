@@ -34,7 +34,13 @@
         <description>Online Visitor Refresher</description>
         <schedule>every 60 minutes</schedule>
     </cron>
-
+    
+    <cron>
+        <url>/blog/symphony/user</url>
+        <description>Sync user to http://symphony.b3log.org</description>
+        <schedule>every 1 minutes</schedule>
+    </cron>
+    
     <!-- http://code.google.com/p/b3log-solo/issues/detail?id=308#c4
     <cron>
         <url>/article-random-double-gen.do?cnt=10</url>
