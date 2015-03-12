@@ -110,9 +110,9 @@
                     <td width="160px">
                         <input id="keyOfSolo" class="normalInput" type="text" readonly="readonly"/>
                     </td>
-                    <td>
+<!--                    <td>
                         <button onclick="admin.preference.update()">${updateLabel}</button>
-                    </td>
+                    </td>-->
                 </tr>
             </tbody>
         </table>
