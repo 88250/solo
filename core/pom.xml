@@ -123,12 +123,14 @@
                     <input>${basedir}/src/main/java</input>
                 </configuration>
                 <executions>
+                    <!--
                     <execution>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>jacobe</goal>
                         </goals>
                     </execution>
+                    -->
                 </executions>
             </plugin>
             
@@ -179,16 +181,17 @@
                     <failOnViolation>true</failOnViolation>
                     <failsOnError>true</failsOnError>
                     <encoding>UTF-8</encoding>
-                    <!-- Do NOT skip code style check before committing -->
                     <skip>false</skip>
                 </configuration>
                 <executions>
+                    <!--
                     <execution>
                         <phase>compile</phase>
                         <goals>
                             <goal>checkstyle</goal>
                         </goals>
                     </execution>
+                    -->
                 </executions>
             </plugin>
             
