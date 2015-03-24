@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: B3log Solo GAE POM.
-    Version: 2.0.2.7, Oct 16, 2014
+    Version: 2.1.2.7, Mar 24, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -19,7 +19,7 @@
     <parent>
         <groupId>org.b3log</groupId>
         <artifactId>solo-war</artifactId>
-        <version>0.6.7</version>
+        <version>0.6.8</version>
     </parent>
     
     <properties>
