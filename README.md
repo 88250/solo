@@ -1,26 +1,22 @@
 # Solo [![Build Status](https://img.shields.io/travis/b3log/b3log-solo.svg?style=flat)](https://travis-ci.org/b3log/b3log-solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/b3log-solo.svg?style=flat)](https://coveralls.io/r/b3log/b3log-solo)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-~3K-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)
 
-## Intro
+## Introduction
 
-Solo is a professional, simple, stable and good performance open source Java blogging program. You can setup it by yourself or buy our provided service, see [here](http://b3log.org/services/#solo) for more details.
+Solo is a professional, simple, stable and good performance open source Java blogging system. You can setup it by yourself or buy our provided service, see [here](http://b3log.org/services/#solo) for more details.
 
-Solo 是一个专业、简约、稳定、极速的开源 Java 博客程序。你可以自己搭建使用，也可以通过购买我们搭建好的服务来直接使用，详情请看[这里](http://b3log.org/services/#solo)。
+Solo 是一个专业、简约、稳定、极速的开源 Java 博客系统。你可以自己搭建使用，也可以通过购买我们搭建好的服务来直接使用，详情请看[这里](http://b3log.org/services/#solo)。
 
 ## Features 
 
 * Tags
-* Ping Search Engine
-* Atom/RSS
-* Sitemap
-* Comment email notification
+* Atom/RSS, Sitemap
+* Comment/Reply email notification
 * Page & Post
+* Markdown/TinyMCE/KindEditor
 * Sticky/Random/Relvant post
 * Permalink
 * Draft, Sign
-* Multiple users
-* i18n
-* Themes
-* Plugins
+* Multiple users, i18n, Themes, Plugins
 * MetaWeblog API
 
 ## Screenshots
