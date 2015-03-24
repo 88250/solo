@@ -35,7 +35,7 @@ Here are some our most valuable business users' cases:
 以下是我们的最有价值商业用户案例：
 
 * [Lanr](http://lanr.b3log.org)
-* [木子](http://369595.b3log.org)
+* [木子](http://369595.com)
 * [Vanessa](http://vanessa.b3log.org)
 * [简约设计の艺术](http://88250.b3log.org)
 
