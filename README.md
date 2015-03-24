@@ -1,4 +1,4 @@
-# Solo [![Build Status](https://img.shields.io/travis/b3log/b3log-solo.svg?style=flat)](https://travis-ci.org/b3log/b3log-solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/b3log-solo.svg?style=flat)](https://coveralls.io/r/b3log/b3log-solo)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-~3K-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)
+# Solo [![Build Status](https://img.shields.io/travis/b3log/b3log-solo.svg?style=flat)](https://travis-ci.org/b3log/b3log-solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/b3log-solo.svg?style=flat)](https://coveralls.io/r/b3log/b3log-solo)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-~4K-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)
 
 ## Introduction
 
