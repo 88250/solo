@@ -1,5 +1,7 @@
 # Solo [![Build Status](https://img.shields.io/travis/b3log/b3log-solo.svg?style=flat)](https://travis-ci.org/b3log/b3log-solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/b3log-solo.svg?style=flat)](https://coveralls.io/r/b3log/b3log-solo)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-~4K-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)
 
+<img src="https://cloud.githubusercontent.com/assets/873584/6817919/72ffdb5c-d2e2-11e4-8be8-37ac1b08ff81.jpg"  width="48%" />
+
 ## Introduction
 
 Solo is a professional, simple, stable and good performance open source Java blogging system. You can setup it by yourself or buy our provided service, see [here](http://b3log.org/services/#solo) for more details.
