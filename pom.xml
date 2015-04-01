@@ -294,6 +294,8 @@
                     <excludes>
                         <exclude>**/src/main/java/**/package-info.java</exclude>
                         <exclude>**/src/*/webapp/js/lib/*.js</exclude>
+                        <exclude>**/src/*/webapp/js/**/*.min.js</exclude>
+                        <exclude>**/src/*/webapp/css/**/*.min.css</exclude>
                         <exclude>**/src/main/java/com/**/*.java</exclude>
                     </excludes>
 
@@ -309,12 +311,14 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
+                    <!--
                     <execution>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>format</goal>
                         </goals>
                     </execution>
+                    -->
                 </executions>
             </plugin>
             
