@@ -1,231 +1,214 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-    Description: B3log Solo core.
-    Version: 2.2.1.7, Mar 24, 2015
-    Author: Liang Ding
--->
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.b3log</groupId>
-    <artifactId>solo-core</artifactId>
-    <packaging>jar</packaging>
-    <name>B3log Solo (Core)</name>
-    <description>B3log Solo Core.</description>
+<!-- Description: B3log Solo core. Version: 2.2.1.7, Mar 24, 2015 Author: 
+	Liang Ding -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>solo-core</artifactId>
+	<packaging>jar</packaging>
+	<name>B3log Solo (Core)</name>
+	<description>B3log Solo Core.</description>
 
-    <parent>
-        <groupId>org.b3log</groupId>
-        <artifactId>solo</artifactId>
-        <version>0.6.8</version>
-    </parent>
-    
-    <dependencies>
-        <dependency>
-            <groupId>org.b3log</groupId>
-            <artifactId>latke</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>${servlet.version}</version>
-            <scope>provided</scope>
-        </dependency>
+	<parent>
+		<groupId>org.b3log</groupId>
+		<artifactId>solo</artifactId>
+		<version>0.6.8</version>
+	</parent>
 
-        <dependency>
-            <groupId>org.testng</groupId>
-            <artifactId>testng</artifactId>
-            <scope>test</scope>
-        </dependency>
+	<dependencies>
+		<dependency>
+			<groupId>org.b3log</groupId>
+			<artifactId>latke</artifactId>
+		</dependency>
 
-        <dependency>
-            <groupId>org.jsoup</groupId>
-            <artifactId>jsoup</artifactId>
-        </dependency>
-        
-        <!-- BEGIN GAE related dependencies just for test -->
-        <dependency>
-            <groupId>org.b3log</groupId>
-            <artifactId>latke-gae</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-api-1.0-sdk</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-api-labs</artifactId>
-            <version>${gae.version}</version>
-            <scope>test</scope>
-        </dependency>
-            
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-api-stubs</artifactId>
-            <version>${gae.version}</version>
-            <scope>test</scope>
-        </dependency>
-            
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-testing</artifactId>
-            <version>${gae.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- END GAE related dependencies just for test -->
-        
-        <dependency>
-            <groupId>org.tautua.markdownpapers</groupId>
-            <artifactId>markdownpapers-core</artifactId>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        
-    </dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>${servlet.version}</version>
+			<scope>provided</scope>
+		</dependency>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <excludes>
-                    <exclude>etc/</exclude>
-                </excludes>
-            </resource>
-        </resources>
-        
-        <plugins>
-            <plugin>
-                <groupId>com.tiobe.jacobe</groupId>
-                <artifactId>maven-jacobe-plugin</artifactId>
-                <version>1.0</version>
-                <configuration>
-                    <jacobeExecutable>${jacobeExecutable}</jacobeExecutable>
-                    <rules>
-                        <param>indent=4</param>
-                        <param>continuationindent=2</param>
-                    </rules>
-                    <configurationFile>../src/main/resources/etc/jacobe/sun.cfg</configurationFile>
-                    <comparisonThreshold>0.01</comparisonThreshold>
-                    <javadoc>private</javadoc>
-                    <noAssert>true</noAssert>
-                    <noEnum>false</noEnum>
-                    <noBackup>true</noBackup>
-                    <overwrite>true</overwrite>
-                    <outputExtension>formatted</outputExtension>
-                    <input>${basedir}/src/main/java</input>
-                </configuration>
-                <executions>
-                    <!--
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>jacobe</goal>
-                        </goals>
-                    </execution>
-                    -->
-                </executions>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <skipTests>false</skipTests>
-                </configuration>
-            </plugin>
-            
-            <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <configuration>
-                    <header>../src/main/resources/etc/header.txt</header>
-                </configuration>
-            </plugin>
-            
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <configuration>
-                    <show>private</show>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-sources</phase>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <!-- For source code style check -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>${maven-checkstyle-plugin.version}</version>
-                <inherited>false</inherited>
-                <configuration>
-                    <configLocation>src/main/resources/etc/beyondtrack_checks.xml</configLocation>
-                    <includeTestSourceDirectory>false</includeTestSourceDirectory>
-                    <excludes>
-                        com/**/*.java,
-                    </excludes>
-                    <consoleOutput>true</consoleOutput>
-                    <failOnViolation>true</failOnViolation>
-                    <failsOnError>true</failsOnError>
-                    <encoding>UTF-8</encoding>
-                    <skip>false</skip>
-                </configuration>
-                <executions>
-                    <!--
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>checkstyle</goal>
-                        </goals>
-                    </execution>
-                    -->
-                </executions>
-            </plugin>
-            
-        </plugins>
-    </build>
-    
-    <profiles>
-        <profile>
-            <id>linux</id>
-            <activation>
-                <os>
-                    <family>linux</family>
-                </os>
-            </activation>
-            <properties>
-                <jacobeExecutable>
-                    ../src/main/resources/etc/jacobe/linux/jacobe
-                </jacobeExecutable>
-            </properties>
-        </profile>
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <jacobeExecutable>
-                    ../src/main/resources/etc/jacobe/win32/jacobe.exe
-                </jacobeExecutable>
-            </properties>
-        </profile>
-    </profiles>
-    
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+		</dependency>
+
+		<!-- BEGIN GAE related dependencies just for test -->
+		<dependency>
+			<groupId>org.b3log</groupId>
+			<artifactId>latke-gae</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-1.0-sdk</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-labs</artifactId>
+			<version>${gae.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-api-stubs</artifactId>
+			<version>${gae.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-testing</artifactId>
+			<version>${gae.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- END GAE related dependencies just for test -->
+
+		<dependency>
+			<groupId>org.tautua.markdownpapers</groupId>
+			<artifactId>markdownpapers-core</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<excludes>
+					<exclude>etc/</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<plugins>
+			<plugin>
+				<groupId>com.tiobe.jacobe</groupId>
+				<artifactId>maven-jacobe-plugin</artifactId>
+				<version>1.0</version>
+				<configuration>
+					<jacobeExecutable>${jacobeExecutable}</jacobeExecutable>
+					<rules>
+						<param>indent=4</param>
+						<param>continuationindent=2</param>
+					</rules>
+					<configurationFile>../src/main/resources/etc/jacobe/sun.cfg</configurationFile>
+					<comparisonThreshold>0.01</comparisonThreshold>
+					<javadoc>private</javadoc>
+					<noAssert>true</noAssert>
+					<noEnum>false</noEnum>
+					<noBackup>true</noBackup>
+					<overwrite>true</overwrite>
+					<outputExtension>formatted</outputExtension>
+					<input>${basedir}/src/main/java</input>
+				</configuration>
+				<executions>
+					<!-- <execution> <phase>process-resources</phase> <goals> <goal>jacobe</goal> 
+						</goals> </execution> -->
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${maven-surefire-plugin.version}</version>
+				<configuration>
+					<skipTests>false</skipTests>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<configuration>
+					<header>../src/main/resources/etc/header.txt</header>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin.version}</version>
+				<configuration>
+					<show>private</show>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>process-sources</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- For source code style check -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin.version}</version>
+				<inherited>false</inherited>
+				<configuration>
+					<configLocation>src/main/resources/etc/beyondtrack_checks.xml</configLocation>
+					<includeTestSourceDirectory>false</includeTestSourceDirectory>
+					<excludes>
+						com/**/*.java,
+					</excludes>
+					<consoleOutput>true</consoleOutput>
+					<failOnViolation>true</failOnViolation>
+					<failsOnError>true</failsOnError>
+					<encoding>UTF-8</encoding>
+					<skip>false</skip>
+				</configuration>
+				<executions>
+					<!-- <execution> <phase>compile</phase> <goals> <goal>checkstyle</goal> 
+						</goals> </execution> -->
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<id>linux</id>
+			<activation>
+				<os>
+					<family>linux</family>
+				</os>
+			</activation>
+			<properties>
+				<jacobeExecutable>
+					../src/main/resources/etc/jacobe/linux/jacobe
+				</jacobeExecutable>
+			</properties>
+		</profile>
+		<profile>
+			<id>windows</id>
+			<activation>
+				<os>
+					<family>windows</family>
+				</os>
+			</activation>
+			<properties>
+				<jacobeExecutable>
+					../src/main/resources/etc/jacobe/win32/jacobe.exe
+				</jacobeExecutable>
+			</properties>
+		</profile>
+	</profiles>
+
 </project>
 

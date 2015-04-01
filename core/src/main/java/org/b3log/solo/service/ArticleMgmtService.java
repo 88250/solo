@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.6, Oct 26, 2013
+ * @version 1.1.1.6, Mar 28, 2015
  * @since 0.3.5
  */
 @Service
@@ -274,11 +274,13 @@ public class ArticleMgmtService {
 
         try {
             final JSONObject article = requestJSONObject.getJSONObject(ARTICLE);
+            final String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
+            article.put(Article.ARTICLE_TAGS_REF, tagsString.replaceAll("，", ","));
+            
             final String articleId = article.getString(Keys.OBJECT_ID);
             // Set permalink
             final JSONObject oldArticle = articleRepository.get(articleId);
             final String permalink = getPermalinkForUpdateArticle(oldArticle, article, (Date) oldArticle.get(ARTICLE_CREATE_DATE));
-
             article.put(ARTICLE_PERMALINK, permalink);
 
             processTagsForArticleUpdate(oldArticle, article);
@@ -462,7 +464,9 @@ public class ArticleMgmtService {
 
         try {
             // Step 1: Add tags
-            final String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
+            String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
+            tagsString = tagsString.replaceAll("，", ",");
+            article.put(Article.ARTICLE_TAGS_REF, tagsString);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);
 
