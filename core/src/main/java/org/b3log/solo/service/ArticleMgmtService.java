@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Mar 28, 2015
+ * @version 1.2.2.6, Apr 16, 2015
  * @since 0.3.5
  */
 @Service
@@ -261,7 +261,8 @@ public class ArticleMgmtService {
      *         "articleIsPublished": boolean,
      *         "articleSignId": "", // optional
      *         "articleCommentable": boolean,
-     *         "articleViewPwd": ""
+     *         "articleViewPwd": "",
+     *         "articleEditorType": "" // optional, preference specified if not exists this key
      *     }
      * }
      * </pre>
@@ -275,7 +276,7 @@ public class ArticleMgmtService {
         try {
             final JSONObject article = requestJSONObject.getJSONObject(ARTICLE);
             final String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
-            article.put(Article.ARTICLE_TAGS_REF, tagsString.replaceAll("，", ","));
+            article.put(Article.ARTICLE_TAGS_REF, tagsString.replaceAll("，", ",").replaceAll("、", ","));
             
             final String articleId = article.getString(Keys.OBJECT_ID);
             // Set permalink
@@ -323,7 +324,9 @@ public class ArticleMgmtService {
             }
 
             // Set editor type
-            article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+            if (!article.has(Article.ARTICLE_EDITOR_TYPE)) {
+                article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+            }
 
             final boolean publishNewArticle = !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED) && article.getBoolean(ARTICLE_IS_PUBLISHED);
 
@@ -417,7 +420,7 @@ public class ArticleMgmtService {
      *         "articleSignId": "" // optional, default is "0",
      *         "articleCommentable": boolean,
      *         "articleViewPwd": "",
-     *         "articleEditorType": "" // optional, preference specified if not exists this key
+     *         "articleEditorType": "", // optional, preference specified if not exists this key
      *         "oId": "" // optional, generate it if not exists this key
      *     }
      * }
@@ -465,7 +468,7 @@ public class ArticleMgmtService {
         try {
             // Step 1: Add tags
             String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
-            tagsString = tagsString.replaceAll("，", ",");
+            tagsString = tagsString.replaceAll("，", ",").replaceAll("、", ",");
             article.put(Article.ARTICLE_TAGS_REF, tagsString);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);
