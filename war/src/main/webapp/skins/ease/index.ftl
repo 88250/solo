@@ -3,8 +3,12 @@
 <html>
     <head>
         <@head title="${blogTitle}">
+        <#if metaKeywords??>
         <meta name="keywords" content="${metaKeywords}"/>
-        <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
+        </#if>
+        <#if metaDescription??>
+        <meta name="description" content="${metaDescription}"/>
+        </#if>
         </@head>
     </head>
     <body>
