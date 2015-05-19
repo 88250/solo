@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Description: B3log Solo (MySQL) standard Servlet container POM.
+    Description: Solo (MySQL) standard Servlet container POM.
     Version: 1.1.1.6, Mar 24, 2015
     Author: Liang Ding
 -->
@@ -10,9 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>solo-mysql</artifactId>
     <packaging>war</packaging>
-    <name>B3log Solo (MySQL)</name>
+    <name>Solo (MySQL)</name>
     <description>
-        B3log Solo (MySQL) standard Servlet container war.
+        Solo (MySQL) standard Servlet container war.
     </description>
 
     <parent>
@@ -102,7 +102,7 @@
             
         </plugins>
         
-        <finalName>b3log-solo-mysql</finalName>
+        <finalName>solo-mysql</finalName>
     </build>
 </project>
 

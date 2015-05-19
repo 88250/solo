@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Description: B3log Solo WAR POM.
+    Description: Solo WAR POM.
     Version: 2.1.2.11, Mar 24, 2015
     Author: Liang Ding
 -->
@@ -10,9 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>solo-war</artifactId>
     <packaging>pom</packaging>
-    <name>B3log Solo (WAR)</name>
+    <name>Solo (WAR)</name>
     <description>
-        B3log Solo standard Servlet container war.
+        Solo standard Servlet container war.
     </description>
 
     <parent>

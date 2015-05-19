@@ -123,7 +123,7 @@ public class PreferenceMgmtService {
                 LOGGER.log(Level.ERROR, "Can not find skin[dirName=ease]");
 
                 throw new IllegalStateException(
-                    "Can not find default skin[dirName=ease], please redeploy your B3log Solo and make sure contains this default skin!");
+                    "Can not find default skin[dirName=ease], please redeploy your Solo and make sure contains this default skin!");
             }
 
             preference.put(SKIN_DIR_NAME, "ease");

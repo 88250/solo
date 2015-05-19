@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Description: B3log Solo parent POM.
+    Description: Solo parent POM.
     Version: 2.2.4.20, Mar 24, 2015
     Author: Liang Ding
 -->
@@ -12,11 +12,10 @@
     <artifactId>solo</artifactId>
     <packaging>pom</packaging>
     <version>0.6.8</version>
-    <name>B3log Solo</name>
+    <name>Solo</name>
     <url>https://github.com/b3log/b3log-solo</url>
     <description>
-        B3log Solo is a blogging program, which could run on Google App Engine
-        or a standard Servlet container.
+        A Java blogging system, feel free to create your or your team own blog.
     </description>
     <inceptionYear>2010</inceptionYear>
 
@@ -324,7 +323,7 @@
             
         </plugins>
 
-        <finalName>b3log-solo</finalName>
+        <finalName>solo</finalName>
     </build>
     
     <repositories>

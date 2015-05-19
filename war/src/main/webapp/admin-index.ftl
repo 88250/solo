@@ -17,7 +17,7 @@
         <div id="allPanel">
             <div id="top">
                 <a href="http://b3log.org" target="_blank" class="hover">
-                    B3log Solo
+                    Solo
                 </a>
                
                 <span class="right"> 

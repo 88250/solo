@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Description: B3log Solo (H2) standard Servlet container POM.
+    Description: Solo (H2) standard Servlet container POM.
     Version: 1.1.0.5, Mar 24, 2015
     Author: Liang Ding
 -->
@@ -11,9 +11,9 @@
     <groupId>org.b3log</groupId>
     <artifactId>solo-h2</artifactId>
     <packaging>war</packaging>
-    <name>B3log Solo (H2)</name>
+    <name>Solo (H2)</name>
     <description>
-        B3log Solo (H2) standard Servlet container war.
+        Solo (H2) standard Servlet container war.
     </description>
 
     <parent>
@@ -108,7 +108,7 @@
 
         </plugins>
 
-        <finalName>b3log-solo-h2</finalName>
+        <finalName>solo-h2</finalName>
     </build>
 </project>
 

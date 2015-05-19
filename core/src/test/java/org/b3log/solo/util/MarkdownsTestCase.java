@@ -46,7 +46,7 @@ public final class MarkdownsTestCase {
 
         Assert.assertNull(html);
 
-        markdownText = "# B3log Solo Markdown Editor";
+        markdownText = "# Solo Markdown Editor";
         html = Markdowns.toHTML(markdownText);
 
         System.out.println(html);

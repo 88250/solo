@@ -179,7 +179,7 @@ public class UserMgmtService {
             final String newHashedPassword = MD5.hash(userPassword);
             final String oldHashedPassword = oldUser.optString(User.USER_PASSWORD);
 
-            if (!"demo.b3log.org".equals(Latkes.getServerHost())) { // Skips the B3log Solo Online Demo (http://demo.b3log.org)
+            if (!"demo.b3log.org".equals(Latkes.getServerHost())) { // Skips the Solo Online Demo (http://demo.b3log.org)
                 if (!mybeHashed || (!oldHashedPassword.equals(userPassword) && !oldHashedPassword.equals(newHashedPassword))) {
                     oldUser.put(User.USER_PASSWORD, newHashedPassword);
                 }

@@ -58,7 +58,7 @@ import org.json.JSONObject;
 
 
 /**
- * B3log Solo initialization service.
+ * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.2.7, Apr 15, 2014
@@ -160,13 +160,13 @@ public class InitService {
 
             return null != admin;
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "B3log Solo has not been initialized");
+            LOGGER.log(Level.WARN, "Solo has not been initialized");
             return false;
         }
     }
 
     /**
-     * Initializes B3log Solo.
+     * Initializes Solo.
      *
      * <p>
      * Initializes the followings in sequence:
@@ -178,11 +178,11 @@ public class InitService {
      * </p>
      *
      * <p>
-     * We will try to initialize B3log Solo 3 times at most.
+     * We will try to initialize Solo 3 times at most.
      * </p>
      *
      * <p>
-     * Posts "Hello World!" article and its comment while B3log Solo initialized.
+     * Posts "Hello World!" article and its comment while Solo initialized.
      * </p>
      *
      * @param requestJSONObject the specified request json object, for example,
@@ -204,7 +204,7 @@ public class InitService {
         final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
         if (RuntimeEnv.LOCAL == runtimeEnv) {
-            LOGGER.log(Level.INFO, "B3log Solo is running on [" + runtimeEnv + "] environment, database [{0}], creates all tables",
+            LOGGER.log(Level.INFO, "Solo is running on [" + runtimeEnv + "] environment, database [{0}], creates all tables",
                 Latkes.getRuntimeDatabase());
             final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
 
@@ -233,13 +233,13 @@ public class InitService {
                 break;
             } catch (final Exception e) {
                 if (0 == retries) {
-                    LOGGER.log(Level.ERROR, "Initialize B3log Solo error", e);
-                    throw new ServiceException("Initailize B3log Solo error: " + e.getMessage());
+                    LOGGER.log(Level.ERROR, "Initialize Solo error", e);
+                    throw new ServiceException("Initailize Solo error: " + e.getMessage());
                 }
 
                 // Allow retry to occur
                 --retries;
-                LOGGER.log(Level.WARN, "Retrying to init B3log Solo[retries={0}]", retries);
+                LOGGER.log(Level.WARN, "Retrying to init Solo[retries={0}]", retries);
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();

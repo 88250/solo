@@ -30,7 +30,7 @@ import org.b3log.solo.service.StatisticMgmtService;
  * Statistics processor.
  * 
  * <p>
- * Statistics of B3log Solo: 
+ * Statistics of Solo: 
  * 
  *   <ul>
  *     <li>{@link #viewCounter(org.b3log.latke.servlet.HTTPRequestContext) Blog/Article view counting}</li>

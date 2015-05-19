@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Description: B3log Solo GAE POM.
+    Description: Solo GAE POM.
     Version: 2.1.2.7, Mar 24, 2015
     Author: Liang Ding
 -->
@@ -10,9 +10,9 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>solo-gae</artifactId>
     <packaging>war</packaging>
-    <name>B3log Solo (GAE)</name>
+    <name>Solo (GAE)</name>
     <description>
-        B3log Solo Google App Engine war.
+        Solo Google App Engine war.
     </description>
 
     <parent>
@@ -178,7 +178,7 @@
             
         </plugins>
 
-        <finalName>b3log-solo-gae</finalName>
+        <finalName>solo-gae</finalName>
     </build>
 </project>
 

@@ -158,7 +158,7 @@ public class UpgradeProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent(
-                "Upgrade failed [" + e.getMessage() + "], please contact the B3log Solo developers or reports this "
+                "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
                 + "issue directly (<a href='https://github.com/b3log/b3log-solo/issues/new'>"
                 + "https://github.com/b3log/b3log-solo/issues/new</a>) ");
         }
@@ -274,7 +274,7 @@ public class UpgradeProcessor {
     }
 
     /**
-     * Send an email to the user who upgrades B3log Solo with a discontinuous version.
+     * Send an email to the user who upgrades Solo with a discontinuous version.
      * 
      * @throws ServiceException ServiceException
      * @throws JSONException JSONException
@@ -289,6 +289,6 @@ public class UpgradeProcessor {
         message.setSubject(langPropsService.get("skipVersionMailSubject"));
         message.setHtmlBody(langPropsService.get("skipVersionMailBody"));
         MAIL_SVC.send(message);
-        LOGGER.info("Send an email to the user who upgrades B3log Solo with a discontinuous version.");
+        LOGGER.info("Send an email to the user who upgrades Solo with a discontinuous version.");
     }
 }
