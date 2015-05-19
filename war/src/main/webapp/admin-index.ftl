@@ -17,7 +17,7 @@
         <div id="allPanel">
             <div id="top">
                 <a href="http://b3log.org" target="_blank" class="hover">
-                    B3log Solo
+                    Solo
                 </a>
                
                 <span class="right"> 
@@ -128,10 +128,7 @@
                 <div id="tabsPanel_about" class="none"></div>
             </div>
             <div class="footer">
-                Powered by
-                <a href="http://b3log.org" target="_blank" class="logo">
-                    ${b3logLabel}&nbsp;
-                    <span style="color: orangered; font-weight: bold;">Solo</span></a>, ver ${version}
+                Powered by <a href="http://b3log.org" target="_blank">B3log</a>, ver ${version}
             </div>
         </div>
         <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>

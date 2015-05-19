@@ -377,7 +377,7 @@ public class FeedProcessor {
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/blog-articles-rss.do");
-            channel.setGenerator("B3log Solo, ver " + SoloServletListener.VERSION);
+            channel.setGenerator("Solo, ver " + SoloServletListener.VERSION);
             final String localeString = preference.getString(Preference.LOCALE_STRING);
             final String country = Locales.getCountry(localeString).toLowerCase();
             final String language = Locales.getLanguage(localeString).toLowerCase();
@@ -510,7 +510,7 @@ public class FeedProcessor {
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/tag-articles-rss.do");
-            channel.setGenerator("B3log Solo, ver " + SoloServletListener.VERSION);
+            channel.setGenerator("Solo, ver " + SoloServletListener.VERSION);
             final String localeString = preference.getString(Preference.LOCALE_STRING);
             final String country = Locales.getCountry(localeString).toLowerCase();
             final String language = Locales.getLanguage(localeString).toLowerCase();

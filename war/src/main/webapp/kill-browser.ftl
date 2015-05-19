@@ -7,7 +7,7 @@
         <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客,Let's kill IE6" />
         <meta name="owner" content="B3log Team" />
         <meta name="author" content="B3log Team" />
-        <meta name="generator" content="B3log Solo" />
+        <meta name="generator" content="Solo" />
         <meta name="copyright" content="B3log" />
         <meta name="revised" content="B3log, ${year}" />
         <meta http-equiv="Window-target" content="_top" />

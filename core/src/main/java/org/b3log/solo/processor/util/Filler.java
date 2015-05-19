@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor.util;
 
-
 import freemarker.template.Template;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -63,12 +62,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 /**
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.7.10, Jul 3, 2014
+ * @version 1.0.7.11, Apr 30, 2014
  * @since 0.3.1
  */
 @Service
@@ -178,8 +176,8 @@ public class Filler {
      * @throws ServiceException service exception
      */
     public void fillIndexArticles(final HttpServletRequest request,
-        final Map<String, Object> dataModel, final int currentPageNum, final JSONObject preference)
-        throws ServiceException {
+                                  final Map<String, Object> dataModel, final int currentPageNum, final JSONObject preference)
+            throws ServiceException {
         Stopwatchs.start("Fill Index Articles");
 
         try {
@@ -191,7 +189,7 @@ public class Filler {
             final int pageCount = (int) Math.ceil((double) publishedArticleCnt / (double) pageSize);
 
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(pageCount).setFilter(
-                new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED));
+                    new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED));
 
             final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "index.ftl");
 
@@ -371,7 +369,7 @@ public class Filler {
             if (1 < archiveDates.size()) { // XXX: Workaround, remove the duplicated archive dates
                 for (int i = 1; i < archiveDates.size(); i++) {
                     final JSONObject archiveDate = archiveDates.get(i);
-                    
+
                     final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
                     final String dateString = DateFormatUtils.format(time, "yyyy/MM");
 
@@ -541,7 +539,7 @@ public class Filler {
      * @throws ServiceException service exception
      */
     public void fillBlogFooter(final HttpServletRequest request, final Map<String, Object> dataModel, final JSONObject preference)
-        throws ServiceException {
+            throws ServiceException {
         Stopwatchs.start("Fill Footer");
         try {
             LOGGER.debug("Filling footer....");
@@ -598,8 +596,8 @@ public class Filler {
      * @throws ServiceException service exception
      */
     public void fillBlogHeader(final HttpServletRequest request, final HttpServletResponse response,
-        final Map<String, Object> dataModel, final JSONObject preference)
-        throws ServiceException {
+                               final Map<String, Object> dataModel, final JSONObject preference)
+            throws ServiceException {
         Stopwatchs.start("Fill Header");
         try {
             LOGGER.debug("Filling header....");
@@ -613,8 +611,17 @@ public class Filler {
             dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
             dataModel.put(Preference.BLOG_SUBTITLE, preference.getString(Preference.BLOG_SUBTITLE));
             dataModel.put(Preference.HTML_HEAD, preference.getString(Preference.HTML_HEAD));
-            dataModel.put(Preference.META_KEYWORDS, preference.getString(Preference.META_KEYWORDS));
-            dataModel.put(Preference.META_DESCRIPTION, preference.getString(Preference.META_DESCRIPTION));
+
+            final String metaKeywords = preference.getString(Preference.META_KEYWORDS);
+            if (!Strings.isEmptyOrNull(metaKeywords)) {
+                dataModel.put(Preference.META_KEYWORDS, metaKeywords);
+            }
+
+            final String metaDescription = preference.getString(Preference.META_DESCRIPTION);
+            if (!Strings.isEmptyOrNull(metaDescription)) {
+                dataModel.put(Preference.META_DESCRIPTION, metaDescription);
+            }
+
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Common.IS_LOGGED_IN, null != userQueryService.getCurrentUser(request));
             dataModel.put(Common.FAVICON_API, SoloServletListener.FAVICON_API);
@@ -660,16 +667,16 @@ public class Filler {
      */
     public void fillMinified(final Map<String, Object> dataModel) {
         switch (Latkes.getRuntimeMode()) {
-        case DEVELOPMENT:
-            dataModel.put(Common.MINI_POSTFIX, "");
-            break;
+            case DEVELOPMENT:
+                dataModel.put(Common.MINI_POSTFIX, "");
+                break;
 
-        case PRODUCTION:
-            dataModel.put(Common.MINI_POSTFIX, Common.MINI_POSTFIX_VALUE);
-            break;
+            case PRODUCTION:
+                dataModel.put(Common.MINI_POSTFIX, Common.MINI_POSTFIX_VALUE);
+                break;
 
-        default:
-            throw new AssertionError();
+            default:
+                throw new AssertionError();
         }
     }
 
@@ -682,7 +689,7 @@ public class Filler {
      * @throws ServiceException service exception
      */
     public void fillSide(final HttpServletRequest request, final Map<String, Object> dataModel, final JSONObject preference)
-        throws ServiceException {
+            throws ServiceException {
         Stopwatchs.start("Fill Side");
         try {
             LOGGER.debug("Filling side....");
@@ -747,7 +754,7 @@ public class Filler {
      * @throws ServiceException service exception
      */
     public void fillUserTemplate(final HttpServletRequest request, final Template template,
-        final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
+                                 final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         Stopwatchs.start("Fill User Template[name=" + template.getName() + "]");
         try {
             LOGGER.log(Level.DEBUG, "Filling user template[name{0}]", template.getName());
@@ -867,7 +874,7 @@ public class Filler {
      * @see #setArticlesExProperties(java.util.List, org.json.JSONObject)
      */
     private void setArticleExProperties(final JSONObject article, final JSONObject author, final JSONObject preference)
-        throws ServiceException {
+            throws ServiceException {
         try {
             final String authorName = author.getString(User.USER_NAME);
 
@@ -960,7 +967,7 @@ public class Filler {
      * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)
      */
     public void setArticlesExProperties(final List<JSONObject> articles, final JSONObject author, final JSONObject preference)
-        throws ServiceException {
+            throws ServiceException {
         for (final JSONObject article : articles) {
             setArticleExProperties(article, author, preference);
         }
@@ -990,7 +997,7 @@ public class Filler {
      * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)
      */
     public void setArticlesExProperties(final List<JSONObject> articles, final JSONObject preference)
-        throws ServiceException {
+            throws ServiceException {
         for (final JSONObject article : articles) {
             setArticleExProperties(article, preference);
         }

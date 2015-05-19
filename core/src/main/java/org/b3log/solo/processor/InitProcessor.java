@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
@@ -47,12 +46,11 @@ import org.b3log.solo.service.InitService;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 
-
 /**
- * B3log Solo initialization service.
+ * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Jun 28, 2013
+ * @version 1.1.0.6, May 19, 2015
  * @since 0.4.0
  */
 @RequestProcessor
@@ -82,16 +80,26 @@ public class InitProcessor {
     private LangPropsService langPropsService;
 
     /**
+     * Max user name length.
+     */
+    public static final int MAX_USER_NAME_LENGTH = 20;
+
+    /**
+     * Min user name length.
+     */
+    public static final int MIN_USER_NAME_LENGTH = 1;
+
+    /**
      * Shows initialization page.
-     * 
+     *
      * @param context the specified http request context
      * @param request the specified http servlet request
      * @param response the specified http servlet response
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.GET)
     public void showInit(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
+            throws Exception {
         if (initService.isInited()) {
             response.sendRedirect("/");
 
@@ -118,8 +126,8 @@ public class InitProcessor {
     }
 
     /**
-     * Initializes B3log Solo.
-     * 
+     * Initializes Solo.
+     *
      * @param context the specified http request context
      * @param request the specified http servlet request, for example,
      * <pre>
@@ -129,12 +137,13 @@ public class InitProcessor {
      *     "userPassword": ""
      * }
      * </pre>
+     *
      * @param response the specified http servlet response
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.POST)
     public void initB3logSolo(final HTTPRequestContext context, final HttpServletRequest request,
-        final HttpServletResponse response) throws Exception {
+                              final HttpServletResponse response) throws Exception {
         if (initService.isInited()) {
             response.sendRedirect("/");
 
@@ -163,6 +172,12 @@ public class InitProcessor {
                 return;
             }
 
+            if (invalidUserName(userName)) {
+                ret.put(Keys.MSG, "Init failed, please check your input [username: length [1, 20], content {a-z, A-Z, 0-9, _}]");
+
+                return;
+            }
+
             final Locale locale = Locales.getLocale(request);
 
             requestJSONObject.put(Keys.LOCALE, locale.toString());
@@ -185,5 +200,39 @@ public class InitProcessor {
 
             ret.put(Keys.MSG, e.getMessage());
         }
+    }
+
+    /**
+     * Checks whether the specified name is invalid.
+     *
+     * <p>
+     * A valid user name:
+     * <ul>
+     * <li>length [1, 20]</li>
+     * <li>content {a-z, A-Z, 0-9, _}</li>
+     * </ul>
+     * </p>
+     *
+     * @param name the specified name
+     * @return {@code true} if it is invalid, returns {@code false} otherwise
+     */
+    public static boolean invalidUserName(final String name) {
+        final int length = name.length();
+        if (length < MIN_USER_NAME_LENGTH || length > MAX_USER_NAME_LENGTH) {
+            return true;
+        }
+
+        char c;
+        for (int i = 0; i < length; i++) {
+            c = name.charAt(i);
+
+            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || '0' <= c && c <= '9' || '_' == c) {
+                continue;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

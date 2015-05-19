@@ -264,7 +264,7 @@ public final class Preference {
         /**
          * Default blog title.
          */
-        public static final String DEFAULT_BLOG_TITLE = "B3log Solo 示例";
+        public static final String DEFAULT_BLOG_TITLE = "Solo 示例";
 
         /**
          * Default blog subtitle.

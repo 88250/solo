@@ -2,12 +2,12 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>${welcomeToSoloLabel} B3log Solo!</title>
+        <title>${welcomeToSoloLabel} Solo!</title>
         <meta name="keywords" content="GAE 博客,GAE blog,b3log,init" />
         <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客,初始化程序" />
         <meta name="owner" content="B3log Team" />
         <meta name="author" content="B3log Team" />
-        <meta name="generator" content="B3log Solo" />
+        <meta name="generator" content="Solo" />
         <meta name="copyright" content="B3log" />
         <meta name="revised" content="B3log, ${year}" />
         <meta name="robots" content="noindex, follow" />
@@ -79,7 +79,6 @@
                         <h2>
                             <span>${welcomeToSoloLabel}</span>
                             <a target="_blank" href="http://b3log.org">
-                                ${b3logLabel}
                                 <span class="solo">&nbsp;Solo</span>
                             </a>
                         </h2>
@@ -123,11 +122,7 @@
             <div class="footerWrapper">
                 <div class="footer">
                     &copy; ${year}
-                    Powered by
-                    <a href="http://b3log.org" target="_blank">
-                        ${b3logLabel}&nbsp;
-                        <span class="solo">Solo</span></a>,
-                    ver ${version}
+                    Powered by <a href="http://b3log.org" target="_blank">B3log</a>, ver ${version}
                 </div>
             </div>
         </div>

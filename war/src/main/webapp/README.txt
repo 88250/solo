@@ -1,4 +1,4 @@
-B3log Solo is an open source Java blogging program.
+A Java blogging system, feel free to create your or your team own blog.
 
 Project home: https://github.com/b3log/b3log-solo
 Request features/Report bugs: https://github.com/b3log/b3log-solo/issues/new
