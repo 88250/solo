@@ -79,7 +79,6 @@
                         <h2>
                             <span>${welcomeToSoloLabel}</span>
                             <a target="_blank" href="http://b3log.org">
-                                ${b3logLabel}
                                 <span class="solo">&nbsp;Solo</span>
                             </a>
                         </h2>
@@ -123,11 +122,7 @@
             <div class="footerWrapper">
                 <div class="footer">
                     &copy; ${year}
-                    Powered by
-                    <a href="http://b3log.org" target="_blank">
-                        ${b3logLabel}&nbsp;
-                        <span class="solo">Solo</span></a>,
-                    ver ${version}
+                    Powered by <a href="http://b3log.org" target="_blank">B3log</a>, ver ${version}
                 </div>
             </div>
         </div>

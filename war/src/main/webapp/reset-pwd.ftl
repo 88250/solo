@@ -61,11 +61,7 @@
             <div class="footerWrapper">
                 <div class="footer">
                     &copy; ${year} - <a href="${servePath}">${blogTitle}</a><br/>
-                    Powered by
-                    <a href="http://b3log.org" target="_blank">
-                        ${b3logLabel}&nbsp;
-                        <span class="solo">Solo</span></a>,
-                    ver ${version}
+                    Powered by <a href="http://b3log.org" target="_blank">B3log</a>, ver ${version}
                 </div>
             </div>
         </div>
