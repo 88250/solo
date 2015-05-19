@@ -16,6 +16,7 @@
 package org.b3log.solo.util;
 
 
+import java.util.ResourceBundle;
 import org.b3log.latke.util.MD5;
 
 
@@ -27,7 +28,7 @@ import org.b3log.latke.util.MD5;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 10, 2013
+ * @version 1.1.0.0, May 19, 2015
  * @since 0.6.1
  */
 public final class Thumbnails {
@@ -35,7 +36,13 @@ public final class Thumbnails {
     /**
      * Gravatar address.
      */
-    public static final String GRAVATAR = "http://secure.gravatar.com/avatar/";
+    public static final String GRAVATAR;;
+    
+    static {
+        final ResourceBundle b3log = ResourceBundle.getBundle("b3log");
+        
+        GRAVATAR = b3log.getString("gravatar");
+    }
 
     /**
      * Gets the Gravatar URL for the specified email with the specified size.
