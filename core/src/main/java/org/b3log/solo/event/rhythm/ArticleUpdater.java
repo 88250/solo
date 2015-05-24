@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.event.rhythm;
 
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Date;
@@ -32,6 +31,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
@@ -40,14 +40,13 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
-
 /**
  * This listener is responsible for updating article to B3log Rhythm.
- * 
+ *
  * <p>
  * The B3log Rhythm article update interface: http://rhythm.b3log.org/article (PUT).
  * </p>
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, May 17, 2013
  * @since 0.6.0
@@ -83,7 +82,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
         final JSONObject data = event.getData();
 
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-            new Object[] {event.getType(), data, ArticleUpdater.class.getName()});
+                new Object[]{event.getType(), data, ArticleUpdater.class.getName()});
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
@@ -102,9 +101,13 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
+            if (!Strings.isEmptyOrNull(originalArticle.optString(Article.ARTICLE_VIEW_PWD))) {
+                return;
+            }
+
             if (Latkes.getServePath().contains("localhost")) {
-                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-                    new Object[] {originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
+                LOGGER.log(Level.INFO, "Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
+                        new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
                 return;
             }
 
@@ -148,7 +151,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
     /**
      * Gets the event type {@linkplain EventTypes#UPDATE_ARTICLE}.
-     * 
+     *
      * @return event type
      */
     @Override
