@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo parent POM.
-    Version: 2.2.4.20, Mar 24, 2015
+    Version: 2.3.4.20, May 25, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -26,9 +26,10 @@
 
     <!-- Properties -->
     <properties>
+        <org.b3log.latke.version>1.3.0</org.b3log.latke.version>
+
         <servlet.version>2.5</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <org.b3log.latke.version>1.1.0</org.b3log.latke.version>
 
         <maven-gae-plugin.version>0.9.0</maven-gae-plugin.version>
         <gae.version>1.8.1.1</gae.version>
