@@ -32,19 +32,19 @@ admin.editors.CodeMirror = {
      */
     init: function (conf) {
         var it = this;
-        
+
         // load preview and clear
         var previewHTML = "<div class='clear'></div>";
         if (conf.kind !== "simple") {
-            previewHTML = "<div class='markdown-preivew'>" + 
-            "<div class='markdown-help ico-close'></div>" + 
-            "<div class='clear'></div>" + 
-            "<div class='markdown-preview-main none'></div>" +
-            "<div class='markdown-help-main'>" + Label.markdownHelpLabel + "</div>"
-            + "</div><div class='clear'></div>";
-        } 
+            previewHTML = "<div class='markdown-preivew'>" +
+                    "<div class='markdown-help ico-close'></div>" +
+                    "<div class='clear'></div>" +
+                    "<div class='markdown-preview-main none'></div>" +
+                    "<div class='markdown-help-main'>" + Label.markdownHelpLabel + "</div>"
+                    + "</div><div class='clear'></div>";
+        }
         $("#" + conf.id).after(previewHTML);
-        
+
         // init codemirror
         if (conf.kind === "simple") {
             this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
@@ -57,12 +57,12 @@ admin.editors.CodeMirror = {
         } else {
             // preview 执行队列
             it[conf.id + "Timers"] = [];
-        
+
             // 该编辑器是否第一次触发 preivew 事件
             it[conf.id + "IsFirst"] = true;
-            
+
             var $preview = $("#" + conf.id).parent().find(".markdown-preivew"),
-            $help = $("#" + conf.id).parent().find(".markdown-preivew").find(".markdown-help");
+                    $help = $("#" + conf.id).parent().find(".markdown-preivew").find(".markdown-help");
             this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
                 mode: 'markdown',
                 lineNumbers: true,
@@ -74,19 +74,19 @@ admin.editors.CodeMirror = {
                         if (it[conf.id].getValue() === "") {
                             return;
                         }
-                        
+
                         $.ajax({
                             url: latkeConfig.servePath + "/console/markdown/2html",
                             type: "POST",
                             cache: false,
-                            data: JSON.stringify({markdownText:it[conf.id].getValue()}),
-                            success: function(data, textStatus) {
+                            data: JSON.stringify({markdownText: it[conf.id].getValue()}),
+                            success: function (data, textStatus) {
                                 if (data.sc) {
                                     if (it[conf.id + "IsFirst"] && $help.hasClass("ico-close")) {
                                         $help.click();
-                                    } 
+                                    }
                                     it[conf.id + "IsFirst"] = false;
-                                    
+
                                     $preview.find(".markdown-preview-main").html(data.html);
                                 } else {
                                     $preview.find(".markdown-preview-main").html(data.msg);
@@ -94,14 +94,14 @@ admin.editors.CodeMirror = {
                             }
                         });
                     }
-                    
+
                     it[conf.id + "Timers"].push(update);
                 }
             });
-      
+
             this._callPreview(conf.id, it[conf.id + "Timers"]);
         }
-        
+
         if (conf.kind === "simple") {
             // 摘要不需要 preview，设置其宽度
             $("#" + conf.id).next().width("99%");
@@ -109,13 +109,12 @@ admin.editors.CodeMirror = {
             // 有 preview 时，绑定 preview 事件
             this._bindEvent(conf.id);
         }
-        
+
         // after render, call back function
-        if (typeof(conf.fun) === "function") {
+        if (typeof (conf.fun) === "function") {
             conf.fun();
         }
     },
-    
     /*
      * @description 当有更新时每隔3秒 preview
      * @param {string} id 编辑器 id
@@ -128,14 +127,13 @@ admin.editors.CodeMirror = {
             admin.editors.CodeMirror[id + "Timers"] = [];
         }, 2000);
     },
-    
     /*
-    * @description 绑定编辑器 preview 事件
-    * @param {string} id 编辑器id
-    */
+     * @description 绑定编辑器 preview 事件
+     * @param {string} id 编辑器id
+     */
     _bindEvent: function (id) {
         var $preview = $("#" + id).parent().find(".markdown-preivew");
-        
+
         $preview.find(".markdown-help").click(function () {
             var $it = $(this);
             if ($it.hasClass("ico-help")) {
@@ -149,7 +147,6 @@ admin.editors.CodeMirror = {
             }
         });
     },
-    
     /*
      * @description 获取编辑器值
      * @param {string} id 编辑器id
@@ -158,7 +155,6 @@ admin.editors.CodeMirror = {
     getContent: function (id) {
         return this[id].getValue();
     },
-    
     /*
      * @description 设置编辑器值
      * @param {string} id 编辑器 id
@@ -166,5 +162,13 @@ admin.editors.CodeMirror = {
      */
     setContent: function (id, content) {
         this[id].setValue(content);
+    },
+    /*
+     * @description 销毁编辑器值
+     * @param {string} id 编辑器 id
+     */
+    remove: function (id) {
+        this[id].toTextArea();
+        $(".markdown-preivew").remove();
     }
 };
