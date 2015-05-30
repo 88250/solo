@@ -568,15 +568,6 @@ admin.article = {
             return;
         }
 
-        if (admin.article.currentEditorType !== Label.editorType) {
-            admin.editors.articleEditor.remove();
-            admin.editors.abstractEditor.remove();
-
-            admin.article.currentEditorType = Label.editorType;
-            admin.editors.articleEditor.init(Label.editorType);
-            admin.editors.abstractEditor.init(Label.editorType);
-        }
-
         var articleContent = admin.editors.articleEditor.getContent();
 
         if (window.location.hash === "#article/article" &&
@@ -587,6 +578,15 @@ admin.article = {
         }
         $("#tipMsg").text("");
         $("#loadMsg").text("");
+
+        if (admin.article.currentEditorType !== Label.editorType) {
+            admin.editors.articleEditor.remove();
+            admin.editors.abstractEditor.remove();
+
+            admin.article.currentEditorType = Label.editorType;
+            admin.editors.articleEditor.init(Label.editorType);
+            admin.editors.abstractEditor.init(Label.editorType);
+        }
     },
     /**
      * @description: 仿重复提交，点击一次后，按钮设置为 disabled
@@ -613,6 +613,8 @@ admin.register.article = {
     "obj": admin.article,
     "init": admin.article.init,
     "refresh": function () {
+        admin.editors.abstractEditor.setContent('');
+        admin.editors.articleEditor.setContent('');
         $("#loadMsg").text("");
         $("#tipMsg").text("");
     }

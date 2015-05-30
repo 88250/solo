@@ -276,7 +276,7 @@ var admin = new Admin();/*
  * @fileoverview editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Jan 29, 2013
+ * @version 1.1.0.4, May 30, 2015
  */
 
 admin.editors = {};
@@ -311,21 +311,23 @@ $.extend(Editor.prototype, {
     _init: function () {
         this.init();
     },
-    
     /*
      * @description 初始化编辑器
      */
-    init: function () {
+    init: function (type) {
         var conf = this.conf;
+        if (type) {
+            conf.type = type;
+        }
         
         var types = conf.type.split("-");
         if (types.length === 2) {
             conf.codeMirrorLanguage = types[1];
             conf.type = types[0];
         }
+
         admin.editors[conf.type].init(conf);
     },
-    
     /*
      * @description 获取编辑器值
      * @returns {string} 编辑器值
@@ -334,7 +336,6 @@ $.extend(Editor.prototype, {
         var conf = this.conf;
         return admin.editors[conf.type].getContent(conf.id);
     },
-    
     /*
      * @description 设置编辑器值
      * @param {string} content 编辑器回填内容 
@@ -342,6 +343,13 @@ $.extend(Editor.prototype, {
     setContent: function (content) {
         var conf = this.conf;
         admin.editors[conf.type].setContent(conf.id, content);
+    },
+    /*
+     * @description 移除编辑器值
+     */
+    remove: function () {
+        var conf = this.conf;
+        admin.editors[conf.type].remove(conf.id);
     }
 });
 
@@ -367,7 +375,7 @@ admin.editors.pageEditor = {};
  * @fileoverview tinyMCE editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Sep 26, 2012
+ * @version 1.1.0.6, May 30, 2015
  */
 admin.editors.tinyMCE = {
     /*
@@ -382,25 +390,23 @@ admin.editors.tinyMCE = {
         if (language === "zh") {
             language = "zh-cn";
         }
-        
+
         if (conf.kind && conf.kind === "simple") {
             try {
                 tinyMCE.init({
                     // General options
                     language: language,
-                    mode : "exact",
-                    elements : conf.id,
-                    theme : "advanced",
+                    mode: "exact",
+                    elements: conf.id,
+                    theme: "advanced",
                     plugins: "media",
-
                     // Theme options
-                    theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,undo,redo,|,bullist,numlist,|,code",
-                    theme_advanced_buttons2 : "",
-                    theme_advanced_buttons3 : "",
-                    theme_advanced_toolbar_location : "top",
-                    theme_advanced_toolbar_align : "left",
-                
-                    valid_children : "+body[style]"
+                    theme_advanced_buttons1: "bold,italic,underline,strikethrough,|,undo,redo,|,bullist,numlist,|,code",
+                    theme_advanced_buttons2: "",
+                    theme_advanced_buttons3: "",
+                    theme_advanced_toolbar_location: "top",
+                    theme_advanced_toolbar_align: "left",
+                    valid_children: "+body[style]"
                 });
             } catch (e) {
                 $("#tipMsg").text("TinyMCE load fail");
@@ -410,27 +416,24 @@ admin.editors.tinyMCE = {
                 tinyMCE.init({
                     // General options
                     language: language,
-                    mode : "exact",
-                    elements : conf.id,
-                    theme : "advanced",
-                    plugins : "autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,syntaxhl,wordcount",
-
+                    mode: "exact",
+                    elements: conf.id,
+                    theme: "advanced",
+                    plugins: "autosave,style,advhr,advimage,advlink,preview,inlinepopups,media,paste,syntaxhl,wordcount",
                     // Theme options
-                    theme_advanced_buttons1 : "formatselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,forecolor,|,advhr,blockquote,syntaxhl,",
-                    theme_advanced_buttons2 : "undo,redo,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,pastetext,pasteword,|,link,unlink,image,iespell,media,|,cleanup,code,preview,",
-                    theme_advanced_buttons3 : "",
-                    theme_advanced_toolbar_location : "top",
-                    theme_advanced_toolbar_align : "left",
-                    theme_advanced_resizing : true,
-                    theme_advanced_statusbar_location : "bottom",
-                
+                    theme_advanced_buttons1: "formatselect,fontselect,fontsizeselect,|,bold,italic,underline,strikethrough,forecolor,|,advhr,blockquote,syntaxhl,",
+                    theme_advanced_buttons2: "undo,redo,|,bullist,numlist,outdent,indent,|,justifyleft,justifycenter,justifyright,justifyfull,|,pastetext,pasteword,|,link,unlink,image,iespell,media,|,cleanup,code,preview,",
+                    theme_advanced_buttons3: "",
+                    theme_advanced_toolbar_location: "top",
+                    theme_advanced_toolbar_align: "left",
+                    theme_advanced_resizing: true,
+                    theme_advanced_statusbar_location: "bottom",
                     extended_valid_elements: "link[type|rel|href|charset],pre[name|class],iframe[src|width|height|name|align],+a[*]",
-
-                    valid_children : "+body[style]",
+                    valid_children: "+body[style]",
                     relative_urls: false,
                     remove_script_host: false,
-                    oninit : function () {
-                        if (typeof(conf.fun) === "function") {
+                    oninit: function () {
+                        if (typeof (conf.fun) === "function") {
                             conf.fun();
                         }
                     }
@@ -440,7 +443,6 @@ admin.editors.tinyMCE = {
             }
         }
     },
-    
     /*
      * @description 获取编辑器值
      * @param {string} id 编辑器id
@@ -455,7 +457,6 @@ admin.editors.tinyMCE = {
         }
         return content;
     },
-    
     /*
      * @description 设置编辑器值
      * @param {string} id 编辑器 id
@@ -471,6 +472,13 @@ admin.editors.tinyMCE = {
         } catch (e) {
             $("#" + id).val(content);
         }
+    },
+    /*
+     * @description 移除编辑器
+     * @param {string} id 编辑器 id
+     */
+    remove: function (id) {
+        tinyMCE.get(id).remove();
     }
 };
 /*
@@ -494,7 +502,7 @@ admin.editors.tinyMCE = {
  *                     plugins/media/media.js 注释 26 & 28
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Jun 19, 2012
+ * @version 1.1.0.2, May 30, 2015
  */
 admin.editors.KindEditor = {
     /*
@@ -508,15 +516,15 @@ admin.editors.KindEditor = {
         var language = "zh_CN";
         if ("en_US" === Label.localeString) {
             language = "en"
-        } 
-        
+        }
+
         if (conf.kind && conf.kind === "simple") {
             try {
                 this[conf.id] = KindEditor.create('#' + conf.id, {
-                    langType : language,
-                    resizeType: 0, 
-                    items: ["bold", "italic", "underline", "strikethrough", "|", "undo", "redo", "|", 
-                    "insertunorderedlist", "insertorderedlist", "|", "source"
+                    langType: language,
+                    resizeType: 0,
+                    items: ["bold", "italic", "underline", "strikethrough", "|", "undo", "redo", "|",
+                        "insertunorderedlist", "insertorderedlist", "|", "source"
                     ]
                 });
             } catch (e) {
@@ -525,15 +533,15 @@ admin.editors.KindEditor = {
         } else {
             try {
                 this[conf.id] = KindEditor.create('#' + conf.id, {
-                    langType : language,
+                    langType: language,
                     items: ["formatblock", "fontname", "fontsize", "|", "bold", "italic", "underline", "strikethrough", "forecolor", "|",
-                    "link", "unlink", "image", "media", "|", "pagebreak", "emoticons", "code", "/",
-                    "undo", "redo", "|", "insertunorderedlist", "insertorderedlist", "indent", "outdent", "|", 
-                    "justifyleft", "justifycenter", "justifyright", "justifyfull", "|", "plainpaste", "wordpaste", "|", 
-                    "clearhtml", "source", "preview"
+                        "link", "unlink", "image", "media", "|", "pagebreak", "emoticons", "code", "/",
+                        "undo", "redo", "|", "insertunorderedlist", "insertorderedlist", "indent", "outdent", "|",
+                        "justifyleft", "justifycenter", "justifyright", "justifyfull", "|", "plainpaste", "wordpaste", "|",
+                        "clearhtml", "source", "preview"
                     ],
                     afterCreate: function () {
-                        if (typeof(conf.fun) === "function") {
+                        if (typeof (conf.fun) === "function") {
                             conf.fun();
                         }
                     }
@@ -543,7 +551,6 @@ admin.editors.KindEditor = {
             }
         }
     },
-    
     /*
      * @description 获取编辑器值
      * @param {string} id 编辑器id
@@ -558,7 +565,6 @@ admin.editors.KindEditor = {
         }
         return content;
     },
-    
     /*
      * @description 设置编辑器值
      * @param {string} id 编辑器 id
@@ -570,6 +576,13 @@ admin.editors.KindEditor = {
         } catch (e) {
             $("#" + id).val(content);
         }
+    },
+    /*
+     * @description 移除编辑器
+     * @param {string} id 编辑器 id
+     */
+    remove: function (id) {
+        this[id].remove();
     }
 };
 /*
@@ -591,7 +604,7 @@ admin.editors.KindEditor = {
  * @fileoverview markdowm CodeMirror editor 
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, May 30, 2013
+ * @version 1.1.0.4, May 30, 2015
  */
 admin.editors.CodeMirror = {
     /*
@@ -606,19 +619,19 @@ admin.editors.CodeMirror = {
      */
     init: function (conf) {
         var it = this;
-        
+
         // load preview and clear
         var previewHTML = "<div class='clear'></div>";
         if (conf.kind !== "simple") {
-            previewHTML = "<div class='markdown-preivew'>" + 
-            "<div class='markdown-help ico-close'></div>" + 
-            "<div class='clear'></div>" + 
-            "<div class='markdown-preview-main none'></div>" +
-            "<div class='markdown-help-main'>" + Label.markdownHelpLabel + "</div>"
-            + "</div><div class='clear'></div>";
-        } 
+            previewHTML = "<div class='markdown-preivew'>" +
+                    "<div class='markdown-help ico-close'></div>" +
+                    "<div class='clear'></div>" +
+                    "<div class='markdown-preview-main none'></div>" +
+                    "<div class='markdown-help-main'>" + Label.markdownHelpLabel + "</div>"
+                    + "</div><div class='clear'></div>";
+        }
         $("#" + conf.id).after(previewHTML);
-        
+
         // init codemirror
         if (conf.kind === "simple") {
             this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
@@ -631,12 +644,12 @@ admin.editors.CodeMirror = {
         } else {
             // preview 执行队列
             it[conf.id + "Timers"] = [];
-        
+
             // 该编辑器是否第一次触发 preivew 事件
             it[conf.id + "IsFirst"] = true;
-            
+
             var $preview = $("#" + conf.id).parent().find(".markdown-preivew"),
-            $help = $("#" + conf.id).parent().find(".markdown-preivew").find(".markdown-help");
+                    $help = $("#" + conf.id).parent().find(".markdown-preivew").find(".markdown-help");
             this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
                 mode: 'markdown',
                 lineNumbers: true,
@@ -648,19 +661,19 @@ admin.editors.CodeMirror = {
                         if (it[conf.id].getValue() === "") {
                             return;
                         }
-                        
+
                         $.ajax({
                             url: latkeConfig.servePath + "/console/markdown/2html",
                             type: "POST",
                             cache: false,
-                            data: JSON.stringify({markdownText:it[conf.id].getValue()}),
-                            success: function(data, textStatus) {
+                            data: JSON.stringify({markdownText: it[conf.id].getValue()}),
+                            success: function (data, textStatus) {
                                 if (data.sc) {
                                     if (it[conf.id + "IsFirst"] && $help.hasClass("ico-close")) {
                                         $help.click();
-                                    } 
+                                    }
                                     it[conf.id + "IsFirst"] = false;
-                                    
+
                                     $preview.find(".markdown-preview-main").html(data.html);
                                 } else {
                                     $preview.find(".markdown-preview-main").html(data.msg);
@@ -668,14 +681,14 @@ admin.editors.CodeMirror = {
                             }
                         });
                     }
-                    
+
                     it[conf.id + "Timers"].push(update);
                 }
             });
-      
+
             this._callPreview(conf.id, it[conf.id + "Timers"]);
         }
-        
+
         if (conf.kind === "simple") {
             // 摘要不需要 preview，设置其宽度
             $("#" + conf.id).next().width("99%");
@@ -683,13 +696,12 @@ admin.editors.CodeMirror = {
             // 有 preview 时，绑定 preview 事件
             this._bindEvent(conf.id);
         }
-        
+
         // after render, call back function
-        if (typeof(conf.fun) === "function") {
+        if (typeof (conf.fun) === "function") {
             conf.fun();
         }
     },
-    
     /*
      * @description 当有更新时每隔3秒 preview
      * @param {string} id 编辑器 id
@@ -702,14 +714,13 @@ admin.editors.CodeMirror = {
             admin.editors.CodeMirror[id + "Timers"] = [];
         }, 2000);
     },
-    
     /*
-    * @description 绑定编辑器 preview 事件
-    * @param {string} id 编辑器id
-    */
+     * @description 绑定编辑器 preview 事件
+     * @param {string} id 编辑器id
+     */
     _bindEvent: function (id) {
         var $preview = $("#" + id).parent().find(".markdown-preivew");
-        
+
         $preview.find(".markdown-help").click(function () {
             var $it = $(this);
             if ($it.hasClass("ico-help")) {
@@ -723,7 +734,6 @@ admin.editors.CodeMirror = {
             }
         });
     },
-    
     /*
      * @description 获取编辑器值
      * @param {string} id 编辑器id
@@ -732,7 +742,6 @@ admin.editors.CodeMirror = {
     getContent: function (id) {
         return this[id].getValue();
     },
-    
     /*
      * @description 设置编辑器值
      * @param {string} id 编辑器 id
@@ -740,6 +749,14 @@ admin.editors.CodeMirror = {
      */
     setContent: function (id, content) {
         this[id].setValue(content);
+    },
+    /*
+     * @description 销毁编辑器值
+     * @param {string} id 编辑器 id
+     */
+    remove: function (id) {
+        this[id].toTextArea();
+        $(".markdown-preivew").remove();
     }
 };/*
  * Copyright (c) 2010-2015, b3log.org
@@ -875,9 +892,10 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.3, Sep 30, 2013
+ * @version 1.1.3.3, May 30, 2015
  */
 admin.article = {
+    currentEditorType: '',
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
     isConfirm: true,
     status: {
@@ -895,7 +913,7 @@ admin.article = {
      * @param {String} id 文章 id
      * @param {Boolean} isArticle 文章或者草稿
      */
-    get: function(id, isArticle) {
+    get: function (id, isArticle) {
         this.status.id = id;
         this.status.isArticle = isArticle;
         admin.selectTab("article/article");
@@ -903,14 +921,14 @@ admin.article = {
     /**
      * @description 获取文章内容
      */
-    getAndSet: function() {
+    getAndSet: function () {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
         $.ajax({
             url: latkeConfig.servePath + "/console/article/" + admin.article.status.id,
             type: "GET",
             cache: false,
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
@@ -920,6 +938,15 @@ admin.article = {
                 // set default value for article.
                 $("#title").val(result.article.articleTitle);
                 admin.article.status.articleHadBeenPublished = result.article.articleHadBeenPublished;
+
+                if (admin.article.currentEditorType !== result.article.articleEditorType) {
+                    admin.editors.articleEditor.remove();
+                    admin.editors.abstractEditor.remove();
+
+                    admin.article.currentEditorType = result.article.articleEditorType;
+                    admin.editors.articleEditor.init(result.article.articleEditorType);
+                    admin.editors.abstractEditor.init(result.article.articleEditorType);
+                }
 
                 admin.editors.articleEditor.setContent(result.article.articleContent);
                 admin.editors.abstractEditor.setContent(result.article.articleAbstract);
@@ -943,7 +970,7 @@ admin.article = {
 
                 // signs
                 var signs = result.article.signs;
-                $(".signs button").each(function(i) {
+                $(".signs button").each(function (i) {
                     if (parseInt(result.article.articleSignId) === parseInt(signs[i].oId)) {
                         $("#articleSign" + signs[i].oId).addClass("selected");
                     } else {
@@ -962,7 +989,7 @@ admin.article = {
      * @param {String} fromId 文章来自草稿夹(draft)/文件夹(article)
      * @param {String} title 文章标题
      */
-    del: function(id, fromId, title) {
+    del: function (id, fromId, title) {
         var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + title + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
@@ -972,7 +999,7 @@ admin.article = {
                 url: latkeConfig.servePath + "/console/article/" + id,
                 type: "DELETE",
                 cache: false,
-                success: function(result, textStatus) {
+                success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
                         $("#loadMsg").text("");
@@ -989,7 +1016,7 @@ admin.article = {
      * @param {Boolean} articleIsPublished 文章是否发布过
      * @param {Boolean} isAuto 是否为自动保存
      */
-    add: function(articleIsPublished, isAuto) {
+    add: function (articleIsPublished, isAuto) {
         if (admin.article.validate()) {
             var that = this;
             that._addDisabled();
@@ -997,7 +1024,7 @@ admin.article = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             var signId = "";
-            $(".signs button").each(function() {
+            $(".signs button").each(function () {
                 if (this.className === "selected") {
                     signId = this.id.substr(this.id.length - 1, 1);
                 }
@@ -1026,7 +1053,7 @@ admin.article = {
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus) {
+                success: function (result, textStatus) {
                     if (isAuto) {
                         $("#tipMsg").text(Label.autoSaveLabel);
                         admin.article.status.id = result.oId;
@@ -1047,7 +1074,7 @@ admin.article = {
 
                     admin.article.isConfirm = false;
                 },
-                complete: function(jqXHR, textStatus) {
+                complete: function (jqXHR, textStatus) {
                     that._removeDisabled();
                     $("#loadMsg").text("");
                     if (jqXHR.status === 403) {
@@ -1063,7 +1090,7 @@ admin.article = {
      * @param {Boolean} articleIsPublished 文章是否发布过
      * @param {Boolean} isAuto 是否为自动保存
      */
-    update: function(articleIsPublished, isAuto) {
+    update: function (articleIsPublished, isAuto) {
         if (admin.article.validate()) {
             var that = this;
             that._addDisabled();
@@ -1071,7 +1098,7 @@ admin.article = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             var signId = "";
-            $(".signs button").each(function() {
+            $(".signs button").each(function () {
                 if (this.className === "selected") {
                     signId = this.id.substr(this.id.length - 1, 1);
                 }
@@ -1092,7 +1119,8 @@ admin.article = {
                     "articleSignId": signId,
                     "articleCommentable": $("#articleCommentable").prop("checked"),
                     "articleViewPwd": $("#viewPwd").val(),
-                    "postToCommunity": $("#postToCommunity").prop("checked")
+                    "postToCommunity": $("#postToCommunity").prop("checked"),
+                    "articleEditorType": admin.article.currentEditorType
                 }
             };
 
@@ -1101,7 +1129,7 @@ admin.article = {
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus) {
+                success: function (result, textStatus) {
                     if (isAuto) {
                         $("#tipMsg").text(Label.autoSaveLabel);
                         return;
@@ -1123,7 +1151,7 @@ admin.article = {
                     admin.article.status.id = undefined;
                     admin.article.isConfirm = false;
                 },
-                complete: function(jqXHR, textStatus) {
+                complete: function (jqXHR, textStatus) {
                     that._removeDisabled();
                     $("#loadMsg").text("");
                     if (jqXHR.status === 403) {
@@ -1137,7 +1165,7 @@ admin.article = {
     /**
      * @description 发布文章页面设置文章按钮、发布到社区等状态的显示
      */
-    setStatus: function() {
+    setStatus: function () {
         // set button status
         if (this.status) {
             if (this.status.isArticle) {
@@ -1163,7 +1191,7 @@ admin.article = {
     /**
      * @description 清除发布文章页面的输入框的内容
      */
-    clear: function() {
+    clear: function () {
         this.status = {
             id: undefined,
             isArticle: undefined,
@@ -1183,7 +1211,7 @@ admin.article = {
         $("#permalink").val("");
         $("#articleCammentable").prop("checked", true);
         $("#postToCommunity").prop("checked", true);
-        $(".signs button").each(function(i) {
+        $(".signs button").each(function (i) {
             if (i === 0) {
                 this.className = "selected";
             } else {
@@ -1197,20 +1225,21 @@ admin.article = {
      * @description 初始化发布文章页面
      * @param {Function} fun 切面函数
      */
-    init: function(fun) {
+    init: function (fun) {
+        this.currentEditorType = Label.editorType;
         // Inits Signs.
         $.ajax({
             url: latkeConfig.servePath + "/console/signs/",
             type: "GET",
             cache: false,
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
 
-                $(".signs button").each(function(i) {
+                $(".signs button").each(function (i) {
                     // Sets signs.
                     if (i === result.signs.length) {
                         $("#articleSign1").addClass("selected");
@@ -1222,9 +1251,9 @@ admin.article = {
                         });
                     }
                     // Binds checkbox event.
-                    $(this).click(function() {
+                    $(this).click(function () {
                         if (this.className !== "selected") {
-                            $(".signs button").each(function() {
+                            $(".signs button").each(function () {
                                 this.className = "";
                             });
                             this.className = "selected";
@@ -1241,7 +1270,7 @@ admin.article = {
             url: latkeConfig.servePath + "/console/tags",
             type: "GET",
             cache: false,
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
@@ -1268,7 +1297,7 @@ admin.article = {
         });
 
         // submit action
-        $("#submitArticle").click(function() {
+        $("#submitArticle").click(function () {
             if (admin.article.status.id) {
                 admin.article.update(true);
             } else {
@@ -1276,7 +1305,7 @@ admin.article = {
             }
         });
 
-        $("#saveArticle").click(function() {
+        $("#saveArticle").click(function () {
             if (admin.article.status.id) {
                 admin.article.update(admin.article.status.isArticle);
             } else {
@@ -1299,14 +1328,14 @@ admin.article = {
         });
 
         admin.article.clearDraftTimer();
-        admin.article.autoSaveDraftTimer = setInterval(function() {
+        admin.article.autoSaveDraftTimer = setInterval(function () {
             admin.article._autoSaveToDraft();
         }, admin.article.AUTOSAVETIME);
     },
     /**
      * @description 自动保存草稿件
      */
-    _autoSaveToDraft: function() {
+    _autoSaveToDraft: function () {
         if ($("#title").val().replace(/\s/g, "") === "" ||
                 admin.editors.articleEditor.getContent().replace(/\s/g, "") === "" ||
                 $("#tag").val().replace(/\s/g, "") === "") {
@@ -1324,7 +1353,7 @@ admin.article = {
     /**
      * @description 关闭定时器
      */
-    clearDraftTimer: function() {
+    clearDraftTimer: function () {
         if (admin.article.autoSaveDraftTimer !== "") {
             window.clearInterval(admin.article.autoSaveDraftTimer);
             admin.article.autoSaveDraftTimer = "";
@@ -1333,7 +1362,7 @@ admin.article = {
     /**
      * @description 验证发布文章字段的合法性
      */
-    validate: function() {
+    validate: function () {
         var articleContent = admin.editors.articleEditor.getContent();
 
         if ($("#title").val().replace(/\s/g, "") === "") {
@@ -1353,14 +1382,14 @@ admin.article = {
      * @description 取消发布 
      * @param {Boolean} isAuto 是否为自动保存
      */
-    unPublish: function(isAuto) {
+    unPublish: function (isAuto) {
         var that = this;
         that._addDisabled();
         $.ajax({
             url: latkeConfig.servePath + "/console/article/unpublish/" + admin.article.status.id,
             type: "PUT",
             cache: false,
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 if (isAuto) {
                     $("#tipMsg").text(Label.autoSaveLabel);
                     return;
@@ -1375,7 +1404,7 @@ admin.article = {
                 admin.article.status.id = undefined;
                 admin.article.isConfirm = false;
             },
-            complete: function(jqXHR, textStatus) {
+            complete: function (jqXHR, textStatus) {
                 that._removeDisabled();
                 $("#loadMsg").text("");
                 if (jqXHR.status === 403) {
@@ -1390,7 +1419,7 @@ admin.article = {
      * @param {String} str 被解析的字符串
      * @returns {String} 无重复的字符串
      */
-    trimUniqueArray: function(str) {
+    trimUniqueArray: function (str) {
         str = str.toString();
         var arr = str.split(",");
         for (var i = 0; i < arr.length; i++) {
@@ -1406,7 +1435,7 @@ admin.article = {
     /**
      * @description 点击发文文章时的处理
      */
-    prePost: function() {
+    prePost: function () {
         $("#loadMsg").text(Label.loadingLabel);
         admin.article.content = "";
         if (!admin.editors.articleEditor.getContent) {
@@ -1423,11 +1452,20 @@ admin.article = {
         }
         $("#tipMsg").text("");
         $("#loadMsg").text("");
+
+        if (admin.article.currentEditorType !== Label.editorType) {
+            admin.editors.articleEditor.remove();
+            admin.editors.abstractEditor.remove();
+
+            admin.article.currentEditorType = Label.editorType;
+            admin.editors.articleEditor.init(Label.editorType);
+            admin.editors.abstractEditor.init(Label.editorType);
+        }
     },
     /**
      * @description: 仿重复提交，点击一次后，按钮设置为 disabled
      */
-    _addDisabled: function() {
+    _addDisabled: function () {
         $("#unSubmitArticle").attr("disabled", "disabled");
         $("#saveArticle").attr("disabled", "disabled");
         $("#submitArticle").attr("disabled", "disabled");
@@ -1435,7 +1473,7 @@ admin.article = {
     /**
      * @description: 仿重复提交，当后台有数据返回后，按钮移除 disabled 状态
      */
-    _removeDisabled: function() {
+    _removeDisabled: function () {
         $("#unSubmitArticle").removeAttr("disabled");
         $("#saveArticle").removeAttr("disabled");
         $("#submitArticle").removeAttr("disabled");
@@ -1448,7 +1486,9 @@ admin.article = {
 admin.register.article = {
     "obj": admin.article,
     "init": admin.article.init,
-    "refresh": function() {
+    "refresh": function () {
+        admin.editors.abstractEditor.setContent('');
+        admin.editors.articleEditor.setContent('');
         $("#loadMsg").text("");
         $("#tipMsg").text("");
     }
@@ -1864,12 +1904,13 @@ admin.register["draft-list"] =  {
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, May 28, 2013
+ * @version 1.1.2.4, May 30, 2015
  */
 
 /* page-list 相关操作 */
 admin.pageList = {
-    tablePagination:  new TablePaginate("page"),
+    currentEditorType: '',
+    tablePagination: new TablePaginate("page"),
     pageInfo: {
         currentCount: 1,
         pageCount: 1,
@@ -1877,75 +1918,75 @@ admin.pageList = {
     },
     id: "",
     type: "link",
-    
     /* 
      * 初始化 table, pagination, comments dialog
      */
     init: function (page) {
         this.tablePagination.buildTable([{
-            text: "",
-            index: "pageOrder",
-            width: 60,
-            style: "padding-left: 12px;font-size:14px;"
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.titleLabel,
-            index: "pageTitle",
-            width: 300
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.permalinkLabel,
-            index: "pagePermalink",
-            minWidth: 300
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.openMethodLabel,
-            index: "pageTarget",
-            width: 120
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.typeLabel,
-            index: "pageType",
-            width: 80
-        }, {
-            text: Label.commentLabel,
-            index: "comments",
-            width: 80,
-            style: "padding-left: 12px;"
-        }]);
+                text: "",
+                index: "pageOrder",
+                width: 60,
+                style: "padding-left: 12px;font-size:14px;"
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.titleLabel,
+                index: "pageTitle",
+                width: 300
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.permalinkLabel,
+                index: "pagePermalink",
+                minWidth: 300
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.openMethodLabel,
+                index: "pageTarget",
+                width: 120
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.typeLabel,
+                index: "pageType",
+                width: 80
+            }, {
+                text: Label.commentLabel,
+                index: "comments",
+                width: 80,
+                style: "padding-left: 12px;"
+            }]);
         this.tablePagination.initPagination();
         this.tablePagination.initCommentsDialog();
         this.getList(page);
-        
+
         var language = Label.localeString.substring(0, 2);
         if (language === "zh") {
             language = "zh-cn";
         }
-        
+
+        admin.pageList.currentEditorType = Label.editorType;
         admin.editors.pageEditor = new Editor({
             language: language,
             kind: "all",
             id: "pageContent"
         });
-        
+
         // select type
         $(".fn-type").click(function () {
             var $it = $(this);
             if ($it.hasClass("selected")) {
                 return;
             }
-            
+
             $(".fn-type").removeClass("selected");
             $it.addClass("selected");
-              
+
             admin.pageList.type = $it.data("type");
-            
+
             if (admin.pageList.type === "page") {
                 $("#pagePagePanel").slideDown();
-                
+
                 // 使用 CodeMirror 编辑器时，当编辑器初始之前，元素为 display:none 时，行号显示不正常
-                if (Label.editorType === "CodeMirror-Markdown" 
-                    && admin.editors.pageEditor.getContent() === "") {
+                if (Label.editorType === "CodeMirror-Markdown"
+                        && admin.editors.pageEditor.getContent() === "") {
                     admin.editors.pageEditor.setContent("");
                 }
             } else {
@@ -1953,7 +1994,6 @@ admin.pageList = {
             }
         });
     },
-
     /* 
      * 根据当前页码获取列表
      * @pagNum 当前页码
@@ -1962,18 +2002,18 @@ admin.pageList = {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
         var that = this;
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
-            success: function(result, textStatus){
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 var pages = result.pages;
                 var pageData = [];
                 admin.pageList.pageInfo.currentCount = pages.length;
@@ -1998,27 +2038,26 @@ admin.pageList = {
                                     <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
                                     </div>';
                     }
-                            
+
                     pageData[i].pageTitle = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>" +
-                    pages[i].pageTitle + "</a>";
+                            pages[i].pageTitle + "</a>";
                     pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
-                    + pages[i].pagePermalink + "</a>";
+                            + pages[i].pagePermalink + "</a>";
                     pageData[i].pageTarget = pages[i].pageOpenTarget;
-                    pageData[i].pageType = pages[i].pageType ;
+                    pageData[i].pageType = pages[i].pageType;
                     pageData[i].comments = pages[i].pageCommentCount;
                     pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.get('" + pages[i].oId + "')\">" + Label.updateLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "', '" + pages[i].pageTitle + "')\">" + Label.removeLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + pages[i].oId + "', 'page')\">" + Label.commentLabel + "</a></span>";
                 }
-                        
+
                 that.tablePagination.updateTablePagination(pageData, pageNum, result.pagination);
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
-    
     /*
      * 获取自定义页面
      * @id 自定义页面 id
@@ -2026,20 +2065,20 @@ admin.pageList = {
     get: function (id) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/page/" + id,
             type: "GET",
             cache: false,
-            success: function(result, textStatus){
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 admin.pageList.id = id;
-                
+
                 $("#pageTitle").val(result.page.pageTitle);
                 $("#pagePermalink").val(result.page.pagePermalink);
                 $("#pageTarget").val(result.page.pageOpenTarget);
@@ -2050,13 +2089,19 @@ admin.pageList = {
                 }
                 $("#pageCommentable").prop("checked", result.page.pageCommentable);
 
+                if (admin.pageList.currentEditorType !== result.page.pageEditorType) {
+                    admin.editors.pageEditor.remove();
+
+                    admin.pageList.currentEditorType = result.page.pageEditorType;
+                    admin.editors.pageEditor.init(result.page.pageEditorType);
+                }
+
                 admin.editors.pageEditor.setContent(result.page.pageContent);
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
-
     /* 
      * 删除自定义页面
      * @id 自定义页面 id
@@ -2072,16 +2117,16 @@ admin.pageList = {
                 url: latkeConfig.servePath + "/console/page/" + id,
                 type: "DELETE",
                 cache: false,
-                success: function(result, textStatus){
+                success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
                         $("#loadMsg").text("");
                         return;
                     }
-                    
+
                     var pageNum = admin.pageList.pageInfo.currentPage;
                     if (admin.pageList.pageInfo.currentCount === 1 && admin.pageList.pageInfo.pageCount !== 1 &&
-                        admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
+                            admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
                         admin.pageList.pageInfo.pageCount--;
                         pageNum = admin.pageList.pageInfo.pageCount;
                     }
@@ -2091,13 +2136,12 @@ admin.pageList = {
                     } else {
                         admin.setHashByPage(pageNum);
                     }
-                    
+
                     $("#loadMsg").text("");
                 }
             });
         }
     },
-    
     /*
      * 添加自定义页面
      */
@@ -2105,14 +2149,14 @@ admin.pageList = {
         if (this.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            
+
             var pageContent = admin.editors.pageEditor.getContent();
-            
+
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (admin.pageList.type === "link") {
                 pagePermalink = Util.proessURL(pagePermalink);
             }
-            
+
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
@@ -2123,30 +2167,30 @@ admin.pageList = {
                     "pageOpenTarget": $("#pageTarget").val()
                 }
             };
-            
+
             $.ajax({
                 url: latkeConfig.servePath + "/console/page/",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus){
+                success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
                         $("#loadMsg").text("");
                         return;
                     }
-                    
+
                     admin.pageList.id = "";
                     $("#pagePermalink").val("");
                     $("#pageTitle").val("");
                     $("#pageCommentable").prop("cheked", false);
                     $("#pageTarget").val("_self");
                     $($(".fn-type").get(0)).click();
-                    
+
                     admin.editors.pageEditor.setContent("");
-                    
+
                     if (admin.pageList.pageInfo.currentCount === Label.PAGE_SIZE &&
-                        admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
+                            admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
                         admin.pageList.pageInfo.pageCount++;
                     }
                     var hashList = window.location.hash.split("/");
@@ -2155,13 +2199,12 @@ admin.pageList = {
                     } else {
                         admin.setHashByPage(admin.pageList.pageInfo.pageCount);
                     }
-                    
+
                     $("#loadMsg").text("");
                 }
             });
         }
     },
-    
     /*
      * 更新自定义页面
      */
@@ -2169,15 +2212,15 @@ admin.pageList = {
         if (this.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            
+
             var pageContent = admin.editors.pageEditor.getContent();
-            
+
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (admin.pageList.type === "link") {
                 pagePermalink = Util.proessURL(pagePermalink);
             }
-            
-            
+
+
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
@@ -2186,24 +2229,25 @@ admin.pageList = {
                     "pagePermalink": pagePermalink,
                     "pageCommentable": $("#pageCommentable").prop("checked"),
                     "pageType": admin.pageList.type,
-                    "pageOpenTarget": $("#pageTarget").val()
+                    "pageOpenTarget": $("#pageTarget").val(),
+                    "pageEditorType": admin.pageList.currentEditorType
                 }
             };
-            
+
             $.ajax({
                 url: latkeConfig.servePath + "/console/page/",
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus){
+                success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
-                     
+
                     if (!result.sc) {
                         $("#loadMsg").text("");
                         return;
                     }
                     admin.pageList.id = "";
-                    
+
                     admin.pageList.getList(admin.pageList.pageInfo.currentPage);
                     $("#pageTitle").val("");
                     $("#pagePermalink").val("");
@@ -2212,29 +2256,27 @@ admin.pageList = {
                     $($(".fn-type").get(0)).click();
 
                     admin.editors.pageEditor.setContent("");
-                    
+
                     $("#loadMsg").text("");
                 }
             });
         }
     },
-    
     /*
      * 验证字段
      */
-    validate: function () {        
+    validate: function () {
         if ($("#pageTitle").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.titleEmptyLabel);
             $("#pageTitle").focus();
         } else if (admin.pageList.type === "link" &&
-            $("#pagePermalink").val().replace(/\s/g, "") === "") {
+                $("#pagePermalink").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.linkEmptyLabel);
         } else {
             return true;
         }
         return false;
     },
-    
     /*
      * 提交自定义页面
      */
@@ -2245,30 +2287,29 @@ admin.pageList = {
             this.add();
         }
     },
-    
     /*
      * 调换顺序
      */
     changeOrder: function (id, order, status) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
-        
+
         var requestJSONObject = {
             "oId": id.toString(),
             "direction": status
         };
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/page/order/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus){
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
-                
+
                 // Refershes the page list
                 admin.pageList.getList(admin.pageList.pageInfo.currentPage);
-                
+
                 $("#loadMsg").text("");
             }
         });
@@ -2278,7 +2319,7 @@ admin.pageList = {
 /*
  * 注册到 admin 进行管理 
  */
-admin.register["page-list"] =  {
+admin.register["page-list"] = {
     "obj": admin.pageList,
     "init": admin.pageList.init,
     "refresh": admin.pageList.getList
