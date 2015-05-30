@@ -19,7 +19,7 @@
  *                     plugins/media/media.js 注释 26 & 28
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Jun 19, 2012
+ * @version 1.1.0.2, May 30, 2015
  */
 admin.editors.KindEditor = {
     /*

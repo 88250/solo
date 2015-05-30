@@ -245,7 +245,8 @@ admin.article = {
                     "articleSignId": signId,
                     "articleCommentable": $("#articleCommentable").prop("checked"),
                     "articleViewPwd": $("#viewPwd").val(),
-                    "postToCommunity": $("#postToCommunity").prop("checked")
+                    "postToCommunity": $("#postToCommunity").prop("checked"),
+                    "articleEditorType": admin.article.currentEditorType
                 }
             };
 

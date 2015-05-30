@@ -17,7 +17,7 @@
  * @fileoverview editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Jan 29, 2013
+ * @version 1.1.0.4, May 30, 2015
  */
 
 admin.editors = {};

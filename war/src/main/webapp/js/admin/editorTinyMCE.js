@@ -17,7 +17,7 @@
  * @fileoverview tinyMCE editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.6, Sep 26, 2012
+ * @version 1.1.0.6, May 30, 2015
  */
 admin.editors.tinyMCE = {
     /*
