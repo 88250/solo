@@ -749,6 +749,8 @@ admin.editors.CodeMirror = {
      */
     setContent: function (id, content) {
         this[id].setValue(content);
+        var $preview = $("#" + id).parent().find(".markdown-preivew");
+        $preview.find(".markdown-preview-main").html(content);
     },
     /*
      * @description 销毁编辑器值
@@ -2285,6 +2287,13 @@ admin.pageList = {
             this.update();
         } else {
             this.add();
+        }
+
+        if (admin.pageList.currentEditorType !== Label.editorType) {
+            admin.editors.pageEditor.remove();
+
+            admin.pageList.currentEditorType = Label.editorType;
+            admin.editors.pageEditor.init(Label.editorType);
         }
     },
     /*
