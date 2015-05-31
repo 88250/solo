@@ -18,9 +18,10 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.3.3, Sep 30, 2013
+ * @version 1.1.3.3, May 30, 2015
  */
 admin.article = {
+    currentEditorType: '',
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
     isConfirm: true,
     status: {
@@ -38,7 +39,7 @@ admin.article = {
      * @param {String} id 文章 id
      * @param {Boolean} isArticle 文章或者草稿
      */
-    get: function(id, isArticle) {
+    get: function (id, isArticle) {
         this.status.id = id;
         this.status.isArticle = isArticle;
         admin.selectTab("article/article");
@@ -46,14 +47,14 @@ admin.article = {
     /**
      * @description 获取文章内容
      */
-    getAndSet: function() {
+    getAndSet: function () {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
         $.ajax({
             url: latkeConfig.servePath + "/console/article/" + admin.article.status.id,
             type: "GET",
             cache: false,
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
@@ -63,6 +64,15 @@ admin.article = {
                 // set default value for article.
                 $("#title").val(result.article.articleTitle);
                 admin.article.status.articleHadBeenPublished = result.article.articleHadBeenPublished;
+
+                if (admin.article.currentEditorType !== result.article.articleEditorType) {
+                    admin.editors.articleEditor.remove();
+                    admin.editors.abstractEditor.remove();
+
+                    admin.article.currentEditorType = result.article.articleEditorType;
+                    admin.editors.articleEditor.init(result.article.articleEditorType);
+                    admin.editors.abstractEditor.init(result.article.articleEditorType);
+                }
 
                 admin.editors.articleEditor.setContent(result.article.articleContent);
                 admin.editors.abstractEditor.setContent(result.article.articleAbstract);
@@ -86,7 +96,7 @@ admin.article = {
 
                 // signs
                 var signs = result.article.signs;
-                $(".signs button").each(function(i) {
+                $(".signs button").each(function (i) {
                     if (parseInt(result.article.articleSignId) === parseInt(signs[i].oId)) {
                         $("#articleSign" + signs[i].oId).addClass("selected");
                     } else {
@@ -105,7 +115,7 @@ admin.article = {
      * @param {String} fromId 文章来自草稿夹(draft)/文件夹(article)
      * @param {String} title 文章标题
      */
-    del: function(id, fromId, title) {
+    del: function (id, fromId, title) {
         var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + title + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
@@ -115,7 +125,7 @@ admin.article = {
                 url: latkeConfig.servePath + "/console/article/" + id,
                 type: "DELETE",
                 cache: false,
-                success: function(result, textStatus) {
+                success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
                         $("#loadMsg").text("");
@@ -132,7 +142,7 @@ admin.article = {
      * @param {Boolean} articleIsPublished 文章是否发布过
      * @param {Boolean} isAuto 是否为自动保存
      */
-    add: function(articleIsPublished, isAuto) {
+    add: function (articleIsPublished, isAuto) {
         if (admin.article.validate()) {
             var that = this;
             that._addDisabled();
@@ -140,7 +150,7 @@ admin.article = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             var signId = "";
-            $(".signs button").each(function() {
+            $(".signs button").each(function () {
                 if (this.className === "selected") {
                     signId = this.id.substr(this.id.length - 1, 1);
                 }
@@ -169,7 +179,7 @@ admin.article = {
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus) {
+                success: function (result, textStatus) {
                     if (isAuto) {
                         $("#tipMsg").text(Label.autoSaveLabel);
                         admin.article.status.id = result.oId;
@@ -190,7 +200,7 @@ admin.article = {
 
                     admin.article.isConfirm = false;
                 },
-                complete: function(jqXHR, textStatus) {
+                complete: function (jqXHR, textStatus) {
                     that._removeDisabled();
                     $("#loadMsg").text("");
                     if (jqXHR.status === 403) {
@@ -206,7 +216,7 @@ admin.article = {
      * @param {Boolean} articleIsPublished 文章是否发布过
      * @param {Boolean} isAuto 是否为自动保存
      */
-    update: function(articleIsPublished, isAuto) {
+    update: function (articleIsPublished, isAuto) {
         if (admin.article.validate()) {
             var that = this;
             that._addDisabled();
@@ -214,7 +224,7 @@ admin.article = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
             var signId = "";
-            $(".signs button").each(function() {
+            $(".signs button").each(function () {
                 if (this.className === "selected") {
                     signId = this.id.substr(this.id.length - 1, 1);
                 }
@@ -235,7 +245,8 @@ admin.article = {
                     "articleSignId": signId,
                     "articleCommentable": $("#articleCommentable").prop("checked"),
                     "articleViewPwd": $("#viewPwd").val(),
-                    "postToCommunity": $("#postToCommunity").prop("checked")
+                    "postToCommunity": $("#postToCommunity").prop("checked"),
+                    "articleEditorType": admin.article.currentEditorType
                 }
             };
 
@@ -244,7 +255,7 @@ admin.article = {
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus) {
+                success: function (result, textStatus) {
                     if (isAuto) {
                         $("#tipMsg").text(Label.autoSaveLabel);
                         return;
@@ -266,7 +277,7 @@ admin.article = {
                     admin.article.status.id = undefined;
                     admin.article.isConfirm = false;
                 },
-                complete: function(jqXHR, textStatus) {
+                complete: function (jqXHR, textStatus) {
                     that._removeDisabled();
                     $("#loadMsg").text("");
                     if (jqXHR.status === 403) {
@@ -280,7 +291,7 @@ admin.article = {
     /**
      * @description 发布文章页面设置文章按钮、发布到社区等状态的显示
      */
-    setStatus: function() {
+    setStatus: function () {
         // set button status
         if (this.status) {
             if (this.status.isArticle) {
@@ -306,7 +317,7 @@ admin.article = {
     /**
      * @description 清除发布文章页面的输入框的内容
      */
-    clear: function() {
+    clear: function () {
         this.status = {
             id: undefined,
             isArticle: undefined,
@@ -326,7 +337,7 @@ admin.article = {
         $("#permalink").val("");
         $("#articleCammentable").prop("checked", true);
         $("#postToCommunity").prop("checked", true);
-        $(".signs button").each(function(i) {
+        $(".signs button").each(function (i) {
             if (i === 0) {
                 this.className = "selected";
             } else {
@@ -340,20 +351,21 @@ admin.article = {
      * @description 初始化发布文章页面
      * @param {Function} fun 切面函数
      */
-    init: function(fun) {
+    init: function (fun) {
+        this.currentEditorType = Label.editorType;
         // Inits Signs.
         $.ajax({
             url: latkeConfig.servePath + "/console/signs/",
             type: "GET",
             cache: false,
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
 
-                $(".signs button").each(function(i) {
+                $(".signs button").each(function (i) {
                     // Sets signs.
                     if (i === result.signs.length) {
                         $("#articleSign1").addClass("selected");
@@ -365,9 +377,9 @@ admin.article = {
                         });
                     }
                     // Binds checkbox event.
-                    $(this).click(function() {
+                    $(this).click(function () {
                         if (this.className !== "selected") {
-                            $(".signs button").each(function() {
+                            $(".signs button").each(function () {
                                 this.className = "";
                             });
                             this.className = "selected";
@@ -384,7 +396,7 @@ admin.article = {
             url: latkeConfig.servePath + "/console/tags",
             type: "GET",
             cache: false,
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
@@ -411,7 +423,7 @@ admin.article = {
         });
 
         // submit action
-        $("#submitArticle").click(function() {
+        $("#submitArticle").click(function () {
             if (admin.article.status.id) {
                 admin.article.update(true);
             } else {
@@ -419,7 +431,7 @@ admin.article = {
             }
         });
 
-        $("#saveArticle").click(function() {
+        $("#saveArticle").click(function () {
             if (admin.article.status.id) {
                 admin.article.update(admin.article.status.isArticle);
             } else {
@@ -442,14 +454,14 @@ admin.article = {
         });
 
         admin.article.clearDraftTimer();
-        admin.article.autoSaveDraftTimer = setInterval(function() {
+        admin.article.autoSaveDraftTimer = setInterval(function () {
             admin.article._autoSaveToDraft();
         }, admin.article.AUTOSAVETIME);
     },
     /**
      * @description 自动保存草稿件
      */
-    _autoSaveToDraft: function() {
+    _autoSaveToDraft: function () {
         if ($("#title").val().replace(/\s/g, "") === "" ||
                 admin.editors.articleEditor.getContent().replace(/\s/g, "") === "" ||
                 $("#tag").val().replace(/\s/g, "") === "") {
@@ -467,7 +479,7 @@ admin.article = {
     /**
      * @description 关闭定时器
      */
-    clearDraftTimer: function() {
+    clearDraftTimer: function () {
         if (admin.article.autoSaveDraftTimer !== "") {
             window.clearInterval(admin.article.autoSaveDraftTimer);
             admin.article.autoSaveDraftTimer = "";
@@ -476,7 +488,7 @@ admin.article = {
     /**
      * @description 验证发布文章字段的合法性
      */
-    validate: function() {
+    validate: function () {
         var articleContent = admin.editors.articleEditor.getContent();
 
         if ($("#title").val().replace(/\s/g, "") === "") {
@@ -496,14 +508,14 @@ admin.article = {
      * @description 取消发布 
      * @param {Boolean} isAuto 是否为自动保存
      */
-    unPublish: function(isAuto) {
+    unPublish: function (isAuto) {
         var that = this;
         that._addDisabled();
         $.ajax({
             url: latkeConfig.servePath + "/console/article/unpublish/" + admin.article.status.id,
             type: "PUT",
             cache: false,
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 if (isAuto) {
                     $("#tipMsg").text(Label.autoSaveLabel);
                     return;
@@ -518,7 +530,7 @@ admin.article = {
                 admin.article.status.id = undefined;
                 admin.article.isConfirm = false;
             },
-            complete: function(jqXHR, textStatus) {
+            complete: function (jqXHR, textStatus) {
                 that._removeDisabled();
                 $("#loadMsg").text("");
                 if (jqXHR.status === 403) {
@@ -533,7 +545,7 @@ admin.article = {
      * @param {String} str 被解析的字符串
      * @returns {String} 无重复的字符串
      */
-    trimUniqueArray: function(str) {
+    trimUniqueArray: function (str) {
         str = str.toString();
         var arr = str.split(",");
         for (var i = 0; i < arr.length; i++) {
@@ -549,7 +561,7 @@ admin.article = {
     /**
      * @description 点击发文文章时的处理
      */
-    prePost: function() {
+    prePost: function () {
         $("#loadMsg").text(Label.loadingLabel);
         admin.article.content = "";
         if (!admin.editors.articleEditor.getContent) {
@@ -566,11 +578,20 @@ admin.article = {
         }
         $("#tipMsg").text("");
         $("#loadMsg").text("");
+
+        if (admin.article.currentEditorType !== Label.editorType) {
+            admin.editors.articleEditor.remove();
+            admin.editors.abstractEditor.remove();
+
+            admin.article.currentEditorType = Label.editorType;
+            admin.editors.articleEditor.init(Label.editorType);
+            admin.editors.abstractEditor.init(Label.editorType);
+        }
     },
     /**
      * @description: 仿重复提交，点击一次后，按钮设置为 disabled
      */
-    _addDisabled: function() {
+    _addDisabled: function () {
         $("#unSubmitArticle").attr("disabled", "disabled");
         $("#saveArticle").attr("disabled", "disabled");
         $("#submitArticle").attr("disabled", "disabled");
@@ -578,7 +599,7 @@ admin.article = {
     /**
      * @description: 仿重复提交，当后台有数据返回后，按钮移除 disabled 状态
      */
-    _removeDisabled: function() {
+    _removeDisabled: function () {
         $("#unSubmitArticle").removeAttr("disabled");
         $("#saveArticle").removeAttr("disabled");
         $("#submitArticle").removeAttr("disabled");
@@ -591,7 +612,9 @@ admin.article = {
 admin.register.article = {
     "obj": admin.article,
     "init": admin.article.init,
-    "refresh": function() {
+    "refresh": function () {
+        admin.editors.abstractEditor.setContent('');
+        admin.editors.articleEditor.setContent('');
         $("#loadMsg").text("");
         $("#tipMsg").text("");
     }

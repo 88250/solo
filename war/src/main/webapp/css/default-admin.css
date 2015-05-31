@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
-* @version 1.0.4.1, Dec 24, 2012
+* @version 1.0.5.1, May 30, 2015
 */
 
 /* start resset */
@@ -647,7 +647,7 @@ button#submitArticle {
     float: left;
     height: 16px;
     width: 16px;
-    background-position: -79px -32px;
+    background-position: -81px -32px;
 }
 .table-upIcon {
     background-position: -64px -32px;

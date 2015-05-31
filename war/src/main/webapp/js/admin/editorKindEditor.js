@@ -19,7 +19,7 @@
  *                     plugins/media/media.js 注释 26 & 28
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.2, Jun 19, 2012
+ * @version 1.1.0.2, May 30, 2015
  */
 admin.editors.KindEditor = {
     /*
@@ -33,15 +33,15 @@ admin.editors.KindEditor = {
         var language = "zh_CN";
         if ("en_US" === Label.localeString) {
             language = "en"
-        } 
-        
+        }
+
         if (conf.kind && conf.kind === "simple") {
             try {
                 this[conf.id] = KindEditor.create('#' + conf.id, {
-                    langType : language,
-                    resizeType: 0, 
-                    items: ["bold", "italic", "underline", "strikethrough", "|", "undo", "redo", "|", 
-                    "insertunorderedlist", "insertorderedlist", "|", "source"
+                    langType: language,
+                    resizeType: 0,
+                    items: ["bold", "italic", "underline", "strikethrough", "|", "undo", "redo", "|",
+                        "insertunorderedlist", "insertorderedlist", "|", "source"
                     ]
                 });
             } catch (e) {
@@ -50,15 +50,15 @@ admin.editors.KindEditor = {
         } else {
             try {
                 this[conf.id] = KindEditor.create('#' + conf.id, {
-                    langType : language,
+                    langType: language,
                     items: ["formatblock", "fontname", "fontsize", "|", "bold", "italic", "underline", "strikethrough", "forecolor", "|",
-                    "link", "unlink", "image", "media", "|", "pagebreak", "emoticons", "code", "/",
-                    "undo", "redo", "|", "insertunorderedlist", "insertorderedlist", "indent", "outdent", "|", 
-                    "justifyleft", "justifycenter", "justifyright", "justifyfull", "|", "plainpaste", "wordpaste", "|", 
-                    "clearhtml", "source", "preview"
+                        "link", "unlink", "image", "media", "|", "pagebreak", "emoticons", "code", "/",
+                        "undo", "redo", "|", "insertunorderedlist", "insertorderedlist", "indent", "outdent", "|",
+                        "justifyleft", "justifycenter", "justifyright", "justifyfull", "|", "plainpaste", "wordpaste", "|",
+                        "clearhtml", "source", "preview"
                     ],
                     afterCreate: function () {
-                        if (typeof(conf.fun) === "function") {
+                        if (typeof (conf.fun) === "function") {
                             conf.fun();
                         }
                     }
@@ -68,7 +68,6 @@ admin.editors.KindEditor = {
             }
         }
     },
-    
     /*
      * @description 获取编辑器值
      * @param {string} id 编辑器id
@@ -83,7 +82,6 @@ admin.editors.KindEditor = {
         }
         return content;
     },
-    
     /*
      * @description 设置编辑器值
      * @param {string} id 编辑器 id
@@ -95,5 +93,12 @@ admin.editors.KindEditor = {
         } catch (e) {
             $("#" + id).val(content);
         }
+    },
+    /*
+     * @description 移除编辑器
+     * @param {string} id 编辑器 id
+     */
+    remove: function (id) {
+        this[id].remove();
     }
 };

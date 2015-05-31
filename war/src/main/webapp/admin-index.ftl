@@ -6,9 +6,7 @@
         <title>${blogTitle} - ${adminConsoleLabel}</title>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" />
-        <#if "CodeMirror-Markdown" == editorType>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirror/codemirror.css?${staticResourceVersion}" />
-        </#if>
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
     </head>
     <body onhashchange="admin.setCurByHash();">
@@ -133,24 +131,16 @@
         </div>
         <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
-        <#if "tinyMCE" == editorType>
         <script src="${servePath}/js/lib/tiny_mce/tiny_mce.js"></script>
-        <#elseif "KindEditor" == editorType>
         <script src="${staticServePath}/js/lib/KindEditor/kindeditor-min.js"></script>
-        <#else>
         <script src="${staticServePath}/js/lib/CodeMirror/codemirror.js"></script>
-        </#if>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
         <script src="${staticServePath}/js/admin/editor.js"></script>
-        <#if "tinyMCE" == editorType>
         <script src="${staticServePath}/js/admin/editorTinyMCE.js"></script>
-        <#elseif "KindEditor" == editorType>
         <script src="${staticServePath}/js/admin/editorKindEditor.js"></script>
-        <#else>
         <script src="${staticServePath}/js/admin/editorCodeMirror.js"></script>
-        </#if>
         <script src="${staticServePath}/js/admin/tablePaginate.js"></script>
         <script src="${staticServePath}/js/admin/article.js"></script>
         <script src="${staticServePath}/js/admin/comment.js"></script>

@@ -17,7 +17,7 @@
  * @fileoverview editor
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @version 1.0.0.4, Jan 29, 2013
+ * @version 1.1.0.4, May 30, 2015
  */
 
 admin.editors = {};
@@ -52,21 +52,23 @@ $.extend(Editor.prototype, {
     _init: function () {
         this.init();
     },
-    
     /*
      * @description 初始化编辑器
      */
-    init: function () {
+    init: function (type) {
         var conf = this.conf;
+        if (type) {
+            conf.type = type;
+        }
         
         var types = conf.type.split("-");
         if (types.length === 2) {
             conf.codeMirrorLanguage = types[1];
             conf.type = types[0];
         }
+
         admin.editors[conf.type].init(conf);
     },
-    
     /*
      * @description 获取编辑器值
      * @returns {string} 编辑器值
@@ -75,7 +77,6 @@ $.extend(Editor.prototype, {
         var conf = this.conf;
         return admin.editors[conf.type].getContent(conf.id);
     },
-    
     /*
      * @description 设置编辑器值
      * @param {string} content 编辑器回填内容 
@@ -83,6 +84,13 @@ $.extend(Editor.prototype, {
     setContent: function (content) {
         var conf = this.conf;
         admin.editors[conf.type].setContent(conf.id, content);
+    },
+    /*
+     * @description 移除编辑器值
+     */
+    remove: function () {
+        var conf = this.conf;
+        admin.editors[conf.type].remove(conf.id);
     }
 });
 

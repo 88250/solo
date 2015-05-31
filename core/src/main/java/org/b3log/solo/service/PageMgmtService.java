@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
@@ -37,12 +36,11 @@ import org.b3log.solo.util.Comments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 /**
  * Page management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Jun 8, 2012
+ * @version 1.1.0.7, May 30, 2015
  * @since 0.4.0
  */
 @Service
@@ -98,8 +96,7 @@ public class PageMgmtService {
     /**
      * Updates a page by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "page": {
      *         "oId": "",
@@ -110,10 +107,12 @@ public class PageMgmtService {
      *         "pagePermalink": "",
      *         "pageCommentable": boolean,
      *         "pageType": "",
-     *         "pageOpenTarget": ""
+     *         "pageOpenTarget": "",
+     *         "pageEditorType": "" // optional, preference specified if not exists this key
      *     }
      * }, see {@link Page} for more details
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public void updatePage(final JSONObject requestJSONObject) throws ServiceException {
@@ -167,10 +166,11 @@ public class PageMgmtService {
                 processCommentsForPageUpdate(newPage);
             }
 
-            // Editor type
-            final JSONObject preference = preferenceQueryService.getPreference();
-
-            newPage.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+            // Set editor type
+            if (!newPage.has(Page.PAGE_EDITOR_TYPE)) {
+                final JSONObject preference = preferenceQueryService.getPreference();
+                newPage.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+            }
 
             pageRepository.update(pageId, newPage);
 
@@ -216,9 +216,8 @@ public class PageMgmtService {
 
     /**
      * Adds a page with the specified request json object.
-     * 
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "page": {
      *         "pageTitle": "",
@@ -226,13 +225,14 @@ public class PageMgmtService {
      *         "pageOpenTarget": "",
      *         "pageCommentable": boolean,
      *         "pageType": "",
-     *         "pagePermalink": "" // optional
+     *         "pagePermalink": "", // optional
+     *         "pageEditorType": "" // optional, preference specified if not exists this key
      *     }
      * }, see {@link Page} for more details
      * </pre>
+     *
      * @return generated page id
-     * @throws ServiceException if permalink format checks failed or persists
-     * failed
+     * @throws ServiceException if permalink format checks failed or persists failed
      */
     public String addPage(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = pageRepository.beginTransaction();
@@ -274,11 +274,12 @@ public class PageMgmtService {
             }
 
             page.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));
-            
-            // Editor type
-            final JSONObject preference = preferenceQueryService.getPreference();
 
-            page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+            // Set editor type
+            if (!page.has(Page.PAGE_EDITOR_TYPE)) {
+                final JSONObject preference = preferenceQueryService.getPreference();
+                page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+            }
 
             final String ret = pageRepository.add(page);
 
@@ -303,8 +304,7 @@ public class PageMgmtService {
     }
 
     /**
-     * Changes the order of a page specified by the given page id with 
-     * the specified direction.
+     * Changes the order of a page specified by the given page id with the specified direction.
      *
      * @param pageId the given page id
      * @param direction the specified direction, "up"/"down"
@@ -381,9 +381,9 @@ public class PageMgmtService {
 
     /**
      * Processes comments for page update.
-     * 
+     *
      * @param page the specified page to update
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     public void processCommentsForPageUpdate(final JSONObject page) throws Exception {
         final String pageId = page.getString(Keys.OBJECT_ID);
@@ -409,7 +409,7 @@ public class PageMgmtService {
 
     /**
      * Sets the permalink query service with the specified permalink query service.
-     * 
+     *
      * @param permalinkQueryService the specified permalink query service
      */
     public void setPermalinkQueryService(final PermalinkQueryService permalinkQueryService) {
@@ -418,7 +418,7 @@ public class PageMgmtService {
 
     /**
      * Set the page repository with the specified page repository.
-     * 
+     *
      * @param pageRepository the specified page repository
      */
     public void setPageRepository(final PageRepository pageRepository) {
@@ -427,7 +427,7 @@ public class PageMgmtService {
 
     /**
      * Sets the preference query service with the specified preference query service.
-     * 
+     *
      * @param preferenceQueryService the specified preference query service
      */
     public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
@@ -436,7 +436,7 @@ public class PageMgmtService {
 
     /**
      * Sets the statistic query service with the specified statistic query service.
-     * 
+     *
      * @param statisticQueryService the specified statistic query service
      */
     public void setStatisticQueryService(final StatisticQueryService statisticQueryService) {
@@ -445,7 +445,7 @@ public class PageMgmtService {
 
     /**
      * Sets the statistic management service with the specified statistic management service.
-     * 
+     *
      * @param statisticMgmtService the specified statistic management service
      */
     public void setStatisticMgmtService(final StatisticMgmtService statisticMgmtService) {
@@ -454,7 +454,7 @@ public class PageMgmtService {
 
     /**
      * Sets the comment repository with the specified comment repository.
-     * 
+     *
      * @param commentRepository the specified comment repository
      */
     public void setCommentRepository(final CommentRepository commentRepository) {
@@ -463,7 +463,7 @@ public class PageMgmtService {
 
     /**
      * Sets the language service with the specified language service.
-     * 
+     *
      * @param langPropsService the specified language service
      */
     public void setLangPropsService(final LangPropsService langPropsService) {

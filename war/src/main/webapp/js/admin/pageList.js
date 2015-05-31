@@ -18,12 +18,13 @@
  *
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.0.2.4, May 28, 2013
+ * @version 1.1.2.4, May 30, 2015
  */
 
 /* page-list 相关操作 */
 admin.pageList = {
-    tablePagination:  new TablePaginate("page"),
+    currentEditorType: '',
+    tablePagination: new TablePaginate("page"),
     pageInfo: {
         currentCount: 1,
         pageCount: 1,
@@ -31,75 +32,75 @@ admin.pageList = {
     },
     id: "",
     type: "link",
-    
     /* 
      * 初始化 table, pagination, comments dialog
      */
     init: function (page) {
         this.tablePagination.buildTable([{
-            text: "",
-            index: "pageOrder",
-            width: 60,
-            style: "padding-left: 12px;font-size:14px;"
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.titleLabel,
-            index: "pageTitle",
-            width: 300
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.permalinkLabel,
-            index: "pagePermalink",
-            minWidth: 300
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.openMethodLabel,
-            index: "pageTarget",
-            width: 120
-        }, {
-            style: "padding-left: 12px;",
-            text: Label.typeLabel,
-            index: "pageType",
-            width: 80
-        }, {
-            text: Label.commentLabel,
-            index: "comments",
-            width: 80,
-            style: "padding-left: 12px;"
-        }]);
+                text: "",
+                index: "pageOrder",
+                width: 60,
+                style: "padding-left: 12px;font-size:14px;"
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.titleLabel,
+                index: "pageTitle",
+                width: 300
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.permalinkLabel,
+                index: "pagePermalink",
+                minWidth: 300
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.openMethodLabel,
+                index: "pageTarget",
+                width: 120
+            }, {
+                style: "padding-left: 12px;",
+                text: Label.typeLabel,
+                index: "pageType",
+                width: 80
+            }, {
+                text: Label.commentLabel,
+                index: "comments",
+                width: 80,
+                style: "padding-left: 12px;"
+            }]);
         this.tablePagination.initPagination();
         this.tablePagination.initCommentsDialog();
         this.getList(page);
-        
+
         var language = Label.localeString.substring(0, 2);
         if (language === "zh") {
             language = "zh-cn";
         }
-        
+
+        admin.pageList.currentEditorType = Label.editorType;
         admin.editors.pageEditor = new Editor({
             language: language,
             kind: "all",
             id: "pageContent"
         });
-        
+
         // select type
         $(".fn-type").click(function () {
             var $it = $(this);
             if ($it.hasClass("selected")) {
                 return;
             }
-            
+
             $(".fn-type").removeClass("selected");
             $it.addClass("selected");
-              
+
             admin.pageList.type = $it.data("type");
-            
+
             if (admin.pageList.type === "page") {
                 $("#pagePagePanel").slideDown();
-                
+
                 // 使用 CodeMirror 编辑器时，当编辑器初始之前，元素为 display:none 时，行号显示不正常
-                if (Label.editorType === "CodeMirror-Markdown" 
-                    && admin.editors.pageEditor.getContent() === "") {
+                if (Label.editorType === "CodeMirror-Markdown"
+                        && admin.editors.pageEditor.getContent() === "") {
                     admin.editors.pageEditor.setContent("");
                 }
             } else {
@@ -107,7 +108,6 @@ admin.pageList = {
             }
         });
     },
-
     /* 
      * 根据当前页码获取列表
      * @pagNum 当前页码
@@ -116,18 +116,18 @@ admin.pageList = {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
         var that = this;
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
-            success: function(result, textStatus){
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 var pages = result.pages;
                 var pageData = [];
                 admin.pageList.pageInfo.currentCount = pages.length;
@@ -152,27 +152,26 @@ admin.pageList = {
                                     <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
                                     </div>';
                     }
-                            
+
                     pageData[i].pageTitle = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>" +
-                    pages[i].pageTitle + "</a>";
+                            pages[i].pageTitle + "</a>";
                     pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
-                    + pages[i].pagePermalink + "</a>";
+                            + pages[i].pagePermalink + "</a>";
                     pageData[i].pageTarget = pages[i].pageOpenTarget;
-                    pageData[i].pageType = pages[i].pageType ;
+                    pageData[i].pageType = pages[i].pageType;
                     pageData[i].comments = pages[i].pageCommentCount;
                     pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.get('" + pages[i].oId + "')\">" + Label.updateLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "', '" + pages[i].pageTitle + "')\">" + Label.removeLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + pages[i].oId + "', 'page')\">" + Label.commentLabel + "</a></span>";
                 }
-                        
+
                 that.tablePagination.updateTablePagination(pageData, pageNum, result.pagination);
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
-    
     /*
      * 获取自定义页面
      * @id 自定义页面 id
@@ -180,20 +179,20 @@ admin.pageList = {
     get: function (id) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/page/" + id,
             type: "GET",
             cache: false,
-            success: function(result, textStatus){
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 admin.pageList.id = id;
-                
+
                 $("#pageTitle").val(result.page.pageTitle);
                 $("#pagePermalink").val(result.page.pagePermalink);
                 $("#pageTarget").val(result.page.pageOpenTarget);
@@ -204,13 +203,19 @@ admin.pageList = {
                 }
                 $("#pageCommentable").prop("checked", result.page.pageCommentable);
 
+                if (admin.pageList.currentEditorType !== result.page.pageEditorType) {
+                    admin.editors.pageEditor.remove();
+
+                    admin.pageList.currentEditorType = result.page.pageEditorType;
+                    admin.editors.pageEditor.init(result.page.pageEditorType);
+                }
+
                 admin.editors.pageEditor.setContent(result.page.pageContent);
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
-
     /* 
      * 删除自定义页面
      * @id 自定义页面 id
@@ -226,16 +231,16 @@ admin.pageList = {
                 url: latkeConfig.servePath + "/console/page/" + id,
                 type: "DELETE",
                 cache: false,
-                success: function(result, textStatus){
+                success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
                         $("#loadMsg").text("");
                         return;
                     }
-                    
+
                     var pageNum = admin.pageList.pageInfo.currentPage;
                     if (admin.pageList.pageInfo.currentCount === 1 && admin.pageList.pageInfo.pageCount !== 1 &&
-                        admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
+                            admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
                         admin.pageList.pageInfo.pageCount--;
                         pageNum = admin.pageList.pageInfo.pageCount;
                     }
@@ -245,13 +250,12 @@ admin.pageList = {
                     } else {
                         admin.setHashByPage(pageNum);
                     }
-                    
+
                     $("#loadMsg").text("");
                 }
             });
         }
     },
-    
     /*
      * 添加自定义页面
      */
@@ -259,14 +263,14 @@ admin.pageList = {
         if (this.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            
+
             var pageContent = admin.editors.pageEditor.getContent();
-            
+
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (admin.pageList.type === "link") {
                 pagePermalink = Util.proessURL(pagePermalink);
             }
-            
+
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
@@ -277,30 +281,30 @@ admin.pageList = {
                     "pageOpenTarget": $("#pageTarget").val()
                 }
             };
-            
+
             $.ajax({
                 url: latkeConfig.servePath + "/console/page/",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus){
+                success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
                     if (!result.sc) {
                         $("#loadMsg").text("");
                         return;
                     }
-                    
+
                     admin.pageList.id = "";
                     $("#pagePermalink").val("");
                     $("#pageTitle").val("");
                     $("#pageCommentable").prop("cheked", false);
                     $("#pageTarget").val("_self");
                     $($(".fn-type").get(0)).click();
-                    
+
                     admin.editors.pageEditor.setContent("");
-                    
+
                     if (admin.pageList.pageInfo.currentCount === Label.PAGE_SIZE &&
-                        admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
+                            admin.pageList.pageInfo.currentPage === admin.pageList.pageInfo.pageCount) {
                         admin.pageList.pageInfo.pageCount++;
                     }
                     var hashList = window.location.hash.split("/");
@@ -309,13 +313,12 @@ admin.pageList = {
                     } else {
                         admin.setHashByPage(admin.pageList.pageInfo.pageCount);
                     }
-                    
+
                     $("#loadMsg").text("");
                 }
             });
         }
     },
-    
     /*
      * 更新自定义页面
      */
@@ -323,15 +326,15 @@ admin.pageList = {
         if (this.validate()) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
-            
+
             var pageContent = admin.editors.pageEditor.getContent();
-            
+
             var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
             if (admin.pageList.type === "link") {
                 pagePermalink = Util.proessURL(pagePermalink);
             }
-            
-            
+
+
             var requestJSONObject = {
                 "page": {
                     "pageTitle": $("#pageTitle").val(),
@@ -340,24 +343,25 @@ admin.pageList = {
                     "pagePermalink": pagePermalink,
                     "pageCommentable": $("#pageCommentable").prop("checked"),
                     "pageType": admin.pageList.type,
-                    "pageOpenTarget": $("#pageTarget").val()
+                    "pageOpenTarget": $("#pageTarget").val(),
+                    "pageEditorType": admin.pageList.currentEditorType
                 }
             };
-            
+
             $.ajax({
                 url: latkeConfig.servePath + "/console/page/",
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus){
+                success: function (result, textStatus) {
                     $("#tipMsg").text(result.msg);
-                     
+
                     if (!result.sc) {
                         $("#loadMsg").text("");
                         return;
                     }
                     admin.pageList.id = "";
-                    
+
                     admin.pageList.getList(admin.pageList.pageInfo.currentPage);
                     $("#pageTitle").val("");
                     $("#pagePermalink").val("");
@@ -366,29 +370,27 @@ admin.pageList = {
                     $($(".fn-type").get(0)).click();
 
                     admin.editors.pageEditor.setContent("");
-                    
+
                     $("#loadMsg").text("");
                 }
             });
         }
     },
-    
     /*
      * 验证字段
      */
-    validate: function () {        
+    validate: function () {
         if ($("#pageTitle").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.titleEmptyLabel);
             $("#pageTitle").focus();
         } else if (admin.pageList.type === "link" &&
-            $("#pagePermalink").val().replace(/\s/g, "") === "") {
+                $("#pagePermalink").val().replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.linkEmptyLabel);
         } else {
             return true;
         }
         return false;
     },
-    
     /*
      * 提交自定义页面
      */
@@ -398,31 +400,37 @@ admin.pageList = {
         } else {
             this.add();
         }
+
+        if (admin.pageList.currentEditorType !== Label.editorType) {
+            admin.editors.pageEditor.remove();
+
+            admin.pageList.currentEditorType = Label.editorType;
+            admin.editors.pageEditor.init(Label.editorType);
+        }
     },
-    
     /*
      * 调换顺序
      */
     changeOrder: function (id, order, status) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
-        
+
         var requestJSONObject = {
             "oId": id.toString(),
             "direction": status
         };
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/page/order/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus){
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
-                
+
                 // Refershes the page list
                 admin.pageList.getList(admin.pageList.pageInfo.currentPage);
-                
+
                 $("#loadMsg").text("");
             }
         });
@@ -432,7 +440,7 @@ admin.pageList = {
 /*
  * 注册到 admin 进行管理 
  */
-admin.register["page-list"] =  {
+admin.register["page-list"] = {
     "obj": admin.pageList,
     "init": admin.pageList.init,
     "refresh": admin.pageList.getList
