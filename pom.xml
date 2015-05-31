@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <version>0.6.8</version>
     <name>Solo</name>
-    <url>https://github.com/b3log/b3log-solo</url>
+    <url>https://github.com/b3log/solo</url>
     <description>
         A Java blogging system, feel free to create your or your team own blog.
     </description>
@@ -122,7 +122,7 @@
 
     <issueManagement>
         <system>GitHub Issues</system>
-        <url>https://github.com/b3log/b3log-solo/issues</url>
+        <url>https://github.com/b3log/solo/issues</url>
     </issueManagement>
 
     <mailingLists>
@@ -134,7 +134,7 @@
     </mailingLists>
 
     <scm>
-        <url>https://github.com/b3log/b3log-solo</url>
+        <url>https://github.com/b3log/solo</url>
     </scm>
 
     <reporting>

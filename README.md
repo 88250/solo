@@ -43,9 +43,9 @@ Here are some our most valuable business users' cases:
 
 ## Documents
 
-* [User Guide](https://github.com/b3log/b3log-solo/wiki/Pre_installation)
-* [Dev Guide](https://github.com/b3log/b3log-solo/wiki/Pre_dev)
-  * [Skin Dev Guide](https://github.com/b3log/b3log-solo/wiki/Develop_steps)
+* [User Guide](https://github.com/b3log/solo/wiki/Pre_installation)
+* [Dev Guide](https://github.com/b3log/solo/wiki/Pre_dev)
+  * [Skin Dev Guide](https://github.com/b3log/solo/wiki/Develop_steps)
   * [Plugin Dev Guide](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
 
 ## Contact Us
@@ -62,5 +62,5 @@ Here are some our most valuable business users' cases:
 
 ## Credits
 
-* [Latke](https://github.com/b3log/b3log-latke)
+* [Latke](https://github.com/b3log/latke)
 * [IntelliJ IDEA](http://www.jetbrains.com/idea/index.html)

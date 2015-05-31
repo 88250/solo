@@ -12,7 +12,7 @@
         "localeString": "${localeString}",
         "version": "${version}",
         "miniPostfix": "${miniPostfix}",
-        "reportIssueLabel": "please report this issue on https://github.com/b3log/b3log-solo/issues/new",
+        "reportIssueLabel": "please report this issue on https://github.com/b3log/solo/issues/new",
         "noDataLabel": "${noDataLabel}",
         "linkDescriptionLabel": "${linkDescriptionLabel}",
         "addressInvalidLabel": "${addressInvalidLabel}",

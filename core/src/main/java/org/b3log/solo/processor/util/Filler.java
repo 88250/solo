@@ -197,7 +197,7 @@ public class Filler {
 
             if (null == template) {
                 LOGGER.debug("The skin dose not contain [index.ftl] template");
-            } else { // See https://github.com/b3log/b3log-solo/issues/179 for more details
+            } else { // See https://github.com/b3log/solo/issues/179 for more details
                 if (Templates.hasExpression(template, "<#list articles1 as article>")) {
                     isArticles1 = true;
                     query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);

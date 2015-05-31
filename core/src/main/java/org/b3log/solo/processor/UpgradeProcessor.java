@@ -159,8 +159,8 @@ public class UpgradeProcessor {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent(
                 "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
-                + "issue directly (<a href='https://github.com/b3log/b3log-solo/issues/new'>"
-                + "https://github.com/b3log/b3log-solo/issues/new</a>) ");
+                + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
+                + "https://github.com/b3log/solo/issues/new</a>) ");
         }
     }
 
