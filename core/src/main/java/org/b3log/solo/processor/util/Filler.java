@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.7.11, Apr 30, 2014
+ * @version 1.1.7.11, Jun 5, 2015
  * @since 0.3.1
  */
 @Service
@@ -176,7 +176,7 @@ public class Filler {
      * @throws ServiceException service exception
      */
     public void fillIndexArticles(final HttpServletRequest request,
-                                  final Map<String, Object> dataModel, final int currentPageNum, final JSONObject preference)
+            final Map<String, Object> dataModel, final int currentPageNum, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Index Articles");
 
@@ -596,7 +596,7 @@ public class Filler {
      * @throws ServiceException service exception
      */
     public void fillBlogHeader(final HttpServletRequest request, final HttpServletResponse response,
-                               final Map<String, Object> dataModel, final JSONObject preference)
+            final Map<String, Object> dataModel, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Header");
         try {
@@ -754,7 +754,7 @@ public class Filler {
      * @throws ServiceException service exception
      */
     public void fillUserTemplate(final HttpServletRequest request, final Template template,
-                                 final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
+            final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         Stopwatchs.start("Fill User Template[name=" + template.getName() + "]");
         try {
             LOGGER.log(Level.DEBUG, "Filling user template[name{0}]", template.getName());
@@ -853,8 +853,8 @@ public class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified author and preference, performs content and abstract editor
-     * processing.
+     * Sets some extra properties into the specified article with the specified author and preference, performs content
+     * and abstract editor processing.
      *
      * <p>
      * Article ext properties:
@@ -883,6 +883,9 @@ public class Filler {
 
             article.put(Common.AUTHOR_ID, authorId);
 
+            final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+            article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
+
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
             } else {
@@ -899,7 +902,8 @@ public class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified preference, performs content and abstract editor processing.
+     * Sets some extra properties into the specified article with the specified preference, performs content and
+     * abstract editor processing.
      *
      * <p>
      * Article ext properties:

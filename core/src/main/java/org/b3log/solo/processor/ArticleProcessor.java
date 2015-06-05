@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -65,12 +64,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
-
 /**
  * Article processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.14, May 30, 2014
+ * @version 1.3.2.14, Jun 5, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -157,7 +155,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/console/article-pwd", method = HTTPRequestMethod.GET)
     public void showArticlePwdForm(final HTTPRequestContext context,
-        final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String articleId = request.getParameter("articleId");
 
         if (Strings.isEmptyOrNull(articleId)) {
@@ -214,7 +212,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/console/article-pwd", method = HTTPRequestMethod.POST)
     public void onArticlePwdForm(final HTTPRequestContext context,
-        final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         try {
             final String articleId = request.getParameter("articleId");
             final String pwdTyped = request.getParameter("pwdTyped");
@@ -297,7 +295,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/article/id/*/relevant/articles", method = HTTPRequestMethod.GET)
     public void getRelevantArticles(final HTTPRequestContext context,
-        final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+            final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final JSONObject jsonObject = new JSONObject();
 
         final JSONObject preference = preferenceQueryService.getPreference();
@@ -593,7 +591,7 @@ public class ArticleProcessor {
      * @param request the specified request
      */
     @RequestProcessing(value = "/articles/authors/\\d+/\\d+", uriPatternsMode = URIPatternMode.REGEX,
-        method = HTTPRequestMethod.GET)
+            method = HTTPRequestMethod.GET)
     public void getAuthorsArticlesByPage(final HTTPRequestContext context, final HttpServletRequest request) {
         final JSONObject jsonObject = new JSONObject();
 
@@ -661,7 +659,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/authors/**", method = HTTPRequestMethod.GET)
     public void showAuthorArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-        throws IOException, JSONException {
+            throws IOException, JSONException {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
         context.setRenderer(renderer);
@@ -677,7 +675,7 @@ public class ArticleProcessor {
 
             final String authorId = getAuthorId(requestURI);
 
-            LOGGER.log(Level.DEBUG, "Request author articles[requestURI={0}, authorId={1}]", new Object[] {requestURI, authorId});
+            LOGGER.log(Level.DEBUG, "Request author articles[requestURI={0}, authorId={1}]", new Object[]{requestURI, authorId});
 
             final int currentPageNum = getAuthorCurrentPageNum(requestURI, authorId);
 
@@ -686,7 +684,7 @@ public class ArticleProcessor {
                 return;
             }
 
-            LOGGER.log(Level.DEBUG, "Request author articles[authorId={0}, currentPageNum={1}]", new Object[] {authorId, currentPageNum});
+            LOGGER.log(Level.DEBUG, "Request author articles[authorId={0}, currentPageNum={1}]", new Object[]{authorId, currentPageNum});
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
@@ -762,7 +760,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/archives/**", method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context,
-        final HttpServletRequest request, final HttpServletResponse response) {
+            final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
         context.setRenderer(renderer);
@@ -784,7 +782,7 @@ public class ArticleProcessor {
                 return;
             }
 
-            LOGGER.log(Level.DEBUG, "Request archive date[string={0}, currentPageNum={1}]", new Object[] {archiveDateString, currentPageNum});
+            LOGGER.log(Level.DEBUG, "Request archive date[string={0}, currentPageNum={1}]", new Object[]{archiveDateString, currentPageNum});
             final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
 
             if (null == result) {
@@ -881,7 +879,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-        throws IOException {
+            throws IOException {
         // See PermalinkFiler#dispatchToArticleOrPageProcessor()
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
 
@@ -932,6 +930,8 @@ public class ArticleProcessor {
 
             article.put(Common.AUTHOR_ID, authorId);
             article.put(Common.AUTHOR_ROLE, author.getString(User.USER_ROLE));
+            final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+            article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -1001,8 +1001,7 @@ public class ArticleProcessor {
      * Gets the request page number from the specified request URI.
      *
      * @param requestURI the specified request URI
-     * @return page number, returns {@code -1} if the specified request URI
-     * can not convert to an number
+     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
      */
     private static int getArchiveCurrentPageNum(final String requestURI) {
         final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/archives/yyyy/MM/").length());
@@ -1162,11 +1161,11 @@ public class ArticleProcessor {
      * @throws ServiceException service exception
      */
     private void prepareShowAuthorArticles(final List<Integer> pageNums,
-        final Map<String, Object> dataModel,
-        final int pageCount,
-        final int currentPageNum,
-        final List<JSONObject> articles,
-        final JSONObject author) throws ServiceException {
+            final Map<String, Object> dataModel,
+            final int pageCount,
+            final int currentPageNum,
+            final List<JSONObject> articles,
+            final JSONObject author) throws ServiceException {
         if (0 != pageNums.size()) {
             dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
             dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
@@ -1212,12 +1211,12 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     private String prepareShowArchiveArticles(final JSONObject preference,
-        final Map<String, Object> dataModel,
-        final List<JSONObject> articles,
-        final int currentPageNum,
-        final int pageCount,
-        final String archiveDateString,
-        final JSONObject archiveDate) throws Exception {
+            final Map<String, Object> dataModel,
+            final List<JSONObject> articles,
+            final int currentPageNum,
+            final int pageCount,
+            final String archiveDateString,
+            final JSONObject archiveDate) throws Exception {
         final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
         final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
@@ -1271,7 +1270,7 @@ public class ArticleProcessor {
      * @throws Exception exception
      */
     private void prepareShowArticle(final JSONObject preference, final Map<String, Object> dataModel, final JSONObject article)
-        throws Exception {
+            throws Exception {
         article.put(Common.COMMENTABLE, preference.getBoolean(Preference.COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));
         article.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
         dataModel.put(Article.ARTICLE, article);
@@ -1320,7 +1319,7 @@ public class ArticleProcessor {
         Stopwatchs.end();
 
         dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
-            preference.getInt(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
+                preference.getInt(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
         dataModel.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT, preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT));
         dataModel.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT));
     }
