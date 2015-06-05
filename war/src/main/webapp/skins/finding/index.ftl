@@ -12,7 +12,7 @@
         </@head>
     </head>
     <body class="nav-closed">
-        <div class="nav fn-none">
+        <div class="nav">
             ${topBarReplacement}
 
             <div class="left">
@@ -51,9 +51,11 @@
         </div>
         <div class="site-wrapper">
             <header class="main-header">
-                <a class="menu-button icon-menu" href="#">Menu</a>
-                <div class="vertical">
-                    <div class="main-header-content inner">
+                <div class="fn-clear">
+                    <a class="menu-button icon-menu" href="#"><span class="word">Menu</span></a>
+                </div>
+                <div class="fn-vertical">
+                    <div class="main-header-content fn-wrap">
                         <h1 class="page-title">
                             ${blogTitle}
                         </h1>
@@ -62,10 +64,10 @@
                 </div>
                 <a class="scroll-down icon-arrow-left" href="#content" data-offset="-45"></a>
             </header>
-            <main id="content">
+            <main id="content" class="fn-wrap">
                 <#include "article-list.ftl">
             </main>
-            <footer>
+            <footer class="site-footer fn-clear">
                 <#include "footer.ftl">
             </footer>
         </div>
@@ -79,6 +81,10 @@
                         toMove = parseInt(offset);
 
                 $htmlBody.stop(true, false).animate({scrollTop: ($(this.hash).offset().top + toMove)}, 500);
+            });
+
+            $(".menu-button").click(function () {
+                $("body").toggleClass("nav-opened nav-closed");
             });
         </script>
     </body>
