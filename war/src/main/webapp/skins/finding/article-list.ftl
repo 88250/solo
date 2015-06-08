@@ -1,3 +1,15 @@
+<#if 0 != paginationPageCount && paginationCurrentPageNum != 1>
+<nav class="pagination fn-clear" role="navigation">
+    <#if paginationCurrentPageNum != 1>
+    <a class="fn-left" href="${servePath}${path}/${paginationPreviousPageNum}">← ${previousPageLabel}</a>
+    </#if>
+    <span>${pageLabel} ${paginationCurrentPageNum} of ${paginationPageCount}</span>
+    <#if paginationPageCount != paginationCurrentPageNum>
+    <a class="fn-right" href="${servePath}${path}/${paginationNextPageNum}">${nextPagePabel} →</a>
+    </#if>
+</nav>
+</#if>
+
 <#list articles as article>
 <article class="post">
     <header>
@@ -20,44 +32,29 @@
     <section class="post-excerpt">
         <p>${article.articleAbstract}</p>
     </section>
-    <footer>
-
+    <footer class="post-meta">
+        <img class="avatar" title="${article.authorName}" alt="${article.authorName}" src="${article.authorThumbnailURL}"/>
+        <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
+        on
+        <#list article.articleTags?split(",") as articleTag>
+        <span>
+            <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                ${articleTag}</a><#if articleTag_has_next>,</#if>
+        </span>
+        </#list>
+        <time>${article.articleCreateDate?string("yyyy-MM-dd")}</time>
     </footer>
-
-    <div class="article-header">
-        <div class="article-title">
-            <div class="article-tags">
-                ${tags1Label}
-                <#list article.articleTags?split(",") as articleTag>
-                <span>
-                    <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
-                        ${articleTag}</a><#if articleTag_has_next>,</#if>
-                </span>
-                </#list>&nbsp;&nbsp;&nbsp;
-                ${author1Label}<a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
-            </div>
-        </div>
-        <div class="clear"></div>
-    </div>
-    <div class="article-footer">
-        <div class="right">
-            <span class="article-create-date left">
-                &nbsp;${article.articleCreateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp
-            </span>
-
-        </div>
-    </div>
 </article>
 </#list>
 
 <#if 0 != paginationPageCount>
-<nav class="pagination" role="navigation">
+<nav class="pagination fn-clear" role="navigation">
     <#if paginationCurrentPageNum != 1>
-    <a class="newer-posts" href="${servePath}${path}/${paginationPreviousPageNum}">← ${previousPageLabel}</a>
+    <a class="fn-left" href="${servePath}${path}/${paginationPreviousPageNum}">← ${previousPageLabel}</a>
     </#if>
-    <span class="page-number">${pageLabel} ${paginationCurrentPageNum} of ${paginationPageCount}</span>
+    <span>${pageLabel} ${paginationCurrentPageNum} of ${paginationPageCount}</span>
     <#if paginationPageCount != paginationCurrentPageNum>
-    <a class="newer-posts" href="${servePath}${path}/${paginationNextPageNum}">${nextPagePabel} →</a>
+    <a class="fn-right" href="${servePath}${path}/${paginationNextPageNum}">${nextPagePabel} →</a>
     </#if>
 </nav>
 </#if>

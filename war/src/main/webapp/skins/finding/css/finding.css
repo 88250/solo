@@ -67,7 +67,6 @@ h4, h5, h6 {
     -o-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
     color: #2E2E2E;
     line-height: 1.15em;
-    margin: 0 0 0.4em 0;
     font-family: "Open Sans", sans-serif;
     text-rendering: geometricPrecision;
 }
@@ -117,7 +116,6 @@ ol, ul {
 
 ol ol, ul ul,
 ul ol, ol ul {
-    margin: 0 0 0.4em 0;
     padding-left: 2em;
 }
 
@@ -136,10 +134,6 @@ dl dt {
 dl dd {
     margin-left: 200px;
     margin-bottom: 1em
-}
-
-li {
-    margin: 0.4em 0;
 }
 
 li li {
@@ -342,6 +336,14 @@ pre code, pre tt {
 .icon-menu:before {
     content: "\f609";
 }
+
+.avatar {
+    border-radius: 100%;
+    float: left;
+    height: 24px;
+    margin-right: 9px;
+    width: 24px;
+}
 /* end common */
 
 /* start framework */
@@ -501,10 +503,27 @@ pre code, pre tt {
     margin-bottom: 0;
     text-align: left;
     overflow-y: auto;
+    color: #FFF;
     -webkit-transition: -webkit-transform 0.5s ease,
         opacity 0.3s ease 0.7s;
     transition: transform 0.5s ease,
         opacity 0.3s ease 0.7s;
+}
+
+.nav a {
+    color: #B8B8B8;
+    text-decoration: none;
+    line-height: 1.4;
+    font-size: 1.4rem;
+    display: block;
+    padding: 0.6rem 4%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.nav a:hover {
+    color: #FFF;
 }
 
 body.nav-closed .nav {
@@ -570,6 +589,55 @@ body.nav-opened .nav {
     font-size: 0.9em;
     line-height: 1.7em;
 }
+
+.post-meta {
+    color: #9eabb3;
+    font-family: "Open Sans",sans-serif;
+    font-size: 1.5rem;
+    line-height: 2.2rem;
+    margin: 1.75rem 0 0 0;
+}
+
+.post-meta a {
+    color: #9EABB3;
+    text-decoration: none;
+}
+
+.post-meta a:hover {
+    text-decoration: underline;
+}
+
+.post-meta time {
+    border-left: 1px solid #d5dbde;
+    display: inline-block;
+    font-size: 1.3rem;
+    margin-left: 8px;
+    padding-left: 12px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.pagination {
+    font-family: "Open Sans", sans-serif;
+    font-size: 1.3rem;
+    color: #9eabb3;
+    text-align: center;
+}
+
+.pagination a {
+    color: #9EABB3;
+    transition: all 0.2s ease;
+    padding: 0 15px;
+    border: #bfc8cd 1px solid;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 4px;
+}
+
+.pagination a:hover {
+    border-color: #98a0a4;
+    color: #889093;
+}
 /* end article */
 
 /* start footer */
@@ -584,9 +652,9 @@ body.nav-opened .nav {
 }
 
 .site-footer a {
-  color: #BBC7CC;
-  font-weight: bold;
-  text-decoration: none;
+    color: #BBC7CC;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 .site-footer a:hover {
