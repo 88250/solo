@@ -21,7 +21,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.5.1, Jan 12, 2015
+ * @version 1.2.5.1, Jun 8, 2015
  * @since 0.3.1
  */
 public final class Common {
@@ -77,9 +77,9 @@ public final class Common {
     public static final String NEXT_ARTICLE_TITLE = "nextArticleTitle";
 
     /**
-     * index.
+     * Is index.
      */
-    public static final String INDEX = "index";
+    public static final String IS_INDEX = "isIndex";
 
     /**
      * tag-articles.

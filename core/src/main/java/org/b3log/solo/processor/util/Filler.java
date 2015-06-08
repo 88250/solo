@@ -66,7 +66,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.7.11, Jun 5, 2015
+ * @version 1.2.7.11, Jun 8, 2015
  * @since 0.3.1
  */
 @Service
@@ -554,6 +554,8 @@ public class Filler {
 
             dataModel.put(Keys.Server.STATIC_SERVER, Latkes.getStaticServer());
             dataModel.put(Keys.Server.SERVER, Latkes.getServer());
+            
+            dataModel.put(Common.IS_INDEX, "/".equals(request.getRequestURI()));
 
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
 
