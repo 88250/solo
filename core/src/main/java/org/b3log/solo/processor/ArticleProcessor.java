@@ -68,7 +68,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.14, Jun 5, 2015
+ * @version 1.4.2.14, Jun 13, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -1289,6 +1289,7 @@ public class ArticleProcessor {
         if (null != nextArticle) {
             dataModel.put(Common.NEXT_ARTICLE_PERMALINK, nextArticle.getString(Article.ARTICLE_PERMALINK));
             dataModel.put(Common.NEXT_ARTICLE_TITLE, nextArticle.getString(Article.ARTICLE_TITLE));
+            dataModel.put(Common.NEXT_ARTICLE_ABSTRACT, nextArticle.getString(Article.ARTICLE_ABSTRACT));
             LOGGER.debug("Got the next article");
         }
         Stopwatchs.end();
@@ -1300,6 +1301,7 @@ public class ArticleProcessor {
         if (null != previousArticle) {
             dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK, previousArticle.getString(Article.ARTICLE_PERMALINK));
             dataModel.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticle.getString(Article.ARTICLE_TITLE));
+            dataModel.put(Common.PREVIOUS_ARTICLE_ABSTRACT, previousArticle.getString(Article.ARTICLE_ABSTRACT));
             LOGGER.debug("Got the previous article");
         }
         Stopwatchs.end();

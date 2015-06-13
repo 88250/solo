@@ -26,7 +26,7 @@ import org.json.JSONObject;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.9, Dec 31, 2011
+ * @version 1.1.1.9, Jun 13, 2015
  * @since 0.3.1
  */
 public interface ArticleRepository extends Repository {
@@ -96,7 +96,8 @@ public interface ArticleRepository extends Repository {
      * <pre>
      * {
      *     "articleTitle": "",
-     *     "articlePermalink": ""
+     *     "articlePermalink": "",
+     *     "articleAbstract: ""
      * }
      * </pre>
      * returns {@code null} if not found
@@ -112,7 +113,8 @@ public interface ArticleRepository extends Repository {
      * <pre>
      * {
      *     "articleTitle": "",
-     *     "articlePermalink": ""
+     *     "articlePermalink": "",
+     *     "articleAbstract: ""
      * }
      * </pre>
      * returns {@code null} if not found

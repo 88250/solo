@@ -15,13 +15,12 @@
  */
 package org.b3log.solo.model;
 
-
 /**
  * This class defines all common model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.5.1, Jun 8, 2015
+ * @version 1.3.5.1, Jun 13, 2015
  * @since 0.3.1
  */
 public final class Common {
@@ -72,9 +71,19 @@ public final class Common {
     public static final String PREVIOUS_ARTICLE_TITLE = "previousArticleTitle";
 
     /**
+     * Previous article abstract.
+     */
+    public static final String PREVIOUS_ARTICLE_ABSTRACT = "previousArticleAbstract";
+
+    /**
      * Next article title.
      */
     public static final String NEXT_ARTICLE_TITLE = "nextArticleTitle";
+
+    /**
+     * Next article abstract.
+     */
+    public static final String NEXT_ARTICLE_ABSTRACT = "nextArticleAbstract";
 
     /**
      * Is index.
@@ -175,7 +184,7 @@ public final class Common {
      * Key of is logged in.
      */
     public static final String IS_LOGGED_IN = "isLoggedIn";
-    
+
     /**
      * Key of favicon API.
      */
@@ -305,7 +314,7 @@ public final class Common {
      * Key of articles view password.
      */
     public static final String ARTICLES_VIEW_PWD = "articlesViewPwd";
-    
+
     /**
      * Key of Gravatar.
      */
@@ -314,5 +323,6 @@ public final class Common {
     /**
      * Private default constructor.
      */
-    private Common() {}
+    private Common() {
+    }
 }

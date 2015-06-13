@@ -64,7 +64,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
- * @version 1.0.2.3, Feb 10, 2014
+ * @version 1.1.2.3, Jun 13, 2015
  * @since 0.3.5
  */
 @Service
@@ -823,7 +823,8 @@ public class ArticleQueryService {
      * <pre>
      * {
      *     "articleTitle": "",
-     *     "articlePermalink": ""
+     *     "articlePermalink": "",
+     *     "articleAbstract": ""
      * }
      * </pre>
      * returns {@code null} if not found
@@ -851,7 +852,8 @@ public class ArticleQueryService {
      * <pre>
      * {
      *     "articleTitle": "",
-     *     "articlePermalink": ""
+     *     "articlePermalink": "",
+     *     "articleAbstract": ""
      * }
      * </pre>
      * returns {@code null} if not found

@@ -69,10 +69,10 @@
                 <@comments commentList=articleComments article=article></@comments>
             </main>
             <#if nextArticlePermalink??>
-            <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a><br/>
+            <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>${nextArticleAbstract}<br/>
             </#if>
             <#if previousArticlePermalink??>
-            <a href="${servePath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>
+            <a href="${servePath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>${previousArticleAbstract}
             </#if>  
             <#include "footer.ftl">
 
