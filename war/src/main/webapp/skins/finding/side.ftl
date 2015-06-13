@@ -1,3 +1,16 @@
+<div class="fn-clear">
+    <span class="fn-right">
+        <#if isLoggedIn>
+        <a href="${servePath}/admin-index.do#main" title="${adminLabel}" class="icon-setting"></a>
+        &nbsp; 
+        <a title="${logoutLabel}" class="icon-logout" href="${logoutURL}"></a>
+        <#else>
+        <a title="${loginLabel}" href="${loginURL}" class="icon-login"></a>
+        &nbsp; 
+        <a href="${servePath}/register" title="${registerLabel}" class="icon-register"></a>
+        </#if>
+    </span>
+</div>
 <ul>
     <#list pageNavigations as page>
     <li>
@@ -5,42 +18,31 @@
     </li>
     </#list>
     <li>
-        <a href="${servePath}/dynamic.html">${dynamicLabel}</a>&nbsp;&nbsp;
+        <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
     </li>
     <li>
-        <a href="${servePath}/tags.html">${allTagsLabel}</a>&nbsp;&nbsp;
+        <a href="${servePath}/tags.html">${allTagsLabel}</a>
     </li>
     <li>
-        <a rel="alternate" href="${servePath}/blog-articles-feed.do">${atomLabel}</a><a href="${servePath}/blog-articles-feed.do"></a>
+        <a rel="alternate" href="${servePath}/blog-articles-feed.do">${atomLabel}</a>
     </li>
 </ul>
 
-<div class="right" id="statistic">
-    <span>${viewCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticBlogViewCount}
-        </span>
-        &nbsp;&nbsp;
-    </span>
+<div class="count">
+    <span>
+        ${viewCount1Label}
+        ${statistic.statisticBlogViewCount}
+    </span> &nbsp; &nbsp;
     <span>
         ${articleCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticPublishedBlogArticleCount}
-        </span>
-        &nbsp;&nbsp;
-    </span>
+        ${statistic.statisticPublishedBlogArticleCount}
+    </span><br/>
     <span>
         ${commentCount1Label}
-        <span class='error-msg'>
-            ${statistic.statisticPublishedBlogCommentCount}
-        </span>
-        当前在线人数
+        ${statistic.statisticPublishedBlogCommentCount}
+    </span> &nbsp; &nbsp;
+    <span>
+        ${onlineVisitor1Label}
+        ${onlineVisitorCnt}
     </span>
 </div>
-<div id="sideNavi" class="side-navi">
-    <#if "" != noticeBoard>
-    ${noticeBoard}
-    </#if>
-</div>
-注册/登录
-管理/退出

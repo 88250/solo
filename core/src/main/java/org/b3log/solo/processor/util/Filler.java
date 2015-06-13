@@ -41,6 +41,8 @@ import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.user.UserService;
+import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.*;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
@@ -66,7 +68,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.7.11, Jun 8, 2015
+ * @version 1.3.7.11, Jun 13, 2015
  * @since 0.3.1
  */
 @Service
@@ -159,6 +161,11 @@ public class Filler {
      */
     @Inject
     private FillTagArticles fillTagArticles;
+
+    /**
+     * User service.
+     */
+    private static UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Event manager.
@@ -554,7 +561,7 @@ public class Filler {
 
             dataModel.put(Keys.Server.STATIC_SERVER, Latkes.getStaticServer());
             dataModel.put(Keys.Server.SERVER, Latkes.getServer());
-            
+
             dataModel.put(Common.IS_INDEX, "/".equals(request.getRequestURI()));
 
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
@@ -604,6 +611,9 @@ public class Filler {
         try {
             LOGGER.debug("Filling header....");
             final String topBarHTML = topBars.getTopBarHTML(request, response);
+            dataModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
+            dataModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
+            dataModel.put(Common.ONLINE_VISITOR_CNT, StatisticQueryService.getOnlineVisitorCount());
 
             dataModel.put(Common.TOP_BAR, topBarHTML);
 

@@ -1,4 +1,4 @@
-<#if 0 != paginationPageCount && paginationCurrentPageNum != 1>
+<#if !isIndex>
 <nav class="pagination fn-clear" role="navigation">
     <#if paginationCurrentPageNum != 1>
     <a class="fn-left" href="${servePath}${path}/${paginationPreviousPageNum}">← ${previousPageLabel}</a>

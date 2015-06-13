@@ -31,7 +31,7 @@ html {
 body {
     height: 100%;
     max-height: 100%;
-    font-family: "Merriweather", serif;
+    font-family: "Merriweather", "Microsoft Yahei";
     letter-spacing: 0.01rem;
     font-size: 1.8rem;
     line-height: 1.75em;
@@ -306,18 +306,18 @@ pre code, pre tt {
 
 /* start common */
 @font-face {
-    font-family: "casper-icons";
-    src:url("fonts/casper-icons.eot?v=1");
-    src:url("fonts/casper-icons.eot?v=1#iefix") format("embedded-opentype"),
-        url("fonts/casper-icons.woff?v=1") format("woff"),
-        url("fonts/casper-icons.ttf?v=1") format("truetype"),
-        url("fonts/casper-icons.svg?v=1#icons") format("svg");
+    font-family: "icomoon";
+    src:url("fonts/icomoon.eot?v=1");
+    src:url("fonts/icomoon.eot?v=1#iefix") format("embedded-opentype"),
+        url("fonts/icomoon.woff?v=1") format("woff"),
+        url("fonts/icomoon.ttf?v=1") format("truetype"),
+        url("fonts/icomoon.svg?v=1#icons") format("svg");
     font-weight: normal;
     font-style: normal;
 }
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "casper-icons", "Open Sans", sans-serif;
+    font-family: "icomoon", "Open Sans", sans-serif;
     speak: none;
     font-style: normal;
     font-weight: normal;
@@ -337,6 +337,22 @@ pre code, pre tt {
     content: "\f609";
 }
 
+.icon-login:before {
+    content: "\e611";
+}
+
+.icon-logout:before {
+    content: "\e601";
+}
+
+.icon-setting:before {
+    content: "\e602";
+}
+
+.icon-register:before {
+    content: "\e600";
+}
+
 .avatar {
     border-radius: 100%;
     float: left;
@@ -344,7 +360,117 @@ pre code, pre tt {
     margin-right: 9px;
     width: 24px;
 }
+
+.avatar-48 {
+    box-shadow: 0 0 2px #ddd;
+    height: 48px;
+    width: 48px;
+    margin-right: 10px;
+    border-radius: 24px;
+}
+
+.form {
+    width: 100%;
+    margin-top: 50px;
+}
+
+.form input,
+.form textarea,
+.form button {
+    border: 1px solid #CCCCCC;
+    background-color: #FAFAFA;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
+    padding: 7px 8px;
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    font-family: "Merriweather", "Microsoft Yahei";
+}
+
+.form button {
+    width: auto;
+    vertical-align: bottom;
+}
+
+.form input:focus,
+.form textarea:focus {
+    background-color: #FFF;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset, 0 0 5px rgba(81, 167, 232, 0.5);
+    border: 1px solid #51A7E8;
+}
 /* end common */
+
+/* start emotions */
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
+.em10, .em11, .em12, .em13, .em14 {
+    background-image: url("../images/emotions/emotions-ease.png");
+    float: left;
+    height: 24px;
+    margin-right: 5px;
+    width: 24px;
+}
+
+#emotions span {
+    cursor: pointer;
+}
+
+.em01 {
+    background-position: -24px 0;
+}
+
+.em02 {
+    background-position: -48px 0;
+}
+
+.em03 {
+    background-position: -72px 0;
+}
+.em04 {
+    background-position: -96px 0;
+}
+
+.em05 {
+    background-position: 0px -24px;
+}
+
+.em06 {
+    background-position: -24px -24px;
+}
+
+.em07 {
+    background-position: -48px -24px;
+}
+
+.em08 {
+    background-position: -72px -24px;
+}
+
+.em09 {
+    background-position: -96px -24px;
+}
+
+.em10 {
+    background-position: 0 -48px;
+}
+
+.em11 {
+    background-position: -24px -48px ;
+}
+
+.em12 {
+    background-position: -48px -48px;
+}
+
+.em13 {
+    background-position: -72px -48px;
+}
+
+.em14 {
+    background-position: -96px -48px;
+}
+/* end emotions */
 
 /* start framework */
 .main-header {
@@ -358,6 +484,7 @@ pre code, pre tt {
     background-size: cover;
     overflow: hidden;
     background-image: url('../images/header-bg.jpg');
+    min-height: 50vh;
 }
 
 .site-wrapper {
@@ -380,7 +507,7 @@ pre code, pre tt {
 /* end framework */
 
 /* start header */  
-.page-title {
+.page-title a  {
     -webkit-animation: fade-in-down 0.6s;
     animation: fade-in-down 0.6s;
     -webkit-animation-delay: 0.2s;
@@ -391,6 +518,8 @@ pre code, pre tt {
     font-weight: 700;
     font-family: "Open Sans", sans-serif;
     color: #fff;
+    text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.9);
+    text-decoration: none;
 }
 
 .page-description {
@@ -402,7 +531,6 @@ pre code, pre tt {
     font-size: 2rem;
     line-height: 1.5em;
     font-weight: 400;
-    font-family: "Merriweather", serif;
     letter-spacing: 0.01rem;
     color: rgba(255,255,255,0.8);
 }
@@ -480,9 +608,9 @@ pre code, pre tt {
     background: #111;
     border-color: #111;
     color: #fff;
-    -webkit-transform: translate3D(66px, 0, 0);
-    -ms-transform: translate3D(66px, 0, 0);
-    transform: translate3D(66px, 0, 0);
+    -webkit-transform: translate3D(50px, 0, 0);
+    -ms-transform: translate3D(50px, 0, 0);
+    transform: translate3D(50px, 0, 0);
     transition: all 0.3s ease;
 }
 
@@ -497,7 +625,8 @@ pre code, pre tt {
     right: 0;
     bottom: 0;
     z-index: 5;
-    width: 240px;
+    width: 220px;
+    padding: 0 10px;
     opacity: 0;
     background: #111;
     margin-bottom: 0;
@@ -508,6 +637,33 @@ pre code, pre tt {
         opacity 0.3s ease 0.7s;
     transition: transform 0.5s ease,
         opacity 0.3s ease 0.7s;
+    overflow-x: hidden;
+}
+
+.nav ul {
+    margin: 0;
+    padding: 0px 0 5%;
+    list-style: none;
+    counter-reset: item;
+}
+
+.nav li {
+    height: 30px;
+    line-height: 1.4rem;
+}
+
+.nav li:before {
+    display: block;
+    float: right;
+    padding-right: 4%;
+    padding-left: 5px;
+    text-align: right;
+    font-size: 1.2rem;
+    vertical-align: bottom;
+    color: #B8B8B8;
+    content: counter(item, lower-roman);
+    counter-increment: item;
+    line-height: 2.5rem;
 }
 
 .nav a {
@@ -515,6 +671,13 @@ pre code, pre tt {
     text-decoration: none;
     line-height: 1.4;
     font-size: 1.4rem;
+}
+
+.nav a:hover {
+    color: #FFF;
+}
+
+.nav li a {
     display: block;
     padding: 0.6rem 4%;
     overflow: hidden;
@@ -522,8 +685,21 @@ pre code, pre tt {
     text-overflow: ellipsis;
 }
 
-.nav a:hover {
-    color: #FFF;
+.nav li a:after {
+    display: inline-block;
+    content: " .......................................................";
+    color: rgba(255,255,255,0.2);
+    margin-left: 5px;
+}
+
+.nav .count {
+    position: absolute;
+    bottom: 10px;
+    font-size: 1.4rem;
+    width: 100%;
+    word-wrap: normal;
+    word-break: break-all;
+    white-space: nowrap;
 }
 
 body.nav-closed .nav {
@@ -617,6 +793,60 @@ body.nav-opened .nav {
     white-space: nowrap;
 }
 
+.post-author {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    bottom: -57px;
+    left: 50%;
+    margin-left: -40px; 
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    overflow: hidden;
+    padding: 6px;
+    background: #fff;
+    z-index: 2;
+    box-shadow: #E7EEF2 0 0 0 1px;
+}
+
+.post-author a {
+    background-size: cover;
+    background-position: center center;
+    width: 68px;
+    height: 68px;
+    display: block;
+    border-radius: 35px;
+}
+.share .icon {
+    cursor: pointer;
+    transition: all 0.2s ease-out 0s;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 20px;
+}
+
+.share .icon:hover {
+    transform: rotate(360deg);
+    color: #9EABB3;
+}
+
+.icon-weibo:before {
+    content: "\e605";
+}
+
+.icon-twitter:before {
+    content: "\e60b";
+}
+
+.icon-tencent:before {
+    content: "\e60d";
+}
+
+.icon-google:before {
+    content: "\e603";
+}
+
 .pagination {
     font-family: "Open Sans", sans-serif;
     font-size: 1.3rem;
@@ -637,6 +867,50 @@ body.nav-opened .nav {
 .pagination a:hover {
     border-color: #98a0a4;
     color: #889093;
+}
+
+ul.comments {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    margin-top: 100px;
+    position: relative;
+}
+
+.comments li {
+    padding: 10px;
+    white-space: normal;
+    word-wrap: break-word;
+    position: relative;
+    border-bottom: #EBF2F6 1px solid;
+}
+
+.comments li:hover {
+    background-color: #F7F7F7;
+}
+
+.comments .comment-content {
+    margin: 8px 0 0;
+}
+
+.comments li.comment-body-ref {
+    position: absolute;
+    z-index: 10;
+    background-color: #EBF2F6;
+    border: #d5dbde 1px solid;
+    width: 86%;
+    left: 69px;
+}
+
+.comments .post-meta {
+    margin-top: 0;
+}
+
+#captcha, 
+#captchaReply {
+    height: 27px;
+    display: inline-block;
+    vertical-align: inherit;
 }
 /* end article */
 
