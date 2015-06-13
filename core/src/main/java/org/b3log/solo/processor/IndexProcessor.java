@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import freemarker.template.Template;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,13 +48,12 @@ import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
-
 /**
  * Index processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.1.1.5, Nov 17, 2013
+ * @version 1.1.2.5, Jun 13, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -83,7 +81,7 @@ public class IndexProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
-    
+
     /**
      * Statistic management service.
      */
@@ -92,12 +90,12 @@ public class IndexProcessor {
 
     /**
      * Shows index with the specified context.
-     * 
+     *
      * @param context the specified context
      * @param request the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      */
-    @RequestProcessing(value = { "/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
@@ -121,19 +119,15 @@ public class IndexProcessor {
             filler.fillBlogFooter(request, dataModel, preference);
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
-            final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
-
-            dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
+            final int previousPageNum = currentPageNum > 1 ? currentPageNum - 1 : 0;
+            dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, previousPageNum);
+            
             final Integer pageCount = (Integer) dataModel.get(Pagination.PAGINATION_PAGE_COUNT);
-
-            if (pageCount == currentPageNum + 1) { // The next page is the last page
-                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, "");
-            } else {
-                dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, currentPageNum + 1);
-            }
+            final int nextPageNum = currentPageNum+1 > pageCount ? pageCount : currentPageNum + 1;
+            dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, nextPageNum);
 
             dataModel.put(Common.PATH, "");
-            
+
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -148,10 +142,10 @@ public class IndexProcessor {
 
     /**
      * Shows kill browser page with the specified context.
-     * 
+     *
      * @param context the specified context
      * @param request the specified HTTP servlet request
-     * @param response the specified HTTP servlet response 
+     * @param response the specified HTTP servlet response
      */
     @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
     public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
@@ -220,10 +214,9 @@ public class IndexProcessor {
 
     /**
      * Gets the request page number from the specified request URI.
-     * 
+     *
      * @param requestURI the specified request URI
-     * @return page number, returns {@code -1} if the specified request URI
-     * can not convert to an number
+     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI) {
         final String pageNumString = StringUtils.substringAfterLast(requestURI, "/");
@@ -233,7 +226,7 @@ public class IndexProcessor {
 
     /**
      * Kill browser (kill-browser.ftl) HTTP response renderer.
-     * 
+     *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
      * @version 1.0.0.0, Sep 18, 2011
      * @since 0.3.1
