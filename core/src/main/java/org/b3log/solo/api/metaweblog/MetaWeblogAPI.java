@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.api.metaweblog;
 
-
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -55,21 +54,20 @@ import org.json.JSONObject;
 import org.json.XML;
 import org.jsoup.Jsoup;
 
-
 /**
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> requests processing.
- * 
+ *
  * <p>
  * Implemented the following APIs:
- *   <ul>
- *     <li>blogger.deletePost</li>
- *     <li>blogger.getUsersBlogs</li>
- *     <li>metaWeblog.editPost</li>
- *     <li>metaWeblog.getCategories</li>
- *     <li>metaWeblog.getPost</li>
- *     <li>metaWeblog.getRecentPosts</li>
- *     <li>metaWeblog.newPost</li>
- *   </ul>
+ * <ul>
+ * <li>blogger.deletePost</li>
+ * <li>blogger.getUsersBlogs</li>
+ * <li>metaWeblog.editPost</li>
+ * <li>metaWeblog.getCategories</li>
+ * <li>metaWeblog.getPost</li>
+ * <li>metaWeblog.getRecentPosts</li>
+ * <li>metaWeblog.newPost</li>
+ * </ul>
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -202,7 +200,7 @@ public class MetaWeblogAPI {
 
     /**
      * MetaWeblog requests processing.
-     * 
+     *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param context the specified http request context
@@ -259,7 +257,7 @@ public class MetaWeblogAPI {
                 addArticle(article);
 
                 final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><string>").append(article.getString(Keys.OBJECT_ID)).append(
-                    "</string></value></param></params></methodResponse>");
+                        "</string></value></param></params></methodResponse>");
 
                 responseContent = stringBuilder.toString();
             } else if (METHOD_GET_POST.equals(methodName)) {
@@ -279,7 +277,7 @@ public class MetaWeblogAPI {
                 articleMgmtService.updateArticle(updateArticleRequest);
 
                 final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><string>").append(postId).append(
-                    "</string></value></param></params></methodResponse>");
+                        "</string></value></param></params></methodResponse>");
 
                 responseContent = stringBuilder.toString();
             } else if (METHOD_DELETE_POST.equals(methodName)) {
@@ -288,7 +286,7 @@ public class MetaWeblogAPI {
                 articleMgmtService.removeArticle(postId);
 
                 final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><boolean>").append(true).append(
-                    "</boolean></value></param></params></methodResponse>");
+                        "</boolean></value></param></params></methodResponse>");
 
                 responseContent = stringBuilder.toString();
             } else {
@@ -298,7 +296,7 @@ public class MetaWeblogAPI {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<fault><value><struct>").append("<member><name>faultCode</name><value><int>500</int></value></member>").append("<member><name>faultString</name><value><string>").append(e.getMessage()).append(
-                "</string></value></member></struct></value></fault></methodResponse>");
+                    "</string></value></member></struct></value></fault></methodResponse>");
 
             responseContent = stringBuilder.toString();
         }
@@ -308,14 +306,14 @@ public class MetaWeblogAPI {
 
     /**
      * Processes {@value #METHOD_GET_POST}.
-     * 
+     *
      * @param postId the specified post id
      * @return method response XML
      * @throws Exception exception
      */
     private String getPost(final String postId) throws Exception {
         final StringBuilder stringBuilder = new StringBuilder(
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value>");
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value>");
 
         final String posts = buildPost(postId);
 
@@ -328,7 +326,7 @@ public class MetaWeblogAPI {
 
     /**
      * Adds the specified article.
-     * 
+     *
      * @param article the specified article
      * @throws Exception exception
      */
@@ -349,10 +347,10 @@ public class MetaWeblogAPI {
 
     /**
      * Parses the specified method call for an article.
-     * 
+     *
      * @param methodCall the specified method call
      * @return article
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     private JSONObject parsetPost(final JSONObject methodCall) throws Exception {
         final JSONObject ret = new JSONObject();
@@ -373,9 +371,9 @@ public class MetaWeblogAPI {
                     date = (Date) DateFormatUtils.ISO_DATETIME_FORMAT.parseObject(dateString);
                 } catch (final ParseException e) {
                     LOGGER.log(Level.WARN,
-                        "Parses article create date failed with ISO8601, retry to parse with "
-                        + "pattern[yyyy-MM-dd'T'HH:mm:ss, yyyyMMdd'T'HH:mm:ss'Z']");
-                    date = DateUtils.parseDate(dateString, new String[] {"yyyyMMdd'T'HH:mm:ss", "yyyyMMdd'T'HH:mm:ss'Z'"});
+                            "Parses article create date failed with ISO8601, retry to parse with "
+                            + "pattern[yyyy-MM-dd'T'HH:mm:ss, yyyyMMdd'T'HH:mm:ss'Z']");
+                    date = DateUtils.parseDate(dateString, new String[]{"yyyyMMdd'T'HH:mm:ss", "yyyyMMdd'T'HH:mm:ss'Z'"});
                 }
                 ret.put(Article.ARTICLE_CREATE_DATE, date);
             } else if ("title".equals(name)) {
@@ -437,14 +435,14 @@ public class MetaWeblogAPI {
 
     /**
      * Processes {@value #METHOD_GET_RECENT_POSTS}.
-     * 
+     *
      * @param fetchSize the specified fetch size
      * @return method response XML
      * @throws Exception exception
      */
     private String getRecentPosts(final int fetchSize) throws Exception {
         final StringBuilder stringBuilder = new StringBuilder(
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data>");
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data>");
 
         final String posts = buildRecentPosts(fetchSize);
 
@@ -457,13 +455,13 @@ public class MetaWeblogAPI {
 
     /**
      * Processes {@value #METHOD_GET_CATEGORIES}.
-     * 
+     *
      * @return method response XML
      * @throws Exception exception
      */
     private String getCategories() throws Exception {
         final StringBuilder stringBuilder = new StringBuilder(
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data>");
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data>");
 
         final String categories = buildCategories();
 
@@ -476,13 +474,13 @@ public class MetaWeblogAPI {
 
     /**
      * Processes {@value #METHOD_GET_USERS_BLOGS}.
-     * 
+     *
      * @return method response XML
      * @throws Exception exception
      */
     private String getUsersBlogs() throws Exception {
         final StringBuilder stringBuilder = new StringBuilder(
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data><value><struct>");
+                "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data><value><struct>");
 
         final JSONObject preference = preferenceQueryService.getPreference();
         final String blogInfo = buildBlogInfo(preference);
@@ -496,10 +494,10 @@ public class MetaWeblogAPI {
 
     /**
      * Builds a post (post struct) with the specified post id.
-     * 
+     *
      * @param postId the specified post id
      * @return blog info XML
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     private String buildPost(final String postId) throws Exception {
         final StringBuilder stringBuilder = new StringBuilder();
@@ -518,10 +516,10 @@ public class MetaWeblogAPI {
         stringBuilder.append("<struct>");
 
         stringBuilder.append("<member><name>dateCreated</name>").append("<value><dateTime.iso8601>").append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(createDate)).append(
-            "</dateTime.iso8601></value></member>");
+                "</dateTime.iso8601></value></member>");
 
         stringBuilder.append("<member><name>description</name>").append("<value>").append(StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))).append(
-            "</value></member>");
+                "</value></member>");
 
         stringBuilder.append("<member><name>title</name>").append("<value>").append(articleTitle).append("</value></member>");
 
@@ -539,15 +537,14 @@ public class MetaWeblogAPI {
     }
 
     /**
-     * Builds recent posts (array of post structs) with the specified 
-     * fetch size.
-     * 
+     * Builds recent posts (array of post structs) with the specified fetch size.
+     *
      * @param fetchSize the specified fetch size
      * @return blog info XML
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     private String buildRecentPosts(final int fetchSize)
-        throws Exception {
+            throws Exception {
 
         final StringBuilder stringBuilder = new StringBuilder();
 
@@ -560,15 +557,15 @@ public class MetaWeblogAPI {
             stringBuilder.append("<value><struct>");
 
             stringBuilder.append("<member><name>dateCreated</name>").append("<value><dateTime.iso8601>").append(DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(createDate)).append(
-                "</dateTime.iso8601></value></member>");
+                    "</dateTime.iso8601></value></member>");
 
             stringBuilder.append("<member><name>description</name>").append("<value>").append(StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))).append(
-                "</value></member>");
+                    "</value></member>");
 
             stringBuilder.append("<member><name>title</name>").append("<value>").append(articleTitle).append("</value></member>");
 
             stringBuilder.append("<member><name>postid</name>").append("<value>").append(article.getString(Keys.OBJECT_ID)).append(
-                "</value></member>");
+                    "</value></member>");
 
             stringBuilder.append("<member><name>categories</name>").append("<value><array><data>");
             final String tagTitles = article.getString(Article.ARTICLE_TAGS_REF);
@@ -589,9 +586,9 @@ public class MetaWeblogAPI {
 
     /**
      * Builds categories (array of category info structs) with the specified preference.
-     * 
+     *
      * @return blog info XML
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     private String buildCategories() throws Exception {
         final StringBuilder stringBuilder = new StringBuilder();
@@ -611,10 +608,10 @@ public class MetaWeblogAPI {
             stringBuilder.append("<member><name>categoryid</name>").append("<value>").append(tagId).append("</value></member>");
 
             stringBuilder.append("<member><name>htmlUrl</name>").append("<value>").append(Latkes.getServePath()).append("/tags/").append(tagTitle).append(
-                "</value></member>");
+                    "</value></member>");
 
             stringBuilder.append("<member><name>rsslUrl</name>").append("<value>").append(Latkes.getServePath()).append("/tag-articles-rss.do?oId=").append(tagId).append(
-                "</value></member>");
+                    "</value></member>");
             stringBuilder.append("</struct></value>");
         }
 
@@ -623,19 +620,19 @@ public class MetaWeblogAPI {
 
     /**
      * Builds blog info struct with the specified preference.
-     * 
+     *
      * @param preference the specified preference
      * @return blog info XML
-     * @throws JSONException json exception 
+     * @throws JSONException json exception
      */
     private String buildBlogInfo(final JSONObject preference)
-        throws JSONException {
+            throws JSONException {
         final String blogId = preference.getString(Keys.OBJECT_ID);
 
         final String blogTitle = StringEscapeUtils.escapeXml(preference.getString(Preference.BLOG_TITLE));
 
         final StringBuilder stringBuilder = new StringBuilder("<member><name>blogid</name><value>").append(blogId).append(
-            "</value></member>");
+                "</value></member>");
 
         stringBuilder.append("<member><name>url</name><value>").append(Latkes.getServePath()).append("</value></member>");
         stringBuilder.append("<member><name>blogName</name><value>").append(blogTitle).append("</value></member>");
