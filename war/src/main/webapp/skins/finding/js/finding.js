@@ -55,8 +55,8 @@ var Finding = {
     share: function () {
         $(".share span").click(function () {
             var key = $(this).data("type");
-            var title = encodeURIComponent($.trim($(".post-title a").text()) + " - " + $.trim($(".post-author span").text())),
-                    url = $(".post-title a").attr('href'),
+            var title = encodeURIComponent($("title").text()),
+                    url = $(".post-title a").attr('href') ? $(".post-title a").attr('href') : location,
                     pic = $(".post-content img:eq(0)").attr("src");
             var urls = {};
             urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +

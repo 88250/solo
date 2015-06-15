@@ -68,12 +68,28 @@
                 </article>
                 <@comments commentList=articleComments article=article></@comments>
             </main>
-            <#if nextArticlePermalink??>
-            <a href="${servePath}${nextArticlePermalink}">${nextArticle1Label}${nextArticleTitle}</a>${nextArticleAbstract}<br/>
+            <#if nextArticlePermalink?? || previousArticlePermalink??>
+            <aside class="read-next">
+                <#if nextArticlePermalink??>
+                <a class="read-next-story " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/next.jpg')"
+                   href="${servePath}${nextArticlePermalink}">
+                    <section class="post">
+                        <h2>${nextArticleTitle}</h2>
+                        <p>${nextArticleAbstract}</p>
+                    </section>
+                </a>
+                </#if>
+                <#if previousArticlePermalink??>
+                <a class="read-next-story prev " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/preview.jpg')"
+                   href="${servePath}${previousArticlePermalink}">
+                    <section class="post">
+                        <h2>${previousArticleTitle}</h2>
+                        <p>${previousArticleAbstract}</p>
+                    </section>
+                </a>
+                </#if>
+            </aside>
             </#if>
-            <#if previousArticlePermalink??>
-            <a href="${servePath}${previousArticlePermalink}">${previousArticle1Label}${previousArticleTitle}</a>${previousArticleAbstract}
-            </#if>  
             <#include "footer.ftl">
 
             <@comment_script oId=article.oId>

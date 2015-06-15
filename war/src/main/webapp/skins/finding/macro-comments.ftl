@@ -115,7 +115,7 @@
                             "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
                         });
                         var addComment = function (result, state) {
-                            var commentable = "${article.commentable?string}";
+                            var commentable = $("#commentForm").length === 0 ? false : true;
                             var commentHTML = '<li class="fn-clear" id="' + result.oId +
                                     '"><div class="fn-left" style="width: 10%"><img class="avatar-48" title="'
                                     + result.userName + '" src="' + result.commentThumbnailURL + '"></div><div class="fn-left" style="width: 90%">'
@@ -131,7 +131,7 @@
 
                             commentHTML += '<time>' + result.commentDate
                                     + '</time></span>';
-                            if (commentable === 'true') {
+                            if (commentable) {
                                 commentHTML += '<a class="fn-right" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>';
                             }
                             commentHTML += '</div><div class="comment-content">' +

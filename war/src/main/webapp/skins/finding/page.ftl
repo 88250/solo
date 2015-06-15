@@ -8,32 +8,32 @@
         <meta name="description" content="${metaDescription}" />
         </@head>
     </head>
-    <body>
-        ${topBarReplacement}
-        <div class="content">
-            <div class="header">
-                <#include "header.ftl">
-            </div>
-            <div class="body">
-                <div class="left main">
-                    <div>
-                        <div class="article">
-                            <div class="article-body">
-                                ${page.pageContent}
-                            </div>
-                        </div>
-                        <@comments commentList=pageComments article=page></@comments>
-                    </div>
-                </div>
-                <div class="right side">
-                    <#include "side.ftl">
-                </div>
-                <div class="clear"></div>
-            </div>
-            <div class="footer">
-                <#include "footer.ftl">
-            </div>
+    <body class="nav-closed">
+        <div class="nav">
+            <#include "side.ftl">
         </div>
-         <@comment_script oId=page.oId></@comment_script>
+        <div class="site-wrapper">
+            <#include "header.ftl">
+            <main class="fn-wrap">
+                <article class="post">
+                    <section class="post-content">
+                        ${page.pageContent}
+                    </section>
+                    <footer>
+                        <div class="share fn-right">
+                            <span class="icon icon-tencent" data-type="tencent"></span>
+                            <span class="icon icon-weibo" data-type="weibo"></span>
+                            <span class="icon icon-twitter" data-type="twitter"></span>
+                            <span class="icon icon-google" data-type="google"></span>
+                        </div>
+                    </footer>
+                </article>
+                <@comments commentList=pageComments article=page></@comments>
+            </main>
+
+            <#include "footer.ftl">
+
+            <@comment_script oId=page.oId></@comment_script>
+        </div>
     </body>
 </html>
