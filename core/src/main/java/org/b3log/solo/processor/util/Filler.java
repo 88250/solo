@@ -68,7 +68,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.7.11, Jun 13, 2015
+ * @version 1.3.8.11, Jun 15, 2015
  * @since 0.3.1
  */
 @Service
@@ -564,13 +564,14 @@ public class Filler {
 
             dataModel.put(Common.IS_INDEX, "/".equals(request.getRequestURI()));
 
+            dataModel.put(User.USER_NAME, "");
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
-
             if (null != currentUser) {
                 final String email = currentUser.optString(User.USER_EMAIL);
                 final String gravatar = Thumbnails.getGravatarURL(email, "60");
-
                 dataModel.put(Common.GRAVATAR, gravatar);
+                
+                dataModel.put(User.USER_NAME, currentUser.optString(User.USER_NAME));
             }
 
             // Activates plugins
@@ -616,10 +617,6 @@ public class Filler {
             dataModel.put(Common.ONLINE_VISITOR_CNT, StatisticQueryService.getOnlineVisitorCount());
 
             dataModel.put(Common.TOP_BAR, topBarHTML);
-            
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
-            final String userName = currentUser.getString(User.USER_NAME);
-            dataModel.put(User.USER_NAME, userName);
 
             dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
             dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
