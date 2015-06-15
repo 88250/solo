@@ -68,7 +68,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.8.11, Jun 15, 2015
+ * @version 1.3.9.11, Jun 15, 2015
  * @since 0.3.1
  */
 @Service
@@ -570,7 +570,7 @@ public class Filler {
                 final String email = currentUser.optString(User.USER_EMAIL);
                 final String gravatar = Thumbnails.getGravatarURL(email, "60");
                 dataModel.put(Common.GRAVATAR, gravatar);
-                
+
                 dataModel.put(User.USER_NAME, currentUser.optString(User.USER_NAME));
             }
 
@@ -876,6 +876,7 @@ public class Filler {
      *     ....,
      *     "authorName": "",
      *     "authorId": "",
+     *     "authorThumbnailURL": "",
      *     "hasUpdated": boolean
      * }
      * </pre> </p>
@@ -925,6 +926,7 @@ public class Filler {
      *     ....,
      *     "authorName": "",
      *     "authorId": "",
+     *     "authorThumbnailURL": "",
      *     "hasUpdated": boolean
      * }
      * </pre> </p>
@@ -943,6 +945,9 @@ public class Filler {
             final String authorId = author.getString(Keys.OBJECT_ID);
 
             article.put(Common.AUTHOR_ID, authorId);
+
+            final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+            article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
