@@ -30,7 +30,7 @@
         </h2>
     </header>
     <section class="post-excerpt">
-        <p>${article.articleAbstract}<a class="read-more" href="/the-purpose-of-education/">»</a></p>
+        <p>${article.articleAbstract}</p>
     </section>
     <footer class="post-meta">
         <img class="avatar" title="${article.authorName}" alt="${article.authorName}" src="${article.authorThumbnailURL}"/>

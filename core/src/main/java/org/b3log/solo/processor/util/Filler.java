@@ -616,6 +616,10 @@ public class Filler {
             dataModel.put(Common.ONLINE_VISITOR_CNT, StatisticQueryService.getOnlineVisitorCount());
 
             dataModel.put(Common.TOP_BAR, topBarHTML);
+            
+            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            final String userName = currentUser.getString(User.USER_NAME);
+            dataModel.put(User.USER_NAME, userName);
 
             dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
             dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));

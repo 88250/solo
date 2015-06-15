@@ -906,10 +906,6 @@ ul.comments {
     margin-top: 0;
 }
 
-.read-more {
-  text-decoration: none;
-}
-
 #captcha, 
 #captchaReply {
     height: 27px;

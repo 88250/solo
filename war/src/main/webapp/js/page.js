@@ -69,7 +69,7 @@ $.extend(Page.prototype, {
             oR.moveToElementText(textarea);
             oS.getBookmark();
             for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i++) {
-                if (textarea.value.charAt(i) == '\n') {
+                if (textarea.value.charAt(i) === '\n') {
                     i++;
                 }
             }
@@ -81,7 +81,7 @@ $.extend(Page.prototype, {
      * @param {String} state 用于区别回复评论还是对文章的评论
      */
     validateComment: function(state) {
-        if ($("#admin").data("login")) {
+        if (Util.isLoggedIn()) {
             var commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
             if (2 > commenterContent.length || commenterContent.length > 500) {
                 $("#commentErrorTip" + state).html(this.tips.commentContentCannotEmptyLabel);
@@ -389,7 +389,7 @@ $.extend(Page.prototype, {
             $(this).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
         });
         // cookie
-        if (!$("#admin").data("login")) {
+        if (!Util.isLoggedIn()) {
             $("#commentEmail").val(Cookie.readCookie("commentEmail"));
             $("#commentURL").val(Cookie.readCookie("commentURL"));
             $("#commentName").val(Cookie.readCookie("commentName"));
@@ -537,7 +537,7 @@ $.extend(Page.prototype, {
                 "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "")
             };
             
-            if (!$("#admin").data("login")) {
+            if (!Util.isLoggedIn()) {
                 requestJSONObject = {
                     "oId": tips.oId,
                     "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
@@ -566,14 +566,14 @@ $.extend(Page.prototype, {
                         $("#commentErrorTip" + state).html(result.msg);
                         $("#comment" + state).val("").focus();
                         $("#submitCommentButton" + state).removeAttr("disabled");
-                        if (!$("#admin").data("login")) {
+                        if (!Util.isLoggedIn()) {
                             $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
                         }
                         return;
                     }
 
                     result.replyNameHTML = "";
-                    if (!$("#admin").data("login")) {
+                    if (!Util.isLoggedIn()) {
                         $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
                         if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
                             result.replyNameHTML = '<a>' + $("#commentName" + state).val() + '</a>';
@@ -584,8 +584,8 @@ $.extend(Page.prototype, {
                         result.userName = $("#commentName" + state).val();
                     } else {
                         result.replyNameHTML = '<a href="' + window.location.host +
-                                '" target="_blank">' + $("#adminName").text() + '</a>';
-                        result.userName = $("#adminName").text();
+                                '" target="_blank">' + Util.getUserName() + '</a>';
+                        result.userName = Util.getUserName();
                     }
 
                     that.addCommentAjax(addComment(result, state), state);

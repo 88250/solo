@@ -27,6 +27,28 @@
  */
 var Util = {
     /**
+     * @description 是否登录
+     * @returns {Boolean} 是否登录
+     */
+    isLoggedIn: function () {
+         if (($("#admin").length === 1 && $("#admin").data("login")) || latkeConfig.isLoggedIn === "true") {
+             return true;
+         } else {
+             return false;
+         }
+    },
+    /**
+     * @description 获取用户名称
+     * @returns {String} 用户名称
+     */
+    getUserName: function () {
+        if ($("#adminName").length === 1) {
+            return $("#adminName").text();
+        } else {
+            return latkeConfig.userName;
+        }
+    },
+    /**
      * @description 检测页面错误
      */
     error: function() {
