@@ -696,7 +696,7 @@ pre code, pre tt {
 .nav .count {
     position: absolute;
     bottom: 10px;
-    font-size: 1.4rem;
+    font-size: 1rem;
     width: 100%;
     word-wrap: normal;
     word-break: break-all;
@@ -981,7 +981,7 @@ ul.comments {
     font-size: 1.1rem;
     font-family: "Open Sans", sans-serif;
     color: rgba(255,255,255,0.8);
-    border: rgba(255,255,255,0.5) 1px solid;
+    border: 1px solid rgba(255,255,255,0.5);
     border-radius: 4px;
     transition: all 0.5s ease;
 }
