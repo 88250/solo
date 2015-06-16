@@ -522,7 +522,8 @@ pre code, pre tt {
     text-decoration: none;
 }
 
-.page-description {
+.page-description, 
+.page-description a {
     -webkit-animation: fade-in-down 0.9s;
     animation: fade-in-down 0.9s;
     -webkit-animation-delay: 0.1s;
@@ -1127,7 +1128,8 @@ ul.comments {
         letter-spacing: -1px;
     }
 
-    .page-description {
+    .page-description,
+    .page-description a {
         font-size: 1.8rem;
         line-height: 1.5em;
     }
@@ -1337,7 +1339,8 @@ ul.comments {
         font-size: 0.85em;
     }
 
-    .page-description {
+    .page-description,
+    .page-description a {
         font-size: 1.6rem;
     }
 

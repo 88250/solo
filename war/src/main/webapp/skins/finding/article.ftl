@@ -71,22 +71,22 @@
             <#if nextArticlePermalink?? || previousArticlePermalink??>
             <aside class="read-next">
                 <#if nextArticlePermalink??>
-                <a class="read-next-story " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/next.jpg')"
-                   href="${servePath}${nextArticlePermalink}">
+                <div class="read-next-story " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/next.jpg')"
+                     onclick="window.open('${servePath}${nextArticlePermalink}')">
                     <section class="post">
                         <h2>${nextArticleTitle}</h2>
                         <p>${nextArticleAbstract}</p>
                     </section>
-                </a>
+                </div>
                 </#if>
                 <#if previousArticlePermalink??>
-                <a class="read-next-story prev " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/preview.jpg')"
-                   href="${servePath}${previousArticlePermalink}">
+                <div class="read-next-story prev " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/preview.jpg')"
+                     onclick="window.open('${servePath}${previousArticlePermalink}')">
                     <section class="post">
                         <h2>${previousArticleTitle}</h2>
                         <p>${previousArticleAbstract}</p>
                     </section>
-                </a>
+                </div>
                 </#if>
             </aside>
             </#if>
