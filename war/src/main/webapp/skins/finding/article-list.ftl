@@ -29,7 +29,7 @@
             </#if>
         </h2>
     </header>
-    <section class="post-excerpt">
+    <section class="post-excerpt fn-clear">
         <p>${article.articleAbstract}</p>
     </section>
     <footer class="post-meta">

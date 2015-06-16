@@ -944,6 +944,13 @@ ul.comments {
     background-size: cover;
     overflow: hidden;
 }
+.read-next-story a {
+    color: #BBB;
+}
+
+.read-next-story a:hover {
+    color: #FFF;
+}
 .read-next-story:hover:before {
     background: rgba(0,0,0,0.8);
     transition: all 0.2s ease;
