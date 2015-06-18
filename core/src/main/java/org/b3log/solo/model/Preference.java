@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, May 17, 2013
+ * @version 1.1.0.10, Jun 18, 2015
  * @since 0.3.1
  */
 public final class Preference {
@@ -274,7 +274,7 @@ public final class Preference {
         /**
          * Default skin directory name.
          */
-        public static final String DEFAULT_SKIN_DIR_NAME = "ease";
+        public static final String DEFAULT_SKIN_DIR_NAME = "finding";
 
         /**
          * Default language.

@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * Solo servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.6, Mar 24, 2015
+ * @version 1.2.0.7, Jun 18, 2015
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -116,8 +116,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
         Stopwatchs.start("Context Initialized");
 
-        // Default to skin "ease", loads from preference later
-        Skins.setDirectoryForTemplateLoading("ease");
+        // Set default skin, loads from preference later
+        Skins.setDirectoryForTemplateLoading(Preference.Default.DEFAULT_SKIN_DIR_NAME);
 
         final PreferenceRepository preferenceRepository = beanManager.getReference(PreferenceRepositoryImpl.class);
 

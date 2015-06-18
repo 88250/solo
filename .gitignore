@@ -13,7 +13,6 @@
 /target/
 
 war/src/main/webapp/skins/*
-!war/src/main/webapp/skins/ease
 !war/src/main/webapp/skins/mobile
 !war/src/main/webapp/skins/finding
 

@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.solo.util.TimeZones;
 import org.b3log.solo.util.Skins;
@@ -47,12 +46,11 @@ import static org.b3log.solo.model.Skin.SKIN_NAME;
 import static org.b3log.solo.util.Skins.getSkinDirNames;
 import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
 
-
 /**
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.7, Apr 15, 2014
+ * @version 1.0.1.8, Jun 18, 2014
  * @since 0.4.0
  */
 @Service
@@ -117,17 +115,19 @@ public class PreferenceMgmtService {
         LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
 
         if (!skinDirNames.contains(currentSkinDirName)) {
-            LOGGER.log(Level.WARN, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName=ease] instead.",
-                currentSkinDirName);
-            if (!skinDirNames.contains("ease")) {
-                LOGGER.log(Level.ERROR, "Can not find skin[dirName=ease]");
+            LOGGER.log(Level.WARN, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName="
+                    + Preference.Default.DEFAULT_SKIN_DIR_NAME + "] instead.",
+                    currentSkinDirName);
+            if (!skinDirNames.contains(Preference.Default.DEFAULT_SKIN_DIR_NAME)) {
+                LOGGER.log(Level.ERROR, "Can not find skin[dirName=" + Preference.Default.DEFAULT_SKIN_DIR_NAME + "]");
 
                 throw new IllegalStateException(
-                    "Can not find default skin[dirName=ease], please redeploy your Solo and make sure contains this default skin!");
+                        "Can not find default skin[dirName=" + Preference.Default.DEFAULT_SKIN_DIR_NAME
+                        + "], please redeploy your Solo and make sure contains this default skin!");
             }
 
-            preference.put(SKIN_DIR_NAME, "ease");
-            preference.put(SKIN_NAME, "ease");
+            preference.put(SKIN_DIR_NAME, Preference.Default.DEFAULT_SKIN_DIR_NAME);
+            preference.put(SKIN_NAME, Latkes.getSkinName(Preference.Default.DEFAULT_SKIN_DIR_NAME));
 
             updatePreference(preference);
         }

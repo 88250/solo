@@ -61,7 +61,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.7, Apr 15, 2014
+ * @version 1.0.2.8, Jun 18, 2015
  * @since 0.4.0
  */
 @Service
@@ -574,11 +574,9 @@ public class InitService {
         ret.put(EDITOR_TYPE, Default.DEFAULT_EDITOR_TYPE);
 
         final String skinDirName = Default.DEFAULT_SKIN_DIR_NAME;
-
         ret.put(Skin.SKIN_DIR_NAME, skinDirName);
 
         final String skinName = Latkes.getSkinName(skinDirName);
-
         ret.put(Skin.SKIN_NAME, skinName);
 
         final Set<String> skinDirNames = Skins.getSkinDirNames();
