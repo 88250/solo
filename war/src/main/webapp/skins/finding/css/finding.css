@@ -316,7 +316,9 @@ pre code, pre tt {
     font-style: normal;
 }
 
-[class^="icon-"]:before, [class*=" icon-"]:before {
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+    font-size: 2rem;
     font-family: "icomoon", "Open Sans", "Microsoft Yahei", 'Helvetica';
     speak: none;
     font-style: normal;
@@ -335,6 +337,7 @@ pre code, pre tt {
 
 .icon-menu:before {
     content: "\f609";
+    vertical-align: sub;
 }
 
 .icon-login:before {
@@ -592,7 +595,7 @@ pre code, pre tt {
     transition: all 0.5s ease;
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 40px;
     text-decoration: none;
     font-family: 'Open Sans', "Microsoft Yahei", 'Helvetica';
     z-index: 30;
@@ -637,7 +640,7 @@ pre code, pre tt {
     bottom: 0;
     z-index: 5;
     width: 220px;
-    padding: 0 10px;
+    padding: 10px 10px 0 10px;
     opacity: 0;
     background: #111;
     margin-bottom: 0;
