@@ -333,6 +333,7 @@ pre code, pre tt {
 
 .icon-arrow-left:before {
     content: "\f605";
+	font-size: 3.5rem;
 }
 
 .icon-menu:before {
