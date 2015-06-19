@@ -30,7 +30,7 @@
         <a href="${servePath}/links.html">${linkLabel}</a>
     </li>
     <li>
-        <a rel="alternate" href="${servePath}/blog-articles-feed.do">${atomLabel}</a>
+        <a rel="alternate" href="${servePath}/blog-articles-rss.do">${subscribeLabel}</a>
     </li>
 </ul>
 

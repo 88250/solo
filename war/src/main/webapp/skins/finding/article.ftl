@@ -72,7 +72,7 @@
             <aside class="read-next">
                 <#if nextArticlePermalink??>
                 <div class="read-next-story " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/next.jpg')"
-                     onclick="window.open('${servePath}${nextArticlePermalink}')">
+                     onclick="window.location = '${servePath}${nextArticlePermalink}'">
                     <section class="post">
                         <h2>${nextArticleTitle}</h2>
                         <p>${nextArticleAbstract}</p>
@@ -81,7 +81,7 @@
                 </#if>
                 <#if previousArticlePermalink??>
                 <div class="read-next-story prev " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/preview.jpg')"
-                     onclick="window.open('${servePath}${previousArticlePermalink}')">
+                     onclick="window.location = '${servePath}${previousArticlePermalink}'">
                     <section class="post">
                         <h2>${previousArticleTitle}</h2>
                         <p>${previousArticleAbstract}</p>

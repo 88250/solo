@@ -31,7 +31,7 @@ html {
 body {
     height: 100%;
     max-height: 100%;
-    font-family: "Merriweather", "Microsoft Yahei";
+    font-family: "Merriweather", "Microsoft Yahei", 'Helvetica';
     letter-spacing: 0.01rem;
     font-size: 1.8rem;
     line-height: 1.75em;
@@ -67,7 +67,7 @@ h4, h5, h6 {
     -o-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
     color: #2E2E2E;
     line-height: 1.15em;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Open Sans", "Microsoft Yahei", 'Helvetica';
     text-rendering: geometricPrecision;
 }
 
@@ -183,7 +183,7 @@ mark {
 
 code, tt {
     padding: 1px 3px;
-    font-family: Inconsolata, monospace, sans-serif;
+    font-family: Inconsolata, monospace, "Microsoft Yahei", 'Helvetica';
     font-size: 0.85em;
     white-space: pre-wrap;
     border: #E3EDF3 1px solid;
@@ -198,7 +198,7 @@ pre {
     border: #E3EDF3 1px solid;
     width: 100%;
     padding: 10px;
-    font-family: Inconsolata, monospace, sans-serif;
+    font-family: Inconsolata, monospace, "Microsoft Yahei", 'Helvetica';
     font-size: 0.9em;
     white-space: pre;
     overflow: auto;
@@ -317,7 +317,7 @@ pre code, pre tt {
 }
 
 [class^="icon-"]:before, [class*=" icon-"]:before {
-    font-family: "icomoon", "Open Sans", sans-serif;
+    font-family: "icomoon", "Open Sans", "Microsoft Yahei", 'Helvetica';
     speak: none;
     font-style: normal;
     font-weight: normal;
@@ -386,7 +386,7 @@ pre code, pre tt {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
-    font-family: "Merriweather", "Microsoft Yahei";
+    font-family: "Merriweather", "Microsoft Yahei", 'Helvetica';
 }
 
 .form button {
@@ -399,6 +399,16 @@ pre code, pre tt {
     background-color: #FFF;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset, 0 0 5px rgba(81, 167, 232, 0.5);
     border: 1px solid #51A7E8;
+}
+
+.error-msg {  
+    font-size: 1.5rem;
+    color: #9EABB3;
+}
+
+.cmtFromSym {
+    font-size: 1rem;
+    color: #9EABB3;
 }
 /* end common */
 
@@ -516,7 +526,7 @@ pre code, pre tt {
     font-size: 5rem;
     letter-spacing: -1px;
     font-weight: 700;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Open Sans", "Microsoft Yahei", 'Helvetica';
     color: #fff;
     text-shadow: 0px 0px 3px rgba(0, 0, 0, 0.9);
     text-decoration: none;
@@ -584,7 +594,7 @@ pre code, pre tt {
     right: 20px;
     top: 20px;
     text-decoration: none;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Open Sans', "Microsoft Yahei", 'Helvetica';
     z-index: 30;
 }
 
@@ -769,7 +779,7 @@ article.post:after {
 
 .post-meta {
     color: #9eabb3;
-    font-family: "Open Sans",sans-serif;
+    font-family: "Open Sans", "Microsoft Yahei", 'Helvetica';
     font-size: 1.5rem;
     line-height: 2.2rem;
     margin: 1.75rem 0 0 0;
@@ -849,7 +859,7 @@ article.post:after {
 }
 
 .pagination {
-    font-family: "Open Sans", sans-serif;
+    font-family: "Open Sans", "Microsoft Yahei", 'Helvetica';
     font-size: 1.3rem;
     color: #9eabb3;
     text-align: center;
@@ -888,6 +898,10 @@ ul.comments {
 
 .comments li:hover {
     background-color: #F7F7F7;
+}
+
+.comments li img {
+    vertical-align: sub;
 }
 
 .comments .comment-content {
@@ -986,7 +1000,7 @@ ul.comments {
     padding: 4px 10px 5px;
     text-transform: uppercase;
     font-size: 1.1rem;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Open Sans", "Microsoft Yahei", 'Helvetica';
     color: rgba(255,255,255,0.8);
     border: 1px solid rgba(255,255,255,0.5);
     border-radius: 4px;
@@ -1064,10 +1078,10 @@ ul.comments {
 
 /* start dynamic */
 .dynamic .read-next-story > div {
-  position: relative;
-  width: 60%;
-  margin: 50px auto;
-  text-align: left;
+    position: relative;
+    width: 60%;
+    margin: 50px auto;
+    text-align: left;
 }
 
 .dynamic a {
@@ -1086,7 +1100,7 @@ ul.comments {
     position: relative;
     margin: 8rem 0 0 0;
     padding: 1rem 15px;
-    font-family: "Open Sans", sans-serif;
+    font-family: "Open Sans", "Microsoft Yahei", 'Helvetica';
     font-size: 1rem;
     line-height: 1.75em;
     color: #BBC7CC;
