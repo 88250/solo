@@ -14,7 +14,7 @@
         </div>
         <div class="site-wrapper">
             <#include "header.ftl">
-            <main class="fn-wrap">
+            <main>
                 <article class="post">
                     <section class="post-content">
                         ${page.pageContent}

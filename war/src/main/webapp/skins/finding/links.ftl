@@ -13,9 +13,9 @@
         </div>
         <div class="site-wrapper">
             <#include "header.ftl">
-            <main id="content" class="fn-wrap">
+            <main id="content">
                 <#if 0 != links?size>
-                <ul class="fn-clear" id="tags">
+                <ul class="fn-clear fn-wrap" id="tags">
                     <#list links as link>
                     <li>
                         <a rel="friend" href="${link.linkAddress}" title="${link.linkDescription}" target="_blank">

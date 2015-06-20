@@ -1,5 +1,5 @@
 <#if !isIndex && paginationCurrentPageNum != 1>
-<nav class="pagination fn-clear" role="navigation">
+<nav class="pagination fn-clear fn-wrap" role="navigation">
     <#if paginationCurrentPageNum != 1>
     <a class="fn-left" href="${servePath}${path}/${paginationPreviousPageNum}">← ${previousPageLabel}</a>
     </#if>
@@ -11,7 +11,7 @@
 </#if>
 
 <#list articles as article>
-<article class="post">
+<article class="post fn-wrap">
     <header>
         <h2 class="post-title">
             <a rel="bookmark" href="${servePath}${article.articlePermalink}">
@@ -48,7 +48,7 @@
 </#list>
 
 <#if 0 != paginationPageCount>
-<nav class="pagination fn-clear" role="navigation">
+<nav class="pagination fn-clear fn-wrap" role="navigation">
     <#if paginationCurrentPageNum != 1>
     <a class="fn-left" href="${servePath}${path}/${paginationPreviousPageNum}">← ${previousPageLabel}</a>
     </#if>

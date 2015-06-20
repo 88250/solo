@@ -13,13 +13,13 @@
         </div>
         <div class="site-wrapper">
             <#include "header.ftl">
-            <main id="content" class="fn-wrap">
+            <main id="content">
                 <#if 0 != recentComments?size>
-                <ul class="comments">
+                <ul class="comments fn-wrap">
                     <#list recentComments as comment>
                     <#if comment_index < 6>
                     <li id="${comment.oId}" class="fn-clear">
-                        <div class="fn-left" style="width: 10%">
+                        <div class="fn-left avatar-warp">
                             <img class="avatar-48" title="${comment.commentName}"
                                  alt="${comment.commentName}" src="${comment.commentThumbnailURL}">
                         </div>

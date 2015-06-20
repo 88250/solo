@@ -17,7 +17,7 @@
         </div>
         <div class="site-wrapper">
             <#include "header.ftl">
-            <main id="content" class="fn-wrap">
+            <main id="content">
                 <#include "article-list.ftl">
             </main>
             <#include "footer.ftl">

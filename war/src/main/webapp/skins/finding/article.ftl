@@ -14,8 +14,8 @@
         </div>
         <div class="site-wrapper">
             <#include "header.ftl">
-            <main class="fn-wrap">
-                <article class="post">
+            <main>
+                <article class="post fn-wrap">
                     <header>
                         <h1 class="post-title">
                             <a rel="bookmark" href="${servePath}${article.articlePermalink}">
@@ -92,18 +92,7 @@
             </#if>
             <#include "footer.ftl">
 
-            <@comment_script oId=article.oId>
-            page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
-            <#if 0 != randomArticlesDisplayCount>
-            page.loadRandomArticles();
-            </#if>
-            <#if 0 != relevantArticlesDisplayCount>
-            page.loadRelevantArticles('${article.oId}', '<h4>${relevantArticles1Label}</h4>');
-            </#if>
-            <#if 0 != externalRelevantArticlesDisplayCount>
-            page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
-            </#if>
-            </@comment_script>    
+            <@comment_script oId=article.oId></@comment_script>    
         </div>
     </body>
 </html>

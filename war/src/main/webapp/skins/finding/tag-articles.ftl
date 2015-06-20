@@ -13,8 +13,8 @@
         </div>
         <div class="site-wrapper">
             <#include "header.ftl">
-            <main id="content" class="fn-wrap">
-                <h2>
+            <main id="content">
+                <h2 class="fn-wrap">
                     ${tag1Label}
                     <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}">
                         ${tag.tagTitle}

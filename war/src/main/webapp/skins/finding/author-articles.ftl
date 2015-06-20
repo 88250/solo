@@ -13,8 +13,8 @@
         </div>
         <div class="site-wrapper">
             <#include "header.ftl">
-            <main id="content" class="fn-wrap">
-                <h2>
+            <main id="content">
+                <h2 class="fn-wrap">
                     ${author1Label}${authorName}
                 </h2>
                 <#include "article-list.ftl">

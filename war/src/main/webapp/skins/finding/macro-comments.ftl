@@ -1,8 +1,8 @@
 <#macro comments commentList article>
-<ul class="comments" id="comments">
+<ul class="comments fn-wrap" id="comments">
     <#list commentList as comment>
     <li id="${comment.oId}" class="fn-clear">
-        <div class="fn-left" style="width: 10%">
+        <div class="fn-left avatar-warp">
             <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
         </div>
         <div class="fn-left" style="width: 90%">
@@ -34,7 +34,7 @@
     </#list>
 </ul>
 <#if article.commentable>
-<div class="comment-body">
+<div class="comment-body fn-wrap">
     <table id="commentForm" class="form">
         <tbody>
             <#if !isLoggedIn>

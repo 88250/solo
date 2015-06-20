@@ -42,14 +42,25 @@ var Finding = {
         });
 
         $('body').click(function (event) {
-            if ($(event.target).closest('.nav').length === 0 && $("body").hasClass('nav-opened')) {
+            if ($(event.target).closest('.nav').length === 0
+                    && $("body").hasClass('nav-opened')
+                    && !$(event.target).hasClass('icon-gotop')) {
                 $("body").removeClass('nav-opened').addClass('nav-closed');
             }
         });
 
-        $(".menu-button, .nav-close").click(function (event) {
+        $(".menu-button").click(function (event) {
             event.stopPropagation();
             $("body").toggleClass("nav-opened nav-closed");
+        });
+
+        $('body').append('<a class="icon-gotop fn-none" href="javascript:Util.goTop()"></a>');
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > $(window).height()) {
+                $(".icon-gotop").show();
+            } else {
+                $(".icon-gotop").hide();
+            }
         });
     },
     share: function () {

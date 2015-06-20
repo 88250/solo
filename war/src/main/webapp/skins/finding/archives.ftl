@@ -13,9 +13,9 @@
         </div>
         <div class="site-wrapper">
             <#include "header.ftl">
-            <main id="content" class="fn-wrap">
+            <main id="content">
                 <#if 0 != archiveDates?size>
-                <ul class="fn-clear" id='tags'>
+                <ul class="fn-clear fn-wrap" id='tags'>
                     <#list archiveDates as archiveDate>
                     <li>
                         <#if "en" == localeString?substring(0, 2)>

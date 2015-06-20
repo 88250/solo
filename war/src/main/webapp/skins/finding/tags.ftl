@@ -13,8 +13,8 @@
         </div>
         <div class="site-wrapper">
             <#include "header.ftl">
-            <main id="content" class="fn-wrap">
-                <ul id="tags" class="fn-clear">
+            <main id="content">
+                <ul id="tags" class="fn-clear fn-wrap">
                     <#list tags as tag>
                     <li>
                         <a rel="tag" data-count="${tag.tagPublishedRefCount}"
