@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo parent POM.
-    Version: 2.3.4.20, May 25, 2015
+    Version: 2.4.4.20, Jun 28, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -11,7 +11,7 @@
     <groupId>org.b3log</groupId>
     <artifactId>solo</artifactId>
     <packaging>pom</packaging>
-    <version>0.6.8</version>
+    <version>0.6.9</version>
     <name>Solo</name>
     <url>https://github.com/b3log/solo</url>
     <description>

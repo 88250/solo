@@ -47,9 +47,10 @@
     </div>
     <div class="module-body padding12 about-developer">
         <div class="about-logo">
-            <a href="http://b3log.org" target="_blank">
-                <img src="${staticServePath}/images/developers.jpg" alt="Solo" title="Solo" />
-            </a>
+            <!--            <a href="http://b3log.org" target="_blank">
+                            <img src="${staticServePath}/images/developers.jpg" alt="Solo" title="Solo" />
+                        </a>-->
+            <div style="width: 156px; height: 56px;"></div>
         </div>
         <div class="about-body">
             <div class="left" style="width: 73%">

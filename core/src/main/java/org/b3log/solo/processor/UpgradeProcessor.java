@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import java.io.IOException;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
@@ -41,13 +40,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 /**
  * Upgrader.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.1.14, Mar 24, 2015
+ * @version 1.2.1.14, Jun 28, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -106,7 +104,7 @@ public class UpgradeProcessor {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "0.6.7";
+    private static final String FROM_VER = "0.6.8";
 
     /**
      * New version.
@@ -158,9 +156,9 @@ public class UpgradeProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             renderer.setContent(
-                "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
-                + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
-                + "https://github.com/b3log/solo/issues/new</a>) ");
+                    "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
+                    + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
+                    + "https://github.com/b3log/solo/issues/new</a>) ");
         }
     }
 
@@ -200,11 +198,11 @@ public class UpgradeProcessor {
 
     /**
      * Upgrades users.
-     * 
+     *
      * <p>
      * Password hashing.
      * </p>
-     * 
+     *
      * @throws Exception exception
      */
     private void upgradeUsers() throws Exception {
@@ -275,7 +273,7 @@ public class UpgradeProcessor {
 
     /**
      * Send an email to the user who upgrades Solo with a discontinuous version.
-     * 
+     *
      * @throws ServiceException ServiceException
      * @throws JSONException JSONException
      * @throws IOException IOException
