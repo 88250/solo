@@ -151,14 +151,7 @@ var Util = {
      * @description 回到顶部
      */
     goTop: function() {
-        var acceleration = acceleration || 0.1;
-        var y = $(window).scrollTop();
-        var speed = 1 + acceleration;
-        window.scrollTo(0, Math.floor(y / speed));
-        if (y > 0) {
-            var invokeFunction = "Util.goTop(" + acceleration + ")";
-            window.setTimeout(invokeFunction, 16);
-        }
+          $('html, body').animate({scrollTop : 0},800);
     },
     /**
      * @description 回到底部
