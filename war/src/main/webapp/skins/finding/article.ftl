@@ -42,7 +42,7 @@
                             <time>${article.articleCreateDate?string("yyyy-MM-dd")}</time>
                         </section>
                     </header>
-                    <section class="post-content">
+                    <section class="post-content article-body">
                         ${article.articleContent}
                         <#if "" != article.articleSign.signHTML?trim>
                         <div class="marginTop12">

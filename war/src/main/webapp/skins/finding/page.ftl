@@ -16,7 +16,7 @@
             <#include "header.ftl">
             <main>
                 <article class="post">
-                    <section class="post-content">
+                    <section class="post-content article-body">
                         ${page.pageContent}
                     </section>
                     <footer>
