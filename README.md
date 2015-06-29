@@ -50,7 +50,7 @@ Here are some our most valuable business users' cases:
 
 ## Contact Us
 
-* QQ Group: 13139268
+* Forum: http://symphony.b3log.org
 * support@liuyun.io (purchase purpose)
 
 ## Terms
