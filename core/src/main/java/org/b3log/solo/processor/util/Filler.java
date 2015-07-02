@@ -68,7 +68,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.9.11, Jun 15, 2015
+ * @version 1.3.10.11, Jul 2, 2015
  * @since 0.3.1
  */
 @Service
@@ -625,15 +625,17 @@ public class Filler {
             dataModel.put(Preference.BLOG_SUBTITLE, preference.getString(Preference.BLOG_SUBTITLE));
             dataModel.put(Preference.HTML_HEAD, preference.getString(Preference.HTML_HEAD));
 
-            final String metaKeywords = preference.getString(Preference.META_KEYWORDS);
-            if (!Strings.isEmptyOrNull(metaKeywords)) {
-                dataModel.put(Preference.META_KEYWORDS, metaKeywords);
+            String metaKeywords = preference.getString(Preference.META_KEYWORDS);
+            if (Strings.isEmptyOrNull(metaKeywords)) {
+                metaKeywords = "";
             }
+            dataModel.put(Preference.META_KEYWORDS, metaKeywords);
 
-            final String metaDescription = preference.getString(Preference.META_DESCRIPTION);
-            if (!Strings.isEmptyOrNull(metaDescription)) {
-                dataModel.put(Preference.META_DESCRIPTION, metaDescription);
+            String metaDescription = preference.getString(Preference.META_DESCRIPTION);
+            if (Strings.isEmptyOrNull(metaDescription)) {
+                metaDescription = "";
             }
+            dataModel.put(Preference.META_DESCRIPTION, metaDescription);
 
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Common.IS_LOGGED_IN, null != userQueryService.getCurrentUser(request));
