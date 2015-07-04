@@ -16,7 +16,7 @@
 /**
  * @fileoverview tinyMCE editor
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.1.0.6, May 30, 2015
  */
 admin.editors.tinyMCE = {

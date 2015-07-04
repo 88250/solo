@@ -16,7 +16,7 @@
 /**
  * @description index for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.2.2, May 28, 2013
  */
 var Admin = function() {

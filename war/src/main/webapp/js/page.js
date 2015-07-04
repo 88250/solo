@@ -16,7 +16,7 @@
 /**
  * @fileoverview Page util, load heighlight and process comment.
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
  * @version 1.1.3.5, Jul 23, 2014
  */

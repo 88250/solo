@@ -16,7 +16,7 @@
 /**
  * @description index for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.2.2, May 28, 2013
  */
 var Admin = function() {
@@ -275,7 +275,7 @@ var admin = new Admin();/*
 /**
  * @fileoverview editor
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.1.0.4, May 30, 2015
  */
 
@@ -374,7 +374,7 @@ admin.editors.pageEditor = {};
 /**
  * @fileoverview tinyMCE editor
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.1.0.6, May 30, 2015
  */
 admin.editors.tinyMCE = {
@@ -501,7 +501,7 @@ admin.editors.tinyMCE = {
  * @description 修改点：plugins/image/image.js 注释 173-176
  *                     plugins/media/media.js 注释 26 & 28
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.1.0.2, May 30, 2015
  */
 admin.editors.KindEditor = {
@@ -603,7 +603,7 @@ admin.editors.KindEditor = {
 /**
  * @fileoverview markdowm CodeMirror editor 
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.1.0.4, May 30, 2015
  */
 admin.editors.CodeMirror = {
@@ -778,7 +778,7 @@ admin.editors.CodeMirror = {
 /**
  * table and paginate util
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.0.8, Jun 11, 2012
  */
 
@@ -892,8 +892,8 @@ $.extend(TablePaginate.prototype, {
 /**
  * @fileoverview article for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.3.3, May 30, 2015
  */
 admin.article = {
@@ -1512,8 +1512,8 @@ admin.register.article = {
 /**
  *  common comment for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.9, May 28, 2013
  */
 
@@ -1642,8 +1642,8 @@ admin.comment = {
 /**
  * article list for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.5, May 28, 2013
  */
 
@@ -1791,8 +1791,8 @@ admin.register["article-list"] =  {
 /**
  * draft list for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.4, Feb 23, 2013
  */
 
@@ -1904,8 +1904,8 @@ admin.register["draft-list"] =  {
 /**
  * page list for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.2.4, May 30, 2015
  */
 
@@ -2351,8 +2351,8 @@ admin.register["page-list"] = {
 /**
  * others for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.8, May 28, 2013
  */
 
@@ -2478,8 +2478,8 @@ admin.register.others =  {
 /**
  * link list for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.4, Feb 23, 2013
  */
 
@@ -2828,8 +2828,8 @@ admin.register["link-list"] =  {
 /**
  * preference for admin.
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.8, May 28, 2013
  */
 
@@ -3090,8 +3090,8 @@ admin.register["preference"] =  {
 /**
  * plugin list for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.4, May 28, 2013
  */
 
@@ -3266,8 +3266,8 @@ admin.register["plugin-list"] = {
 /**
  * user list for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.7, May 28, 2013
  */
 
@@ -3625,8 +3625,8 @@ admin.register["user-list"] = {
 /**
  * comment list for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.5, Feb 23, 2013
  */
 
@@ -3775,7 +3775,7 @@ admin.register["comment-list"] =  {
 /**
  *  plugin manager for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.0.7, Mar 28, 2012
  */
 var plugins = {};
@@ -3909,7 +3909,7 @@ admin.plugin = {
 /**
  * main for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.0.3, May 28, 2013
  */
 
@@ -3947,8 +3947,8 @@ admin.register.main =  {
 /**
  *  about for admin
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.4, May 28, 2013
  */
 

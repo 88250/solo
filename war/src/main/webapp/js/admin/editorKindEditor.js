@@ -18,7 +18,7 @@
  * @description 修改点：plugins/image/image.js 注释 173-176
  *                     plugins/media/media.js 注释 26 & 28
  *
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.1.0.2, May 30, 2015
  */
 admin.editors.KindEditor = {
