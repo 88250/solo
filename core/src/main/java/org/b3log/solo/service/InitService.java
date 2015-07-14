@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.service;
 
-
+import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +40,9 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.freemarker.Templates;
@@ -56,12 +59,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 /**
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.8, Jun 18, 2015
+ * @version 1.1.2.8, Jul 14, 2015
  * @since 0.4.0
  */
 @Service
@@ -185,8 +187,7 @@ public class InitService {
      * Posts "Hello World!" article and its comment while Solo initialized.
      * </p>
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "userName": "",
      *     "userEmail": "",
@@ -205,12 +206,12 @@ public class InitService {
 
         if (RuntimeEnv.LOCAL == runtimeEnv) {
             LOGGER.log(Level.INFO, "Solo is running on [" + runtimeEnv + "] environment, database [{0}], creates all tables",
-                Latkes.getRuntimeDatabase());
+                    Latkes.getRuntimeDatabase());
             final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
 
             for (final CreateTableResult createTableResult : createTableResults) {
                 LOGGER.log(Level.INFO, "Create table result[tableName={0}, isSuccess={1}]",
-                    new Object[] {createTableResult.getName(), createTableResult.isSuccess()});
+                        new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
         }
 
@@ -260,6 +261,16 @@ public class InitService {
             LOGGER.log(Level.ERROR, "Hello World error?!", e);
         }
 
+        try {
+            final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
+            final HTTPRequest req = new HTTPRequest();
+            req.setURL(new URL(Latkes.getServePath() + "/blog/symphony/user"));
+            urlFetchService.fetch(req);
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Sync account failed");
+        }
+
         pluginManager.load();
     }
 
@@ -276,8 +287,8 @@ public class InitService {
 
         article.put(Article.ARTICLE_ABSTRACT, content);
         article.put(Article.ARTICLE_CONTENT, content);
-        article.put(Article.ARTICLE_TAGS_REF, "B3log");
-        article.put(Article.ARTICLE_PERMALINK, "/b3log-hello-wolrd.html");
+        article.put(Article.ARTICLE_TAGS_REF, "B3log,Solo");
+        article.put(Article.ARTICLE_PERMALINK, "/hello-solo");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
@@ -371,8 +382,7 @@ public class InitService {
     /**
      * Archive the create date with the specified article.
      *
-     * @param article the specified article, for example,
-     * <pre>
+     * @param article the specified article, for example,      <pre>
      * {
      *     ....,
      *     "oId": "",
@@ -389,7 +399,7 @@ public class InitService {
         final JSONObject archiveDate = new JSONObject();
 
         try {
-            archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate(createDateString, new String[] {"yyyy/MM"}).getTime());
+            archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate(createDateString, new String[]{"yyyy/MM"}).getTime());
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 1);
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 1);
 
@@ -442,7 +452,7 @@ public class InitService {
             final JSONObject tag = new JSONObject();
 
             LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
-                new Object[] {tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                    new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
             tag.put(Tag.TAG_TITLE, tagTitle);
             tag.put(Tag.TAG_REFERENCE_COUNT, 1);
             tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
@@ -458,11 +468,9 @@ public class InitService {
     }
 
     /**
-     * Initializes administrator with the specified request json object, and
-     * then logins it.
+     * Initializes administrator with the specified request json object, and then logins it.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "userName": "",
      *     "userEmail": "",

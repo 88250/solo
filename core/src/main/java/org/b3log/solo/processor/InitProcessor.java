@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, May 19, 2015
+ * @version 1.1.0.7, Jul 14, 2015
  * @since 0.4.0
  */
 @RequestProcessor
@@ -129,8 +129,7 @@ public class InitProcessor {
      * Initializes Solo.
      *
      * @param context the specified http request context
-     * @param request the specified http servlet request, for example,
-     * <pre>
+     * @param request the specified http servlet request, for example,      <pre>
      * {
      *     "userName": "",
      *     "userEmail": "",
@@ -142,8 +141,8 @@ public class InitProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.POST)
-    public void initB3logSolo(final HTTPRequestContext context, final HttpServletRequest request,
-                              final HttpServletResponse response) throws Exception {
+    public void initSolo(final HTTPRequestContext context, final HttpServletRequest request,
+            final HttpServletResponse response) throws Exception {
         if (initService.isInited()) {
             response.sendRedirect("/");
 
@@ -166,7 +165,7 @@ public class InitProcessor {
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
 
             if (Strings.isEmptyOrNull(userName) || Strings.isEmptyOrNull(userEmail) || Strings.isEmptyOrNull(userPassword)
-                || !Strings.isEmail(userEmail)) {
+                    || !Strings.isEmail(userEmail)) {
                 ret.put(Keys.MSG, "Init failed, please check your input");
 
                 return;
@@ -209,7 +208,7 @@ public class InitProcessor {
      * A valid user name:
      * <ul>
      * <li>length [1, 20]</li>
-     * <li>content {a-z, A-Z, 0-9, _}</li>
+     * <li>content {a-z, A-Z, 0-9}</li>
      * </ul>
      * </p>
      *
@@ -226,7 +225,7 @@ public class InitProcessor {
         for (int i = 0; i < length; i++) {
             c = name.charAt(i);
 
-            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || '0' <= c && c <= '9' || '_' == c) {
+            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || '0' <= c && c <= '9') {
                 continue;
             }
 
