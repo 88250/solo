@@ -412,12 +412,12 @@ public class ArticleProcessor {
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
-                filler.setArticlesExProperties(articles, preference);
+                filler.setArticlesExProperties(request, articles, preference);
             } else {
                 if (!articles.isEmpty()) {
                     final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                    filler.setArticlesExProperties(articles, author, preference);
+                    filler.setArticlesExProperties(request, articles, author, preference);
                 }
             }
 
@@ -480,12 +480,12 @@ public class ArticleProcessor {
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
-                filler.setArticlesExProperties(articles, preference);
+                filler.setArticlesExProperties(request, articles, preference);
             } else {
                 if (!articles.isEmpty()) {
                     final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                    filler.setArticlesExProperties(articles, author, preference);
+                    filler.setArticlesExProperties(request, articles, author, preference);
                 }
             }
 
@@ -551,12 +551,12 @@ public class ArticleProcessor {
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
-                filler.setArticlesExProperties(articles, preference);
+                filler.setArticlesExProperties(request, articles, preference);
             } else {
                 if (!articles.isEmpty()) {
                     final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                    filler.setArticlesExProperties(articles, author, preference);
+                    filler.setArticlesExProperties(request, articles, author, preference);
                 }
             }
 
@@ -620,7 +620,7 @@ public class ArticleProcessor {
             final List<JSONObject> articles = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
 
             if (!articles.isEmpty()) {
-                filler.setArticlesExProperties(articles, author, preference);
+                filler.setArticlesExProperties(request, articles, author, preference);
             }
 
             final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
@@ -718,7 +718,7 @@ public class ArticleProcessor {
                 }
             }
 
-            filler.setArticlesExProperties(articles, author, preference);
+            filler.setArticlesExProperties(request, articles, author, preference);
 
             if (preference.optBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
@@ -814,12 +814,12 @@ public class ArticleProcessor {
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
-                filler.setArticlesExProperties(articles, preference);
+                filler.setArticlesExProperties(request, articles, preference);
             } else {
                 if (!articles.isEmpty()) {
                     final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                    filler.setArticlesExProperties(articles, author, preference);
+                    filler.setArticlesExProperties(request, articles, author, preference);
                 }
             }
 

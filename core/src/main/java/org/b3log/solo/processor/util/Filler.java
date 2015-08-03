@@ -39,6 +39,7 @@ import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.user.UserService;
@@ -47,6 +48,7 @@ import org.b3log.latke.util.*;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
+import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
@@ -68,7 +70,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.10.11, Jul 2, 2015
+ * @version 1.3.11.11, Aug 3, 2015
  * @since 0.3.1
  */
 @Service
@@ -174,6 +176,12 @@ public class Filler {
     private EventManager eventManager;
 
     /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
+
+    /**
      * Fills articles in index.ftl.
      *
      * @param request the specified HTTP servlet request
@@ -238,12 +246,12 @@ public class Filler {
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
-                setArticlesExProperties(articles, preference);
+                setArticlesExProperties(request, articles, preference);
             } else {
                 if (!articles.isEmpty()) {
                     final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                    setArticlesExProperties(articles, author, preference);
+                    setArticlesExProperties(request, articles, author, preference);
                 }
             }
 
@@ -883,13 +891,15 @@ public class Filler {
      * }
      * </pre> </p>
      *
+     * @param request the specified HTTP servlet request
      * @param article the specified article
      * @param author the specified author
      * @param preference the specified preference
      * @throws ServiceException service exception
      * @see #setArticlesExProperties(java.util.List, org.json.JSONObject)
      */
-    private void setArticleExProperties(final JSONObject article, final JSONObject author, final JSONObject preference)
+    private void setArticleExProperties(final HttpServletRequest request,
+            final JSONObject article, final JSONObject author, final JSONObject preference)
             throws ServiceException {
         try {
             final String authorName = author.getString(User.USER_NAME);
@@ -908,6 +918,12 @@ public class Filler {
                 article.put(Common.HAS_UPDATED, false);
             }
 
+            if (articleQueryService.needViewPwd(request, article)) {
+                final String content = langPropsService.get("articleContentPwd");
+
+                article.put(ARTICLE_CONTENT, content);
+            }
+            
             processArticleAbstract(preference, article);
 
             articleQueryService.markdown(article);
@@ -933,12 +949,14 @@ public class Filler {
      * }
      * </pre> </p>
      *
+     * @param request the specified HTTP servlet request
      * @param article the specified article
      * @param preference the specified preference
      * @throws ServiceException service exception
      * @see #setArticlesExProperties(java.util.List, org.json.JSONObject)
      */
-    private void setArticleExProperties(final JSONObject article, final JSONObject preference) throws ServiceException {
+    private void setArticleExProperties(final HttpServletRequest request,
+            final JSONObject article, final JSONObject preference) throws ServiceException {
         try {
             final JSONObject author = articleQueryService.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
@@ -957,6 +975,12 @@ public class Filler {
                 article.put(Common.HAS_UPDATED, false);
             }
 
+            if (articleQueryService.needViewPwd(request, article)) {
+                final String content = langPropsService.get("articleContentPwd");
+
+                article.put(ARTICLE_CONTENT, content);
+            }
+            
             processArticleAbstract(preference, article);
 
             articleQueryService.markdown(article);
@@ -984,16 +1008,18 @@ public class Filler {
      * }
      * </pre> </p>
      *
+     * @param request the specified HTTP servlet request
      * @param articles the specified articles
      * @param author the specified author
      * @param preference the specified preference
      * @throws ServiceException service exception
      * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)
      */
-    public void setArticlesExProperties(final List<JSONObject> articles, final JSONObject author, final JSONObject preference)
+    public void setArticlesExProperties(final HttpServletRequest request,
+            final List<JSONObject> articles, final JSONObject author, final JSONObject preference)
             throws ServiceException {
         for (final JSONObject article : articles) {
-            setArticleExProperties(article, author, preference);
+            setArticleExProperties(request, article, author, preference);
         }
     }
 
@@ -1015,15 +1041,17 @@ public class Filler {
      * }
      * </pre> </p>
      *
+     * @param request the specified HTTP servlet request
      * @param articles the specified articles
      * @param preference the specified preference
      * @throws ServiceException service exception
      * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)
      */
-    public void setArticlesExProperties(final List<JSONObject> articles, final JSONObject preference)
+    public void setArticlesExProperties(final HttpServletRequest request,
+            final List<JSONObject> articles, final JSONObject preference)
             throws ServiceException {
         for (final JSONObject article : articles) {
-            setArticleExProperties(article, preference);
+            setArticleExProperties(request, article, preference);
         }
     }
 

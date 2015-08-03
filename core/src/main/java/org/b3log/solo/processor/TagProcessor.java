@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -55,7 +54,6 @@ import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 
 /**
  * Tag processor.
@@ -147,7 +145,7 @@ public class TagProcessor {
                 return;
             }
 
-            LOGGER.log(Level.DEBUG, "Tag[title={0}, currentPageNum={1}]", new Object[] {tagTitle, currentPageNum});
+            LOGGER.log(Level.DEBUG, "Tag[title={0}, currentPageNum={1}]", new Object[]{tagTitle, currentPageNum});
 
             tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
@@ -181,19 +179,19 @@ public class TagProcessor {
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
             if (hasMultipleUsers) {
-                filler.setArticlesExProperties(articles, preference);
+                filler.setArticlesExProperties(request, articles, preference);
             } else {
                 // All articles composed by the same author
                 final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                filler.setArticlesExProperties(articles, author, preference);
+                filler.setArticlesExProperties(request, articles, author, preference);
             }
 
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
 
             LOGGER.log(Level.TRACE, "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
-                new Object[] {currentPageNum, pageSize, pageCount, windowSize});
+                    new Object[]{currentPageNum, pageSize, pageCount, windowSize});
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
             LOGGER.log(Level.TRACE, "tag-articles[pageNums={0}]", pageNums);
@@ -208,7 +206,7 @@ public class TagProcessor {
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
-            
+
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -239,9 +237,9 @@ public class TagProcessor {
      * @param pageNums the specified page numbers
      */
     private void fillPagination(final Map<String, Object> dataModel,
-        final int pageCount, final int currentPageNum,
-        final List<JSONObject> articles,
-        final List<Integer> pageNums) {
+            final int pageCount, final int currentPageNum,
+            final List<JSONObject> articles,
+            final List<Integer> pageNums) {
         final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
 
         dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
