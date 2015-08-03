@@ -13,13 +13,10 @@
 <!-- #start The Search Overlay -->
 <div id="wptouch-search"> 
     <div id="wptouch-search-inner">
-        <form id="searchform" method="get" action="http://www.google.com/search">
-            <input type="hidden" name="oe" value="UTF-8" />
-            <input type="hidden" name="ie" value="UTF-8" />
-            <input type="hidden" name="newwindow" value="0" />
-            <input type="hidden" name="sitesearch" value="${serverHost}" />
-            <input type="text" placeholder="Search..." id="search" name="q" /> 
-            <input name="submit" type="submit" tabindex="1" id="search-submit" placeholder="Search..."  />
+        <form target="_blank" id="searchform" action="http://zhannei.baidu.com/cse/site">
+            <input id="search" placeholder="Search..." type="text" name="q" />
+            <input type="submit" id="search-submit" value="" />
+            <input type="hidden" name="cc" value="${serverHost}">
             <a href="javascript:void(0)"><img class="head-close" src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/head-close.png" alt="close" /></a>
         </form>
     </div>
