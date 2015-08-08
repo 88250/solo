@@ -52,7 +52,7 @@ Here are some our most valuable business users' cases:
 
 ## Contact Us
 
-* Forum: http://symphony.b3log.org
+* Forum: http://hacpai.com
 * support@liuyun.io (purchase purpose)
 
 ## Terms

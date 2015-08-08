@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Jul 14, 2015
+ * @version 1.1.0.8, Aug 8, 2015
  * @since 0.4.0
  */
 @RequestProcessor
@@ -172,7 +172,7 @@ public class InitProcessor {
             }
 
             if (invalidUserName(userName)) {
-                ret.put(Keys.MSG, "Init failed, please check your input [username: length [1, 20], content {a-z, A-Z, 0-9, _}]");
+                ret.put(Keys.MSG, "Init failed, please check your input [username: length [1, 20], content {a-z, A-Z, 0-9}]");
 
                 return;
             }
