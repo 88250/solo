@@ -604,7 +604,8 @@ admin.editors.KindEditor = {
  * @fileoverview markdowm CodeMirror editor 
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.4, May 30, 2015
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.1.1.4, Aug 13, 2015
  */
 admin.editors.CodeMirror = {
     /*
@@ -636,6 +637,7 @@ admin.editors.CodeMirror = {
         if (conf.kind === "simple") {
             this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
                 mode: 'markdown',
+                lineWrapping: true,
                 lineNumbers: true,
                 matchBrackets: true,
                 theme: "default",
@@ -652,6 +654,7 @@ admin.editors.CodeMirror = {
                     $help = $("#" + conf.id).parent().find(".markdown-preivew").find(".markdown-help");
             this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
                 mode: 'markdown',
+                lineWrapping: true,
                 lineNumbers: true,
                 matchBrackets: true,
                 theme: "default",
