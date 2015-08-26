@@ -37,7 +37,7 @@
     
     <cron>
         <url>/blog/symphony/user</url>
-        <description>Sync user to http://symphony.b3log.org</description>
+        <description>Sync user to http://hacpai.com</description>
         <schedule>every 24 hours</schedule>
     </cron>
     

@@ -156,8 +156,8 @@ public class ArticleReceiver {
             String content = article.getString(Article.ARTICLE_CONTENT);
             final String articleId = article.getString(Keys.OBJECT_ID);
 
-            content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://symphony.b3log.org/article/" + articleId
-                + "' target='_blank'>B3log 社区</a></i></p>";
+            content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
+                + "' target='_blank'>黑客派</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
             articleMgmtService.addArticle(requestJSONObject);
@@ -253,8 +253,8 @@ public class ArticleReceiver {
             article.put(Article.ARTICLE_VIEW_PWD, "");
             String content = article.getString(Article.ARTICLE_CONTENT);
 
-            content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://symphony.b3log.org/article/" + articleId
-                + "' target='_blank'>B3log 社区</a></i></p>";
+            content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
+                + "' target='_blank'>黑客派</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
             articleMgmtService.updateArticle(requestJSONObject);

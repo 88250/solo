@@ -147,7 +147,7 @@ public class BlogProcessor {
     }
 
     /**
-     * Sync user to http://symphony.b3log.org.
+     * Sync user to http://hacpai.com.
      *
      * @param context the specified context
      * @throws Exception exception

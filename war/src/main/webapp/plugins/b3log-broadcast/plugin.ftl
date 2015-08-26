@@ -4,7 +4,7 @@
         <div class="module-panel">
             <div class="module-header">
                 <h2 class="left">
-                    <a target="_blank" href="http://symphony.b3log.org/tags/B3log%20Broadcast">
+                    <a target="_blank" href="http://hacpai.com/tags/B3log%20Broadcast">
                         ${userBroadcastLabel}
                     </a>
                 </h2>
@@ -93,7 +93,7 @@
             // 获取广播
             $.ajax({
                 type: "GET",
-                url: "http://symphony.b3log.org/apis/broadcasts",
+                url: "http://hacpai.com/apis/broadcasts",
                 dataType: "jsonp",
                 jsonp: "callback",
                 beforeSend: function() {
