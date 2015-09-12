@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo core.
-    Version: 2.3.1.7, Jun 28, 2015
+    Version: 2.4.1.7, Sep 12, 2015
     Author: Liang Ding
 -->        
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -80,6 +80,11 @@
         <dependency>
             <groupId>org.tautua.markdownpapers</groupId>
             <artifactId>markdownpapers-core</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
         </dependency>
 
         <dependency>

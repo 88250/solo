@@ -77,7 +77,7 @@ admin.preference = {
                     if (skins[i].skinName === preference.skinName
                             && skins[i].skinDirName === preference.skinDirName) {
                         selectedClass += " selected";
-                    }
+            }
                     skinsHTML += "<div title='" + skins[i].skinDirName
                             + "' class='left skinItem" + selectedClass + "'><img class='skinPreview' src='"
                             + latkeConfig.staticServePath + "/skins/" + skins[i].skinDirName
@@ -89,8 +89,8 @@ admin.preference = {
                     $(".skinItem").removeClass("selected");
                     $(this).addClass("selected");
                     $("#skinMain").data("skinDirName", this.title);
-                });
-
+        });
+        
                 // sign
                 var signs = eval('(' + preference.signs + ')');
                 for (var j = 1; j < signs.length; j++) {
@@ -112,6 +112,24 @@ admin.preference = {
                 preference.commentable ? $("#commentable").attr("checked", "checked") : $("commentable").removeAttr("checked");
 
                 $("#loadMsg").text("");
+            }
+        });
+        
+                 $.ajax({
+            url: latkeConfig.servePath + "/console/preference/qiniu",
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                $("#tipMsg").text(result.msg);
+                if (!result.sc) {
+                    $("#loadMsg").text("");
+                    return;
+                }
+
+                $("#qiniuAccessKey").val(result.qiniu.qiniuAccessKey);
+                $("#qiniuSecretKey").val(result.qiniu.qiniuSecretKey);
+                $("#qiniuDomain").val(result.qiniu.qiniuDomain);
+                $("#qiniuBucket").val(result.qiniu.qiniuBucket);
             }
         });
     },

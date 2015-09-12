@@ -33,6 +33,7 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.service.OptionMgmtService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
@@ -72,6 +73,12 @@ public class PreferenceConsole {
      */
     @Inject
     private OptionMgmtService optionMgmtService;
+    
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
 
     /**
      * User query service.
@@ -426,6 +433,63 @@ public class PreferenceConsole {
 
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
+        }
+    }
+    
+    /**
+     * Gets Qiniu preference.
+     *
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "qiniuAccessKey": "",
+     *     "qiniuSecretKey": "",
+     *     "qiniuDomain": "",
+     *     "qiniuBucket": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HTTPRequestMethod.GET)
+    public void getQiniuPreference(final HttpServletRequest request, final HttpServletResponse response, 
+            final HTTPRequestContext context) throws Exception {
+        if (!userQueryService.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        try {
+            final JSONObject qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
+
+            if (null == qiniu) {
+                renderer.setJSONObject(QueryResults.defaultResult());
+
+                return;
+            }
+
+            final JSONObject ret = new JSONObject();
+
+            renderer.setJSONObject(ret);
+            ret.put(Option.CATEGORY_C_QINIU, qiniu);
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
     }
 
