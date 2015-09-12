@@ -6,6 +6,8 @@ var ImageDialog = {
 
         if (url = tinyMCEPopup.getParam("external_image_list_url"))
             document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
+
+        ImageDialog.uploadImage();
     },
     init: function (ed) {
         var f = document.forms[0], nl = f.elements, ed = tinyMCEPopup.editor, dom = ed.dom, n = ed.selection.getNode(), fl = tinyMCEPopup.getParam('external_image_list', 'tinyMCEImageList');
@@ -475,41 +477,46 @@ var ImageDialog = {
     changeMouseMove: function () {
     },
     uploadImage: function () {
-        $('#imageUpload').fileupload({
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            maxFileSize: 1024 * 1024, // 1M
-            multipart: true,
-            pasteZone: null,
-            dropZone: null,
-            url: "http://upload.qiniu.com/",
-            formData: function (form) {
-                var data = form.serializeArray();
-                data.push({name: 'token', value: '${qiniuUploadToken}'});
-                data.push({name: 'key', value: 'avatar/${currentUser.oId}'});
-                return data;
-            },
-            submit: function (e, data) {
-            },
-            done: function (e, data) {
-                // console.log(data.result)
-                var qiniuKey = data.result.key;
-                if (!qiniuKey) {
-                    alert("Upload error");
-                    return;
-                }
+        $(function () {
+            var qiniu = window.parent.qiniu;
 
-                var t = new Date().getTime();
-                $('#src').val('7xjz0r.com1.z0.glb.clouddn.com/' + qiniuKey + '?' + t);
-                ImageDialog.showPreviewImage('7xjz0r.com1.z0.glb.clouddn.com/' + qiniuKey + '?' + t);
-            },
-            fail: function (e, data) {
-                alert("Upload error: " + data.errorThrown);
-            }
-        }).on('fileuploadprocessalways', function (e, data) {
-            var currentFile = data.files[data.index];
-            if (data.files.error && currentFile.error) {
-                alert(currentFile.error);
-            }
+            console.log(qiniu);
+
+            $('#imageUpload').fileupload({
+                multipart: true,
+                pasteZone: null,
+                dropZone: null,
+                url: "http://upload.qiniu.com/",
+                formData: function (form) {
+                    var data = form.serializeArray();
+
+                    data.push({name: 'token', value: qiniu.qiniuUploadToken});
+
+                    return data;
+                },
+                submit: function (e, data) {
+                },
+                done: function (e, data) {
+                    // console.log(data.result)
+                    var qiniuKey = data.result.key;
+                    if (!qiniuKey) {
+                        alert("Upload error");
+                        return;
+                    }
+
+                    var t = new Date().getTime();
+                    $('#src').val(qiniu.qiniuDomain + qiniuKey + '?' + t);
+                    ImageDialog.showPreviewImage(qiniu.qiniuDomain + qiniuKey + '?' + t);
+                },
+                fail: function (e, data) {
+                    alert("Upload error: " + data.errorThrown);
+                }
+            }).on('fileuploadprocessalways', function (e, data) {
+                var currentFile = data.files[data.index];
+                if (data.files.error && currentFile.error) {
+                    alert(currentFile.error);
+                }
+            });
         });
     },
     showPreviewImage: function (u, st) {

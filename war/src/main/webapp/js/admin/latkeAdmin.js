@@ -533,6 +533,7 @@ admin.editors.KindEditor = {
         } else {
             try {
                 this[conf.id] = KindEditor.create('#' + conf.id, {
+                    'uploadJson' : 'kindeditor/php/upyunUpload.php',
                     langType: language,
                     items: ["formatblock", "fontname", "fontsize", "|", "bold", "italic", "underline", "strikethrough", "forecolor", "|",
                         "link", "unlink", "image", "media", "|", "pagebreak", "emoticons", "code", "/",

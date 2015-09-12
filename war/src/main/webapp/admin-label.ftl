@@ -3,6 +3,12 @@
       "staticServePath": "${staticServePath}",
       "servePath": "${servePath}"
     };
+    
+    var qiniu = {
+        "qiniuUploadToken": "${qiniuUploadToken}",
+        "qiniuDomain": "${qiniuDomain}"
+    };
+    
     var Label = {
         "skinDirName": "${skinDirName}",
         "editorType": "${editorType}",

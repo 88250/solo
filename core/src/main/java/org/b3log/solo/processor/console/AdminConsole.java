@@ -142,10 +142,8 @@ public class AdminConsole {
         try {
             final JSONObject qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
 
-            dataModel.put(Option.ID_C_QINIU_ACCESS_KEY, "");
-            dataModel.put(Option.ID_C_QINIU_BUCKET, "");
             dataModel.put(Option.ID_C_QINIU_DOMAIN, "");
-            dataModel.put(Option.ID_C_QINIU_SECRET_KEY, "");
+            dataModel.put("qiniuUploadToken", "");
 
             if (null != qiniu) {
                 final Auth auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY),

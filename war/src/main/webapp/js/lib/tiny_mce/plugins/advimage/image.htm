@@ -2,6 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>{#advimage_dlg.dialog_title}</title>
+        <script type="text/javascript" src="../../../jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="../../../jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js"></script>
+        <script type="text/javascript" src="../../../jquery/file-upload-9.10.1/jquery.iframe-transport.js"></script>
+        <script type="text/javascript" src="../../../jquery/file-upload-9.10.1/jquery.fileupload.js"></script>
+        <script type="text/javascript" src="../../../jquery/file-upload-9.10.1/jquery.fileupload-process.js"></script>
         <script type="text/javascript" src="../../tiny_mce_popup.js"></script>
         <script type="text/javascript" src="../../utils/mctabs.js"></script>
         <script type="text/javascript" src="../../utils/form_utils.js"></script>
@@ -12,7 +17,8 @@
     </head>
     <body id="advimage" style="display: none" role="application" aria-labelledby="app_title">
         <span id="app_title" style="display:none">{#advimage_dlg.dialog_title}</span>
-        <form onsubmit="ImageDialog.insert();return false;" action="#"> 
+        <form onsubmit="ImageDialog.insert();
+                return false;" action="#"> 
             <div class="tabs">
                 <ul>
                     <li id="general_tab" class="current" aria-controls="general_panel"><span><a href="javascript:mcTabs.displayTab('general_tab','general_panel');" onmousedown="return false;">{#advimage_dlg.tab_general}</a></span></li>
@@ -47,7 +53,10 @@
                             </tr>
                             <tr>
                                 <td><label for="src_list">{#advimage_dlg.image_list}</label></td>
-                                <td><select id="src_list" name="src_list" onchange="document.getElementById('src').value = this.options[this.selectedIndex].value;document.getElementById('alt').value = this.options[this.selectedIndex].text;document.getElementById('title').value = this.options[this.selectedIndex].text;ImageDialog.showPreviewImage(this.options[this.selectedIndex].value);"><option value=""></option></select></td>
+                                <td><select id="src_list" name="src_list" onchange="document.getElementById('src').value = this.options[this.selectedIndex].value;
+                                        document.getElementById('alt').value = this.options[this.selectedIndex].text;
+                                        document.getElementById('title').value = this.options[this.selectedIndex].text;
+                                        ImageDialog.showPreviewImage(this.options[this.selectedIndex].value);"><option value=""></option></select></td>
                             </tr>
                             <tr> 
                                 <td class="column1"><label id="altlabel" for="alt">{#advimage_dlg.alt}</label></td> 
@@ -83,7 +92,8 @@
                         <table role="presentation" border="0" cellpadding="4" cellspacing="0">
                             <tr> 
                                 <td class="column1"><label id="alignlabel" for="align">{#advimage_dlg.align}</label></td> 
-                                <td><select id="align" name="align" onchange="ImageDialog.updateStyle('align');ImageDialog.changeAppearance();"> 
+                                <td><select id="align" name="align" onchange="ImageDialog.updateStyle('align');
+                                        ImageDialog.changeAppearance();"> 
                                         <option value="">{#not_set}</option> 
                                         <option value="baseline">{#advimage_dlg.align_baseline}</option>
                                         <option value="top">{#advimage_dlg.align_top}</option>
@@ -128,18 +138,24 @@
 
                             <tr>
                                 <td class="column1"><label id="vspacelabel" for="vspace">{#advimage_dlg.vspace}</label></td> 
-                                <td><input name="vspace" type="text" id="vspace" value="" size="3" maxlength="3" class="number" onchange="ImageDialog.updateStyle('vspace');ImageDialog.changeAppearance();" onblur="ImageDialog.updateStyle('vspace');ImageDialog.changeAppearance();" />
+                                <td><input name="vspace" type="text" id="vspace" value="" size="3" maxlength="3" class="number" onchange="ImageDialog.updateStyle('vspace');
+                                        ImageDialog.changeAppearance();" onblur="ImageDialog.updateStyle('vspace');
+                                                ImageDialog.changeAppearance();" />
                                 </td>
                             </tr>
 
                             <tr> 
                                 <td class="column1"><label id="hspacelabel" for="hspace">{#advimage_dlg.hspace}</label></td> 
-                                <td><input name="hspace" type="text" id="hspace" value="" size="3" maxlength="3" class="number" onchange="ImageDialog.updateStyle('hspace');ImageDialog.changeAppearance();" onblur="ImageDialog.updateStyle('hspace');ImageDialog.changeAppearance();" /></td> 
+                                <td><input name="hspace" type="text" id="hspace" value="" size="3" maxlength="3" class="number" onchange="ImageDialog.updateStyle('hspace');
+                                        ImageDialog.changeAppearance();" onblur="ImageDialog.updateStyle('hspace');
+                                                ImageDialog.changeAppearance();" /></td> 
                             </tr>
 
                             <tr>
                                 <td class="column1"><label id="borderlabel" for="border">{#advimage_dlg.border}</label></td> 
-                                <td><input id="border" name="border" type="text" value="" size="3" maxlength="3" class="number" onchange="ImageDialog.updateStyle('border');ImageDialog.changeAppearance();" onblur="ImageDialog.updateStyle('border');ImageDialog.changeAppearance();" /></td> 
+                                <td><input id="border" name="border" type="text" value="" size="3" maxlength="3" class="number" onchange="ImageDialog.updateStyle('border');
+                                        ImageDialog.changeAppearance();" onblur="ImageDialog.updateStyle('border');
+                                                ImageDialog.changeAppearance();" /></td> 
                             </tr>
 
                             <tr>

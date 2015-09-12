@@ -18,6 +18,7 @@ package org.b3log.solo.processor.console;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -73,7 +74,7 @@ public class PreferenceConsole {
      */
     @Inject
     private OptionMgmtService optionMgmtService;
-    
+
     /**
      * Option query service.
      */
@@ -435,7 +436,7 @@ public class PreferenceConsole {
             jsonObject.put(Keys.MSG, e.getMessage());
         }
     }
-    
+
     /**
      * Gets Qiniu preference.
      *
@@ -458,11 +459,11 @@ public class PreferenceConsole {
      * @throws Exception exception
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HTTPRequestMethod.GET)
-    public void getQiniuPreference(final HttpServletRequest request, final HttpServletResponse response, 
+    public void getQiniuPreference(final HttpServletRequest request, final HttpServletResponse response,
             final HTTPRequestContext context) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            
+
             return;
         }
 
@@ -526,12 +527,15 @@ public class PreferenceConsole {
 
             final String accessKey = requestJSONObject.optString(Option.ID_C_QINIU_ACCESS_KEY);
             final String secretKey = requestJSONObject.optString(Option.ID_C_QINIU_SECRET_KEY);
-            final String domain = requestJSONObject.optString(Option.ID_C_QINIU_DOMAIN);
+            String domain = requestJSONObject.optString(Option.ID_C_QINIU_DOMAIN);
             final String bucket = requestJSONObject.optString(Option.ID_C_QINIU_BUCKET);
 
             final JSONObject ret = new JSONObject();
-
             renderer.setJSONObject(ret);
+
+            if (StringUtils.isNotBlank(domain) && !StringUtils.endsWith(domain, "/")) {
+                domain += "/";
+            }
 
             final JSONObject accessKeyOpt = new JSONObject();
             accessKeyOpt.put(Keys.OBJECT_ID, Option.ID_C_QINIU_ACCESS_KEY);
