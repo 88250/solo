@@ -1,11 +1,10 @@
-﻿/war/mysql/target/
 /core/target/
 /war/gae/target/
-/war/bae/target/
-/war/target/
 /war/mysql/target/
 /war/h2/target/
+/war/target/
 /war/src/main/webapp/WEB-INF/lib/
+/war/src/main/webapp/js/admin/latkeAdmin.min.js
 
 .idea/
 
