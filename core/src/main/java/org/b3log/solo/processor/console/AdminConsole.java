@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
-
+import com.qiniu.util.Auth;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
@@ -43,21 +43,22 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONObject;
 
-
 /**
  * Admin console render processing.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Jul 11, 2013
+ * @version 1.2.0.7, Sep 12, 2015
  * @since 0.4.1
  */
 @RequestProcessor
@@ -81,6 +82,12 @@ public class AdminConsole {
     private PreferenceQueryService preferenceQueryService;
 
     /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
      * User query service.
      */
     @Inject
@@ -100,7 +107,7 @@ public class AdminConsole {
 
     /**
      * Shows administrator index with the specified context.
-     * 
+     *
      * @param request the specified request
      * @param context the specified context
      */
@@ -133,6 +140,22 @@ public class AdminConsole {
         dataModel.put(Common.GRAVATAR, gravatar);
 
         try {
+            final JSONObject qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
+
+            dataModel.put(Option.ID_C_QINIU_ACCESS_KEY, "");
+            dataModel.put(Option.ID_C_QINIU_BUCKET, "");
+            dataModel.put(Option.ID_C_QINIU_DOMAIN, "");
+            dataModel.put(Option.ID_C_QINIU_SECRET_KEY, "");
+
+            if (null != qiniu) {
+                final Auth auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY),
+                        qiniu.optString(Option.ID_C_QINIU_SECRET_KEY));
+                
+                final String uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET));
+                dataModel.put("qiniuUploadToken", uploadToken);
+                dataModel.put(Option.ID_C_QINIU_DOMAIN, qiniu.optString(Option.ID_C_QINIU_DOMAIN));
+            }
+
             final JSONObject preference = preferenceQueryService.getPreference();
 
             dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
@@ -158,22 +181,22 @@ public class AdminConsole {
 
     /**
      * Shows administrator functions with the specified context.
-     * 
+     *
      * @param request the specified request
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/admin-article.do",
-            "/admin-article-list.do",
-            "/admin-comment-list.do",
-            "/admin-link-list.do",
-            "/admin-page-list.do",
-            "/admin-others.do",
-            "/admin-draft-list.do",
-            "/admin-user-list.do",
-            "/admin-plugin-list.do",
-            "/admin-main.do",
-            "/admin-about.do"},
-        method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = {"/admin-article.do",
+        "/admin-article-list.do",
+        "/admin-comment-list.do",
+        "/admin-link-list.do",
+        "/admin-page-list.do",
+        "/admin-others.do",
+        "/admin-draft-list.do",
+        "/admin-user-list.do",
+        "/admin-plugin-list.do",
+        "/admin-main.do",
+        "/admin-about.do"},
+            method = HTTPRequestMethod.GET)
     public void showAdminFunctions(final HttpServletRequest request, final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
 
@@ -200,7 +223,7 @@ public class AdminConsole {
 
     /**
      * Shows administrator preference function with the specified context.
-     * 
+     *
      * @param request the specified request
      * @param context the specified context
      */
@@ -252,7 +275,7 @@ public class AdminConsole {
 
     /**
      * Fires FreeMarker action event with the host template name and data model.
-     * 
+     *
      * @param hostTemplateName the specified host template name
      * @param dataModel the specified data model
      */
