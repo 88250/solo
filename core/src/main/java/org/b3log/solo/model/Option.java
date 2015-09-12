@@ -15,12 +15,11 @@
  */
 package org.b3log.solo.model;
 
-
 /**
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 15, 2013
+ * @version 1.1.0.0, Sep 12, 2015
  * @since 0.6.0
  */
 public final class Option {
@@ -44,11 +43,33 @@ public final class Option {
      * Key of option category.
      */
     public static final String OPTION_CATEGORY = "optionCategory";
+
     // oId constants
     /**
      * Key of broadcast chance expiration time.
      */
     public static final String ID_C_BROADCAST_CHANCE_EXPIRATION_TIME = "broadcastChanceExpirationTime";
+
+    /**
+     * Key of Qiniu access key.
+     */
+    public static final String ID_C_QINIU_ACCESS_KEY = "qiniuAccessKey";
+
+    /**
+     * Key of Qiniu secret key.
+     */
+    public static final String ID_C_QINIU_SECRET_KEY = "qiniuSecretKey";
+
+    /**
+     * Key of Qiniu domain.
+     */
+    public static final String ID_C_QINIU_DOMAIN = "qiniuDomain";
+
+    /**
+     * Key of Qiniu bucket.
+     */
+    public static final String ID_C_QINIU_BUCKET = "qiniuBucket";
+
     // Category constants
     /**
      * Broadcast.
@@ -56,7 +77,13 @@ public final class Option {
     public static final String CATEGORY_C_BROADCAST = "broadcast";
 
     /**
+     * Qiniu.
+     */
+    public static final String CATEGORY_C_QINIU = "qiniu";
+
+    /**
      * Private constructor.
      */
-    private Option() {}
+    private Option() {
+    }
 }

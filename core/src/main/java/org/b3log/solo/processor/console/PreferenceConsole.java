@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor.console;
 
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,8 +29,10 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
+import org.b3log.solo.service.OptionMgmtService;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
@@ -39,12 +40,11 @@ import org.b3log.solo.util.QueryResults;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-
 /**
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, May 17, 2013
+ * @version 1.1.0.6, Sep 12, 2015
  * @since 0.4.0
  */
 @RequestProcessor
@@ -68,6 +68,12 @@ public class PreferenceConsole {
     private PreferenceMgmtService preferenceMgmtService;
 
     /**
+     * Option management service.
+     */
+    @Inject
+    private OptionMgmtService optionMgmtService;
+
+    /**
      * User query service.
      */
     @Inject
@@ -86,7 +92,7 @@ public class PreferenceConsole {
 
     /**
      * Gets reply template.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -107,9 +113,9 @@ public class PreferenceConsole {
      */
     @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.GET)
     public void getReplyNotificationTemplate(final HttpServletRequest request,
-        final HttpServletResponse response,
-        final HTTPRequestContext context)
-        throws Exception {
+            final HttpServletResponse response,
+            final HTTPRequestContext context)
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -140,9 +146,8 @@ public class PreferenceConsole {
 
     /**
      * Updates reply template.
-     * 
-     * @param request the specified http servlet request, for example,
-     * <pre>
+     *
+     * @param request the specified http servlet request, for example,      <pre>
      * {
      *     "replyNotificationTemplate": {
      *         "subject": "",
@@ -150,15 +155,16 @@ public class PreferenceConsole {
      *     }
      * }
      * </pre>
+     *
      * @param response the specified http servlet response
      * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.PUT)
     public void updateReplyNotificationTemplate(final HttpServletRequest request,
-        final HttpServletResponse response,
-        final HTTPRequestContext context)
-        throws Exception {
+            final HttpServletResponse response,
+            final HTTPRequestContext context)
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -193,7 +199,7 @@ public class PreferenceConsole {
 
     /**
      * Gets signs.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -214,7 +220,7 @@ public class PreferenceConsole {
      */
     @RequestProcessing(value = "/console/signs/", method = HTTPRequestMethod.GET)
     public void getSigns(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -230,7 +236,7 @@ public class PreferenceConsole {
             final JSONArray signs = new JSONArray();
 
             final JSONArray allSigns = // includes the empty sign(id=0)
-                new JSONArray(preference.getString(Preference.SIGNS));
+                    new JSONArray(preference.getString(Preference.SIGNS));
 
             for (int i = 1; i < allSigns.length(); i++) { // excludes the empty sign
                 signs.put(allSigns.getJSONObject(i));
@@ -254,7 +260,7 @@ public class PreferenceConsole {
 
     /**
      * Gets preference.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -308,7 +314,7 @@ public class PreferenceConsole {
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.GET)
     public void getPreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -345,8 +351,7 @@ public class PreferenceConsole {
     /**
      * Updates the preference by the specified request.
      *
-     * @param request the specified http servlet request, for example,
-     * <pre>
+     * @param request the specified http servlet request, for example,      <pre>
      * {
      *     "preference": {
      *         "mostViewArticleDisplayCount": int,
@@ -380,13 +385,14 @@ public class PreferenceConsole {
      *     }
      * }, see {@link org.b3log.solo.model.Preference} for more details
      * </pre>
+     *
      * @param response the specified http servlet response
      * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.PUT)
     public void updatePreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -424,8 +430,82 @@ public class PreferenceConsole {
     }
 
     /**
+     * Updates the Qiniu preference by the specified request.
+     *
+     * @param request the specified http servlet request, for example,      <pre>
+     * {
+     *     "qiniuAccessKey": "",
+     *     "qiniuSecretKey": "",
+     *     "qiniuDomain": "",
+     *     "qiniuBucket": ""
+     * }, see {@link org.b3log.solo.model.Option} for more details
+     * </pre>
+     *
+     * @param response the specified http servlet response
+     * @param context the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HTTPRequestMethod.PUT)
+    public void updateQiniu(final HttpServletRequest request, final HttpServletResponse response,
+            final HTTPRequestContext context) throws Exception {
+        if (!userQueryService.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        try {
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+
+            final String accessKey = requestJSONObject.optString(Option.ID_C_QINIU_ACCESS_KEY);
+            final String secretKey = requestJSONObject.optString(Option.ID_C_QINIU_SECRET_KEY);
+            final String domain = requestJSONObject.optString(Option.ID_C_QINIU_DOMAIN);
+            final String bucket = requestJSONObject.optString(Option.ID_C_QINIU_BUCKET);
+
+            final JSONObject ret = new JSONObject();
+
+            renderer.setJSONObject(ret);
+
+            final JSONObject accessKeyOpt = new JSONObject();
+            accessKeyOpt.put(Keys.OBJECT_ID, Option.ID_C_QINIU_ACCESS_KEY);
+            accessKeyOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_QINIU);
+            accessKeyOpt.put(Option.OPTION_VALUE, accessKey);
+            final JSONObject secretKeyOpt = new JSONObject();
+            secretKeyOpt.put(Keys.OBJECT_ID, Option.ID_C_QINIU_SECRET_KEY);
+            secretKeyOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_QINIU);
+            secretKeyOpt.put(Option.OPTION_VALUE, secretKey);
+            final JSONObject domainOpt = new JSONObject();
+            domainOpt.put(Keys.OBJECT_ID, Option.ID_C_QINIU_DOMAIN);
+            domainOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_QINIU);
+            domainOpt.put(Option.OPTION_VALUE, domain);
+            final JSONObject bucketOpt = new JSONObject();
+            bucketOpt.put(Keys.OBJECT_ID, Option.ID_C_QINIU_BUCKET);
+            bucketOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_QINIU);
+            bucketOpt.put(Option.OPTION_VALUE, bucket);
+
+            optionMgmtService.addOrUpdateOption(accessKeyOpt);
+            optionMgmtService.addOrUpdateOption(secretKeyOpt);
+            optionMgmtService.addOrUpdateOption(domainOpt);
+            optionMgmtService.addOrUpdateOption(bucketOpt);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, e.getMessage());
+        }
+    }
+
+    /**
      * Checks whether the specified preference is invalid and sets the specified response object.
-     * 
+     *
      * @param preference the specified preference
      * @param responseObject the specified response object
      * @return {@code true} if the specified preference is invalid, returns {@code false} otherwise
@@ -441,7 +521,7 @@ public class PreferenceConsole {
 
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("externalRelevantArticlesDisplayCntLabel")).append("]  ").append(
-                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
@@ -449,7 +529,7 @@ public class PreferenceConsole {
         input = preference.optString(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("relevantArticlesDisplayCntLabel")).append("]  ").append(
-                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
@@ -457,7 +537,7 @@ public class PreferenceConsole {
         input = preference.optString(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("randomArticlesDisplayCntLabel")).append("]  ").append(
-                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
@@ -465,7 +545,7 @@ public class PreferenceConsole {
         input = preference.optString(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("indexMostCommentArticleDisplayCntLabel")).append("]  ").append(
-                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
@@ -473,7 +553,7 @@ public class PreferenceConsole {
         input = preference.optString(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("indexMostViewArticleDisplayCntLabel")).append("]  ").append(
-                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
@@ -481,7 +561,7 @@ public class PreferenceConsole {
         input = preference.optString(Preference.RECENT_COMMENT_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("indexRecentCommentDisplayCntLabel")).append("]  ").append(
-                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
@@ -489,7 +569,7 @@ public class PreferenceConsole {
         input = preference.optString(Preference.MOST_USED_TAG_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("indexTagDisplayCntLabel")).append("]  ").append(
-                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
@@ -497,7 +577,7 @@ public class PreferenceConsole {
         input = preference.optString(Preference.ARTICLE_LIST_DISPLAY_COUNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("pageSizeLabel")).append("]  ").append(
-                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
@@ -505,7 +585,7 @@ public class PreferenceConsole {
         input = preference.optString(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("windowSizeLabel")).append("]  ").append(
-                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
@@ -513,7 +593,7 @@ public class PreferenceConsole {
         input = preference.optString(Preference.FEED_OUTPUT_CNT);
         if (!isNonNegativeInteger(input)) {
             errMsgBuilder.append(langPropsService.get("feedOutputCntLabel")).append("]  ").append(
-                langPropsService.get("nonNegativeIntegerOnlyLabel"));
+                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
@@ -523,7 +603,7 @@ public class PreferenceConsole {
 
     /**
      * Checks whether the specified input is a non-negative integer.
-     * 
+     *
      * @param input the specified input
      * @return {@code true} if it is, returns {@code false} otherwise
      */

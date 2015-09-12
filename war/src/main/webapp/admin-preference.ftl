@@ -21,6 +21,11 @@
             </div>
         </li>
         <li>
+            <div id="tabPreference_qiniu">
+                <a href="#toos/preference/qiniu">${qiniuLabel}</a>
+            </div>
+        </li>
+        <li>
             <div id="tabPreference_solo">
                 <a href="#tools/preference/solo">B3log</a>
             </div>
@@ -111,8 +116,8 @@
                         <input id="keyOfSolo" class="normalInput" type="text" readonly="readonly"/>
                     </td>
                     <td>
-<!--                        <button onclick="admin.preference.update()">${updateLabel}</button>-->
-<label></label>
+                        <!--                        <button onclick="admin.preference.update()">${updateLabel}</button>-->
+                        <label></label>
                     </td>
                 </tr>
             </tbody>
@@ -339,6 +344,49 @@
                     <th colspan="2">
                         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
                     </th>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="tabPreferencePanel_qiniu" class="none">
+        <table class="form" width="98%" cellpadding="0" cellspacing="9px">
+            <tbody>
+                <tr>
+                    <th colspan="2">
+                        <button onclick="admin.preference.updateQiniu()">${updateLabel}</button>
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="qiniuAccessKey">AccessKey</label>
+                    </th>
+                    <td>
+                        <input id="qiniuAccessKey" class="normalInput" type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="qiniuSecretKey">SecretKey</label>
+                    </th>
+                    <td>
+                        <input id="qiniuSecretKey" class="normalInput" type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="qiniuDomain">Domain</label>
+                    </th>
+                    <td>
+                        <input id="qiniuDomain" class="normalInput" type="text"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <label for="qiniuBucket">Bucket</label>
+                    </th>
+                    <td>
+                        <input id="qiniuBucket" class="normalInput" type="text"/>
+                    </td>
                 </tr>
             </tbody>
         </table>

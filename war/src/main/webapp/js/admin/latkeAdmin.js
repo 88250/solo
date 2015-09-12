@@ -2833,40 +2833,39 @@ admin.register["link-list"] =  {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.8, May 28, 2013
+ * @version 1.1.1.8, Sep 12, 2015
  */
 
 /* preference 相关操作 */
 admin.preference = {
     locale: "",
     editorType: "",
-    
     /*
      * 初始化
      */
     init: function () {
         $("#tabPreference").tabs();
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/preference/",
             type: "GET",
             cache: false,
-            success: function(result, textStatus){
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 var preference = result.preference;
-                
+
                 $("#metaKeywords").val(preference.metaKeywords),
-                $("#metaDescription").val(preference.metaDescription),
-                $("#blogTitle").val(preference.blogTitle),
-                $("#blogSubtitle").val(preference.blogSubtitle),
-                $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
+                        $("#metaDescription").val(preference.metaDescription),
+                        $("#blogTitle").val(preference.blogTitle),
+                        $("#blogSubtitle").val(preference.blogSubtitle),
+                        $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
                 $("#mostViewArticleDisplayCount").val(preference.mostViewArticleDisplayCount),
-                $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
+                        $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
                 $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
                 $("#articleListDisplayCount").val(preference.articleListDisplayCount);
                 $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
@@ -2891,13 +2890,13 @@ admin.preference = {
                 for (var i = 0; i < skins.length; i++) {
                     var selectedClass = "";
                     if (skins[i].skinName === preference.skinName
-                        && skins[i].skinDirName === preference.skinDirName ) {
+                            && skins[i].skinDirName === preference.skinDirName) {
                         selectedClass += " selected";
-                    } 
+                    }
                     skinsHTML += "<div title='" + skins[i].skinDirName
-                        + "' class='left skinItem" + selectedClass + "'><img class='skinPreview' src='" 
-                        + latkeConfig.staticServePath + "/skins/" + skins[i].skinDirName 
-                        + "/preview.png'/><div>" + skins[i].skinName + "</div></div>";
+                            + "' class='left skinItem" + selectedClass + "'><img class='skinPreview' src='"
+                            + latkeConfig.staticServePath + "/skins/" + skins[i].skinDirName
+                            + "/preview.png'/><div>" + skins[i].skinName + "</div></div>";
                 }
                 $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
 
@@ -2916,7 +2915,7 @@ admin.preference = {
                         position: "bottom"
                     });
                 }
-                        
+
                 // Article list style
                 $("#articleListDisplay").val(preference.articleListStyle);
                 // Editor Type
@@ -2926,12 +2925,11 @@ admin.preference = {
                 $("#feedOutputCnt").val(preference.feedOutputCnt);
                 // Commentable
                 preference.commentable ? $("#commentable").attr("checked", "checked") : $("commentable").removeAttr("checked");
-                
+
                 $("#loadMsg").text("");
             }
         });
     },
-    
     /* 
      * @description 参数校验
      */
@@ -2975,7 +2973,6 @@ admin.preference = {
         }
         return true;
     },
-    
     /*
      * @description 更新
      */
@@ -2987,19 +2984,19 @@ admin.preference = {
         $("#tipMsg").text("");
         $("#loadMsg").text(Label.loadingLabel);
         var signs = [{
-            "oId": 0,
-            "signHTML": ""
-        }, {
-            "oId": 1,
-            "signHTML": $("#preferenceSign1").val()
-        }, {
-            "oId": 2,
-            "signHTML": $("#preferenceSign2").val()
-        }, {
-            "oId": 3,
-            "signHTML": $("#preferenceSign3").val()
-        }];
-        
+                "oId": 0,
+                "signHTML": ""
+            }, {
+                "oId": 1,
+                "signHTML": $("#preferenceSign1").val()
+            }, {
+                "oId": 2,
+                "signHTML": $("#preferenceSign2").val()
+            }, {
+                "oId": 3,
+                "signHTML": $("#preferenceSign3").val()
+            }];
+
         var requestJSONObject = {
             "preference": {
                 "metaKeywords": $("#metaKeywords").val(),
@@ -3031,34 +3028,60 @@ admin.preference = {
                 "commentable": $("#commentable").prop("checked")
             }
         };
-        
+
         $.ajax({
             url: latkeConfig.servePath + "/console/preference/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            success: function(result, textStatus){
+            success: function (result, textStatus) {
                 $("#tipMsg").text(result.msg);
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     return;
                 }
-                    
+
                 if ($("#localeString").val() !== admin.preference.locale ||
-                    $("#editorType").val() !== admin.preference.editorType) {
+                        $("#editorType").val() !== admin.preference.editorType) {
                     window.location.reload();
                 }
-                        
+
                 // update article and preferences signs
                 for (var i = 1; i < signs.length; i++) {
                     if ($("#articleSign" + signs[i].oId).length === 1) {
-                        $("#articleSign" + signs[i].oId).tip("option", "content", 
-                            signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
+                        $("#articleSign" + signs[i].oId).tip("option", "content",
+                                signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
                     }
-                    $("#preferenceSignButton" + signs[i].oId).tip("option", "content", 
-                        signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
+                    $("#preferenceSignButton" + signs[i].oId).tip("option", "content",
+                            signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
                 }
-                
+
+                $("#loadMsg").text("");
+            }
+        });
+    },
+    /*
+     * @description 更新 Qiniu 参数
+     */
+    updateQiniu: function () {
+        $("#tipMsg").text("");
+        $("#loadMsg").text(Label.loadingLabel);
+
+        var requestJSONObject = {
+            "qiniuAccessKey": $("#qiniuAccessKey").val(),
+            "qiniuSecretKey": $("#qiniuSecretKey").val(),
+            "qiniuDomain": $("#qiniuDomain").val(),
+            "qiniuBucket": $("#qiniuBucket").val()
+        };
+
+        $.ajax({
+            url: latkeConfig.servePath + "/console/preference/qiniu",
+            type: "PUT",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function (result, textStatus) {
+                $("#tipMsg").text(result.msg);
+
                 $("#loadMsg").text("");
             }
         });
@@ -3068,7 +3091,7 @@ admin.preference = {
 /*
  * 注册到 admin 进行管理 
  */
-admin.register["preference"] =  {
+admin.register["preference"] = {
     "obj": admin.preference,
     "init": admin.preference.init,
     "refresh": function () {
