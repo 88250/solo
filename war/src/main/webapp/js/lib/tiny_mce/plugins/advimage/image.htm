@@ -29,16 +29,25 @@
                         <table role="presentation" class="properties">
                             <tr>
                                 <td class="column1"><label id="srclabel" for="src">{#advimage_dlg.src}</label></td>
-                                <td colspan="2"><table role="presentation" border="0" cellspacing="0" cellpadding="0">
+                                <td>
+                                    <table role="presentation" border="0" cellspacing="0" cellpadding="0">
                                         <tr> 
                                             <td><input name="src" type="text" id="src" value="" class="mceFocus" onchange="ImageDialog.showPreviewImage(this.value);" aria-required="true" /></td> 
                                             <td id="srcbrowsercontainer">&nbsp;</td>
                                         </tr>
-                                    </table></td>
+                                    </table>
+                                </td>
+                                <td>
+                                    <label>
+                                        Upload
+                                        <input type="file" style="width: 1px;opacity: .001;" id="imageUpload"
+                                               accept="image/gif, image/jpeg, image/png" />
+                                    </label>
+                                </td> 
                             </tr>
                             <tr>
                                 <td><label for="src_list">{#advimage_dlg.image_list}</label></td>
-                                <td><select id="src_list" name="src_list" onchange="document.getElementById('src').value=this.options[this.selectedIndex].value;document.getElementById('alt').value=this.options[this.selectedIndex].text;document.getElementById('title').value=this.options[this.selectedIndex].text;ImageDialog.showPreviewImage(this.options[this.selectedIndex].value);"><option value=""></option></select></td>
+                                <td><select id="src_list" name="src_list" onchange="document.getElementById('src').value = this.options[this.selectedIndex].value;document.getElementById('alt').value = this.options[this.selectedIndex].text;document.getElementById('title').value = this.options[this.selectedIndex].text;ImageDialog.showPreviewImage(this.options[this.selectedIndex].value);"><option value=""></option></select></td>
                             </tr>
                             <tr> 
                                 <td class="column1"><label id="altlabel" for="alt">{#advimage_dlg.alt}</label></td> 
@@ -170,7 +179,7 @@
                             </tr>
                             <tr>
                                 <td><label for="over_list">{#advimage_dlg.image_list}</label></td>
-                                <td><select id="over_list" name="over_list" onchange="document.getElementById('onmouseoversrc').value=this.options[this.selectedIndex].value;"><option value=""></option></select></td>
+                                <td><select id="over_list" name="over_list" onchange="document.getElementById('onmouseoversrc').value = this.options[this.selectedIndex].value;"><option value=""></option></select></td>
                             </tr>
                             <tr> 
                                 <td class="column1"><label id="onmouseoutsrclabel" for="onmouseoutsrc">{#advimage_dlg.mouseout}</label></td> 
@@ -183,7 +192,7 @@
                             </tr>
                             <tr>
                                 <td><label for="out_list">{#advimage_dlg.image_list}</label></td>
-                                <td><select id="out_list" name="out_list" onchange="document.getElementById('onmouseoutsrc').value=this.options[this.selectedIndex].value;"><option value=""></option></select></td>
+                                <td><select id="out_list" name="out_list" onchange="document.getElementById('onmouseoutsrc').value = this.options[this.selectedIndex].value;"><option value=""></option></select></td>
                             </tr>
                         </table>
                     </fieldset>
