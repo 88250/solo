@@ -1,5 +1,5 @@
 var ImageDialog = {
-    preInit : function() {
+    preInit: function () {
         var url;
 
         tinyMCEPopup.requireLangPack();
@@ -7,8 +7,7 @@ var ImageDialog = {
         if (url = tinyMCEPopup.getParam("external_image_list_url"))
             document.write('<script language="javascript" type="text/javascript" src="' + tinyMCEPopup.editor.documentBaseURI.toAbsolute(url) + '"></script>');
     },
-
-    init : function(ed) {
+    init: function (ed) {
         var f = document.forms[0], nl = f.elements, ed = tinyMCEPopup.editor, dom = ed.dom, n = ed.selection.getNode(), fl = tinyMCEPopup.getParam('external_image_list', 'tinyMCEImageList');
 
         tinyMCEPopup.resizeToInnerSize();
@@ -26,7 +25,7 @@ var ImageDialog = {
                 nl.isFancybox.checked = false;
                 nl.groupName.value = "";
             }
-            
+
             nl.src.value = dom.getAttrib(n, 'src');
             nl.width.value = dom.getAttrib(n, 'width');
             nl.height.value = dom.getAttrib(n, 'height');
@@ -68,17 +67,17 @@ var ImageDialog = {
         }
 
         // Setup browse button
-        document.getElementById('srcbrowsercontainer').innerHTML = getBrowserHTML('srcbrowser','src','image','theme_advanced_image');
+        document.getElementById('srcbrowsercontainer').innerHTML = getBrowserHTML('srcbrowser', 'src', 'image', 'theme_advanced_image');
         if (isVisible('srcbrowser'))
             document.getElementById('src').style.width = '260px';
 
         // Setup browse button
-        document.getElementById('onmouseoversrccontainer').innerHTML = getBrowserHTML('overbrowser','onmouseoversrc','image','theme_advanced_image');
+        document.getElementById('onmouseoversrccontainer').innerHTML = getBrowserHTML('overbrowser', 'onmouseoversrc', 'image', 'theme_advanced_image');
         if (isVisible('overbrowser'))
             document.getElementById('onmouseoversrc').style.width = '260px';
 
         // Setup browse button
-        document.getElementById('onmouseoutsrccontainer').innerHTML = getBrowserHTML('outbrowser','onmouseoutsrc','image','theme_advanced_image');
+        document.getElementById('onmouseoutsrccontainer').innerHTML = getBrowserHTML('outbrowser', 'onmouseoutsrc', 'image', 'theme_advanced_image');
         if (isVisible('outbrowser'))
             document.getElementById('onmouseoutsrc').style.width = '260px';
 
@@ -95,8 +94,7 @@ var ImageDialog = {
         this.changeAppearance();
         this.showPreviewImage(nl.src.value, 1);
     },
-
-    insert : function(file, title) {
+    insert: function (file, title) {
         var ed = tinyMCEPopup.editor, t = this, f = document.forms[0];
 
         if (f.src.value === '') {
@@ -111,7 +109,7 @@ var ImageDialog = {
 
         if (tinyMCEPopup.getParam("accessibility_warnings", 1)) {
             if (!f.alt.value) {
-                tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function(s) {
+                tinyMCEPopup.confirm(tinyMCEPopup.getLang('advimage_dlg.missing_alt'), function (s) {
                     if (s)
                         t.insertAndClose();
                 });
@@ -122,15 +120,14 @@ var ImageDialog = {
 
         t.insertAndClose();
     },
-
-    insertAndClose : function() {
+    insertAndClose: function () {
         var ed = tinyMCEPopup.editor, f = document.forms[0], nl = f.elements, v, args = {}, el,
-        fancyboxArgs = {};
+                fancyboxArgs = {};
 
         if (nl.isFancybox.checked) {
             fancyboxArgs = {
-                title : nl.title.value,
-                href : nl.src.value.replace(/ /g, '%20'),
+                title: nl.title.value,
+                href: nl.src.value.replace(/ /g, '%20'),
                 "class": "fancybox",
                 "data-fancybox-group": nl.groupName.value
             }
@@ -144,34 +141,34 @@ var ImageDialog = {
 
         if (!ed.settings.inline_styles) {
             args = {
-                vspace : nl.vspace.value,
-                hspace : nl.hspace.value,
-                border : nl.border.value,
-                align : getSelectValue(f, 'align')
+                vspace: nl.vspace.value,
+                hspace: nl.hspace.value,
+                border: nl.border.value,
+                align: getSelectValue(f, 'align')
             };
         } else {
             // Remove deprecated values
             args = {
-                vspace : '',
-                hspace : '',
-                border : '',
-                align : ''
+                vspace: '',
+                hspace: '',
+                border: '',
+                align: ''
             };
         }
 
         tinymce.extend(args, {
-            src : nl.src.value.replace(/ /g, '%20'),
-            width : nl.width.value,
-            height : nl.height.value,
-            alt : nl.alt.value,
-            title : nl.title.value,
-            'class' : getSelectValue(f, 'class_list'),
-            style : nl.style.value,
-            id : nl.id.value,
-            dir : nl.dir.value,
-            lang : nl.lang.value,
-            usemap : nl.usemap.value,
-            longdesc : nl.longdesc.value
+            src: nl.src.value.replace(/ /g, '%20'),
+            width: nl.width.value,
+            height: nl.height.value,
+            alt: nl.alt.value,
+            title: nl.title.value,
+            'class': getSelectValue(f, 'class_list'),
+            style: nl.style.value,
+            id: nl.id.value,
+            dir: nl.dir.value,
+            lang: nl.lang.value,
+            usemap: nl.usemap.value,
+            longdesc: nl.longdesc.value
         });
 
         args.onmouseover = args.onmouseout = '';
@@ -197,11 +194,11 @@ var ImageDialog = {
             } else {
                 if (nl.isFancybox.checked) {
                     el.outerHTML = "<a class='fancybox' data-fancybox-group='" + nl.groupName.value + "' href='" + nl.src.value.replace(/ /g, '%20')
-                    + "' title='" + nl.title.value + "'>" + el.outerHTML + "</a>";
-                }       
+                            + "' title='" + nl.title.value + "'>" + el.outerHTML + "</a>";
+                }
             }
         } else {
-            tinymce.each(args, function(value, name) {
+            tinymce.each(args, function (value, name) {
                 if (value === "") {
                     delete args[name];
                 }
@@ -209,19 +206,19 @@ var ImageDialog = {
 
             if (nl.isFancybox.checked) {
                 ed.execCommand('mceInsertContent', false, '<a id="__mce_tmp_a"><img id="__mce_tmp" /></a>', {
-                    skip_undo : 1
+                    skip_undo: 1
                 });
 
                 ed.dom.setAttribs('__mce_tmp_a', fancyboxArgs);
                 ed.dom.setAttrib('__mce_tmp_a', 'id', '');
             } else {
                 ed.execCommand('mceInsertContent', false, '<img id="__mce_tmp" />', {
-                    skip_undo : 1
+                    skip_undo: 1
                 });
             }
             ed.dom.setAttribs('__mce_tmp', args);
             ed.dom.setAttrib('__mce_tmp', 'id', '');
-            
+
             ed.undoManager.add();
         }
 
@@ -229,8 +226,7 @@ var ImageDialog = {
         tinyMCEPopup.editor.focus();
         tinyMCEPopup.close();
     },
-
-    getAttrib : function(e, at) {
+    getAttrib: function (e, at) {
         var ed = tinyMCEPopup.editor, dom = ed.dom, v, v2;
 
         if (ed.settings.inline_styles) {
@@ -264,7 +260,7 @@ var ImageDialog = {
                 case 'border':
                     v = 0;
 
-                    tinymce.each(['top', 'right', 'bottom', 'left'], function(sv) {
+                    tinymce.each(['top', 'right', 'bottom', 'left'], function (sv) {
                         sv = dom.getStyle(e, 'border-' + sv + '-width');
 
                         // False or not the same as prev
@@ -289,8 +285,7 @@ var ImageDialog = {
 
         return '';
     },
-
-    setSwapImage : function(st) {
+    setSwapImage: function (st) {
         var f = document.forms[0];
 
         f.onmousemovecheck.checked = st;
@@ -304,21 +299,20 @@ var ImageDialog = {
             f.out_list.disabled = !st;
 
         f.onmouseoversrc.disabled = !st;
-        f.onmouseoutsrc.disabled  = !st;
+        f.onmouseoutsrc.disabled = !st;
     },
-
-    fillClassList : function(id) {
+    fillClassList: function (id) {
         var dom = tinyMCEPopup.dom, lst = dom.get(id), v, cl;
 
         if (v = tinyMCEPopup.getParam('theme_advanced_styles')) {
             cl = [];
 
-            tinymce.each(v.split(';'), function(v) {
+            tinymce.each(v.split(';'), function (v) {
                 var p = v.split('=');
 
                 cl.push({
-                    'title' : p[0], 
-                    'class' : p[1]
+                    'title': p[0],
+                    'class': p[1]
                 });
             });
         } else
@@ -328,36 +322,33 @@ var ImageDialog = {
             lst.options.length = 0;
             lst.options[lst.options.length] = new Option(tinyMCEPopup.getLang('not_set'), '');
 
-            tinymce.each(cl, function(o) {
+            tinymce.each(cl, function (o) {
                 lst.options[lst.options.length] = new Option(o.title || o['class'], o['class']);
             });
         } else
             dom.remove(dom.getParent(id, 'tr'));
     },
-
-    fillFileList : function(id, l) {
+    fillFileList: function (id, l) {
         var dom = tinyMCEPopup.dom, lst = dom.get(id), v, cl;
 
-        l = typeof(l) === 'function' ? l() : window[l];
+        l = typeof (l) === 'function' ? l() : window[l];
         lst.options.length = 0;
 
         if (l && l.length > 0) {
             lst.options[lst.options.length] = new Option('', '');
 
-            tinymce.each(l, function(o) {
+            tinymce.each(l, function (o) {
                 lst.options[lst.options.length] = new Option(o[0], o[1]);
             });
         } else
             dom.remove(dom.getParent(id, 'tr'));
     },
-
-    resetImageData : function() {
+    resetImageData: function () {
         var f = document.forms[0];
 
         f.elements.width.value = f.elements.height.value = '';
     },
-
-    updateImageData : function(img, st) {
+    updateImageData: function (img, st) {
         var f = document.forms[0];
 
         if (!st) {
@@ -367,8 +358,7 @@ var ImageDialog = {
 
         this.preloadImg = img;
     },
-
-    changeAppearance : function() {
+    changeAppearance: function () {
         var ed = tinyMCEPopup.editor, f = document.forms[0], img = document.getElementById('alignSampleImg');
 
         if (img) {
@@ -382,8 +372,7 @@ var ImageDialog = {
             }
         }
     },
-
-    changeHeight : function() {
+    changeHeight: function () {
         var f = document.forms[0], tp, t = this;
 
         if (!f.constrain.checked || !t.preloadImg) {
@@ -396,8 +385,7 @@ var ImageDialog = {
         tp = (parseInt(f.width.value) / parseInt(t.preloadImg.width)) * t.preloadImg.height;
         f.height.value = tp.toFixed(0);
     },
-
-    changeWidth : function() {
+    changeWidth: function () {
         var f = document.forms[0], tp, t = this;
 
         if (!f.constrain.checked || !t.preloadImg) {
@@ -410,10 +398,9 @@ var ImageDialog = {
         tp = (parseInt(f.height.value) / parseInt(t.preloadImg.height)) * t.preloadImg.width;
         f.width.value = tp.toFixed(0);
     },
-
-    updateStyle : function(ty) {
+    updateStyle: function (ty) {
         var dom = tinyMCEPopup.dom, b, bStyle, bColor, v, isIE = tinymce.isIE, f = document.forms[0], img = dom.create('img', {
-            style : dom.get('style').value
+            style: dom.get('style').value
         });
 
         if (tinyMCEPopup.editor.settings.inline_styles) {
@@ -485,11 +472,47 @@ var ImageDialog = {
             dom.get('style').value = dom.serializeStyle(dom.parseStyle(img.style.cssText), 'img');
         }
     },
-
-    changeMouseMove : function() {
+    changeMouseMove: function () {
     },
+    uploadImage: function () {
+        $('#imageUpload').fileupload({
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            maxFileSize: 1024 * 1024, // 1M
+            multipart: true,
+            pasteZone: null,
+            dropZone: null,
+            url: "http://upload.qiniu.com/",
+            formData: function (form) {
+                var data = form.serializeArray();
+                data.push({name: 'token', value: '${qiniuUploadToken}'});
+                data.push({name: 'key', value: 'avatar/${currentUser.oId}'});
+                return data;
+            },
+            submit: function (e, data) {
+            },
+            done: function (e, data) {
+                // console.log(data.result)
+                var qiniuKey = data.result.key;
+                if (!qiniuKey) {
+                    alert("Upload error");
+                    return;
+                }
 
-    showPreviewImage : function(u, st) {
+                var t = new Date().getTime();
+                $('#src').val('7xjz0r.com1.z0.glb.clouddn.com/' + qiniuKey + '?' + t);
+                ImageDialog.showPreviewImage('7xjz0r.com1.z0.glb.clouddn.com/' + qiniuKey + '?' + t);
+            },
+            fail: function (e, data) {
+                alert("Upload error: " + data.errorThrown);
+            }
+        }).on('fileuploadprocessalways', function (e, data) {
+            var currentFile = data.files[data.index];
+            if (data.files.error && currentFile.error) {
+                alert(currentFile.error);
+            }
+        });
+    },
+    showPreviewImage: function (u, st) {
         if (!u) {
             tinyMCEPopup.dom.setHTML('prev', '');
             return;
@@ -505,10 +528,9 @@ var ImageDialog = {
         else
             tinyMCEPopup.dom.setHTML('prev', '<img id="previewImg" src="' + u + '" border="0" onload="ImageDialog.updateImageData(this, 1);" />');
     },
-    
     setGroupName: function (it) {
         var groupName = document.getElementById("groupName");
-        
+
         if (it.checked && groupName.value === "") {
             groupName.value = "group";
         }
