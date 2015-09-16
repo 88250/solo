@@ -45,7 +45,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.1.14, Jun 28, 2015
+ * @version 1.3.1.14, Sep 16, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -104,7 +104,7 @@ public class UpgradeProcessor {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "0.6.8";
+    private static final String FROM_VER = "0.6.9";
 
     /**
      * New version.
@@ -147,14 +147,17 @@ public class UpgradeProcessor {
             }
 
             LOGGER.log(Level.WARN, "Attempt to skip more than one version to upgrade. Expected: {0}; Actually: {1}", FROM_VER, currentVer);
+            
             if (!sent) {
                 notifyUserByEmail();
+                
                 sent = true;
             }
 
             renderer.setContent(langPropsService.get("skipVersionAlert"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
+            
             renderer.setContent(
                     "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
                     + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
@@ -210,7 +213,6 @@ public class UpgradeProcessor {
 
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.getJSONObject(i);
-
             user.put(User.USER_URL, Latkes.getServePath());
 
             userRepository.update(user.optString(Keys.OBJECT_ID), user);
@@ -286,7 +288,9 @@ public class UpgradeProcessor {
         message.addRecipient(adminEmail);
         message.setSubject(langPropsService.get("skipVersionMailSubject"));
         message.setHtmlBody(langPropsService.get("skipVersionMailBody"));
+        
         MAIL_SVC.send(message);
+        
         LOGGER.info("Send an email to the user who upgrades Solo with a discontinuous version.");
     }
 }
