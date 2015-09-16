@@ -4,6 +4,7 @@
 /war/h2/target/
 /war/target/
 /war/src/main/webapp/WEB-INF/lib/
+/war/src/main/webapp/js/admin/latkeAdmin.js
 /war/src/main/webapp/js/admin/latkeAdmin.min.js
 
 .idea/
