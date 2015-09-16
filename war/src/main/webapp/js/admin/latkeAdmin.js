@@ -898,7 +898,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.3, May 30, 2015
+ * @version 1.2.3.3, Sep 16, 2015
  */
 admin.article = {
     currentEditorType: '',
@@ -1319,6 +1319,39 @@ admin.article = {
             }
         });
 
+        // upload
+        var qiniu = window.qiniu;
+
+        $('#articleUpload').fileupload({
+             multipart: true,
+            url: "http://upload.qiniu.com/",
+            formData: function (form) {
+                var data = form.serializeArray();
+                data.push({name: 'token', value: qiniu.qiniuUploadToken});
+                return data;
+            }, 
+            done: function (e, data) {
+                var qiniuKey = data.result.key;
+                if (!qiniuKey) {
+                    alert("Upload error");
+                    return;
+                }
+                
+                var t = new Date().getTime();
+                    $('#articleUpload').after('<div><a target="_blank" href="http://' + qiniu.qiniuDomain + qiniuKey + '?' + t
+                            + '">[' + data.files[0].name + ']</a> http://' 
+                            + qiniu.qiniuDomain + qiniuKey + '?' + t + '</div>');
+            },
+            fail: function (e, data) {
+                alert("Upload error: " + data.errorThrown);
+            }
+        }).on('fileuploadprocessalways', function (e, data) {
+            var currentFile = data.files[data.index];
+            if (data.files.error && currentFile.error) {
+                alert(currentFile.error);
+            }
+        });
+        
         // editor
         admin.editors.articleEditor = new Editor({
             id: "articleContent",
