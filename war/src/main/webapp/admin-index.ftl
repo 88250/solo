@@ -130,6 +130,9 @@
             </div>
         </div>
         <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
+        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js"></script>
+        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js"></script>
+        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js"></script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
         <script src="${servePath}/js/lib/tiny_mce/tiny_mce.js"></script>
         <script src="${staticServePath}/js/lib/KindEditor/kindeditor-min.js"></script>

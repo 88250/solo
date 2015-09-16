@@ -2,11 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <title>{#advimage_dlg.dialog_title}</title>
-        <script type="text/javascript" src="../../../jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="../../../jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js"></script>
-        <script type="text/javascript" src="../../../jquery/file-upload-9.10.1/jquery.iframe-transport.js"></script>
-        <script type="text/javascript" src="../../../jquery/file-upload-9.10.1/jquery.fileupload.js"></script>
-        <script type="text/javascript" src="../../../jquery/file-upload-9.10.1/jquery.fileupload-process.js"></script>
         <script type="text/javascript" src="../../tiny_mce_popup.js"></script>
         <script type="text/javascript" src="../../utils/mctabs.js"></script>
         <script type="text/javascript" src="../../utils/form_utils.js"></script>
@@ -35,7 +30,7 @@
                         <table role="presentation" class="properties">
                             <tr>
                                 <td class="column1"><label id="srclabel" for="src">{#advimage_dlg.src}</label></td>
-                                <td>
+                                <td colspan="2">
                                     <table role="presentation" border="0" cellspacing="0" cellpadding="0">
                                         <tr> 
                                             <td><input name="src" type="text" id="src" value="" class="mceFocus" onchange="ImageDialog.showPreviewImage(this.value);" aria-required="true" /></td> 
@@ -43,13 +38,6 @@
                                         </tr>
                                     </table>
                                 </td>
-                                <td>
-                                    <label>
-                                        Upload
-                                        <input type="file" style="width: 1px;opacity: .001;" id="imageUpload"
-                                               accept="image/gif, image/jpeg, image/png" />
-                                    </label>
-                                </td> 
                             </tr>
                             <tr>
                                 <td><label for="src_list">{#advimage_dlg.image_list}</label></td>
