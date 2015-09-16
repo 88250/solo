@@ -361,7 +361,7 @@
                         <label for="qiniuAccessKey">${accessKey1Label}</label>
                     </th>
                     <td>
-                        <input id="qiniuAccessKey" class="normalInput" type="text"/>
+                        <input id="qiniuAccessKey" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -369,7 +369,7 @@
                         <label for="qiniuSecretKey">${secretKey1Label}</label>
                     </th>
                     <td>
-                        <input id="qiniuSecretKey" class="normalInput" type="text"/>
+                        <input id="qiniuSecretKey" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -377,7 +377,7 @@
                         <label for="qiniuDomain">${domain1Label}</label>
                     </th>
                     <td>
-                        <input id="qiniuDomain" class="normalInput" type="text"/>
+                        <input id="qiniuDomain" type="text"/>
                     </td>
                 </tr>
                 <tr>
@@ -385,7 +385,7 @@
                         <label for="qiniuBucket">${bucket1Label}</label>
                     </th>
                     <td>
-                        <input id="qiniuBucket" class="normalInput" type="text"/>
+                        <input id="qiniuBucket" type="text"/>
                     </td>
                 </tr>
             </tbody>
