@@ -34,11 +34,7 @@
         <div class="footerWrapper">
             <div class="footer">
                 &copy; ${year}
-                Powered by
-                <a href="http://b3log.org" target="_blank">
-                    <span style="color: orange;">B</span><span style="color: blue;"><sup>3</sup></span><span style="color: green;">L</span><span style="color: red;">O</span><span style="color: blue;">G</span>
-                    <span class="solo">Solo</span>
-                </a>
+                Powered by <a href="http://b3log.org" target="_blank">B3log</a>, ver ${version}
             </div>
         </div>
     </body>
