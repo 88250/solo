@@ -30,7 +30,7 @@ Solo 是一个专业、简约、稳定、极速的开源 Java 博客系统。你
 * **Admin - Post (TinyMCE/Markdown)**  
 <img src="https://cloud.githubusercontent.com/assets/873584/5584725/848cdf58-90d1-11e4-8d8a-f186e05db2cd.png" width="49%" />&nbsp;&nbsp;<img src="https://cloud.githubusercontent.com/assets/873584/5585055/6bf35892-90da-11e4-986c-c80e4df5dde1.png" width="49%" />
 * **Admin - Skins**
-![admin-skins](https://cloud.githubusercontent.com/assets/873584/5584928/2e01f7da-90d7-11e4-872a-524f953d5afa.png)
+![admin-skins](https://cloud.githubusercontent.com/assets/873584/9975917/994d9e02-5f00-11e5-8a6d-fe652ac3e75e.png)
 
 ## Top Cases
 
