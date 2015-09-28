@@ -58,7 +58,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.7, Sep 12, 2015
+ * @version 1.2.1.7, Sep 28, 2015
  * @since 0.4.1
  */
 @RequestProcessor
@@ -145,13 +145,20 @@ public class AdminConsole {
             dataModel.put(Option.ID_C_QINIU_DOMAIN, "");
             dataModel.put("qiniuUploadToken", "");
 
-            if (null != qiniu) {
-                final Auth auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY),
-                        qiniu.optString(Option.ID_C_QINIU_SECRET_KEY));
-                
-                final String uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET));
-                dataModel.put("qiniuUploadToken", uploadToken);
-                dataModel.put(Option.ID_C_QINIU_DOMAIN, qiniu.optString(Option.ID_C_QINIU_DOMAIN));
+            if (null != qiniu && StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY))
+                    && StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_SECRET_KEY))
+                    && StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_BUCKET))
+                    && StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_DOMAIN))) {
+                try {
+                    final Auth auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY),
+                            qiniu.optString(Option.ID_C_QINIU_SECRET_KEY));
+
+                    final String uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET));
+                    dataModel.put("qiniuUploadToken", uploadToken);
+                    dataModel.put(Option.ID_C_QINIU_DOMAIN, qiniu.optString(Option.ID_C_QINIU_DOMAIN));
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Qiniu settings error", e);
+                }
             }
 
             final JSONObject preference = preferenceQueryService.getPreference();
