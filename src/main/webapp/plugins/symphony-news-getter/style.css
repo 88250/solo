@@ -1,0 +1,16 @@
+/*
+ * plugin style for symphony-news-getter
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.0.0.1, Aug 9, 2011
+*/
+#symphonyNewsGetter ul {
+    list-style: none;
+}
+#symphonyNewsGetter a {
+    text-decoration: none;
+}
+#symphonyNewsGetter .date {
+    color: #686868;
+    font-size: 12px;
+}

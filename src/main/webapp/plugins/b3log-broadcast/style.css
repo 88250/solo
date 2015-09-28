@@ -1,0 +1,34 @@
+/*
+ * plugin style for b3log-broadcast
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.0.0.1, Apr 24, 2011
+*/
+#b3logBroadcastDialog input,
+#b3logBroadcastDialog textarea {
+    width: 98%;
+}
+
+#b3logBroadcast .module-header > button {
+    height: 22px;
+}
+
+#b3logBroadcastDialog label {
+    line-height: 30px;
+}
+
+#b3logBroadcast .msg,
+#b3logBroadcastDialog .msg {
+    color: #D54121;
+}
+
+#b3logBroadcastList ul {
+    list-style: none;
+}
+#b3logBroadcastList a {
+    text-decoration: none;
+}
+#b3logBroadcastList .date {
+    color: #686868;
+    font-size: 12px;
+}
