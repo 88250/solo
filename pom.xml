@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Description: Solo parent POM.
-    Version: 2.6.4.20, Sep 16, 2015
+    Description: Solo POM.
+    Version: 2.3.1.6, Sep 28, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -10,50 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.b3log</groupId>
     <artifactId>solo</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <packaging>war</packaging>
     <name>Solo</name>
-    <url>https://github.com/b3log/solo</url>
+    <version>1.1.0</version>
     <description>
         A Java blogging system, feel free to create your or your team own blog.
     </description>
     <inceptionYear>2010</inceptionYear>
-
-    <modules>
-        <module>core</module>
-        <module>war</module>
-    </modules>
-
-    <!-- Properties -->
-    <properties>
-        <org.b3log.latke.version>1.3.2</org.b3log.latke.version>
-
-        <servlet.version>3.1.0</servlet.version>
-        <slf4j.version>1.7.5</slf4j.version>
-
-        <maven-gae-plugin.version>0.9.0</maven-gae-plugin.version>
-        <gae.version>1.8.1.1</gae.version>
-        
-        <freemarker-gae.version>2.3.20</freemarker-gae.version>
-        <jsoup.version>1.5.2</jsoup.version>
-        <markdownpapers-core.version>1.3.2</markdownpapers-core.version>
-        <qiniu.version>7.0.4.1</qiniu.version>
-        
-        <!-- maven plugin -->
-        <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
-        <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
-        <maven-surefire-plugin.version>2.9</maven-surefire-plugin.version>
-        <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
-        <maven-checkstyle-plugin.version>2.15</maven-checkstyle-plugin.version>
-        <maven-javancss-plugin.version>2.0</maven-javancss-plugin.version>
-        <maven-javadoc-plugin.version>2.7</maven-javadoc-plugin.version>
-        <coveralls-maven-plugin.version>3.0.1</coveralls-maven-plugin.version>
-        <maven-min-plugin.version>1.0.0</maven-min-plugin.version>
-        <!-- Unit Test -->
-        <testng.version>6.1.1</testng.version>
-
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 
     <organization>
         <name>B3log</name>
@@ -148,94 +111,156 @@
             </plugin>
         </plugins>
     </reporting>
+        
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        
+        <org.b3log.latke.version>1.3.2</org.b3log.latke.version>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.b3log</groupId>
-                <artifactId>solo-core</artifactId>
-                <version>${project.version}</version>
-            </dependency>
+        <servlet.version>3.1.0</servlet.version>
+        <slf4j.version>1.7.5</slf4j.version>
+
+        <freemarker-gae.version>2.3.20</freemarker-gae.version>
+        <jsoup.version>1.5.2</jsoup.version>
+        <markdownpapers-core.version>1.3.2</markdownpapers-core.version>
+        <qiniu.version>7.0.4.1</qiniu.version>
+        
+        <!-- maven plugin -->
+        <maven-compiler-plugin.version>2.3.2</maven-compiler-plugin.version>
+        <maven-resources-plugin.version>2.5</maven-resources-plugin.version>
+        <maven-surefire-plugin.version>2.9</maven-surefire-plugin.version>
+        <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
+        <maven-checkstyle-plugin.version>2.15</maven-checkstyle-plugin.version>
+        <maven-javancss-plugin.version>2.0</maven-javancss-plugin.version>
+        <maven-javadoc-plugin.version>2.7</maven-javadoc-plugin.version>
+        <coveralls-maven-plugin.version>3.0.1</coveralls-maven-plugin.version>
+        <maven-min-plugin.version>1.0.0</maven-min-plugin.version>
+        <!-- Unit Test -->
+        <testng.version>6.1.1</testng.version>
+        <gae.version>1.8.1.1</gae.version>
+        <!-- JDBC Drivers -->
+        <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+            <scope>provided</scope>
+        </dependency>
+        
+        <dependency>         
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
+        </dependency>
             
-            <dependency>
-                <groupId>org.b3log</groupId>
-                <artifactId>latke</artifactId>
-                <version>${org.b3log.latke.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.b3log</groupId>
-                <artifactId>latke-gae</artifactId>
-                <version>${org.b3log.latke.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-mysql</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dependency>
             
-            <dependency>
-                <groupId>org.b3log</groupId>
-                <artifactId>latke-repository-mysql</artifactId>
-                <version>${org.b3log.latke.version}</version>
-            </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
             
-            <dependency>
-                <groupId>org.b3log</groupId>
-                <artifactId>latke-repository-h2</artifactId>
-                <version>${org.b3log.latke.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.testng</groupId>
-                <artifactId>testng</artifactId>
-                <version>${testng.version}</version>
-                <scope>test</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.jsoup</groupId>
-                <artifactId>jsoup</artifactId>
-                <version>${jsoup.version}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.google.appengine</groupId>
-                <artifactId>appengine-api-1.0-sdk</artifactId>
-                <version>${gae.version}</version>
-                <scope>runtime</scope>
-            </dependency>
-
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-log4j12</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-jdk14</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
             
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-jdk14</artifactId>
-                <version>${slf4j.version}</version>
-                <scope>test</scope>
-            </dependency>
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker-gae</artifactId>
+            <version>${freemarker-gae.version}</version>
+        </dependency>
             
-            <dependency>
-                <groupId>org.freemarker</groupId>
-                <artifactId>freemarker-gae</artifactId>
-                <version>${freemarker-gae.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>org.tautua.markdownpapers</groupId>
+            <artifactId>markdownpapers-core</artifactId>
+            <version>${markdownpapers-core.version}</version>
+        </dependency>
             
-            <dependency>
-                <groupId>org.tautua.markdownpapers</groupId>
-                <artifactId>markdownpapers-core</artifactId>
-                <version>${markdownpapers-core.version}</version>
-            </dependency>
-            
-            <dependency>
-                <groupId>com.qiniu</groupId>
-                <artifactId>qiniu-java-sdk</artifactId>
-                <version>${qiniu.version}</version>
-            </dependency>
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>${qiniu.version}</version>
+        </dependency>
+        
+        <!-- BEGIN GAE related dependencies just for test -->
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-gae</artifactId>
+            <version>${org.b3log.latke.version}</version>
+            <scope>test</scope>
+        </dependency>
 
-        </dependencies>
-    </dependencyManagement>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>${gae.version}</version>
+            <scope>test</scope>
+        </dependency>
 
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-labs</artifactId>
+            <version>${gae.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-stubs</artifactId>
+            <version>${gae.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-testing</artifactId>
+            <version>${gae.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- END GAE related dependencies just for test -->
+    </dependencies>
+    
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        
         <plugins>
             <plugin>
                 <groupId>org.eluder.coveralls</groupId>
@@ -278,11 +303,45 @@
             </plugin>
             
             <plugin>
+                <groupId>com.tiobe.jacobe</groupId>
+                <artifactId>maven-jacobe-plugin</artifactId>
+                <version>1.0</version>
+                <configuration>
+                    <jacobeExecutable>${jacobeExecutable}</jacobeExecutable>
+                    <rules>
+                        <param>indent=4</param>
+                        <param>continuationindent=2</param>
+                    </rules>
+                    <configurationFile>../src/main/resources/etc/jacobe/sun.cfg</configurationFile>
+                    <comparisonThreshold>0.01</comparisonThreshold>
+                    <javadoc>private</javadoc>
+                    <noAssert>true</noAssert>
+                    <noEnum>false</noEnum>
+                    <noBackup>true</noBackup>
+                    <overwrite>true</overwrite>
+                    <outputExtension>formatted</outputExtension>
+                    <input>src/main/java</input>
+                </configuration>
+                <executions>
+                    <!-- <execution> <phase>process-resources</phase> <goals> <goal>jacobe</goal> 
+                    </goals> </execution> -->
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+            
+            <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
                 <artifactId>maven-license-plugin</artifactId>
                 <version>${maven-license-plugin.version}</version>
                 <configuration>
-                    <basedir>${basedir}</basedir>
                     <header>src/main/resources/etc/header.txt</header>
                     <quiet>false</quiet>
                     <failIfMissing>true</failIfMissing>
@@ -330,8 +389,81 @@
                 </executions>
             </plugin>
             
-        </plugins>
+            <plugin>
+                <groupId>org.b3log</groupId>
+                <artifactId>maven-min-plugin</artifactId>
+                <version>${maven-min-plugin.version}</version>
+                <inherited>false</inherited>
 
+                <configuration>
+                    <suffix>.min</suffix>
+                    <!-- Common#MINI_POSTFIX_VALUE -->
+                    <adminJSs>
+                        <param>admin.js</param>
+                        <param>editor.js</param>
+                        <param>editorTinyMCE.js</param>
+                        <param>editorKindEditor.js</param>
+                        <param>editorCodeMirror.js</param>
+                        <param>tablePaginate.js</param>
+                        <param>article.js</param>
+                        <param>comment.js</param>
+                        <param>articleList.js</param>
+                        <param>draftList.js</param>
+                        <param>pageList.js</param>
+                        <param>others.js</param>
+                        <param>linkList.js</param>
+                        <param>preference.js</param>
+                        <param>pluginList.js</param>
+                        <param>userList.js</param>
+                        <param>commentList.js</param>
+                        <param>plugin.js</param>
+                        <param>main.js</param>
+                        <param>about.js</param>
+                    </adminJSs>
+
+                    <cssSourceDir>src/main/webapp/css</cssSourceDir>
+                    <cssTargetDir>src/main/webapp/css</cssTargetDir>
+
+                    <jsSourceDir>src/main/webapp/js</jsSourceDir>
+                    <jsTargetDir>src/main/webapp/js</jsTargetDir>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>min</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>8.1.14.v20131031</version>
+                <configuration>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.bio.SocketConnector">
+                            <port>8080</port>
+                        </connector>
+                    </connectors>  
+                    <stopKey>stop</stopKey>
+                    <stopPort>4502</stopPort>
+                    
+                    <systemProperties>
+                        <systemProperty>
+                            <name>org.eclipse.jetty.server.Request.maxFormContentSize</name>
+                            <value>10485760</value>
+                        </systemProperty>
+                    </systemProperties>
+
+                    <reload>manual</reload>
+                </configuration>
+            </plugin>
+
+        </plugins>
+        
         <finalName>solo</finalName>
     </build>
     

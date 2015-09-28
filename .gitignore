@@ -1,18 +1,8 @@
-/core/target/
-/war/gae/target/
-/war/mysql/target/
-/war/h2/target/
-/war/target/
-/war/src/main/webapp/WEB-INF/lib/
-/war/src/main/webapp/js/admin/latkeAdmin.js
-/war/src/main/webapp/js/admin/latkeAdmin.min.js
-
 .idea/
-
 .DS_Store
-/target/
+/target
 
-war/src/main/webapp/skins/*
-!war/src/main/webapp/skins/mobile
-!war/src/main/webapp/skins/finding
+src/main/webapp/skins/*
+!src/main/webapp/skins/mobile
+!src/main/webapp/skins/finding
 
