@@ -126,7 +126,7 @@
                 <div id="tabsPanel_about" class="none"></div>
             </div>
             <div class="footer">
-                Powered by <a href="http://b3log.org" target="_blank">B3log</a>, ver ${version}
+                Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a>, ver ${version}
             </div>
         </div>
         <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
