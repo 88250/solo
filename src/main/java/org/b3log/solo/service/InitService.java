@@ -268,7 +268,7 @@ public class InitService {
             req.setURL(new URL(Latkes.getServePath() + "/blog/symphony/user"));
             urlFetchService.fetch(req);
         } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Sync account failed");
+            LOGGER.log(Level.TRACE, "Sync account failed");
         }
 
         pluginManager.load();
