@@ -138,6 +138,14 @@
                     <groupId>com.h2database</groupId>
                     <artifactId>h2</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.jolbox</groupId>
+                    <artifactId>bonecp</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.alibaba</groupId>
+                    <artifactId>druid</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
         
