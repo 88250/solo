@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.event.comment;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
@@ -39,12 +38,11 @@ import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
-
 /**
  * This listener is responsible for processing article comment reply.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.6, May 17, 2013
+ * @version 1.1.1.6, Oct 1, 2015
  * @since 0.3.1
  */
 public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObject> {
@@ -66,19 +64,26 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
         final JSONObject article = eventData.optJSONObject(Article.ARTICLE);
 
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-            new Object[] {event.getType(), eventData, ArticleCommentReplyNotifier.class.getName()});
+                new Object[]{event.getType(), eventData, ArticleCommentReplyNotifier.class.getName()});
         final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
 
         if (Strings.isEmptyOrNull(originalCommentId)) {
             LOGGER.log(Level.DEBUG, "This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
+
+            return;
+        }
+
+        if (Latkes.getServePath().contains("localhost")) {
+            LOGGER.log(Level.INFO, "Solo runs on local server, so should not send mail");
+
             return;
         }
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
-        
+
         final CommentRepository commentRepository = beanManager.getReference(CommentRepositoryImpl.class);
-        
+
         try {
             final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
             final JSONObject originalComment = commentRepository.get(originalCommentId);
@@ -120,11 +125,11 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
             }
 
             final String mailBody = replyNotificationTemplate.getString("body").replace("${postLink}", articleLink).replace("${postTitle}", articleTitle).replace("${replier}", commenter).replace("${replyURL}", Latkes.getServePath() + commentSharpURL).replace(
-                "${replyContent}", commentContent);
+                    "${replyContent}", commentContent);
 
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
-                new Object[] {mailSubject, mailBody, originalCommentEmail});
+                    new Object[]{mailSubject, mailBody, originalCommentEmail});
             mailService.send(message);
 
         } catch (final Exception e) {

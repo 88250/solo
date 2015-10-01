@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
@@ -50,12 +49,11 @@ import org.b3log.solo.util.Thumbnails;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 /**
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Jan 7, 2014
+ * @version 1.1.0.6, Oct 1, 2015
  * @since 0.3.5
  */
 @Service
@@ -153,25 +151,24 @@ public class CommentMgmtService {
      * Comment mail HTML body.
      */
     public static final String COMMENT_MAIL_HTML_BODY = "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">" + "{title}</a>]"
-        + " received a new comment:</p>" + "{commenter}: <span><a href=\"{commentSharpURL}\">" + "{commentContent}</a></span>";
+            + " received a new comment:</p>" + "{commenter}: <span><a href=\"{commentSharpURL}\">" + "{commentContent}</a></span>";
 
     /**
-     * Sends a notification mail to administrator for notifying the specified
-     * article or page received the specified comment and original comment.
+     * Sends a notification mail to administrator for notifying the specified article or page received the specified
+     * comment and original comment.
      *
      * @param articleOrPage the specified article or page
      * @param comment the specified comment
-     * @param originalComment original comment, if not exists, set it as
-     * {@code null}
+     * @param originalComment original comment, if not exists, set it as {@code null}
      * @param preference the specified preference
      * @throws IOException io exception
      * @throws JSONException json exception
      */
     public void sendNotificationMail(final JSONObject articleOrPage,
-        final JSONObject comment,
-        final JSONObject originalComment,
-        final JSONObject preference)
-        throws IOException, JSONException {
+            final JSONObject comment,
+            final JSONObject originalComment,
+            final JSONObject preference)
+            throws IOException, JSONException {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String commentId = comment.getString(Keys.OBJECT_ID);
         final String commentContent = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
@@ -180,6 +177,13 @@ public class CommentMgmtService {
 
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
             LOGGER.log(Level.DEBUG, "Do not send comment notification mail to admin itself[{0}]", adminEmail);
+
+            return;
+        }
+
+        if (Latkes.getServePath().contains("localhost")) {
+            LOGGER.log(Level.INFO, "Solo runs on local server, so should not send mail");
+
             return;
         }
 
@@ -188,7 +192,7 @@ public class CommentMgmtService {
 
             if (originalEmail.equalsIgnoreCase(adminEmail)) {
                 LOGGER.log(Level.DEBUG, "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
-                    commentId);
+                        commentId);
                 return;
             }
         }
@@ -233,19 +237,19 @@ public class CommentMgmtService {
         }
 
         mailBody = mailBody.replace("{articleOrPageURL}", articleOrPageURL).replace("{title}", title).replace("{commentContent}", commentContent).replace("{commentSharpURL}", Latkes.getServePath() + commentSharpURL).replace(
-            "{commenter}", commenter);
+                "{commenter}", commenter);
         message.setHtmlBody(mailBody);
 
         LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
-            new Object[] {mailSubject, mailBody, adminEmail});
+                new Object[]{mailSubject, mailBody, adminEmail});
+
         mailService.send(message);
     }
 
     /**
      * Checks the specified comment adding request.
-     * 
-     * @param requestJSONObject the specified comment adding request, for example, 
-     * <pre>
+     *
+     * @param requestJSONObject the specified comment adding request, for example,      <pre>
      * {
      *     "type": "", // "article"/"page"
      *     "oId": "",
@@ -255,8 +259,8 @@ public class CommentMgmtService {
      *     "commentContent": "",
      * }
      * </pre>
-     * @return check result, for example, 
-     * <pre>
+     *
+     * @return check result, for example,      <pre>
      * {
      *     "sc": boolean,
      *     "msg": "" // Exists if "sc" equals to false
@@ -325,7 +329,7 @@ public class CommentMgmtService {
             }
 
             final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT).replaceAll("\\n",
-                SoloServletListener.ENTER_ESC);
+                    SoloServletListener.ENTER_ESC);
 
             if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length() || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
                 LOGGER.log(Level.WARN, "Comment conent length is invalid[{0}]", commentContent.length());
@@ -349,9 +353,8 @@ public class CommentMgmtService {
 
     /**
      * Adds page comment with the specified request json object.
-     * 
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "oId": "", // page id
      *     "commentName": "",
@@ -361,8 +364,8 @@ public class CommentMgmtService {
      *     "commentOriginalCommentId": "" // optional
      * }
      * </pre>
-     * @return add result, for example,
-     * <pre>
+     *
+     * @return add result, for example,      <pre>
      * {
      *     "oId": "", // generated comment id
      *     "commentDate": "", // format: yyyy-MM-dd hh:mm:ss
@@ -371,6 +374,7 @@ public class CommentMgmtService {
      *     "commentSharpURL": ""
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public JSONObject addPageComment(final JSONObject requestJSONObject) throws ServiceException {
@@ -415,7 +419,7 @@ public class CommentMgmtService {
                     ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                 } else {
                     LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]", originalCommentId,
-                        commentName, commentContent);
+                            commentName, commentContent);
                 }
             }
             setCommentThumbnailURL(comment);
@@ -465,9 +469,8 @@ public class CommentMgmtService {
 
     /**
      * Adds an article comment with the specified request json object.
-     * 
-     * @param requestJSONObject the specified request json object, for example, 
-     * <pre>
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "oId": "", // article id
      *     "commentName": "",
@@ -477,8 +480,8 @@ public class CommentMgmtService {
      *     "commentOriginalCommentId": "" // optional
      * }
      * </pre>
-     * @return add result, for example,
-     * <pre>
+     *
+     * @return add result, for example,      <pre>
      * {
      *     "oId": "", // generated comment id
      *     "commentDate": "", // format: yyyy-MM-dd hh:mm:ss
@@ -487,6 +490,7 @@ public class CommentMgmtService {
      *     "commentSharpURL": ""
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public JSONObject addArticleComment(final JSONObject requestJSONObject) throws ServiceException {
@@ -535,7 +539,7 @@ public class CommentMgmtService {
                     ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                 } else {
                     LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
-                        new String[] {originalCommentId, commentName, commentContent});
+                            new String[]{originalCommentId, commentName, commentContent});
                 }
             }
             setCommentThumbnailURL(comment);
@@ -586,7 +590,7 @@ public class CommentMgmtService {
 
     /**
      * Removes a comment of a page with the specified comment id.
-     * 
+     *
      * @param commentId the given comment id
      * @throws ServiceException service exception
      */
@@ -623,7 +627,7 @@ public class CommentMgmtService {
      * @throws ServiceException service exception
      */
     public void removeArticleComment(final String commentId)
-        throws ServiceException {
+            throws ServiceException {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
@@ -650,15 +654,14 @@ public class CommentMgmtService {
     }
 
     /**
-     * Page comment count +1 for an page specified by the given page 
-     * id.
+     * Page comment count +1 for an page specified by the given page id.
      *
      * @param pageId the given page id
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
     public void incPageCommentCount(final String pageId)
-        throws JSONException, RepositoryException {
+            throws JSONException, RepositoryException {
         final JSONObject page = pageRepository.get(pageId);
         final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
         final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
@@ -668,15 +671,14 @@ public class CommentMgmtService {
     }
 
     /**
-     * Article comment count -1 for an article specified by the given 
-     * article id.
+     * Article comment count -1 for an article specified by the given article id.
      *
      * @param articleId the given article id
      * @throws JSONException json exception
      * @throws RepositoryException repository exception
      */
     private void decArticleCommentCount(final String articleId)
-        throws JSONException, RepositoryException {
+            throws JSONException, RepositoryException {
         final JSONObject article = articleRepository.get(articleId);
         final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
@@ -694,7 +696,7 @@ public class CommentMgmtService {
      * @throws RepositoryException repository exception
      */
     private void decPageCommentCount(final String pageId)
-        throws JSONException, RepositoryException {
+            throws JSONException, RepositoryException {
         final JSONObject page = pageRepository.get(pageId);
         final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
         final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
@@ -705,7 +707,7 @@ public class CommentMgmtService {
 
     /**
      * Sets commenter thumbnail URL for the specified comment.
-     * 
+     *
      * <p>
      * Try to set thumbnail URL using Gravatar service.
      * </p>
@@ -741,7 +743,7 @@ public class CommentMgmtService {
 
     /**
      * Sets the article repository with the specified article repository.
-     * 
+     *
      * @param articleRepository the specified article repository
      */
     public void setArticleRepository(final ArticleRepository articleRepository) {
@@ -750,7 +752,7 @@ public class CommentMgmtService {
 
     /**
      * Sets the article management service with the specified article management service.
-     * 
+     *
      * @param articleMgmtService the specified article management service
      */
     public void setArticleMgmtService(final ArticleMgmtService articleMgmtService) {
@@ -759,7 +761,7 @@ public class CommentMgmtService {
 
     /**
      * Set the page repository with the specified page repository.
-     * 
+     *
      * @param pageRepository the specified page repository
      */
     public void setPageRepository(final PageRepository pageRepository) {
@@ -768,7 +770,7 @@ public class CommentMgmtService {
 
     /**
      * Sets the preference query service with the specified preference query service.
-     * 
+     *
      * @param preferenceQueryService the specified preference query service
      */
     public void setPreferenceQueryService(final PreferenceQueryService preferenceQueryService) {
@@ -777,7 +779,7 @@ public class CommentMgmtService {
 
     /**
      * Sets the statistic management service with the specified statistic management service.
-     * 
+     *
      * @param statisticMgmtService the specified statistic management service
      */
     public void setStatisticMgmtService(final StatisticMgmtService statisticMgmtService) {
@@ -786,7 +788,7 @@ public class CommentMgmtService {
 
     /**
      * Sets the comment repository with the specified comment repository.
-     * 
+     *
      * @param commentRepository the specified comment repository
      */
     public void setCommentRepository(final CommentRepository commentRepository) {
@@ -795,7 +797,7 @@ public class CommentMgmtService {
 
     /**
      * Sets the language service with the specified language service.
-     * 
+     *
      * @param langPropsService the specified language service
      */
     public void setLangPropsService(final LangPropsService langPropsService) {
