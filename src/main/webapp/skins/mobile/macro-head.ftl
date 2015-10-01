@@ -42,7 +42,7 @@ overflow: hidden;
 }
 
 </style>
-<link href="${servePath}/blog-articles-feed.do" title="ATOM" type="application/atom+xml" rel="alternate" />
+<link href="${servePath}/blog-articles-rss.do" title="RSS" type="application/rss+xml" rel="alternate" />
 <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
 <script type='text/javascript' src='${staticServePath}/skins/${skinDirName}/js/l10n${miniPostfix}.js?${staticResourceVersion}'></script>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
