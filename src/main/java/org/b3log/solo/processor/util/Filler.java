@@ -575,9 +575,14 @@ public class Filler {
             dataModel.put(User.USER_NAME, "");
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
             if (null != currentUser) {
-                final String email = currentUser.optString(User.USER_EMAIL);
-                final String gravatar = Thumbnails.getGravatarURL(email, "60");
-                dataModel.put(Common.GRAVATAR, gravatar);
+                final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
+                if (!Strings.isEmptyOrNull(userAvatar)) {
+                    dataModel.put(Common.GRAVATAR, userAvatar);
+                } else {
+                    final String email = currentUser.optString(User.USER_EMAIL);
+                    final String gravatar = Thumbnails.getGravatarURL(email, "60");
+                    dataModel.put(Common.GRAVATAR, gravatar);
+                }
 
                 dataModel.put(User.USER_NAME, currentUser.optString(User.USER_NAME));
             }
@@ -909,8 +914,13 @@ public class Filler {
 
             article.put(Common.AUTHOR_ID, authorId);
 
-            final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
-            article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
+            final String userAvatar = author.optString(UserExt.USER_AVATAR);
+            if (!Strings.isEmptyOrNull(userAvatar)) {
+                article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
+            } else {
+                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+                article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
+            }
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
@@ -923,7 +933,7 @@ public class Filler {
 
                 article.put(ARTICLE_CONTENT, content);
             }
-            
+
             processArticleAbstract(preference, article);
 
             articleQueryService.markdown(article);
@@ -966,8 +976,13 @@ public class Filler {
 
             article.put(Common.AUTHOR_ID, authorId);
 
-            final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
-            article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
+            final String userAvatar = author.optString(UserExt.USER_AVATAR);
+            if (!Strings.isEmptyOrNull(userAvatar)) {
+                article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
+            } else {
+                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+                article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
+            }
 
             if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
@@ -980,7 +995,7 @@ public class Filler {
 
                 article.put(ARTICLE_CONTENT, content);
             }
-            
+
             processArticleAbstract(preference, article);
 
             articleQueryService.markdown(article);

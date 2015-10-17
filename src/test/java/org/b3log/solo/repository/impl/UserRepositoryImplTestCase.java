@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
  * {@link UserRepositoryImpl} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Apr 2, 2013
+ * @version 1.1.0.2, Oct 17, 2015
  */
 @Test(suiteName = "repository")
 public final class UserRepositoryImplTestCase extends AbstractTestCase {
@@ -56,6 +56,7 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         another.put(User.USER_ROLE, Role.DEFAULT_ROLE);
         another.put(UserExt.USER_ARTICLE_COUNT, 0);
         another.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
+        another.put(UserExt.USER_AVATAR, "");
 
         Transaction transaction = userRepository.beginTransaction();
         userRepository.add(another);
@@ -71,6 +72,7 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
         admin.put(UserExt.USER_ARTICLE_COUNT, 0);
         admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
+        admin.put(UserExt.USER_AVATAR, "");
 
         transaction = userRepository.beginTransaction();
         userRepository.add(admin);

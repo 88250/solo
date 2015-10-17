@@ -46,6 +46,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.OptionQueryService;
@@ -135,9 +136,14 @@ public class AdminConsole {
         dataModel.put(User.USER_ROLE, roleName);
 
         final String email = currentUser.optString(User.USER_EMAIL);
-        final String gravatar = Thumbnails.getGravatarURL(email, "60");
 
-        dataModel.put(Common.GRAVATAR, gravatar);
+        final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
+        if (!Strings.isEmptyOrNull(userAvatar)) {
+            dataModel.put(Common.GRAVATAR, userAvatar);
+        } else {
+            final String gravatar = Thumbnails.getGravatarURL(email, "60");
+            dataModel.put(Common.GRAVATAR, gravatar);
+        }
 
         try {
             final JSONObject qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);

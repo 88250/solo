@@ -15,11 +15,11 @@
  */
 package org.b3log.solo.service;
 
-
 import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
@@ -38,15 +38,15 @@ import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.util.Thumbnails;
 import org.json.JSONObject;
-
 
 /**
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.0.0.6, May 27, 2013
+ * @version 1.1.0.6, Oct 17, 2015
  * @since 0.4.0
  */
 @Service
@@ -135,8 +135,7 @@ public class UserMgmtService {
     /**
      * Updates a user by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "oId": "",
      *     "userName": "",
@@ -146,6 +145,7 @@ public class UserMgmtService {
      *     "userURL": "", // optional
      * }
      * </pre>
+     *
      * @throws ServiceException service exception
      */
     public void updateUser(final JSONObject requestJSONObject) throws ServiceException {
@@ -186,15 +186,18 @@ public class UserMgmtService {
             }
 
             final String userRole = requestJSONObject.optString(User.USER_ROLE);
-
             if (!Strings.isEmptyOrNull(userRole)) {
                 oldUser.put(User.USER_ROLE, userRole);
             }
 
             final String userURL = requestJSONObject.optString(User.USER_URL);
-
             if (!Strings.isEmptyOrNull(userURL)) {
                 oldUser.put(User.USER_URL, userURL);
+            }
+            
+            final String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
+            if (!StringUtils.equals(userAvatar, oldUser.optString(UserExt.USER_AVATAR))) {
+                oldUser.put(UserExt.USER_AVATAR, userAvatar);
             }
 
             userRepository.update(oldUserId, oldUser);
@@ -210,7 +213,7 @@ public class UserMgmtService {
     }
 
     /**
-     * Swithches the user role between "defaultRole" and "visitorRole"  by the specified user id.
+     * Swithches the user role between "defaultRole" and "visitorRole" by the specified user id.
      *
      * @param userId the specified user id
      * @throws ServiceException exception
@@ -248,17 +251,18 @@ public class UserMgmtService {
 
     /**
      * Adds a user with the specified request json object.
-     * 
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     *
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "userName": "",
      *     "userEmail": "",
      *     "userPassword": "", // Unhashed
-     *     "userURL": "", // optional, uses 'servePath' instead if not specified 
-     *     "userRole": "" // optional, uses {@value Role#DEFAULT_ROLE} instead, if not speciffied
+     *     "userURL": "", // optional, uses 'servePath' instead if not specified
+     *     "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not specified
+     *     "userAvatar": "" // optional, users generated gravatar url instead if not specified
      * }
      * </pre>,see {@link User} for more details
+     *
      * @return generated user id
      * @throws ServiceException service exception
      */
@@ -281,15 +285,12 @@ public class UserMgmtService {
             user.put(User.USER_EMAIL, userEmail);
 
             final String userName = requestJSONObject.optString(User.USER_NAME);
-
             user.put(User.USER_NAME, userName);
 
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-
             user.put(User.USER_PASSWORD, MD5.hash(userPassword));
 
             String userURL = requestJSONObject.optString(User.USER_URL);
-
             if (Strings.isEmptyOrNull(userURL)) {
                 userURL = Latkes.getServePath();
             }
@@ -301,11 +302,16 @@ public class UserMgmtService {
             user.put(User.USER_URL, userURL);
 
             final String roleName = requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE);
-
             user.put(User.USER_ROLE, roleName);
 
             user.put(UserExt.USER_ARTICLE_COUNT, 0);
             user.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
+
+            String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
+            if (Strings.isEmptyOrNull(userAvatar)) {
+                userAvatar = Thumbnails.getGravatarURL(userEmail, "60");
+            }
+            user.put(UserExt.USER_AVATAR, userAvatar);
 
             userRepository.add(user);
 
@@ -347,7 +353,7 @@ public class UserMgmtService {
 
     /**
      * Sets the user repository with the specified user repository.
-     * 
+     *
      * @param userRepository the specified user repository
      */
     public void setUserRepository(final UserRepository userRepository) {
@@ -356,7 +362,7 @@ public class UserMgmtService {
 
     /**
      * Sets the language service with the specified language service.
-     * 
+     *
      * @param langPropsService the specified language service
      */
     public void setLangPropsService(final LangPropsService langPropsService) {

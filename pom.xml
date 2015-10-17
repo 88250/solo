@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 2.4.1.7, Oct 1, 2015
+    Version: 2.5.1.7, Oct 17, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -125,7 +125,7 @@
         <testng.version>6.1.1</testng.version>
         <gae.version>1.8.1.1</gae.version>
         <!-- JDBC Drivers -->
-        <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
+        <mysql-connector-java.version>5.1.36</mysql-connector-java.version>
     </properties>
 
     <dependencies>

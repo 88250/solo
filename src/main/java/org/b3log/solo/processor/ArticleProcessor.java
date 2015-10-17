@@ -930,8 +930,13 @@ public class ArticleProcessor {
 
             article.put(Common.AUTHOR_ID, authorId);
             article.put(Common.AUTHOR_ROLE, author.getString(User.USER_ROLE));
-            final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
-            article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
+            final String userAvatar = author.optString(UserExt.USER_AVATAR);
+            if (!Strings.isEmptyOrNull(userAvatar)) {
+                article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
+            } else {
+                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+                article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
+            }
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -1190,9 +1195,14 @@ public class ArticleProcessor {
         dataModel.put(Keys.OBJECT_ID, authorId);
 
         dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
-        final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
 
-        dataModel.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
+        final String userAvatar = author.optString(UserExt.USER_AVATAR);
+        if (!Strings.isEmptyOrNull(userAvatar)) {
+            dataModel.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
+        } else {
+            final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+            dataModel.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
+        }
 
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
     }

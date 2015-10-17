@@ -40,17 +40,19 @@ import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.util.QueryResults;
+import org.b3log.solo.util.Thumbnails;
 import org.json.JSONObject;
 
 /**
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.8, Aug 8, 2015
+ * @version 1.2.0.8, Oct 17, 2015
  * @since 0.4.0
  */
 @RequestProcessor
@@ -185,11 +187,11 @@ public class InitProcessor {
 
             // If initialized, login the admin
             final JSONObject admin = new JSONObject();
-
-            admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
-            admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
+            admin.put(User.USER_NAME, userName);
+            admin.put(User.USER_EMAIL, userEmail);
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-            admin.put(User.USER_PASSWORD, requestJSONObject.getString(User.USER_PASSWORD));
+            admin.put(User.USER_PASSWORD, userPassword);
+            admin.put(UserExt.USER_AVATAR, Thumbnails.getGravatarURL(userEmail, "60"));
 
             Sessions.login(request, response, admin);
 

@@ -18,7 +18,6 @@ package org.b3log.solo.processor;
 import java.io.IOException;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -36,6 +35,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,7 +45,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.4.1.14, Oct 1, 2015
+ * @version 1.5.1.14, Oct 17, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -147,17 +147,17 @@ public class UpgradeProcessor {
             }
 
             LOGGER.log(Level.WARN, "Attempt to skip more than one version to upgrade. Expected: {0}; Actually: {1}", FROM_VER, currentVer);
-            
+
             if (!sent) {
                 notifyUserByEmail();
-                
+
                 sent = true;
             }
 
             renderer.setContent(langPropsService.get("skipVersionAlert"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-            
+
             renderer.setContent(
                     "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
                     + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
@@ -178,6 +178,8 @@ public class UpgradeProcessor {
         try {
             transaction = userRepository.beginTransaction();
 
+            upgradeUsers();
+            
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
@@ -213,11 +215,13 @@ public class UpgradeProcessor {
 
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.getJSONObject(i);
-            user.put(User.USER_URL, Latkes.getServePath());
+            final String email = user.optString(User.USER_EMAIL);
+
+            user.put(UserExt.USER_AVATAR, Thumbnails.getGravatarURL(email, "60"));
 
             userRepository.update(user.optString(Keys.OBJECT_ID), user);
 
-            LOGGER.log(Level.INFO, "Hashed user[name={0}] password.", user.optString(User.USER_NAME));
+            LOGGER.log(Level.INFO, "Updated user[name={0}]");
         }
     }
 
@@ -288,9 +292,9 @@ public class UpgradeProcessor {
         message.addRecipient(adminEmail);
         message.setSubject(langPropsService.get("skipVersionMailSubject"));
         message.setHtmlBody(langPropsService.get("skipVersionMailBody"));
-        
+
         MAIL_SVC.send(message);
-        
+
         LOGGER.info("Send an email to the user who upgrades Solo with a discontinuous version.");
     }
 }

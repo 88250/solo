@@ -63,7 +63,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.8, Jul 14, 2015
+ * @version 1.2.2.8, Oct 17, 2015
  * @since 0.4.0
  */
 @Service
@@ -491,6 +491,7 @@ public class InitService {
         admin.put(User.USER_PASSWORD, MD5.hash(requestJSONObject.getString(User.USER_PASSWORD)));
         admin.put(UserExt.USER_ARTICLE_COUNT, 0);
         admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
+        admin.put(UserExt.USER_AVATAR, Thumbnails.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "60"));
 
         userRepository.add(admin);
 

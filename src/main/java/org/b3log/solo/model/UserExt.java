@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Feb 21, 2012
+ * @version 1.1.0.0, Oct 17, 2015
  * @since 0.4.1
  * @see org.b3log.latke.model.User
  */
@@ -35,6 +35,11 @@ public final class UserExt {
      * Key of user article count.
      */
     public static final String USER_PUBLISHED_ARTICLE_COUNT = "userPublishedArticleCount";
+    
+    /**
+     * Key of user avatar.
+     */
+    public static final String USER_AVATAR = "userAvatar";
 
     /**
      * Private constructor.
