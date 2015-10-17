@@ -3,7 +3,7 @@
     &copy; ${year}
 
     <span class="fn-right">
-        Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a>, ver ${version}&nbsp;&nbsp;
+        Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}&nbsp;&nbsp;
         Theme by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
     </span>
 </footer>
