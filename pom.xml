@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 2.5.1.7, Oct 17, 2015
+    Version: 2.6.1.7, Oct 25, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -113,6 +113,7 @@
         <jsoup.version>1.5.2</jsoup.version>
         <markdownpapers-core.version>1.4.2</markdownpapers-core.version>
         <qiniu.version>7.0.4.1</qiniu.version>
+        <jetty.version>9.2.13.v20150730</jetty.version>
         
         <!-- maven plugin -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -125,7 +126,7 @@
         <testng.version>6.1.1</testng.version>
         <gae.version>1.8.1.1</gae.version>
         <!-- JDBC Drivers -->
-        <mysql-connector-java.version>5.1.36</mysql-connector-java.version>
+        <mysql-connector-java.version>5.1.37</mysql-connector-java.version>
     </properties>
 
     <dependencies>
@@ -134,10 +135,6 @@
             <artifactId>latke</artifactId>
             <version>${org.b3log.latke.version}</version>
             <exclusions>
-                <exclusion>
-                    <groupId>com.h2database</groupId>
-                    <artifactId>h2</artifactId>
-                </exclusion>
                 <exclusion>
                     <groupId>com.jolbox</groupId>
                     <artifactId>bonecp</artifactId>
@@ -153,7 +150,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet.version}</version>
-            <scope>provided</scope>
         </dependency>
         
         <dependency>         
@@ -168,6 +164,11 @@
             <version>${org.b3log.latke.version}</version>
         </dependency>
             
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-h2</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.testng</groupId>
@@ -200,7 +201,13 @@
             <version>${qiniu.version}</version>
         </dependency>
         
-        <!-- BEGIN GAE related dependencies just for test -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>${jetty.version}</version>
+        </dependency>
+        
+        <!-- BEGIN: GAE related dependencies just for testing -->
         <dependency>
             <groupId>org.b3log</groupId>
             <artifactId>latke-gae</artifactId>
@@ -221,7 +228,7 @@
             <version>${gae.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- END GAE related dependencies just for test -->
+        <!-- END: GAE related dependencies just for testing -->
     </dependencies>
     
     <build>
