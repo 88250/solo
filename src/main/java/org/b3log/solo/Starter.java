@@ -18,11 +18,12 @@ package org.b3log.solo;
 import java.awt.Desktop;
 import java.io.File;
 import java.net.URI;
+import java.util.ResourceBundle;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 /**
- * Solo with embedded Jetty.
+ * Solo with embedded Jetty, <a href="https://github.com/b3log/solo/issues/12037">standalone mode</a>.
  *
  * <ul>
  * <li>Windows: java -cp WEB-INF/lib/*;WEB-INF/classes org.b3log.solo.Solo</li>
@@ -30,7 +31,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Oct 25, 2015
+ * @version 1.0.0.1, Oct 31, 2015
  * @since 1.2.0
  */
 public final class Starter {
@@ -46,11 +47,13 @@ public final class Starter {
 
         final File file = new File(webappDirLocation);
         if (!file.exists()) {
-            webappDirLocation = "."; // Release prod env
+            webappDirLocation = "."; // prod env
         }
 
-        final int port = 8080; // TODO: read from conf
-        final String contextPath = "/";  // TODO: read from conf
+        final ResourceBundle latke = ResourceBundle.getBundle("latke");
+
+        final int port = Integer.valueOf(latke.getString("serverPort"));
+        final String contextPath = latke.getString("contextPath");
 
         Server server = new Server(port);
         WebAppContext root = new WebAppContext();
@@ -63,14 +66,16 @@ public final class Starter {
 
         server.start();
 
+        final String scheme = latke.getString("serverScheme");
+        final String host = latke.getString("serverHost");
+
         try {
-            Desktop.getDesktop().browse(new URI("http://localhost:" + port));
+            Desktop.getDesktop().browse(new URI(scheme + "://" + host + ":" + port + contextPath));
         } catch (final Throwable e) {
             e.printStackTrace();
         }
 
         server.join();
-
     }
 
     /**
