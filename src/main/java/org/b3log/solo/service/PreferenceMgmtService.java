@@ -50,7 +50,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.8, Jun 18, 2014
+ * @version 1.0.1.9, Oct 31, 2015
  * @since 0.4.0
  */
 @Service
@@ -86,7 +86,7 @@ public class PreferenceMgmtService {
     public void loadSkins(final JSONObject preference) throws Exception {
         Stopwatchs.start("Load Skins");
 
-        LOGGER.info("Loading skins....");
+        LOGGER.debug("Loading skins....");
 
         final Set<String> skinDirNames = getSkinDirNames();
 
@@ -112,7 +112,7 @@ public class PreferenceMgmtService {
         final String currentSkinDirName = preference.optString(SKIN_DIR_NAME);
         final String skinName = preference.optString(SKIN_NAME);
 
-        LOGGER.log(Level.INFO, "Current skin[name={0}]", skinName);
+        LOGGER.log(Level.DEBUG, "Current skin[name={0}]", skinName);
 
         if (!skinDirNames.contains(currentSkinDirName)) {
             LOGGER.log(Level.WARN, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName="
@@ -135,7 +135,7 @@ public class PreferenceMgmtService {
         final String skinsString = skinArray.toString();
 
         if (!skinsString.equals(preference.getString(SKINS))) {
-            LOGGER.log(Level.INFO, "The skins directory has been changed, persists " + "the change into preference");
+            LOGGER.debug("The skins directory has been changed, persists the change into preference");
             preference.put(SKINS, skinsString);
             updatePreference(preference);
         }
@@ -148,7 +148,7 @@ public class PreferenceMgmtService {
             TimeZones.setTimeZone("Asia/Shanghai");
         }
 
-        LOGGER.info("Loaded skins....");
+        LOGGER.debug("Loaded skins....");
 
         Stopwatchs.end();
     }

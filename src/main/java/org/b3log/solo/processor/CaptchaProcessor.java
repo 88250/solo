@@ -54,7 +54,7 @@ import org.b3log.solo.SoloServletListener;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Jan 4, 2013
+ * @version 1.1.0.4, Oct 31, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -130,7 +130,7 @@ public class CaptchaProcessor {
      * Loads captcha.
      */
     private synchronized void loadCaptchas() {
-        LOGGER.info("Loading captchas....");
+        LOGGER.debug("Loading captchas....");
 
         try {
             captchas = new Image[CAPTCHA_COUNT];
@@ -182,6 +182,6 @@ public class CaptchaProcessor {
             throw new IllegalStateException(e);
         }
 
-        LOGGER.info("Loaded captch images");
+        LOGGER.debug("Loaded captch images");
     }
 }

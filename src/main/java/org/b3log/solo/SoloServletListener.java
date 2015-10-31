@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
@@ -53,7 +54,7 @@ import org.json.JSONObject;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.8, Oct 17, 2015
+ * @version 1.5.0.9, Oct 31, 2015
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -139,7 +140,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         pluginManager.load();
 
-        LOGGER.info("Initialized the context");
+        LOGGER.info("Solo is running [" + Latkes.getServePath() + "]");
 
         Stopwatchs.end();
         LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
@@ -210,7 +211,7 @@ public final class SoloServletListener extends AbstractServletListener {
     private void loadPreference() {
         Stopwatchs.start("Load Preference");
 
-        LOGGER.info("Loading preference....");
+        LOGGER.debug("Loading preference....");
 
         final PreferenceRepository preferenceRepository = beanManager.getReference(PreferenceRepositoryImpl.class);
         JSONObject preference;
@@ -218,7 +219,7 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             preference = preferenceRepository.get(Preference.PREFERENCE);
             if (null == preference) {
-                LOGGER.log(Level.WARN, "Can't not init default skin, please init Solo first");
+                LOGGER.warn("Can't not init default skin, please init Solo first");
                 return;
             }
 
@@ -240,7 +241,7 @@ public final class SoloServletListener extends AbstractServletListener {
     private void registerEventProcessor() {
         Stopwatchs.start("Register Event Processors");
 
-        LOGGER.log(Level.INFO, "Registering event processors....");
+        LOGGER.debug("Registering event processors....");
         try {
             final EventManager eventManager = beanManager.getReference(EventManager.class);
 
@@ -264,7 +265,7 @@ public final class SoloServletListener extends AbstractServletListener {
             throw new IllegalStateException(e);
         }
 
-        LOGGER.log(Level.INFO, "Registering event processors....");
+        LOGGER.debug("Registering event processors....");
 
         Stopwatchs.end();
     }

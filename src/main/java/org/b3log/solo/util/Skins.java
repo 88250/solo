@@ -42,7 +42,7 @@ import org.b3log.solo.SoloServletListener;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.3.6, Apr 15, 2014
+ * @version 1.0.3.7, Oct 31, 2015
  * @since 0.3.1
  */
 public final class Skins {
@@ -82,7 +82,7 @@ public final class Skins {
             if (null == langs) {
                 LANG_MAP.clear(); // Collect unused skin languages
 
-                LOGGER.log(Level.INFO, "Loading skin [dirName={0}, locale={1}]", new Object[] {currentSkinDirName, localeString});
+                LOGGER.log(Level.DEBUG, "Loading skin [dirName={0}, locale={1}]", new Object[] {currentSkinDirName, localeString});
                 langs = new HashMap<String, String>();
 
                 final String language = Locales.getLanguage(localeString);
@@ -102,7 +102,7 @@ public final class Skins {
                 }
 
                 LANG_MAP.put(langName, langs);
-                LOGGER.log(Level.INFO, "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
+                LOGGER.log(Level.DEBUG, "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
                     new Object[] {currentSkinDirName, localeString, langs.size()});
             }
 
