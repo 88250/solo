@@ -22,7 +22,7 @@
     <section class="abstract">
         ${article.articleAbstract}
     </section>
-    <footer>
+    <footer class="tags">
         <span class="icon-tag"></span>  &nbsp;
         <#list article.articleTags?split(",") as articleTag>
         <a class="tag" rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">

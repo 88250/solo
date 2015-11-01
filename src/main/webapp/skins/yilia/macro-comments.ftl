@@ -144,7 +144,7 @@
                             page.addReplyForm(id, commentFormHTML);
                         };
                         (function () {
-                            Finding.share();
+                            Yilia.share();
                             page.load();
                             // emotions
                             page.replaceCommentsEm("#comments .comment-content");

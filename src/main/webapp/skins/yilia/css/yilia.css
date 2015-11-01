@@ -440,7 +440,7 @@ article.show {
 
 article header {
     border-left: 5px solid;
-    padding: 15px 135px 15px 25px;
+    padding: 15px 30px 15px 25px;
 }
 
 article header:hover {
@@ -448,8 +448,9 @@ article header:hover {
 }
 
 article header h2 {
-    margin: 0;
-    font-size: 26px;
+   margin: 0;
+  font-size: 26px;
+  padding-right: 110px;
 }
 
 article header a {
@@ -489,12 +490,20 @@ article footer {
     border-top: 1px solid #ddd;
 }
 
-article footer .tag:hover,
+.post section.tags {
+    margin: 0;
+}
+
+.post header {
+    padding-bottom: 0;
+}
+
+.tags .tag:hover,
 article .abstract a:hover{
     opacity: 0.7;
 }
 
-article footer .avatar {
+.tags .avatar {
     width: 20px;
     border-radius: 10px;
     right: 30px;
@@ -503,11 +512,23 @@ article footer .avatar {
     transition: all 0.2s ease-out 0s;
 }
 
-article footer .avatar:hover {
-    transform: rotate(360deg);
+.post .tags .avatar {
+    bottom: inherit;
+    margin-top: 4px;
 }
 
-article footer .tag {
+.share span {
+    transition: all 0.2s ease-out 0s;
+    cursor: pointer;
+}
+
+.tags .avatar:hover,
+.share span:hover {
+    transform: rotate(360deg);
+    color: #333;
+}
+
+.tags .tag {
     color: #fff;
     font-size: 10px;
     height: 18px;
@@ -521,7 +542,7 @@ article footer .tag {
     font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace;
 }
 
-article footer .tag:before {
+.tags .tag:before {
     content: " ";
     width: 0px;
     height: 0px;
@@ -532,7 +553,7 @@ article footer .tag:before {
     border-right-color: #7b5d5f;
 }
 
-article footer .tag:after {
+.tags .tag:after {
     content: " ";
     width: 4px;
     height: 4px;
@@ -607,6 +628,10 @@ nav.pagination .extend:hover {
 
 nav.pagination:hover .extend {
     opacity: 1;
+}
+
+.post .share {
+    padding: 0;
 }
 /* end article */
 
