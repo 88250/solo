@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.3.5.1, Jun 13, 2015
+ * @version 1.4.5.1, Nov 1, 2015
  * @since 0.3.1
  */
 public final class Common {
@@ -174,6 +174,11 @@ public final class Common {
      * Key of current user.
      */
     public static final String CURRENT_USER = "currentUser";
+    
+    /**
+     * Key of admin user.
+     */
+    public static final String ADMIN_USER = "adminUser";
 
     /**
      * Key of enabled multiple user support.

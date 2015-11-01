@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.11.11, Aug 3, 2015
+ * @version 1.4.11.11, Nov 1, 2015
  * @since 0.3.1
  */
 @Service
@@ -662,12 +662,10 @@ public class Filler {
             final JSONObject result = userRepository.get(query);
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
             final List<JSONObject> userList = CollectionUtils.jsonArrayToList(users);
-
             dataModel.put(User.USERS, userList);
-            for (final JSONObject user : userList) {
-                user.remove(User.USER_EMAIL);
-                user.remove(User.USER_PASSWORD);
-            }
+            
+            final JSONObject admin = userRepository.getAdmin();
+            dataModel.put(Common.ADMIN_USER, admin);
 
             final String skinDirName = (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
 
