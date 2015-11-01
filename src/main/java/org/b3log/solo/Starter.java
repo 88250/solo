@@ -56,7 +56,7 @@ public final class Starter {
      */
     public static void main(final String[] args) throws Exception {
         final Logger logger = Logger.getLogger(Starter.class);
-        
+
         logger.info("Standalone mode, see [https://github.com/b3log/solo/wiki/standalone_mode] for more details.");
 
         String webappDirLocation = "src/main/webapp/"; // POM structure in dev env
