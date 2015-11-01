@@ -42,7 +42,7 @@ import org.b3log.solo.SoloServletListener;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.3.7, Oct 31, 2015
+ * @version 1.0.4.7, Nov 1, 2015
  * @since 0.3.1
  */
 public final class Skins {
@@ -155,11 +155,13 @@ public final class Skins {
         final Set<String> resourcePaths = servletContext.getResourcePaths("/skins");
 
         for (final String path : resourcePaths) {
-            if (path.startsWith(".")) {
+            final String dirName = path.substring("/skins".length() + 1, path.length() - 1);
+            
+            if (dirName.startsWith(".")) {
                 continue;
             }
 
-            ret.add(path.substring("/skins".length() + 1, path.length() - 1));
+            ret.add(dirName);
         }
 
         return ret;
