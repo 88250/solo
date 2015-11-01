@@ -11,16 +11,11 @@
         </#if>
         </@head>
     </head>
-    <body class="nav-closed">
-        <div class="nav">
-            <#include "side.ftl">
-        </div>
-        <div class="site-wrapper">
-            <#include "header.ftl">
-            <main id="content">
-                <#include "article-list.ftl">
-            </main>
-            <#include "footer.ftl">
-        </div>
+    <body>
+        <#include "side.ftl">
+        <main>
+            <#include "article-list.ftl">
+        </main>
+        <#include "footer.ftl">
     </body>
 </html>

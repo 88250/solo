@@ -7,6 +7,26 @@
         Theme by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
     </span>
 </footer>
+
+
+<div class="count">
+    <span>
+        ${viewCount1Label}
+        ${statistic.statisticBlogViewCount}
+    </span> &nbsp; &nbsp;
+    <span>
+        ${articleCount1Label}
+        ${statistic.statisticPublishedBlogArticleCount}
+    </span><br/>
+    <span>
+        ${commentCount1Label}
+        ${statistic.statisticPublishedBlogCommentCount}
+    </span> &nbsp; &nbsp;
+    <span>
+        ${onlineVisitor1Label}
+        ${onlineVisitorCnt}
+    </span>
+</div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/skins/${skinDirName}/js/${skinDirName}${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
