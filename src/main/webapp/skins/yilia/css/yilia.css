@@ -610,6 +610,17 @@ nav.pagination:hover .extend {
 }
 /* end article */
 
+/* start footer */
+footer.footer {
+    line-height: 1rem;
+    font-size: 12px;
+    font-family: Menlo, Monaco, "Andale Mono", "lucida console", "Courier New", monospace;
+    text-shadow: 0 1px #fff;
+    opacity: 0.6;
+    margin: 0 30px 30px;
+}
+/* end footer */
+
 /* start responsive */
 @media only screen and (max-width: 900px) {
 

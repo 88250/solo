@@ -1,27 +1,21 @@
-<footer class="site-footer fn-clear">
-    <a href="${servePath}">${blogTitle}</a> 
-    &copy; ${year}
-
-    <span class="fn-right">
-        Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}&nbsp;&nbsp;
-        Theme by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
-    </span>
-    <div class="count">
-        <span>
-            ${viewCount1Label}
-            ${statistic.statisticBlogViewCount}
-        </span> &nbsp; &nbsp;
-        <span>
-            ${articleCount1Label}
-            ${statistic.statisticPublishedBlogArticleCount}
-        </span><br/>
-        <span>
-            ${commentCount1Label}
-            ${statistic.statisticPublishedBlogCommentCount}
-        </span> &nbsp; &nbsp;
-        <span>
-            ${onlineVisitor1Label}
-            ${onlineVisitorCnt}
+<footer class="footer">
+    <div class="fn-clear">
+        <span class="fn-right">
+            ${viewCount1Label}${statistic.statisticBlogViewCount}
+            &nbsp;
+            ${articleCount1Label}${statistic.statisticPublishedBlogArticleCount}
+            &nbsp; 
+            ${commentCount1Label}${statistic.statisticPublishedBlogCommentCount}
+            &nbsp; 
+            ${onlineVisitor1Label}${onlineVisitorCnt}
+        </span>
+    </div>
+    <div class="fn-clear">
+        <a href="${servePath}">${blogTitle}</a> 
+        &copy; ${year}
+        <span class="fn-right">
+            Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
+            <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
         </span>
     </div>
 </footer>
