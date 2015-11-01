@@ -15,7 +15,7 @@
         <#include "side.ftl">
         <main>
             <#include "article-list.ftl">
+            <#include "footer.ftl">
         </main>
-        <#include "footer.ftl">
     </body>
 </html>

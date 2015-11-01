@@ -1,60 +1,57 @@
-<#if !isIndex && paginationCurrentPageNum != 1>
-<nav class="pagination fn-clear fn-wrap" role="navigation">
-    <#if paginationCurrentPageNum != 1>
-    <a class="fn-left" href="${servePath}${path}/${paginationPreviousPageNum}">← ${previousPageLabel}</a>
-    </#if>
-    <span>${pageLabel} ${paginationCurrentPageNum} of ${paginationPageCount}</span>
-    <#if paginationPageCount != paginationCurrentPageNum>
-    <a class="fn-right" href="${servePath}${path}/${paginationNextPageNum}">${nextPagePabel} →</a>
-    </#if>
-</nav>
-</#if>
-
 <#list articles as article>
-<article class="post fn-wrap">
+<article>
     <header>
-        <h2 class="post-title">
+        <h2>
             <a rel="bookmark" href="${servePath}${article.articlePermalink}">
                 ${article.articleTitle}
             </a>
-            <#if article.hasUpdated>
-            <sup class="post-tip">
-                ${updatedLabel}
-            </sup>
-            </#if>
             <#if article.articlePutTop>
-            <sup class="post-tip">
+            <sup>
                 ${topArticleLabel}
             </sup>
             </#if>
+            <#if article.hasUpdated>
+            <sup>
+                ${updatedLabel}
+            </sup>
+            </#if>
         </h2>
+
+        <time><span class="icon-date"></span> ${article.articleCreateDate?string("yyyy-MM-dd")}</time>
     </header>
-    <section class="post-excerpt fn-clear">
-        <p>${article.articleAbstract}</p>
+    <section class="abstract">
+        ${article.articleAbstract}
     </section>
-    <footer class="post-meta">
-        <img class="avatar" title="${article.authorName}" alt="${article.authorName}" src="${article.authorThumbnailURL}"/>
-        <a rel="nofollow" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
-        on
+    <footer>
+        <span class="icon-tag"></span>  &nbsp;
         <#list article.articleTags?split(",") as articleTag>
-        <span>
-            <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
-                ${articleTag}</a><#if articleTag_has_next>,</#if>
-        </span>
+        <a class="tag" rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
+            ${articleTag}</a>
         </#list>
-        <time>${article.articleCreateDate?string("yyyy-MM-dd")}</time>
+
+        <a rel="nofollow" href="${servePath}/authors/${article.authorId}">
+            <img class="avatar" title="${article.authorName}" alt="${article.authorName}" src="${article.authorThumbnailURL}"/>
+        </a>
     </footer>
 </article>
 </#list>
 
 <#if 0 != paginationPageCount>
-<nav class="pagination fn-clear fn-wrap" role="navigation">
-    <#if paginationCurrentPageNum != 1>
-    <a class="fn-left" href="${servePath}${path}/${paginationPreviousPageNum}">← ${previousPageLabel}</a>
+    <nav class="pagination">
+        <#if 1 != paginationPageNums?first>
+        <a href="${servePath}${path}/${paginationPreviousPageNum}" class="extend">${previousPageLabel}</a>
+        <a class="page-num" href="${servePath}${path}/1">1</a> ...
+        </#if>
+        <#list paginationPageNums as paginationPageNum>
+        <#if paginationPageNum == paginationCurrentPageNum>
+        <span class="current page-num">${paginationPageNum}</span>
+        <#else>
+        <a class="page-num" href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
+        </#if>
+        </#list>
+        <#if paginationPageNums?last != paginationPageCount> ...
+        <a href="${servePath}${path}/${paginationPageCount}" class="page-num">${paginationPageCount}</a>
+        <a href="${servePath}${path}/${paginationNextPageNum}" class="extend">${nextPagePabel}</a>
+        </#if>
+    </nav>
     </#if>
-    <span>${pageLabel} ${paginationCurrentPageNum} of ${paginationPageCount}</span>
-    <#if paginationPageCount != paginationCurrentPageNum>
-    <a class="fn-right" href="${servePath}${path}/${paginationNextPageNum}">${nextPagePabel} →</a>
-    </#if>
-</nav>
-</#if>

@@ -17,50 +17,33 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.0, Jun 13, 2015
+ * @version 1.0.0.0, Nov 1, 2015
  */
 
 /**
- * @description Finding 皮肤脚本
+ * @description yilia 皮肤脚本
  * @static
  */
-var Finding = {
+var Yilia = {
     /**
      * @description 页面初始化
      */
     init: function () {
         Util.killIE();
-        $(".scroll-down").click(function (event) {
-            event.preventDefault();
-
-            var $this = $(this),
-                    $htmlBody = $('html, body'),
-                    offset = ($this.attr('data-offset')) ? $this.attr('data-offset') : false,
-                    toMove = parseInt(offset);
-
-            $htmlBody.stop(true, false).animate({scrollTop: ($(this.hash).offset().top + toMove)}, 500);
-        });
-
-        $('body').click(function (event) {
-            if ($(event.target).closest('.nav').length === 0
-                    && $("body").hasClass('nav-opened')
-                    && !$(event.target).hasClass('icon-gotop')) {
-                $("body").removeClass('nav-opened').addClass('nav-closed');
-            }
-        });
-
-        $(".menu-button").click(function (event) {
-            event.stopPropagation();
-            $("body").toggleClass("nav-opened nav-closed");
-        });
-
-        $('body').append('<a class="icon-gotop fn-none" href="javascript:Util.goTop()"></a>');
+        this.resetTags();
         $(window).scroll(function () {
-            if ($(window).scrollTop() > $(window).height()) {
-                $(".icon-gotop").show();
-            } else {
-                $(".icon-gotop").hide();
-            }
+            $("article:not(.show)").each(function () {
+                if ($(this).offset().top <= $(window).scrollTop() + $(window).height() - $(this).height() / 7) {
+                    $(this).addClass("show");
+                }
+            });
+        });
+        
+        $(window).scroll();
+    },
+    resetTags: function () {
+        $("a.tag").each(function (i) {
+            $(this).addClass("color" + Math.ceil(Math.random() * 4));
         });
     },
     share: function () {
@@ -81,4 +64,4 @@ var Finding = {
     }
 };
 
-Finding.init();
+Yilia.init();
