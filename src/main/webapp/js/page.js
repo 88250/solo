@@ -18,9 +18,9 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
- * @version 1.1.3.5, Jul 23, 2014
+ * @version 1.2.3.5, Nov 2, 2015
  */
-var Page = function(tips) {
+var Page = function (tips) {
     this.currentCommentId = "";
     this.tips = tips;
 };
@@ -29,13 +29,13 @@ $.extend(Page.prototype, {
      * @description 评论时点击表情，在评论内容中插入相关代码
      * @param {String} name 用于区别回复评论还是对文章的评论
      */
-    insertEmotions: function(name) {
+    insertEmotions: function (name) {
         var _it = this;
         if (name === undefined) {
             name = "";
         }
 
-        $("#emotions" + name + " span").click(function() {
+        $("#emotions" + name + " span").click(function () {
             var $comment = $("#comment" + name);
             var endPosition = _it._getCursorEndPosition($comment[0]);
             var key = "[" + this.className + "]",
@@ -58,7 +58,7 @@ $.extend(Page.prototype, {
      * @param {Dom} textarea 评论框对象
      * @returns {Num} 光标位置
      */
-    _getCursorEndPosition: function(textarea) {
+    _getCursorEndPosition: function (textarea) {
         textarea.focus();
         if (textarea.setSelectionRange) { // W3C
             return textarea.selectionEnd;
@@ -80,7 +80,7 @@ $.extend(Page.prototype, {
      * @description 评论校验
      * @param {String} state 用于区别回复评论还是对文章的评论
      */
-    validateComment: function(state) {
+    validateComment: function (state) {
         if (Util.isLoggedIn()) {
             var commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
             if (2 > commenterContent.length || commenterContent.length > 500) {
@@ -120,7 +120,7 @@ $.extend(Page.prototype, {
      * @description 把评论中的标识替换为图片
      * @param {Dom} selector
      */
-    replaceCommentsEm: function(selector) {
+    replaceCommentsEm: function (selector) {
         var $commentContents = $(selector);
         for (var i = 0; i < $commentContents.length; i++) {
             var str = $commentContents[i].innerHTML;
@@ -131,7 +131,7 @@ $.extend(Page.prototype, {
      * @description 初始化 SyantaxHighlighter
      * @param {Array} languages 需要加载的语言 
      */
-    _initSyntaxHighlighter: function(languages) {
+    _initSyntaxHighlighter: function (languages) {
         // load brush js
         for (var i = 0; i < languages.length; i++) {
             switch (languages[i]) {
@@ -274,7 +274,7 @@ $.extend(Page.prototype, {
      * @description 加载 SyntaxHighlighter 
      * @param {String} SHTheme SyntaxHighLighter 样式
      */
-    _loadSyntaxHighlighter: function(SHTheme) {
+    _loadSyntaxHighlighter: function (SHTheme) {
         var cssName = SHTheme ? SHTheme : "shCoreEclipse",
                 that = this;
         // load css
@@ -290,11 +290,11 @@ $.extend(Page.prototype, {
             url: latkeConfig.staticServePath + "/js/lib/SyntaxHighlighter/scripts/shCore.js",
             dataType: "script",
             cache: true,
-            success: function() {
+            success: function () {
                 // get brush settings
                 var languages = [],
                         isScrip = false;
-                $(".article-body pre, .code-highlight pre").each(function() {
+                $(".article-body pre, .code-highlight pre").each(function () {
                     var name = this.className.split(";")[0];
                     var language = name.substr(7, name.length - 1);
                     if (this.className.indexOf("html-script: true") > -1 &&
@@ -311,7 +311,7 @@ $.extend(Page.prototype, {
                         url: latkeConfig.staticServePath + "/js/lib/SyntaxHighlighter/scripts/shBrushXml.js",
                         dataType: "script",
                         cache: true,
-                        success: function() {
+                        success: function () {
                             that._initSyntaxHighlighter(languages);
                         }
                     });
@@ -326,10 +326,10 @@ $.extend(Page.prototype, {
      * @param {Obj} obj 语法高亮配置参数
      * @param {Obj} obj.SHTheme 语法高亮 SyntaxHighLighter 样式
      */
-    parseLanguage: function(obj) {
+    parseLanguage: function (obj) {
         var isPrettify = false,
                 isSH = false;
-        $(".article-body pre, .code-highlight pre").each(function() {
+        $(".article-body pre, .code-highlight pre").each(function () {
             if (this.className.indexOf("brush") > -1) {
                 isSH = true;
             }
@@ -338,8 +338,10 @@ $.extend(Page.prototype, {
                 isPrettify = true;
             }
         });
+
         if (isSH) {
             this._loadSyntaxHighlighter(obj ? (obj.SHTheme ? obj.SHTheme : undefined) : undefined);
+            return false;
         }
 
         if (isPrettify) {
@@ -355,37 +357,56 @@ $.extend(Page.prototype, {
                 url: latkeConfig.staticServePath + "/js/lib/google-code-prettify/prettify.js",
                 dataType: "script",
                 cache: true,
-                success: function() {
+                success: function () {
                     prettyPrint();
                 }
             });
+            return false;
         }
+
+
+        // otherelse use highlight
+        // load css
+        if (document.createStyleSheet) {
+            document.createStyleSheet(latkeConfig.staticServePath + "/js/lib/highlight/styles/default.css");
+        } else {
+            $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/highlight/styles/github.css'>"));
+        }
+        $.ajax({
+            url: latkeConfig.staticServePath + "/js/lib/highlight/highlight.pack.js",
+            dataType: "script",
+            cache: true,
+            success: function () {
+                hljs.initHighlightingOnLoad();
+            }
+        });
+
     },
     /*
      * @description 文章/自定义页面加载
      * @param {Obj} obj 配置设定
      * @param {Obj} obj.language 代码高亮配置
      */
-    load: function(obj) {
+    load: function (obj) {
         var that = this;
         // emotions
         that.insertEmotions();
         // language
         that.parseLanguage(obj ? (obj.language ? obj.language : undefined) : undefined);
         // submit comment
-        $("#commentValidate").keypress(function(event) {
+        $("#commentValidate").keypress(function (event) {
             if (event.keyCode === 13) {
                 that.submitComment();
             }
         });
 
-        $("#comment").keypress(function(event) {
+        $("#comment").keypress(function (event) {
             if (event.keyCode === 13 && event.ctrlKey) {
                 that.submitComment();
             }
         });
         // captcha
-        $("#captcha").click(function() {
+        $("#captcha").click(function () {
             $(this).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
         });
         // cookie
@@ -406,13 +427,13 @@ $.extend(Page.prototype, {
      * @description 加载随机文章
      * @param {String} headTitle 随机文章标题
      */
-    loadRandomArticles: function(headTitle) {
+    loadRandomArticles: function (headTitle) {
         var randomArticles1Label = this.tips.randomArticles1Label;
         // getRandomArticles
         $.ajax({
             url: latkeConfig.servePath + "/get-random-articles.do",
             type: "POST",
-            success: function(result, textStatus) {
+            success: function (result, textStatus) {
                 var randomArticles = result.randomArticles;
                 if (!randomArticles || 0 === randomArticles.length) {
                     $("#randomArticles").remove();
@@ -439,11 +460,11 @@ $.extend(Page.prototype, {
      * @param {String} id 文章 id
      * @param {String} headTitle 相关文章标题
      */
-    loadRelevantArticles: function(id, headTitle) {
+    loadRelevantArticles: function (id, headTitle) {
         $.ajax({
             url: latkeConfig.servePath + "/article/id/" + id + "/relevant/articles",
             type: "GET",
-            success: function(data, textStatus) {
+            success: function (data, textStatus) {
                 var articles = data.relevantArticles;
                 if (!articles || 0 === articles.length) {
                     $("#relevantArticles").remove();
@@ -464,7 +485,7 @@ $.extend(Page.prototype, {
                         + listHtml + "</ul>";
                 $("#relevantArticles").append(relevantArticleListHtml);
             },
-            error: function() {
+            error: function () {
                 $("#relevantArticles").remove();
             }
         });
@@ -474,7 +495,7 @@ $.extend(Page.prototype, {
      * @param {String} tags 文章 tags
      * @param {String} headTitle 站外相关文章标题
      */
-    loadExternalRelevantArticles: function(tags, headTitle) {
+    loadExternalRelevantArticles: function (tags, headTitle) {
         var tips = this.tips;
         try {
             $.ajax({
@@ -483,10 +504,10 @@ $.extend(Page.prototype, {
                 type: "GET",
                 cache: true,
                 dataType: "jsonp",
-                error: function() {
+                error: function () {
                     $("#externalRelevantArticles").remove();
                 },
-                success: function(data, textStatus) {
+                success: function (data, textStatus) {
                     var articles = data.articles;
                     if (!articles || 0 === articles.length) {
                         $("#externalRelevantArticles").remove();
@@ -518,7 +539,7 @@ $.extend(Page.prototype, {
      * @param {String} commentId 回复评论时的评论 id
      * @param {String} state 区分回复文章还是回复评论的标识
      */
-    submitComment: function(commentId, state) {
+    submitComment: function (commentId, state) {
         if (!state) {
             state = '';
         }
@@ -536,7 +557,7 @@ $.extend(Page.prototype, {
                 "oId": tips.oId,
                 "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "")
             };
-            
+
             if (!Util.isLoggedIn()) {
                 requestJSONObject = {
                     "oId": tips.oId,
@@ -550,7 +571,7 @@ $.extend(Page.prototype, {
                 Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
                 Cookie.createCookie("commentURL", $("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
             }
-            
+
             if (state === "Reply") {
                 requestJSONObject.commentOriginalCommentId = commentId;
             }
@@ -561,7 +582,7 @@ $.extend(Page.prototype, {
                 cache: false,
                 contentType: "application/json",
                 data: JSON.stringify(requestJSONObject),
-                success: function(result) {
+                success: function (result) {
                     if (!result.sc) {
                         $("#commentErrorTip" + state).html(result.msg);
                         $("#comment" + state).val("").focus();
@@ -600,7 +621,7 @@ $.extend(Page.prototype, {
      * @param {String} commentFormHTML 评论表单HTML
      * @param {String} endHTML 判断该表单使用 table 还是 div 标签，然后进行构造
      */
-    addReplyForm: function(id, commentFormHTML, endHTML) {
+    addReplyForm: function (id, commentFormHTML, endHTML) {
         var that = this;
         if (id === this.currentCommentId) {
             if ($("#commentNameReply").val() === "") {
@@ -621,7 +642,7 @@ $.extend(Page.prototype, {
         }
 
         // change id, bind event and set value
-        $("#replyForm input, #replyForm textarea").each(function() {
+        $("#replyForm input, #replyForm textarea").each(function () {
             this.id = this.id + "Reply";
         });
         $("#commentNameReply").val(Cookie.readCookie("commentName"));
@@ -634,25 +655,25 @@ $.extend(Page.prototype, {
         $("#commentURLReply").val(Cookie.readCookie("commentURL"));
         $("#replyForm #emotions").attr("id", "emotionsReply");
         this.insertEmotions("Reply");
-        $("#commentReply").unbind().keypress(function(event) {
+        $("#commentReply").unbind().keypress(function (event) {
             if (event.keyCode === 13 && event.ctrlKey) {
                 that.submitComment(id, 'Reply');
                 event.preventDefault();
             }
         });
-        $("#commentValidateReply").unbind().keypress(function(event) {
+        $("#commentValidateReply").unbind().keypress(function (event) {
             if (event.keyCode === 13) {
                 that.submitComment(id, 'Reply');
                 event.preventDefault();
             }
         });
         $("#replyForm #captcha").attr("id", "captchaReply").
-                attr("src", latkeConfig.servePath + "/captcha.do?" + new Date().getTime()).click(function() {
+                attr("src", latkeConfig.servePath + "/captcha.do?" + new Date().getTime()).click(function () {
             $(this).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
         });
         $("#replyForm #commentErrorTip").attr("id", "commentErrorTipReply").html("").hide();
         $("#replyForm #submitCommentButton").attr("id", "submitCommentButtonReply");
-        $("#replyForm #submitCommentButtonReply").unbind("click").removeAttr("onclick").click(function() {
+        $("#replyForm #submitCommentButtonReply").unbind("click").removeAttr("onclick").click(function () {
             that.submitComment(id, 'Reply');
         });
         if ($("#commentNameReply").val() === "") {
@@ -669,7 +690,7 @@ $.extend(Page.prototype, {
      * @description 隐藏回复评论的浮出层
      * @parma {String} id 被回复的评论 id
      */
-    hideComment: function(id) {
+    hideComment: function (id) {
         $("#commentRef" + id).hide();
     },
     /* 
@@ -679,7 +700,7 @@ $.extend(Page.prototype, {
      * @param {Int} top 位置相对浮出层的高度
      * @param {String} [parentTag] it 如果嵌入在 position 为 relative 的元素 A 中时，需取到 A 元素
      */
-    showComment: function(it, id, top, parentTag) {
+    showComment: function (it, id, top, parentTag) {
         var positionTop = parseInt($(it).position().top);
         if (parentTag) {
             positionTop = parseInt($(it).parents(parentTag).position().top);
@@ -700,7 +721,7 @@ $.extend(Page.prototype, {
      * @parma {String} commentHTML 回复内容 HTML
      * @param {String} state 用于区分评论文章还是回复评论
      */
-    addCommentAjax: function(commentHTML, state) {
+    addCommentAjax: function (commentHTML, state) {
         if ($("#comments").children().length > 0) {
             $($("#comments").children()[0]).before(commentHTML);
         } else {

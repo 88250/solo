@@ -18,6 +18,7 @@
             <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
         </span>
     </div>
+    <span onclick="Util.goTop()" class="icon-goup"></span>
 </footer>
 
 

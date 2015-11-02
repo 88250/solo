@@ -11,7 +11,7 @@
     <body>
         <#include "side.ftl">
         <main>
-            <article class="post">
+            <article class="post article-body">
                 <header>
                     <h2>
                         <a rel="bookmark" href="${servePath}${article.articlePermalink}">
@@ -49,7 +49,23 @@
                         ${article.articleSign.signHTML}
                     </div>
                     </#if>
+
+                    <#if nextArticlePermalink?? || previousArticlePermalink??>
+                    <aside class="fn-clear">
+                        <#if previousArticlePermalink??>
+                        <a class="fn-left" rel="prev" href="${servePath}${previousArticlePermalink}">
+                            <strong>&lt;</strong> ${previousArticleTitle}
+                        </a>
+                        </#if>
+                        <#if nextArticlePermalink??>
+                        <a class="fn-right" rel="next" href="${servePath}${nextArticlePermalink}">
+                            ${nextArticleTitle} <strong>&gt;</strong>
+                        </a>
+                        </#if>
+                    </aside>
+                    </#if>
                 </section>
+
                 <footer class="fn-clear share">
                     <div class="fn-right">
                         <span class="icon icon-t-weibo" data-type="tencent"></span>
@@ -59,30 +75,9 @@
                     </div>
                 </footer>
             </article>
+
             <@comments commentList=articleComments article=article></@comments>
 
-            <#if nextArticlePermalink?? || previousArticlePermalink??>
-            <aside class="read-next">
-                <#if nextArticlePermalink??>
-                <div class="read-next-story " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/next.jpg')"
-                     onclick="window.location = '${servePath}${nextArticlePermalink}'">
-                    <section class="post">
-                        <h2>${nextArticleTitle}</h2>
-                        <p>${nextArticleAbstract}</p>
-                    </section>
-                </div>
-                </#if>
-                <#if previousArticlePermalink??>
-                <div class="read-next-story prev " style="background-image: url('${staticServePath}/skins/${skinDirName}/images/preview.jpg')"
-                     onclick="window.location = '${servePath}${previousArticlePermalink}'">
-                    <section class="post">
-                        <h2>${previousArticleTitle}</h2>
-                        <p>${previousArticleAbstract}</p>
-                    </section>
-                </div>
-                </#if>
-            </aside>
-            </#if>
             <#include "footer.ftl">
 
             <@comment_script oId=article.oId>

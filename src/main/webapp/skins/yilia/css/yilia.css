@@ -18,7 +18,7 @@
  * skin yilia style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.0, Nov 1, 2015
+ * @version 1.1.0.0, Nov 2, 2015
 */
 /* start reset */
 html {
@@ -65,7 +65,7 @@ h4, h5, h6 {
     -webkit-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
     -moz-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
     -o-font-feature-settings: 'dlig' 1, 'liga' 1, 'lnum' 1, 'kern' 1;
-    color: #2E2E2E;
+    color: #666;
     line-height: 1.15em;
     font-family: "Open Sans", "Microsoft Yahei", 'Helvetica';
     text-rendering: geometricPrecision;
@@ -149,11 +149,16 @@ hr {
 }
 
 blockquote {
-    -moz-box-sizing: border-box;
     box-sizing: border-box;
-    margin: 1.75em 0 1.75em -2.2em;
+    margin: 1.75em 0 1.75em 0;
     padding: 0 0 0 1.75em;
-    border-left: #4A4A4A 0.4em solid;
+    border-left: 5px solid;
+    transition: all 0.3s ease;
+}
+
+
+blockquote:hover {
+    border-color: #b0a0aa;
 }
 
 blockquote p {
@@ -191,18 +196,7 @@ code, tt {
 }
 
 pre {
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    margin: 0 0 1.75em 0;
-    border: #E3EDF3 1px solid;
-    width: 100%;
-    padding: 10px;
-    font-family: Inconsolata, monospace, "Microsoft Yahei", 'Helvetica';
     font-size: 0.9em;
-    white-space: pre;
-    overflow: auto;
-    background: #F7FAFB;
-    border-radius: 3px;
 }
 
 pre code, pre tt {
@@ -305,7 +299,124 @@ pre code, pre tt {
 .icon-login:before {
     content: "\e611";
 }
+
+.form {
+    width: 100%;
+    padding: 30px;
+}
+
+#captcha,
+#captchaReply {
+    height: 27px;
+    display: inline-block;
+    vertical-align: inherit;
+}
+
+.form input,
+.form textarea,
+.form button {
+    border: 1px solid #CCCCCC;
+    background-color: #FAFAFA;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
+    padding: 7px 8px;
+    width: 100%;
+    box-sizing: border-box;
+    outline: none;
+    font-family: "Merriweather", "Microsoft Yahei", 'Helvetica';
+}
+
+.form button {
+    width: auto;
+    vertical-align: bottom;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.form button:hover {
+    background-color: #b0a0aa;
+    color: #FFF;
+    box-shadow: 0 0 0;
+    border-color: #b0a0aa;
+}
+
+.form input:focus,
+.form textarea:focus {
+    background-color: #FFF;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset, 0 0 5px rgba(176, 160, 170, 0.5);
+    border: 1px solid #b0a0aa;
+}
 /* end common */
+
+/* start emotions */
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
+.em10, .em11, .em12, .em13, .em14 {
+    background-image: url("../images/emotions/emotions-ease.png");
+    float: left;
+    height: 24px;
+    margin-right: 5px;
+    width: 24px;
+}
+
+#emotions span {
+    cursor: pointer;
+}
+
+.em01 {
+    background-position: -24px 0;
+}
+
+.em02 {
+    background-position: -48px 0;
+}
+
+.em03 {
+    background-position: -72px 0;
+}
+.em04 {
+    background-position: -96px 0;
+}
+
+.em05 {
+    background-position: 0px -24px;
+}
+
+.em06 {
+    background-position: -24px -24px;
+}
+
+.em07 {
+    background-position: -48px -24px;
+}
+
+.em08 {
+    background-position: -72px -24px;
+}
+
+.em09 {
+    background-position: -96px -24px;
+}
+
+.em10 {
+    background-position: 0 -48px;
+}
+
+.em11 {
+    background-position: -24px -48px ;
+}
+
+.em12 {
+    background-position: -48px -48px;
+}
+
+.em13 {
+    background-position: -72px -48px;
+}
+
+.em14 {
+    background-position: -96px -48px;
+}
+/* end emotions */
 
 /* start side */
 .side {
@@ -448,9 +559,9 @@ article header:hover {
 }
 
 article header h2 {
-   margin: 0;
-  font-size: 26px;
-  padding-right: 110px;
+    margin: 0;
+    font-size: 26px;
+    padding-right: 110px;
 }
 
 article header a {
@@ -490,14 +601,6 @@ article footer {
     border-top: 1px solid #ddd;
 }
 
-.post section.tags {
-    margin: 0;
-}
-
-.post header {
-    padding-bottom: 0;
-}
-
 .tags .tag:hover,
 article .abstract a:hover{
     opacity: 0.7;
@@ -510,11 +613,6 @@ article .abstract a:hover{
     position: absolute;
     bottom: 25px;
     transition: all 0.2s ease-out 0s;
-}
-
-.post .tags .avatar {
-    bottom: inherit;
-    margin-top: 4px;
 }
 
 .share span {
@@ -630,8 +728,52 @@ nav.pagination:hover .extend {
     opacity: 1;
 }
 
+article.post {
+    visibility: visible;
+}
+
+.post .tags .avatar {
+    bottom: inherit;
+    margin-top: 4px;
+}
+
+.post section.tags {
+    margin: 0;
+}
+
+.post header {
+    padding-bottom: 0;
+}
+
 .post .share {
-    padding: 0;
+    padding: 10px 0 0 0;
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.post aside a {
+    color: #DDD;
+}
+
+.post aside a > strong {
+    background: #ddd;
+    color: #fff;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    transition: background 0.3s;
+    vertical-align: middle;
+    line-height: 18px;
+    text-align: center;
+}
+
+.post aside a:hover {
+    color: #4d4d4d;
+}
+
+.post aside a:hover > strong {
+    background-color: #4d4d4d;    
 }
 /* end article */
 
@@ -643,6 +785,53 @@ footer.footer {
     text-shadow: 0 1px #fff;
     opacity: 0.6;
     margin: 0 30px 30px;
+}
+
+footer.footer .icon-goup {
+    position: fixed;
+    bottom: 35px;
+    right: 5px;
+    -webkit-animation: upbounce 4s 2s infinite;
+    animation: upbounce 4s 2s infinite;
+    z-index: 10;
+    font-size: 20px;
+    cursor: pointer;
+    color: #b0a0aa;
+    transition: all 0.3s ease;
+}
+
+footer.footer .icon-goup:hover {
+    color: #4a4a4a;
+}
+
+@-webkit-keyframes upbounce {
+    0%, 10%, 25%, 40%, 50% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    20% {
+        -webkit-transform: translateY(-10px);
+        transform: translateY(-10px);
+    }
+    30% {
+        -webkit-transform: translateY(-5px);
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes upbounce {
+    0%, 20%, 50%, 80%, 100% {
+        -webkit-transform: translateY(0);
+        transform: translateY(0);
+    }
+    40% {
+        -webkit-transform: translateY(-10px);
+        transform: translateY(-10px);
+    }
+    60% {
+        -webkit-transform: translateY(-5px);
+        transform: translateY(-5px);
+    }
 }
 /* end footer */
 
