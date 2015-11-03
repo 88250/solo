@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.0, Nov 2, 2015
+ * @version 1.2.0.0, Nov 3, 2015
  */
 
 /**
@@ -31,19 +31,28 @@ var Yilia = {
     init: function () {
         Util.killIE();
         this.resetTags();
-        if ($("article").length > 0 && $("article.post").length === 0) {
-            $(window).scroll(function () {
+        
+        $(window).scroll(function () {
+            if ($("article").length > 0 && $("article.post").length === 0) {
                 $("article:not(.show)").each(function () {
                     if ($(this).offset().top <= $(window).scrollTop() + $(window).height() - $(this).height() / 7) {
                         $(this).addClass("show");
                     }
                 });
-            });
+            }
 
-            $(window).scroll();
-        } else if ($("article.post").length === 1) {
-            $("article.post").addClass('show');
-        }
+            if ($(window).scrollTop() > $(window).height()) {
+                $(".icon-goup").show();
+            } else {
+                $(".icon-goup").hide();
+            }
+
+            if ($("article.post").length === 1) {
+                $("article.post").addClass('show');
+            }
+        });
+
+        $(window).scroll();
     },
     resetTags: function () {
         $("a.tag").each(function (i) {

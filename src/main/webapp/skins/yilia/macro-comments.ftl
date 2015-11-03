@@ -1,11 +1,9 @@
 <#macro comments commentList article>
-<ul class="comments fn-wrap" id="comments">
+<ul class="comments" id="comments">
     <#list commentList as comment>
-    <li id="${comment.oId}" class="fn-clear">
-        <div class="fn-left avatar-warp">
-            <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
-        </div>
-        <div class="fn-left" style="width: 90%">
+    <li id="${comment.oId}">
+        <img class="avatar" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
+        <div class="content">
             <div class="fn-clear post-meta">
                 <span class="fn-left">
                     <#if "http://" == comment.commentURL>
@@ -116,9 +114,9 @@
                         });
                         var addComment = function (result, state) {
                             var commentable = $("#commentForm").length === 0 ? false : true;
-                            var commentHTML = '<li class="fn-clear" id="' + result.oId +
-                                    '"><div class="fn-left" style="width: 10%"><img class="avatar-48" title="'
-                                    + result.userName + '" src="' + result.commentThumbnailURL + '"></div><div class="fn-left" style="width: 90%">'
+                            var commentHTML = '<li id="' + result.oId +
+                                    '"><img class="avatar" title="'
+                                    + result.userName + '" src="' + result.commentThumbnailURL + '"><div class="content">'
                                     + '<div class="fn-clear post-meta"><span class="fn-left">' + result.replyNameHTML;
                             if (state !== "") {
                                 var commentOriginalCommentName = $("#" + page.currentCommentId).find(".post-meta a").first().text();
@@ -126,8 +124,6 @@
                                         + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 23);"'
                                         + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                             }
-
-
 
                             commentHTML += '<time>' + result.commentDate
                                     + '</time></span>';
@@ -147,7 +143,7 @@
                             Yilia.share();
                             page.load();
                             // emotions
-                            page.replaceCommentsEm("#comments .comment-content");
+                            page.replaceCommentsEm(".comments .comment-content");
                             <#nested>
                         })();
 </script>

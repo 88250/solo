@@ -18,7 +18,7 @@
  * skin yilia style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.0, Nov 2, 2015
+ * @version 1.2.0.0, Nov 3, 2015
 */
 /* start reset */
 html {
@@ -774,6 +774,49 @@ article.post {
 
 .post aside a:hover > strong {
     background-color: #4d4d4d;    
+}
+
+.comments {
+    margin: 60px 60px 0 50px;
+    padding: 0;
+    list-style: none;
+    position: relative;
+}
+
+.comments li {
+    margin-bottom: 30px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid #ddd;
+}
+
+.comments .avatar {
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    border: 3px solid #FFF;
+}
+
+.comments .content {
+    margin-left: 80px;
+    min-height: 66px;
+}
+
+.comments .post-meta {
+    margin-bottom: 9px;
+}
+
+.comments .content img {
+    vertical-align: sub;
+}
+
+.comments li.comment-body-ref {
+    position: absolute;
+    background-color: #FFF;
+    width: 80%;
+    margin-left: 80px;
+    padding: 10px;
+    border: 1px solid #ddd;
 }
 /* end article */
 
