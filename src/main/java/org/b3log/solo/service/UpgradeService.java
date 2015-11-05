@@ -13,48 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.b3log.solo.processor;
+package org.b3log.solo.service;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Statement;
 import javax.inject.Inject;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
+import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
-import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Upgrader.
+ * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.5.1.14, Oct 17, 2015
- * @since 0.3.1
+ * @version 1.0.0.0, Nov 5, 2015
+ * @since 1.2.0
  */
-@RequestProcessor
-public class UpgradeProcessor {
+@Service
+public class UpgradeService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UpgradeProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UpgradeService.class.getName());
 
     /**
      * Article repository.
@@ -104,7 +103,7 @@ public class UpgradeProcessor {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "1.0.0";
+    private static final String FROM_VER = "1.1.0";
 
     /**
      * New version.
@@ -113,26 +112,16 @@ public class UpgradeProcessor {
 
     /**
      * Checks upgrade.
-     *
-     * @param context the specified context
      */
-    @RequestProcessing(value = "/upgrade/checker.do", method = HTTPRequestMethod.GET)
-    public void upgrade(final HTTPRequestContext context) {
-        final TextHTMLRenderer renderer = new TextHTMLRenderer();
-
-        context.setRenderer(renderer);
-
+    public void upgrade() {
         try {
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
             if (null == preference) {
                 LOGGER.log(Level.INFO, "Not init yet");
-                renderer.setContent("Not init yet");
 
                 return;
             }
-
-            renderer.setContent("Upgrade successfully ;-)");
 
             final String currentVer = preference.getString(Preference.VERSION);
 
@@ -141,7 +130,7 @@ public class UpgradeProcessor {
             }
 
             if (FROM_VER.equals(currentVer)) {
-                upgrade();
+                perform();
 
                 return;
             }
@@ -154,11 +143,9 @@ public class UpgradeProcessor {
                 sent = true;
             }
 
-            renderer.setContent(langPropsService.get("skipVersionAlert"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            renderer.setContent(
+            LOGGER.log(Level.ERROR,
                     "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
                     + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
                     + "https://github.com/b3log/solo/issues/new</a>) ");
@@ -166,20 +153,29 @@ public class UpgradeProcessor {
     }
 
     /**
-     * Upgrades.
+     * Performs upgrade.
      *
      * @throws Exception upgrade fails
      */
-    private void upgrade() throws Exception {
+    private void perform() throws Exception {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
         Transaction transaction = null;
 
         try {
+            final Connection connection = Connections.getConnection();
+            final Statement statement = connection.createStatement();
+
+            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+            statement.execute("ALTER TABLE `" + tablePrefix + "user` ADD COLUMN `userAvatar` varchar(255)");
+            statement.close();
+            connection.commit();
+            connection.close();
+
             transaction = userRepository.beginTransaction();
 
             upgradeUsers();
-            
+
             // Upgrades preference model
             final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
 
@@ -221,7 +217,7 @@ public class UpgradeProcessor {
 
             userRepository.update(user.optString(Keys.OBJECT_ID), user);
 
-            LOGGER.log(Level.INFO, "Updated user[name={0}]");
+            LOGGER.log(Level.INFO, "Updated user[email={0}]", email);
         }
     }
 

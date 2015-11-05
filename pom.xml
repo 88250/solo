@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 2.6.1.7, Oct 25, 2015
+    Version: 2.7.1.7, Nov 5, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -12,7 +12,7 @@
     <artifactId>solo</artifactId>
     <packaging>war</packaging>
     <name>Solo</name>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <description>
         A Java blogging system, feel free to create your or your team own blog.
     </description>

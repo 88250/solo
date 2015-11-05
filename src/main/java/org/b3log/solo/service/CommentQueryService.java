@@ -41,6 +41,7 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -49,7 +50,7 @@ import org.json.JSONObject;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Feb 28, 2014
+ * @version 1.0.0.6, Nov 5, 2015
  * @since 0.3.5
  */
 @Service
@@ -242,6 +243,10 @@ public class CommentQueryService {
                 comment.put(Comment.COMMENT_NAME, StringEscapeUtils.escapeHtml(comment.getString(Comment.COMMENT_NAME)));
                 comment.put(Comment.COMMENT_URL, StringEscapeUtils.escapeHtml(comment.getString(Comment.COMMENT_URL)));
                 comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
+                
+                final String email = comment.optString(Comment.COMMENT_EMAIL);
+                
+                comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.getGravatarURL(email, "60"));
 
                 if (!Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                     // This comment is a reply

@@ -47,6 +47,7 @@ import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.StatisticMgmtService;
+import org.b3log.solo.service.UpgradeService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
@@ -54,7 +55,7 @@ import org.json.JSONObject;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.9, Oct 31, 2015
+ * @version 1.6.0.9, Nov 5, 2015
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -62,7 +63,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Solo version.
      */
-    public static final String VERSION = "1.1.0";
+    public static final String VERSION = "1.2.0";
 
     /**
      * Logger.
@@ -114,6 +115,10 @@ public final class SoloServletListener extends AbstractServletListener {
         beanManager = Lifecycle.getBeanManager();
 
         Stopwatchs.start("Context Initialized");
+        
+        // Upgrade check (https://github.com/b3log/solo/issues/12040)
+        final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
+        upgradeService.upgrade();
 
         // Set default skin, loads from preference later
         Skins.setDirectoryForTemplateLoading(Preference.Default.DEFAULT_SKIN_DIR_NAME);

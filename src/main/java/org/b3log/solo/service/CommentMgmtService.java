@@ -44,6 +44,7 @@ import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONException;
@@ -53,7 +54,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, Oct 1, 2015
+ * @version 1.1.0.7, Nov 5, 2015
  * @since 0.3.5
  */
 @Service
@@ -81,6 +82,12 @@ public class CommentMgmtService {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Statistic management service.
@@ -709,15 +716,31 @@ public class CommentMgmtService {
      * Sets commenter thumbnail URL for the specified comment.
      *
      * <p>
-     * Try to set thumbnail URL using Gravatar service.
+     * Try to set thumbnail URL using:
+     * <ol>
+     * <li>User avatar</li>
+     * <li>Gravatar service</li>
+     * <ol>
      * </p>
      *
      * @param comment the specified comment
      * @throws Exception exception
      */
-    public static void setCommentThumbnailURL(final JSONObject comment) throws Exception {
+    public void setCommentThumbnailURL(final JSONObject comment) throws Exception {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
+        
+        // 1. user avatar
+        final JSONObject user = userRepository.getByEmail(commentEmail);
+        if (null != user) {
+            final String avatar = user.optString(UserExt.USER_AVATAR);
+            if (!Strings.isEmptyOrNull(avatar)) {
+                comment.put(Comment.COMMENT_THUMBNAIL_URL, avatar);
+                
+                return;
+            }
+        }
 
+        // 2. Gravatar
         String thumbnailURL = Thumbnails.getGravatarURL(commentEmail.toLowerCase(), "60");
         final URL gravatarURL = new URL(thumbnailURL);
 
