@@ -45,7 +45,7 @@ Here are some our most valuable business users' cases:
 
 ## Documents
 
-* [User Guide](https://github.com/b3log/solo/wiki/Pre_installation)
+* [User Guide](https://github.com/b3log/solo/wiki/standalone_mode)
 * [Dev Guide](https://github.com/b3log/solo/wiki/Pre_dev)
   * [Skin Dev Guide](https://github.com/b3log/solo/wiki/Develop_steps)
   * [Plugin Dev Guide](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
