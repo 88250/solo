@@ -13,6 +13,7 @@
     <div class="fn-clear">
         <a href="${servePath}">${blogTitle}</a> 
         &copy; ${year}
+        ${footerContent}
         <span class="fn-right">
             Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
             <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
