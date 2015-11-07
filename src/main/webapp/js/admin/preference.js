@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.8, Sep 12, 2015
+ * @version 1.1.1.9, Nov 7, 2015
  */
 
 /* preference 相关操作 */
@@ -57,6 +57,7 @@ admin.preference = {
                 $("#localeString").val(preference.localeString);
                 $("#timeZoneId").val(preference.timeZoneId);
                 $("#noticeBoard").val(preference.noticeBoard);
+                $("#footerContent").val(preference.footerContent);
                 $("#htmlHead").val(preference.htmlHead);
                 $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
                 $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
@@ -77,7 +78,7 @@ admin.preference = {
                     if (skins[i].skinName === preference.skinName
                             && skins[i].skinDirName === preference.skinDirName) {
                         selectedClass += " selected";
-            }
+                    }
                     skinsHTML += "<div title='" + skins[i].skinDirName
                             + "' class='left skinItem" + selectedClass + "'><img class='skinPreview' src='"
                             + latkeConfig.staticServePath + "/skins/" + skins[i].skinDirName
@@ -89,8 +90,8 @@ admin.preference = {
                     $(".skinItem").removeClass("selected");
                     $(this).addClass("selected");
                     $("#skinMain").data("skinDirName", this.title);
-        });
-        
+                });
+
                 // sign
                 var signs = eval('(' + preference.signs + ')');
                 for (var j = 1; j < signs.length; j++) {
@@ -114,8 +115,8 @@ admin.preference = {
                 $("#loadMsg").text("");
             }
         });
-        
-                 $.ajax({
+
+        $.ajax({
             url: latkeConfig.servePath + "/console/preference/qiniu",
             type: "GET",
             cache: false,
@@ -216,6 +217,7 @@ admin.preference = {
                 "localeString": $("#localeString").val(),
                 "timeZoneId": $("#timeZoneId").val(),
                 "noticeBoard": $("#noticeBoard").val(),
+                "footerContent": $("#footerContent").val(),
                 "htmlHead": $("#htmlHead").val(),
                 "externalRelevantArticlesDisplayCount": $("#externalRelevantArticlesDisplayCount").val(),
                 "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),

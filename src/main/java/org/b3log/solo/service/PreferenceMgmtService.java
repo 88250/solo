@@ -23,6 +23,7 @@ import java.util.Locale;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -34,6 +35,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.PreferenceRepository;
@@ -43,6 +45,7 @@ import static org.b3log.solo.model.Preference.*;
 import static org.b3log.solo.model.Skin.SKINS;
 import static org.b3log.solo.model.Skin.SKIN_DIR_NAME;
 import static org.b3log.solo.model.Skin.SKIN_NAME;
+import org.b3log.solo.repository.OptionRepository;
 import static org.b3log.solo.util.Skins.getSkinDirNames;
 import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
 
@@ -50,7 +53,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.9, Oct 31, 2015
+ * @version 1.1.1.9, Nov 7, 2015
  * @since 0.4.0
  */
 @Service
@@ -66,6 +69,12 @@ public class PreferenceMgmtService {
      */
     @Inject
     private PreferenceRepository preferenceRepository;
+    
+    /**
+     * Option repository.
+     */
+    @Inject
+    private OptionRepository optionRepository;
 
     /**
      * Language service.
@@ -238,6 +247,22 @@ public class PreferenceMgmtService {
             LOGGER.log(Level.DEBUG, "Current locale[string={0}]", localeString);
             Latkes.setLocale(new Locale(Locales.getLanguage(localeString), Locales.getCountry(localeString)));
 
+            final String footerContent = preference.optString(Option.ID_C_FOOTER_CONTENT);
+            JSONObject opt = optionRepository.get(Option.ID_C_FOOTER_CONTENT);
+            if (null == opt) {
+                opt = new JSONObject();
+                opt.put(Keys.OBJECT_ID, Option.ID_C_FOOTER_CONTENT);
+                opt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+                opt.put(Option.OPTION_VALUE, footerContent);
+                
+                optionRepository.add(opt);
+            } else {
+                opt.put(Option.OPTION_VALUE, footerContent);
+                optionRepository.update(Option.ID_C_FOOTER_CONTENT, opt);
+            }
+            
+            preference.remove(Option.ID_C_FOOTER_CONTENT);
+            
             preferenceRepository.update(Preference.PREFERENCE, preference);
 
             transaction.commit();

@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, Sep 12, 2015
+ * @version 1.1.0.7, Nov 7, 2015
  * @since 0.4.0
  */
 @RequestProcessor
@@ -295,6 +295,7 @@ public class PreferenceConsole {
      *             "skinDirName": ""
      *         }, ....]",
      *         "noticeBoard": "",
+     *         "footerContent": "",
      *         "htmlHead": "",
      *         "adminEmail": "",
      *         "metaKeywords": "",
@@ -341,6 +342,13 @@ public class PreferenceConsole {
                 return;
             }
 
+            String footerContent = "";
+            final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_FOOTER_CONTENT);
+            if (null != opt) {
+                footerContent = opt.optString(Option.OPTION_VALUE);
+            }
+            preference.put(Option.ID_C_FOOTER_CONTENT, footerContent);
+
             final JSONObject ret = new JSONObject();
 
             renderer.setJSONObject(ret);
@@ -377,6 +385,7 @@ public class PreferenceConsole {
      *         "localeString": "",
      *         "timeZoneId": "",
      *         "noticeBoard": "",
+     *         "footerContent": "",
      *         "htmlHead": "",
      *         "metaKeywords": "",
      *         "metaDescription": "",
@@ -422,7 +431,7 @@ public class PreferenceConsole {
             if (isInvalid(preference, ret)) {
                 return;
             }
-
+            
             preferenceMgmtService.updatePreference(preference);
 
             ret.put(Keys.STATUS_CODE, true);

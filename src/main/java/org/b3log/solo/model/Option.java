@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 12, 2015
+ * @version 1.1.0.1, Nov 7, 2015
  * @since 0.6.0
  */
 public final class Option {
@@ -69,6 +69,11 @@ public final class Option {
      * Key of Qiniu bucket.
      */
     public static final String ID_C_QINIU_BUCKET = "qiniuBucket";
+    
+    /**
+     * Key of footer content.
+     */
+    public static final String ID_C_FOOTER_CONTENT = "footerContent";
 
     // Category constants
     /**
@@ -80,6 +85,11 @@ public final class Option {
      * Qiniu.
      */
     public static final String CATEGORY_C_QINIU = "qiniu";
+    
+    /**
+     * Preference.
+     */
+    public static final String CATEGORY_C_PREFERENCE = "preference";
 
     /**
      * Private constructor.

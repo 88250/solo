@@ -86,7 +86,7 @@
                         <label for="htmlHead">${htmlhead1Label}</label>
                     </th>
                     <td>
-                        <textarea rows="9" id="htmlHead"></textarea>
+                        <textarea rows="6" id="htmlHead"></textarea>
                     </td>
                 </tr>
                 <tr>
@@ -94,7 +94,15 @@
                         <label for="noticeBoard">${noticeBoard1Label}</label>
                     </th>
                     <td>
-                        <textarea rows="9" id="noticeBoard"></textarea>
+                        <textarea rows="6" id="noticeBoard"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <th valign="top">
+                        <label for="footerContent">${footerContent1Label}</label>
+                    </th>
+                    <td>
+                        <textarea rows="2" id="footerContent"></textarea>
                     </td>
                 </tr>
                 <tr>

@@ -57,6 +57,7 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.ArticleQueryService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
@@ -70,7 +71,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.11.11, Nov 1, 2015
+ * @version 1.5.11.11, Nov 7, 2015
  * @since 0.3.1
  */
 @Service
@@ -134,6 +135,12 @@ public class Filler {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Option query service..
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
 
     /**
      * Article query service.
@@ -567,6 +574,13 @@ public class Filler {
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
+            String footerContent = "";
+            final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_FOOTER_CONTENT);
+            if (null != opt) {
+                footerContent = opt.optString(Option.OPTION_VALUE);
+            }
+            dataModel.put(Option.ID_C_FOOTER_CONTENT, footerContent);
+
             dataModel.put(Keys.Server.STATIC_SERVER, Latkes.getStaticServer());
             dataModel.put(Keys.Server.SERVER, Latkes.getServer());
 
@@ -663,7 +677,7 @@ public class Filler {
             final JSONArray users = result.getJSONArray(Keys.RESULTS);
             final List<JSONObject> userList = CollectionUtils.jsonArrayToList(users);
             dataModel.put(User.USERS, userList);
-            
+
             final JSONObject admin = userRepository.getAdmin();
             dataModel.put(Common.ADMIN_USER, admin);
 
