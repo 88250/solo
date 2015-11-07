@@ -7,18 +7,23 @@
         <meta name="description" content="${metaDescription},${linkLabel}"/>
         </@head>
     </head>
-    <body class="nav-closed">
-        <div class="nav">
-            <#include "side.ftl">
-        </div>
-        <div class="site-wrapper">
-            <#include "header.ftl">
-            <main id="content">
+    <body>
+        <#include "side.ftl">
+        <main class="classify">
+            <article>
+                <header>
+                    <h2>
+                        <a rel="archive" href="${servePath}/links.html">
+                            ${linkLabel}
+                        </a>
+                    </h2>
+                </header>
                 <#if 0 != links?size>
-                <ul class="fn-clear fn-wrap" id="tags">
+                <ul class="tags fn-clear">
                     <#list links as link>
                     <li>
-                        <a rel="friend" href="${link.linkAddress}" title="${link.linkDescription}" target="_blank">
+                        <a rel="friend" href="${link.linkAddress}" class="tag"
+                           title="${link.linkDescription}" target="_blank">
                             <img src="${faviconAPI}<#list link.linkAddress?split('/') as x><#if x_index=2>${x}<#break></#if></#list>" width="16" height="16" />
                             ${link.linkTitle}
                         </a>
@@ -26,8 +31,8 @@
                     </#list>
                 </ul>
                 </#if>
-            </main>
+            </article>
             <#include "footer.ftl">
-        </div>
+        </main>
     </body>
 </html>

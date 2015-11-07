@@ -7,17 +7,21 @@
         <meta name="description" content="<#list tags as tag>${tag.tagTitle}<#if tag_has_next>,</#if></#list>"/>
         </@head>
     </head>
-    <body class="nav-closed">
-        <div class="nav">
-            <#include "side.ftl">
-        </div>
-        <div class="site-wrapper">
-            <#include "header.ftl">
-            <main id="content">
-                <ul id="tags" class="fn-clear fn-wrap">
+    <body>
+        <#include "side.ftl">
+        <main class="classify">
+            <article>
+                <header>
+                    <h2>
+                        <a rel="archive" href="${servePath}/tags.html">
+                            ${tagLabel}
+                        </a>
+                    </h2>
+                </header>
+                <ul class="tags fn-clear">
                     <#list tags as tag>
                     <li>
-                        <a rel="tag" data-count="${tag.tagPublishedRefCount}"
+                        <a rel="tag" class="tag" data-count="${tag.tagPublishedRefCount}"
                            href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
                             <span>${tag.tagTitle}</span>
                             (<b>${tag.tagPublishedRefCount}</b>)
@@ -25,12 +29,8 @@
                     </li>
                     </#list>
                 </ul>
-            </main>
+            </article>
             <#include "footer.ftl">
-        </div>
-        <script type="text/javascript">
-            Util.buildTags();
-        </script>
+        </main>
     </body>
-</body>
 </html>

@@ -7,19 +7,14 @@
         <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
         </@head>
     </head>
-    <body class="nav-closed">
-        <div class="nav">
-            <#include "side.ftl">
-        </div>
-        <div class="site-wrapper">
-            <#include "header.ftl">
-            <main id="content">
-                <h2 class="fn-wrap">
-                    ${author1Label}${authorName}
-                </h2>
-                <#include "article-list.ftl">
-            </main>
+    <body>
+        <#include "side.ftl">
+        <main>
+            <h2 class="classify-name">
+                ${author1Label}${authorName}
+            </h2>
+            <#include "article-list.ftl">
             <#include "footer.ftl">
-        </div>
+        </main>
     </body>
 </html>

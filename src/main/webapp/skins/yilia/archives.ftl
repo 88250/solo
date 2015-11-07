@@ -7,23 +7,27 @@
         <meta name="description" content="${metaDescription},${archiveLabel}"/>
         </@head>
     </head>
-    <body class="nav-closed">
-        <div class="nav">
-            <#include "side.ftl">
-        </div>
-        <div class="site-wrapper">
-            <#include "header.ftl">
-            <main id="content">
+    <body>
+        <#include "side.ftl">
+        <main class="classify">
+            <article>
+                <header>
+                    <h2>
+                        <a rel="archive" href="${servePath}/archives.html">
+                            ${archiveLabel}
+                        </a>
+                    </h2>
+                </header>
                 <#if 0 != archiveDates?size>
-                <ul class="fn-clear fn-wrap" id='tags'>
+                <ul class="tags fn-clear">
                     <#list archiveDates as archiveDate>
                     <li>
                         <#if "en" == localeString?substring(0, 2)>
-                        <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                        <a class="tag" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                            title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
                             ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
                         <#else>
-                        <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                        <a class="tag" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
                            title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
                             ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
                         </#if>
@@ -31,8 +35,9 @@
                     </#list>
                 </ul>
                 </#if>
-            </main>
+            </article>
+
             <#include "footer.ftl">
-        </div>
+        </main>
     </body>
 </html>

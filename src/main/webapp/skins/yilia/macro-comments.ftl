@@ -7,7 +7,7 @@
             <div class="fn-clear post-meta">
                 <span class="fn-left">
                     <#if "http://" == comment.commentURL>
-                    <a>${comment.commentName}</a>
+                    <span>${comment.commentName}</span>
                     <#else>
                     <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                     </#if>
@@ -18,7 +18,7 @@
                        onmouseout="page.hideComment('${comment.commentOriginalCommentId}')"
                        >${comment.commentOriginalCommentName}</a>
                     </#if>
-                    <time>${comment.commentDate?string("yyyy-MM-dd HH:mm")}</time> 
+                    <time>${comment.commentDate?string("yyyy-MM-dd")}</time> 
                 </span>
                 <#if article.commentable>
                 <a class="fn-right" href="javascript:replyTo('${comment.oId}')">${replyLabel}</a>
@@ -125,7 +125,7 @@
                                         + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                             }
 
-                            commentHTML += '<time>' + result.commentDate
+                            commentHTML += ' <time>' + result.commentDate
                                     + '</time></span>';
                             if (commentable) {
                                 commentHTML += '<a class="fn-right" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>';
