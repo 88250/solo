@@ -18,7 +18,8 @@
  * skin finding style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.0, Nov 2, 2015
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.1.1, Nov 7, 2015
 */
 /* start reset */
 html {
@@ -456,15 +457,21 @@ pre code, pre tt {
 /* start emotions */
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
 .em10, .em11, .em12, .em13, .em14 {
+    cursor: pointer;
     background-image: url("../images/emotions/emotions-ease.png");
     float: left;
     height: 24px;
     margin-right: 5px;
     width: 24px;
+    transition: all .2s ease-out;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
 }
 
-#emotions span {
-    cursor: pointer;
+#emotions span:hover {
+    transform: scale(1.2) rotate(360deg);
+    -webkit-transform: scale(1.2) rotate(360deg);
+    -moz-transform: scale(1.2) rotate(360deg);
 }
 
 .em01 {
