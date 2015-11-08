@@ -46,7 +46,7 @@ public final class ThumbnailsTestCase {
         Latkes.initRuntimeEnv();
         Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
 
-        final String gravatarURL = Thumbnails.getGravatarURL("test@b3log.org", "60");
+        final String gravatarURL = Thumbnails.getGravatarURL("test@b3log.org", "128");
 
         System.out.println(gravatarURL);
     }

@@ -246,7 +246,7 @@ public class CommentQueryService {
                 
                 final String email = comment.optString(Comment.COMMENT_EMAIL);
                 
-                comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.getGravatarURL(email, "60"));
+                comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.getGravatarURL(email, "128"));
 
                 if (!Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                     // This comment is a reply

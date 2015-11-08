@@ -934,7 +934,7 @@ public class ArticleProcessor {
             if (!Strings.isEmptyOrNull(userAvatar)) {
                 article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
             } else {
-                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");
                 article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
             }
 
@@ -1200,7 +1200,7 @@ public class ArticleProcessor {
         if (!Strings.isEmptyOrNull(userAvatar)) {
             dataModel.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
         } else {
-            final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+            final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");
             dataModel.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
         }
 

@@ -141,7 +141,7 @@ public class AdminConsole {
         if (!Strings.isEmptyOrNull(userAvatar)) {
             dataModel.put(Common.GRAVATAR, userAvatar);
         } else {
-            final String gravatar = Thumbnails.getGravatarURL(email, "60");
+            final String gravatar = Thumbnails.getGravatarURL(email, "128");
             dataModel.put(Common.GRAVATAR, gravatar);
         }
 

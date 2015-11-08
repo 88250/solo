@@ -502,7 +502,7 @@ public class InitService {
         admin.put(User.USER_PASSWORD, MD5.hash(requestJSONObject.getString(User.USER_PASSWORD)));
         admin.put(UserExt.USER_ARTICLE_COUNT, 0);
         admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
-        admin.put(UserExt.USER_AVATAR, Thumbnails.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "60"));
+        admin.put(UserExt.USER_AVATAR, Thumbnails.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128"));
 
         userRepository.add(admin);
 

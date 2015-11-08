@@ -309,7 +309,7 @@ public class UserMgmtService {
 
             String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
             if (Strings.isEmptyOrNull(userAvatar)) {
-                userAvatar = Thumbnails.getGravatarURL(userEmail, "60");
+                userAvatar = Thumbnails.getGravatarURL(userEmail, "128");
             }
             user.put(UserExt.USER_AVATAR, userAvatar);
 

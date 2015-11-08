@@ -594,7 +594,7 @@ public class Filler {
                     dataModel.put(Common.GRAVATAR, userAvatar);
                 } else {
                     final String email = currentUser.optString(User.USER_EMAIL);
-                    final String gravatar = Thumbnails.getGravatarURL(email, "60");
+                    final String gravatar = Thumbnails.getGravatarURL(email, "128");
                     dataModel.put(Common.GRAVATAR, gravatar);
                 }
 
@@ -930,7 +930,7 @@ public class Filler {
             if (!Strings.isEmptyOrNull(userAvatar)) {
                 article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
             } else {
-                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");
                 article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
             }
 
@@ -992,7 +992,7 @@ public class Filler {
             if (!Strings.isEmptyOrNull(userAvatar)) {
                 article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
             } else {
-                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "60");
+                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");
                 article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
             }
 

@@ -741,7 +741,7 @@ public class CommentMgmtService {
         }
 
         // 2. Gravatar
-        String thumbnailURL = Thumbnails.getGravatarURL(commentEmail.toLowerCase(), "60");
+        String thumbnailURL = Thumbnails.getGravatarURL(commentEmail.toLowerCase(), "128");
         final URL gravatarURL = new URL(thumbnailURL);
 
         int statusCode = HttpServletResponse.SC_OK;

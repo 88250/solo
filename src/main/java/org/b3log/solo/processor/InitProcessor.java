@@ -191,7 +191,7 @@ public class InitProcessor {
             admin.put(User.USER_EMAIL, userEmail);
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             admin.put(User.USER_PASSWORD, userPassword);
-            admin.put(UserExt.USER_AVATAR, Thumbnails.getGravatarURL(userEmail, "60"));
+            admin.put(UserExt.USER_AVATAR, Thumbnails.getGravatarURL(userEmail, "128"));
 
             Sessions.login(request, response, admin);
 
