@@ -4,6 +4,5 @@
 
 src/main/webapp/skins/*
 !src/main/webapp/skins/mobile
-!src/main/webapp/skins/finding
 !src/main/webapp/skins/yilia
 
