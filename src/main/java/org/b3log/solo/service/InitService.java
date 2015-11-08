@@ -48,9 +48,16 @@ import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
-import static org.b3log.solo.model.Preference.*;
 import org.b3log.solo.model.Preference.Default;
-import org.b3log.solo.repository.*;
+import org.b3log.solo.repository.ArchiveDateArticleRepository;
+import org.b3log.solo.repository.ArchiveDateRepository;
+import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.OptionRepository;
+import org.b3log.solo.repository.StatisticRepository;
+import org.b3log.solo.repository.TagArticleRepository;
+import org.b3log.solo.repository.TagRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Thumbnails;
@@ -63,7 +70,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.8, Oct 17, 2015
+ * @version 1.3.2.8, Nov 8, 2015
  * @since 0.4.0
  */
 @Service
@@ -81,10 +88,10 @@ public class InitService {
     private StatisticRepository statisticRepository;
 
     /**
-     * Preference repository.
+     * Option repository.
      */
     @Inject
-    private PreferenceRepository preferenceRepository;
+    private OptionRepository optionRepository;
 
     /**
      * User repository.
@@ -173,9 +180,9 @@ public class InitService {
      * <p>
      * Initializes the followings in sequence:
      * <ol>
-     * <li>Statistic.</li>
-     * <li>Preference.</li>
-     * <li>Administrator.</li>
+     * <li>Statistic</li>
+     * <li>Preference</li>
+     * <li>Administrator</li>
      * </ol>
      * </p>
      *
@@ -231,6 +238,7 @@ public class InitService {
                 }
 
                 transaction.commit();
+
                 break;
             } catch (final Exception e) {
                 if (0 == retries) {
@@ -296,11 +304,14 @@ public class InitService {
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
         final Date date = new Date();
 
+        final JSONObject admin = userRepository.getAdmin();
+        final String authorEmail = admin.optString(User.USER_EMAIL);
+
         article.put(Article.ARTICLE_CREATE_DATE, date);
         article.put(Article.ARTICLE_UPDATE_DATE, date);
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, preferenceRepository.get(Preference.PREFERENCE).optString(Preference.ADMIN_EMAIL));
+        article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
         article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
         article.put(Article.ARTICLE_EDITOR_TYPE, Default.DEFAULT_EDITOR_TYPE);
@@ -501,25 +512,22 @@ public class InitService {
     /**
      * Initializes statistic.
      *
-     * @return statistic
      * @throws RepositoryException repository exception
      * @throws JSONException json exception
      */
-    private JSONObject initStatistic() throws RepositoryException, JSONException {
+    private void initStatistic() throws RepositoryException, JSONException {
         LOGGER.info("Initializing statistic....");
-        final JSONObject ret = new JSONObject();
+        final JSONObject statistic = new JSONObject();
 
-        ret.put(Keys.OBJECT_ID, Statistic.STATISTIC);
-        ret.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 0);
-        ret.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 0);
-        ret.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, 0);
-        ret.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 0);
-        ret.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 0);
-        statisticRepository.add(ret);
+        statistic.put(Keys.OBJECT_ID, Statistic.STATISTIC);
+        statistic.put(Statistic.STATISTIC_BLOG_ARTICLE_COUNT, 0);
+        statistic.put(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT, 0);
+        statistic.put(Statistic.STATISTIC_BLOG_VIEW_COUNT, 0);
+        statistic.put(Statistic.STATISTIC_BLOG_COMMENT_COUNT, 0);
+        statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 0);
+        statisticRepository.add(statistic);
 
         LOGGER.info("Initialized statistic");
-
-        return ret;
     }
 
     /**
@@ -534,7 +542,17 @@ public class InitService {
 
         replyNotificationTemplate.put(Keys.OBJECT_ID, Preference.REPLY_NOTIFICATION_TEMPLATE);
 
-        preferenceRepository.add(replyNotificationTemplate);
+        final JSONObject subjectOpt = new JSONObject();
+        subjectOpt.put(Keys.OBJECT_ID, Option.ID_C_REPLY_NOTI_TPL_SUBJECT);
+        subjectOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        subjectOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("subject"));
+        optionRepository.add(subjectOpt);
+
+        final JSONObject bodyOpt = new JSONObject();
+        bodyOpt.put(Keys.OBJECT_ID, Option.ID_C_REPLY_NOTI_TPL_BODY);
+        bodyOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        bodyOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("body"));
+        optionRepository.add(bodyOpt);
 
         LOGGER.info("Initialized reply notification template");
     }
@@ -543,66 +561,221 @@ public class InitService {
      * Initializes preference.
      *
      * @param requestJSONObject the specified json object
-     * @return preference
      * @throws Exception exception
      */
-    private JSONObject initPreference(final JSONObject requestJSONObject) throws Exception {
+    private void initPreference(final JSONObject requestJSONObject) throws Exception {
         LOGGER.info("Initializing preference....");
 
-        final JSONObject ret = new JSONObject();
+        final JSONObject noticeBoardOpt = new JSONObject();
+        noticeBoardOpt.put(Keys.OBJECT_ID, Option.ID_C_NOTICE_BOARD);
+        noticeBoardOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        noticeBoardOpt.put(Option.OPTION_VALUE, Default.DEFAULT_NOTICE_BOARD);
+        optionRepository.add(noticeBoardOpt);
 
-        ret.put(NOTICE_BOARD, Default.DEFAULT_NOTICE_BOARD);
-        ret.put(META_DESCRIPTION, Default.DEFAULT_META_DESCRIPTION);
-        ret.put(META_KEYWORDS, Default.DEFAULT_META_KEYWORDS);
-        ret.put(HTML_HEAD, Default.DEFAULT_HTML_HEAD);
-        ret.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT, Default.DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT);
-        ret.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT, Default.DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT);
-        ret.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT, Default.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
-        ret.put(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT, Default.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
-        ret.put(ARTICLE_LIST_DISPLAY_COUNT, Default.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
-        ret.put(ARTICLE_LIST_PAGINATION_WINDOW_SIZE, Default.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
-        ret.put(MOST_USED_TAG_DISPLAY_CNT, Default.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
-        ret.put(MOST_COMMENT_ARTICLE_DISPLAY_CNT, Default.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
-        ret.put(RECENT_ARTICLE_DISPLAY_CNT, Default.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
-        ret.put(RECENT_COMMENT_DISPLAY_CNT, Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
-        ret.put(BLOG_TITLE, Default.DEFAULT_BLOG_TITLE);
-        ret.put(BLOG_SUBTITLE, Default.DEFAULT_BLOG_SUBTITLE);
-        ret.put(ADMIN_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
-        ret.put(LOCALE_STRING, Default.DEFAULT_LANGUAGE);
-        ret.put(ENABLE_ARTICLE_UPDATE_HINT, Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
-        ret.put(SIGNS, Default.DEFAULT_SIGNS);
-        ret.put(TIME_ZONE_ID, Default.DEFAULT_TIME_ZONE);
-        ret.put(ALLOW_VISIT_DRAFT_VIA_PERMALINK, Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
-        ret.put(COMMENTABLE, Default.DEFAULT_COMMENTABLE);
-        ret.put(VERSION, SoloServletListener.VERSION);
-        ret.put(ARTICLE_LIST_STYLE, Default.DEFAULT_ARTICLE_LIST_STYLE);
-        // ret.put(KEY_OF_SOLO, Default.DEFAULT_KEY_OF_SOLO);
-        ret.put(KEY_OF_SOLO, Ids.genTimeMillisId());
-        ret.put(FEED_OUTPUT_MODE, Default.DEFAULT_FEED_OUTPUT_MODE);
-        ret.put(FEED_OUTPUT_CNT, Default.DEFAULT_FEED_OUTPUT_CNT);
-        ret.put(EDITOR_TYPE, Default.DEFAULT_EDITOR_TYPE);
+        final JSONObject metaDescriptionOpt = new JSONObject();
+        metaDescriptionOpt.put(Keys.OBJECT_ID, Option.ID_C_META_DESCRIPTION);
+        metaDescriptionOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        metaDescriptionOpt.put(Option.OPTION_VALUE, Default.DEFAULT_META_DESCRIPTION);
+        optionRepository.add(metaDescriptionOpt);
+
+        final JSONObject metaKeywordsOpt = new JSONObject();
+        metaKeywordsOpt.put(Keys.OBJECT_ID, Option.ID_C_META_KEYWORDS);
+        metaKeywordsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        metaKeywordsOpt.put(Option.OPTION_VALUE, Default.DEFAULT_META_KEYWORDS);
+        optionRepository.add(metaKeywordsOpt);
+
+        final JSONObject htmlHeadOpt = new JSONObject();
+        htmlHeadOpt.put(Keys.OBJECT_ID, Option.ID_C_HTML_HEAD);
+        htmlHeadOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        htmlHeadOpt.put(Option.OPTION_VALUE, Default.DEFAULT_HTML_HEAD);
+        optionRepository.add(htmlHeadOpt);
+
+        final JSONObject relevantArticlesDisplayCountOpt = new JSONObject();
+        relevantArticlesDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
+        relevantArticlesDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        relevantArticlesDisplayCountOpt.put(Option.OPTION_VALUE, Default.DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT);
+        optionRepository.add(relevantArticlesDisplayCountOpt);
+
+        final JSONObject randomArticlesDisplayCountOpt = new JSONObject();
+        randomArticlesDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
+        randomArticlesDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        randomArticlesDisplayCountOpt.put(Option.OPTION_VALUE, Default.DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT);
+        optionRepository.add(randomArticlesDisplayCountOpt);
+
+        final JSONObject externalRelevantArticlesDisplayCountOpt = new JSONObject();
+        externalRelevantArticlesDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT);
+        externalRelevantArticlesDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        externalRelevantArticlesDisplayCountOpt.put(Option.OPTION_VALUE, Default.DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT);
+        optionRepository.add(externalRelevantArticlesDisplayCountOpt);
+
+        final JSONObject mostViewArticleDisplayCountOpt = new JSONObject();
+        mostViewArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
+        mostViewArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        mostViewArticleDisplayCountOpt.put(Option.OPTION_VALUE, Default.DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT);
+        optionRepository.add(mostViewArticleDisplayCountOpt);
+
+        final JSONObject articleListDisplayCountOpt = new JSONObject();
+        articleListDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
+        articleListDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        articleListDisplayCountOpt.put(Option.OPTION_VALUE, Default.DEFAULT_ARTICLE_LIST_DISPLAY_COUNT);
+        optionRepository.add(articleListDisplayCountOpt);
+
+        final JSONObject articleListPaginationWindowSizeOpt = new JSONObject();
+        articleListPaginationWindowSizeOpt.put(Keys.OBJECT_ID, Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+        articleListPaginationWindowSizeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        articleListPaginationWindowSizeOpt.put(Option.OPTION_VALUE, Default.DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+        optionRepository.add(articleListPaginationWindowSizeOpt);
+
+        final JSONObject mostUsedTagDisplayCountOpt = new JSONObject();
+        mostUsedTagDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_MOST_USED_TAG_DISPLAY_CNT);
+        mostUsedTagDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        mostUsedTagDisplayCountOpt.put(Option.OPTION_VALUE, Default.DEFAULT_MOST_USED_TAG_DISPLAY_COUNT);
+        optionRepository.add(mostUsedTagDisplayCountOpt);
+
+        final JSONObject mostCommentArticleDisplayCountOpt = new JSONObject();
+        mostCommentArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT);
+        mostCommentArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        mostCommentArticleDisplayCountOpt.put(Option.OPTION_VALUE, Default.DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT);
+        optionRepository.add(mostCommentArticleDisplayCountOpt);
+
+        final JSONObject recentArticleDisplayCountOpt = new JSONObject();
+        recentArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RECENT_ARTICLE_DISPLAY_CNT);
+        recentArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        recentArticleDisplayCountOpt.put(Option.OPTION_VALUE, Default.DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT);
+        optionRepository.add(recentArticleDisplayCountOpt);
+
+        final JSONObject recentCommentDisplayCountOpt = new JSONObject();
+        recentCommentDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
+        recentCommentDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        recentCommentDisplayCountOpt.put(Option.OPTION_VALUE, Default.DEFAULT_RECENT_COMMENT_DISPLAY_COUNT);
+        optionRepository.add(recentCommentDisplayCountOpt);
+
+        final JSONObject blogTitleOpt = new JSONObject();
+        blogTitleOpt.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
+        blogTitleOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        blogTitleOpt.put(Option.OPTION_VALUE, Default.DEFAULT_BLOG_TITLE);
+        optionRepository.add(blogTitleOpt);
+
+        final JSONObject blogSubtitleOpt = new JSONObject();
+        blogSubtitleOpt.put(Keys.OBJECT_ID, Option.ID_C_BLOG_SUBTITLE);
+        blogSubtitleOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        blogSubtitleOpt.put(Option.OPTION_VALUE, Default.DEFAULT_BLOG_SUBTITLE);
+        optionRepository.add(blogSubtitleOpt);
+
+        final JSONObject adminEmailOpt = new JSONObject();
+        adminEmailOpt.put(Keys.OBJECT_ID, Option.ID_C_ADMIN_EMAIL);
+        adminEmailOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        adminEmailOpt.put(Option.OPTION_VALUE, requestJSONObject.getString(User.USER_EMAIL));
+        optionRepository.add(adminEmailOpt);
+
+        final JSONObject localeStringOpt = new JSONObject();
+        localeStringOpt.put(Keys.OBJECT_ID, Option.ID_C_LOCALE_STRING);
+        localeStringOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        localeStringOpt.put(Option.OPTION_VALUE, Default.DEFAULT_LANGUAGE);
+        optionRepository.add(localeStringOpt);
+
+        final JSONObject enableArticleUpdateHintOpt = new JSONObject();
+        enableArticleUpdateHintOpt.put(Keys.OBJECT_ID, Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT);
+        enableArticleUpdateHintOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        enableArticleUpdateHintOpt.put(Option.OPTION_VALUE, Default.DEFAULT_ENABLE_ARTICLE_UPDATE_HINT);
+        optionRepository.add(enableArticleUpdateHintOpt);
+
+        final JSONObject signsOpt = new JSONObject();
+        signsOpt.put(Keys.OBJECT_ID, Option.ID_C_SIGNS);
+        signsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        signsOpt.put(Option.OPTION_VALUE, Default.DEFAULT_SIGNS);
+        optionRepository.add(signsOpt);
+
+        final JSONObject timeZoneIdOpt = new JSONObject();
+        timeZoneIdOpt.put(Keys.OBJECT_ID, Option.ID_C_TIME_ZONE_ID);
+        timeZoneIdOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        timeZoneIdOpt.put(Option.OPTION_VALUE, Default.DEFAULT_TIME_ZONE);
+        optionRepository.add(timeZoneIdOpt);
+
+        final JSONObject allowVisitDraftViaPermalinkOpt = new JSONObject();
+        allowVisitDraftViaPermalinkOpt.put(Keys.OBJECT_ID, Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
+        allowVisitDraftViaPermalinkOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        allowVisitDraftViaPermalinkOpt.put(Option.OPTION_VALUE, Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
+        optionRepository.add(allowVisitDraftViaPermalinkOpt);
+
+        final JSONObject commentableOpt = new JSONObject();
+        commentableOpt.put(Keys.OBJECT_ID, Option.ID_C_COMMENTABLE);
+        commentableOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        commentableOpt.put(Option.OPTION_VALUE, Default.DEFAULT_COMMENTABLE);
+        optionRepository.add(commentableOpt);
+
+        final JSONObject versionOpt = new JSONObject();
+        versionOpt.put(Keys.OBJECT_ID, Option.ID_C_VERSION);
+        versionOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        versionOpt.put(Option.OPTION_VALUE, SoloServletListener.VERSION);
+        optionRepository.add(versionOpt);
+
+        final JSONObject articleListStyleOpt = new JSONObject();
+        articleListStyleOpt.put(Keys.OBJECT_ID, Option.ID_C_ARTICLE_LIST_STYLE);
+        articleListStyleOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        articleListStyleOpt.put(Option.OPTION_VALUE, Default.DEFAULT_ARTICLE_LIST_STYLE);
+        optionRepository.add(articleListStyleOpt);
+
+        final JSONObject keyOfSoloOpt = new JSONObject();
+        keyOfSoloOpt.put(Keys.OBJECT_ID, Option.ID_C_KEY_OF_SOLO);
+        keyOfSoloOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        keyOfSoloOpt.put(Option.OPTION_VALUE, Ids.genTimeMillisId());
+        optionRepository.add(keyOfSoloOpt);
+
+        final JSONObject feedOutputModeOpt = new JSONObject();
+        feedOutputModeOpt.put(Keys.OBJECT_ID, Option.ID_C_FEED_OUTPUT_MODE);
+        feedOutputModeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        feedOutputModeOpt.put(Option.OPTION_VALUE, Default.DEFAULT_FEED_OUTPUT_MODE);
+        optionRepository.add(feedOutputModeOpt);
+
+        final JSONObject feedOutputCntOpt = new JSONObject();
+        feedOutputCntOpt.put(Keys.OBJECT_ID, Option.ID_C_FEED_OUTPUT_CNT);
+        feedOutputCntOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        feedOutputCntOpt.put(Option.OPTION_VALUE, Default.DEFAULT_FEED_OUTPUT_CNT);
+        optionRepository.add(feedOutputCntOpt);
+
+        final JSONObject editorTypeOpt = new JSONObject();
+        editorTypeOpt.put(Keys.OBJECT_ID, Option.ID_C_EDITOR_TYPE);
+        editorTypeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        editorTypeOpt.put(Option.OPTION_VALUE, Default.DEFAULT_EDITOR_TYPE);
+        optionRepository.add(editorTypeOpt);
+
+        final JSONObject footerContentOpt = new JSONObject();
+        footerContentOpt.put(Keys.OBJECT_ID, Option.ID_C_FOOTER_CONTENT);
+        footerContentOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        footerContentOpt.put(Option.OPTION_VALUE, Default.DEFAULT_FOOTER_CONTENT);
+        optionRepository.add(footerContentOpt);
 
         final String skinDirName = Default.DEFAULT_SKIN_DIR_NAME;
-        ret.put(Skin.SKIN_DIR_NAME, skinDirName);
+        final JSONObject skinDirNameOpt = new JSONObject();
+        skinDirNameOpt.put(Keys.OBJECT_ID, Option.ID_C_SKIN_DIR_NAME);
+        skinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        skinDirNameOpt.put(Option.OPTION_VALUE, skinDirName);
+        optionRepository.add(skinDirNameOpt);
 
         final String skinName = Latkes.getSkinName(skinDirName);
-        ret.put(Skin.SKIN_NAME, skinName);
+        final JSONObject skinNameOpt = new JSONObject();
+        skinNameOpt.put(Keys.OBJECT_ID, Option.ID_C_SKIN_NAME);
+        skinNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        skinNameOpt.put(Option.OPTION_VALUE, skinName);
+        optionRepository.add(skinNameOpt);
 
         final Set<String> skinDirNames = Skins.getSkinDirNames();
         final JSONArray skinArray = new JSONArray();
-
         for (final String dirName : skinDirNames) {
             final JSONObject skin = new JSONObject();
-
             skinArray.put(skin);
 
             final String name = Latkes.getSkinName(dirName);
-
             skin.put(Skin.SKIN_NAME, name);
             skin.put(Skin.SKIN_DIR_NAME, dirName);
         }
 
-        ret.put(Skin.SKINS, skinArray.toString());
+        final JSONObject skinsOpt = new JSONObject();
+        skinsOpt.put(Keys.OBJECT_ID, Option.ID_C_SKINS);
+        skinsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        skinsOpt.put(Option.OPTION_VALUE, skinArray.toString());
+        optionRepository.add(skinsOpt);
 
         final ServletContext servletContext = SoloServletListener.getServletContext();
 
@@ -610,12 +783,7 @@ public class InitService {
 
         TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
 
-        ret.put(Keys.OBJECT_ID, PREFERENCE);
-        preferenceRepository.add(ret);
-
         LOGGER.info("Initialized preference");
-
-        return ret;
     }
 
     /**
@@ -652,15 +820,6 @@ public class InitService {
      */
     public void setUserRepository(final UserRepository userRepository) {
         this.userRepository = userRepository;
-    }
-
-    /**
-     * Sets the preference repository with the specified preference repository.
-     *
-     * @param preferenceRepository the specified preference repository
-     */
-    public void setPreferenceRepository(final PreferenceRepository preferenceRepository) {
-        this.preferenceRepository = preferenceRepository;
     }
 
     /**

@@ -25,5 +25,7 @@ import org.b3log.latke.repository.Repository;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Aug 14, 2010
  * @since 0.3.1
+ * @deprecated this class will be removed in 1.3.0, see issue <a href="https://github.com/b3log/solo/issues/12042">#12042</a> 
+ * for more details
  */
 public interface PreferenceRepository extends Repository {}

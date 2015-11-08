@@ -30,6 +30,8 @@ import org.json.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.3, Feb 28, 2012
  * @since 0.3.1
+ * @deprecated this class will be removed in 1.3.0, see issue <a href="https://github.com/b3log/solo/issues/12042">#12042</a> 
+ * for more details
  */
 @Repository
 public class PreferenceRepositoryImpl extends AbstractRepository implements PreferenceRepository {

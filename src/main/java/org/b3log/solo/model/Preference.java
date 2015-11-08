@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.10, Jun 18, 2015
+ * @version 1.2.0.10, Nov 8, 2015
  * @since 0.3.1
  */
 public final class Preference {
@@ -291,7 +291,7 @@ public final class Preference {
         /**
          * Default enable article update hint.
          */
-        public static final boolean DEFAULT_ENABLE_ARTICLE_UPDATE_HINT = true;
+        public static final String DEFAULT_ENABLE_ARTICLE_UPDATE_HINT = "true";
 
         /**
          * Default notice board.
@@ -312,6 +312,11 @@ public final class Preference {
          * Default HTML head to append.
          */
         public static final String DEFAULT_HTML_HEAD = "";
+        
+        /**
+         * Default footer content.
+         */
+        public static final String DEFAULT_FOOTER_CONTENT = "";
 
         /**
          * Default relevant articles display count.
@@ -341,12 +346,12 @@ public final class Preference {
         /**
          * Default allow visit draft via permalink.
          */
-        public static final boolean DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK = false;
+        public static final String DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK = "false";
 
         /**
          * Default allow comment article/page.
          */
-        public static final boolean DEFAULT_COMMENTABLE = true;
+        public static final String DEFAULT_COMMENTABLE = "true";
 
         /**
          * Default administrator's password.
@@ -404,7 +409,6 @@ public final class Preference {
 
                 final JSONObject replyNotificationTemplate = new JSONObject();
 
-                replyNotificationTemplate.put(Keys.OBJECT_ID, Preference.REPLY_NOTIFICATION_TEMPLATE);
                 replyNotificationTemplate.put("subject", "${blogTitle}: New reply of your comment");
                 replyNotificationTemplate.put("body",
                     "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"

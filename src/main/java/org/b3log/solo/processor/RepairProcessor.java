@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -48,9 +47,9 @@ import org.b3log.solo.repository.impl.ArchiveDateRepositoryImpl;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.repository.impl.LinkRepositoryImpl;
+import org.b3log.solo.repository.impl.OptionRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
-import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
@@ -62,14 +61,14 @@ import org.b3log.solo.service.StatisticQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-
 /**
  * Provides patches on some special issues.
- * 
- * <p>See AuthFilter filter configurations in web.xml for authentication.</p>
+ *
+ * <p>
+ * See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.10, Oct 26, 2013
+ * @version 1.2.0.10, Nov 8, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -135,7 +134,7 @@ public class RepairProcessor {
 
     /**
      * Removes unused properties of each article.
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/fix/normalization/articles/properties", method = HTTPRequestMethod.POST)
@@ -173,7 +172,7 @@ public class RepairProcessor {
 
                     articleRepository.update(article.getString(Keys.OBJECT_ID), article);
                     LOGGER.log(Level.INFO, "Found an article[id={0}] exists unused properties[{1}]",
-                        new Object[] {article.getString(Keys.OBJECT_ID), nameSet});
+                            new Object[]{article.getString(Keys.OBJECT_ID), nameSet});
                 }
             }
 
@@ -190,16 +189,16 @@ public class RepairProcessor {
 
     /**
      * Restores the statistics.
-     * 
+     *
      * <p>
-     *   <ul>
-     *     <li>Uses the value of {@link Statistic#STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT}
-     *     for {@link Statistic#STATISTIC_BLOG_COMMENT_COUNT}</li>
-     *     <li>Uses the value of {@link Statistic#STATISTIC_PUBLISHED_ARTICLE_COUNT}
-     *     for {@link Statistic#STATISTIC_BLOG_ARTICLE_COUNT}</li>
-     *   </ul>
+     * <ul>
+     * <li>Uses the value of {@link Statistic#STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT} for
+     * {@link Statistic#STATISTIC_BLOG_COMMENT_COUNT}</li>
+     * <li>Uses the value of {@link Statistic#STATISTIC_PUBLISHED_ARTICLE_COUNT} for
+     * {@link Statistic#STATISTIC_BLOG_ARTICLE_COUNT}</li>
+     * </ul>
      * </p>
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/fix/restore-stat.do", method = HTTPRequestMethod.GET)
@@ -237,7 +236,7 @@ public class RepairProcessor {
 
     /**
      * Restores the signs of preference to default.
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/fix/restore-signs.do", method = HTTPRequestMethod.GET)
@@ -272,7 +271,7 @@ public class RepairProcessor {
 
     /**
      * Repairs tag article counter.
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/fix/tag-article-counter-repair.do", method = HTTPRequestMethod.GET)
@@ -316,7 +315,7 @@ public class RepairProcessor {
                 tagRepository.update(tagId, tag);
 
                 LOGGER.log(Level.INFO, "Repaired tag[title={0}, refCnt={1}, publishedTagRefCnt={2}]",
-                    new Object[] {tag.getString(Tag.TAG_TITLE), tagRefCnt, publishedTagRefCnt});
+                        new Object[]{tag.getString(Tag.TAG_TITLE), tagRefCnt, publishedTagRefCnt});
             }
 
             renderer.setContent("Repair sucessfully!");
@@ -328,9 +327,9 @@ public class RepairProcessor {
 
     /**
      * Shows remove all data page.
-     * 
+     *
      * @param context the specified context
-     * @param request the specified HTTP servlet request 
+     * @param request the specified HTTP servlet request
      */
     @RequestProcessing(value = "/rm-all-data.do", method = HTTPRequestMethod.GET)
     public void removeAllDataGET(final HTTPRequestContext context, final HttpServletRequest request) {
@@ -367,7 +366,7 @@ public class RepairProcessor {
 
     /**
      * Removes all data.
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/rm-all-data.do", method = HTTPRequestMethod.POST)
@@ -382,13 +381,13 @@ public class RepairProcessor {
             remove(beanManager.getReference(ArticleRepositoryImpl.class));
             remove(beanManager.getReference(CommentRepositoryImpl.class));
             remove(beanManager.getReference(LinkRepositoryImpl.class));
+            remove(beanManager.getReference(OptionRepositoryImpl.class));
             remove(beanManager.getReference(PageRepositoryImpl.class));
-            remove(beanManager.getReference(PreferenceRepositoryImpl.class));
+            remove(beanManager.getReference(PluginRepositoryImpl.class));
             remove(beanManager.getReference(StatisticRepositoryImpl.class));
             remove(beanManager.getReference(TagArticleRepositoryImpl.class));
             remove(beanManager.getReference(TagRepositoryImpl.class));
             remove(beanManager.getReference(UserRepositoryImpl.class));
-            remove(beanManager.getReference(PluginRepositoryImpl.class));
 
             succeed = true;
         } catch (final Exception e) {

@@ -33,7 +33,7 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Init.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -53,15 +53,13 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Update Preference.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
     public void updatePreference() throws Exception {
-        final PreferenceMgmtService preferenceMgmtService =
-                getPreferenceMgmtService();
-        final PreferenceQueryService preferenceQueryService =
-                getPreferenceQueryService();
+        final PreferenceMgmtService preferenceMgmtService = getPreferenceMgmtService();
+        final PreferenceQueryService preferenceQueryService = getPreferenceQueryService();
         JSONObject preference = preferenceQueryService.getPreference();
 
         Assert.assertEquals(preference.getString(Preference.BLOG_TITLE),
@@ -71,23 +69,22 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
         preferenceMgmtService.updatePreference(preference);
 
         preference = preferenceQueryService.getPreference();
-        Assert.assertEquals(preference.getString(Preference.BLOG_TITLE),
-                "updated blog title");
+        Assert.assertEquals(preference.getString(Preference.BLOG_TITLE), "updated blog title");
     }
 
     /**
      * Update Reply Notification Template.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
     public void updateReplyNotificationTemplate() throws Exception {
-        final PreferenceMgmtService preferenceMgmtService =
-                getPreferenceMgmtService();
-        final PreferenceQueryService preferenceQueryService =
-                getPreferenceQueryService();
-        JSONObject replyNotificationTemplate =
-                preferenceQueryService.getReplyNotificationTemplate();
+        final PreferenceMgmtService preferenceMgmtService
+                = getPreferenceMgmtService();
+        final PreferenceQueryService preferenceQueryService
+                = getPreferenceQueryService();
+        JSONObject replyNotificationTemplate
+                = preferenceQueryService.getReplyNotificationTemplate();
 
         Assert.assertEquals(replyNotificationTemplate.toString(),
                 Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
@@ -96,8 +93,8 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
         preferenceMgmtService.updateReplyNotificationTemplate(
                 replyNotificationTemplate);
 
-        replyNotificationTemplate =
-                preferenceQueryService.getReplyNotificationTemplate();
+        replyNotificationTemplate
+                = preferenceQueryService.getReplyNotificationTemplate();
         Assert.assertEquals(replyNotificationTemplate.getString(
                 "subject"), "updated subject");
     }

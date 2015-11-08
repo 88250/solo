@@ -212,7 +212,7 @@
                                                         return;
                                                     }
 
-                                                    window.location.href = "${servePath}/admin-index.do#tools/user-list";
+                                                    window.location.href = "${servePath}/admin-index.do#main";
                                                 }
                                             });
                                         }

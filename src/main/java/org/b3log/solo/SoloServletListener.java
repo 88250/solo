@@ -43,9 +43,10 @@ import org.b3log.solo.event.rhythm.ArticleUpdater;
 import org.b3log.solo.event.symphony.CommentSender;
 import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.repository.PreferenceRepository;
-import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
+import org.b3log.solo.repository.OptionRepository;
+import org.b3log.solo.repository.impl.OptionRepositoryImpl;
 import org.b3log.solo.service.PreferenceMgmtService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.service.UpgradeService;
 import org.b3log.solo.util.Skins;
@@ -55,7 +56,7 @@ import org.json.JSONObject;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.9, Nov 5, 2015
+ * @version 1.7.0.9, Nov 8, 2015
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -123,9 +124,9 @@ public final class SoloServletListener extends AbstractServletListener {
         // Set default skin, loads from preference later
         Skins.setDirectoryForTemplateLoading(Preference.Default.DEFAULT_SKIN_DIR_NAME);
 
-        final PreferenceRepository preferenceRepository = beanManager.getReference(PreferenceRepositoryImpl.class);
+        final OptionRepository optionRepository = beanManager.getReference(OptionRepositoryImpl.class);
 
-        final Transaction transaction = preferenceRepository.beginTransaction();
+        final Transaction transaction = optionRepository.beginTransaction();
 
         try {
             loadPreference();
@@ -218,11 +219,11 @@ public final class SoloServletListener extends AbstractServletListener {
 
         LOGGER.debug("Loading preference....");
 
-        final PreferenceRepository preferenceRepository = beanManager.getReference(PreferenceRepositoryImpl.class);
+        final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
         JSONObject preference;
 
         try {
-            preference = preferenceRepository.get(Preference.PREFERENCE);
+            preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 LOGGER.warn("Can't not init default skin, please init Solo first");
                 return;
@@ -282,8 +283,8 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
         try {
-            final PreferenceRepository preferenceRepository = beanManager.getReference(PreferenceRepositoryImpl.class);
-            final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
+            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+            final JSONObject preference = preferenceQueryService.getPreference();
 
             if (null == preference) { // Did not initialize yet
                 return;
