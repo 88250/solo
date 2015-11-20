@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Nov 7, 2015
+ * @version 1.2.0.7, Nov 20, 2015
  * @since 0.4.0
  */
 @RequestProcessor
@@ -306,6 +306,7 @@ public class PreferenceConsole {
      *             "signHTML": ""
      *         }, ...]",
      *         "allowVisitDraftViaPermalink": boolean,
+     *         "allowRegister": boolean,
      *         "version": "",
      *         "articleListStyle": "", // Optional values: "titleOnly"/"titleAndContent"/"titleAndAbstract"
      *         "commentable": boolean,
@@ -395,6 +396,7 @@ public class PreferenceConsole {
      *             "signHTML": ""
      *         }, ...],
      *         "allowVisitDraftViaPermalink": boolean,
+     *         "allowRegister": boolean,
      *         "articleListStyle": "",
      *         "commentable": boolean,
      *         "feedOutputMode: "",

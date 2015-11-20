@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor.console;
 
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,18 +32,19 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.solo.model.Option;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
-
 
 /**
  * User console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.1.0.4, Oct 17, 2015
+ * @version 1.2.0.4, Nov 20, 2015
  * @since 0.4.0
  */
 @RequestProcessor
@@ -68,6 +68,12 @@ public class UserConsole {
     private UserMgmtService userMgmtService;
 
     /**
+     * Preference query service.
+     */
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
+
+    /**
      * Language service.
      */
     @Inject
@@ -75,7 +81,7 @@ public class UserConsole {
 
     /**
      * Updates a user by the specified request.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -86,8 +92,7 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request, for example,
-     * <pre>
+     * @param request the specified http servlet request, for example,      <pre>
      * {
      *     "oId": "",
      *     "userName": "",
@@ -98,13 +103,14 @@ public class UserConsole {
      *     "userAvatar": "" // optional
      * }
      * </pre>
+     *
      * @param context the specified http request context
      * @param response the specified http servlet response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.PUT)
     public void updateUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -137,7 +143,7 @@ public class UserConsole {
 
     /**
      * Adds a user with the specified request.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -148,31 +154,31 @@ public class UserConsole {
      * }
      * </pre>
      * </p>
-     * 
-     * @param request the specified http servlet request, for example,
-     * <pre>
+     *
+     * @param request the specified http servlet request, for example,      <pre>
      * {
      *     "userName": "",
      *     "userEmail": "",
      *     "userPassword": "",
-     *     "userURL": "", // optional, uses 'servePath' instead if not specified 
+     *     "userURL": "", // optional, uses 'servePath' instead if not specified
      *     "userRole": "", // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not specified
      *     "userAvatar": "" // optional
      * }
      * </pre>
+     *
      * @param response the specified http servlet response
      * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.POST)
     public void addUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
+        renderer.setJSONObject(ret);
 
         try {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
@@ -180,8 +186,18 @@ public class UserConsole {
             if (userQueryService.isAdminLoggedIn(request)) { // if the administrator register a new user, treats the new user as a normal user
                 // (defaultRole) who could post article
                 requestJSONObject.put(User.USER_ROLE, Role.DEFAULT_ROLE);
-            } else { // if a normal user or a visitor register a new user, treates the new user as a visitor (visitorRole) who couldn't 
-                // post article
+            } else {
+                final JSONObject preference = preferenceQueryService.getPreference();
+
+                if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
+                    ret.put(Keys.STATUS_CODE, false);
+                    ret.put(Keys.MSG, langPropsService.get("notAllowRegisterLabel"));
+
+                    return;
+                }
+
+                // if a normal user or a visitor register a new user, treates the new user as a visitor 
+                // (visitorRole) who couldn't post article
                 requestJSONObject.put(User.USER_ROLE, Role.VISITOR_ROLE);
             }
 
@@ -190,8 +206,6 @@ public class UserConsole {
             ret.put(Keys.OBJECT_ID, userId);
             ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
             ret.put(Keys.STATUS_CODE, true);
-
-            renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -204,7 +218,7 @@ public class UserConsole {
 
     /**
      * Removes a user by the specified request.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -222,7 +236,7 @@ public class UserConsole {
      */
     @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.DELETE)
     public void removeUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -254,11 +268,10 @@ public class UserConsole {
     /**
      * Gets users by the specified request json object.
      * <p>
-     * The request URI contains the pagination arguments. For example, the 
-     * request URI is /console/users/1/10/20, means the current page is 1, the
-     * page size is 10, and the window size is 20.
+     * The request URI contains the pagination arguments. For example, the request URI is /console/users/1/10/20, means
+     * the current page is 1, the page size is 10, and the window size is 20.
      * </p>
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -282,11 +295,11 @@ public class UserConsole {
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param context the specified http request context
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/users/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
     public void getUsers(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
 
         context.setRenderer(renderer);
@@ -319,7 +332,7 @@ public class UserConsole {
 
     /**
      * Gets a user by the specified request.
-     * 
+     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -335,7 +348,7 @@ public class UserConsole {
      * }
      * </pre>
      * </p>
-     * 
+     *
      * @param request the specified http servlet request
      * @param response the specified http servlet response
      * @param context the specified http request context
@@ -343,7 +356,7 @@ public class UserConsole {
      */
     @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.GET)
     public void getUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -398,7 +411,7 @@ public class UserConsole {
      */
     @RequestProcessing(value = "/console/changeRole/*", method = HTTPRequestMethod.GET)
     public void changeUserRole(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;

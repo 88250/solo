@@ -50,7 +50,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.9, Nov 8, 2015
+ * @version 1.3.1.9, Nov 20, 2015
  * @since 0.4.0
  */
 @Service
@@ -252,6 +252,10 @@ public class PreferenceMgmtService {
             final JSONObject allowVisitDraftViaPermalinkOpt = optionRepository.get(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
             allowVisitDraftViaPermalinkOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK));
             optionRepository.update(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK, allowVisitDraftViaPermalinkOpt);
+
+            final JSONObject allowRegisterOpt = optionRepository.get(Option.ID_C_ALLOW_REGISTER);
+            allowRegisterOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_ALLOW_REGISTER));
+            optionRepository.update(Option.ID_C_ALLOW_REGISTER, allowRegisterOpt);
 
             final JSONObject articleListDisplayCountOpt = optionRepository.get(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
             articleListDisplayCountOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT));

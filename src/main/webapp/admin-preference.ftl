@@ -282,6 +282,14 @@
                 </tr>
                 <tr>
                     <th>
+                        <label for="allowRegister">${allowRegister1Label}</label>
+                    </th>
+                    <td>
+                        <input id="allowRegister" type="checkbox" class="normalInput"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
                         <label for="feedOutputMode">${feedOutputModel1Label}</label>
                     </th>
                     <td>

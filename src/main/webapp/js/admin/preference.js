@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.9, Nov 7, 2015
+ * @version 1.2.1.9, Nov 20, 2015
  */
 
 /* preference 相关操作 */
@@ -63,8 +63,11 @@ admin.preference = {
                 $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
                 $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
                 $("#keyOfSolo").val(preference.keyOfSolo);
-                preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
-                preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
+                
+                "true" === preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
+                "true" === preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
+                "true" === preference.allowRegister ? $("#allowRegister").attr("checked", "checked") : $("#allowRegister").removeAttr("checked");
+                "true" === preference.commentable ? $("#commentable").attr("checked", "checked") : $("commentable").removeAttr("checked");
 
                 admin.preference.locale = preference.localeString;
                 admin.preference.editorType = preference.editorType;
@@ -102,16 +105,11 @@ admin.preference = {
                     });
                 }
 
-                // Article list style
                 $("#articleListDisplay").val(preference.articleListStyle);
-                // Editor Type
                 $("#editorType").val(preference.editorType);
-                // Feed output
                 $("#feedOutputMode").val(preference.feedOutputMode);
                 $("#feedOutputCnt").val(preference.feedOutputCnt);
-                // Commentable
-                preference.commentable ? $("#commentable").attr("checked", "checked") : $("commentable").removeAttr("checked");
-
+                
                 $("#loadMsg").text("");
             }
         });
@@ -230,7 +228,8 @@ admin.preference = {
                 "editorType": $("#editorType").val(),
                 "feedOutputMode": $("#feedOutputMode").val(),
                 "feedOutputCnt": $("#feedOutputCnt").val(),
-                "commentable": $("#commentable").prop("checked")
+                "commentable": $("#commentable").prop("checked"),
+                "allowRegister": $("#allowRegister").prop("checked")
             }
         };
 

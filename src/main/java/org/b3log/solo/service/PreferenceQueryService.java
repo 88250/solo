@@ -26,7 +26,6 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.PreferenceRepository;
 import org.json.JSONArray;
@@ -46,12 +45,6 @@ public class PreferenceQueryService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PreferenceQueryService.class.getName());
-
-    /**
-     * Preference repository.
-     */
-    @Inject
-    private PreferenceRepository preferenceRepository;
 
     /**
      * Option repository.
@@ -108,14 +101,5 @@ public class PreferenceQueryService {
         } catch (final RepositoryException e) {
             return null;
         }
-    }
-
-    /**
-     * Sets the preference repository with the specified preference repository.
-     *
-     * @param preferenceRepository the specified preference repository
-     */
-    public void setPreferenceRepository(final PreferenceRepository preferenceRepository) {
-        this.preferenceRepository = preferenceRepository;
     }
 }

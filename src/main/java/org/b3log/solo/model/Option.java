@@ -19,7 +19,7 @@ package org.b3log.solo.model;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Nov 8, 2015
+ * @version 1.3.0.1, Nov 20, 2015
  * @since 0.6.0
  */
 public final class Option {
@@ -184,6 +184,11 @@ public final class Option {
      * Key of allow visit draft via permalink.
      */
     public static final String ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK = "allowVisitDraftViaPermalink";
+    
+    /**
+     * Key of allow register.
+     */
+    public static final String ID_C_ALLOW_REGISTER = "allowRegister";
 
     /**
      * Key of version.

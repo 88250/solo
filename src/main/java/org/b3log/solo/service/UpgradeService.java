@@ -44,7 +44,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.0.0.1, Nov 8, 2015
+ * @version 1.1.0.1, Nov 20, 2015
  * @since 1.2.0
  */
 @Service
@@ -392,13 +392,6 @@ public class UpgradeService {
             timeZoneIdOpt.put(Option.OPTION_VALUE, timeZoneId);
             optionRepository.add(timeZoneIdOpt);
 
-            final String version = preference.optString(Preference.VERSION);
-            final JSONObject versionOpt = new JSONObject();
-            versionOpt.put(Keys.OBJECT_ID, Option.ID_C_VERSION);
-            versionOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            versionOpt.put(Option.OPTION_VALUE, TO_VER);
-            optionRepository.add(versionOpt);
-
             final String editorType = preference.optString(Preference.EDITOR_TYPE);
             final JSONObject editorTypeOpt = new JSONObject();
             editorTypeOpt.put(Keys.OBJECT_ID, Option.ID_C_EDITOR_TYPE);
@@ -427,6 +420,18 @@ public class UpgradeService {
             subjectOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
             subjectOpt.put(Option.OPTION_VALUE, subject);
             optionRepository.add(subjectOpt);
+
+            final JSONObject versionOpt = new JSONObject();
+            versionOpt.put(Keys.OBJECT_ID, Option.ID_C_VERSION);
+            versionOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+            versionOpt.put(Option.OPTION_VALUE, TO_VER);
+            optionRepository.add(versionOpt);
+
+            final JSONObject allowRegisterOpt = new JSONObject();
+            allowRegisterOpt.put(Keys.OBJECT_ID, Option.ID_C_ALLOW_REGISTER);
+            allowRegisterOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+            allowRegisterOpt.put(Option.OPTION_VALUE, Preference.Default.DEFAULT_ALLOW_REGISTER);
+            optionRepository.add(allowRegisterOpt);
 
             preference.put(Preference.VERSION, TO_VER);
             preferenceRepository.update(Preference.PREFERENCE, preference);

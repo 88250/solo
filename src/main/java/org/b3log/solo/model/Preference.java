@@ -15,19 +15,17 @@
  */
 package org.b3log.solo.model;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-
 /**
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.10, Nov 8, 2015
+ * @version 1.3.0.10, Nov 20, 2015
  * @since 0.3.1
  */
 public final class Preference {
@@ -153,20 +151,25 @@ public final class Preference {
     public static final String ALLOW_VISIT_DRAFT_VIA_PERMALINK = "allowVisitDraftViaPermalink";
 
     /**
+     * Key of allow register.
+     */
+    public static final String ALLOW_REGISTER = "allowRegister";
+
+    /**
      * Key of version.
      */
     public static final String VERSION = "version";
 
     /**
      * Key of article list display style.
-     * 
+     *
      * <p>
      * Optional values:
-     *   <ul>
-     *     <li>"titleOnly"</li>
-     *     <li>"titleAndContent"</li>
-     *     <li>"titleAndAbstract"</li>
-     *   </ul>
+     * <ul>
+     * <li>"titleOnly"</li>
+     * <li>"titleAndContent"</li>
+     * <li>"titleAndAbstract"</li>
+     * </ul>
      * </p>
      */
     public static final String ARTICLE_LIST_STYLE = "articleListStyle";
@@ -183,13 +186,13 @@ public final class Preference {
 
     /**
      * Key of feed (Atom/RSS) output mode.
-     * 
+     *
      * <p>
      * Optional values:
-     *   <ul>
-     *     <li>"abstract"</li>
-     *     <li>"fullContent"</li>
-     *   </ul>
+     * <ul>
+     * <li>"abstract"</li>
+     * <li>"fullContent"</li>
+     * </ul>
      * </p>
      */
     public static final String FEED_OUTPUT_MODE = "feedOutputMode";
@@ -201,13 +204,13 @@ public final class Preference {
 
     /**
      * Key of editor type.
-     * 
-     * Optional values: 
+     *
+     * Optional values:
      * <p>
-     *   <ul>
-     *     <li>"tinyMCE"</li>
-     *     <li>"CodeMirror-Markdown"</li>
-     *   </ul>
+     * <ul>
+     * <li>"tinyMCE"</li>
+     * <li>"CodeMirror-Markdown"</li>
+     * </ul>
      * </p>
      */
     public static final String EDITOR_TYPE = "editorType";
@@ -215,7 +218,8 @@ public final class Preference {
     /**
      * Private default constructor.
      */
-    private Preference() {}
+    private Preference() {
+    }
 
     /**
      * Default preference.
@@ -283,8 +287,8 @@ public final class Preference {
 
         /**
          * Default time zone.
-         * 
-         * @see java.util.TimeZone#getAvailableIDs() 
+         *
+         * @see java.util.TimeZone#getAvailableIDs()
          */
         public static final String DEFAULT_TIME_ZONE = "Asia/Shanghai";
 
@@ -312,7 +316,7 @@ public final class Preference {
          * Default HTML head to append.
          */
         public static final String DEFAULT_HTML_HEAD = "";
-        
+
         /**
          * Default footer content.
          */
@@ -347,6 +351,11 @@ public final class Preference {
          * Default allow visit draft via permalink.
          */
         public static final String DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK = "false";
+
+        /**
+         * Default allow register.
+         */
+        public static final String DEFAULT_ALLOW_REGISTER = "false";
 
         /**
          * Default allow comment article/page.
@@ -411,8 +420,8 @@ public final class Preference {
 
                 replyNotificationTemplate.put("subject", "${blogTitle}: New reply of your comment");
                 replyNotificationTemplate.put("body",
-                    "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"
-                    + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
+                        "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"
+                        + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
                 DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Creates sign error!", e);
@@ -423,6 +432,7 @@ public final class Preference {
         /**
          * Private default constructor.
          */
-        private Default() {}
+        private Default() {
+        }
     }
 }

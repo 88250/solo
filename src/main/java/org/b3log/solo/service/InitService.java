@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.8, Nov 8, 2015
+ * @version 1.4.2.8, Nov 20, 2015
  * @since 0.4.0
  */
 @Service
@@ -697,6 +697,12 @@ public class InitService {
         allowVisitDraftViaPermalinkOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         allowVisitDraftViaPermalinkOpt.put(Option.OPTION_VALUE, Default.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
         optionRepository.add(allowVisitDraftViaPermalinkOpt);
+
+        final JSONObject allowRegisterOpt = new JSONObject();
+        allowRegisterOpt.put(Keys.OBJECT_ID, Option.ID_C_ALLOW_REGISTER);
+        allowRegisterOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        allowRegisterOpt.put(Option.OPTION_VALUE, Default.DEFAULT_ALLOW_REGISTER);
+        optionRepository.add(allowRegisterOpt);
 
         final JSONObject commentableOpt = new JSONObject();
         commentableOpt.put(Keys.OBJECT_ID, Option.ID_C_COMMENTABLE);
