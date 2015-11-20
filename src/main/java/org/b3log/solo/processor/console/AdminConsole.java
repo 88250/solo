@@ -44,7 +44,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
@@ -59,7 +58,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.7, Sep 28, 2015
+ * @version 1.2.1.8, Nov 20, 2015
  * @since 0.4.1
  */
 @RequestProcessor
@@ -169,16 +168,16 @@ public class AdminConsole {
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
-            dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
-            dataModel.put(Preference.BLOG_SUBTITLE, preference.getString(Preference.BLOG_SUBTITLE));
+            dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
+            dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
+            dataModel.put(Option.ID_C_BLOG_SUBTITLE, preference.getString(Option.ID_C_BLOG_SUBTITLE));
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-            dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
-            dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
-            dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
-            dataModel.put(Preference.EDITOR_TYPE, preference.getString(Preference.EDITOR_TYPE));
+            dataModel.put(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT));
+            dataModel.put(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
+            dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
+            dataModel.put(Option.ID_C_EDITOR_TYPE, preference.getString(Option.ID_C_EDITOR_TYPE));
             dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
 
             Keys.fillRuntime(dataModel);
@@ -227,7 +226,7 @@ public class AdminConsole {
 
         Keys.fillRuntime(dataModel);
 
-        dataModel.put(Preference.LOCALE_STRING, locale.toString());
+        dataModel.put(Option.ID_C_LOCALE_STRING, locale.toString());
 
         fireFreeMarkerActionEvent(templateName, dataModel);
     }
@@ -253,7 +252,7 @@ public class AdminConsole {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.putAll(langs);
-        dataModel.put(Preference.LOCALE_STRING, locale.toString());
+        dataModel.put(Option.ID_C_LOCALE_STRING, locale.toString());
 
         JSONObject preference = null;
 
@@ -270,7 +269,7 @@ public class AdminConsole {
             final String id = availableIDs[i];
             String option;
 
-            if (id.equals(preference.optString(Preference.TIME_ZONE_ID))) {
+            if (id.equals(preference.optString(Option.ID_C_TIME_ZONE_ID))) {
                 option = "<option value=\"" + id + "\" selected=\"true\">" + id + "</option>";
             } else {
                 option = "<option value=\"" + id + "\">" + id + "</option>";

@@ -43,7 +43,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.repository.OptionRepository;
@@ -62,13 +61,13 @@ import java.util.Map;
 
 /**
  * Login/logout processor.
- * <p/>
+ * 
  * <p>Initializes administrator</p>.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.1.6, Oct 26, 2013
+ * @version 1.1.1.7, Nov 20, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -401,7 +400,7 @@ public class LoginProcessor {
             ServiceException, IOException, RepositoryException {
         final JSONObject preference = preferenceQueryService.getPreference();
         final String token = new Randoms().nextStringWithMD5();
-        final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
+        final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
         final String mailSubject = langPropsService.get("resetPwdMailSubject");
         final String mailBody = langPropsService.get("resetPwdMailBody") + " " + Latkes.getServePath() + "/forgot?token=" + token
             + "&login=" + userEmail;
@@ -458,7 +457,7 @@ public class LoginProcessor {
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-        dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
+        dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
 
         final String token = request.getParameter("token");
         final String email = request.getParameter("login");

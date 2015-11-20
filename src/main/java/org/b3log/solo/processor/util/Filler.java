@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.11.11, Nov 7, 2015
+ * @version 1.5.11.12, Nov 20, 2015
  * @since 0.3.1
  */
 @Service
@@ -203,8 +203,8 @@ public class Filler {
         Stopwatchs.start("Fill Index Articles");
 
         try {
-            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
-            final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+            final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final JSONObject statistic = statisticQueryService.getStatistic();
             final int publishedArticleCnt = statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT);
@@ -219,19 +219,18 @@ public class Filler {
 
             if (null == template) {
                 LOGGER.debug("The skin dose not contain [index.ftl] template");
-            } else { // See https://github.com/b3log/solo/issues/179 for more details
-                if (Templates.hasExpression(template, "<#list articles1 as article>")) {
-                    isArticles1 = true;
-                    query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+            } else // See https://github.com/b3log/solo/issues/179 for more details
+            if (Templates.hasExpression(template, "<#list articles1 as article>")) {
+                isArticles1 = true;
+                query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
 
-                    LOGGER.trace("Query ${articles1} in index.ftl");
-                } else { // <#list articles as article>
-                    query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-                    if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
-                        query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
-                    } else {
-                        query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
-                    }
+                LOGGER.trace("Query ${articles1} in index.ftl");
+            } else { // <#list articles as article>
+                query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+                if (preference.getBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
+                    query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
+                } else {
+                    query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
                 }
             }
 
@@ -254,12 +253,10 @@ public class Filler {
 
             if (hasMultipleUsers) {
                 setArticlesExProperties(request, articles, preference);
-            } else {
-                if (!articles.isEmpty()) {
-                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
+            } else if (!articles.isEmpty()) {
+                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                    setArticlesExProperties(request, articles, author, preference);
-                }
+                setArticlesExProperties(request, articles, author, preference);
             }
 
             if (!isArticles1) {
@@ -347,7 +344,7 @@ public class Filler {
 
         try {
             LOGGER.debug("Filling most used tags....");
-            final int mostUsedTagDisplayCnt = preference.getInt(Preference.MOST_USED_TAG_DISPLAY_CNT);
+            final int mostUsedTagDisplayCnt = preference.getInt(Option.ID_C_MOST_USED_TAG_DISPLAY_CNT);
 
             final List<JSONObject> tags = tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
 
@@ -406,7 +403,7 @@ public class Filler {
                 }
             }
 
-            final String localeString = preference.getString(Preference.LOCALE_STRING);
+            final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
             final String language = Locales.getLanguage(localeString);
 
             for (final JSONObject archiveDate : archiveDates2) {
@@ -449,7 +446,7 @@ public class Filler {
         Stopwatchs.start("Fill Most View Articles");
         try {
             LOGGER.debug("Filling the most view count articles....");
-            final int mostCommentArticleDisplayCnt = preference.getInt(Preference.MOST_VIEW_ARTICLE_DISPLAY_CNT);
+            final int mostCommentArticleDisplayCnt = preference.getInt(Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
             final List<JSONObject> mostViewCountArticles = articleRepository.getMostViewCountArticles(mostCommentArticleDisplayCnt);
 
             dataModel.put(Common.MOST_VIEW_COUNT_ARTICLES, mostViewCountArticles);
@@ -474,7 +471,7 @@ public class Filler {
 
         try {
             LOGGER.debug("Filling most comment articles....");
-            final int mostCommentArticleDisplayCnt = preference.getInt(Preference.MOST_COMMENT_ARTICLE_DISPLAY_CNT);
+            final int mostCommentArticleDisplayCnt = preference.getInt(Option.ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT);
             final List<JSONObject> mostCommentArticles = articleRepository.getMostCommentArticles(mostCommentArticleDisplayCnt);
 
             dataModel.put(Common.MOST_COMMENT_ARTICLES, mostCommentArticles);
@@ -497,7 +494,7 @@ public class Filler {
         Stopwatchs.start("Fill Recent Articles");
 
         try {
-            final int recentArticleDisplayCnt = preference.getInt(Preference.RECENT_ARTICLE_DISPLAY_CNT);
+            final int recentArticleDisplayCnt = preference.getInt(Option.ID_C_RECENT_ARTICLE_DISPLAY_CNT);
 
             final List<JSONObject> recentArticles = articleRepository.getRecentArticles(recentArticleDisplayCnt);
 
@@ -525,7 +522,7 @@ public class Filler {
         Stopwatchs.start("Fill Recent Comments");
         try {
             LOGGER.debug("Filling recent comments....");
-            final int recentCommentDisplayCnt = preference.getInt(Preference.RECENT_COMMENT_DISPLAY_CNT);
+            final int recentCommentDisplayCnt = preference.getInt(Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
 
             final List<JSONObject> recentComments = commentRepository.getRecentComments(recentCommentDisplayCnt);
 
@@ -565,9 +562,9 @@ public class Filler {
         Stopwatchs.start("Fill Footer");
         try {
             LOGGER.debug("Filling footer....");
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+            final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
 
-            dataModel.put(Preference.BLOG_TITLE, blogTitle);
+            dataModel.put(Option.ID_C_BLOG_TITLE, blogTitle);
             dataModel.put("blogHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
 
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
@@ -645,32 +642,32 @@ public class Filler {
 
             dataModel.put(Common.TOP_BAR, topBarHTML);
 
-            dataModel.put(Preference.ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT));
-            dataModel.put(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
-            dataModel.put(Preference.LOCALE_STRING, preference.getString(Preference.LOCALE_STRING));
-            dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
-            dataModel.put(Preference.BLOG_SUBTITLE, preference.getString(Preference.BLOG_SUBTITLE));
-            dataModel.put(Preference.HTML_HEAD, preference.getString(Preference.HTML_HEAD));
+            dataModel.put(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT));
+            dataModel.put(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
+            dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
+            dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
+            dataModel.put(Option.ID_C_BLOG_SUBTITLE, preference.getString(Option.ID_C_BLOG_SUBTITLE));
+            dataModel.put(Option.ID_C_HTML_HEAD, preference.getString(Option.ID_C_HTML_HEAD));
 
-            String metaKeywords = preference.getString(Preference.META_KEYWORDS);
+            String metaKeywords = preference.getString(Option.ID_C_META_KEYWORDS);
             if (Strings.isEmptyOrNull(metaKeywords)) {
                 metaKeywords = "";
             }
-            dataModel.put(Preference.META_KEYWORDS, metaKeywords);
+            dataModel.put(Option.ID_C_META_KEYWORDS, metaKeywords);
 
-            String metaDescription = preference.getString(Preference.META_DESCRIPTION);
+            String metaDescription = preference.getString(Option.ID_C_META_DESCRIPTION);
             if (Strings.isEmptyOrNull(metaDescription)) {
                 metaDescription = "";
             }
-            dataModel.put(Preference.META_DESCRIPTION, metaDescription);
+            dataModel.put(Option.ID_C_META_DESCRIPTION, metaDescription);
 
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Common.IS_LOGGED_IN, null != userQueryService.getCurrentUser(request));
             dataModel.put(Common.FAVICON_API, SoloServletListener.FAVICON_API);
 
-            final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);
+            final String noticeBoard = preference.getString(Option.ID_C_NOTICE_BOARD);
 
-            dataModel.put(Preference.NOTICE_BOARD, noticeBoard);
+            dataModel.put(Option.ID_C_NOTICE_BOARD, noticeBoard);
 
             final Query query = new Query().setPageCount(1);
             final JSONObject result = userRepository.get(query);
@@ -831,9 +828,9 @@ public class Filler {
                 fillSide(request, dataModel, preference);
             }
 
-            final String noticeBoard = preference.getString(Preference.NOTICE_BOARD);
+            final String noticeBoard = preference.getString(Option.ID_C_NOTICE_BOARD);
 
-            dataModel.put(Preference.NOTICE_BOARD, noticeBoard);
+            dataModel.put(Option.ID_C_NOTICE_BOARD, noticeBoard);
         } catch (final JSONException e) {
             LOGGER.log(Level.ERROR, "Fills user template failed", e);
             throw new ServiceException(e);
@@ -934,7 +931,7 @@ public class Filler {
                 article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
             }
 
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            if (preference.getBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
             } else {
                 article.put(Common.HAS_UPDATED, false);
@@ -996,7 +993,7 @@ public class Filler {
                 article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
             }
 
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            if (preference.getBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
             } else {
                 article.put(Common.HAS_UPDATED, false);
@@ -1103,7 +1100,7 @@ public class Filler {
             article.put(Article.ARTICLE_ABSTRACT, "");
         }
 
-        final String articleListStyle = preference.optString(Preference.ARTICLE_LIST_STYLE);
+        final String articleListStyle = preference.optString(Option.ID_C_ARTICLE_LIST_STYLE);
 
         if ("titleOnly".equals(articleListStyle)) {
             article.put(Article.ARTICLE_ABSTRACT, "");

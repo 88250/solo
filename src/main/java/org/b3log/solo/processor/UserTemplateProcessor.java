@@ -35,7 +35,7 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
@@ -55,7 +55,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Nov 17, 2013
+ * @version 1.0.0.5, Nov 20, 2015
  * @since 0.4.5
  */
 @RequestProcessor
@@ -135,7 +135,7 @@ public class UserTemplateProcessor {
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillUserTemplate(request, template, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
-            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {

@@ -39,8 +39,14 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.model.*;
+import org.b3log.solo.model.ArchiveDate;
+import org.b3log.solo.model.Article;
 import static org.b3log.solo.model.Article.*;
+import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Tag;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
@@ -58,7 +64,7 @@ import org.json.JSONObject;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.6, Apr 16, 2015
+ * @version 1.2.2.7, Nov 20, 2015
  * @since 0.3.5
  */
 @Service
@@ -325,7 +331,7 @@ public class ArticleMgmtService {
 
             // Set editor type
             if (!article.has(Article.ARTICLE_EDITOR_TYPE)) {
-                article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+                article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
             }
 
             final boolean publishNewArticle = !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED) && article.getBoolean(ARTICLE_IS_PUBLISHED);
@@ -526,7 +532,7 @@ public class ArticleMgmtService {
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
             // Step 14: Set editor type
             if (!article.has(Article.ARTICLE_EDITOR_TYPE)) {
-                article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+                article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
             }
             // Step 15: Add article
             articleRepository.add(article);

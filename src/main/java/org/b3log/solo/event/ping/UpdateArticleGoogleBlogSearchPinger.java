@@ -31,7 +31,7 @@ import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, May 17, 2013
+ * @version 1.0.0.4, Nov 20, 2015
  * @see AddArticleGoogleBlogSearchPinger
  * @since 0.3.1
  */
@@ -88,7 +88,7 @@ public final class UpdateArticleGoogleBlogSearchPinger extends AbstractEventList
 
             articleTitle = article.getString(Article.ARTICLE_TITLE);
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+            final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
 
             if (Latkes.getServePath().contains("localhost")) {
                 LOGGER.log(Level.INFO,

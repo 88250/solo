@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -44,7 +43,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import static org.b3log.solo.model.Article.*;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
@@ -58,13 +57,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 /**
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
- * @version 1.1.2.3, Jun 13, 2015
+ * @version 1.1.2.4, Nov 20, 2015
  * @since 0.3.5
  */
 @Service
@@ -134,8 +132,7 @@ public class ArticleQueryService {
      *
      * @param articleId the given article id
      * @param request the specified request
-     * @return {@code true} if the current user can access the article,
-     * {@code false} otherwise
+     * @return {@code true} if the current user can access the article, {@code false} otherwise
      * @throws Exception exception
      */
     public boolean canAccessArticle(final String articleId, final HttpServletRequest request) throws Exception {
@@ -234,14 +231,13 @@ public class ArticleQueryService {
      * Gets the specified article's author.
      *
      * <p>
-     * The specified article has a property
-     * {@value Article#ARTICLE_AUTHOR_EMAIL}, this method will use this property
-     * to get a user from users.
+     * The specified article has a property {@value Article#ARTICLE_AUTHOR_EMAIL}, this method will use this property to
+     * get a user from users.
      * </p>
      *
      * <p>
-     * If can't find the specified article's author (i.e. the author has been
-     * removed by administrator), returns administrator.
+     * If can't find the specified article's author (i.e. the author has been removed by administrator), returns
+     * administrator.
      * </p>
      *
      * @param article the specified article
@@ -256,7 +252,7 @@ public class ArticleQueryService {
 
             if (null == ret) {
                 LOGGER.log(Level.WARN, "Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
-                    article.getString(Keys.OBJECT_ID));
+                        article.getString(Keys.OBJECT_ID));
                 // This author may be deleted by admin, use admin as the author
                 // of this article
                 ret = userRepository.getAdmin();
@@ -282,7 +278,7 @@ public class ArticleQueryService {
      * @throws JSONException json exception
      */
     public JSONObject getSign(final String signId, final JSONObject preference) throws JSONException, RepositoryException {
-        final JSONArray signs = new JSONArray(preference.getString(Preference.SIGNS));
+        final JSONArray signs = new JSONArray(preference.getString(Option.ID_C_SIGNS));
 
         JSONObject defaultSign = null;
 
@@ -354,8 +350,7 @@ public class ArticleQueryService {
      * Gets the recent articles with the specified fetch size.
      *
      * @param fetchSize the specified fetch size
-     * @return a list of json object, its size less or equal to the specified
-     * fetch size
+     * @return a list of json object, its size less or equal to the specified fetch size
      * @throws ServiceException service exception
      */
     public List<JSONObject> getRecentArticles(final int fetchSize) throws ServiceException {
@@ -376,8 +371,7 @@ public class ArticleQueryService {
      * </p>
      *
      * @param articleId the specified article id
-     * @return for example,
-     * <pre>
+     * @return for example,      <pre>
      * {
      *     "article": {
      *         "oId": "",
@@ -432,7 +426,7 @@ public class ArticleQueryService {
             // Signs
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            article.put(Sign.SIGNS, new JSONArray(preference.getString(Preference.SIGNS)));
+            article.put(Sign.SIGNS, new JSONArray(preference.getString(Option.ID_C_SIGNS)));
 
             // Remove unused properties
             article.remove(ARTICLE_AUTHOR_EMAIL);
@@ -453,20 +447,18 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets articles(by crate date descending) by the specified request json
-     * object.
+     * Gets articles(by crate date descending) by the specified request json object.
      *
      * <p>
-     * If the property "articleIsPublished" of the specified request json object is {@code true}, the returned articles all are published,
-     * {@code false} otherwise.
+     * If the property "articleIsPublished" of the specified request json object is {@code true}, the returned articles
+     * all are published, {@code false} otherwise.
      * </p>
      *
      * <p>
      * Specified the "excludes" for results properties exclusion.
      * </p>
      *
-     * @param requestJSONObject the specified request json object, for example,
-     * <pre>
+     * @param requestJSONObject the specified request json object, for example,      <pre>
      * {
      *     "paginationCurrentPageNum": 1,
      *     "paginationPageSize": 20,
@@ -476,8 +468,7 @@ public class ArticleQueryService {
      * }, see {@link Pagination} for more details
      * </pre>
      *
-     * @return for example,
-     * <pre>
+     * @return for example,      <pre>
      * {
      *     "pagination": {
      *         "paginationPageCount": 100,
@@ -512,7 +503,7 @@ public class ArticleQueryService {
             final boolean articleIsPublished = requestJSONObject.optBoolean(ARTICLE_IS_PUBLISHED, true);
 
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING).addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING).setFilter(
-                new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
+                    new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
 
             int articleCount = statisticQueryService.getBlogArticleCount();
 
@@ -580,7 +571,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesByTag(final String tagId, final int currentPageNum, final int pageSize)
-        throws ServiceException {
+            throws ServiceException {
         try {
             JSONObject result = tagArticleRepository.getByTagId(tagId, currentPageNum, pageSize);
             final JSONArray tagArticleRelations = result.getJSONArray(Keys.RESULTS);
@@ -601,7 +592,7 @@ public class ArticleQueryService {
             final List<JSONObject> ret = new ArrayList<JSONObject>();
 
             final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).setPageCount(1).index(
-                Article.ARTICLE_PERMALINK);
+                    Article.ARTICLE_PERMALINK);
 
             result = articleRepository.get(query);
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
@@ -639,7 +630,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesByArchiveDate(final String archiveDateId, final int currentPageNum, final int pageSize)
-        throws ServiceException {
+            throws ServiceException {
         try {
             JSONObject result = archiveDateArticleRepository.getByArchiveDateId(archiveDateId, currentPageNum, pageSize);
 
@@ -661,7 +652,7 @@ public class ArticleQueryService {
             final List<JSONObject> ret = new ArrayList<JSONObject>();
 
             final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).setPageCount(1).index(
-                Article.ARTICLE_PERMALINK);
+                    Article.ARTICLE_PERMALINK);
 
             result = articleRepository.get(query);
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
@@ -697,8 +688,7 @@ public class ArticleQueryService {
      * </p>
      *
      * @param fetchSize the specified fetch size
-     * @return a list of json objects, its size less or equal to the specified
-     * fetch size
+     * @return a list of json objects, its size less or equal to the specified fetch size
      * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesRandomly(final int fetchSize) throws ServiceException {
@@ -727,9 +717,9 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getRelevantArticles(final JSONObject article, final JSONObject preference)
-        throws ServiceException {
+            throws ServiceException {
         try {
-            final int displayCnt = preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
+            final int displayCnt = preference.getInt(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
             final String[] tagTitles = article.getString(Article.ARTICLE_TAGS_REF).split(",");
             final int maxTagCnt = displayCnt > tagTitles.length ? tagTitles.length : displayCnt;
             final String articleId = article.getString(Keys.OBJECT_ID);
@@ -819,15 +809,13 @@ public class ArticleQueryService {
      * </p>
      *
      * @param articleId the specified article id
-     * @return the previous article,
-     * <pre>
+     * @return the previous article,      <pre>
      * {
      *     "articleTitle": "",
      *     "articlePermalink": "",
      *     "articleAbstract": ""
      * }
-     * </pre>
-     * returns {@code null} if not found
+     * </pre> returns {@code null} if not found
      *
      * @throws ServiceException service exception
      */
@@ -848,15 +836,13 @@ public class ArticleQueryService {
      * </p>
      *
      * @param articleId the specified article id
-     * @return the previous article,
-     * <pre>
+     * @return the previous article,      <pre>
      * {
      *     "articleTitle": "",
      *     "articlePermalink": "",
      *     "articleAbstract": ""
      * }
-     * </pre>
-     * returns {@code null} if not found
+     * </pre> returns {@code null} if not found
      *
      * @throws ServiceException service exception
      */
@@ -919,7 +905,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public List<JSONObject> getArticlesByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
-        throws ServiceException {
+            throws ServiceException {
         try {
             final JSONObject result = articleRepository.getByAuthorEmail(authorEmail, currentPageNum, pageSize);
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
@@ -939,9 +925,9 @@ public class ArticleQueryService {
             return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR,
-                "Gets articles by author email failed[authorEmail=" + authorEmail + ", currentPageNum=" + currentPageNum + ", pageSize="
-                + pageSize + "]",
-                e);
+                    "Gets articles by author email failed[authorEmail=" + authorEmail + ", currentPageNum=" + currentPageNum + ", pageSize="
+                    + pageSize + "]",
+                    e);
 
             throw new ServiceException(e);
         }

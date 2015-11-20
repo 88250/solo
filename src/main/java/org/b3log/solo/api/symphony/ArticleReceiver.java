@@ -32,7 +32,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -46,7 +46,7 @@ import org.jsoup.Jsoup;
  * Article receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Mar 18, 2013
+ * @version 1.0.0.6, Nov 20, 2015
  * @since 0.5.5
  */
 @RequestProcessor
@@ -132,7 +132,7 @@ public class ArticleReceiver {
             final String userB3Key = article.optString("userB3Key");
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            if (!userB3Key.equals(preference.optString(Preference.KEY_OF_SOLO))) {
+            if (!userB3Key.equals(preference.optString(Option.ID_C_KEY_OF_SOLO))) {
                 LOGGER.log(Level.WARN, "B3 key not match, ignored add article");
 
                 return;
@@ -224,7 +224,7 @@ public class ArticleReceiver {
             final String userB3Key = article.optString("userB3Key");
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            if (!userB3Key.equals(preference.optString(Preference.KEY_OF_SOLO))) {
+            if (!userB3Key.equals(preference.optString(Option.ID_C_KEY_OF_SOLO))) {
                 LOGGER.log(Level.WARN, "B3 key not match, ignored update article");
 
                 return;

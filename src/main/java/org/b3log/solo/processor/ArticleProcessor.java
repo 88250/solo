@@ -68,7 +68,7 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.14, Jun 13, 2015
+ * @version 1.4.2.15, Nov 20, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -193,7 +193,7 @@ public class ArticleProcessor {
 
         final JSONObject preference = preferenceQueryService.getPreference();
 
-        dataModel.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
+        dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
@@ -259,7 +259,7 @@ public class ArticleProcessor {
         final JSONObject jsonObject = new JSONObject();
 
         final JSONObject preference = preferenceQueryService.getPreference();
-        final int displayCnt = preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
+        final int displayCnt = preference.getInt(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
 
         if (0 == displayCnt) {
             jsonObject.put(Common.RANDOM_ARTICLES, new ArrayList<JSONObject>());
@@ -300,7 +300,7 @@ public class ArticleProcessor {
 
         final JSONObject preference = preferenceQueryService.getPreference();
 
-        final int displayCnt = preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT);
+        final int displayCnt = preference.getInt(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
 
         if (0 == displayCnt) {
             jsonObject.put(Common.RANDOM_ARTICLES, new ArrayList<JSONObject>());
@@ -395,8 +395,8 @@ public class ArticleProcessor {
             jsonObject.put(Keys.STATUS_CODE, true);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
-            final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+            final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final StringBuilder pathBuilder = new StringBuilder();
 
@@ -413,12 +413,10 @@ public class ArticleProcessor {
 
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(request, articles, preference);
-            } else {
-                if (!articles.isEmpty()) {
-                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
+            } else if (!articles.isEmpty()) {
+                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                    filler.setArticlesExProperties(request, articles, author, preference);
-                }
+                filler.setArticlesExProperties(request, articles, author, preference);
             }
 
             jsonObject.put(Keys.RESULTS, result);
@@ -462,7 +460,7 @@ public class ArticleProcessor {
             jsonObject.put(Keys.STATUS_CODE, true);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
             final JSONObject tagQueryResult = tagQueryService.getTagByTitle(tagTitle);
 
@@ -481,12 +479,10 @@ public class ArticleProcessor {
 
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(request, articles, preference);
-            } else {
-                if (!articles.isEmpty()) {
-                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
+            } else if (!articles.isEmpty()) {
+                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                    filler.setArticlesExProperties(request, articles, author, preference);
-                }
+                filler.setArticlesExProperties(request, articles, author, preference);
             }
 
             Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
@@ -532,7 +528,7 @@ public class ArticleProcessor {
             jsonObject.put(Keys.STATUS_CODE, true);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
             final JSONObject archiveQueryResult = archiveDateQueryService.getByArchiveDateString(archiveDateString);
 
@@ -552,12 +548,10 @@ public class ArticleProcessor {
 
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(request, articles, preference);
-            } else {
-                if (!articles.isEmpty()) {
-                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
+            } else if (!articles.isEmpty()) {
+                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                    filler.setArticlesExProperties(request, articles, author, preference);
-                }
+                filler.setArticlesExProperties(request, articles, author, preference);
             }
 
             Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
@@ -604,7 +598,7 @@ public class ArticleProcessor {
             jsonObject.put(Keys.STATUS_CODE, true);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
             final JSONObject authorRet = userQueryService.getUser(authorId);
 
@@ -694,8 +688,8 @@ public class ArticleProcessor {
                 return;
             }
 
-            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
-            final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+            final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
+            final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final JSONObject result = userQueryService.getUser(authorId);
 
@@ -720,7 +714,7 @@ public class ArticleProcessor {
 
             filler.setArticlesExProperties(request, articles, author, preference);
 
-            if (preference.optBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            if (preference.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
                 Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
             } else {
                 Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
@@ -737,7 +731,7 @@ public class ArticleProcessor {
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException e) {
@@ -795,7 +789,7 @@ public class ArticleProcessor {
             final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-            final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
+            final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
             final int articleCount = archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
@@ -815,19 +809,17 @@ public class ArticleProcessor {
 
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(request, articles, preference);
-            } else {
-                if (!articles.isEmpty()) {
-                    final JSONObject author = articleQueryService.getAuthor(articles.get(0));
+            } else if (!articles.isEmpty()) {
+                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
-                    filler.setArticlesExProperties(request, articles, author, preference);
-                }
+                filler.setArticlesExProperties(request, articles, author, preference);
             }
 
             sort(preference, articles);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
-            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount, archiveDateString, archiveDate);
             filler.fillBlogHeader(request, response, dataModel, preference);
@@ -899,7 +891,7 @@ public class ArticleProcessor {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            final boolean allowVisitDraftViaPermalink = preference.getBoolean(Preference.ALLOW_VISIT_DRAFT_VIA_PERMALINK);
+            final boolean allowVisitDraftViaPermalink = preference.getBoolean(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
 
             if (!article.optBoolean(Article.ARTICLE_IS_PUBLISHED) && !allowVisitDraftViaPermalink) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -916,7 +908,7 @@ public class ArticleProcessor {
 
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
 
-            if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+            if (preference.getBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
             } else {
                 article.put(Common.HAS_UPDATED, false);
@@ -945,7 +937,7 @@ public class ArticleProcessor {
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
             filler.fillSide(request, dataModel, preference);
-            Skins.fillLangs(preference.optString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             if (!Requests.hasBeenServed(request, response)) {
                 articleMgmtService.incViewCount(articleId);
@@ -983,7 +975,7 @@ public class ArticleProcessor {
      * @see Comparators#ARTICLE_CREATE_DATE_COMPARATOR
      */
     private void sort(final JSONObject preference, final List<JSONObject> articles) throws JSONException {
-        // if (preference.getBoolean(Preference.ENABLE_ARTICLE_UPDATE_HINT)) {
+        // if (preference.getBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
         // Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
         // } else {
         Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
@@ -1143,7 +1135,7 @@ public class ArticleProcessor {
      */
     private List<JSONObject> getRandomArticles(final JSONObject preference) {
         try {
-            final int displayCnt = preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT);
+            final int displayCnt = preference.getInt(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
             final List<JSONObject> ret = articleQueryService.getArticlesRandomly(displayCnt);
 
             return ret;
@@ -1227,8 +1219,8 @@ public class ArticleProcessor {
             final int pageCount,
             final String archiveDateString,
             final JSONObject archiveDate) throws Exception {
-        final int pageSize = preference.getInt(Preference.ARTICLE_LIST_DISPLAY_COUNT);
-        final int windowSize = preference.getInt(Preference.ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+        final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
+        final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
@@ -1256,7 +1248,7 @@ public class ArticleProcessor {
         final String month = dateStrings[1];
 
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_YEAR, year);
-        final String language = Locales.getLanguage(preference.getString(Preference.LOCALE_STRING));
+        final String language = Locales.getLanguage(preference.getString(Option.ID_C_LOCALE_STRING));
         String ret;
 
         if ("en".equals(language)) {
@@ -1281,7 +1273,7 @@ public class ArticleProcessor {
      */
     private void prepareShowArticle(final JSONObject preference, final Map<String, Object> dataModel, final JSONObject article)
             throws Exception {
-        article.put(Common.COMMENTABLE, preference.getBoolean(Preference.COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));
+        article.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));
         article.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
         dataModel.put(Article.ARTICLE, article);
         final String articleId = article.getString(Keys.OBJECT_ID);
@@ -1330,9 +1322,9 @@ public class ArticleProcessor {
         LOGGER.debug("Got article's comments");
         Stopwatchs.end();
 
-        dataModel.put(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
-                preference.getInt(Preference.EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
-        dataModel.put(Preference.RANDOM_ARTICLES_DISPLAY_CNT, preference.getInt(Preference.RANDOM_ARTICLES_DISPLAY_CNT));
-        dataModel.put(Preference.RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Preference.RELEVANT_ARTICLES_DISPLAY_CNT));
+        dataModel.put(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
+                preference.getInt(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
+        dataModel.put(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT));
+        dataModel.put(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT));
     }
 }

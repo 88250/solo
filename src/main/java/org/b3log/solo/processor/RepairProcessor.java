@@ -68,7 +68,7 @@ import org.json.JSONObject;
  * See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.10, Nov 8, 2015
+ * @version 1.2.0.11, Nov 20, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -247,19 +247,19 @@ public class RepairProcessor {
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String originalSigns = preference.getString(Preference.SIGNS);
+            final String originalSigns = preference.getString(Option.ID_C_SIGNS);
 
-            preference.put(Preference.SIGNS, Preference.Default.DEFAULT_SIGNS);
+            preference.put(Option.ID_C_SIGNS, Preference.Default.DEFAULT_SIGNS);
 
             preferenceMgmtService.updatePreference(preference);
 
             // Sends the sample signs to developer
             final Message msg = new MailService.Message();
 
-            msg.setFrom(preference.getString(Preference.ADMIN_EMAIL));
+            msg.setFrom(preference.getString(Option.ID_C_ADMIN_EMAIL));
             msg.addRecipient("DL88250@gmail.com");
             msg.setSubject("Restore signs");
-            msg.setHtmlBody(originalSigns + "<p>Admin email: " + preference.getString(Preference.ADMIN_EMAIL) + "</p>");
+            msg.setHtmlBody(originalSigns + "<p>Admin email: " + preference.getString(Option.ID_C_ADMIN_EMAIL) + "</p>");
 
             MAIL_SVC.send(msg);
             renderer.setContent("Restores signs succeeded.");

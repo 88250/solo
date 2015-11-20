@@ -40,7 +40,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextXMLRenderer;
 import org.b3log.latke.util.MD5;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.service.ArticleMgmtService;
@@ -71,7 +71,7 @@ import org.jsoup.Jsoup;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.11, May 17, 2013
+ * @version 1.0.0.12, Nov 20, 2015
  * @since 0.4.0
  */
 @RequestProcessor
@@ -629,7 +629,7 @@ public class MetaWeblogAPI {
             throws JSONException {
         final String blogId = preference.getString(Keys.OBJECT_ID);
 
-        final String blogTitle = StringEscapeUtils.escapeXml(preference.getString(Preference.BLOG_TITLE));
+        final String blogTitle = StringEscapeUtils.escapeXml(preference.getString(Option.ID_C_BLOG_TITLE));
 
         final StringBuilder stringBuilder = new StringBuilder("<member><name>blogid</name><value>").append(blogId).append(
                 "</value></member>");

@@ -17,6 +17,7 @@ package org.b3log.solo.service;
 
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Preference;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -26,7 +27,7 @@ import org.testng.annotations.Test;
  * {@link PreferenceMgmtService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 11, 2012
+ * @version 1.0.0.2, Nov 20, 2015
  */
 @Test(suiteName = "service")
 public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
@@ -62,14 +63,14 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
         final PreferenceQueryService preferenceQueryService = getPreferenceQueryService();
         JSONObject preference = preferenceQueryService.getPreference();
 
-        Assert.assertEquals(preference.getString(Preference.BLOG_TITLE),
+        Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE),
                 Preference.Default.DEFAULT_BLOG_TITLE);
 
-        preference.put(Preference.BLOG_TITLE, "updated blog title");
+        preference.put(Option.ID_C_BLOG_TITLE, "updated blog title");
         preferenceMgmtService.updatePreference(preference);
 
         preference = preferenceQueryService.getPreference();
-        Assert.assertEquals(preference.getString(Preference.BLOG_TITLE), "updated blog title");
+        Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), "updated blog title");
     }
 
     /**
@@ -79,23 +80,16 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void updateReplyNotificationTemplate() throws Exception {
-        final PreferenceMgmtService preferenceMgmtService
-                = getPreferenceMgmtService();
-        final PreferenceQueryService preferenceQueryService
-                = getPreferenceQueryService();
-        JSONObject replyNotificationTemplate
-                = preferenceQueryService.getReplyNotificationTemplate();
+        final PreferenceMgmtService preferenceMgmtService = getPreferenceMgmtService();
+        final PreferenceQueryService preferenceQueryService = getPreferenceQueryService();
+        JSONObject replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
 
-        Assert.assertEquals(replyNotificationTemplate.toString(),
-                Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
+        Assert.assertEquals(replyNotificationTemplate.toString(), Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
 
         replyNotificationTemplate.put("subject", "updated subject");
-        preferenceMgmtService.updateReplyNotificationTemplate(
-                replyNotificationTemplate);
+        preferenceMgmtService.updateReplyNotificationTemplate(replyNotificationTemplate);
 
-        replyNotificationTemplate
-                = preferenceQueryService.getReplyNotificationTemplate();
-        Assert.assertEquals(replyNotificationTemplate.getString(
-                "subject"), "updated subject");
+        replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
+        Assert.assertEquals(replyNotificationTemplate.getString("subject"), "updated subject");
     }
 }

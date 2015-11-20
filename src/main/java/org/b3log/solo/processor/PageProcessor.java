@@ -35,8 +35,8 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -50,7 +50,7 @@ import org.json.JSONObject;
  * Page processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Nov 17, 2013
+ * @version 1.1.0.5, Nov 20, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -116,7 +116,7 @@ public class PageProcessor {
                 return;
             }
 
-            Skins.fillLangs(preference.getString(Preference.LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 
@@ -130,7 +130,7 @@ public class PageProcessor {
 
             final String pageId = page.getString(Keys.OBJECT_ID);
 
-            page.put(Common.COMMENTABLE, preference.getBoolean(Preference.COMMENTABLE) && page.getBoolean(Page.PAGE_COMMENTABLE));
+            page.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && page.getBoolean(Page.PAGE_COMMENTABLE));
             page.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
             dataModel.put(Page.PAGE, page);
             final List<JSONObject> comments = commentQueryService.getComments(pageId);

@@ -32,8 +32,8 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -44,7 +44,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, May 17, 2013
+ * @version 1.0.1.3, Nov 20, 2015
  * @since 0.3.1
  */
 public final class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> {
@@ -94,8 +94,8 @@ public final class PageCommentReplyNotifier extends AbstractEventListener<JSONOb
                 throw new EventException("Not found preference");
             }
 
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
+            final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
+            final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
 
             final String commentContent = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
             final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);

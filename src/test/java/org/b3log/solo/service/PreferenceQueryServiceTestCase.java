@@ -17,6 +17,7 @@ package org.b3log.solo.service;
 
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Preference;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -26,14 +27,14 @@ import org.testng.annotations.Test;
  * {@link PreferenceQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep  11, 2012
+ * @version 1.0.0.2, Nov 20, 2015
  */
 @Test(suiteName = "service")
 public class PreferenceQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Init.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -53,32 +54,30 @@ public class PreferenceQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get Preference.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
     public void getPreference() throws Exception {
-        final PreferenceQueryService preferenceQueryService =
-                getPreferenceQueryService();
+        final PreferenceQueryService preferenceQueryService
+                = getPreferenceQueryService();
         final JSONObject preference = preferenceQueryService.getPreference();
 
-        Assert.assertEquals(preference.getString(Preference.BLOG_TITLE),
-                            Preference.Default.DEFAULT_BLOG_TITLE);
+        Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), Preference.Default.DEFAULT_BLOG_TITLE);
     }
 
     /**
      * Get Reply Notification Template.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
     public void getReplyNotificationTemplate() throws Exception {
-        final PreferenceQueryService preferenceQueryService =
-                getPreferenceQueryService();
-        final JSONObject replyNotificationTemplate =
-                preferenceQueryService.getReplyNotificationTemplate();
+        final PreferenceQueryService preferenceQueryService
+                = getPreferenceQueryService();
+        final JSONObject replyNotificationTemplate
+                = preferenceQueryService.getReplyNotificationTemplate();
 
-        Assert.assertEquals(replyNotificationTemplate.toString(),
-                Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
+        Assert.assertEquals(replyNotificationTemplate.toString(), Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
     }
 }

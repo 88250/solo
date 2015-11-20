@@ -540,7 +540,7 @@ public class InitService {
 
         final JSONObject replyNotificationTemplate = new JSONObject(Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
 
-        replyNotificationTemplate.put(Keys.OBJECT_ID, Preference.REPLY_NOTIFICATION_TEMPLATE);
+        replyNotificationTemplate.put(Keys.OBJECT_ID, "replyNotificationTemplate");
 
         final JSONObject subjectOpt = new JSONObject();
         subjectOpt.put(Keys.OBJECT_ID, Option.ID_C_REPLY_NOTI_TPL_SUBJECT);

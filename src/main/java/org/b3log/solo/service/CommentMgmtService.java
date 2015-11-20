@@ -54,7 +54,7 @@ import org.json.JSONObject;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Nov 5, 2015
+ * @version 1.1.0.8, Nov 20, 2015
  * @since 0.3.5
  */
 @Service
@@ -180,7 +180,7 @@ public class CommentMgmtService {
         final String commentId = comment.getString(Keys.OBJECT_ID);
         final String commentContent = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
 
-        final String adminEmail = preference.getString(Preference.ADMIN_EMAIL);
+        final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
 
         if (adminEmail.equalsIgnoreCase(commentEmail)) {
             LOGGER.log(Level.DEBUG, "Do not send comment notification mail to admin itself[{0}]", adminEmail);
@@ -204,7 +204,7 @@ public class CommentMgmtService {
             }
         }
 
-        final String blogTitle = preference.getString(Preference.BLOG_TITLE);
+        final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
         boolean isArticle = true;
         String title = articleOrPage.optString(Article.ARTICLE_TITLE);
 
@@ -281,7 +281,7 @@ public class CommentMgmtService {
             ret.put(Keys.STATUS_CODE, false);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            if (null == preference || !preference.optBoolean(Preference.COMMENTABLE)) {
+            if (null == preference || !preference.optBoolean(Option.ID_C_COMMENTABLE)) {
                 ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
 
                 return ret;
@@ -728,14 +728,14 @@ public class CommentMgmtService {
      */
     public void setCommentThumbnailURL(final JSONObject comment) throws Exception {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
-        
+
         // 1. user avatar
         final JSONObject user = userRepository.getByEmail(commentEmail);
         if (null != user) {
             final String avatar = user.optString(UserExt.USER_AVATAR);
             if (!Strings.isEmptyOrNull(avatar)) {
                 comment.put(Comment.COMMENT_THUMBNAIL_URL, avatar);
-                
+
                 return;
             }
         }

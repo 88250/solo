@@ -36,7 +36,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
@@ -48,7 +48,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, May 17, 2013
+ * @version 1.0.0.2, Nov 20, 2015
  * @since 0.6.0
  */
 public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
@@ -133,10 +133,10 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Article.ARTICLE, article);
             requestJSONObject.put(Common.BLOG_VERSION, SoloServletListener.VERSION);
             requestJSONObject.put(Common.BLOG, "B3log Solo");
-            requestJSONObject.put(Preference.BLOG_TITLE, preference.getString(Preference.BLOG_TITLE));
+            requestJSONObject.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
             requestJSONObject.put("blogHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
-            requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
-            requestJSONObject.put("clientAdminEmail", preference.optString(Preference.ADMIN_EMAIL));
+            requestJSONObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
+            requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());
 
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));

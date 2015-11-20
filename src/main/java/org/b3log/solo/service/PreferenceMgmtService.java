@@ -38,7 +38,6 @@ import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Skin;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import static org.b3log.solo.model.Preference.*;
 import static org.b3log.solo.model.Skin.SKINS;
 import static org.b3log.solo.model.Skin.SKIN_DIR_NAME;
 import static org.b3log.solo.model.Skin.SKIN_NAME;
@@ -50,7 +49,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.9, Nov 20, 2015
+ * @version 1.3.1.10, Nov 20, 2015
  * @since 0.4.0
  */
 @Service
@@ -148,7 +147,7 @@ public class PreferenceMgmtService {
 
         setDirectoryForTemplateLoading(preference.getString(SKIN_DIR_NAME));
 
-        final String localeString = preference.getString(Preference.LOCALE_STRING);
+        final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
 
         if ("zh_CN".equals(localeString)) {
             TimeZones.setTimeZone("Asia/Shanghai");
@@ -229,19 +228,19 @@ public class PreferenceMgmtService {
 
             preference.put(Skin.SKINS, skinArray.toString());
 
-            final String timeZoneId = preference.getString(TIME_ZONE_ID);
+            final String timeZoneId = preference.getString(Option.ID_C_TIME_ZONE_ID);
             TimeZones.setTimeZone(timeZoneId);
 
-            preference.put(Preference.SIGNS, preference.get(Preference.SIGNS).toString());
+            preference.put(Option.ID_C_SIGNS, preference.get(Option.ID_C_SIGNS).toString());
 
             final JSONObject oldPreference = preferenceQueryService.getPreference();
-            final String adminEmail = oldPreference.getString(ADMIN_EMAIL);
-            preference.put(ADMIN_EMAIL, adminEmail);
+            final String adminEmail = oldPreference.getString(Option.ID_C_ADMIN_EMAIL);
+            preference.put(Option.ID_C_ADMIN_EMAIL, adminEmail);
 
-            final String version = oldPreference.optString(VERSION);
-            preference.put(VERSION, version);
+            final String version = oldPreference.optString(Option.ID_C_VERSION);
+            preference.put(Option.ID_C_VERSION, version);
 
-            final String localeString = preference.getString(Preference.LOCALE_STRING);
+            final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
             LOGGER.log(Level.DEBUG, "Current locale[string={0}]", localeString);
             Latkes.setLocale(new Locale(Locales.getLanguage(localeString), Locales.getCountry(localeString)));
 

@@ -28,8 +28,8 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.Comments;
@@ -40,7 +40,7 @@ import org.json.JSONObject;
  * Page management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, May 30, 2015
+ * @version 1.1.0.8, Nov 20, 2015
  * @since 0.4.0
  */
 @Service
@@ -169,7 +169,7 @@ public class PageMgmtService {
             // Set editor type
             if (!newPage.has(Page.PAGE_EDITOR_TYPE)) {
                 final JSONObject preference = preferenceQueryService.getPreference();
-                newPage.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+                newPage.put(Page.PAGE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
             }
 
             pageRepository.update(pageId, newPage);
@@ -278,7 +278,7 @@ public class PageMgmtService {
             // Set editor type
             if (!page.has(Page.PAGE_EDITOR_TYPE)) {
                 final JSONObject preference = preferenceQueryService.getPreference();
-                page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Preference.EDITOR_TYPE));
+                page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
             }
 
             final String ret = pageRepository.add(page);

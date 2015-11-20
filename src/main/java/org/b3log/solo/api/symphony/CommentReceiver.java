@@ -42,7 +42,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.service.ArticleMgmtService;
@@ -57,7 +57,7 @@ import org.json.JSONObject;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, Nov 5, 2015
+ * @version 1.1.0.10, Nov 20, 2015
  * @since 0.5.5
  */
 @RequestProcessor
@@ -97,11 +97,6 @@ public class CommentReceiver {
      */
     @Inject
     private ArticleRepository articleRepository;
-
-    /**
-     * Default user thumbnail.
-     */
-    private static final String DEFAULT_USER_THUMBNAIL = "default-user-thumbnail.png";
 
     /**
      * URL fetch service.
@@ -168,7 +163,7 @@ public class CommentReceiver {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final JSONObject symphonyCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String keyOfSolo = preference.optString(Preference.KEY_OF_SOLO);
+            final String keyOfSolo = preference.optString(Option.ID_C_KEY_OF_SOLO);
             final String key = symphonyCmt.optString("userB3Key");
 
             if (Strings.isEmptyOrNull(keyOfSolo) || !keyOfSolo.equals(key)) {

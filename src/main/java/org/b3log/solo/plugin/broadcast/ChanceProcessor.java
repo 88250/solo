@@ -39,7 +39,6 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.service.OptionMgmtService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -52,7 +51,7 @@ import org.json.JSONObject;
  * Broadcast chance processor.
  * 
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Jun 13, 2013
+ * @version 1.0.0.10, Nov 20, 2015
  * @since 0.6.0
  */
 @RequestProcessor
@@ -285,11 +284,11 @@ public class ChanceProcessor {
 
             final JSONObject broadcast = requestJSONObject.getJSONObject("broadcast");
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String b3logKey = preference.getString(Preference.KEY_OF_SOLO);
-            final String email = preference.getString(Preference.ADMIN_EMAIL);
+            final String b3logKey = preference.getString(Option.ID_C_KEY_OF_SOLO);
+            final String email = preference.getString(Option.ID_C_ADMIN_EMAIL);
             final String clientName = "B3log Solo";
             final String clientVersion = SoloServletListener.VERSION;
-            final String clientTitle = preference.getString(Preference.BLOG_TITLE);
+            final String clientTitle = preference.getString(Option.ID_C_BLOG_TITLE);
             final String clientRuntimeEnv = Latkes.getRuntimeEnv().name();
 
             final JSONObject broadcastRequest = new JSONObject();

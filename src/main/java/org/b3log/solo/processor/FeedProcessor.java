@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +45,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.model.feed.atom.Category;
 import org.b3log.solo.model.feed.atom.Entry;
@@ -62,12 +61,11 @@ import org.b3log.solo.service.UserQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-
 /**
  * Feed (Atom/RSS) processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, May 17, 2013
+ * @version 1.1.0.5, Nov 20, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -116,10 +114,10 @@ public class FeedProcessor {
 
     /**
      * Blog articles Atom output.
-     * 
+     *
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/blog-articles-feed.do"}, method = { HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = {"/blog-articles-feed.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void blogArticlesAtom(final HTTPRequestContext context) {
         final AtomRenderer renderer = new AtomRenderer();
 
@@ -130,9 +128,9 @@ public class FeedProcessor {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE);
-            final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
+            final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
+            final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE);
+            final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
@@ -146,7 +144,7 @@ public class FeedProcessor {
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
             final Query query = new Query().setCurrentPageNum(1).setPageSize(outputCnt).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setPageCount(
-                1);
+                    1);
 
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
             String authorName = "";
@@ -158,7 +156,7 @@ public class FeedProcessor {
                 authorName = articleQueryService.getAuthor(articles.getJSONObject(0)).getString(User.USER_NAME);
             }
 
-            final boolean isFullContent = "fullContent".equals(preference.getString(Preference.FEED_OUTPUT_MODE));
+            final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
@@ -169,8 +167,8 @@ public class FeedProcessor {
 
                 entry.setTitle(title);
                 final String summary = isFullContent
-                    ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                    : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+                        ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                        : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
 
                 entry.setSummary(summary);
                 final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
@@ -214,11 +212,11 @@ public class FeedProcessor {
 
     /**
      * Tag articles Atom output.
-     * 
+     *
      * @param context the specified context
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
-    @RequestProcessing(value = { "/tag-articles-feed.do"}, method = { HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = {"/tag-articles-feed.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void tagArticlesAtom(final HTTPRequestContext context) throws IOException {
         final AtomRenderer renderer = new AtomRenderer();
 
@@ -256,9 +254,9 @@ public class FeedProcessor {
                 return;
             }
 
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE) + ", " + tagTitle;
-            final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
+            final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
+            final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE) + ", " + tagTitle;
+            final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
 
             feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
@@ -283,7 +281,7 @@ public class FeedProcessor {
                 final JSONObject article = articleRepository.get(articleId);
 
                 if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED) // Skips the unpublished article
-                    && Strings.isEmptyOrNull(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips article with password
+                        && Strings.isEmptyOrNull(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips article with password
                     articles.add(article);
                 }
             }
@@ -295,7 +293,7 @@ public class FeedProcessor {
                 authorName = articleQueryService.getAuthor(articles.get(0)).getString(User.USER_NAME);
             }
 
-            final boolean isFullContent = "fullContent".equals(preference.getString(Preference.FEED_OUTPUT_MODE));
+            final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.size(); i++) {
                 final JSONObject article = articles.get(i);
@@ -306,8 +304,8 @@ public class FeedProcessor {
 
                 entry.setTitle(title);
                 final String summary = isFullContent
-                    ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                    : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+                        ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                        : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
 
                 entry.setSummary(summary);
                 final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
@@ -349,10 +347,10 @@ public class FeedProcessor {
 
     /**
      * Blog articles RSS output.
-     * 
+     *
      * @param context the specified context
      */
-    @RequestProcessing(value = { "/blog-articles-rss.do"}, method = { HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = {"/blog-articles-rss.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void blogArticlesRSS(final HTTPRequestContext context) {
         final HttpServletResponse response = context.getResponse();
         final RssRenderer renderer = new RssRenderer();
@@ -369,16 +367,16 @@ public class FeedProcessor {
                 return;
             }
 
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE);
-            final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
+            final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
+            final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE);
+            final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/blog-articles-rss.do");
             channel.setGenerator("Solo, ver " + SoloServletListener.VERSION);
-            final String localeString = preference.getString(Preference.LOCALE_STRING);
+            final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
             final String country = Locales.getCountry(localeString).toLowerCase();
             final String language = Locales.getLanguage(localeString).toLowerCase();
 
@@ -390,7 +388,7 @@ public class FeedProcessor {
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
             final Query query = new Query().setCurrentPageNum(1).setPageSize(outputCnt).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setPageCount(
-                1);
+                    1);
 
             final JSONObject articleResult = articleRepository.get(query);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
@@ -402,7 +400,7 @@ public class FeedProcessor {
                 authorName = articleQueryService.getAuthor(articles.getJSONObject(0)).getString(User.USER_NAME);
             }
 
-            final boolean isFullContent = "fullContent".equals(preference.getString(Preference.FEED_OUTPUT_MODE));
+            final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
@@ -413,8 +411,8 @@ public class FeedProcessor {
 
                 item.setTitle(title);
                 final String description = isFullContent
-                    ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                    : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+                        ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                        : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
 
                 item.setDescription(description);
                 final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
@@ -460,11 +458,11 @@ public class FeedProcessor {
 
     /**
      * Tag articles RSS output.
-     * 
+     *
      * @param context the specified context
-     * @throws IOException io exception 
+     * @throws IOException io exception
      */
-    @RequestProcessing(value = { "/tag-articles-rss.do"}, method = { HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = {"/tag-articles-rss.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void tagArticlesRSS(final HTTPRequestContext context) throws IOException {
         final HttpServletResponse response = context.getResponse();
         final HttpServletRequest request = context.getRequest();
@@ -502,16 +500,16 @@ public class FeedProcessor {
                 return;
             }
 
-            final String blogTitle = preference.getString(Preference.BLOG_TITLE);
-            final String blogSubtitle = preference.getString(Preference.BLOG_SUBTITLE) + ", " + tagTitle;
-            final int outputCnt = preference.getInt(Preference.FEED_OUTPUT_CNT);
+            final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
+            final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE) + ", " + tagTitle;
+            final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
 
             channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/tag-articles-rss.do");
             channel.setGenerator("Solo, ver " + SoloServletListener.VERSION);
-            final String localeString = preference.getString(Preference.LOCALE_STRING);
+            final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
             final String country = Locales.getCountry(localeString).toLowerCase();
             final String language = Locales.getLanguage(localeString).toLowerCase();
 
@@ -534,7 +532,7 @@ public class FeedProcessor {
                 final JSONObject article = articleRepository.get(articleId);
 
                 if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED) // Skips the unpublished article
-                    && Strings.isEmptyOrNull(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips article with password
+                        && Strings.isEmptyOrNull(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips article with password
                     articles.add(article);
                 }
             }
@@ -546,7 +544,7 @@ public class FeedProcessor {
                 authorName = articleQueryService.getAuthor(articles.get(0)).getString(User.USER_NAME);
             }
 
-            final boolean isFullContent = "fullContent".equals(preference.getString(Preference.FEED_OUTPUT_MODE));
+            final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.size(); i++) {
                 final JSONObject article = articles.get(i);
@@ -557,8 +555,8 @@ public class FeedProcessor {
 
                 item.setTitle(title);
                 final String description = isFullContent
-                    ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                    : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+                        ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                        : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
 
                 item.setDescription(description);
                 final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);

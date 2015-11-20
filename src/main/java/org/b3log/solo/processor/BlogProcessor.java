@@ -38,7 +38,7 @@ import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -53,7 +53,7 @@ import org.json.JSONObject;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.3, Mar 12, 2015
+ * @version 1.2.0.4, Nov 20, 2015
  * @since 0.4.6
  */
 @RequestProcessor
@@ -183,7 +183,7 @@ public class BlogProcessor {
         requestJSONObject.put(User.USER_NAME, admin.getString(User.USER_NAME));
         requestJSONObject.put(User.USER_EMAIL, admin.getString(User.USER_EMAIL));
         requestJSONObject.put(User.USER_PASSWORD, admin.getString(User.USER_PASSWORD));
-        requestJSONObject.put("userB3Key", preference.optString(Preference.KEY_OF_SOLO));
+        requestJSONObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
         requestJSONObject.put("clientHost", Latkes.getServePath());
 
         httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
