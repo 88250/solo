@@ -41,7 +41,7 @@ import org.b3log.solo.event.plugin.PluginRefresher;
 import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.event.rhythm.ArticleUpdater;
 import org.b3log.solo.event.symphony.CommentSender;
-import org.b3log.solo.model.Preference;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.impl.OptionRepositoryImpl;
@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.9, Nov 8, 2015
+ * @version 1.7.0.10, Nov 23, 2015
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -122,7 +122,7 @@ public final class SoloServletListener extends AbstractServletListener {
         upgradeService.upgrade();
 
         // Set default skin, loads from preference later
-        Skins.setDirectoryForTemplateLoading(Preference.Default.DEFAULT_SKIN_DIR_NAME);
+        Skins.setDirectoryForTemplateLoading(Option.Default.DEFAULT_SKIN_DIR_NAME);
 
         final OptionRepository optionRepository = beanManager.getReference(OptionRepositoryImpl.class);
 

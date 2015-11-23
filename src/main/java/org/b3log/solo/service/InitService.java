@@ -48,7 +48,7 @@ import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
-import org.b3log.solo.model.Preference.Default;
+import org.b3log.solo.model.Option.Default;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
@@ -538,7 +538,7 @@ public class InitService {
     private void initReplyNotificationTemplate() throws Exception {
         LOGGER.info("Initializing reply notification template");
 
-        final JSONObject replyNotificationTemplate = new JSONObject(Preference.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
+        final JSONObject replyNotificationTemplate = new JSONObject(Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
 
         replyNotificationTemplate.put(Keys.OBJECT_ID, "replyNotificationTemplate");
 

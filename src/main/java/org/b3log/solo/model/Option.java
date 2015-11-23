@@ -15,6 +15,12 @@
  */
 package org.b3log.solo.model;
 
+import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * This class defines option model relevant keys.
  *
@@ -184,7 +190,7 @@ public final class Option {
      * Key of allow visit draft via permalink.
      */
     public static final String ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK = "allowVisitDraftViaPermalink";
-    
+
     /**
      * Key of allow register.
      */
@@ -290,6 +296,216 @@ public final class Option {
      * Preference.
      */
     public static final String CATEGORY_C_PREFERENCE = "preference";
+
+    /**
+     * Default preference.
+     *
+     * @author <a href="http://88250.b3log.org">Liang Ding</a>
+     * @version 2.1.0.9, Nov 23, 2015
+     * @since 0.3.1
+     */
+    public static final class Default {
+
+        /**
+         * Logger.
+         */
+        private static final Logger LOGGER = Logger.getLogger(Default.class.getName());
+
+        /**
+         * Default recent article display count.
+         */
+        public static final int DEFAULT_RECENT_ARTICLE_DISPLAY_COUNT = 10;
+
+        /**
+         * Default recent comment display count.
+         */
+        public static final int DEFAULT_RECENT_COMMENT_DISPLAY_COUNT = 10;
+
+        /**
+         * Default most used tag display count.
+         */
+        public static final int DEFAULT_MOST_USED_TAG_DISPLAY_COUNT = 20;
+
+        /**
+         * Default article list display count.
+         */
+        public static final int DEFAULT_ARTICLE_LIST_DISPLAY_COUNT = 20;
+
+        /**
+         * Default article list pagination window size.
+         */
+        public static final int DEFAULT_ARTICLE_LIST_PAGINATION_WINDOW_SIZE = 15;
+
+        /**
+         * Default most comment article display count.
+         */
+        public static final int DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT = 5;
+
+        /**
+         * Default blog title.
+         */
+        public static final String DEFAULT_BLOG_TITLE = "Solo 示例";
+
+        /**
+         * Default blog subtitle.
+         */
+        public static final String DEFAULT_BLOG_SUBTITLE = "Java 开源博客";
+
+        /**
+         * Default skin directory name.
+         */
+        public static final String DEFAULT_SKIN_DIR_NAME = "yilia";
+
+        /**
+         * Default language.
+         */
+        public static final String DEFAULT_LANGUAGE = "zh_CN";
+
+        /**
+         * Default time zone.
+         *
+         * @see java.util.TimeZone#getAvailableIDs()
+         */
+        public static final String DEFAULT_TIME_ZONE = "Asia/Shanghai";
+
+        /**
+         * Default enable article update hint.
+         */
+        public static final String DEFAULT_ENABLE_ARTICLE_UPDATE_HINT = "true";
+
+        /**
+         * Default notice board.
+         */
+        public static final String DEFAULT_NOTICE_BOARD = "Open Source, Open Mind, <br/>Open Sight, Open Future!";
+
+        /**
+         * Default meta keywords..
+         */
+        public static final String DEFAULT_META_KEYWORDS = "Java 博客,GAE,b3log";
+
+        /**
+         * Default meta description..
+         */
+        public static final String DEFAULT_META_DESCRIPTION = "An open source blog with Java. Java 开源博客";
+
+        /**
+         * Default HTML head to append.
+         */
+        public static final String DEFAULT_HTML_HEAD = "";
+
+        /**
+         * Default footer content.
+         */
+        public static final String DEFAULT_FOOTER_CONTENT = "";
+
+        /**
+         * Default relevant articles display count.
+         */
+        public static final int DEFAULT_RELEVANT_ARTICLES_DISPLAY_COUNT = 5;
+
+        /**
+         * Default random articles display count.
+         */
+        public static final int DEFAULT_RANDOM_ARTICLES_DISPLAY_COUNT = 5;
+
+        /**
+         * Default external relevant articles display count.
+         */
+        public static final int DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT = 5;
+
+        /**
+         * Most view articles display count.
+         */
+        public static final int DEFAULT_MOST_VIEW_ARTICLES_DISPLAY_COUNT = 5;
+
+        /**
+         * Default signs.
+         */
+        public static final String DEFAULT_SIGNS;
+
+        /**
+         * Default allow visit draft via permalink.
+         */
+        public static final String DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK = "false";
+
+        /**
+         * Default allow register.
+         */
+        public static final String DEFAULT_ALLOW_REGISTER = "false";
+
+        /**
+         * Default allow comment article/page.
+         */
+        public static final String DEFAULT_COMMENTABLE = "true";
+
+        /**
+         * Default article list display style.
+         */
+        public static final String DEFAULT_ARTICLE_LIST_STYLE = "titleAndAbstract";
+
+        /**
+         * Default key of solo.
+         */
+        public static final String DEFAULT_KEY_OF_SOLO = "Your key";
+
+        /**
+         * Default reply notification template.
+         */
+        public static final String DEFAULT_REPLY_NOTIFICATION_TEMPLATE;
+
+        /**
+         * Default feed output mode.
+         */
+        public static final String DEFAULT_FEED_OUTPUT_MODE = "abstract";
+
+        /**
+         * Default feed output entry count.
+         */
+        public static final int DEFAULT_FEED_OUTPUT_CNT = 10;
+
+        /**
+         * Default editor type.
+         */
+        public static final String DEFAULT_EDITOR_TYPE = "tinyMCE";
+
+        static {
+            final JSONArray signs = new JSONArray();
+
+            final int signLength = 4;
+
+            try {
+                for (int i = 0; i < signLength; i++) {
+                    final JSONObject sign = new JSONObject();
+
+                    sign.put(Keys.OBJECT_ID, i);
+                    signs.put(sign);
+
+                    sign.put(Sign.SIGN_HTML, "");
+                }
+
+                // Sign(id=0) is the 'empty' sign, used for article user needn't
+                // a sign
+                DEFAULT_SIGNS = signs.toString();
+
+                final JSONObject replyNotificationTemplate = new JSONObject();
+
+                replyNotificationTemplate.put("subject", "${blogTitle}: New reply of your comment");
+                replyNotificationTemplate.put("body",
+                        "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"
+                        + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
+                DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Creates sign error!", e);
+                throw new IllegalStateException(e);
+            }
+        }
+
+        /**
+         * Private default constructor.
+         */
+        private Default() {
+        }
+    }
 
     /**
      * Private constructor.
