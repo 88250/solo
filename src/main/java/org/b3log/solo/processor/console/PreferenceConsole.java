@@ -31,7 +31,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Preference;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.service.OptionMgmtService;
 import org.b3log.solo.service.OptionQueryService;
@@ -243,7 +242,8 @@ public class PreferenceConsole {
 
             final JSONArray signs = new JSONArray();
 
-            final JSONArray allSigns = // includes the empty sign(id=0)
+            final JSONArray allSigns
+                    = // includes the empty sign(id=0)
                     new JSONArray(preference.getString(Option.ID_C_SIGNS));
 
             for (int i = 1; i < allSigns.length(); i++) { // excludes the empty sign
@@ -353,7 +353,7 @@ public class PreferenceConsole {
             final JSONObject ret = new JSONObject();
 
             renderer.setJSONObject(ret);
-            ret.put(Preference.PREFERENCE, preference);
+            ret.put(Option.CATEGORY_C_PREFERENCE, preference);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -424,7 +424,7 @@ public class PreferenceConsole {
         try {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
-            final JSONObject preference = requestJSONObject.getJSONObject(Preference.PREFERENCE);
+            final JSONObject preference = requestJSONObject.getJSONObject(Option.CATEGORY_C_PREFERENCE);
 
             final JSONObject ret = new JSONObject();
 
@@ -433,7 +433,7 @@ public class PreferenceConsole {
             if (isInvalid(preference, ret)) {
                 return;
             }
-            
+
             preferenceMgmtService.updatePreference(preference);
 
             ret.put(Keys.STATUS_CODE, true);

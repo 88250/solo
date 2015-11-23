@@ -121,7 +121,7 @@ public class UpgradeService {
      */
     public void upgrade() {
         try {
-            final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
+            final JSONObject preference = preferenceRepository.get(Option.CATEGORY_C_PREFERENCE);
             if (null == preference) {
                 return;
             }
@@ -180,7 +180,7 @@ public class UpgradeService {
             upgradeUsers();
 
             // Upgrades preference model
-            final JSONObject preference = preferenceRepository.get(Preference.PREFERENCE);
+            final JSONObject preference = preferenceRepository.get(Option.CATEGORY_C_PREFERENCE);
 
             final String adminEmail = preference.optString(Option.ID_C_ADMIN_EMAIL);
             final JSONObject adminEmailOpt = new JSONObject();
@@ -434,7 +434,7 @@ public class UpgradeService {
             optionRepository.add(allowRegisterOpt);
 
             preference.put(Option.ID_C_VERSION, TO_VER);
-            preferenceRepository.update(Preference.PREFERENCE, preference);
+            preferenceRepository.update(Option.CATEGORY_C_PREFERENCE, preference);
 
             transaction.commit();
 
