@@ -120,18 +120,18 @@ public class PreferenceMgmtService {
 
         if (!skinDirNames.contains(currentSkinDirName)) {
             LOGGER.log(Level.WARN, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName="
-                    + Option.Default.DEFAULT_SKIN_DIR_NAME + "] instead.",
+                    + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead.",
                     currentSkinDirName);
-            if (!skinDirNames.contains(Option.Default.DEFAULT_SKIN_DIR_NAME)) {
-                LOGGER.log(Level.ERROR, "Can not find skin[dirName=" + Option.Default.DEFAULT_SKIN_DIR_NAME + "]");
+            if (!skinDirNames.contains(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME)) {
+                LOGGER.log(Level.ERROR, "Can not find skin[dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "]");
 
                 throw new IllegalStateException(
-                        "Can not find default skin[dirName=" + Option.Default.DEFAULT_SKIN_DIR_NAME
+                        "Can not find default skin[dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME
                         + "], please redeploy your Solo and make sure contains this default skin!");
             }
 
-            preference.put(SKIN_DIR_NAME, Option.Default.DEFAULT_SKIN_DIR_NAME);
-            preference.put(SKIN_NAME, Latkes.getSkinName(Option.Default.DEFAULT_SKIN_DIR_NAME));
+            preference.put(SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+            preference.put(SKIN_NAME, Latkes.getSkinName(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME));
 
             updatePreference(preference);
         }

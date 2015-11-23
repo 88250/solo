@@ -122,7 +122,7 @@ public final class SoloServletListener extends AbstractServletListener {
         upgradeService.upgrade();
 
         // Set default skin, loads from preference later
-        Skins.setDirectoryForTemplateLoading(Option.Default.DEFAULT_SKIN_DIR_NAME);
+        Skins.setDirectoryForTemplateLoading(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         final OptionRepository optionRepository = beanManager.getReference(OptionRepositoryImpl.class);
 

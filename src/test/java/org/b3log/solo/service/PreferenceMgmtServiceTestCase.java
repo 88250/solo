@@ -63,7 +63,7 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
         JSONObject preference = preferenceQueryService.getPreference();
 
         Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE),
-                Option.Default.DEFAULT_BLOG_TITLE);
+                Option.DefaultPreference.DEFAULT_BLOG_TITLE);
 
         preference.put(Option.ID_C_BLOG_TITLE, "updated blog title");
         preferenceMgmtService.updatePreference(preference);
@@ -83,7 +83,7 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
         final PreferenceQueryService preferenceQueryService = getPreferenceQueryService();
         JSONObject replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
 
-        Assert.assertEquals(replyNotificationTemplate.toString(), Option.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
+        Assert.assertEquals(replyNotificationTemplate.toString(), Option.DefaultPreference.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
 
         replyNotificationTemplate.put("subject", "updated subject");
         preferenceMgmtService.updateReplyNotificationTemplate(replyNotificationTemplate);

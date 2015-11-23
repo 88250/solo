@@ -62,7 +62,7 @@ public class PreferenceQueryServiceTestCase extends AbstractTestCase {
                 = getPreferenceQueryService();
         final JSONObject preference = preferenceQueryService.getPreference();
 
-        Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), Option.Default.DEFAULT_BLOG_TITLE);
+        Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), Option.DefaultPreference.DEFAULT_BLOG_TITLE);
     }
 
     /**
@@ -77,6 +77,6 @@ public class PreferenceQueryServiceTestCase extends AbstractTestCase {
         final JSONObject replyNotificationTemplate
                 = preferenceQueryService.getReplyNotificationTemplate();
 
-        Assert.assertEquals(replyNotificationTemplate.toString(), Option.Default.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
+        Assert.assertEquals(replyNotificationTemplate.toString(), Option.DefaultPreference.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
     }
 }

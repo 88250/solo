@@ -249,7 +249,7 @@ public class RepairProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
             final String originalSigns = preference.getString(Option.ID_C_SIGNS);
 
-            preference.put(Option.ID_C_SIGNS, Option.Default.DEFAULT_SIGNS);
+            preference.put(Option.ID_C_SIGNS, Option.DefaultPreference.DEFAULT_SIGNS);
 
             preferenceMgmtService.updatePreference(preference);
 

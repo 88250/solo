@@ -304,12 +304,12 @@ public final class Option {
      * @version 2.1.0.9, Nov 23, 2015
      * @since 0.3.1
      */
-    public static final class Default {
+    public static final class DefaultPreference {
 
         /**
          * Logger.
          */
-        private static final Logger LOGGER = Logger.getLogger(Default.class.getName());
+        private static final Logger LOGGER = Logger.getLogger(DefaultPreference.class.getName());
 
         /**
          * Default recent article display count.
@@ -503,7 +503,7 @@ public final class Option {
         /**
          * Private default constructor.
          */
-        private Default() {
+        private DefaultPreference() {
         }
     }
 
