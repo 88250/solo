@@ -183,11 +183,6 @@ public final class Preference {
         public static final String DEFAULT_COMMENTABLE = "true";
 
         /**
-         * Default administrator's password.
-         */
-        public static final String DEFAULT_ADMIN_PWD = "111111";
-
-        /**
          * Default article list display style.
          */
         public static final String DEFAULT_ARTICLE_LIST_STYLE = "titleAndAbstract";
