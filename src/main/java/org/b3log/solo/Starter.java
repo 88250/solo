@@ -19,6 +19,10 @@ import java.awt.Desktop;
 import java.io.File;
 import java.net.URI;
 import java.util.ResourceBundle;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Options;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
 import org.eclipse.jetty.server.Server;
@@ -35,7 +39,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Oct 31, 2015
+ * @version 1.0.0.3, Nov 29, 2015
  * @since 1.2.0
  */
 public final class Starter {
@@ -57,18 +61,29 @@ public final class Starter {
     public static void main(final String[] args) throws Exception {
         final Logger logger = Logger.getLogger(Starter.class);
 
+        final Options options = new Options();
+        options.addOption("p", "port", true, "listen port");
+
+        final CommandLineParser commandLineParser = new DefaultParser();
+        final CommandLine commandLine = commandLineParser.parse(options, args);
+        
+        String portArg = commandLine.getOptionValue("p");
+        if (!Strings.isNumeric(portArg)) {
+            portArg = "9090";
+        }
+
         logger.info("Standalone mode, see [https://github.com/b3log/solo/wiki/standalone_mode] for more details.");
 
         String webappDirLocation = "src/main/webapp/"; // POM structure in dev env
-
         final File file = new File(webappDirLocation);
         if (!file.exists()) {
-            webappDirLocation = "."; // prod env
+            webappDirLocation = "."; // production environment
         }
 
-        final ResourceBundle latke = ResourceBundle.getBundle("latke");
+        final int port = Integer.valueOf(portArg);
+        
 
-        final int port = Integer.valueOf(latke.getString("serverPort"));
+        final ResourceBundle latke = ResourceBundle.getBundle("latke");
         String contextPath = latke.getString("contextPath");
         if (Strings.isEmptyOrNull(contextPath)) {
             contextPath = "/";
@@ -89,9 +104,10 @@ public final class Starter {
         final String host = latke.getString("serverHost");
 
         try {
-            Desktop.getDesktop().browse(new URI(scheme + "://" + host + ":" + port + contextPath));
+            final int visitPort = Integer.valueOf(latke.getString("serverPort"));
+            Desktop.getDesktop().browse(new URI(scheme + "://" + host + ":" + visitPort + contextPath));
         } catch (final Throwable e) {
-            e.printStackTrace();
+            // Ignored
         }
 
         server.join();
