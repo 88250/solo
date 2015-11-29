@@ -10,3 +10,8 @@
 !nbactions.xml
 !nb-configuration.xml
 !.travis.yml
+
+
+src/main/webapp/skins/*
+!src/main/webapp/skins/mobile
+!src/main/webapp/skins/yilia
