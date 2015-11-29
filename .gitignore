@@ -1,8 +1,12 @@
-.idea/
-.DS_Store
-/target
-
-src/main/webapp/skins/*
-!src/main/webapp/skins/mobile
-!src/main/webapp/skins/yilia
-
+/*
+#ignore all but these:
+!src/
+!.gitignore
+!pom.xml
+!CHANGE_LOGS.html
+!README.md
+!TERMS.md
+!LICENSE
+!nbactions.xml
+!nb-configuration.xml
+!.travis.yml
