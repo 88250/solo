@@ -39,7 +39,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Nov 29, 2015
+ * @version 1.0.0.4, Nov 30, 2015
  * @since 1.2.0
  */
 public final class Starter {
@@ -69,7 +69,7 @@ public final class Starter {
         
         String portArg = commandLine.getOptionValue("p");
         if (!Strings.isNumeric(portArg)) {
-            portArg = "9090";
+            portArg = "8080";
         }
 
         logger.info("Standalone mode, see [https://github.com/b3log/solo/wiki/standalone_mode] for more details.");
