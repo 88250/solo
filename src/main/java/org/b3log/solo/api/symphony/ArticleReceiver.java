@@ -46,7 +46,7 @@ import org.jsoup.Jsoup;
  * Article receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Nov 20, 2015
+ * @version 1.0.1.6, Oct 1, 2015
  * @since 0.5.5
  */
 @RequestProcessor
@@ -156,7 +156,7 @@ public class ArticleReceiver {
             String content = article.getString(Article.ARTICLE_CONTENT);
             final String articleId = article.getString(Keys.OBJECT_ID);
 
-            content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
+            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
                 + "' target='_blank'>黑客派</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
@@ -253,7 +253,7 @@ public class ArticleReceiver {
             article.put(Article.ARTICLE_VIEW_PWD, "");
             String content = article.getString(Article.ARTICLE_CONTENT);
 
-            content += "<br/><br/><p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
+            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
                 + "' target='_blank'>黑客派</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
