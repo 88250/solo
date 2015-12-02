@@ -2867,7 +2867,7 @@ admin.register["link-list"] =  {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.8, Sep 12, 2015
+ * @version 1.2.1.9, Nov 20, 2015
  */
 
 /* preference 相关操作 */
@@ -2906,13 +2906,17 @@ admin.preference = {
                 $("#localeString").val(preference.localeString);
                 $("#timeZoneId").val(preference.timeZoneId);
                 $("#noticeBoard").val(preference.noticeBoard);
+                $("#footerContent").val(preference.footerContent);
                 $("#htmlHead").val(preference.htmlHead);
                 $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
                 $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
                 $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
                 $("#keyOfSolo").val(preference.keyOfSolo);
-                preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
-                preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
+                
+                "true" === preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
+                "true" === preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
+                "true" === preference.allowRegister ? $("#allowRegister").attr("checked", "checked") : $("#allowRegister").removeAttr("checked");
+                "true" === preference.commentable ? $("#commentable").attr("checked", "checked") : $("commentable").removeAttr("checked");
 
                 admin.preference.locale = preference.localeString;
                 admin.preference.editorType = preference.editorType;
@@ -2926,7 +2930,7 @@ admin.preference = {
                     if (skins[i].skinName === preference.skinName
                             && skins[i].skinDirName === preference.skinDirName) {
                         selectedClass += " selected";
-            }
+                    }
                     skinsHTML += "<div title='" + skins[i].skinDirName
                             + "' class='left skinItem" + selectedClass + "'><img class='skinPreview' src='"
                             + latkeConfig.staticServePath + "/skins/" + skins[i].skinDirName
@@ -2938,8 +2942,8 @@ admin.preference = {
                     $(".skinItem").removeClass("selected");
                     $(this).addClass("selected");
                     $("#skinMain").data("skinDirName", this.title);
-        });
-        
+                });
+
                 // sign
                 var signs = eval('(' + preference.signs + ')');
                 for (var j = 1; j < signs.length; j++) {
@@ -2950,21 +2954,16 @@ admin.preference = {
                     });
                 }
 
-                // Article list style
                 $("#articleListDisplay").val(preference.articleListStyle);
-                // Editor Type
                 $("#editorType").val(preference.editorType);
-                // Feed output
                 $("#feedOutputMode").val(preference.feedOutputMode);
                 $("#feedOutputCnt").val(preference.feedOutputCnt);
-                // Commentable
-                preference.commentable ? $("#commentable").attr("checked", "checked") : $("commentable").removeAttr("checked");
-
+                
                 $("#loadMsg").text("");
             }
         });
-        
-                 $.ajax({
+
+        $.ajax({
             url: latkeConfig.servePath + "/console/preference/qiniu",
             type: "GET",
             cache: false,
@@ -3065,6 +3064,7 @@ admin.preference = {
                 "localeString": $("#localeString").val(),
                 "timeZoneId": $("#timeZoneId").val(),
                 "noticeBoard": $("#noticeBoard").val(),
+                "footerContent": $("#footerContent").val(),
                 "htmlHead": $("#htmlHead").val(),
                 "externalRelevantArticlesDisplayCount": $("#externalRelevantArticlesDisplayCount").val(),
                 "relevantArticlesDisplayCount": $("#relevantArticlesDisplayCount").val(),
@@ -3077,7 +3077,8 @@ admin.preference = {
                 "editorType": $("#editorType").val(),
                 "feedOutputMode": $("#feedOutputMode").val(),
                 "feedOutputCnt": $("#feedOutputCnt").val(),
-                "commentable": $("#commentable").prop("checked")
+                "commentable": $("#commentable").prop("checked"),
+                "allowRegister": $("#allowRegister").prop("checked")
             }
         };
 
