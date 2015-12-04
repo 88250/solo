@@ -18,11 +18,12 @@ package org.b3log.solo;
 import java.awt.Desktop;
 import java.io.File;
 import java.net.URI;
-import java.util.ResourceBundle;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
 import org.eclipse.jetty.server.Server;
@@ -58,21 +59,73 @@ public final class Starter {
      * @param args the specified arguments
      * @throws java.lang.Exception if start failed
      */
-    public static void main(final String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         final Logger logger = Logger.getLogger(Starter.class);
 
         final Options options = new Options();
-        options.addOption("p", "port", true, "listen port");
+        final Option listenPortOpt = Option.builder().longOpt("listen_port")
+                .hasArg().desc("listen port").build();
+        options.addOption(listenPortOpt);
+
+        final Option serverSchemeOpt = Option.builder().longOpt("server_scheme")
+                .hasArg().desc("browser visit protocol").build();
+        options.addOption(serverSchemeOpt);
+
+        final Option serverHostOpt = Option.builder().longOpt("server_host")
+                .hasArg().desc("browser visit domain name").build();
+        options.addOption(serverHostOpt);
+
+        final Option serverPortOpt = Option.builder().longOpt("server_port")
+                .hasArg().desc("browser visit port").build();
+        options.addOption(serverPortOpt);
+
+        final Option staticServerSchemeOpt = Option.builder().longOpt("static_server_scheme")
+                .hasArg().desc("browser visit static resource protocol").build();
+        options.addOption(staticServerSchemeOpt);
+
+        final Option staticServerHostOpt = Option.builder().longOpt("static_server_host")
+                .hasArg().desc("browser visit static resource domain name").build();
+        options.addOption(staticServerHostOpt);
+
+        final Option staticServerPortOpt = Option.builder().longOpt("static_server_port")
+                .hasArg().desc("browser visit static resource port").build();
+        options.addOption(staticServerPortOpt);
+
+        final Option contextPathOpt = Option.builder().longOpt("context_path")
+                .hasArg().desc("context path").build();
+        options.addOption(contextPathOpt);
+
+        final Option staticPathOpt = Option.builder().longOpt("static_path")
+                .hasArg().desc("static path").build();
+        options.addOption(staticPathOpt);
 
         final CommandLineParser commandLineParser = new DefaultParser();
         final CommandLine commandLine = commandLineParser.parse(options, args);
 
-        String portArg = commandLine.getOptionValue("p");
+        String portArg = commandLine.getOptionValue("listen_port");
         if (!Strings.isNumeric(portArg)) {
             portArg = "8080";
         }
 
+        String serverScheme = commandLine.getOptionValue("server_scheme");
+        Latkes.setServerScheme(serverScheme);
+        String serverHost = commandLine.getOptionValue("server_host");
+        Latkes.setServerHost(serverHost);
+        String serverPort = commandLine.getOptionValue("server_port");
+        Latkes.setServerPort(serverPort);
+        String staticServerScheme = commandLine.getOptionValue("static_server_scheme");
+        Latkes.setStaticServerScheme(staticServerScheme);
+        String staticServerHost = commandLine.getOptionValue("static_server_host");
+        Latkes.setStaticServerHost(staticServerHost);
+        String staticServerPort = commandLine.getOptionValue("static_server_port");
+        Latkes.setStaticServerPort(staticServerPort);
+        String contextPath = commandLine.getOptionValue("context_path");
+        Latkes.setContextPath(contextPath);
+        String staticPath = commandLine.getOptionValue("static_path");
+        Latkes.setStaticPath(staticPath);
+
         logger.info("Standalone mode, see [https://github.com/b3log/solo/wiki/standalone_mode] for more details.");
+        Latkes.initRuntimeEnv();
 
         String webappDirLocation = "src/main/webapp/"; // POM structure in dev env
         final File file = new File(webappDirLocation);
@@ -82,31 +135,27 @@ public final class Starter {
 
         final int port = Integer.valueOf(portArg);
 
-        String contextPath = "/";
-        final ResourceBundle latke = ResourceBundle.getBundle("latke");
-        if (latke.containsKey("contextPath")) {
-            if (!Strings.isEmptyOrNull(latke.getString("contextPath"))) {
-                contextPath = latke.getString("contextPath");
-            }
+        contextPath = Latkes.getContextPath();
+        if (Strings.isEmptyOrNull(contextPath)) {
+            contextPath = "/";
         }
 
-        Server server = new Server(port);
-        WebAppContext root = new WebAppContext();
+        final Server server = new Server(port);
+        final WebAppContext root = new WebAppContext();
 
         root.setContextPath(contextPath);
         root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
         root.setResourceBase(webappDirLocation);
-
         server.setHandler(root);
-
         server.start();
 
-        final String scheme = latke.getString("serverScheme");
-        final String host = latke.getString("serverHost");
+        serverScheme = Latkes.getServerScheme();
+        serverHost = Latkes.getServerHost();
+        serverPort = Latkes.getServerPort();
+        contextPath = Latkes.getContextPath();
 
         try {
-            final int visitPort = Integer.valueOf(latke.getString("serverPort"));
-            Desktop.getDesktop().browse(new URI(scheme + "://" + host + ":" + visitPort + contextPath));
+            Desktop.getDesktop().browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath));
         } catch (final Throwable e) {
             // Ignored
         }
