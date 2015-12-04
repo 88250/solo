@@ -39,7 +39,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Nov 30, 2015
+ * @version 1.0.0.5, Dec 4, 2015
  * @since 1.2.0
  */
 public final class Starter {
@@ -66,7 +66,7 @@ public final class Starter {
 
         final CommandLineParser commandLineParser = new DefaultParser();
         final CommandLine commandLine = commandLineParser.parse(options, args);
-        
+
         String portArg = commandLine.getOptionValue("p");
         if (!Strings.isNumeric(portArg)) {
             portArg = "8080";
@@ -81,12 +81,13 @@ public final class Starter {
         }
 
         final int port = Integer.valueOf(portArg);
-        
 
+        String contextPath = "/";
         final ResourceBundle latke = ResourceBundle.getBundle("latke");
-        String contextPath = latke.getString("contextPath");
-        if (Strings.isEmptyOrNull(contextPath)) {
-            contextPath = "/";
+        if (latke.containsKey("contextPath")) {
+            if (!Strings.isEmptyOrNull(latke.getString("contextPath"))) {
+                contextPath = latke.getString("contextPath");
+            }
         }
 
         Server server = new Server(port);
