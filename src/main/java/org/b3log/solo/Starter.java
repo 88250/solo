@@ -21,9 +21,12 @@ import java.net.URI;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
 import org.eclipse.jetty.server.Server;
@@ -62,45 +65,66 @@ public final class Starter {
     public static void main(String[] args) throws Exception {
         final Logger logger = Logger.getLogger(Starter.class);
 
+        //args = new String[]{"-lp", "9090", "-sp", "9090", "-ssp", "9090"};
+
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+            System.out.println(arg);
+        }
+
         final Options options = new Options();
-        final Option listenPortOpt = Option.builder().longOpt("listen_port")
-                .hasArg().desc("listen port").build();
+        final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT")
+                .hasArg().desc("listen port, default is 8080").build();
         options.addOption(listenPortOpt);
 
-        final Option serverSchemeOpt = Option.builder().longOpt("server_scheme")
-                .hasArg().desc("browser visit protocol").build();
+        final Option serverSchemeOpt = Option.builder("ss").longOpt("server_scheme").argName("SERVER_SCHEME")
+                .hasArg().desc("browser visit protocol, default is http").build();
         options.addOption(serverSchemeOpt);
 
-        final Option serverHostOpt = Option.builder().longOpt("server_host")
-                .hasArg().desc("browser visit domain name").build();
+        final Option serverHostOpt = Option.builder("sh").longOpt("server_host").argName("SERVER_HOST")
+                .hasArg().desc("browser visit domain name, default is localhost").build();
         options.addOption(serverHostOpt);
 
-        final Option serverPortOpt = Option.builder().longOpt("server_port")
-                .hasArg().desc("browser visit port").build();
+        final Option serverPortOpt = Option.builder("sp").longOpt("server_port").argName("SERVER_PORT")
+                .hasArg().desc("browser visit port, default is 8080").build();
         options.addOption(serverPortOpt);
 
-        final Option staticServerSchemeOpt = Option.builder().longOpt("static_server_scheme")
-                .hasArg().desc("browser visit static resource protocol").build();
+        final Option staticServerSchemeOpt = Option.builder("sss").longOpt("static_server_scheme").argName("STATIC_SERVER_SCHEME")
+                .hasArg().desc("browser visit static resource protocol, default is http").build();
         options.addOption(staticServerSchemeOpt);
 
-        final Option staticServerHostOpt = Option.builder().longOpt("static_server_host")
-                .hasArg().desc("browser visit static resource domain name").build();
+        final Option staticServerHostOpt = Option.builder("ssh").longOpt("static_server_host").argName("STATIC_SERVER_HOST")
+                .hasArg().desc("browser visit static resource domain name, default is localhost").build();
         options.addOption(staticServerHostOpt);
 
-        final Option staticServerPortOpt = Option.builder().longOpt("static_server_port")
-                .hasArg().desc("browser visit static resource port").build();
+        final Option staticServerPortOpt = Option.builder("ssp").longOpt("static_server_port").argName("STATIC_SERVER_PORT")
+                .hasArg().desc("browser visit static resource port, default is 8080").build();
         options.addOption(staticServerPortOpt);
 
-        final Option contextPathOpt = Option.builder().longOpt("context_path")
-                .hasArg().desc("context path").build();
-        options.addOption(contextPathOpt);
+        options.addOption("h", "help", false, "print help for the command");
 
-        final Option staticPathOpt = Option.builder().longOpt("static_path")
-                .hasArg().desc("static path").build();
-        options.addOption(staticPathOpt);
-
+        final HelpFormatter helpFormatter = new HelpFormatter();
         final CommandLineParser commandLineParser = new DefaultParser();
-        final CommandLine commandLine = commandLineParser.parse(options, args);
+        CommandLine commandLine;
+
+        final boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+        final String cmdSyntax = isWindows ? "java -cp WEB-INF/lib/*;WEB-INF/classes org.b3log.solo.Starter"
+                : "java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter";
+        final String header = "\nSolo is a blogging system written by Java, feel free to create your or your team own blog. 一个用 Java 编写的博客系统，为你或你的团队创建个博客吧。\n\n";
+        final String footer = "\nReport bugs or request features please visit our project website: https://github.com/b3log/solo\n\n";
+        try {
+            commandLine = commandLineParser.parse(options, args);
+        } catch (final ParseException e) {
+            helpFormatter.printHelp(cmdSyntax, header, options, footer, true);
+
+            return;
+        }
+
+        if (commandLine.hasOption("h")) {
+            helpFormatter.printHelp(cmdSyntax, header, options, footer, true);
+
+            return;
+        }
 
         String portArg = commandLine.getOptionValue("listen_port");
         if (!Strings.isNumeric(portArg)) {
@@ -119,10 +143,6 @@ public final class Starter {
         Latkes.setStaticServerHost(staticServerHost);
         String staticServerPort = commandLine.getOptionValue("static_server_port");
         Latkes.setStaticServerPort(staticServerPort);
-        String contextPath = commandLine.getOptionValue("context_path");
-        Latkes.setContextPath(contextPath);
-        String staticPath = commandLine.getOptionValue("static_path");
-        Latkes.setStaticPath(staticPath);
 
         logger.info("Standalone mode, see [https://github.com/b3log/solo/wiki/standalone_mode] for more details.");
         Latkes.initRuntimeEnv();
@@ -135,24 +155,26 @@ public final class Starter {
 
         final int port = Integer.valueOf(portArg);
 
-        contextPath = Latkes.getContextPath();
-        if (Strings.isEmptyOrNull(contextPath)) {
-            contextPath = "/";
-        }
-
         final Server server = new Server(port);
         final WebAppContext root = new WebAppContext();
 
-        root.setContextPath(contextPath);
+        root.setContextPath("/");
         root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
         root.setResourceBase(webappDirLocation);
         server.setHandler(root);
-        server.start();
+
+        try {
+            server.start();
+        } catch (final Exception e) {
+            logger.log(Level.ERROR, "Server start failed", e);
+
+            System.exit(-1);
+        }
 
         serverScheme = Latkes.getServerScheme();
         serverHost = Latkes.getServerHost();
         serverPort = Latkes.getServerPort();
-        contextPath = Latkes.getContextPath();
+        final String contextPath = Latkes.getContextPath();
 
         try {
             Desktop.getDesktop().browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath));
