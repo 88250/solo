@@ -1,5 +1,5 @@
 /*
-#ignore all but these:
+# ignore all but these:
 !src/
 !.gitignore
 !pom.xml
@@ -10,7 +10,7 @@
 !nbactions.xml
 !nb-configuration.xml
 !.travis.yml
-
+!Dockerfile
 
 src/main/webapp/skins/*
 !src/main/webapp/skins/mobile
