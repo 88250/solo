@@ -43,7 +43,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Dec 4, 2015
+ * @version 1.1.0.5, Dec 5, 2015
  * @since 1.2.0
  */
 public final class Starter {
@@ -62,15 +62,8 @@ public final class Starter {
      * @param args the specified arguments
      * @throws java.lang.Exception if start failed
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(final String[] args) throws Exception {
         final Logger logger = Logger.getLogger(Starter.class);
-
-        //args = new String[]{"-lp", "9090", "-sp", "9090", "-ssp", "9090"};
-
-        for (int i = 0; i < args.length; i++) {
-            String arg = args[i];
-            System.out.println(arg);
-        }
 
         final Options options = new Options();
         final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT")
@@ -157,7 +150,7 @@ public final class Starter {
 
         final Server server = new Server(port);
         final WebAppContext root = new WebAppContext();
-
+        root.setParentLoaderPriority(true); // Use parent class loader
         root.setContextPath("/");
         root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
         root.setResourceBase(webappDirLocation);
