@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.filter;
 
-
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -38,12 +37,11 @@ import org.b3log.latke.servlet.HttpControl;
 import org.b3log.latke.servlet.renderer.HTTP500Renderer;
 import org.b3log.solo.service.InitService;
 
-
 /**
  * Checks initialization filter.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Sep 10, 2013
+ * @version 1.1.1.1, Dec 5, 2015
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -53,8 +51,14 @@ public final class InitCheckFilter implements Filter {
      */
     private static final Logger LOGGER = Logger.getLogger(InitCheckFilter.class.getName());
 
+    /**
+     * Whether initialization info reported.
+     */
+    private static boolean initReported;
+
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {}
+    public void init(final FilterConfig filterConfig) throws ServletException {
+    }
 
     /**
      * If Solo has not been initialized, so redirects to /init.
@@ -67,7 +71,7 @@ public final class InitCheckFilter implements Filter {
      */
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
 
@@ -96,7 +100,10 @@ public final class InitCheckFilter implements Filter {
             return;
         }
 
-        LOGGER.log(Level.INFO, "Solo has not been initialized, so redirects to /init");
+        if (!initReported) {
+            LOGGER.log(Level.INFO, "Solo has not been initialized, so redirects to /init");
+            initReported = true;
+        }
 
         final HTTPRequestContext context = new HTTPRequestContext();
 
@@ -118,5 +125,6 @@ public final class InitCheckFilter implements Filter {
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }
