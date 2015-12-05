@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 2.8.1.10, Dec 4, 2015
+    Version: 2.8.1.11, Dec 5, 2015
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
