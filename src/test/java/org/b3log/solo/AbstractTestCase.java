@@ -31,7 +31,6 @@ import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.PluginRepository;
-import org.b3log.solo.repository.PreferenceRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
@@ -44,7 +43,6 @@ import org.b3log.solo.repository.impl.LinkRepositoryImpl;
 import org.b3log.solo.repository.impl.OptionRepositoryImpl;
 import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.repository.impl.PluginRepositoryImpl;
-import org.b3log.solo.repository.impl.PreferenceRepositoryImpl;
 import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
@@ -55,19 +53,19 @@ import org.testng.annotations.BeforeClass;
 
 /**
  * Abstract test case.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Oct 14, 2013
- * @see #beforeClass() 
- * @see #afterClass() 
+ * @version 1.0.0.9, Dec 13, 2015
+ * @see #beforeClass()
+ * @see #afterClass()
  */
 public abstract class AbstractTestCase {
 
     /**
      * Local service test helper.
      */
-    private final LocalServiceTestHelper localServiceTestHelper =
-            new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+    private final LocalServiceTestHelper localServiceTestHelper
+            = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
     /**
      * Bean manager.
@@ -76,12 +74,13 @@ public abstract class AbstractTestCase {
 
     /**
      * Before class.
-     * 
+     *
      * <ol>
-     *   <li>Sets up GAE unit test runtime environment</li>
-     *   <li>Initializes Latke runtime</li>
-     *   <li>Instantiates repositories</li>
+     * <li>Sets up GAE unit test runtime environment</li>
+     * <li>Initializes Latke runtime</li>
+     * <li>Instantiates repositories</li>
      * </ol>
+     *
      * @throws Exception exception
      */
     @BeforeClass
@@ -99,10 +98,10 @@ public abstract class AbstractTestCase {
 
     /**
      * After class.
-     * 
+     *
      * <ol>
-     *   <li>Tears down GAE unit test runtime environment</li>
-     *   <li>Shutdowns Latke runtime</li>
+     * <li>Tears down GAE unit test runtime environment</li>
+     * <li>Shutdowns Latke runtime</li>
      * </ol>
      */
     @AfterClass
@@ -114,7 +113,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets user repository.
-     * 
+     *
      * @return user repository
      */
     public UserRepository getUserRepository() {
@@ -123,7 +122,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets link repository.
-     * 
+     *
      * @return link repository
      */
     public LinkRepository getLinkRepository() {
@@ -132,7 +131,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets article repository.
-     * 
+     *
      * @return article repository
      */
     public ArticleRepository getArticleRepository() {
@@ -141,7 +140,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets tag repository.
-     * 
+     *
      * @return tag repository
      */
     public TagRepository getTagRepository() {
@@ -150,7 +149,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets tag-article repository.
-     * 
+     *
      * @return tag-article repository
      */
     public TagArticleRepository getTagArticleRepository() {
@@ -159,7 +158,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets page repository.
-     * 
+     *
      * @return page repository
      */
     public PageRepository getPageRepository() {
@@ -168,7 +167,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets comment repository.
-     * 
+     *
      * @return comment repository
      */
     public CommentRepository getCommentRepository() {
@@ -177,7 +176,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets archive date repository.
-     * 
+     *
      * @return archive date repository
      */
     public ArchiveDateRepository getArchiveDateRepository() {
@@ -186,7 +185,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Archive date article repository.
-     * 
+     *
      * @return archive date article repository
      */
     public ArchiveDateArticleRepository getArchiveDateArticleRepository() {
@@ -195,7 +194,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets plugin repository.
-     * 
+     *
      * @return plugin repository
      */
     public PluginRepository getPluginRepository() {
@@ -203,17 +202,8 @@ public abstract class AbstractTestCase {
     }
 
     /**
-     * Gets preference repository.
-     * 
-     * @return preference repository
-     */
-    public PreferenceRepository getPreferenceRepository() {
-        return beanManager.getReference(PreferenceRepositoryImpl.class);
-    }
-
-    /**
      * Gets statistic repository.
-     * 
+     *
      * @return statistic repository
      */
     public StatisticRepository getStatisticRepository() {
@@ -222,7 +212,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets option repository.
-     * 
+     *
      * @return option repository
      */
     public OptionRepository getOptionRepository() {
@@ -231,7 +221,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets initialization service.
-     * 
+     *
      * @return initialization service
      */
     public InitService getInitService() {
@@ -240,7 +230,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets user management service.
-     * 
+     *
      * @return user management service
      */
     public UserMgmtService getUserMgmtService() {
@@ -249,7 +239,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets user query service.
-     * 
+     *
      * @return user query service
      */
     public UserQueryService getUserQueryService() {
@@ -258,7 +248,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets article management service.
-     * 
+     *
      * @return article management service
      */
     public ArticleMgmtService getArticleMgmtService() {
@@ -267,7 +257,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets article query service.
-     * 
+     *
      * @return article query service
      */
     public ArticleQueryService getArticleQueryService() {
@@ -276,7 +266,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets page management service.
-     * 
+     *
      * @return page management service
      */
     public PageMgmtService getPageMgmtService() {
@@ -285,7 +275,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets page query service.
-     * 
+     *
      * @return page query service
      */
     public PageQueryService getPageQueryService() {
@@ -294,7 +284,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets link management service.
-     * 
+     *
      * @return link management service
      */
     public LinkMgmtService getLinkMgmtService() {
@@ -304,7 +294,7 @@ public abstract class AbstractTestCase {
     /**
      * Gets link query service.
      *
-     * @return link query service 
+     * @return link query service
      */
     public LinkQueryService getLinkQueryService() {
         return beanManager.getReference(LinkQueryService.class);
@@ -312,7 +302,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets preference management service.
-     * 
+     *
      * @return preference management service
      */
     public PreferenceMgmtService getPreferenceMgmtService() {
@@ -321,7 +311,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets preference query service.
-     * 
+     *
      * @return preference query service
      */
     public PreferenceQueryService getPreferenceQueryService() {
@@ -330,7 +320,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets tag query service.
-     * 
+     *
      * @return tag query service
      */
     public TagQueryService getTagQueryService() {
@@ -339,7 +329,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets tag management service.
-     * 
+     *
      * @return tag management service
      */
     public TagMgmtService getTagMgmtService() {
@@ -348,7 +338,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets comment query service.
-     * 
+     *
      * @return comment query service
      */
     public CommentQueryService getCommentQueryService() {
@@ -357,7 +347,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets comment management service.
-     * 
+     *
      * @return comment management service
      */
     public CommentMgmtService getCommentMgmtService() {
@@ -366,7 +356,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets archive date query service.
-     * 
+     *
      * @return archive date query service
      */
     public ArchiveDateQueryService getArchiveDateQueryService() {
@@ -375,7 +365,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets option management service.
-     * 
+     *
      * @return option management service
      */
     public OptionMgmtService getOptionMgmtService() {
@@ -384,7 +374,7 @@ public abstract class AbstractTestCase {
 
     /**
      * Gets option query service.
-     * 
+     *
      * @return option query service
      */
     public OptionQueryService getOptionQueryService() {

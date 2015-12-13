@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.10, Nov 23, 2015
+ * @version 1.7.0.11, Dec 13, 2015
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -64,7 +64,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Solo version.
      */
-    public static final String VERSION = "1.2.0";
+    public static final String VERSION = "1.3.0";
 
     /**
      * Logger.

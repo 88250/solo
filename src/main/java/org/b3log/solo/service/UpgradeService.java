@@ -44,7 +44,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.0.3, Nov 23, 2015
+ * @version 1.1.0.4, Dec 13, 2015
  * @since 1.2.0
  */
 @Service
@@ -72,12 +72,6 @@ public class UpgradeService {
      */
     @Inject
     private OptionRepository optionRepository;
-
-    /**
-     * Preference repository.
-     */
-    @Inject
-    private PreferenceRepository preferenceRepository;
 
     /**
      * Step for article updating.
@@ -109,7 +103,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "1.1.0";
+    private static final String FROM_VER = "1.2.0";
 
     /**
      * New version.
@@ -121,7 +115,7 @@ public class UpgradeService {
      */
     public void upgrade() {
         try {
-            final JSONObject preference = preferenceRepository.get(Option.CATEGORY_C_PREFERENCE);
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 return;
             }
@@ -168,273 +162,17 @@ public class UpgradeService {
         try {
             final Connection connection = Connections.getConnection();
             final Statement statement = connection.createStatement();
-
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            statement.execute("ALTER TABLE `" + tablePrefix + "user` ADD COLUMN `userAvatar` varchar(255)");
+            statement.execute("DROP TABLE `" + tablePrefix + "preference`");
             statement.close();
             connection.commit();
             connection.close();
 
-            transaction = userRepository.beginTransaction();
+            transaction = optionRepository.beginTransaction();
 
-            upgradeUsers();
-
-            // Upgrades preference model
-            final JSONObject preference = preferenceRepository.get(Option.CATEGORY_C_PREFERENCE);
-
-            final String adminEmail = preference.optString(Option.ID_C_ADMIN_EMAIL);
-            final JSONObject adminEmailOpt = new JSONObject();
-            adminEmailOpt.put(Keys.OBJECT_ID, Option.ID_C_ADMIN_EMAIL);
-            adminEmailOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            adminEmailOpt.put(Option.OPTION_VALUE, adminEmail);
-            optionRepository.add(adminEmailOpt);
-
-            final boolean allowVisitDraftViaPermalink = preference.optBoolean(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
-            final JSONObject allowVisitDraftViaPermalinkOpt = new JSONObject();
-            allowVisitDraftViaPermalinkOpt.put(Keys.OBJECT_ID, Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
-            allowVisitDraftViaPermalinkOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            allowVisitDraftViaPermalinkOpt.put(Option.OPTION_VALUE, Boolean.toString(allowVisitDraftViaPermalink));
-            optionRepository.add(allowVisitDraftViaPermalinkOpt);
-
-            final boolean commentable = preference.optBoolean(Option.ID_C_COMMENTABLE);
-            final JSONObject commentableOpt = new JSONObject();
-            commentableOpt.put(Keys.OBJECT_ID, Option.ID_C_COMMENTABLE);
-            commentableOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            commentableOpt.put(Option.OPTION_VALUE, Boolean.toString(commentable));
-            optionRepository.add(commentableOpt);
-
-            final String feedOutputMode = preference.optString(Option.ID_C_FEED_OUTPUT_MODE);
-            final JSONObject feedOutputModeOpt = new JSONObject();
-            feedOutputModeOpt.put(Keys.OBJECT_ID, Option.ID_C_FEED_OUTPUT_MODE);
-            feedOutputModeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            feedOutputModeOpt.put(Option.OPTION_VALUE, feedOutputMode);
-            optionRepository.add(feedOutputModeOpt);
-
-            final int feedOutputCnt = preference.optInt(Option.ID_C_FEED_OUTPUT_CNT);
-            final JSONObject feedOutputCntOpt = new JSONObject();
-            feedOutputCntOpt.put(Keys.OBJECT_ID, Option.ID_C_FEED_OUTPUT_CNT);
-            feedOutputCntOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            feedOutputCntOpt.put(Option.OPTION_VALUE, feedOutputCnt);
-            optionRepository.add(feedOutputCntOpt);
-
-            final int articleListDisplayCount = preference.optInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
-            final JSONObject articleListDisplayCountOpt = new JSONObject();
-            articleListDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
-            articleListDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            articleListDisplayCountOpt.put(Option.OPTION_VALUE, articleListDisplayCount);
-            optionRepository.add(articleListDisplayCountOpt);
-
-            final int relevantArticlesDisplayCount = preference.optInt(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
-            final JSONObject relevantArticlesDisplayCountOpt = new JSONObject();
-            relevantArticlesDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
-            relevantArticlesDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            relevantArticlesDisplayCountOpt.put(Option.OPTION_VALUE, relevantArticlesDisplayCount);
-            optionRepository.add(relevantArticlesDisplayCountOpt);
-
-            final int articleListPaginationWindowSize = preference.optInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
-            final JSONObject articleListPaginationWindowSizeOpt = new JSONObject();
-            articleListPaginationWindowSizeOpt.put(Keys.OBJECT_ID, Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
-            articleListPaginationWindowSizeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            articleListPaginationWindowSizeOpt.put(Option.OPTION_VALUE, articleListPaginationWindowSize);
-            optionRepository.add(articleListPaginationWindowSizeOpt);
-
-            final String articleListStyle = preference.optString(Option.ID_C_ARTICLE_LIST_STYLE);
-            final JSONObject articleListStyleOpt = new JSONObject();
-            articleListStyleOpt.put(Keys.OBJECT_ID, Option.ID_C_ARTICLE_LIST_STYLE);
-            articleListStyleOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            articleListStyleOpt.put(Option.OPTION_VALUE, articleListStyle);
-            optionRepository.add(articleListStyleOpt);
-
-            final String blogSubtitle = preference.optString(Option.ID_C_BLOG_SUBTITLE);
-            final JSONObject blogSubtitleOpt = new JSONObject();
-            blogSubtitleOpt.put(Keys.OBJECT_ID, Option.ID_C_BLOG_SUBTITLE);
-            blogSubtitleOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            blogSubtitleOpt.put(Option.OPTION_VALUE, blogSubtitle);
-            optionRepository.add(blogSubtitleOpt);
-
-            final String blogTitle = preference.optString(Option.ID_C_BLOG_TITLE);
-            final JSONObject blogTitleOpt = new JSONObject();
-            blogTitleOpt.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
-            blogTitleOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            blogTitleOpt.put(Option.OPTION_VALUE, blogTitle);
-            optionRepository.add(blogTitleOpt);
-
-            final boolean enableArticleUpdateHint = preference.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT);
-            final JSONObject enableArticleUpdateHintOpt = new JSONObject();
-            enableArticleUpdateHintOpt.put(Keys.OBJECT_ID, Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT);
-            enableArticleUpdateHintOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            enableArticleUpdateHintOpt.put(Option.OPTION_VALUE, Boolean.toString(enableArticleUpdateHint));
-            optionRepository.add(enableArticleUpdateHintOpt);
-
-            final int externalRelevantArticlesDisplayCount = preference.optInt(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT);
-            final JSONObject externalRelevantArticlesDisplayCountOpt = new JSONObject();
-            externalRelevantArticlesDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT);
-            externalRelevantArticlesDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            externalRelevantArticlesDisplayCountOpt.put(Option.OPTION_VALUE, externalRelevantArticlesDisplayCount);
-            optionRepository.add(externalRelevantArticlesDisplayCountOpt);
-
-            final String htmlHead = preference.optString(Option.ID_C_HTML_HEAD);
-            final JSONObject htmlHeadOpt = new JSONObject();
-            htmlHeadOpt.put(Keys.OBJECT_ID, Option.ID_C_HTML_HEAD);
-            htmlHeadOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            htmlHeadOpt.put(Option.OPTION_VALUE, htmlHead);
-            optionRepository.add(htmlHeadOpt);
-
-            final String keyOfSolo = preference.optString(Option.ID_C_KEY_OF_SOLO);
-            final JSONObject keyOfSoloOpt = new JSONObject();
-            keyOfSoloOpt.put(Keys.OBJECT_ID, Option.ID_C_KEY_OF_SOLO);
-            keyOfSoloOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            keyOfSoloOpt.put(Option.OPTION_VALUE, keyOfSolo);
-            optionRepository.add(keyOfSoloOpt);
-
-            final String localeString = preference.optString(Option.ID_C_LOCALE_STRING);
-            final JSONObject localeStringOpt = new JSONObject();
-            localeStringOpt.put(Keys.OBJECT_ID, Option.ID_C_LOCALE_STRING);
-            localeStringOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            localeStringOpt.put(Option.OPTION_VALUE, localeString);
-            optionRepository.add(localeStringOpt);
-
-            final String metaDescription = preference.optString(Option.ID_C_META_DESCRIPTION);
-            final JSONObject metaDescriptionOpt = new JSONObject();
-            metaDescriptionOpt.put(Keys.OBJECT_ID, Option.ID_C_META_DESCRIPTION);
-            metaDescriptionOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            metaDescriptionOpt.put(Option.OPTION_VALUE, metaDescription);
-            optionRepository.add(metaDescriptionOpt);
-
-            final String metaKeywords = preference.optString(Option.ID_C_META_KEYWORDS);
-            final JSONObject metaKeywordsOpt = new JSONObject();
-            metaKeywordsOpt.put(Keys.OBJECT_ID, Option.ID_C_META_KEYWORDS);
-            metaKeywordsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            metaKeywordsOpt.put(Option.OPTION_VALUE, metaKeywords);
-            optionRepository.add(metaKeywordsOpt);
-
-            final int mostCommentArticleDisplayCount = preference.optInt(Option.ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT);
-            final JSONObject mostCommentArticleDisplayCountOpt = new JSONObject();
-            mostCommentArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT);
-            mostCommentArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            mostCommentArticleDisplayCountOpt.put(Option.OPTION_VALUE, mostCommentArticleDisplayCount);
-            optionRepository.add(mostCommentArticleDisplayCountOpt);
-
-            final int mostUsedTagDisplayCount = preference.optInt(Option.ID_C_MOST_USED_TAG_DISPLAY_CNT);
-            final JSONObject mostUsedTagDisplayCountOpt = new JSONObject();
-            mostUsedTagDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_MOST_USED_TAG_DISPLAY_CNT);
-            mostUsedTagDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            mostUsedTagDisplayCountOpt.put(Option.OPTION_VALUE, mostUsedTagDisplayCount);
-            optionRepository.add(mostUsedTagDisplayCountOpt);
-
-            final int mostViewArticleDisplayCount = preference.optInt(Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
-            final JSONObject mostViewArticleDisplayCountOpt = new JSONObject();
-            mostViewArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
-            mostViewArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            mostViewArticleDisplayCountOpt.put(Option.OPTION_VALUE, mostViewArticleDisplayCount);
-            optionRepository.add(mostViewArticleDisplayCountOpt);
-
-            final String noticeBoard = preference.optString(Option.ID_C_NOTICE_BOARD);
-            final JSONObject noticeBoardOpt = new JSONObject();
-            noticeBoardOpt.put(Keys.OBJECT_ID, Option.ID_C_NOTICE_BOARD);
-            noticeBoardOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            noticeBoardOpt.put(Option.OPTION_VALUE, noticeBoard);
-            optionRepository.add(noticeBoardOpt);
-
-            final int randomArticlesDisplayCount = preference.optInt(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
-            final JSONObject randomArticlesDisplayCountOpt = new JSONObject();
-            randomArticlesDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
-            randomArticlesDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            randomArticlesDisplayCountOpt.put(Option.OPTION_VALUE, randomArticlesDisplayCount);
-            optionRepository.add(randomArticlesDisplayCountOpt);
-
-            final int recentCommentDisplayCount = preference.optInt(Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
-            final JSONObject recentCommentDisplayCountOpt = new JSONObject();
-            recentCommentDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
-            recentCommentDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            recentCommentDisplayCountOpt.put(Option.OPTION_VALUE, recentCommentDisplayCount);
-            optionRepository.add(recentCommentDisplayCountOpt);
-
-            final int recentArticleDisplayCount = preference.optInt(Option.ID_C_RECENT_ARTICLE_DISPLAY_CNT);
-            final JSONObject recentArticleDisplayCountOpt = new JSONObject();
-            recentArticleDisplayCountOpt.put(Keys.OBJECT_ID, Option.ID_C_RECENT_ARTICLE_DISPLAY_CNT);
-            recentArticleDisplayCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            recentArticleDisplayCountOpt.put(Option.OPTION_VALUE, recentArticleDisplayCount);
-            optionRepository.add(recentArticleDisplayCountOpt);
-
-            final String signs = preference.optString(Option.ID_C_SIGNS);
-            final JSONObject signsOpt = new JSONObject();
-            signsOpt.put(Keys.OBJECT_ID, Option.ID_C_SIGNS);
-            signsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            signsOpt.put(Option.OPTION_VALUE, signs);
-            optionRepository.add(signsOpt);
-
-            final String skinDirName = preference.optString(Skin.SKIN_DIR_NAME);
-            final JSONObject skinDirNameOpt = new JSONObject();
-            skinDirNameOpt.put(Keys.OBJECT_ID, Option.ID_C_SKIN_DIR_NAME);
-            skinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            skinDirNameOpt.put(Option.OPTION_VALUE, skinDirName);
-            optionRepository.add(skinDirNameOpt);
-
-            final String skinName = preference.optString(Skin.SKIN_NAME);
-            final JSONObject skinNameOpt = new JSONObject();
-            skinNameOpt.put(Keys.OBJECT_ID, Option.ID_C_SKIN_NAME);
-            skinNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            skinNameOpt.put(Option.OPTION_VALUE, skinName);
-            optionRepository.add(skinNameOpt);
-
-            final String skins = preference.optString(Skin.SKINS);
-            final JSONObject skinsOpt = new JSONObject();
-            skinsOpt.put(Keys.OBJECT_ID, Option.ID_C_SKINS);
-            skinsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            skinsOpt.put(Option.OPTION_VALUE, skins);
-            optionRepository.add(skinsOpt);
-
-            final String timeZoneId = preference.optString(Option.ID_C_TIME_ZONE_ID);
-            final JSONObject timeZoneIdOpt = new JSONObject();
-            timeZoneIdOpt.put(Keys.OBJECT_ID, Option.ID_C_TIME_ZONE_ID);
-            timeZoneIdOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            timeZoneIdOpt.put(Option.OPTION_VALUE, timeZoneId);
-            optionRepository.add(timeZoneIdOpt);
-
-            final String editorType = preference.optString(Option.ID_C_EDITOR_TYPE);
-            final JSONObject editorTypeOpt = new JSONObject();
-            editorTypeOpt.put(Keys.OBJECT_ID, Option.ID_C_EDITOR_TYPE);
-            editorTypeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            editorTypeOpt.put(Option.OPTION_VALUE, editorType);
-            optionRepository.add(editorTypeOpt);
-
-            final JSONObject footerContentOpt = new JSONObject();
-            footerContentOpt.put(Keys.OBJECT_ID, Option.ID_C_FOOTER_CONTENT);
-            footerContentOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            footerContentOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_FOOTER_CONTENT);
-            optionRepository.add(footerContentOpt);
-
-            final JSONObject replyNotificationTemplate = preferenceRepository.get("replyNotificationTemplate");
-
-            final String body = replyNotificationTemplate.optString("body");
-            final JSONObject bodyOpt = new JSONObject();
-            bodyOpt.put(Keys.OBJECT_ID, Option.ID_C_REPLY_NOTI_TPL_BODY);
-            bodyOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            bodyOpt.put(Option.OPTION_VALUE, body);
-            optionRepository.add(bodyOpt);
-
-            final String subject = replyNotificationTemplate.optString("subject");
-            final JSONObject subjectOpt = new JSONObject();
-            subjectOpt.put(Keys.OBJECT_ID, Option.ID_C_REPLY_NOTI_TPL_SUBJECT);
-            subjectOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            subjectOpt.put(Option.OPTION_VALUE, subject);
-            optionRepository.add(subjectOpt);
-
-            final JSONObject versionOpt = new JSONObject();
-            versionOpt.put(Keys.OBJECT_ID, Option.ID_C_VERSION);
-            versionOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+            final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
-            optionRepository.add(versionOpt);
-
-            final JSONObject allowRegisterOpt = new JSONObject();
-            allowRegisterOpt.put(Keys.OBJECT_ID, Option.ID_C_ALLOW_REGISTER);
-            allowRegisterOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            allowRegisterOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_ALLOW_REGISTER);
-            optionRepository.add(allowRegisterOpt);
-
-            preference.put(Option.ID_C_VERSION, TO_VER);
-            preferenceRepository.update(Option.CATEGORY_C_PREFERENCE, preference);
+            optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
             transaction.commit();
 

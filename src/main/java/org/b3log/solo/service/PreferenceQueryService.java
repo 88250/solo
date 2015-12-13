@@ -27,7 +27,6 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
-import org.b3log.solo.repository.PreferenceRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,7 +34,7 @@ import org.json.JSONObject;
  * Preference query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Nov 8, 2015
+ * @version 1.1.0.2, Dec 13, 2015
  * @since 0.4.0
  */
 @Service
