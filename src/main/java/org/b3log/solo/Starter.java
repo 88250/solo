@@ -43,7 +43,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Dec 5, 2015
+ * @version 1.1.0.6, Dec 15, 2015
  * @since 1.2.0
  */
 public final class Starter {
@@ -103,7 +103,7 @@ public final class Starter {
         final boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
         final String cmdSyntax = isWindows ? "java -cp WEB-INF/lib/*;WEB-INF/classes org.b3log.solo.Starter"
                 : "java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter";
-        final String header = "\nSolo is a blogging system written by Java, feel free to create your or your team own blog.\nSolo 是一个用 Java 编写的博客系统，为你或你的团队创建个博客吧。\n\n";
+        final String header = "\nSolo is a blogging system written in Java, feel free to create your or your team own blog.\nSolo 是一个用 Java 实现的博客系统，为你或你的团队创建个博客吧。\n\n";
         final String footer = "\nReport bugs or request features please visit our project website: https://github.com/b3log/solo\n\n";
         try {
             commandLine = commandLineParser.parse(options, args);
