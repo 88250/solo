@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-
 import java.util.Iterator;
 import java.util.List;
 import javax.inject.Inject;
@@ -24,6 +23,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
@@ -33,12 +33,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 /**
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Jun 28, 2012
+ * @version 1.1.0.3, Dec 17, 2015
  * @since 0.4.0
  */
 @Service
@@ -59,8 +58,7 @@ public class TagQueryService {
      * Gets a tag by the specified tag title.
      *
      * @param tagTitle the specified tag title
-     * @return for example,
-     * <pre>
+     * @return for example,      <pre>
      * {
      *     "tag": {
      *         "oId": "",
@@ -70,6 +68,7 @@ public class TagQueryService {
      *     }
      * }
      * </pre>, returns {@code null} if not found
+     *
      * @throws ServiceException service exception
      */
     public JSONObject getTagByTitle(final String tagTitle) throws ServiceException {
@@ -95,7 +94,7 @@ public class TagQueryService {
 
     /**
      * Gets the count of tags.
-     * 
+     *
      * @return count of tags
      * @throws ServiceException service exception
      */
@@ -112,13 +111,13 @@ public class TagQueryService {
     /**
      * Gets all tags.
      *
-     * @return for example,
-     * <pre>
+     * @return for example,      <pre>
      * [
      *     {"tagTitle": "", "tagReferenceCount": int, ....},
      *     ....
      * ]
      * </pre>, returns an empty list if not found
+     *
      * @throws ServiceException service exception
      */
     public List<JSONObject> getTags() throws ServiceException {
@@ -131,6 +130,64 @@ public class TagQueryService {
             return CollectionUtils.jsonArrayToList(tagArray);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tags failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets top (reference count descending) tags.
+     *
+     * @param fetchSize the specified fetch size
+     * @return for example,      <pre>
+     * [
+     *     {"tagTitle": "", "tagReferenceCount": int, ....},
+     *     ....
+     * ]
+     * </pre>, returns an empty list if not found
+     *
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getTopTags(final int fetchSize) throws ServiceException {
+        try {
+            final Query query = new Query().setPageCount(1).setPageSize(fetchSize).
+                    addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING);
+
+            final JSONObject result = tagRepository.get(query);
+            final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
+
+            return CollectionUtils.jsonArrayToList(tagArray);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets top tags failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Gets bottom (reference count ascending) tags.
+     *
+     * @param fetchSize the specified fetch size
+     * @return for example,      <pre>
+     * [
+     *     {"tagTitle": "", "tagReferenceCount": int, ....},
+     *     ....
+     * ]
+     * </pre>, returns an empty list if not found
+     *
+     * @throws ServiceException service exception
+     */
+    public List<JSONObject> getBottomTags(final int fetchSize) throws ServiceException {
+        try {
+            final Query query = new Query().setPageCount(1).setPageSize(fetchSize).
+                    addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.ASCENDING);
+
+            final JSONObject result = tagRepository.get(query);
+            final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
+
+            return CollectionUtils.jsonArrayToList(tagArray);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Gets bottom tags failed", e);
 
             throw new ServiceException(e);
         }
@@ -157,7 +214,7 @@ public class TagQueryService {
 
     /**
      * Sets the tag repository with the specified tag repository.
-     * 
+     *
      * @param tagRepository the specified tag repository
      */
     public void setTagRepository(final TagRepository tagRepository) {
