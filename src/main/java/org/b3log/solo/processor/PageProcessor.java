@@ -120,7 +120,7 @@ public class PageProcessor {
 
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
 
-            // See PermalinkFiler#dispatchToArticleOrPageProcessor()
+            // See PermalinkFilter#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
 
             if (null == page) {

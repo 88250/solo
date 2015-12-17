@@ -872,7 +872,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
-        // See PermalinkFiler#dispatchToArticleOrPageProcessor()
+        // See PermalinkFilter#dispatchToArticleOrPageProcessor()
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
 
         if (null == article) {
