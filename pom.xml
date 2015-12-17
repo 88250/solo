@@ -304,6 +304,9 @@
                         <include>**/src/*/webapp/skins/*/js/*.js</include>
                         <include>**/src/*/webapp/skins/*/css/*.css</include>
                         <include>**/src/*/webapp/skins/**/*.properties</include>
+                        <include>**/src/*/webapp/plugins/*/js/*.js</include>
+                        <include>**/src/*/webapp/plugins/*/css/*.css</include>
+                        <include>**/src/*/webapp/plugins/*/*.properties</include>
                         <include>**/src/*/webapp/js/admin/*.js</include>
                         <include>**/src/*/resources/*.properties</include>
                         <include>**/src/*/webapp/WEB-INF/*.xml</include>
