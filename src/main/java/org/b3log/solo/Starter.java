@@ -26,6 +26,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
@@ -93,6 +94,10 @@ public final class Starter {
         final Option staticServerPortOpt = Option.builder("ssp").longOpt("static_server_port").argName("STATIC_SERVER_PORT")
                 .hasArg().desc("browser visit static resource port, default is 8080").build();
         options.addOption(staticServerPortOpt);
+        
+        final Option runtimeModeOpt = Option.builder("rm").longOpt("runtime_mode").argName("RUNTIME_MODE")
+                .hasArg().desc("runtime mode (DEVELOPMENT/PRODUCTION), default is DEVELOPMENT").build();
+        options.addOption(runtimeModeOpt);
 
         options.addOption("h", "help", false, "print help for the command");
 
@@ -136,6 +141,8 @@ public final class Starter {
         Latkes.setStaticServerHost(staticServerHost);
         String staticServerPort = commandLine.getOptionValue("static_server_port");
         Latkes.setStaticServerPort(staticServerPort);
+        String runtimeMode = commandLine.getOptionValue("runtime_mode");
+        Latkes.setRuntimeMode(RuntimeMode.valueOf(runtimeMode));
 
         logger.info("Standalone mode, see [https://github.com/b3log/solo/wiki/standalone_mode] for more details.");
         Latkes.initRuntimeEnv();
