@@ -131,7 +131,7 @@
                                 commentHTML += '<a class="fn-right" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>';
                             }
                             commentHTML += '</div><div class="comment-content">' +
-                                    Util.replaceEmString($("#comment" + state).val().replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br/>"))
+                                    Util.replaceEmString($("#comment" + state).val())
                                     + '</div></div></li>';
                             return commentHTML;
                         };

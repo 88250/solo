@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -70,7 +69,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.8, Nov 20, 2015
+ * @version 1.4.2.9, Dec 17, 2015
  * @since 0.4.0
  */
 @Service
@@ -324,7 +323,7 @@ public class InitService {
         comment.put(Comment.COMMENT_NAME, "88250");
         comment.put(Comment.COMMENT_EMAIL, "dl88250@gmail.com");
         comment.put(Comment.COMMENT_URL, "http://88250.b3log.org");
-        comment.put(Comment.COMMENT_CONTENT, StringEscapeUtils.escapeHtml(langPropsService.get("helloWorld.comment.content")));
+        comment.put(Comment.COMMENT_CONTENT, langPropsService.get("helloWorld.comment.content"));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
         comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.GRAVATAR + "59a5e8209c780307dbe9c9ba728073f5??s=60&r=G");

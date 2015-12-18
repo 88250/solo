@@ -102,7 +102,7 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
             final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
 
-            final String commentContent = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+            final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
             final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
             final Message message = new Message();
 

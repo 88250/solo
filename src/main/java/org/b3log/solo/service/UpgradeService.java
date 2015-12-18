@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
 import javax.inject.Inject;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
@@ -34,17 +35,20 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
+import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.0.4, Dec 13, 2015
+ * @version 1.2.0.4, Dec 17, 2015
  * @since 1.2.0
  */
 @Service
@@ -60,6 +64,12 @@ public class UpgradeService {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
 
     /**
      * User repository.
@@ -173,6 +183,23 @@ public class UpgradeService {
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
+
+            final JSONArray comments = commentRepository.get(new Query()).optJSONArray(Keys.RESULTS);
+            for (int i = 0; i < comments.length(); i++) {
+                final JSONObject comment = comments.getJSONObject(i);
+
+                String name = comment.optString(Comment.COMMENT_NAME);
+                name = Jsoup.clean(name, Whitelist.none());
+                comment.put(Comment.COMMENT_NAME, name);
+
+                String content = comment.optString(Comment.COMMENT_CONTENT);
+                content = StringEscapeUtils.unescapeHtml(content).replaceAll("_esc_enter_88250_", "<br/>");
+                content = Markdowns.toHTML(content);
+                content = Jsoup.clean(content, Whitelist.relaxed());
+                comment.put(Comment.COMMENT_CONTENT, content);
+
+                commentRepository.update(comment.optString(Keys.OBJECT_ID), comment);
+            }
 
             transaction.commit();
 

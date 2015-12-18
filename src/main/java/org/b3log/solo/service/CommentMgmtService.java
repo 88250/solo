@@ -20,7 +20,6 @@ import java.net.URL;
 import java.util.Date;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -46,15 +45,18 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Comments;
+import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.8, Nov 20, 2015
+ * @version 1.2.0.8, Dec 17, 2015
  * @since 0.3.5
  */
 @Service
@@ -178,7 +180,7 @@ public class CommentMgmtService {
             throws IOException, JSONException {
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String commentId = comment.getString(Keys.OBJECT_ID);
-        final String commentContent = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "<br/>");
+        final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
 
         final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
 
@@ -256,6 +258,10 @@ public class CommentMgmtService {
     /**
      * Checks the specified comment adding request.
      *
+     * <p>
+     * XSS process (name, content) in this method.
+     * </p>
+     *
      * @param requestJSONObject the specified comment adding request, for example,      <pre>
      * {
      *     "type": "", // "article"/"page"
@@ -308,7 +314,7 @@ public class CommentMgmtService {
                 }
             }
 
-            final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
+            String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
 
             if (MAX_COMMENT_NAME_LENGTH < commentName.length() || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
                 LOGGER.log(Level.WARN, "Comment name is too long[{0}]", commentName);
@@ -335,8 +341,7 @@ public class CommentMgmtService {
                 return ret;
             }
 
-            final String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT).replaceAll("\\n",
-                    SoloServletListener.ENTER_ESC);
+            String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT).replaceAll("\\n", "<br/>");
 
             if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length() || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
                 LOGGER.log(Level.WARN, "Comment conent length is invalid[{0}]", commentContent.length());
@@ -346,6 +351,16 @@ public class CommentMgmtService {
             }
 
             ret.put(Keys.STATUS_CODE, true);
+
+            // XSS process
+            commentName = Jsoup.clean(commentName, Whitelist.none());
+            requestJSONObject.put(Comment.COMMENT_NAME, commentName);
+            
+            commentContent = commentContent.replaceAll("\\n", "<br/>\n");
+
+            commentContent = Markdowns.toHTML(commentContent);
+            commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
+            requestJSONObject.put(Comment.COMMENT_CONTENT, commentContent);
 
             return ret;
         } catch (final Exception e) {
@@ -378,7 +393,9 @@ public class CommentMgmtService {
      *     "commentDate": "", // format: yyyy-MM-dd hh:mm:ss
      *     "commentOriginalCommentName": "" // optional, corresponding to argument "commentOriginalCommentId"
      *     "commentThumbnailURL": "",
-     *     "commentSharpURL": ""
+     *     "commentSharpURL": "",
+     *     "commentContent": "", // processed XSS HTML
+     *     "commentName": "" // processed XSS
      * }
      * </pre>
      *
@@ -395,9 +412,8 @@ public class CommentMgmtService {
             final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
-            String commentContent = requestJSONObject.getString(Comment.COMMENT_CONTENT).replaceAll("\\n", SoloServletListener.ENTER_ESC);
+            final String commentContent = requestJSONObject.getString(Comment.COMMENT_CONTENT);
 
-            commentContent = StringEscapeUtils.escapeHtml(commentContent);
             final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
@@ -439,6 +455,9 @@ public class CommentMgmtService {
             ret.put(Keys.OBJECT_ID, commentId);
             // Save comment sharp URL
             final String commentSharpURL = Comments.getCommentSharpURLForPage(page, commentId);
+            
+            ret.put(Comment.COMMENT_NAME, commentName);
+            ret.put(Comment.COMMENT_CONTENT, commentContent);
 
             ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
@@ -494,7 +513,9 @@ public class CommentMgmtService {
      *     "commentDate": "", // format: yyyy-MM-dd hh:mm:ss
      *     "commentOriginalCommentName": "" // optional, corresponding to argument "commentOriginalCommentId"
      *     "commentThumbnailURL": "",
-     *     "commentSharpURL": ""
+     *     "commentSharpURL": "",
+     *     "commentContent": "", // processed XSS HTML
+     *     "commentName": "" // processed XSS
      * }
      * </pre>
      *
@@ -511,10 +532,8 @@ public class CommentMgmtService {
             final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
-            String commentContent = requestJSONObject.getString(Comment.COMMENT_CONTENT).replaceAll("\\n", SoloServletListener.ENTER_ESC);
-            final String contentNoEsc = commentContent;
+            final String commentContent = requestJSONObject.getString(Comment.COMMENT_CONTENT);
 
-            commentContent = StringEscapeUtils.escapeHtml(commentContent);
             final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
@@ -535,6 +554,9 @@ public class CommentMgmtService {
 
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd hh:mm:ss"));
+            
+            ret.put(Comment.COMMENT_NAME, commentName);
+            ret.put(Comment.COMMENT_CONTENT, commentContent);
 
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
@@ -579,7 +601,6 @@ public class CommentMgmtService {
             final JSONObject eventData = new JSONObject();
 
             eventData.put(Comment.COMMENT, comment);
-            comment.put(Comment.COMMENT_CONTENT, contentNoEsc);
             eventData.put(Article.ARTICLE, article);
             eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
 

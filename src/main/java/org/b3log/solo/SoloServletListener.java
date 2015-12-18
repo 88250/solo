@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.11, Dec 13, 2015
+ * @version 1.7.0.12, Dec 17, 2015
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -75,11 +75,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * JSONO print indent factor.
      */
     public static final int JSON_PRINT_INDENT_FACTOR = 4;
-
-    /**
-     * Enter escape.
-     */
-    public static final String ENTER_ESC = "_esc_enter_88250_";
 
     /**
      * B3log Rhythm address.
@@ -116,7 +111,7 @@ public final class SoloServletListener extends AbstractServletListener {
         beanManager = Lifecycle.getBeanManager();
 
         Stopwatchs.start("Context Initialized");
-        
+
         // Upgrade check (https://github.com/b3log/solo/issues/12040)
         final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
         upgradeService.upgrade();

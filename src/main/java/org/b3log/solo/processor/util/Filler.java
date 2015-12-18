@@ -25,7 +25,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -71,7 +70,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.11.12, Nov 20, 2015
+ * @version 1.5.11.13, Dec 17, 2015
  * @since 0.3.1
  */
 @Service
@@ -527,11 +526,10 @@ public class Filler {
             final List<JSONObject> recentComments = commentRepository.getRecentComments(recentCommentDisplayCnt);
 
             for (final JSONObject comment : recentComments) {
-                final String content = comment.getString(Comment.COMMENT_CONTENT).replaceAll(SoloServletListener.ENTER_ESC, "&nbsp;");
-
+                final String content = comment.getString(Comment.COMMENT_CONTENT);
                 comment.put(Comment.COMMENT_CONTENT, content);
-                comment.put(Comment.COMMENT_NAME, StringEscapeUtils.escapeHtml(comment.getString(Comment.COMMENT_NAME)));
-                comment.put(Comment.COMMENT_URL, StringEscapeUtils.escapeHtml(comment.getString(Comment.COMMENT_URL)));
+                comment.put(Comment.COMMENT_NAME, comment.getString(Comment.COMMENT_NAME));
+                comment.put(Comment.COMMENT_URL, comment.getString(Comment.COMMENT_URL));
 
                 comment.remove(Comment.COMMENT_EMAIL); // Erases email for security reason
             }

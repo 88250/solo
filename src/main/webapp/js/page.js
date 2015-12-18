@@ -590,8 +590,12 @@ $.extend(Page.prototype, {
                         if (!Util.isLoggedIn()) {
                             $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
                         }
+
                         return;
                     }
+
+                    $("#comment" + state).val(result.commentContent); // Server processed XSS
+                    $("#commentName" + state).val(result.commentName); // Server processed XSS
 
                     result.replyNameHTML = "";
                     if (!Util.isLoggedIn()) {
@@ -602,7 +606,7 @@ $.extend(Page.prototype, {
                             result.replyNameHTML = '<a href="' + Util.proessURL($("#commentURL" + state).val()) +
                                     '" target="_blank">' + $("#commentName" + state).val() + '</a>';
                         }
-                        result.userName = $("#commentName" + state).val();
+                        result.userName = result.commentName;
                     } else {
                         result.replyNameHTML = '<a href="' + window.location.host +
                                 '" target="_blank">' + Util.getUserName() + '</a>';
