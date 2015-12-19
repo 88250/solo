@@ -49,7 +49,7 @@ import org.jsoup.safety.Whitelist;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, Dec 17, 2015
+ * @version 1.1.0.7, Dec 19, 2015
  * @since 0.3.5
  */
 @Service
@@ -194,11 +194,6 @@ public class CommentQueryService {
 
                 comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
                 comment.remove(Comment.COMMENT_DATE);
-
-                String content = comment.getString(Comment.COMMENT_CONTENT);
-                content = Markdowns.toHTML(content);
-                content = Jsoup.clean(content, Whitelist.relaxed());
-                comment.put(Comment.COMMENT_CONTENT, content);
             }
 
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -224,7 +219,7 @@ public class CommentQueryService {
      *
      * @param onId the specified on id
      * @return a list of comments, returns an empty list if not found
-     * @throws ServiceException repository exception
+     * @throws ServiceException service exception
      */
     public List<JSONObject> getComments(final String onId) throws ServiceException {
         try {
@@ -233,11 +228,6 @@ public class CommentQueryService {
             final List<JSONObject> comments = commentRepository.getComments(onId, 1, Integer.MAX_VALUE);
 
             for (final JSONObject comment : comments) {
-                String content = comment.getString(Comment.COMMENT_CONTENT);
-                content = Markdowns.toHTML(content);
-                content = Jsoup.clean(content, Whitelist.relaxed());
-
-                comment.put(Comment.COMMENT_CONTENT, content);
                 comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
                 comment.put(Comment.COMMENT_NAME, comment.getString(Comment.COMMENT_NAME));
                 comment.put(Comment.COMMENT_URL, comment.getString(Comment.COMMENT_URL));

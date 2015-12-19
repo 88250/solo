@@ -352,12 +352,12 @@ public class CommentMgmtService {
 
             ret.put(Keys.STATUS_CODE, true);
 
-            // XSS process
+            // name XSS process
             commentName = Jsoup.clean(commentName, Whitelist.none());
             requestJSONObject.put(Comment.COMMENT_NAME, commentName);
             
             commentContent = commentContent.replaceAll("\\n", "<br/>\n");
-
+            // content Markdown & XSS process 
             commentContent = Markdowns.toHTML(commentContent);
             commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
             requestJSONObject.put(Comment.COMMENT_CONTENT, commentContent);
