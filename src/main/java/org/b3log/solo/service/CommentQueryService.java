@@ -38,12 +38,9 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 /**
  * Comment query service.
