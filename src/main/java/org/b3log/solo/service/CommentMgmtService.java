@@ -341,7 +341,7 @@ public class CommentMgmtService {
                 return ret;
             }
 
-            String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT).replaceAll("\\n", "<br/>");
+            String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
 
             if (MAX_COMMENT_CONTENT_LENGTH < commentContent.length() || MIN_COMMENT_CONTENT_LENGTH > commentContent.length()) {
                 LOGGER.log(Level.WARN, "Comment conent length is invalid[{0}]", commentContent.length());
@@ -356,7 +356,6 @@ public class CommentMgmtService {
             commentName = Jsoup.clean(commentName, Whitelist.none());
             requestJSONObject.put(Comment.COMMENT_NAME, commentName);
             
-            commentContent = commentContent.replaceAll("\\n", "<br/>\n");
             // content Markdown & XSS process 
             commentContent = Markdowns.toHTML(commentContent);
             commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());

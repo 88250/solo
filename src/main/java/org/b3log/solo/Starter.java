@@ -94,7 +94,7 @@ public final class Starter {
         final Option staticServerPortOpt = Option.builder("ssp").longOpt("static_server_port").argName("STATIC_SERVER_PORT")
                 .hasArg().desc("browser visit static resource port, default is 8080").build();
         options.addOption(staticServerPortOpt);
-        
+
         final Option runtimeModeOpt = Option.builder("rm").longOpt("runtime_mode").argName("RUNTIME_MODE")
                 .hasArg().desc("runtime mode (DEVELOPMENT/PRODUCTION), default is DEVELOPMENT").build();
         options.addOption(runtimeModeOpt);
@@ -142,8 +142,10 @@ public final class Starter {
         String staticServerPort = commandLine.getOptionValue("static_server_port");
         Latkes.setStaticServerPort(staticServerPort);
         String runtimeMode = commandLine.getOptionValue("runtime_mode");
-        Latkes.setRuntimeMode(RuntimeMode.valueOf(runtimeMode));
-
+        if (null != runtimeMode) {
+            Latkes.setRuntimeMode(RuntimeMode.valueOf(runtimeMode));
+        }
+        
         logger.info("Standalone mode, see [https://github.com/b3log/solo/wiki/standalone_mode] for more details.");
         Latkes.initRuntimeEnv();
 

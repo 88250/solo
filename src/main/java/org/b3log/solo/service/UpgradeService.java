@@ -193,7 +193,7 @@ public class UpgradeService {
                 comment.put(Comment.COMMENT_NAME, name);
 
                 String content = comment.optString(Comment.COMMENT_CONTENT);
-                content = StringEscapeUtils.unescapeHtml(content).replaceAll("_esc_enter_88250_", "<br/>");
+                content = StringEscapeUtils.unescapeHtml(content).replaceAll("_esc_enter_88250_", "\n\n");
                 content = Markdowns.toHTML(content);
                 content = Jsoup.clean(content, Whitelist.relaxed());
                 comment.put(Comment.COMMENT_CONTENT, content);
