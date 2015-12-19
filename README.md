@@ -50,6 +50,10 @@ Here are some our most valuable business users' cases:
   * [Skin Dev Guide](https://github.com/b3log/solo/wiki/Develop_steps)
   * [Plugin Dev Guide](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
 
+## Change logs
+
+See [here](http://solo.b3log.org/CHANGE_LOGS.html).
+
 ## Contact Us
 
 * Forum: http://hacpai.com
