@@ -44,7 +44,7 @@ import org.eclipse.jetty.webapp.WebAppContext;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, Dec 15, 2015
+ * @version 1.1.0.7, Dec 23, 2015
  * @since 1.2.0
  */
 public final class Starter {
@@ -145,7 +145,8 @@ public final class Starter {
         if (null != runtimeMode) {
             Latkes.setRuntimeMode(RuntimeMode.valueOf(runtimeMode));
         }
-        
+        Latkes.setScanPath("org.b3log.solo"); // For Latke IoC 
+
         logger.info("Standalone mode, see [https://github.com/b3log/solo/wiki/standalone_mode] for more details.");
         Latkes.initRuntimeEnv();
 

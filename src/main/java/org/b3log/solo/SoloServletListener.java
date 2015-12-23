@@ -56,7 +56,7 @@ import org.json.JSONObject;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.12, Dec 17, 2015
+ * @version 1.7.0.13, Dec 23, 2015
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -106,11 +106,11 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
+        Latkes.setScanPath("org.b3log.solo"); // For Latke IoC        
         super.contextInitialized(servletContextEvent);
-
-        beanManager = Lifecycle.getBeanManager();
-
         Stopwatchs.start("Context Initialized");
+        
+        beanManager = Lifecycle.getBeanManager();
 
         // Upgrade check (https://github.com/b3log/solo/issues/12040)
         final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
