@@ -109,7 +109,7 @@ public final class SoloServletListener extends AbstractServletListener {
         Latkes.setScanPath("org.b3log.solo"); // For Latke IoC        
         super.contextInitialized(servletContextEvent);
         Stopwatchs.start("Context Initialized");
-        
+
         beanManager = Lifecycle.getBeanManager();
 
         // Upgrade check (https://github.com/b3log/solo/issues/12040)
