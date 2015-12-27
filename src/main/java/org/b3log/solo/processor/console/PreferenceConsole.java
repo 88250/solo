@@ -16,6 +16,7 @@
 package org.b3log.solo.processor.console;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
@@ -32,6 +33,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Sign;
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.service.OptionMgmtService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceMgmtService;
@@ -435,6 +437,10 @@ public class PreferenceConsole {
             }
 
             preferenceMgmtService.updatePreference(preference);
+            
+            final Cookie cookie = new Cookie(Skin.SKIN, preference.getString(Skin.SKIN_DIR_NAME));
+            cookie.setPath("/");
+            response.addCookie(cookie);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
