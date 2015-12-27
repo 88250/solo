@@ -893,12 +893,13 @@ $.extend(TablePaginate.prototype, {
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @fileoverview article for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.3, Sep 16, 2015
+ * @version 1.2.4.3, Dec 24, 2015
  */
 admin.article = {
     currentEditorType: '',
@@ -1172,6 +1173,33 @@ admin.article = {
      * @description 发布文章页面设置文章按钮、发布到社区等状态的显示
      */
     setStatus: function () {
+        $.ajax({// Gets all tags
+            url: latkeConfig.servePath + "/console/tags",
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                $("#tipMsg").text(result.msg);
+                if (!result.sc) {
+                    $("#loadMsg").text("");
+                    return;
+                }
+
+                if (0 >= result.tags.length) {
+                    return;
+                }
+
+                $("#tagCheckboxPanel>span").remove("");
+                
+                var spans = "";
+                for (var i = 0; i < result.tags.length; i++) {
+                    spans += "<span>" + result.tags[i].tagTitle + "</span>";
+                }
+                $("#tagCheckboxPanel").html(spans + '<div class="clear"></div>');
+
+                $("#loadMsg").text("");
+            }
+        });
+
         // set button status
         if (this.status) {
             if (this.status.isArticle) {
@@ -1184,12 +1212,14 @@ admin.article = {
             if (this.status.articleHadBeenPublished) {
                 $("#postToCommunityPanel").hide();
             } else {
-                $("#postToCommunityPanel").show();
+                // 1.0.0 开始默认会发布到社区
+                // $("#postToCommunityPanel").show();
             }
         } else {
             $("#submitArticle").show();
             $("#unSubmitArticle").hide();
-            $("#postToCommunityPanel").show();
+            // 1.0.0 开始默认会发布到社区
+            // $("#postToCommunityPanel").show();
         }
 
         $("#postToCommunity").attr("checked", "checked");
@@ -1226,6 +1256,7 @@ admin.article = {
         });
 
         $(".markdown-preview-main").html("");
+        $("#uploadContent").remove();
     },
     /**
      * @description 初始化发布文章页面
@@ -1323,24 +1354,24 @@ admin.article = {
         var qiniu = window.qiniu;
 
         $('#articleUpload').fileupload({
-             multipart: true,
+            multipart: true,
             url: "http://upload.qiniu.com/",
             formData: function (form) {
                 var data = form.serializeArray();
                 data.push({name: 'token', value: qiniu.qiniuUploadToken});
                 return data;
-            }, 
+            },
             done: function (e, data) {
                 var qiniuKey = data.result.key;
                 if (!qiniuKey) {
                     alert("Upload error");
                     return;
                 }
-                
+
                 var t = new Date().getTime();
-                    $('#articleUpload').after('<div><a target="_blank" href="http://' + qiniu.qiniuDomain + qiniuKey + '?' + t
-                            + '">[' + data.files[0].name + ']</a> http://' 
-                            + qiniu.qiniuDomain + qiniuKey + '?' + t + '</div>');
+                $('#articleUpload').after('<div id="uploadContent"><a target="_blank" href="http://' + qiniu.qiniuDomain + qiniuKey + '?' + t
+                        + '">[' + data.files[0].name + ']</a> http://'
+                        + qiniu.qiniuDomain + qiniuKey + '?' + t + '</div>');
             },
             fail: function (e, data) {
                 alert("Upload error: " + data.errorThrown);
@@ -1351,7 +1382,7 @@ admin.article = {
                 alert(currentFile.error);
             }
         });
-        
+
         // editor
         admin.editors.articleEditor = new Editor({
             id: "articleContent",

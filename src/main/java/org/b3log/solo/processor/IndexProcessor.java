@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
@@ -39,8 +40,12 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.freemarker.Templates;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -53,7 +58,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.1.2.6, Nov 20, 2015
+ * @version 1.2.2.6, Dec 27, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -98,17 +103,27 @@ public class IndexProcessor {
     @RequestProcessing(value = {"/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
     public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
-
         context.setRenderer(renderer);
-
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         final String requestURI = request.getRequestURI();
 
         try {
             final int currentPageNum = getCurrentPageNum(requestURI);
             final JSONObject preference = preferenceQueryService.getPreference();
+
+            // https://github.com/b3log/solo/issues/12060
+            String specifiedSkin = Skins.getSkinDirName(request);
+            if (null != specifiedSkin) {
+                if ("default".equals(specifiedSkin)) {
+                    specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
+                }
+            } else {
+                specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
+            }
+            Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(),
+                    "/skins/" + specifiedSkin);
+            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
 
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
@@ -121,14 +136,19 @@ public class IndexProcessor {
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final int previousPageNum = currentPageNum > 1 ? currentPageNum - 1 : 0;
             dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, previousPageNum);
-            
+
             final Integer pageCount = (Integer) dataModel.get(Pagination.PAGINATION_PAGE_COUNT);
-            final int nextPageNum = currentPageNum+1 > pageCount ? pageCount : currentPageNum + 1;
+            final int nextPageNum = currentPageNum + 1 > pageCount ? pageCount : currentPageNum + 1;
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, nextPageNum);
 
             dataModel.put(Common.PATH, "");
 
             statisticMgmtService.incBlogViewCount(request, response);
+
+            // https://github.com/b3log/solo/issues/12060
+            final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
+            cookie.setPath("/");
+            response.addCookie(cookie);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
