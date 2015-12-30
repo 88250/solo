@@ -48,7 +48,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.2.1.12, Dec 17, 2015
+ * @version 1.2.2.12, Dec 29, 2015
  * @since 0.3.1
  */
 @RequestProcessor
@@ -91,7 +91,7 @@ public class CommentProcessor {
      * {
      *     "oId": generatedCommentId,
      *     "sc": "COMMENT_PAGE_SUCC"
-     *     "commentDate": "", // yyyy/MM/dd hh:mm:ss
+     *     "commentDate": "", // yyyy/MM/dd HH:mm:ss
      *     "commentSharpURL": "",
      *     "commentThumbnailURL": "",
      *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
@@ -186,7 +186,7 @@ public class CommentProcessor {
      * {
      *     "oId": generatedCommentId,
      *     "sc": "COMMENT_ARTICLE_SUCC",
-     *     "commentDate": "", // yyyy/MM/dd hh:mm:ss
+     *     "commentDate": "", // yyyy/MM/dd HH:mm:ss
      *     "commentSharpURL": "",
      *     "commentThumbnailURL": "",
      *     "commentOriginalCommentName": "", // if exists this key, the comment is an reply

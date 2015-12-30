@@ -56,7 +56,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.8, Dec 17, 2015
+ * @version 1.2.1.8, Dec 29, 2015
  * @since 0.3.5
  */
 @Service
@@ -389,7 +389,7 @@ public class CommentMgmtService {
      * @return add result, for example,      <pre>
      * {
      *     "oId": "", // generated comment id
-     *     "commentDate": "", // format: yyyy-MM-dd hh:mm:ss
+     *     "commentDate": "", // format: yyyy-MM-dd HH:mm:ss
      *     "commentOriginalCommentName": "" // optional, corresponding to argument "commentOriginalCommentId"
      *     "commentThumbnailURL": "",
      *     "commentSharpURL": "",
@@ -430,7 +430,7 @@ public class CommentMgmtService {
             final Date date = new Date();
 
             comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd hh:mm:ss"));
+            ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
                 if (null != originalComment) {
@@ -509,7 +509,7 @@ public class CommentMgmtService {
      * @return add result, for example,      <pre>
      * {
      *     "oId": "", // generated comment id
-     *     "commentDate": "", // format: yyyy-MM-dd hh:mm:ss
+     *     "commentDate": "", // format: yyyy-MM-dd HH:mm:ss
      *     "commentOriginalCommentName": "" // optional, corresponding to argument "commentOriginalCommentId"
      *     "commentThumbnailURL": "",
      *     "commentSharpURL": "",
@@ -552,7 +552,7 @@ public class CommentMgmtService {
             final Date date = new Date();
 
             comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd hh:mm:ss"));
+            ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
             
             ret.put(Comment.COMMENT_NAME, commentName);
             ret.put(Comment.COMMENT_CONTENT, commentContent);
