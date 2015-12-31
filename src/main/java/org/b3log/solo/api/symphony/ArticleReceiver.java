@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.api.symphony;
 
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,12 +40,11 @@ import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
-
 /**
  * Article receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.6, Oct 1, 2015
+ * @version 1.0.1.7, Dec 31, 2015
  * @since 0.5.5
  */
 @RequestProcessor
@@ -100,8 +98,7 @@ public class ArticleReceiver {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request, for example,
-     * <pre>
+     * @param request the specified http servlet request, for example,      <pre>
      * {
      *     "article": {
      *         "oId": "",
@@ -113,13 +110,14 @@ public class ArticleReceiver {
      *     }
      * }
      * </pre>
+     *
      * @param response the specified http servlet response
      * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/apis/symphony/article", method = HTTPRequestMethod.POST)
     public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
 
         context.setRenderer(renderer);
@@ -156,8 +154,8 @@ public class ArticleReceiver {
             String content = article.getString(Article.ARTICLE_CONTENT);
             final String articleId = article.getString(Keys.OBJECT_ID);
 
-            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
-                + "' target='_blank'>黑客派</a></i></p>";
+//            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
+//                + "' target='_blank'>黑客派</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
             articleMgmtService.addArticle(requestJSONObject);
@@ -190,8 +188,7 @@ public class ArticleReceiver {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request, for example,
-     * <pre>
+     * @param request the specified http servlet request, for example,      <pre>
      * {
      *     "article": {
      *         "oId": "", // Symphony Article#clientArticleId
@@ -203,13 +200,14 @@ public class ArticleReceiver {
      *     }
      * }
      * </pre>
+     *
      * @param response the specified http servlet response
      * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/apis/symphony/article", method = HTTPRequestMethod.PUT)
     public void updateArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
 
         context.setRenderer(renderer);
@@ -253,8 +251,8 @@ public class ArticleReceiver {
             article.put(Article.ARTICLE_VIEW_PWD, "");
             String content = article.getString(Article.ARTICLE_CONTENT);
 
-            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
-                + "' target='_blank'>黑客派</a></i></p>";
+//            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
+//                + "' target='_blank'>黑客派</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
             articleMgmtService.updateArticle(requestJSONObject);
