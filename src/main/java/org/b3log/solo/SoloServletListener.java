@@ -33,6 +33,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
@@ -59,7 +60,7 @@ import org.json.JSONObject;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.13, Dec 27, 2015
+ * @version 1.8.1.13, Jan 5, 2016
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -118,6 +119,7 @@ public final class SoloServletListener extends AbstractServletListener {
         // Upgrade check (https://github.com/b3log/solo/issues/12040)
         final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
         upgradeService.upgrade();
+        JdbcRepository.dispose(); // XXX: JDBC connection close
 
         // Set default skin, loads from preference later
         Skins.setDirectoryForTemplateLoading(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);

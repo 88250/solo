@@ -149,7 +149,6 @@ public class UpgradeService {
 
                 sent = true;
             }
-
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             LOGGER.log(Level.ERROR,
