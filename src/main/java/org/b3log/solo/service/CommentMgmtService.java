@@ -37,7 +37,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.urlfetch.*;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArticleRepository;

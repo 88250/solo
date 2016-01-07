@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.1.13, Jan 5, 2016
+ * @version 1.8.2.13, Jan 7, 2016
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -119,7 +119,7 @@ public final class SoloServletListener extends AbstractServletListener {
         // Upgrade check (https://github.com/b3log/solo/issues/12040)
         final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
         upgradeService.upgrade();
-        JdbcRepository.dispose(); // XXX: JDBC connection close
+        JdbcRepository.dispose();
 
         // Set default skin, loads from preference later
         Skins.setDirectoryForTemplateLoading(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
@@ -163,9 +163,9 @@ public final class SoloServletListener extends AbstractServletListener {
     public void sessionCreated(final HttpSessionEvent httpSessionEvent) {
     }
 
-    // Note: This method will never invoked on GAE production environment
     @Override
     public void sessionDestroyed(final HttpSessionEvent httpSessionEvent) {
+        super.sessionDestroyed(httpSessionEvent);
     }
 
     @Override
