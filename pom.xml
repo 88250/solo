@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 2.9.1.15, Jan 4, 2016
+    Version: 2.9.1.16, Jan 7, 2016
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -105,7 +105,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
-        <org.b3log.latke.version>1.4.6</org.b3log.latke.version>
+        <org.b3log.latke.version>1.4.8</org.b3log.latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
@@ -135,16 +135,6 @@
             <groupId>org.b3log</groupId>
             <artifactId>latke</artifactId>
             <version>${org.b3log.latke.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.jolbox</groupId>
-                    <artifactId>bonecp</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.alibaba</groupId>
-                    <artifactId>druid</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
         
         <dependency>
