@@ -36,6 +36,9 @@
             </ul>
         </nav>
         <footer>
+            <#if noticeBoard??>
+            <div>${noticeBoard}</div>
+            </#if>
             <#if isLoggedIn>
             <a href="${servePath}/admin-index.do#main" title="${adminLabel}" class="icon-setting"></a>
             &nbsp; &nbsp; 
