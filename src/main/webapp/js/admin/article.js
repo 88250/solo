@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.3, Dec 24, 2015
+ * @version 1.2.4.4, Jan 7, 2016
  */
 admin.article = {
     currentEditorType: '',
@@ -487,10 +487,8 @@ admin.article = {
                     return;
                 }
 
-                var t = new Date().getTime();
-                $('#articleUpload').after('<div id="uploadContent"><a target="_blank" href="http://' + qiniu.qiniuDomain + qiniuKey + '?' + t
-                        + '">[' + data.files[0].name + ']</a> http://'
-                        + qiniu.qiniuDomain + qiniuKey + '?' + t + '</div>');
+                $('#articleUpload').after('<div id="uploadContent"><a target="_blank" href="http://' + qiniu.qiniuDomain + qiniuKey + '">[' + data.files[0].name + ']</a> http://'
+                        + qiniu.qiniuDomain + qiniuKey + '</div>');
             },
             fail: function (e, data) {
                 alert("Upload error: " + data.errorThrown);
