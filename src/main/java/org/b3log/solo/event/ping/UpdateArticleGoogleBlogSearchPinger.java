@@ -91,8 +91,8 @@ public final class UpdateArticleGoogleBlogSearchPinger extends AbstractEventList
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
 
             if (Latkes.getServePath().contains("localhost")) {
-                LOGGER.log(Level.INFO,
-                    "Blog Solo runs on local server, so should not ping " + "Google Blog Search Service for the article[title={0}]",
+                LOGGER.log(Level.TRACE,
+                    "Solo runs on local server, so should not ping " + "Google Blog Search Service for the article[title={0}]",
                     new Object[] {article.getString(Article.ARTICLE_TITLE)});
                 return;
             }
