@@ -92,7 +92,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             }
 
             if (Latkes.getServePath().contains("localhost")) {
-                LOGGER.log(Level.INFO, "Blog Solo runs on local server, so should not send this comment[id={0}] to Symphony",
+                LOGGER.log(Level.TRACE, "Solo runs on local server, so should not send this comment[id={0}] to Symphony",
                     new Object[] {originalComment.getString(Keys.OBJECT_ID)});
                 return;
             }
