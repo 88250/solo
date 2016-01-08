@@ -38,13 +38,12 @@ public class TagArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Add.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
     public void add() throws Exception {
-        final TagArticleRepository tagArticleRepository =
-                getTagArticleRepository();
+        final TagArticleRepository tagArticleRepository = getTagArticleRepository();
 
         final JSONObject tagArticle = new JSONObject();
 
@@ -58,34 +57,34 @@ public class TagArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get By ArticleId.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
     public void getByArticleId() throws Exception {
-        final TagArticleRepository tagArticleRepository =
-                getTagArticleRepository();
+        final TagArticleRepository tagArticleRepository
+                = getTagArticleRepository();
 
-        final List<JSONObject> tagArticle =
-                tagArticleRepository.getByArticleId("article1 id");
+        final List<JSONObject> tagArticle
+                = tagArticleRepository.getByArticleId("article1 id");
         Assert.assertNotNull(tagArticle);
 
-        Assert.assertEquals(tagArticleRepository.getByArticleId("").size(), 0);
+        Assert.assertEquals(0, tagArticleRepository.getByArticleId("").size());
     }
 
     /**
      * Get By TagId.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
     public void getByTagId() throws Exception {
-        final TagArticleRepository tagArticleRepository =
-                getTagArticleRepository();
+        final TagArticleRepository tagArticleRepository
+                = getTagArticleRepository();
 
-        final JSONArray results =
-                tagArticleRepository.getByTagId("tag1 id", 1, Integer.MAX_VALUE).
+        final JSONArray results
+                = tagArticleRepository.getByTagId("tag1 id", 1, Integer.MAX_VALUE).
                 getJSONArray(Keys.RESULTS);
-        Assert.assertEquals(results.length(), 1);
+        Assert.assertEquals(1, results.length());
     }
 }

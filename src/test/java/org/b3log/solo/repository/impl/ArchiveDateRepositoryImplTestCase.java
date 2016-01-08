@@ -37,7 +37,7 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Adds successfully.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -46,7 +46,7 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
 
         final JSONObject archiveDate = new JSONObject();
 
-        archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate("2011/12", new String[] {"yyyy/MM"}).getTime());
+        archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate("2011/12", new String[]{"yyyy/MM"}).getTime());
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 1);
         archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 1);
 
@@ -56,12 +56,12 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
 
         final List<JSONObject> archiveDates = archiveDateRepository.getArchiveDates();
         Assert.assertNotNull(archiveDates);
-        Assert.assertEquals(archiveDates.size(), 1);
+        Assert.assertEquals(1, archiveDates.size());
     }
 
     /**
      * Get By ArchiveDate.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
