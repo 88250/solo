@@ -38,7 +38,7 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Add.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -58,7 +58,7 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get By Title.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
@@ -69,9 +69,8 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
 
         Assert.assertNotNull(found);
         Assert.assertEquals(found.getString(Tag.TAG_TITLE), "tag title1");
-        Assert.assertEquals(found.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
-                            0);
-        Assert.assertEquals(found.getInt(Tag.TAG_REFERENCE_COUNT), 1);
+        Assert.assertEquals(0, found.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT));
+        Assert.assertEquals(1, found.getInt(Tag.TAG_REFERENCE_COUNT));
 
         final JSONObject notFound = tagRepository.getByTitle("");
         Assert.assertNull(notFound);
@@ -79,7 +78,7 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get Most Used Tags.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
@@ -98,18 +97,17 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
 
         List<JSONObject> mostUsedTags = tagRepository.getMostUsedTags(3);
         Assert.assertNotNull(mostUsedTags);
-        Assert.assertEquals(mostUsedTags.size(), 2);
+        Assert.assertEquals(2, mostUsedTags.size());
 
         mostUsedTags = tagRepository.getMostUsedTags(1);
         Assert.assertNotNull(mostUsedTags);
-        Assert.assertEquals(mostUsedTags.size(), 1);
-        Assert.assertEquals(mostUsedTags.get(0).getInt(
-                Tag.TAG_PUBLISHED_REFERENCE_COUNT), 3);
+        Assert.assertEquals(1, mostUsedTags.size());
+        Assert.assertEquals(3, mostUsedTags.get(0).getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT));
     }
 
     /**
      * Get By ArticleId.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
@@ -120,16 +118,16 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
 
         List<JSONObject> tags = tagRepository.getByArticleId("article1 id");
         Assert.assertNotNull(tags);
-        Assert.assertEquals(tags.size(), 1);
+        Assert.assertEquals(1, tags.size());
 
         tags = tagRepository.getByArticleId("not found");
         Assert.assertNotNull(tags);
-        Assert.assertEquals(tags.size(), 0);
+        Assert.assertEquals(0, tags.size());
     }
 
     private void addTagArticle() throws Exception {
-        final TagArticleRepository tagArticleRepository =
-                getTagArticleRepository();
+        final TagArticleRepository tagArticleRepository
+                = getTagArticleRepository();
 
         final JSONObject tagArticle = new JSONObject();
 

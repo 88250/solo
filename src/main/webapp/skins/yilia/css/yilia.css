@@ -477,8 +477,10 @@ pre code, pre tt {
 .side footer {
     position: absolute;
     bottom: 15px;
-    left: 50%;
-    margin-left: -65px;
+}
+
+.side footer > div {
+    margin-bottom: 10px;
 }
 /* end side */
 

@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8" />
         <title>${articleViewPwdLabel}</title>
-        <meta name="keywords" content="Java 博客,GAE blog,b3log" />
-        <meta name="description" content="An open source blog based on GAE Java,GAE Java 开源博客" />
+        <meta name="keywords" content="Solo,Java 博客,开源" />
+        <meta name="description" content="An open source blog with Java. Java 开源博客" />
         <meta name="owner" content="B3log Team" />
         <meta name="author" content="B3log Team" />
         <meta name="generator" content="Solo" />

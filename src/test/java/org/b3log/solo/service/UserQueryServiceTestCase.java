@@ -34,7 +34,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Add User.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -56,7 +56,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get User.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "addUser")
@@ -67,7 +67,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get User By Email.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "addUser")
@@ -80,7 +80,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get Users.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "addUser")
@@ -90,7 +90,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
         final JSONObject paginationRequest = Requests.buildPaginationRequest("1/20/10");
         final JSONObject result = userQueryService.getUsers(paginationRequest);
         final JSONArray users = result.getJSONArray(User.USERS);
-        Assert.assertEquals(users.length(), 1);
+        Assert.assertEquals(1, users.length());
     }
 
     /**

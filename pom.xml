@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 2.9.1.16, Jan 7, 2016
+    Version: 3.9.1.16, Jan 8, 2016
     Author: Liang Ding
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -105,7 +105,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         
-        <org.b3log.latke.version>1.4.9</org.b3log.latke.version>
+        <org.b3log.latke.version>2.0.0</org.b3log.latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
@@ -125,7 +125,6 @@
         <maven-min-plugin.version>1.0.0</maven-min-plugin.version>
         <!-- Unit Test -->
         <testng.version>6.1.1</testng.version>
-        <gae.version>1.8.1.1</gae.version>
         <!-- JDBC Drivers -->
         <mysql-connector-java.version>5.1.18</mysql-connector-java.version>
     </properties>
@@ -203,29 +202,6 @@
             <artifactId>commons-cli</artifactId>
             <version>${commons-cli.version}</version>
         </dependency>
-        
-        <!-- BEGIN: GAE related dependencies just for testing -->
-        <dependency>
-            <groupId>org.b3log</groupId>
-            <artifactId>latke-gae</artifactId>
-            <version>${org.b3log.latke.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-api-stubs</artifactId>
-            <version>${gae.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-testing</artifactId>
-            <version>${gae.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- END: GAE related dependencies just for testing -->
     </dependencies>
     
     <build>

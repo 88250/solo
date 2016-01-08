@@ -65,13 +65,13 @@ public final class MarkdownsTestCase {
         }
         
         markdownText = markdownTextBuilder.toString();
-        System.out.println(markdownText);
+        //System.out.println(markdownText);
 
         Stopwatchs.start("Markdowning");
         html = Markdowns.toHTML(markdownText);
         Stopwatchs.end();
         
-        System.out.println(html);
+        //System.out.println(html);
         
         System.out.println("Stopwatch: ");
         System.out.println(Stopwatchs.getTimingStat());

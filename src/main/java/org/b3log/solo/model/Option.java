@@ -381,7 +381,7 @@ public final class Option {
         /**
          * Default meta keywords..
          */
-        public static final String DEFAULT_META_KEYWORDS = "Java 博客,GAE,b3log";
+        public static final String DEFAULT_META_KEYWORDS = "Solo,Java 博客,开源";
 
         /**
          * Default meta description..

@@ -15,14 +15,15 @@
  */
 package org.b3log.solo;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import java.sql.Connection;
 import java.util.Collection;
 import java.util.Locale;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.ioc.config.Discoverer;
+import org.b3log.latke.repository.jdbc.util.Connections;
+import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
@@ -48,24 +49,17 @@ import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
 import org.b3log.solo.service.*;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 /**
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Dec 13, 2015
+ * @version 2.0.0.9, Jan 8, 2016
  * @see #beforeClass()
  * @see #afterClass()
  */
 public abstract class AbstractTestCase {
-
-    /**
-     * Local service test helper.
-     */
-    private final LocalServiceTestHelper localServiceTestHelper
-            = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
     /**
      * Bean manager.
@@ -76,7 +70,6 @@ public abstract class AbstractTestCase {
      * Before class.
      *
      * <ol>
-     * <li>Sets up GAE unit test runtime environment</li>
      * <li>Initializes Latke runtime</li>
      * <li>Instantiates repositories</li>
      * </ol>
@@ -85,30 +78,18 @@ public abstract class AbstractTestCase {
      */
     @BeforeClass
     public void beforeClass() throws Exception {
-        localServiceTestHelper.setUp();
-
         Latkes.initRuntimeEnv();
         Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
 
         final Collection<Class<?>> classes = Discoverer.discover("org.b3log.solo");
         Lifecycle.startApplication(classes);
-
         beanManager = Lifecycle.getBeanManager();
-    }
 
-    /**
-     * After class.
-     *
-     * <ol>
-     * <li>Tears down GAE unit test runtime environment</li>
-     * <li>Shutdowns Latke runtime</li>
-     * </ol>
-     */
-    @AfterClass
-    public void afterClass() {
-        // XXX: NPE, localServiceTestHelper.tearDown();
+        final Connection connection = Connections.getConnection();
+        connection.createStatement().execute("DROP ALL OBJECTS");
+        connection.close();
+        JdbcRepositories.initAllTables();
 
-        Latkes.shutdown();
     }
 
     /**

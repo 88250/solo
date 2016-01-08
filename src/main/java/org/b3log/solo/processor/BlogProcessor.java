@@ -112,7 +112,7 @@ public class BlogProcessor {
      * <li>Serve path</li>
      * <li>Static serve path</li>
      * <li>Solo version</li>
-     * <li>Runtime environment (GAE/LOCAL)</li>
+     * <li>Runtime environment (LOCAL)</li>
      * <li>Locale</li>
      * </ul>
      *
