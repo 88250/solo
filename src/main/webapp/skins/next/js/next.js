@@ -17,11 +17,11 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.0, Nov 3, 2015
+ * @version 0.1.0.0, Jan 11, 2016
  */
 
 /**
- * @description yilia 皮肤脚本
+ * @description next 皮肤脚本
  * @static
  */
 var Yilia = {
