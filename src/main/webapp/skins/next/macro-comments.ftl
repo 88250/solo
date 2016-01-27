@@ -7,7 +7,7 @@
             <div class="fn-clear post-meta">
                 <span class="fn-left">
                     <#if "http://" == comment.commentURL>
-                    <a>${comment.commentName}</a>
+                    <span>${comment.commentName}</span>
                     <#else>
                     <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                     </#if>
