@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Nov 7, 2015
+ * @version 1.2.0.3, Jan 27, 2016
 */
 /* start reset */
 html {
@@ -430,13 +430,14 @@ pre code, pre tt {
     position: absolute;
     opacity: 0.7;
     width: 100%;
-    z-index: -1;
 }
 
 .side .content {
     width: 76%;
     text-align: center;
     margin: 112px auto 0;
+    position: relative;
+    z-index: 1;
 }
 
 .side .avatar {
@@ -478,6 +479,9 @@ pre code, pre tt {
     position: absolute;
     bottom: 15px;
     width: 228px;
+    text-align: center;
+    left: 50%;
+    margin-left: -114px;
 }
 
 .side footer > div {
@@ -932,12 +936,12 @@ footer.footer .icon-goup:hover {
         margin-top: 0;
         padding-top: 20px;
     }
-    
+
     .side .overlay {
         height: 100px;
         z-index: 0;
     }
-    
+
     .side nav {
         display: none;
     }
@@ -951,19 +955,19 @@ footer.footer .icon-goup:hover {
     main {
         position: initial;
     }
-    
+
     article {
         margin: 10px;
     }
-    
+
     .comments {
         margin: 20px 20px 0 20px;
     }
-    
+
     footer.footer {
         text-align: center;
     }
-    
+
     footer.footer .fn-right {
         float: none;
         display: block;
