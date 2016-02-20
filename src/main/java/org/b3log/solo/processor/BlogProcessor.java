@@ -149,7 +149,7 @@ public class BlogProcessor {
     }
 
     /**
-     * Sync user to http://hacpai.com.
+     * Sync user to https://hacpai.com.
      *
      * @param context the specified context
      * @throws Exception exception

@@ -8,7 +8,7 @@
 
 [Solo](https://github.com/b3log/solo) 是一个专业、简约、稳定、极速的开源 Java 博客系统。你可以自己搭建使用（[下载](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)），也可以通过购买我们搭建好的服务来直接使用，详情请看[这里](http://b3log.org/services/#solo)。
 
-> 加入[**黑客派**](http://hacpai.com/register)，与其他程序员、设计师共同成长！
+> 加入[**黑客派**](https://hacpai.com/register)，与其他程序员、设计师共同成长！
 
 ## Features 
 
@@ -56,7 +56,7 @@ See [here](http://solo.b3log.org/CHANGE_LOGS.html).
 
 ## Contact Us
 
-* Forum: http://hacpai.com
+* Forum: https://hacpai.com
 * support@liuyun.io (purchase purpose)
 
 ## Terms

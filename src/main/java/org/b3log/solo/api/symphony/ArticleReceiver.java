@@ -154,7 +154,7 @@ public class ArticleReceiver {
             String content = article.getString(Article.ARTICLE_CONTENT);
             final String articleId = article.getString(Keys.OBJECT_ID);
 
-//            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
+//            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='https://hacpai.com/article/" + articleId
 //                + "' target='_blank'>黑客派</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
@@ -251,7 +251,7 @@ public class ArticleReceiver {
             article.put(Article.ARTICLE_VIEW_PWD, "");
             String content = article.getString(Article.ARTICLE_CONTENT);
 
-//            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='http://hacpai.com/article/" + articleId
+//            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='https://hacpai.com/article/" + articleId
 //                + "' target='_blank'>黑客派</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
