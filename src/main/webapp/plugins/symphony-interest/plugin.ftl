@@ -32,7 +32,7 @@
                     }
                     
                     $.ajax({
-                        url: "http://hacpai.com/apis/articles?p=1&size=7&tags=" + tags.join(),
+                        url: "https://hacpai.com/apis/articles?p=1&size=7&tags=" + tags.join(),
                         type: "GET",
                         dataType: "jsonp",
                         jsonp: "callback",

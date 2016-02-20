@@ -19,7 +19,7 @@
             "url(${staticServePath}/images/loader.gif) no-repeat scroll center center transparent");
             
             $.ajax({
-                url: "http://hacpai.com/apis/news",
+                url: "https://hacpai.com/apis/news",
                 type: "GET",
                 dataType:"jsonp",
                 jsonp: "callback",

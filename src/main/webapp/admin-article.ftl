@@ -50,7 +50,7 @@
             <input type="checkbox" id="articleCommentable" checked="checked" />
             <span id="postToCommunityPanel" class="none">
                 <label for="postToCommunity">
-                    <a class="no-underline" href="http://hacpai.com/article/1440573175609" target="_blank">${postToCommunityLabel}</a>
+                    <a class="no-underline" href="https://hacpai.com/article/1440573175609" target="_blank">${postToCommunityLabel}</a>
                 </label>
                 <input id="postToCommunity" type="checkbox" checked="checked"/>
             </span>
