@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -46,7 +47,7 @@ import org.json.JSONObject;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Dec 19, 2015
+ * @version 1.1.0.8, Apr 4, 2016
  * @since 0.3.5
  */
 @Service
@@ -227,7 +228,11 @@ public class CommentQueryService {
             for (final JSONObject comment : comments) {
                 comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
                 comment.put(Comment.COMMENT_NAME, comment.getString(Comment.COMMENT_NAME));
-                comment.put(Comment.COMMENT_URL, comment.getString(Comment.COMMENT_URL));
+                String url = comment.getString(Comment.COMMENT_URL);
+                if (StringUtils.contains(url, "<")) { // legacy issue https://github.com/b3log/solo/issues/12091
+                    url = "";
+                }
+                comment.put(Comment.COMMENT_URL, url);
                 comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
 
                 final String email = comment.optString(Comment.COMMENT_EMAIL);

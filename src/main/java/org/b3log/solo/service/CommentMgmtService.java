@@ -20,6 +20,7 @@ import java.net.URL;
 import java.util.Date;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -55,7 +56,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.8, Dec 29, 2015
+ * @version 1.2.2.8, Apr 4, 2016
  * @since 0.3.5
  */
 @Service
@@ -333,7 +334,7 @@ public class CommentMgmtService {
 
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
 
-            if (!Strings.isURL(commentURL)) {
+            if (!Strings.isURL(commentURL) || StringUtils.contains(commentURL, "<")) {
                 LOGGER.log(Level.WARN, "Comment URL is invalid[{0}]", commentURL);
                 ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
 
@@ -354,7 +355,7 @@ public class CommentMgmtService {
             // name XSS process
             commentName = Jsoup.clean(commentName, Whitelist.none());
             requestJSONObject.put(Comment.COMMENT_NAME, commentName);
-            
+
             // content Markdown & XSS process 
             commentContent = Markdowns.toHTML(commentContent);
             commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
@@ -453,7 +454,7 @@ public class CommentMgmtService {
             ret.put(Keys.OBJECT_ID, commentId);
             // Save comment sharp URL
             final String commentSharpURL = Comments.getCommentSharpURLForPage(page, commentId);
-            
+
             ret.put(Comment.COMMENT_NAME, commentName);
             ret.put(Comment.COMMENT_CONTENT, commentContent);
 
@@ -552,7 +553,7 @@ public class CommentMgmtService {
 
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
-            
+
             ret.put(Comment.COMMENT_NAME, commentName);
             ret.put(Comment.COMMENT_CONTENT, commentContent);
 
