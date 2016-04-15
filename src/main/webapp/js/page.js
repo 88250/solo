@@ -17,7 +17,7 @@
  * @fileoverview Page util, load heighlight and process comment.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @author <a href="mailto:DL88250@gmail.com">Liang Ding</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.2.3.5, Nov 2, 2015
  */
 var Page = function (tips) {

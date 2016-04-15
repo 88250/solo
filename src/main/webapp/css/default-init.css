@@ -17,7 +17,8 @@
 * 403, 404, 500, article-pwd, init, login and kill-browser page style.
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 1.0.1.6, Sep 12, 2013
+* @author <a href="http://88250.b3log.org">Liang Ding</a>
+* @version 1.0.1.7, Apr 15, 2016
 */
 html {
     height: 100%;
@@ -165,6 +166,7 @@ button:active {
     border-style: solid solid none;
     border-width: 1px;
     margin: 0 auto;
+    padding: 0 0 28px 0;
     position: relative;
     width: 700px;
     top: 60px;
