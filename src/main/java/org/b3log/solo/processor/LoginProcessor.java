@@ -65,7 +65,7 @@ import java.util.Map;
  * <p>Initializes administrator</p>.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="mailto:LLY219@gmail.com">Liyuan Li</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @version 1.1.1.7, Nov 20, 2015
  * @since 0.3.1

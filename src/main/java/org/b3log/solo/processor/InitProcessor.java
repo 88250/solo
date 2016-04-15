@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.8, Oct 17, 2015
+ * @version 1.2.0.9, Apr 15, 2016
  * @since 0.4.0
  */
 @RequestProcessor
@@ -174,7 +174,7 @@ public class InitProcessor {
             }
 
             if (invalidUserName(userName)) {
-                ret.put(Keys.MSG, "Init failed, please check your input [username: length [1, 20], content {a-z, A-Z, 0-9}]");
+                ret.put(Keys.MSG, "Init failed, please check your username (length [1, 20], content {a-z, A-Z, 0-9}, do not contain 'admin' for security reason]");
 
                 return;
             }
@@ -211,6 +211,7 @@ public class InitProcessor {
      * <ul>
      * <li>length [1, 20]</li>
      * <li>content {a-z, A-Z, 0-9}</li>
+     * <li>Not contains "admin"/"Admin"</li>
      * </ul>
      * </p>
      *
@@ -234,6 +235,6 @@ public class InitProcessor {
             return true;
         }
 
-        return false;
+        return name.contains("admin") || name.contains("Admin");
     }
 }
