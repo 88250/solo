@@ -2,7 +2,7 @@
 <!--
     Description: Solo POM.
     Version: 3.9.1.18, Feb 20, 2016
-    Author: Liang Ding
+    Author: <a href="http://www.annpeter.cn">Ann Peter</a>
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -110,7 +110,7 @@
         <servlet.version>3.1.0</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
 
-        <jsoup.version>1.5.2</jsoup.version>
+        <jsoup.version>1.9.1</jsoup.version>
         <markdownpapers-core.version>1.4.2</markdownpapers-core.version>
         <qiniu.version>7.0.4.1</qiniu.version>
         <jetty.version>9.2.13.v20150730</jetty.version>
