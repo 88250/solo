@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.9.1.18, Feb 20, 2016
+    Version: 3.9.1.19, May 3, 2016
+    Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
