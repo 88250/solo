@@ -16,6 +16,7 @@
 package org.b3log.solo.plugin.list;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
 
@@ -34,7 +36,8 @@ import org.jsoup.select.Elements;
  * List (table of contents of an article) handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, May 30, 2014
+ * @author <a href="http://www.annpeter.cn">Ann Peter</a>
+ * @version 1.0.1.0, May 4, 2016
  * @since 0.6.7
  */
 public class ListHandler extends AbstractEventListener<JSONObject> {
@@ -56,7 +59,8 @@ public class ListHandler extends AbstractEventListener<JSONObject> {
 
         String content = article.optString(Article.ARTICLE_CONTENT);
 
-        final Document doc = Jsoup.parse(content);
+        final Document doc = Jsoup.parse(content, StringUtils.EMPTY, Parser.htmlParser());
+        doc.outputSettings().prettyPrint(false);
 
         final StringBuilder listBuilder = new StringBuilder();
 
