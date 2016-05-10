@@ -10,6 +10,12 @@
 
 > 加入[**黑客派**](https://hacpai.com/register)，与其他程序员、设计师共同成长！
 
+## Authors
+
+[Daniel](https://github.com/88250) and [Vanessa](https://github.com/Vanessa219) are the main authors of Solo, [here](https://github.com/b3log/solo/graphs/contributors) are all contributors.
+
+Solo 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/solo/graphs/contributors)看到。
+
 ## Features 
 
 * Tags
