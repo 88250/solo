@@ -45,6 +45,7 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Comments;
+import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONException;
@@ -56,7 +57,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.8, Apr 4, 2016
+ * @version 1.3.2.8, May 10, 2016
  * @since 0.3.5
  */
 @Service
@@ -359,6 +360,10 @@ public class CommentMgmtService {
             // content Markdown & XSS process 
             commentContent = Markdowns.toHTML(commentContent);
             commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
+
+            // Emoji
+            commentContent = Emotions.toAliases(commentContent);
+
             requestJSONObject.put(Comment.COMMENT_CONTENT, commentContent);
 
             return ret;
