@@ -39,6 +39,7 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,7 +48,7 @@ import org.json.JSONObject;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.8, Apr 4, 2016
+ * @version 1.2.0.8, May 10, 2016
  * @since 0.3.5
  */
 @Service
@@ -190,6 +191,10 @@ public class CommentQueryService {
 
                 comment.put(Common.COMMENT_TITLE, title);
 
+                String commentContent = comment.optString(Comment.COMMENT_CONTENT);
+                commentContent = Emotions.convert(commentContent);
+                comment.put(Comment.COMMENT_CONTENT, commentContent);
+
                 comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
                 comment.remove(Comment.COMMENT_DATE);
             }
@@ -243,6 +248,10 @@ public class CommentQueryService {
                     // This comment is a reply
                     comment.put(Common.IS_REPLY, true);
                 }
+
+                String commentContent = comment.optString(Comment.COMMENT_CONTENT);
+                commentContent = Emotions.convert(commentContent);
+                comment.put(Comment.COMMENT_CONTENT, commentContent);
 
                 ret.add(comment);
             }
