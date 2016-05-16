@@ -15,27 +15,24 @@
  */
 package org.b3log.solo.util;
 
-
-import java.io.StringReader;
-import java.io.StringWriter;
-import org.b3log.latke.logging.Level;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
-import org.tautua.markdownpapers.Markdown;
-import org.tautua.markdownpapers.parser.ParseException;
-
+import org.pegdown.Extensions;
+import org.pegdown.PegDownProcessor;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
- * 
- * <p>Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
+ *
+ * <p>
+ * Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Feb 8, 2013
+ * @version 2.0.0.1, May 16, 2016
  * @since 0.4.5
  */
 public final class Markdowns {
-    
+
     /**
      * Logger.
      */
@@ -43,32 +40,29 @@ public final class Markdowns {
 
     /**
      * Converts the specified markdown text to HTML.
-     * 
+     *
      * @param markdownText the specified markdown text
-     * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}, returns "Markdown error" if 
-     * exception
+     * @return converted HTML, returns {@code null} if the specified markdown text is "" or {@code null}, returns
+     * "Markdown error" if exception
      */
     public static String toHTML(final String markdownText) {
         if (Strings.isEmptyOrNull(markdownText)) {
-            return null;
+            return "";
         }
 
-        final StringWriter writer = new StringWriter();
-        final Markdown markdown = new Markdown();
+        final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL, 5000);
+        String ret = pegDownProcessor.markdownToHtml(markdownText);
 
-        try {
-            markdown.transform(new StringReader(markdownText), writer);
-        } catch (final ParseException e) {
-            LOGGER.log(Level.ERROR, "Markdown error", e);
-            
-            return "Markdown error";
+        if (!StringUtils.startsWith(ret, "<p>")) {
+            ret = "<p>" + ret + "</p>";
         }
-        
-        return writer.toString();
+
+        return ret;
     }
 
     /**
      * Private constructor.
      */
-    private Markdowns() {}
+    private Markdowns() {
+    }
 }
