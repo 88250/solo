@@ -64,7 +64,7 @@ public class ListHandler extends AbstractEventListener<JSONObject> {
 
         final StringBuilder listBuilder = new StringBuilder();
 
-        listBuilder.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + Latkes.getStaticPath() + "/plugins/list/style.css\" />");
+        listBuilder.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + Latkes.getStaticServePath() + "/plugins/list/style.css\" />");
 
         final Elements hs = doc.select("h1, h2, h3, h4, h5");
 
