@@ -29,7 +29,7 @@ import org.testng.Assert;
  * {@link org.b3log.solo.util.Markdowns} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, May 16, 2013
+ * @version 1.0.1.2, May 18, 2016
  * @since 0.4.5
  */
 public final class MarkdownsTestCase {
@@ -44,7 +44,7 @@ public final class MarkdownsTestCase {
         String markdownText = "";
         String html = Markdowns.toHTML(markdownText);
 
-        Assert.assertNull(html);
+        Assert.assertEquals(html, "");
 
         markdownText = "# Solo Markdown Editor";
         html = Markdowns.toHTML(markdownText);
