@@ -898,7 +898,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.4, Jan 7, 2016
+ * @version 1.3.4.4, Jan 27, 2016
  */
 admin.article = {
     currentEditorType: '',
@@ -1352,23 +1352,34 @@ admin.article = {
         // upload
         var qiniu = window.qiniu;
 
+        var filename = "";
         $('#articleUpload').fileupload({
             multipart: true,
             url: "http://upload.qiniu.com/",
+            add: function (e, data) {
+                filename = data.files[0].name;
+                
+                data.submit();
+            },
             formData: function (form) {
                 var data = form.serializeArray();
+                var ext = filename.substring(filename.lastIndexOf(".") + 1);  
+                
+                data.push({name: 'key', value: getUUID() + "." + ext});
                 data.push({name: 'token', value: qiniu.qiniuUploadToken});
+                
                 return data;
             },
             done: function (e, data) {
                 var qiniuKey = data.result.key;
                 if (!qiniuKey) {
                     alert("Upload error");
+                    
                     return;
                 }
-
-                $('#articleUpload').after('<div id="uploadContent"><a target="_blank" href="http://' + qiniu.qiniuDomain + qiniuKey + '">[' + data.files[0].name + ']</a> http://'
-                        + qiniu.qiniuDomain + qiniuKey + '</div>');
+                
+                $('#articleUpload').after('<div id="uploadContent">!<a target="_blank" href="http://' + qiniu.qiniuDomain + qiniuKey + '">[' + filename + ']</a>(http://'
+                        + qiniu.qiniuDomain + qiniuKey + ')</div>');
             },
             fail: function (e, data) {
                 alert("Upload error: " + data.errorThrown);
@@ -1559,7 +1570,22 @@ admin.register.article = {
         $("#loadMsg").text("");
         $("#tipMsg").text("");
     }
-};/*
+};
+
+function getUUID() {
+    var d = new Date().getTime();
+    
+    var ret = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = (d + Math.random()*16)%16 | 0;
+        d = Math.floor(d/16);
+        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+    });
+    
+    ret = ret.replace(new RegExp("-", 'g'), "");
+    
+    return ret;
+};
+/*
  * Copyright (c) 2010-2016, b3log.org & hacpai.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

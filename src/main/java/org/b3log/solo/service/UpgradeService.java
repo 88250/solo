@@ -16,39 +16,37 @@
 package org.b3log.solo.service;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Statement;
 import javax.inject.Inject;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.*;
-import org.b3log.latke.repository.jdbc.util.Connections;
+import org.b3log.latke.repository.Query;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.*;
-import org.b3log.solo.repository.*;
-import org.b3log.solo.util.Markdowns;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Option;
+import org.b3log.solo.model.UserExt;
+import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.OptionRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 /**
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.4, Dec 17, 2015
+ * @version 1.2.0.5, Jun 28, 2016
  * @since 1.2.0
  */
 @Service
@@ -113,7 +111,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "1.2.0";
+    private static final String FROM_VER = "1.3.0";
 
     /**
      * New version.
@@ -166,39 +164,12 @@ public class UpgradeService {
     private void perform() throws Exception {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
-        Transaction transaction = null;
+        Transaction transaction = optionRepository.beginTransaction();
 
         try {
-            final Connection connection = Connections.getConnection();
-            final Statement statement = connection.createStatement();
-            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            statement.execute("DROP TABLE `" + tablePrefix + "preference`");
-            statement.close();
-            connection.commit();
-            connection.close();
-
-            transaction = optionRepository.beginTransaction();
-
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
-
-            final JSONArray comments = commentRepository.get(new Query()).optJSONArray(Keys.RESULTS);
-            for (int i = 0; i < comments.length(); i++) {
-                final JSONObject comment = comments.getJSONObject(i);
-
-                String name = comment.optString(Comment.COMMENT_NAME);
-                name = Jsoup.clean(name, Whitelist.none());
-                comment.put(Comment.COMMENT_NAME, name);
-
-                String content = comment.optString(Comment.COMMENT_CONTENT);
-                content = StringEscapeUtils.unescapeHtml(content).replaceAll("_esc_enter_88250_", "\n\n");
-                content = Markdowns.toHTML(content);
-                content = Jsoup.clean(content, Whitelist.relaxed());
-                comment.put(Comment.COMMENT_CONTENT, content);
-
-                commentRepository.update(comment.optString(Keys.OBJECT_ID), comment);
-            }
 
             transaction.commit();
 
