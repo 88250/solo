@@ -12,10 +12,18 @@
         </@head>
     </head>
     <body>
-        <#include "side.ftl">
-        <main>
-            <#include "article-list.ftl">
+        <div class="container one-column page-home">
+            <div class="headband"></div>
+            <#include "header.ftl">
+            <main id="main" class="main">
+                <div class="main-inner">
+                    <div id="content" class="content">
+                        <#include "article-list.ftl">
+                    </div>
+                </div>
+                <#include "side.ftl">
+            </main>
             <#include "footer.ftl">
-        </main>
+        </div>
     </body>
 </html>

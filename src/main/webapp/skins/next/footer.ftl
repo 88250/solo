@@ -1,6 +1,6 @@
-<footer class="footer">
-    <div class="fn-clear">
-        <span class="fn-right">
+<footer id="footer" class="footer">
+    <div class="footer-inner">
+        <div class="copyright">
             ${viewCount1Label}${statistic.statisticBlogViewCount}
             &nbsp;
             ${articleCount1Label}${statistic.statisticPublishedBlogArticleCount}
@@ -8,9 +8,8 @@
             ${commentCount1Label}${statistic.statisticPublishedBlogCommentCount}
             &nbsp; 
             ${onlineVisitor1Label}${onlineVisitorCnt}
-        </span>
-    </div>
-    <div class="fn-clear">
+        </div>
+
         <a href="${servePath}">${blogTitle}</a> 
         &copy; ${year}
         ${footerContent}
@@ -19,9 +18,8 @@
             <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
         </span>
     </div>
-    <span onclick="Util.goTop()" class="icon-goup"></span>
 </footer>
-
+<div class="back-to-top"></div>
 
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
