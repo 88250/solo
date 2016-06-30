@@ -27,7 +27,7 @@
                 </span>
                 <span class="post-comments-count">
                     &nbsp; | &nbsp;
-                    <a href="${servePath}${article.articlePermalink}/#comments">
+                    <a href="${servePath}${article.articlePermalink}#comments">
                         ${article.articleCommentCount}条评论</a>
                 </span>
                 &nbsp; | &nbsp;热度 ${article.articleViewCount}°C

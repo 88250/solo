@@ -140,7 +140,6 @@
                             page.addReplyForm(id, commentFormHTML);
                         };
                         (function () {
-                            Yilia.share();
                             page.load();
                             // emotions
                             page.replaceCommentsEm(".comments .comment-content");

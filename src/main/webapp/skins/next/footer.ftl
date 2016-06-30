@@ -1,25 +1,16 @@
 <footer id="footer" class="footer">
     <div class="footer-inner">
         <div class="copyright">
-            ${viewCount1Label}${statistic.statisticBlogViewCount}
-            &nbsp;
-            ${articleCount1Label}${statistic.statisticPublishedBlogArticleCount}
-            &nbsp; 
-            ${commentCount1Label}${statistic.statisticPublishedBlogCommentCount}
-            &nbsp; 
+            <a href="${servePath}">${blogTitle}</a>  •
             ${onlineVisitor1Label}${onlineVisitorCnt}
         </div>
-
-        <a href="${servePath}">${blogTitle}</a> 
         &copy; ${year}
         ${footerContent}
-        <span class="fn-right">
-            Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
-            <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
-        </span>
+        Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
+        <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
     </div>
 </footer>
-<div class="back-to-top"></div>
+<div class="back-to-top" onclick="Util.goTop()"></div>
 
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>

@@ -42,6 +42,12 @@
                     </a>  
                 </li>
                 <li class="menu-item menu-item-archives">
+                    <a href="${servePath}/archives.html">
+                        <i class="menu-item-icon fa fa-archive fa-fw"></i> <br>
+                        ${archiveLabel}
+                    </a>
+                </li>
+                <li class="menu-item menu-item-archives">
                     <a rel="alternate" href="${servePath}/blog-articles-rss.do" rel="section">
                         <i class="menu-item-icon fa fa-archive fa-fw"></i> <br>
                         RSS

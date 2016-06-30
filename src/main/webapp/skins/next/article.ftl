@@ -9,80 +9,92 @@
         </@head>
     </head>
     <body>
-        <#include "side.ftl">
-        <main>
-            <article class="post article-body">
-                <header>
-                    <h2>
-                        <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                            ${article.articleTitle}
-                        </a>
-                        <#if article.articlePutTop>
-                        <sup>
-                            ${topArticleLabel}
-                        </sup>
-                        </#if>
-                        <#if article.hasUpdated>
-                        <sup>
-                            ${updatedLabel}
-                        </sup>
-                        </#if>
-                    </h2>
-                    <time><span class="icon-date"></span> ${article.articleCreateDate?string("yyyy-MM-dd")}</time>
+        <div class="container one-column  page-post-detail">
+            <div class="headband"></div>
+            <#include "header.ftl">
+            <main id="main" class="main">
+                <div class="main-inner">
+                    <div id="content" class="content">
+                        <div id="posts" class="posts-expand">
+                            <article class="post post-type-normal">
+                                <header class="post-header">
+                                    <h1 class="post-title">
+                                        ${article.articleTitle}
+                                        <#if article.articlePutTop>
+                                        <sup>
+                                            ${topArticleLabel}
+                                        </sup>
+                                        </#if>
+                                        <#if article.hasUpdated>
+                                        <sup>
+                                            ${updatedLabel}
+                                        </sup>
+                                        </#if>
+                                    </h1>
+                                    <div class="post-meta">
+                                        <span class="post-time">
+                                            发表于
+                                            <time>
+                                                ${article.articleCreateDate?string("yyyy-MM-dd")}
+                                            </time>
+                                        </span>
+                                        <span class="post-comments-count">
+                                            &nbsp; | &nbsp;
+                                            <a href="${servePath}${article.articlePermalink}#comments">
+                                                ${article.articleCommentCount}条评论</a>
+                                        </span>
+                                        &nbsp; | &nbsp;热度
+                                        ${article.articleViewCount}°C
+                                    </div>
+                                </header>
 
-                    <section class="tags">
-                        <span class="icon-tag"></span>  &nbsp;
-                        <#list article.articleTags?split(",") as articleTag>
-                        <a class="tag" rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
-                            ${articleTag}</a>
-                        </#list>
+                                <div class="post-body">
+                                    ${article.articleContent}
+                                    <#if "" != article.articleSign.signHTML?trim>
+                                    <div>
+                                        ${article.articleSign.signHTML}
+                                    </div>
+                                    </#if>
+                                </div>
+                                <footer class="post-footer">
+                                    <div class="post-tags">
+                                        <#list article.articleTags?split(",") as articleTag>
+                                        <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                                            ${articleTag}</a>
+                                        </#list>
+                                    </div>
+                                    <div class="post-nav">
+                                        <#if nextArticlePermalink?? || previousArticlePermalink??>
+                                        <#if previousArticlePermalink??>
+                                        <div class="post-nav-next post-nav-item">
+                                            <a href="${servePath}${previousArticlePermalink}" rel="next" title="${previousArticleTitle}">
+                                                <i class="fa fa-chevron-left"></i> ${previousArticleTitle}
+                                            </a>
+                                        </div>
+                                        </#if>
+                                        <#if nextArticlePermalink??>
+                                         <div class="post-nav-prev post-nav-item">
+                                            <a href="${servePath}${nextArticlePermalink}" rel="prev" title="${nextArticleTitle}">
+                                                ${nextArticleTitle} <i class="fa fa-chevron-right"></i>
+                                            </a>
+                                        </div>
+                                        </#if>
+                                        </#if>
+                                    </div>
+                                </footer>
+                            </article>
+                        </div>
 
-                        <a rel="nofollow" href="${servePath}/authors/${article.authorId}">
-                            <img class="avatar" title="${article.authorName}" alt="${article.authorName}" src="${article.authorThumbnailURL}"/>
-                        </a>
-                    </section>
-                </header>
-                <section class="abstract">
-                    ${article.articleContent}
-                    <#if "" != article.articleSign.signHTML?trim>
-                    <div>
-                        ${article.articleSign.signHTML}
+                        <@comments commentList=articleComments article=article></@comments>
+
                     </div>
-                    </#if>
-
-                    <#if nextArticlePermalink?? || previousArticlePermalink??>
-                    <aside class="fn-clear">
-                        <#if previousArticlePermalink??>
-                        <a class="fn-left" rel="prev" href="${servePath}${previousArticlePermalink}">
-                            <strong>&lt;</strong> ${previousArticleTitle}
-                        </a>
-                        </#if>
-                        <#if nextArticlePermalink??>
-                        <a class="fn-right" rel="next" href="${servePath}${nextArticlePermalink}">
-                            ${nextArticleTitle} <strong>&gt;</strong>
-                        </a>
-                        </#if>
-                    </aside>
-                    </#if>
-                </section>
-
-                <footer class="fn-clear share">
-                    <div class="fn-right">
-                        <span class="icon icon-t-weibo" data-type="tencent"></span>
-                        <span class="icon icon-weibo" data-type="weibo"></span>
-                        <span class="icon icon-twitter" data-type="twitter"></span>
-                        <span class="icon icon-gplus" data-type="google"></span>
-                    </div>
-                </footer>
-            </article>
-
-            <@comments commentList=articleComments article=article></@comments>
-
+                </div>
+                <#include "side.ftl">
+            </main>
             <#include "footer.ftl">
-
             <@comment_script oId=article.oId>
             page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
             </@comment_script>    
-        </main>
+        </div>
     </body>
 </html>
