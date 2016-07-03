@@ -1,13 +1,15 @@
 <#macro comments commentList article>
-<ul class="comments" id="comments">
+<ul class="comments fn-wrap" id="comments">
     <#list commentList as comment>
-    <li id="${comment.oId}">
-        <img class="avatar" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
-        <div class="content">
+    <li id="${comment.oId}" class="fn-clear">
+        <div class="fn-left avatar-warp">
+            <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
+        </div>
+        <div class="fn-left" style="width: 90%">
             <div class="fn-clear post-meta">
                 <span class="fn-left">
                     <#if "http://" == comment.commentURL>
-                    <span>${comment.commentName}</span>
+                    <a>${comment.commentName}</a>
                     <#else>
                     <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                     </#if>
@@ -18,7 +20,7 @@
                        onmouseout="page.hideComment('${comment.commentOriginalCommentId}')"
                        >${comment.commentOriginalCommentName}</a>
                     </#if>
-                    <time>${comment.commentDate?string("yyyy-MM-dd")}</time> 
+                    <time>${comment.commentDate?string("yyyy-MM-dd HH:mm")}</time> 
                 </span>
                 <#if article.commentable>
                 <a class="fn-right" href="javascript:replyTo('${comment.oId}')">${replyLabel}</a>
@@ -114,9 +116,9 @@
                         });
                         var addComment = function (result, state) {
                             var commentable = $("#commentForm").length === 0 ? false : true;
-                            var commentHTML = '<li id="' + result.oId +
-                                    '"><img class="avatar" title="'
-                                    + result.userName + '" src="' + result.commentThumbnailURL + '"><div class="content">'
+                            var commentHTML = '<li class="fn-clear" id="' + result.oId +
+                                    '"><div class="fn-left" style="width: 10%"><img class="avatar-48" title="'
+                                    + result.userName + '" src="' + result.commentThumbnailURL + '"></div><div class="fn-left" style="width: 90%">'
                                     + '<div class="fn-clear post-meta"><span class="fn-left">' + result.replyNameHTML;
                             if (state !== "") {
                                 var commentOriginalCommentName = $("#" + page.currentCommentId).find(".post-meta a").first().text();
@@ -125,7 +127,9 @@
                                         + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                             }
 
-                            commentHTML += ' <time>' + result.commentDate
+
+
+                            commentHTML += '<time>' + result.commentDate
                                     + '</time></span>';
                             if (commentable) {
                                 commentHTML += '<a class="fn-right" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>';
@@ -142,7 +146,7 @@
                         (function () {
                             page.load();
                             // emotions
-                            page.replaceCommentsEm(".comments .comment-content");
+                            page.replaceCommentsEm("#comments .comment-content");
                             <#nested>
                         })();
 </script>
