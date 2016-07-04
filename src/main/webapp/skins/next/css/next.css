@@ -272,3 +272,29 @@ ul.comments {
     font-size: 1rem;
     color: #9EABB3;
 }
+
+#tags li {
+    list-style: none;
+    display: inline-block;
+}
+
+#tags .tags1 {
+    font-size: 12px;
+    color: #CCC;
+}
+#tags .tags2 {
+    font-size: 16px;
+    color: #999;
+}
+#tags .tags3 {
+    font-size: 21px;
+    color: #6f6f6f;
+}
+#tags .tags4 {
+    font-size: 24px;
+    color: #333;
+}
+#tags .tags5 {
+    font-size: 30px;
+    color: #111;
+}

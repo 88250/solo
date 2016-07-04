@@ -203,7 +203,7 @@ var Util = {
             }
         }
 
-// 按字母或者中文拼音进行排序
+        // 按字母或者中文拼音进行排序
         $("#" + id).html($("#" + id + " li").get().sort(function(a, b) {
             var valA = $(a).find("span").text().toLowerCase();
             var valB = $(b).find("span").text().toLowerCase();

@@ -8,36 +8,48 @@
         </@head>
     </head>
     <body>
-        <#include "side.ftl">
-        <main class="classify">
-            <article>
-                <header>
-                    <h2>
-                        <a rel="archive" href="${servePath}/archives.html">
-                            ${archiveLabel}
-                        </a>
-                    </h2>
-                </header>
-                <#if 0 != archiveDates?size>
-                <ul class="tags fn-clear">
-                    <#list archiveDates as archiveDate>
-                    <li>
-                        <#if "en" == localeString?substring(0, 2)>
-                        <a class="tag" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                           title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
-                            ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
-                        <#else>
-                        <a class="tag" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                           title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
-                            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
-                        </#if>
-                    </li>
-                    </#list>
-                </ul>
-                </#if>
-            </article>
-
+        <div class="container one-column page-home">
+            <div class="headband"></div>
+            <#include "header.ftl">
+            <main id="main" class="main">
+                <div class="main-inner">
+                    <div id="content" class="content">
+                        <article>
+                            <header>
+                                <h2>
+                                    <a rel="archive" href="${servePath}/archives.html">
+                                        ${archiveLabel}
+                                    </a>
+                                </h2>
+                            </header>
+                            <#if 0 != archiveDates?size>
+                            <ul class="tags fn-clear">
+                                <#list archiveDates as archiveDate>
+                                <li>
+                                    <#if "en" == localeString?substring(0, 2)>
+                                    <a class="tag" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                                       title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
+                                        ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
+                                    <#else>
+                                    <a class="tag" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
+                                       title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
+                                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
+                                    </#if>
+                                </li>
+                                <li>
+                                    <#list articles as article>
+                                     ${article.articleTitle}
+                                    </#list>
+                                </li>
+                                </#list>
+                            </ul>
+                            </#if>
+                        </article>
+                    </div>
+                </div>
+                <#include "side.ftl">
+            </main>
             <#include "footer.ftl">
-        </main>
+        </div>
     </body>
 </html>
