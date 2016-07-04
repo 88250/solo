@@ -1035,39 +1035,24 @@ body {
 .sidebar-panel-active {
   display: block;
 }
-.post-toc {
-  overflow: hidden;
-  position: relative;
-}
-.post-toc-empty {
-  font-size: 14px;
-  color: #666;
-}
-.post-toc ol {
+ul.b3-solo-list {
   overflow: auto;
-  margin: 0;
+  margin: 20px 0;
   padding: 0 10px 10px;
   text-align: left;
   list-style: none;
   font-size: 14px;
+  text-align: left;
 }
-.post-toc ol a {
+
+.b3-solo-list li {
+    list-style: none;
+}
+.b3-solo-list ul a {
   color: #999;
 }
-.post-toc ol a:hover {
+.b3-solo-list ul a:hover {
   color: #ccc;
-}
-.post-toc .nav .nav-child {
-  display: none;
-}
-.post-toc .nav .active > .nav-child {
-  display: block;
-}
-.post-toc .nav .active-current > .nav-child {
-  display: block;
-}
-.post-toc .nav .active-current > .nav-child > .nav-item {
-  display: block;
 }
 .post-toc .nav .active > a {
   color: #ccc;
@@ -1077,20 +1062,6 @@ body {
 }
 .post-toc .nav .active-current > a:hover {
   color: #87daff;
-}
-.post-toc-indicator {
-  height: 20px;
-  text-align: center;
-  color: #fff;
-  font-size: 14px;
-}
-.post-toc-indicator-top {
-  opacity: 0;
-  margin-top: 10px;
-}
-.post-toc-indicator-bottom {
-  position: absolute;
-  width: 100%;
 }
 .footer {
   font-size: 14px;
@@ -2291,6 +2262,16 @@ ul li {
 }
 .site-search input:focus {
   opacity: 1;
+}
+.page-post-detail .post-title,
+.page-post-detail .post-meta {
+  text-align: center;
+}
+.page-post-detail .post-title:before {
+  display: none;
+}
+.page-post-detail .post-meta {
+  margin-bottom: 60px;
 }
 .pagination {
   margin: 120px 0 0;

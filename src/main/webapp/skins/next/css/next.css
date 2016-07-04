@@ -89,8 +89,8 @@ ul.comments {
     left: 69px;
 }
 
-.comments .post-meta {
-    margin-top: 0;
+#comments.comments .post-meta {
+    margin: 0;
 }
 
 #captcha, 
@@ -99,21 +99,27 @@ ul.comments {
     display: inline-block;
     vertical-align: inherit;
 }
-.post-meta {
+
+#commentValidate,
+#commentValidateReply {
+    vertical-align: middle;
+}
+
+#comments .post-meta {
     font-family: "Open Sans","Microsoft Yahei",Helvetica;
     color: #9eabb3;
 }
-.post-meta a {
+#comments .post-meta a {
     color: #9EABB3;
     text-decoration: none;
     border-bottom-width: 0;
 }
 
-.post-meta a:hover {
+#comments .post-meta a:hover {
     text-decoration: underline;
 }
 
-.post-meta time {
+#comments .post-meta time {
     border-left: 1px solid #d5dbde;
     display: inline-block;
     font-size: 13px;
@@ -123,7 +129,7 @@ ul.comments {
     white-space: nowrap;
 }
 
-.post-author {
+#comments .post-author {
     box-sizing: border-box;
     display: block;
     position: absolute;
@@ -140,7 +146,7 @@ ul.comments {
     box-shadow: #E7EEF2 0 0 0 1px;
 }
 
-.post-author a {
+#comments .post-author a {
     background-size: cover;
     background-position: center center;
     width: 68px;

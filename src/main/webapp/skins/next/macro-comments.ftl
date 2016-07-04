@@ -145,6 +145,7 @@
                         };
                         (function () {
                             page.load();
+                            NexT.initArticle();
                             // emotions
                             page.replaceCommentsEm("#comments .comment-content");
                             <#nested>

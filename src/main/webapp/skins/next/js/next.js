@@ -24,28 +24,36 @@
  * @description next 皮肤脚本
  * @static
  */
-$('.sidebar-toggle').click(function () {
-    var $sidebar = $('#sidebar');
-    if ($(this).hasClass('sidebar-active')) {
-        $(this).removeClass('sidebar-active');
-        
-        $('body').animate({
-            'padding-right': 0
-        });
-        $sidebar.animate({
-            width: 0
-        }, function () {
-            $sidebar.hide();
-        });
+var NexT = {
+    init: function () {
+        $('.sidebar-toggle').click(function () {
+            var $sidebar = $('#sidebar');
+            if ($(this).hasClass('sidebar-active')) {
+                $(this).removeClass('sidebar-active');
 
-    } else {
-        $(this).addClass('sidebar-active');
-        $sidebar.show();
-        $('body').animate({
-            'padding-right': 320
+                $('body').animate({
+                    'padding-right': 0
+                });
+                $sidebar.animate({
+                    width: 0
+                }, function () {
+                    $sidebar.hide();
+                });
+
+            } else {
+                $(this).addClass('sidebar-active');
+                $sidebar.show();
+                $('body').animate({
+                    'padding-right': 320
+                });
+                $sidebar.animate({
+                    width: 320
+                });
+            }
         });
-        $sidebar.animate({
-            width: 320
-        });
+    },
+    initArticle: function () {
+        $('.sidebar-inner').html($('.b3-solo-list'));
     }
-});
+};
+NexT.init();
