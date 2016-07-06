@@ -9,26 +9,29 @@
         </@head>
     </head>
     <body>
-        <#include "side.ftl">
-        <main>
-            <article class="post article-body">
-                <section class="abstract">
-                    ${page.pageContent}
-                </section>
-                <footer class="fn-clear share">
-                    <div class="fn-right">
-                        <span class="icon icon-t-weibo" data-type="tencent"></span>
-                        <span class="icon icon-weibo" data-type="weibo"></span>
-                        <span class="icon icon-twitter" data-type="twitter"></span>
-                        <span class="icon icon-gplus" data-type="google"></span>
+        <div class="container one-column  page-post-detail">
+            <div class="headband"></div>
+            <#include "header.ftl">
+            <main id="main" class="main">
+                <div class="main-inner">
+                    <div id="content" class="content">
+                        <div id="posts" class="posts-expand">
+                            <article class="post post-type-normal">
+                                <div class="post-body">
+                                    ${page.pageContent}
+                                </div>
+                            </article>
+                        </div>
+
+
+                        <@comments commentList=pageComments article=page></@comments>
+
                     </div>
-                </footer>
-            </article>
-            <@comments commentList=pageComments article=page></@comments>
-
+                </div>
+                <#include "side.ftl">
+            </main>
             <#include "footer.ftl">
-
             <@comment_script oId=page.oId></@comment_script>
-        </main>
+        </div>
     </body>
 </html>

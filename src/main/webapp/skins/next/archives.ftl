@@ -8,43 +8,37 @@
         </@head>
     </head>
     <body>
-        <div class="container one-column page-home">
+        <div class="container one-column page-archive">
             <div class="headband"></div>
             <#include "header.ftl">
             <main id="main" class="main">
                 <div class="main-inner">
                     <div id="content" class="content">
-                        <article>
-                            <header>
-                                <h2>
-                                    <a rel="archive" href="${servePath}/archives.html">
-                                        ${archiveLabel}
+                        <section id="posts" class="posts-collapse">
+                            <span class="archive-move-on"></span>
+                            <span class="archive-page-counter">
+                                嗯..! 目前共计 ${statistic.statisticPublishedBlogArticleCount} 篇日志。 继续努力。
+                            </span>
+                            <#if 0 != archiveDates?size>
+                            <#list archiveDates as archiveDate>
+                            <div class="collection-title">
+                                <#if "en" == localeString?substring(0, 2)>
+                                <h2 class="archive-year motion-element">
+                                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
+                                        ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})
                                     </a>
                                 </h2>
-                            </header>
-                            <#if 0 != archiveDates?size>
-                            <ul class="tags fn-clear">
-                                <#list archiveDates as archiveDate>
-                                <li>
-                                    <#if "en" == localeString?substring(0, 2)>
-                                    <a class="tag" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                                       title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
-                                        ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
-                                    <#else>
-                                    <a class="tag" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                                       title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
-                                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
-                                    </#if>
-                                </li>
-                                <li>
-                                    <#list articles as article>
-                                     ${article.articleTitle}
-                                    </#list>
-                                </li>
-                                </#list>
-                            </ul>
+                                <#else>
+                                <h2 class="archive-year motion-element">
+                                    <a href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
+                                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})
+                                    </a>
+                                </h2>
+                                </#if>
+                            </div>
+                            </#list>
                             </#if>
-                        </article>
+                        </section>
                     </div>
                 </div>
                 <#include "side.ftl">

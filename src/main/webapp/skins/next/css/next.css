@@ -72,10 +72,6 @@ ul.comments {
     background-color: #F7F7F7;
 }
 
-.comments li img {
-    vertical-align: sub;
-}
-
 .comments .comment-content {
     margin: 8px 0 0;
 }
@@ -264,8 +260,8 @@ ul.comments {
 }
 
 .error-msg {  
-    font-size: 1.5rem;
     color: #9EABB3;
+    margin-right: 10px;
 }
 
 .cmtFromSym {
