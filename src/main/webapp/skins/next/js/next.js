@@ -27,7 +27,7 @@
 var NexT = {
     init: function () {
         $('.sidebar-toggle').click(function () {
-            var $sidebar = $('#sidebar');
+            var $sidebar = $('.sidebar');
             if ($(this).hasClass('sidebar-active')) {
                 $(this).removeClass('sidebar-active');
 

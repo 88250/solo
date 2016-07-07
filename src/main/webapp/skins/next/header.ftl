@@ -1,5 +1,5 @@
 <header class="header">
-    <div class="fn-clear">
+    <div class="fn-clear wrapper">
         <div class="logo-wrap">
             <a href="${servePath}" rel="start">
                 <span class="logo-line-before"><i></i></span>
