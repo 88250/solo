@@ -35,21 +35,22 @@ var NexT = {
                     'padding-right': 0
                 });
                 $sidebar.animate({
-                    width: 0
-                }, function () {
-                    $sidebar.hide();
+                    right: -320
                 });
 
             } else {
                 $(this).addClass('sidebar-active');
-                $sidebar.show();
                 $('body').animate({
                     'padding-right': 320
                 });
                 $sidebar.animate({
-                    width: 320
+                    right: 0
                 });
             }
+        });
+        
+        $('.site-nav-toggle').click(function () {
+            $('.site-nav').slideToggle();
         });
     },
     initArticle: function () {

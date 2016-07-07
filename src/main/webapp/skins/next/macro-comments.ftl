@@ -2,11 +2,9 @@
 <ul class="comments fn-wrap" id="comments">
     <#list commentList as comment>
     <li id="${comment.oId}" class="fn-clear">
-        <div class="fn-left avatar-warp">
-            <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
-        </div>
-        <div class="fn-left" style="width: 90%">
-            <div class="fn-clear post-meta">
+        <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
+        <div class="comment-body">
+            <div class="fn-clear comment-meta">
                 <span class="fn-left">
                     <#if "http://" == comment.commentURL>
                     <a>${comment.commentName}</a>
@@ -117,11 +115,11 @@
                         var addComment = function (result, state) {
                             var commentable = $("#commentForm").length === 0 ? false : true;
                             var commentHTML = '<li class="fn-clear" id="' + result.oId +
-                                    '"><div class="fn-left" style="width: 10%"><img class="avatar-48" title="'
-                                    + result.userName + '" src="' + result.commentThumbnailURL + '"></div><div class="fn-left" style="width: 90%">'
-                                    + '<div class="fn-clear post-meta"><span class="fn-left">' + result.replyNameHTML;
+                                    '"><img class="avatar-48" title="'
+                                    + result.userName + '" src="' + result.commentThumbnailURL + '"><div class="comment-body">'
+                                    + '<div class="fn-clear comment-meta"><span class="fn-left">' + result.replyNameHTML;
                             if (state !== "") {
-                                var commentOriginalCommentName = $("#" + page.currentCommentId).find(".post-meta a").first().text();
+                                var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-meta a").first().text();
                                 commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                                         + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 23);"'
                                         + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
