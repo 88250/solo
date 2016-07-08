@@ -8,46 +8,38 @@
         </@head>
     </head>
     <body>
-        <div class="container one-column page-home">
-            <div class="headband"></div>
-            <#include "header.ftl">
-            <main id="main" class="main">
-                <div class="main-inner">
-                    <div id="content" class="content">
-                        <#if 0 != recentComments?size>
-                        <ul class="comments" id="comments">
-                            <#list recentComments as comment>
-                            <#if comment_index < 6>
-                            <li class="fn-clear">
-                                <div class="fn-left avatar-warp">
-                                    <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
-                                </div>
-                                <div class="fn-left" style="width: 90%">
-                                    <div class="fn-clear post-meta">
-                                        <span class="fn-left">
-                                            <#if "http://" == comment.commentURL>
-                                             <span>${comment.commentName}</span>
-                                            <#else>
-                                            <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
-                                            </#if>
-                                            <time>${comment.commentDate?string("yyyy-MM-dd HH:mm")}</time> 
-                                        </span>
-                                    </div>
-                                    <div class="comment-content">
-                                        ${comment.commentContent}
-                                    </div>
-                                </div>
-                            </li>
-                            </#if>
-                            </#list>
-                        </ul>
-                        </#if>
-                    </div>
-                </div>
-                <#include "side.ftl">
-            </main>
-            <#include "footer.ftl">
-        </div>
+        <#include "header.ftl">
+        <main class="main wrapper">
+            <div class="content">
+                <#if 0 != recentComments?size>
+                <ul class="comments" id="comments">
+                    <#list recentComments as comment>
+                    <li class="fn-clear">
+                        <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
+                        <div class="comment-body">
+                            <div class="fn-clear comment-meta">
+                                <span class="fn-left">
+                                    <#if "http://" == comment.commentURL>
+                                    <span>${comment.commentName}</span>
+                                    <#else>
+                                    <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
+                                    </#if>
+                                    <time>${comment.commentDate?string("yyyy-MM-dd HH:mm")}</time> 
+                                </span>
+                                <a class="fn-right" href="${servePath}${comment.commentSharpURL}">${viewLabel}»</a>
+                            </div>
+                            <div class="comment-content">
+                                ${comment.commentContent}
+                            </div>
+                        </div>
+                    </li>
+                    </#list>
+                </ul>
+                </#if>
+            </div>
+            <#include "side.ftl">
+        </main>
+        <#include "footer.ftl">
 
         <script>
             var $commentContents = $(".comments .comment-content");

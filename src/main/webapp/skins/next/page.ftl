@@ -9,29 +9,17 @@
         </@head>
     </head>
     <body>
-        <div class="container one-column  page-post-detail">
-            <div class="headband"></div>
-            <#include "header.ftl">
-            <main id="main" class="main">
-                <div class="main-inner">
-                    <div id="content" class="content">
-                        <div id="posts" class="posts-expand">
-                            <article class="post post-type-normal">
-                                <div class="post-body">
-                                    ${page.pageContent}
-                                </div>
-                            </article>
-                        </div>
-
-
-                        <@comments commentList=pageComments article=page></@comments>
-
-                    </div>
-                </div>
-                <#include "side.ftl">
-            </main>
-            <#include "footer.ftl">
-            <@comment_script oId=page.oId></@comment_script>
-        </div>
+        <#include "header.ftl">
+        <main class="main wrapper">
+            <div class="content">
+                <article class="post-body">
+                    ${page.pageContent}
+                </article>
+                <@comments commentList=pageComments article=page></@comments>
+            </div>
+            <#include "side.ftl">
+        </main>
+        <#include "footer.ftl">
+        <@comment_script oId=page.oId></@comment_script>
     </body>
 </html>

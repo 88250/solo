@@ -12,7 +12,6 @@
         </@head>
     </head>
     <body>
-        <div class="headband"></div>
         <#include "header.ftl">
         <main class="main wrapper">
             <div class="content">

@@ -1,5 +1,5 @@
 <#macro comments commentList article>
-<ul class="comments fn-wrap" id="comments">
+<ul class="comments" id="comments">
     <#list commentList as comment>
     <li id="${comment.oId}" class="fn-clear">
         <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
