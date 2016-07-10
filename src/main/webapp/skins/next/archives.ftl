@@ -8,36 +8,37 @@
         </@head>
     </head>
     <body>
-        <#include "side.ftl">
-        <main class="classify">
-            <article>
-                <header>
-                    <h2>
-                        <a rel="archive" href="${servePath}/archives.html">
-                            ${archiveLabel}
-                        </a>
-                    </h2>
-                </header>
-                <#if 0 != archiveDates?size>
-                <ul class="tags fn-clear">
+        <#include "header.ftl">
+        <main class="main wrapper">
+            <div class="content page-archive">
+                <section class="posts-collapse">
+                    <span class="archive-move-on"></span>
+                    <span class="archive-page-counter">
+                        嗯..! 目前共计 ${statistic.statisticPublishedBlogArticleCount} 篇日志。 继续努力。
+                    </span>
+                    <#if 0 != archiveDates?size>
                     <#list archiveDates as archiveDate>
-                    <li>
-                        <#if "en" == localeString?substring(0, 2)>
-                        <a class="tag" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                           title="${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})">
-                            ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})</a>
-                        <#else>
-                        <a class="tag" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}"
-                           title="${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})">
-                            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})</a>
-                        </#if>
-                    </li>
+                    <article>
+                        <header class="post-header">
+                            <h1>
+                                <#if "en" == localeString?substring(0, 2)>
+                                <a class="post-title" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
+                                    ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})
+                                </a>
+                                <#else>
+                                <a class="post-title" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
+                                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})
+                                </a>
+                                </#if>
+                            </h1>
+                        </header>
+                    </article>
                     </#list>
-                </ul>
-                </#if>
-            </article>
-
-            <#include "footer.ftl">
+                    </#if>
+                </section>
+            </div>
+            <#include "side.ftl">
         </main>
+        <#include "footer.ftl">
     </body>
 </html>

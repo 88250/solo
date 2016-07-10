@@ -1,13 +1,13 @@
 <#macro comments commentList article>
 <ul class="comments" id="comments">
     <#list commentList as comment>
-    <li id="${comment.oId}">
-        <img class="avatar" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
-        <div class="content">
-            <div class="fn-clear post-meta">
+    <li id="${comment.oId}" class="fn-clear">
+        <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
+        <div class="comment-body">
+            <div class="fn-clear comment-meta">
                 <span class="fn-left">
                     <#if "http://" == comment.commentURL>
-                    <span>${comment.commentName}</span>
+                    <a>${comment.commentName}</a>
                     <#else>
                     <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                     </#if>
@@ -18,7 +18,7 @@
                        onmouseout="page.hideComment('${comment.commentOriginalCommentId}')"
                        >${comment.commentOriginalCommentName}</a>
                     </#if>
-                    <time>${comment.commentDate?string("yyyy-MM-dd")}</time> 
+                    <time>${comment.commentDate?string("yyyy-MM-dd HH:mm")}</time> 
                 </span>
                 <#if article.commentable>
                 <a class="fn-right" href="javascript:replyTo('${comment.oId}')">${replyLabel}</a>
@@ -114,18 +114,20 @@
                         });
                         var addComment = function (result, state) {
                             var commentable = $("#commentForm").length === 0 ? false : true;
-                            var commentHTML = '<li id="' + result.oId +
-                                    '"><img class="avatar" title="'
-                                    + result.userName + '" src="' + result.commentThumbnailURL + '"><div class="content">'
-                                    + '<div class="fn-clear post-meta"><span class="fn-left">' + result.replyNameHTML;
+                            var commentHTML = '<li class="fn-clear" id="' + result.oId +
+                                    '"><img class="avatar-48" title="'
+                                    + result.userName + '" src="' + result.commentThumbnailURL + '"><div class="comment-body">'
+                                    + '<div class="fn-clear comment-meta"><span class="fn-left">' + result.replyNameHTML;
                             if (state !== "") {
-                                var commentOriginalCommentName = $("#" + page.currentCommentId).find(".post-meta a").first().text();
+                                var commentOriginalCommentName = $("#" + page.currentCommentId).find(".comment-meta a").first().text();
                                 commentHTML += '&nbsp;@&nbsp;<a href="${servePath}' + result.commentSharpURL.split("#")[0] + '#' + page.currentCommentId + '"'
                                         + 'onmouseover="page.showComment(this, \'' + page.currentCommentId + '\', 23);"'
                                         + 'onmouseout="page.hideComment(\'' + page.currentCommentId + '\')">' + commentOriginalCommentName + '</a>';
                             }
 
-                            commentHTML += ' <time>' + result.commentDate
+
+
+                            commentHTML += '<time>' + result.commentDate
                                     + '</time></span>';
                             if (commentable) {
                                 commentHTML += '<a class="fn-right" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>';
@@ -140,10 +142,10 @@
                             page.addReplyForm(id, commentFormHTML);
                         };
                         (function () {
-                            Yilia.share();
                             page.load();
+                            NexT.initArticle();
                             // emotions
-                            page.replaceCommentsEm(".comments .comment-content");
+                            page.replaceCommentsEm("#comments .comment-content");
                             <#nested>
                         })();
 </script>

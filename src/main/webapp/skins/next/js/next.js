@@ -24,57 +24,65 @@
  * @description next 皮肤脚本
  * @static
  */
-var Yilia = {
-    /**
-     * @description 页面初始化
-     */
+var NexT = {
     init: function () {
-        Util.killIE();
-        this.resetTags();
-        
-        $(window).scroll(function () {
-            if ($("article").length > 0 && $("article.post").length === 0) {
-                $("article:not(.show)").each(function () {
-                    if ($(this).offset().top <= $(window).scrollTop() + $(window).height() - $(this).height() / 7) {
-                        $(this).addClass("show");
-                    }
+        $('.sidebar-toggle').click(function () {
+            var $sidebar = $('.sidebar');
+            if ($(this).hasClass('sidebar-active')) {
+                $(this).removeClass('sidebar-active');
+
+                $('body').animate({
+                    'padding-right': 0
+                });
+                $sidebar.animate({
+                    right: -320
+                });
+            } else {
+                $(this).addClass('sidebar-active');
+                $('body').animate({
+                    'padding-right': 320
+                });
+                $sidebar.animate({
+                    right: 0
                 });
             }
-
-            if ($(window).scrollTop() > $(window).height()) {
-                $(".icon-goup").show();
-            } else {
-                $(".icon-goup").hide();
-            }
-
-            if ($("article.post").length === 1) {
-                $("article.post").addClass('show');
-            }
         });
 
-        $(window).scroll();
+        $('.site-nav-toggle').click(function () {
+            $('.site-nav').slideToggle();
+        });
+
+        $(document).ready(function () {
+            setTimeout(function () {
+                $('.logo-wrap').css('opacity', 1);
+                $('.logo-line-before i').animate({
+                    'left': '0'
+                }, function () {
+                    $('.site-title').css('opacity', 1).animate({
+                        'top': 0
+                    }, function () {
+                        $('.menu').css('opacity', 1).animate({
+                            'margin-top': '15px'
+                        });
+                        $('.main').css('opacity', 1).animate({
+                            'top': '0'
+                        });
+                    });
+
+
+                });
+
+                $('.logo-line-after i').animate({
+                    'right': '0'
+                });
+            }, 500);
+        });
     },
-    resetTags: function () {
-        $("a.tag").each(function (i) {
-            $(this).addClass("color" + Math.ceil(Math.random() * 4));
-        });
-    },
-    share: function () {
-        $(".share span").click(function () {
-            var key = $(this).data("type");
-            var title = encodeURIComponent($("title").text()),
-                    url = $(".post-title a").attr('href') ? $(".post-title a").attr('href') : location,
-                    pic = $(".post-content img:eq(0)").attr("src");
-            var urls = {};
-            urls.tencent = "http://share.v.t.qq.com/index.php?c=share&a=index&title=" + title +
-                    "&url=" + url + "&pic=" + pic;
-            urls.weibo = "http://v.t.sina.com.cn/share/share.php?title=" +
-                    title + "&url=" + url + "&pic=" + pic;
-            urls.google = "https://plus.google.com/share?url=" + url;
-            urls.twitter = "https://twitter.com/intent/tweet?status=" + title + " " + url;
-            window.open(urls[key], "_blank", "top=100,left=200,width=648,height=618");
-        });
+    initArticle: function () {
+        if ($('.b3-solo-list li').length > 0) {
+            $('.sidebar').html($('.b3-solo-list'));
+            $('.sidebar-toggle').click();
+        }
     }
 };
-
-Yilia.init();
+NexT.init();

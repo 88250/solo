@@ -1,54 +1,90 @@
-<div class="side">
-    <div class="overlay"></div>
-    <header class="content">
-        <a href="${servePath}">
-            <img class="avatar" src="${adminUser.userAvatar}" title="${userName}"/>
-        </a>
-        <hgroup>
-            <h1>
-                <a href="${servePath}">${blogTitle}</a>
-            </h1>
-        </hgroup>
+<div class="sidebar-toggle">
+    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+</div>
+
+<aside class="sidebar">
+    <section>
+        <img class="site-author-image" src="${adminUser.userAvatar}" title="${userName}"/>
+        <p class="site-author-name">${userName}</p>
         <#if "" != noticeBoard>
-        <p class="subtitle">
-            ${blogSubtitle}
-        </p>
+        <p class="site-description motion-element">${blogSubtitle}</p>
         </#if>
         <nav>
-            <ul>
-                <#list pageNavigations as page>
-                <li>
-                    <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">${page.pageTitle}</a>
-                </li>
-                </#list>
-                <li>
-                    <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
-                </li>
-                <li>
-                    <a href="${servePath}/tags.html">${allTagsLabel}</a>
-                </li>
-                <li>
-                    <a href="${servePath}/archives.html">${archiveLabel}</a>
-                </li>
-                <li>
-                    <a href="${servePath}/links.html">${linkLabel}</a>
-                </li>
-            </ul>
+            <div class="site-state-item">
+                <a href="/archives">
+                    <span class="site-state-item-count">${statistic.statisticPublishedBlogArticleCount}</span>
+                    <span class="site-state-item-name">日志</span>
+                </a>
+            </div>
+
+            <div class="site-state-item site-state-categories">
+                <span class="site-state-item-count">${statistic.statisticBlogViewCount}</span>
+                <span class="site-state-item-name">浏览</span>
+            </div>
+
+            <div class="site-state-item site-state-tags">
+                <a href="/tags">
+                    <span class="site-state-item-count">${statistic.statisticPublishedBlogCommentCount}</span>
+                    <span class="site-state-item-name">评论</span>
+                </a>
+            </div>
         </nav>
-        <footer>
-            <#if noticeBoard??>
-            <div>${noticeBoard}</div>
-            </#if>
+
+        <div class="feed-link">
+            <a href="${servePath}/blog-articles-rss.do" rel="alternate">
+                <i class="icon-rss"></i>
+                RSS
+            </a>
+        </div>
+
+        <div class="links-of-author">
             <#if isLoggedIn>
-            <a href="${servePath}/admin-index.do#main" title="${adminLabel}" class="icon-setting"></a>
-            &nbsp; &nbsp; 
-            <a title="${logoutLabel}" class="icon-logout" href="${logoutURL}"></a>
+            <span class="links-of-author-item">
+                <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
+                    <i class="icon-setting"></i> ${adminLabel}
+                </a>
+            </span>
+
+            <span class="links-of-author-item">
+                <a href="${logoutURL}">
+                    <i class="icon-logout"></i> ${logoutLabel}
+                </a>
+            </span>
             <#else>
-            <a title="${loginLabel}" href="${loginURL}" class="icon-login"></a>
-            &nbsp; &nbsp; 
-            <a href="${servePath}/register" title="${registerLabel}" class="icon-register"></a>
-            </#if> &nbsp; &nbsp; 
-            <a rel="alternate" href="${servePath}/blog-articles-rss.do" title="${subscribeLabel}" class="icon-rss"></a>
-        </footer>
-    </header>
-</div>
+            <span class="links-of-author-item">
+                <a href="${loginURL}">
+                    <i class="fa fa-github"></i> ${loginLabel}
+                </a>
+            </span>
+
+            <span class="links-of-author-item">
+                <a href="${servePath}/register">
+                    <i class="icon-register"></i> ${registerLabel}
+                </a>
+            </span>
+            </#if> 
+        </div>
+
+        <#if noticeBoard??>
+        <div class="links-of-author">
+            ${noticeBoard}
+        </div>
+        </#if>
+
+        <#if 0 != links?size>
+        <div class="links-of-author">
+            <p class="site-author-name">Links</p>
+            <#list links as link>
+            <span class="links-of-author-item">
+                <a rel="friend" href="${link.linkAddress}" 
+                   title="${link.linkDescription}" target="_blank">
+                    ${link.linkTitle}
+                </a>
+            </span>
+            </#list>
+        </div>
+        </#if>
+    </section>
+</aside>

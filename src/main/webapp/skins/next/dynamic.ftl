@@ -8,86 +8,38 @@
         </@head>
     </head>
     <body>
-        <#include "side.ftl">
-        <main class="dynamic">
-            <#if 0 != recentComments?size>
-            <ul class="comments">
-                <#list recentComments as comment>
-                <#if comment_index < 6>
-                <li>
-                    <img class="avatar" title="${comment.commentName}"
-                         alt="${comment.commentName}" src="${comment.commentThumbnailURL}">
-                    <div class="content">
-                        <div class="fn-clear post-meta">
-                            <span class="fn-left">
-                                <#if "http://" == comment.commentURL>
-                                <span>${comment.commentName}</span>
-                                <#else>
-                                <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
-                                </#if>
-                                <time>${comment.commentDate?string("yy-MM-dd HH")}</time> 
-                            </span>
-                            <a class="fn-right" href="${servePath}${comment.commentSharpURL}">${viewLabel}»</a>
+        <#include "header.ftl">
+        <main class="main wrapper">
+            <div class="content">
+                <#if 0 != recentComments?size>
+                <ul class="comments" id="comments">
+                    <#list recentComments as comment>
+                    <li class="fn-clear">
+                        <img class="avatar-48" title="${comment.commentName}" src="${comment.commentThumbnailURL}">
+                        <div class="comment-body">
+                            <div class="fn-clear comment-meta">
+                                <span class="fn-left">
+                                    <#if "http://" == comment.commentURL>
+                                    <span>${comment.commentName}</span>
+                                    <#else>
+                                    <a href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
+                                    </#if>
+                                    <time>${comment.commentDate?string("yyyy-MM-dd HH:mm")}</time> 
+                                </span>
+                                <a class="fn-right" href="${servePath}${comment.commentSharpURL}">${viewLabel}»</a>
+                            </div>
+                            <div class="comment-content">
+                                ${comment.commentContent}
+                            </div>
                         </div>
-                        <div class="comment-content">
-                            ${comment.commentContent}
-                        </div>
-                    </div>
-                </li>
+                    </li>
+                    </#list>
+                </ul>
                 </#if>
-                </#list>
-            </ul>
-            </#if>
-
-
-            <#if 0 != mostCommentArticles?size || 0 != mostViewCountArticles?size>
-
-            <#if 0 != mostCommentArticles?size>
-            <article>
-                <header>
-                    <h2>
-                        ${mostCommentArticlesLabel}
-                    </h2>
-                </header>
-                <ul>
-                    <#list mostCommentArticles as article>
-                    <li>
-                        <a href="${servePath}${article.articlePermalink}" title="${article.articleTitle}" rel="nofollow">
-                            ${article.articleTitle}
-                        </a>
-                        <span data-ico="&#xe14e;">
-                            ${article.articleCommentCount}
-                        </span>
-                    </li>
-                    </#list>
-                </ul>
-            </article>
-            </#if>
-            <#if 0 != mostViewCountArticles?size>
-            <article>
-                <header>
-                    <h2>
-                        ${mostViewCountArticlesLabel}
-                    </h2>
-                </header>
-                <ul>
-                    <#list mostViewCountArticles as article>
-                    <li>
-                        <a href="${servePath}${article.articlePermalink}" title="${article.articleTitle}" rel="nofollow">
-                            ${article.articleTitle}
-                        </a>
-                        <span data-ico="&#xe185;">
-                            ${article.articleViewCount}
-                        </span>
-                    </li>
-                    </#list>
-                </ul>
-            </article>
-            </#if>
-            </#if>
-
-            <#include "footer.ftl">
+            </div>
+            <#include "side.ftl">
         </main>
+        <#include "footer.ftl">
 
         <script>
             var $commentContents = $(".comments .comment-content");

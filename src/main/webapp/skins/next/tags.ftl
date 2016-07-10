@@ -8,29 +8,29 @@
         </@head>
     </head>
     <body>
-        <#include "side.ftl">
-        <main class="classify">
-            <article>
-                <header>
-                    <h2>
-                        <a rel="archive" href="${servePath}/tags.html">
-                            ${tagLabel}
-                        </a>
-                    </h2>
-                </header>
-                <ul class="tags fn-clear">
-                    <#list tags as tag>
-                    <li>
-                        <a rel="tag" class="tag" data-count="${tag.tagPublishedRefCount}"
-                           href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}" title="${tag.tagTitle}">
-                            <span>${tag.tagTitle}</span>
-                            (<b>${tag.tagPublishedRefCount}</b>)
-                        </a>
-                    </li>
-                    </#list>
-                </ul>
-            </article>
-            <#include "footer.ftl">
+        <#include "header.ftl">
+        <main class="main wrapper">
+            <div class="content">
+                <div class="tag-cloud">
+                        目前共计 ${tags?size} 个标签
+                    <ul class="tag-cloud-tags fn-clear" id="tags">
+                        <#list tags as tag>
+                        <li>
+                            <a rel="tag" data-count="${tag.tagPublishedRefCount}"
+                               href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
+                                <span>${tag.tagTitle}</span>
+                                (<b>${tag.tagPublishedRefCount}</b>)
+                            </a>
+                        </li>
+                        </#list>
+                    </ul>
+                </div>
+            </div>
+            <#include "side.ftl">
         </main>
+        <#include "footer.ftl">
+        <script>
+            Util.buildTags();
+        </script>
     </body>
 </html>

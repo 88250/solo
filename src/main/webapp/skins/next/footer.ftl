@@ -1,27 +1,14 @@
 <footer class="footer">
-    <div class="fn-clear">
-        <span class="fn-right">
-            ${viewCount1Label}${statistic.statisticBlogViewCount}
-            &nbsp;
-            ${articleCount1Label}${statistic.statisticPublishedBlogArticleCount}
-            &nbsp; 
-            ${commentCount1Label}${statistic.statisticPublishedBlogCommentCount}
-            &nbsp; 
-            ${onlineVisitor1Label}${onlineVisitorCnt}
-        </span>
-    </div>
-    <div class="fn-clear">
-        <a href="${servePath}">${blogTitle}</a> 
+    <div class="wrapper">
+        <a href="${servePath}">${blogTitle}</a>  •
+        ${onlineVisitor1Label}${onlineVisitorCnt} <br/>
         &copy; ${year}
         ${footerContent}
-        <span class="fn-right">
-            Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
-            <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
-        </span>
+        Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
+        <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
     </div>
-    <span onclick="Util.goTop()" class="icon-goup"></span>
 </footer>
-
+<div class="back-to-top" onclick="Util.goTop()"></div>
 
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
