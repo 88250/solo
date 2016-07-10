@@ -1,4 +1,5 @@
 <header class="header">
+    <div class="header-line"></div>
     <div class="fn-clear wrapper">
         <div class="logo-wrap">
             <a href="${servePath}" rel="start">
@@ -8,12 +9,10 @@
             </a>
         </div>
 
-        <div class="site-nav-toggle">
-            <button>
-                <span class="btn-bar"></span>
-                <span class="btn-bar"></span>
-                <span class="btn-bar"></span>
-            </button>
+        <div class="site-nav-toggle fn-right" onclick="$('.header-line').toggle();$('nav').children('.menu').slideToggle();">
+            <span class="btn-bar"></span>
+            <span class="btn-bar"></span>
+            <span class="btn-bar"></span>
         </div>
 
         <nav>

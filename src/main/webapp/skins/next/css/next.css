@@ -18,9 +18,13 @@
  * skin next style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.0.0, Jul 7, 2016
+ * @version 0.1.0.1, Jul 10, 2016
 */
 /* start reset */
+html {
+    background-color: #f5f5f5;
+}
+
 body {
     margin: 0;
     font-family: Lato, "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -776,6 +780,10 @@ ul.comments .comment-meta time {
     text-align: center;
 }
 
+.tag-cloud ul.tag-cloud-tags {
+    padding-left: 0;
+}
+
 #tags li {
     list-style: none;
     display: inline-block;
@@ -920,6 +928,69 @@ ul.comments .comment-meta time {
 @media (max-width: 500px) {
     .site-nav-toggle {
         display: block;
+        margin-top: 16px;
+    }
+
+    .logo-line-before,
+    .logo-line-after,
+    .menu,
+    .site-search,
+    .sidebar-toggle, 
+    .back-to-top {
+        display: none;
+    }
+
+    .header {
+        margin-bottom: 50px;
+        padding: 5px 0px;
+    }
+
+    .header-line {
+        position: relative;
+        top: 52px;
+        height: 1px;
+        width: 100%;
+        background-color: #ddd;
+        display: none;
+    }
+    
+    .header .wrapper {
+        padding: 0 10px;
+    }
+    
+    .logo-wrap .site-title {
+        margin-left: 10px;
+    }
+
+    .wrapper {
+        width: auto;
+        margin: 0 10px;
+    }
+
+    .btn-bar {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #555;
+        border-radius: 1px;
+    }
+    .btn-bar+.btn-bar {
+        margin-top: 4px;
+    }
+
+    .menu {
+        width: 100%;
+        margin: 0 0 0 -20px;
+        padding: 0 5px;
+        line-height: 26px;
+    }
+
+    .menu .menu-item {
+        display: block;
+    }
+
+    .footer {
+        text-align: center;
     }
 }
 /* end responsive */
