@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.8, Jul 27, 2016
+ * @version 1.3.1.9, Jul 28, 2016
  * @since 0.4.1
  */
 @RequestProcessor
@@ -232,6 +232,8 @@ public class AdminConsole {
         final Locale locale = Latkes.getLocale();
         final Map<String, String> langs = langPropsService.getAll(locale);
         final Map<String, Object> dataModel = renderer.getDataModel();
+
+        dataModel.put("isMySQL", RuntimeDatabase.MYSQL == Latkes.getRuntimeDatabase());
 
         dataModel.putAll(langs);
 
