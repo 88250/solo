@@ -14,7 +14,7 @@
                 <section class="posts-collapse">
                     <span class="archive-move-on"></span>
                     <span class="archive-page-counter">
-                        嗯..! 目前共计 ${statistic.statisticPublishedBlogArticleCount} 篇日志。 继续努力。
+                        ${ohLabel}..!  ${sumLabel} ${statistic.statisticPublishedBlogArticleCount} ${fightLabel}
                     </span>
                     <#if 0 != archiveDates?size>
                     <#list archiveDates as archiveDate>

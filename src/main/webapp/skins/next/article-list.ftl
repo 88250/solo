@@ -20,7 +20,7 @@
 
             <div class="post-meta">
                 <span>
-                    发表于
+                    ${postTimeLabel}
                     <time>
                         ${article.articleCreateDate?string("yyyy-MM-dd")}
                     </time>
@@ -28,15 +28,15 @@
                 <span>
                     &nbsp; | &nbsp;
                     <a href="${servePath}${article.articlePermalink}#comments">
-                        ${article.articleCommentCount}条评论</a>
+                        ${article.articleCommentCount} ${cmtLabel}</a>
                 </span>
-                &nbsp; | &nbsp;热度 ${article.articleViewCount}°C
+                &nbsp; | &nbsp;${viewsLabel} ${article.articleViewCount}°C
             </div>
         </header>
         ${article.articleAbstract}
         <div class="post-more-link">
             <a href="${servePath}${article.articlePermalink}/#more" rel="contents">
-                阅读全文 &raquo;
+                ${readLabel} &raquo;
             </a>
         </div>
     </article>

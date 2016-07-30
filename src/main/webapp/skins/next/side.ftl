@@ -15,19 +15,19 @@
             <div class="site-state-item">
                 <a href="/archives">
                     <span class="site-state-item-count">${statistic.statisticPublishedBlogArticleCount}</span>
-                    <span class="site-state-item-name">日志</span>
+                    <span class="site-state-item-name">${articleLabel}</span>
                 </a>
             </div>
 
             <div class="site-state-item site-state-categories">
                 <span class="site-state-item-count">${statistic.statisticBlogViewCount}</span>
-                <span class="site-state-item-name">浏览</span>
+                <span class="site-state-item-name">${viewLabel}</span>
             </div>
 
             <div class="site-state-item site-state-tags">
                 <a href="/tags">
                     <span class="site-state-item-count">${statistic.statisticPublishedBlogCommentCount}</span>
-                    <span class="site-state-item-name">评论</span>
+                    <span class="site-state-item-name">${commentLabel}</span>
                 </a>
             </div>
         </nav>

@@ -925,7 +925,33 @@ ul.comments .comment-meta time {
 /* end archives */
 
 /* start responsive */
+
+@media (max-width: 700px) {
+    .b3-solo-list {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .page-archive .posts-collapse .archive-move-on {
+        margin-left: 5px;
+    }
+
+    .posts-collapse {
+        margin-left: 10px;
+    }
+}
+
 @media (max-width: 500px) {
+    pre {
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: normal;
+    }
+
+    .page-archive .archive-page-counter {
+        margin-right: 10px;
+    }
+
     .site-nav-toggle {
         display: block;
         margin-top: 16px;
@@ -953,11 +979,11 @@ ul.comments .comment-meta time {
         background-color: #ddd;
         display: none;
     }
-    
+
     .header .wrapper {
         padding: 0 10px;
     }
-    
+
     .logo-wrap .site-title {
         margin-left: 10px;
     }
