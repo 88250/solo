@@ -664,11 +664,13 @@ img {
     text-align: center;
 }
 
+.post-body {
+    word-wrap: break-word;
+}
+
 .post-body img {
     box-sizing: border-box;
     margin: auto;
-    padding: 3px;
-    border: 1px solid #ddd;
 }
 .posts-expand .post-tags {
     margin-top: 40px;
@@ -734,6 +736,7 @@ ul.comments .avatar-48 {
 
 ul.comments .comment-body {
     margin: 8px 0 0 60px;
+    min-height: 50px;
 }
 
 ul.comments li.comment-body-ref {
@@ -931,7 +934,7 @@ ul.comments .comment-meta time {
         margin: 0;
         padding: 0;
     }
-    
+
     .page-archive .posts-collapse .archive-move-on {
         margin-left: 5px;
     }

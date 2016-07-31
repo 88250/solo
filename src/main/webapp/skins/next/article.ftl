@@ -44,7 +44,7 @@
                         </div>
                     </header>
 
-                    <div class="post-body">
+                    <div class="post-body article-body">
                         ${article.articleContent}
                         <#if "" != article.articleSign.signHTML?trim>
                         <div>

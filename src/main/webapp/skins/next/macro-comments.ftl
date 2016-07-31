@@ -24,7 +24,7 @@
                 <a class="fn-right" href="javascript:replyTo('${comment.oId}')">${replyLabel}</a>
                 </#if>
             </div>
-            <div class="comment-content">
+            <div class="comment-content post-body article-body">
                 ${comment.commentContent}
             </div>
         </div>
