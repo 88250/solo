@@ -16,15 +16,25 @@
 package org.b3log.solo.processor.console;
 
 import com.qiniu.util.Auth;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.UUID;
 import javax.inject.Inject;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import jodd.io.ZipUtil;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeDatabase;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
@@ -40,6 +50,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
@@ -58,7 +69,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.8, Nov 20, 2015
+ * @version 1.3.1.9, Jul 28, 2016
  * @since 0.4.1
  */
 @RequestProcessor
@@ -222,6 +233,8 @@ public class AdminConsole {
         final Map<String, String> langs = langPropsService.getAll(locale);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
+        dataModel.put("isMySQL", RuntimeDatabase.MYSQL == Latkes.getRuntimeDatabase());
+
         dataModel.putAll(langs);
 
         Keys.fillRuntime(dataModel);
@@ -281,6 +294,82 @@ public class AdminConsole {
         dataModel.put("timeZoneIdOptions", timeZoneIdOptions.toString());
 
         fireFreeMarkerActionEvent(templateName, dataModel);
+    }
+
+    /**
+     * Exports data as SQL file.
+     *
+     * @param request the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @param context the specified HTTP request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/export/sql", method = HTTPRequestMethod.GET)
+    public void exportSQL(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        if (!userQueryService.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        if (!Latkes.runsWithJDBCDatabase() || RuntimeDatabase.MYSQL != Latkes.getRuntimeDatabase()) {
+            context.renderJSON().renderMsg("Just support MySQL export now");
+
+            return;
+        }
+
+        final String dbUser = Latkes.getLocalProperty("jdbc.username");
+        final String dbPwd = Latkes.getLocalProperty("jdbc.password");
+        final String dbURL = Latkes.getLocalProperty("jdbc.URL");
+        String db = StringUtils.substringAfterLast(dbURL, "/");
+        db = StringUtils.substringBefore(db, "?");
+
+        String sql;
+        try {
+            if (StringUtils.isNotBlank(dbPwd)) {
+                sql = Execs.exec("mysqldump -u" + dbUser + " -p" + dbPwd + " --database " + db);
+            } else {
+                sql = Execs.exec("mysqldump -u" + dbUser + " --database " + db);
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Export failed", e);
+            context.renderJSON().renderMsg("Export failed, please check log");
+
+            return;
+        }
+
+        final String tmpDir = System.getProperty("java.io.tmpdir");
+        String localFilePath = tmpDir + "/b3_solo_" + UUID.randomUUID().toString() + ".sql";
+        LOGGER.info(localFilePath);
+        final File localFile = new File(localFilePath);
+
+        try {
+            final byte[] data = sql.getBytes("UTF-8");
+
+            OutputStream output = new FileOutputStream(localFile);
+            IOUtils.write(data, output);
+            IOUtils.closeQuietly(output);
+
+            final File zipFile = ZipUtil.zip(localFile);
+
+            final FileInputStream inputStream = new FileInputStream(zipFile);
+            final byte[] zipData = IOUtils.toByteArray(inputStream);
+            IOUtils.closeQuietly(inputStream);
+
+            response.setContentType("application/zip");
+            response.setHeader("Content-Disposition", "attachment; filename=\"solo.sql.zip\"");
+
+            final ServletOutputStream outputStream = response.getOutputStream();
+            outputStream.write(zipData);
+            outputStream.flush();
+            outputStream.close();
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Export failed", e);
+            context.renderJSON().renderMsg("Export failed, please check log");
+
+            return;
+        }
     }
 
     /**

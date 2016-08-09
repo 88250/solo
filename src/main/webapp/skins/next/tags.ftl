@@ -12,7 +12,7 @@
         <main class="main wrapper">
             <div class="content">
                 <div class="tag-cloud">
-                        目前共计 ${tags?size} 个标签
+                        ${sumLabel} ${tags?size} ${tagLabel}
                     <ul class="tag-cloud-tags fn-clear" id="tags">
                         <#list tags as tag>
                         <li>
