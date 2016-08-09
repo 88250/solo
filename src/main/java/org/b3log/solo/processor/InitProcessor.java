@@ -52,7 +52,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.9, Apr 15, 2016
+ * @version 1.2.0.10, Aug 9, 2016
  * @since 0.4.0
  */
 @RequestProcessor
@@ -152,11 +152,9 @@ public class InitProcessor {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
 
         final JSONObject ret = QueryResults.defaultResult();
-
         renderer.setJSONObject(ret);
 
         try {
@@ -180,7 +178,6 @@ public class InitProcessor {
             }
 
             final Locale locale = Locales.getLocale(request);
-
             requestJSONObject.put(Keys.LOCALE, locale.toString());
 
             initService.init(requestJSONObject);
