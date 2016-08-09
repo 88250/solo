@@ -14,6 +14,5 @@
 
 src/main/webapp/skins/*
 !src/main/webapp/skins/mobile
-!src/main/webapp/skins/yilia
 !src/main/webapp/skins/next
 **/.DS_Store
