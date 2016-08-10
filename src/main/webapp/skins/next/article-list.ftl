@@ -35,7 +35,7 @@
         </header>
         ${article.articleAbstract}
         <div class="post-more-link">
-            <a href="${servePath}${article.articlePermalink}/#more" rel="contents">
+            <a href="${servePath}${article.articlePermalink}#more" rel="contents">
                 ${readLabel} &raquo;
             </a>
         </div>
