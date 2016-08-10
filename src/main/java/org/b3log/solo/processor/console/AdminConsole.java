@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.9, Jul 28, 2016
+ * @version 1.3.2.9, Aug 10, 2016
  * @since 0.4.1
  */
 @RequestProcessor
@@ -328,9 +328,9 @@ public class AdminConsole {
         String sql;
         try {
             if (StringUtils.isNotBlank(dbPwd)) {
-                sql = Execs.exec("mysqldump -u" + dbUser + " -p" + dbPwd + " --database " + db);
+                sql = Execs.exec("mysqldump -u" + dbUser + " -p" + dbPwd + " --databases " + db);
             } else {
-                sql = Execs.exec("mysqldump -u" + dbUser + " --database " + db);
+                sql = Execs.exec("mysqldump -u" + dbUser + " --databases " + db);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
