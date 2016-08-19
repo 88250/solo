@@ -13,7 +13,7 @@
         </#if>
         <nav>
             <div class="site-state-item">
-                <a href="/archives">
+                <a href="${servePath}/archives.html">
                     <span class="site-state-item-count">${statistic.statisticPublishedBlogArticleCount}</span>
                     <span class="site-state-item-name">${articleLabel}</span>
                 </a>
@@ -25,7 +25,7 @@
             </div>
 
             <div class="site-state-item site-state-tags">
-                <a href="/tags">
+                <a href="${servePath}/dynamic.html">
                     <span class="site-state-item-count">${statistic.statisticPublishedBlogCommentCount}</span>
                     <span class="site-state-item-name">${commentLabel}</span>
                 </a>
