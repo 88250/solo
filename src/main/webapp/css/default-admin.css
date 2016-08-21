@@ -22,12 +22,14 @@
 
 /* start resset */
 body, input, textarea {
-    font-family: 'sans-serif','\5fae\8f6f\96c5\9ed1';
+    font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB","Microsoft Yahei",sans-serif;;
 }
 html, body {
     height: 100%;
     min-width: 1024px;
-    background-color: #FAFAFA;
+    color: #767676;
+    background: #f1f2f7;
+    font-size: 13px;
 }
 a:link {
     color: #21759B;
@@ -71,8 +73,9 @@ button.selected {
     position: relative;
 }
 #tabsPanel {
-    margin: 30px 0 0 162px;
-    padding: 0 12px;
+    margin: 80px 0 0 0;
+    padding: 15px;
+    float: left;
 }
 
 #tabsPanel>div {
@@ -111,52 +114,51 @@ button.selected {
 
 /* start top-nav */
 #top {
-    background-color: #666;
-    background-image: linear-gradient(#666666,#7F7F7F);
-    background-image: -ms-linear-gradient(#666666,#7F7F7F);
-    background-image: -o-linear-gradient(#666666,#7F7F7F);
-    background-image: -webkit-linear-gradient(#666666,#7F7F7F);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#666666', endColorstr='#7F7F7F');
+    height: 80px;
+    position: fixed;
+    box-shadow: 1px 0 3px rgba(0,0,0,.15);
+    width: 100%;
+    top: 0;
+    background-color: #fff;
 }
 
-#top a, #top span span {
-    float: left;
-    line-height: 18px;
-    margin: 6px 0;
-    padding: 0 6px;
-    text-decoration: none;
-    text-shadow: 0 -1px 0 #FFFFFF;
-    font-weight: normal;
-    border-right: 1px solid #686868;
-    color: #CCCCCC;
-    text-shadow: 0 -1px 0 #555555;
-}
 #top>a {
-    color: #FFFFFF;
+    background: #1fb5ad;
+    float: left;
+    width: 240px;
+    height: 80px;
+    position: relative;
+    color: #F7F7F7;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 80px;
 }
 
-#top a:hover, #top a.hover {
-    border-radius: 0 13px 13px 0;
-    margin: 0px;
-    line-height: 30px;
-    background-color: #4C4C4C;
-    border-left-color: #707070;
+#top > .right a, 
+#top > .right span {
+    color: #555;
+    line-height: 80px;
+    margin: 0 10px;
+    border: 1px solid #f6f6f6;
+    background-color: #f6f6f6;
+    border-radius: 100px;
+    padding: 10px;
+    text-decoration: none;
+}
+
+#top > .right a:hover {
+    color: #333;
 }
 /* end top-nav */
 
 /* start first tab */
 #tabs {
-    background-color: #ECECEC;
-    border-radius: 0 5px 5px 0;
-    border-right: 1px solid #CCC;
-    border-top: 1px solid #DDD;
-    bottom: 0;
-    box-shadow: 6px 0 6px #ECECEC;
+    height: 100%;
     min-height: 468px;
-    padding: 15px 0;
-    position: absolute;
-    top: 58px;
-    width: 145px;
+    width: 240px;
+    margin-top: 80px;
+    float: left;
 }
 
 #tabs ul {

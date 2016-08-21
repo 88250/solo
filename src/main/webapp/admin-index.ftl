@@ -21,7 +21,6 @@
                 <span class="right"> 
                     <span>${userName}</span><a href="${servePath}" title='${indexLabel}'>${indexLabel}</a><a href='javascript:admin.logout();' title='${logoutLabel}'>${logoutLabel}</a>
                 </span>
-                <div class="clear"></div>
             </div>
             <div id="tabs">
                 <ul>
@@ -125,6 +124,7 @@
                 <div id="tabsPanel_plugin-list" class="none"></div>
                 <div id="tabsPanel_about" class="none"></div>
             </div>
+            <div class="clear"></div>
             <div class="footer">
                 Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
             </div>
