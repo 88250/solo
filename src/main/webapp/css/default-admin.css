@@ -58,7 +58,7 @@ button.selected {
     background: url("../images/arrows.png") repeat scroll 0 4px transparent;
     float: right;
     height: 20px;
-    margin: 2px 3px 0 0;
+    margin: -3px 5px 0 0;
     width: 18px;
 }
 .ico-arrow-up {
@@ -82,6 +82,18 @@ button.selected {
 
 #tabsPanel>div {
     padding-bottom: 36px;
+}
+
+#tabsPanel_article-list,
+#tabsPanel_draft-list,
+#tabsPanel_comment-list,
+#tabsPanel_plugin-list,
+#tabsPanel_page-list > div:first-child,
+#tabsPanel_user-list > div:first-child,
+#tabsPanel_link-list > div:first-child{
+    background-color: #FFF;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .tip {
@@ -162,6 +174,7 @@ button.selected {
     position: fixed;
     top: 0;
     background-color: #32323a;
+    overflow: auto;
 }
 
 #tabs ul {
@@ -604,74 +617,87 @@ button#submitArticle:hover,
     padding: 12px;
 }
 
-.paginate-paginate div, .paginate-paginate a, .paginate-pageCount{
-    float: left;
-    height: 20px;
-    line-height: 20px;
-    margin: 0 5px;
-    text-decoration: none;
-}
+.paginate-paginate div.button.paginate-page, .paginate-paginate a, .paginate-pageCount,
 .pagination-pages {
-    background: url(../images/icon.png) repeat center bottom;
-    border: 1px solid;
-    border-color: #CCC #BBBBBB #A0A0A0;
-    border-radius: 4px;
-    padding: 0 6px;
+    border: 1px solid #EFF2F7;
+    padding: 6px 12px;
     cursor: pointer;
     float: left;
-    height: 20px;
-    line-height: 20px;
-    margin: 0 5px;
+    line-height: 18px;
+    background: #eee;
+    height: 18px;
+    margin-left: 1px;
+    border-radius: 0;
+    text-decoration: none;
+    color: #333;
 }
 
-.pagination-current-page {
+.pagination-current-page,
+.paginate-pageCount {
     cursor: auto;
-    font-weight: bold;
-    border-color: #BBB;
+}
+
+.paginate-pageCount {
+    margin-left: 10px;
+}
+
+.pagination-current-page,
+.paginate-paginate a:hover,
+.paginate-paginate div.button.paginate-page:hover,
+.pagination-pages:hover {
+    border-color: #2eb4ad;
+    background-color: #2eb4ad;
+    color: #FFF;
+}
+
+.paginate-paginate div.button {
+    padding: 0;
+    float: left;
+    border: 0;
+    background: none;
 }
 
 .paginate-inputPage {
-    height: 14px;
+    height: 26px;
     width: 24px;
+    margin: 0 5px;
 }
 .table-main {
     margin: 0;
     padding: 0;
     position: relative;
 }
+
 .table-main table {
     word-break: break-all;
     word-wrap: break-word;
 }
 
 .table-header {
-    border: 1px solid #D0D0D0;
-    border-bottom: 0px;
-    border-radius: 6px 6px 0 0;
+    border-bottom: 1px solid #ddd;
+    background-color: #fafafa;
+    padding: 15px 0;
 }
 
 .table-header th {
-    height: 34px;
-    line-height: 34px;
+    line-height: 18px;
     text-align: left;
     text-indent: 6px;
-    font-size: 14px;
     font-weight: normal;
-    background: url("../images/icon.png") repeat scroll center bottom #F1F1F1;
 }
 
 .table-main td {
-    border-bottom: 1px solid #D0D0D0;
-    color: #333;
-    padding: 3px 0;
+    border-bottom: 1px solid #ddd;
+    color: #767676;
+    padding: 10px 0;
 }
 
 .table-lineHover .table-hasExpend td {
     border-bottom: 0px;
 }
 .table-heiglight td, .table-lineHover td {
-    background-color: #F3F3F3;
-    border-right-color: #F3F3F3;
+    background-color: #F5F5F5;
+    border-right-color: #F5F5F5;
 }
 .table-expendRow td {
     padding: 0 0 5px 36px;
@@ -680,16 +706,19 @@ button#submitArticle:hover,
     margin-left: 60px;
 }
 .table-expendRow td a {
-    background-color: #999;
-    border-radius: 3px;
-    color: #FFF;
+    padding: 1px 5px;
     font-size: 12px;
-    margin-right: 5px;
-    padding: 1px 6px;
+    line-height: 1.5;
+    border-radius: 3px;
     text-decoration: none;
+    color: #FFF;
+    background-color: #c7cbd6;
+    border-color: #c7cbd6;
 }
+
 .table-expendRow td a:hover {
-    background-color: #BBB;
+    background-color: #b0b5b9;
+    border-color: #b0b5b9;
 }
 .table-center {
     margin: 0 auto;

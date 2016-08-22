@@ -308,7 +308,7 @@ admin.article = {
                 }
 
                 $("#tagCheckboxPanel>span").remove("");
-                
+
                 var spans = "";
                 for (var i = 0; i < result.tags.length; i++) {
                     spans += "<span>" + result.tags[i].tagTitle + "</span>";
@@ -383,11 +383,42 @@ admin.article = {
      */
     init: function (fun) {
         this.currentEditorType = Label.editorType;
+
         // Inits Signs.
-        
         $(".signs button").click(function (i) {
-             $(".signs button").removeClass('selected');
-             $(this).addClass('selected');
+            $(".signs button").removeClass('selected');
+            $(this).addClass('selected');
+        });
+
+        // For tag auto-completion
+        $.ajax({// Gets all tags
+            url: latkeConfig.servePath + "/console/tags",
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                $("#tipMsg").text(result.msg);
+                if (!result.sc) {
+                    $("#loadMsg").text("");
+                    return;
+                }
+
+                if (0 >= result.tags.length) {
+                    return;
+                }
+
+                var tags = [];
+                for (var i = 0; i < result.tags.length; i++) {
+                    tags.push(result.tags[i].tagTitle);
+                }
+
+                $("#tag").completed({
+                    height: 160,
+                    buttonText: Label.selectLabel,
+                    data: tags
+                });
+
+                $("#loadMsg").text("");
+            }
         });
 
         // submit action
@@ -397,8 +428,8 @@ admin.article = {
             } else {
                 admin.article.add(true);
             }
-        });
-
+        }
+        );
         $("#saveArticle").click(function () {
             if (admin.article.status.id) {
                 admin.article.update(admin.article.status.isArticle);
@@ -416,26 +447,26 @@ admin.article = {
             url: "http://upload.qiniu.com/",
             add: function (e, data) {
                 filename = data.files[0].name;
-                
+
                 data.submit();
             },
             formData: function (form) {
                 var data = form.serializeArray();
-                var ext = filename.substring(filename.lastIndexOf(".") + 1);  
-                
+                var ext = filename.substring(filename.lastIndexOf(".") + 1);
+
                 data.push({name: 'key', value: getUUID() + "." + ext});
                 data.push({name: 'token', value: qiniu.qiniuUploadToken});
-                
+
                 return data;
             },
             done: function (e, data) {
                 var qiniuKey = data.result.key;
                 if (!qiniuKey) {
                     alert("Upload error");
-                    
+
                     return;
                 }
-                
+
                 $('#articleUpload').after('<div id="uploadContent">!<a target="_blank" href="http://' + qiniu.qiniuDomain + qiniuKey + '">[' + filename + ']</a>(http://'
                         + qiniu.qiniuDomain + qiniuKey + ')</div>');
             },
@@ -632,14 +663,15 @@ admin.register.article = {
 
 function getUUID() {
     var d = new Date().getTime();
-    
-    var ret = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (d + Math.random()*16)%16 | 0;
-        d = Math.floor(d/16);
-        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+
+    var ret = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
-    
+
     ret = ret.replace(new RegExp("-", 'g'), "");
-    
+
     return ret;
-};
+}
+;

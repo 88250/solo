@@ -236,6 +236,9 @@ $.extend(Admin.prototype, {
                 $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
                 $(it).removeClass('tab-current');
             }
+
+            $('#tabs > ul').height('auto');
+            $('#tabs > ul').height($('#tabs > ul').height() + 80);
         });
     },
     /**
