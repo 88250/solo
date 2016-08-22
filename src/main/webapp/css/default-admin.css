@@ -31,22 +31,25 @@ html, body {
     background: #f1f2f7;
     font-size: 13px;
 }
-a:link {
-    color: #21759B;
+a {
+    color: #4183c4;
+    text-decoration: none;
 }
 a:visited {
-    color: #551A8B;
+    color: #7ba9d6;
 }
 a:active {
-    color: #D54121;
+    color: #2c5d8d;
 }
+
 a:hover {
-    color: #D54121;
+    text-decoration: underline;
 }
 
 button.selected {
-    background: url("../images/bowknot/completed.png") no-repeat scroll right bottom transparent;
-    color: #D54121;
+    background: url("../images/bowknot/completed.png") no-repeat scroll right bottom transparent !important;
+    color: #D54121 !important;
+    border-color: #b0b5b9 !important;
 }
 /* end reset */
 
@@ -73,9 +76,8 @@ button.selected {
     position: relative;
 }
 #tabsPanel {
-    margin: 80px 0 0 0;
+    margin: 80px 0 0 240px;
     padding: 15px;
-    float: left;
 }
 
 #tabsPanel>div {
@@ -89,19 +91,17 @@ button.selected {
     padding: 2px 0;
     position: fixed;
     text-align: center;
-    top: 5px;
-    width: 100%;
-    z-index: 2;
-}
-
-.tip-msg {
-    top: 33px;
+    top: 15px;
+    left: 255px;
+    z-index: 1001;
 }
 
 #tipMsg, #loadMsg { 
-    background-color: #E5E7EB;
-    border-radius: 3px;
-    padding: 2px 0;
+    color: #31708f;
+    background-color: #d9edf7;
+    border-radius: 4px;
+    line-height: 40px;
+    display: inline-block;
 }
 
 .footer {
@@ -120,6 +120,7 @@ button.selected {
     width: 100%;
     top: 0;
     background-color: #fff;
+    z-index: 1000;
 }
 
 #top>a {
@@ -158,7 +159,9 @@ button.selected {
     min-height: 468px;
     width: 240px;
     margin-top: 80px;
-    float: left;
+    position: fixed;
+    top: 0;
+    background-color: #32323a;
 }
 
 #tabs ul {
@@ -167,139 +170,187 @@ button.selected {
 
 #tabs li {
     margin-left: 0px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
-#tabs a, #tabs>ul>li>div {
-    color: #21759B;
+#tabs li > div > a,
+#tabs #tabToolsTitle,
+#tabs #tabArticleTitle {
+    color: #aeb2b7;
     display: block;
     text-decoration: none;
-    cursor: pointer;
     letter-spacing: 1px;
-}
-#tabs a:hover, #tabs>ul>li>div:hover {
-    color: #D54121;
-}
-#tabs>ul>li>div {
-    border-bottom: 1px solid #DFDFDF;
-    border-top: 1px solid #F9F9F9;
-    font-weight: bold;
-    padding-left: 12px;
-    line-height: 30px;
-    height: 30px;
+    padding: 18px 0 18px 25px;
+    line-height: 18px;
+    height: 18px;
+    transition: all 0.3s ease;
 }
 
-#tabs>ul>li>div>a.tab-current{
-    background-color: #777777;
-    border-bottom: 1px solid #6D6D6D;
-    border-top: 1px solid #808080;
-    color: #FFFFFF;
-    margin-left: -12px;
-    padding-left: 12px;
-    text-shadow: 0 -1px 0 #333333;
+#tabs a:hover,
+#tabs a.tab-current,
+#tabs #tabToolsTitle.tab-current,
+#tabs #tabArticleTitle.tab-current,
+#tabs #tabToolsTitle:hover,
+#tabs #tabArticleTitle:hover {
+    background-color:#28282e;
+    color:#1fb5ad;
 }
 
-#tabs li li a {
-    background-color: #FFFFFF;
-    padding-left: 36px;
-    line-height: 28px;
-    height: 28px;
+#tabs li li {
+    border-bottom: 0;
 }
 
-#tabs .tab-current {
-    background-color: #EAF2FA;
-    color: #333333;
-    font-weight: bold;
+#tabs li li > div > a {
+    padding: 13px 0 13px 46px;
+    line-height: 15px;
+    height: 15px;
+    background-color:#28282e;
 }
 
-#tabs li li a:hover {
-    background-color: #EAF2FA;
-    color: #333333;
+#tabs li li > div > a:hover,
+#tabs li li > div > a.tab-current {
+    background-color:#202025;
 }
-
 #tabs .commentIcon, #tabs .postIcon, #tabs .preferenceIcon,  #tabs .usersIcon,
 #tabs .aboutIcon {
-    margin: 6px 9px 0 0;
+    display: none;
 }
 /* end first tabs */
 
 /* start sub tabs */
 .sub-tabs {
-    height: 30px;
+    background-color: #e0e1e7;
+    border-radius: 4px 4px 0 0;
+    overflow: hidden;
 }
 .sub-tabs ul {
-    float: right;
+    float: left;
     list-style: none outside none;
     margin-right: 24px;
 }
 .sub-tabs li {
     float: left;
+    margin: 0;
 }
 .sub-tabs li a {
-    background-color: #ECECEC;
-    border: 1px solid #DFDFDF;
-    border-bottom: 0px;
-    border-radius: 5px 5px 0 0;
-    color: #333333;
+    border-right: 1px solid #e0e1e7;
+    color: #898989;
     display: block;
-    line-height: 29px;
-    padding: 0 12px;
+    line-height: 18px;
+    padding: 20px 15px;
     text-decoration: none;
 }
-.sub-tabs .tab-current, .sub-tabs .tab-current:hover {
-    background-color: #FFFFFF;
-    font-weight: bold;
-    line-height: 30px;
-}
+.sub-tabs .tab-current, .sub-tabs .tab-current:hover,
 .sub-tabs a:hover {
-    background-color: #F5F5F5;
+    background-color: #FFFFFF;
+    color: #1fb5ad;
 }
 .sub-tabs-main {
     background-color: #FFFFFF;
-    border: 1px solid #DFDFDF;
-    padding: 12px;
-    border-radius: 6px;
+    padding: 15px;
+    border-radius: 0 0 4px 4px;
 }
 /* end preference tabs*/
 
 /* start form */
 .form>div {
-    margin: 12px 0;
+    margin: 15px 0;
 }
-.form>div label {
-    font-weight: bold;
-    line-height: 28px;
-    margin-right: 12px;
+
+.form label {
+    margin-bottom: 10px;
+    display: inline-block;
+}
+
+.form input[type='text'], .form input[type='password'], .form textarea {
+    font-size: 14px;
+    outline: medium none;
+    width: 100%;
+    padding: 6px 12px;
+    height: 34px;
+    box-sizing: border-box;
+    border: 1px solid #e2e2e4;
+    color: #333;
+    border-radius: 4px;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.form input[type='text']:focus, .form input[type='password']:focus, .form textarea:focus {
+    box-shadow: none;
+    border-color: #1fb5ad;
+} 
+
+.form button,
+.completed-ck span {
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid #1fb5ad;
+    border-radius: 4px;
+    background-color: #1fb5ad;
+    color: #fff;
+    height: auto;
+    outline: none;
+}
+
+.form button:hover {
+    background-color: #1ca59e;
+    border-color: #1ca59e;
 }
 /* end form */
 
 /* start module */
 .module-panel {
-    border: 1px solid #DFDFDF;
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 0 1px 0 #FFFFFF inset;
-    background-color: #F5F5F5;
-    margin-bottom: 36px;
+    border-radius: 4px;
+    background-color: #fff;
+    margin-bottom: 20px;
     min-height: 160px;
 }
 .module-header {
-    background-color: #f9f9f9;
-    background-image: linear-gradient(#f9f9f9,#ececec);
-    background-image: -ms-linear-gradient(#f9f9f9,#ececec);
-    background-image: -o-linear-gradient(#f9f9f9,#ececec);
-    background-image: -webkit-linear-gradient(#f9f9f9,#ececec);
-    filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#f9f9f9', endColorstr='#ececec');
-    border-bottom-color: #DFDFDF;
-    box-shadow: 0 1px 0 #FFFFFF;
-    text-shadow: 0 1px 0 #FFFFFF;
-    padding: 5px 10px;
+    background: #fafafa;
+    padding: 15px;
+    border-bottom: 1px solid #eff2f7;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
 }
 
 .module-header h2 {
-    color: #464646;
-    font-size: 16px;
+    font-size: 13px;
+    font-weight: 400;
 }
 
 .module-header a {
+    color: #767676;
+    text-decoration: none;
+}
+
+.module-header a:hover {
+    color: #1fb5ad;
+}
+
+.module-panel .module-body {
+    padding: 15px;
+}
+
+.module-panel .module-body li {
+    padding: 10px;
+    line-height: 18px;
+    border-bottom: 1px solid #ddd;
+}
+
+.module-panel .module-body li:hover {
+    background-color: #F5F5F5;
+}
+
+
+.module-panel .module-body li a:hover {
     text-decoration: none;
 }
 /* end module */
@@ -366,11 +417,16 @@ button.selected {
     margin-left: 12px;
 }
 
-button#submitArticle {
-    background: none repeat scroll 0 0 #D54121;
-    box-shadow: 0 0 0 1px #FFFFFF inset, 0 1px 1px rgba(0, 0, 0, 0.1);
-    text-shadow: 0 1px rgba(0, 0, 0, 0.1);
-    color: #FFF;
+button#submitArticle,
+#unSubmitArticle {
+    background-color: #fa8564;
+    border-color: #fa8564;
+}
+
+button#submitArticle:hover,
+#unSubmitArticle:hover{
+    background-color: #ec6459;
+    border-color: #ec6459;
 }
 /* end article */
 
@@ -396,7 +452,7 @@ button#submitArticle {
 }
 
 #skinMain .skinItem.selected {
-    background-color: #D54121;
+    background-color: #1fb5ad;
 }
 .skinItem:hover {
     background-color: #EEE;
@@ -473,22 +529,17 @@ button#submitArticle {
 .completed-ck {
     margin-top: 9px;
 }
+
 .completed-ck span {
-    background: url(../images/icon.png) repeat center bottom;
-    border: 1px solid;
-    border-color: #CCC #BBBBBB #A0A0A0;
-    border-radius: 4px;
-    color: #21759B;
-    cursor: pointer;
-    float: left;
-    height: 28px;
-    line-height: 26px;
-    margin: 3px 6px;
-    padding: 0 6px;
-    vertical-align: top;
+    margin: 5px 10px 5px 0;
+    display: inline-block;
+    background-color: #c7cbd6;
+    border-color: #c7cbd6;
 }
+
 .completed-ck span:hover {
-    border-color: #BBB;
+    background-color: #b0b5b9;
+    border-color: #b0b5b9;
 }
 
 .completed-ck span.selected {

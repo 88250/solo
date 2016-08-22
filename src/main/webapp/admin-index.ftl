@@ -32,7 +32,7 @@
                         </div>
                     </li>
                     <li>
-                        <div onclick="admin.collapseNav(this)">
+                        <div id="tabArticleTitle" class="tab-current" onclick="admin.collapseNav(this)">
                             <span class="left postIcon"></span>
                             ${articleLabel}
                             <span class="ico-arrow-up"></span>

@@ -384,72 +384,10 @@ admin.article = {
     init: function (fun) {
         this.currentEditorType = Label.editorType;
         // Inits Signs.
-        $.ajax({
-            url: latkeConfig.servePath + "/console/signs/",
-            type: "GET",
-            cache: false,
-            success: function (result, textStatus) {
-                $("#tipMsg").text(result.msg);
-                if (!result.sc) {
-                    $("#loadMsg").text("");
-                    return;
-                }
-
-                $(".signs button").each(function (i) {
-                    // Sets signs.
-                    if (i === result.signs.length) {
-                        $("#articleSign1").addClass("selected");
-                    } else {
-                        $("#articleSign" + result.signs[i].oId).tip({
-                            content: result.signs[i].signHTML === "" ? Label.signIsNullLabel :
-                                    result.signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
-                            position: "top"
-                        });
-                    }
-                    // Binds checkbox event.
-                    $(this).click(function () {
-                        if (this.className !== "selected") {
-                            $(".signs button").each(function () {
-                                this.className = "";
-                            });
-                            this.className = "selected";
-                        }
-                    });
-                });
-
-                $("#loadMsg").text("");
-            }
-        });
-
-        // For tag auto-completion
-        $.ajax({// Gets all tags
-            url: latkeConfig.servePath + "/console/tags",
-            type: "GET",
-            cache: false,
-            success: function (result, textStatus) {
-                $("#tipMsg").text(result.msg);
-                if (!result.sc) {
-                    $("#loadMsg").text("");
-                    return;
-                }
-
-                if (0 >= result.tags.length) {
-                    return;
-                }
-
-                var tags = [];
-                for (var i = 0; i < result.tags.length; i++) {
-                    tags.push(result.tags[i].tagTitle);
-                }
-
-                $("#tag").completed({
-                    height: 160,
-                    buttonText: Label.selectLabel,
-                    data: tags
-                });
-
-                $("#loadMsg").text("");
-            }
+        
+        $(".signs button").click(function (i) {
+             $(".signs button").removeClass('selected');
+             $(this).addClass('selected');
         });
 
         // submit action

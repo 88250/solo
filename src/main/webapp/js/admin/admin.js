@@ -19,7 +19,7 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.2.2, May 28, 2013
  */
-var Admin = function() {
+var Admin = function () {
     this.register = {};
     // 工具栏下的工具
     this.tools = ['#page-list', '#file-list', '#link-list', '#preference',
@@ -33,13 +33,13 @@ $.extend(Admin.prototype, {
     /**
      * @description  登出
      */
-    logout: function() {
+    logout: function () {
         window.location.href = latkeConfig.servePath + "/logout?goto=" + latkeConfig.servePath;
     },
     /**
      * @description 清除提示
      */
-    clearTip: function() {
+    clearTip: function () {
         $("#tipMsg").text("");
         $("#loadMsg").text("");
     },
@@ -47,7 +47,7 @@ $.extend(Admin.prototype, {
      * @description 根据当前页数设置 hash
      * @param {Int} currentPage 当前页
      */
-    setHashByPage: function(currentPage) {
+    setHashByPage: function (currentPage) {
         var hash = window.location.hash,
                 hashList = hash.split("/");
         if (/^\d*$/.test(hashList[hashList.length - 1])) {
@@ -61,13 +61,13 @@ $.extend(Admin.prototype, {
      * @description 设置某个 tab 被选择
      * @param {Stirng} id id tab id
      */
-    selectTab: function(id) {
+    selectTab: function (id) {
         window.location.hash = "#" + id;
     },
     /**
      * @description 根据当前 hash 解析出当前页数及 hash 数组。
      */
-    analyseHash: function() {
+    analyseHash: function () {
         var hash = window.location.hash;
         var tag = hash.substr(1, hash.length - 1);
         var tagList = tag.split("/");
@@ -86,7 +86,8 @@ $.extend(Admin.prototype, {
     /**
      * @description 根据当前 hash 设置当前 tab
      */
-    setCurByHash: function() {
+    setCurByHash: function () {
+        $(window).scrollTop(0);
         $("#tipMsg").text("");
         var tags = admin.analyseHash();
         var tab = tags.hashList[1],
@@ -103,7 +104,7 @@ $.extend(Admin.prototype, {
         if (tab !== "article") {
             admin.article.clearDraftTimer();
         } else if (tab === "article") {
-            admin.article.autoSaveDraftTimer = setInterval(function() {
+            admin.article.autoSaveDraftTimer = setInterval(function () {
                 admin.article._autoSaveToDraft();
             }, admin.article.AUTOSAVETIME);
         }
@@ -157,7 +158,7 @@ $.extend(Admin.prototype, {
         if ($("#tabsPanel_" + tab).length === 1) {
             if ($("#tabsPanel_" + tab).html().replace(/\s/g, "") === "") {
                 // 还未加载 HTML
-                $("#tabsPanel_" + tab).load("admin-" + tab + ".do", function() {
+                $("#tabsPanel_" + tab).load("admin-" + tab + ".do", function () {
                     // 页面加载完后，回调初始函数
                     if (tab === "article" && admin.article.status.id) {
                         // 当文章页面编辑器未初始化时，调用更新文章需先初始化编辑器
@@ -202,7 +203,7 @@ $.extend(Admin.prototype, {
     /**
      * @description 初始化整个后台
      */
-    init: function() {
+    init: function () {
         //window.onerror = Util.error;
 
         Util.killIE();
@@ -212,9 +213,9 @@ $.extend(Admin.prototype, {
         $("#tabs").tabs();
 
         // tipMsg
-        setInterval(function() {
+        setInterval(function () {
             if ($("#tipMsg").text() !== "") {
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#tipMsg").text("");
                 }, 7000);
             }
@@ -225,20 +226,22 @@ $.extend(Admin.prototype, {
      * @description tools and article collapse
      * @param {Bom} it 触发事件对象
      */
-    collapseNav: function(it) {
+    collapseNav: function (it) {
         var subNav = $(it).next();
-        subNav.slideToggle("normal", function() {
+        subNav.slideToggle("normal", function () {
             if (this.style.display !== "none") {
                 $(it).find(".ico-arrow-down")[0].className = "ico-arrow-up";
+                $(it).addClass('tab-current');
             } else {
                 $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
+                $(it).removeClass('tab-current');
             }
         });
     },
     /**
      * @description 后台及当前页面所需插件初始化完后，对权限进行控制及当前页面属于 tools 时，tools 选项需展开。
      */
-    inited: function() {
+    inited: function () {
         // Removes functions with the current user role
         if (Label.userRole !== "adminRole") {
             for (var i = 0; i < this.adTools.length; i++) {
