@@ -288,6 +288,10 @@ button.selected {
     transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
+.form textarea {
+    height: auto;
+}
+
 .form input[type='text']:focus, .form input[type='password']:focus, .form textarea:focus {
     box-shadow: none;
     border-color: #1fb5ad;

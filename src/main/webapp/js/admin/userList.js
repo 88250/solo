@@ -107,7 +107,7 @@ admin.userList = {
                     } else {
                         userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" +
                                 users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a>" +
+                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a> " +
                                 "<a href='javascript:void(0)' onclick=\"admin.userList.changeRole('" + users[i].oId + "')\">" + Label.changeRoleLabel + "</a>";
                         if ("defaultRole" === users[i].userRole) {
                             userData[i].isAdmin = Label.commonUserLabel;
@@ -358,7 +358,5 @@ admin.userList = {
 admin.register["user-list"] = {
     "obj": admin.userList,
     "init": admin.userList.init,
-    "refresh": function() {
-        admin.clearTip();
-    }
+    "refresh": admin.userList.getList
 }
