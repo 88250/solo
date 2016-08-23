@@ -62,6 +62,7 @@
                     <li class="noborder"><a href="http://reddit.com/submit?url=${servePath}/?p=12&title=${article.articleTitle}" target="_blank"><img src="${staticServePath}/skins/${skinDirName}/themes/core/core-images/bookmarks/reddit.jpg" alt="" /> Reddit</a></li>
                 </ul>
             </div>
+            <div id="externalRelevantArticles" class="post"></div>
             <@comments commentList=articleComments article=article></@comments>
         </div>
         <#include "footer.ftl">    
