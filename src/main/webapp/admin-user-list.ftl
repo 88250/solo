@@ -1,5 +1,7 @@
-<div id="userTable"></div>
-<div id="userPagination" class="margin12 right"></div>
+<div>
+    <div id="userTable"></div>
+    <div id="userPagination" class="margin12 right"></div>
+</div>
 <div class="clear"></div>
 <table class="form" width="100%" cellpadding="0px" cellspacing="9px">
     <thead>

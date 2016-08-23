@@ -99,10 +99,6 @@ admin.preference = {
                 var signs = eval('(' + preference.signs + ')');
                 for (var j = 1; j < signs.length; j++) {
                     $("#preferenceSign" + j).val(signs[j].signHTML);
-                    $("#preferenceSignButton" + j).tip({
-                        content: signs[j].signHTML === "" ? Label.signIsNullLabel : signs[j].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
-                        position: "bottom"
-                    });
                 }
 
                 $("#articleListDisplay").val(preference.articleListStyle);

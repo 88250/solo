@@ -138,6 +138,16 @@ button:hover,.button:hover {
     overflow: hidden;
 }
 
+.fn-clear:before,
+.fn-clear:after {
+    display: table;
+    content: "";
+}
+
+.fn-clear:after {
+    clear: both;
+}
+
 .none {
     display: none;
 }
