@@ -19,7 +19,7 @@
                 </a>
                
                 <span class="right"> 
-                    <span>${userName}</span><a href="${servePath}" title='${indexLabel}'>${indexLabel}</a><a href='javascript:admin.logout();' title='${logoutLabel}'>${logoutLabel}</a>
+                    <a href="${servePath}" title='${indexLabel}'>${indexLabel}</a><a href='javascript:admin.logout();' title='${logoutLabel}'>${logoutLabel}</a>
                 </span>
             </div>
             <div id="tabs">

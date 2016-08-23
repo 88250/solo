@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 1.0.5.1, May 30, 2015
+* @version 2.0.5.1, Aug 23, 2016
 */
 
 /* start resset */
@@ -25,7 +25,6 @@ body, input, textarea {
     font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB","Microsoft Yahei",sans-serif;;
 }
 html, body {
-    height: 100%;
     min-width: 1024px;
     color: #767676;
     background: #f1f2f7;
@@ -76,7 +75,7 @@ button.selected {
     position: relative;
 }
 #tabsPanel {
-    margin: 80px 0 0 240px;
+    margin: 50px 0 0 240px;
     padding: 15px;
 }
 
@@ -93,6 +92,7 @@ button.selected {
 #tabsPanel_link-list > div:first-child{
     background-color: #FFF;
     border-radius: 4px;
+    margin-bottom: 40px;
     overflow: hidden;
 }
 
@@ -103,7 +103,7 @@ button.selected {
     padding: 2px 0;
     position: fixed;
     text-align: center;
-    top: 15px;
+    top: 3px;
     left: 255px;
     z-index: 1001;
 }
@@ -121,12 +121,14 @@ button.selected {
     position: absolute;
     text-align: center;
     width: 100%;
+    padding-left: 240px;
+    box-sizing: border-box;
 }
 /* end frame */
 
 /* start top-nav */
 #top {
-    height: 80px;
+    height: 50px;
     position: fixed;
     box-shadow: 1px 0 3px rgba(0,0,0,.15);
     width: 100%;
@@ -139,19 +141,18 @@ button.selected {
     background: #1fb5ad;
     float: left;
     width: 240px;
-    height: 80px;
+    height: 50px;
     position: relative;
     color: #F7F7F7;
     text-align: center;
     text-decoration: none;
     font-size: 20px;
-    line-height: 80px;
+    line-height: 50px;
 }
 
-#top > .right a, 
-#top > .right span {
+#top > .right a{
     color: #555;
-    line-height: 80px;
+    line-height: 50px;
     margin: 0 10px;
     border: 1px solid #f6f6f6;
     background-color: #f6f6f6;
@@ -170,7 +171,7 @@ button.selected {
     height: 100%;
     min-height: 468px;
     width: 240px;
-    margin-top: 80px;
+    margin-top: 50px;
     position: fixed;
     top: 0;
     background-color: #32323a;
