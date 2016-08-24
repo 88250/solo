@@ -316,7 +316,7 @@
             </tbody>
         </table>
     </div>
-    <div id="tabPreferencePanel_skins" class="none">
+    <div id="tabPreferencePanel_skins" class="none form">
         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
         <div class="clear"></div>
         <div id="skinMain">
