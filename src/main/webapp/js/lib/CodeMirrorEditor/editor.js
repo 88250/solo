@@ -1279,12 +1279,10 @@
         var text = cm.getValue();
 
         $.ajax({
-            url: Label.servePath + "/markdown",
+            url: latkeConfig.servePath + "/console/markdown/2html",
             type: "POST",
             cache: false,
-            data: {
-                markdownText: text
-            },
+            data: JSON.stringify({markdownText: text}),
             success: function (result, textStatus) {
                 preview.innerHTML = result.html;
                 hljs.initHighlighting.called = false;

@@ -18,8 +18,17 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Aug 13, 2015
+ * @version 1.2.1.4, Aug 26, 2016
  */
+
+Util.processClipBoard = function (text, cm) {
+    var text = toMarkdown(text, {converters: [
+        ], gfm: true});
+
+    // ascii 160 替换为 30
+    text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
+    return $.trim(text);
+};
 admin.editors.CodeMirror = {
     /*
      * @description 初始化编辑器
@@ -41,12 +50,10 @@ admin.editors.CodeMirror = {
                 {name: 'bold'},
                 {name: 'italic'},
                 '|',
+                {name: 'link'},
                 {name: 'quote'},
                 {name: 'unordered-list'},
                 {name: 'ordered-list'},
-                '|',
-                {name: 'link'},
-                {name: 'image', html: '<form id="fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
                 '|',
                 {name: 'redo'},
                 {name: 'undo'},
@@ -90,6 +97,6 @@ admin.editors.CodeMirror = {
      */
     remove: function (id) {
         this[id].toTextArea();
-        $(".markdown-preivew").remove();
+        $('.editor-toolbar').remove();
     }
 };

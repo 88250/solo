@@ -606,7 +606,7 @@ span.CodeMirror-selectedtext { background: none; }
     top: 1px;
     padding: 0px 4px;
     left: 100%;
-    background: #FDFDFD;
+    background: #FCFCFC;
     z-index: 9999;
     overflow: auto;
     -webkit-transition: left 0.2s ease;

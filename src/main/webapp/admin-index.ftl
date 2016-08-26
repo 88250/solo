@@ -7,6 +7,7 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirrorEditor/codemirror.min.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css?${staticResourceVersion}" />
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
     </head>
     <body onhashchange="admin.setCurByHash();">
@@ -129,14 +130,8 @@
                 Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
             </div>
         </div>
-        <script src="${staticServePath}/js/lib/jquery/jquery.min.js"></script>
-        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js"></script>
-        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js"></script>
-        <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js"></script>
-        <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>
         <script src="${staticServePath}/js/lib/tiny_mce/tiny_mce.js"></script>
-        <script src="${staticServePath}/js/lib/KindEditor/kindeditor-min.js"></script>
-        <script src="${staticServePath}/js/lib/CodeMirrorEditor/codemirror.min.js"></script>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
