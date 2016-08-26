@@ -6,7 +6,7 @@
         <title>${blogTitle} - ${adminConsoleLabel}</title>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirror/codemirror.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirrorEditor/codemirror.min.css?${staticResourceVersion}" />
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
     </head>
     <body onhashchange="admin.setCurByHash();">
@@ -134,9 +134,9 @@
         <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js"></script>
         <script src="${staticServePath}/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js"></script>
         <script src="${staticServePath}/js/lib/jquery/jquery.bowknot.min.js?${staticResourceVersion}"></script>
-        <script src="${servePath}/js/lib/tiny_mce/tiny_mce.js"></script>
+        <script src="${staticServePath}/js/lib/tiny_mce/tiny_mce.js"></script>
         <script src="${staticServePath}/js/lib/KindEditor/kindeditor-min.js"></script>
-        <script src="${staticServePath}/js/lib/CodeMirror/codemirror.js"></script>
+        <script src="${staticServePath}/js/lib/CodeMirrorEditor/codemirror.min.js"></script>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
