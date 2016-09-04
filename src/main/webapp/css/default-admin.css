@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.0.5.2, Aug 26, 2016
+* @version 2.0.6.2, Sep 2, 2016
 */
 
 /* start resset */
@@ -251,9 +251,11 @@ a[class*=" icon-"]:hover {
 }
 .icon-chevron-down:before {
     content: "\e618";
+    margin-right: 10px;
 }
 .icon-chevron-up:before {
     content: "\e619";
+    margin-right: 10px;
 }
 .icon-reply:before {
     content: "\e61a";
@@ -269,17 +271,6 @@ a[class*=" icon-"]:hover {
 }
 .icon-wechat:before {
     content: "\e907";
-}
-
-.ico-arrow-down, .ico-arrow-up {
-    background: url("../images/arrows.png") repeat scroll 0 4px transparent;
-    float: right;
-    height: 20px;
-    margin: -3px 5px 0 0;
-    width: 18px;
-}
-.ico-arrow-up {
-    background-position: 0 -30px;
 }
 .aboutIcon {
     background-position: -16px -48px;
