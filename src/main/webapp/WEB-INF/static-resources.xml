@@ -19,7 +19,7 @@
 
 <!--
     Description: Static resources definition.
-    Version: 2.6.5.6, Jan 8, 2016
+    Version: 2.7.5.6, Aug 26, 2016
     Author: Liang Ding
 -->
 <static-files>
@@ -65,6 +65,10 @@
 
     <include path="/css/**.css" />
     <include path="/css/**/*.css" />
+    <include path="/css/fonts/*.eot" />
+    <include path="/css/fonts/*.svg" />
+    <include path="/css/fonts/*.ttf" />
+    <include path="/css/fonts/*.woff" />
         
     <include path="/images/**.png" />
     <include path="/images/**/*.png" />
