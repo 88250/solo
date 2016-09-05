@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.0.6.2, Sep 2, 2016
+* @version 2.0.6.3, Sep 5, 2016
 */
 
 /* start resset */
@@ -655,6 +655,9 @@ button#submitArticle:hover,
 }
 .signs button {
     margin: 0 12px;
+}
+#keyOfSolo {
+    width: 200px;
 }
 /* end preference */
 
