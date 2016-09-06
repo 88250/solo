@@ -386,6 +386,10 @@ img {
     -webkit-transform: translateZ(0);
 }
 
+.sidebar-toggle.has-toc .sidebar-toggle-line{
+    background: #87daff;
+}
+
 .sidebar-toggle-line {
     position: relative;
     display: inline-block;
@@ -570,6 +574,34 @@ img {
     font-size: 14px;
     line-height: 2;
 }
+
+.sidebar section {
+    opacity: 0;
+    position: relative;
+}
+
+.sidebar > ul > li {
+    display: inline-block;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    font-size: 14px;
+    color: #555;
+}
+
+.sidebar > ul > li:hover {
+    color: #f5f5f5;
+}
+
+.sidebar > ul > li.current {
+    color: #87daff;
+    border-bottom-color: #87daff;
+}
+
+.sidebar > ul > li:last-child {
+    margin-left: 10px;
+}
+
+
 /* end side */
 
 /* start list*/
@@ -714,6 +746,11 @@ img {
 
 .article-body {
     overflow: auto;
+    text-align: justify;
+}
+
+.article-body p {
+    margin: 0 0 25px 0;
 }
 /* end article */
 

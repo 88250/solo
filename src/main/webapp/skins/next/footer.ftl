@@ -39,7 +39,9 @@
         "em11Label": "${em11Label}",
         "em12Label": "${em12Label}",
         "em13Label": "${em13Label}",
-        "em14Label": "${em14Label}"
+        "em14Label": "${em14Label}",
+        "tocLabel": "${tocLabel}",
+        "siteViewLabel": "${siteViewLabel}"
     };
 </script>
 ${plugins}
