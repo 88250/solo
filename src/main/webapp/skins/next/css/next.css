@@ -18,7 +18,7 @@
  * skin next style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.2.1, Aug 26, 2016
+ * @version 0.2.2.1, Sep 6, 2016
 */
 /* start reset */
 html {
@@ -250,8 +250,10 @@ img {
 
 /* start framework */
 .wrapper {
-    width: 700px;
+    max-width: 700px;
+    min-width: 600px;
     margin: 0 auto;
+    padding: 0 10px;
 }
 
 .main {
@@ -263,12 +265,11 @@ img {
 .header {
     background: #f5f5f5;
     margin-bottom: 80px;
-    padding: 40px 45px;
+    padding: 40px 0px;
 }
 
 .logo-wrap {
     float: left;
-    margin-left: -20px;
     overflow: hidden;
     top: 0;
     opacity: 0;
@@ -977,13 +978,18 @@ ul.comments .comment-meta time {
 /* end archives */
 
 /* start responsive */
-
-@media (max-width: 700px) {
-    .b3-solo-list {
-        margin: 0;
-        padding: 0;
+@media (max-width: 1000px) {
+    .sidebar-toggle,
+    .sidebar {
+        display: none;
     }
 
+    body {
+        padding-right: 0 !important;
+    }
+}
+
+@media (max-width: 700px) {
     .page-archive .posts-collapse .archive-move-on {
         margin-left: 5px;
     }
@@ -991,9 +997,6 @@ ul.comments .comment-meta time {
     .posts-collapse {
         margin-left: 10px;
     }
-}
-
-@media (max-width: 500px) {
     pre {
         word-wrap: break-word;
         word-break: break-all;
@@ -1013,7 +1016,6 @@ ul.comments .comment-meta time {
     .logo-line-after,
     .menu,
     .site-search,
-    .sidebar-toggle, 
     .back-to-top {
         display: none;
     }
@@ -1031,18 +1033,9 @@ ul.comments .comment-meta time {
         background-color: #ddd;
         display: none;
     }
-
-    .header .wrapper {
-        padding: 0 10px;
-    }
-
-    .logo-wrap .site-title {
-        margin-left: 10px;
-    }
-
+    
     .wrapper {
-        width: auto;
-        margin: 0 10px;
+        min-width: inherit;
     }
 
     .btn-bar {
@@ -1069,6 +1062,12 @@ ul.comments .comment-meta time {
 
     .footer {
         text-align: center;
+        font-size: 12px;
+        padding: 10px 0;
+    }
+
+    .footer .fn-right {
+        float: none;
     }
 }
 /* end responsive */

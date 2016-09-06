@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.1.0, Jul 30, 2016
+ * @version 0.2.1.0, Sep 6, 2016
  */
 
 /**
@@ -74,7 +74,7 @@ var NexT = {
                             'top': '0'
                         }, function () {
                             // 当有文章页面有目录时，回调不放这里，侧边栏就会一片空白
-                            if ($('.b3-solo-list li').length > 0 && $(window).width() > 700) {
+                            if ($('.b3-solo-list li').length > 0 && $(window).width() > 1000) {
                                 $('.sidebar-toggle').click();
                             }
                         });
@@ -90,7 +90,7 @@ var NexT = {
         });
     },
     initArticle: function () {
-        if ($('.b3-solo-list li').length > 0 && $(window).width() > 700) {
+        if ($('.b3-solo-list li').length > 0 && $(window).width() > 1000) {
             // add color to sidebar menu
             $('.sidebar-toggle').addClass('has-toc');
 

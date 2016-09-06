@@ -1,5 +1,5 @@
 <footer class="footer">
-    <div class="wrapper">
+    <div class="wrapper fn-clear">
         <a href="${servePath}">${blogTitle}</a>  •
         ${onlineVisitor1Label}${onlineVisitorCnt} <br/>
         &copy; ${year}
