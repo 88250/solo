@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.1.0, Jul 30, 2016
+ * @version 0.2.1.0, Sep 6, 2016
  */
 
 /**
@@ -37,6 +37,7 @@ var NexT = {
                 $sidebar.animate({
                     right: -320
                 });
+                $sidebar.find('section').css('opacity', 0);
             } else {
                 $(this).addClass('sidebar-active');
                 $('body').animate({
@@ -44,6 +45,10 @@ var NexT = {
                 });
                 $sidebar.animate({
                     right: 0
+                }, function () {
+                    $sidebar.find('section:first').animate({
+                        'opacity': 1
+                    });
                 });
             }
         });
@@ -54,6 +59,7 @@ var NexT = {
 
         $(document).ready(function () {
             setTimeout(function () {
+                // logo animate
                 $('.logo-wrap').css('opacity', 1);
                 $('.logo-line-before i').animate({
                     'left': '0'
@@ -66,6 +72,11 @@ var NexT = {
                         });
                         $('.main').css('opacity', 1).animate({
                             'top': '0'
+                        }, function () {
+                            // 当有文章页面有目录时，回调不放这里，侧边栏就会一片空白
+                            if ($('.b3-solo-list li').length > 0 && $(window).width() > 1000) {
+                                $('.sidebar-toggle').click();
+                            }
                         });
                     });
 
@@ -79,9 +90,44 @@ var NexT = {
         });
     },
     initArticle: function () {
-        if ($('.b3-solo-list li').length > 0 && $(window).width() > 700) {
-            $('.sidebar').html($('.b3-solo-list'));
-            $('.sidebar-toggle').click();
+        if ($('.b3-solo-list li').length > 0 && $(window).width() > 1000) {
+            // add color to sidebar menu
+            $('.sidebar-toggle').addClass('has-toc');
+
+            // append toc to sidebar menu
+            var articleTocHTML = '<ul><li class="current" data-tab="toc">' + Label.tocLabel + '</li><li data-tab="site">' + Label.siteViewLabel + '</li></ul><section></section>';
+            $('.sidebar').prepend(articleTocHTML);
+            var $sectionF = $('.sidebar section:first').html($('.b3-solo-list')),
+                    $sectionL = $('.sidebar section:last');
+
+            // 切换 tab
+            $('.sidebar > ul > li').click(function () {
+                if ($(this).data('tab') === 'toc') {
+                    $sectionL.animate({
+                        "opacity": '0',
+                        "top": '-50px'
+                    }, 300, function () {
+                        $sectionF.show().css('top', '-50px');
+                        $sectionF.animate({
+                            "opacity": '1',
+                            "top": '0'
+                        }, 300);
+                    });
+                } else {
+                    $sectionF.animate({
+                        "opacity": '0',
+                        "top": '-50px'
+                    }, 300, function () {
+                        $sectionF.hide().css('top', '-50px');
+                        $sectionL.animate({
+                            "opacity": '1',
+                            "top": '0'
+                        }, 300);
+                    });
+                }
+                $('.sidebar > ul > li').removeClass('current');
+                $(this).addClass('current');
+            });
         }
     }
 };
