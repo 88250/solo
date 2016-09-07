@@ -46,7 +46,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.6, Aug 10, 2016
+ * @version 1.2.0.7, Sep 8, 2016
  * @since 1.2.0
  */
 @Service
@@ -111,7 +111,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "1.4.0";
+    private static final String FROM_VER = "1.5.0";
 
     /**
      * New version.

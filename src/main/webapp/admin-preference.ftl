@@ -120,12 +120,13 @@
                     <th width="80px">
                         <label for="keyOfSolo">${keyOfSolo1Label}</label>
                     </th>
-                    <td width="160px">
+                    <td>
                         <input id="keyOfSolo" class="normalInput" type="text" readonly="readonly"/>
                     </td>
-                    <td>
-                        <!--                        <button onclick="admin.preference.update()">${updateLabel}</button>-->
-                        <label></label>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <a href="https://hacpai.com/article/1457158841475" target="_blank">${APILabel}</a>
                     </td>
                 </tr>
             </tbody>
