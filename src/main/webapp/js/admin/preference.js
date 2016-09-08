@@ -252,8 +252,6 @@ admin.preference = {
                         $("#articleSign" + signs[i].oId).tip("option", "content",
                                 signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
                     }
-                    $("#preferenceSignButton" + signs[i].oId).tip("option", "content",
-                            signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
                 }
 
                 $("#loadMsg").text("");
