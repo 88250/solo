@@ -1,3 +1,4 @@
+
 # [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-~6.2K-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)
 
 <img src="https://cloud.githubusercontent.com/assets/873584/6817919/72ffdb5c-d2e2-11e4-8be8-37ac1b08ff81.jpg"  width="96%" />
@@ -76,3 +77,14 @@ See [here](http://solo.b3log.org/CHANGE_LOGS.html).
 
 * [Latke](https://github.com/b3log/latke)
 * [NetBeans](https://netbeans.org)
+
+## Skins
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
