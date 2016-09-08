@@ -97,3 +97,5 @@ See [here](http://solo.b3log.org/CHANGE_LOGS.html).
 <img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/bruce.png' width='285'>
 
 ## Third Skins
+<img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/bootstyle-%E9%A6%96%E9%A1%B5.png' width='285'>
+<img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/bootstyle-%E9%A6%96%E9%A1%B5.png' width='285'>
