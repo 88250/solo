@@ -37,7 +37,7 @@ Solo 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https:/
 * **Admin - Post (TinyMCE/Markdown)**  
 <img src="https://cloud.githubusercontent.com/assets/873584/5584725/848cdf58-90d1-11e4-8d8a-f186e05db2cd.png" width="49%" />&nbsp;&nbsp;<img src="https://cloud.githubusercontent.com/assets/873584/5585055/6bf35892-90da-11e4-986c-c80e4df5dde1.png" width="49%" />
 * **Admin - Skins**
-![admin-skins](https://cloud.githubusercontent.com/assets/873584/9975917/994d9e02-5f00-11e5-8a6d-fe652ac3e75e.png)
+![admin-skins](https://cloud.githubusercontent.com/assets/970828/18351254/05a23c16-760c-11e6-987b-2b406d9e02da.jpg)
 
 ## Top Cases
 
