@@ -106,13 +106,19 @@ Solo 的诞生离不开以下开源项目：
 
 Logo 征集中....
 
-## admin
+----
+
+## 界面截图 
+
+## 后台
+
 * Admin - Post (TinyMCE/Markdown)
 ![Admin - Post (TinyMCE/Markdown)](http://img.blog.csdn.net/20160909003905083)
 * Admin - Skins 
 ![Admin - Skins ](http://img.blog.csdn.net/20160909003855114)
 
-## Skins
+## 内置的皮肤
+
 * [next](https://github.com/b3log/solo-skins/tree/master/next)
 ![next](http://img.blog.csdn.net/20160908232930827)
 
@@ -162,7 +168,8 @@ Logo 征集中....
 * [bruce](https://github.com/b3log/solo-skins/tree/master/bruce)
 ![bruce](http://img.blog.csdn.net/20160908233157432)
 
-## Third Skins
+## 社区贡献的皮肤
+
 * [bootstyle](https://github.com/b3log/solo-third-skins/tree/master/bootstyle)
 ![bootstyle](http://img.blog.csdn.net/20160909002324766)
 
