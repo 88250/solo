@@ -79,22 +79,22 @@ See [here](http://solo.b3log.org/CHANGE_LOGS.html).
 * [NetBeans](https://netbeans.org)
 
 ## Skins
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/next.jpg' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/yilia.jpg' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/finding.jpg' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/metro-hot.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/timeline.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/ease.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/andrea.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/classic.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/community.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/favourite.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/tree-house.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/i-nove.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/neoease.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/owmx-3.0.png' width='285'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/bruce.png' width='285'>
+<img src='http://img.blog.csdn.net/20160908232930827' width='285'>
+<img src='http://img.blog.csdn.net/20160908232913225' width='285'>
+<img src='http://img.blog.csdn.net/20160908232943335' width='285'>
+<img src='http://img.blog.csdn.net/20160908233003148' width='285'>
+<img src='http://img.blog.csdn.net/20160908233015843' width='285'>
+<img src='http://img.blog.csdn.net/20160908233024047' width='285'>
+<img src='http://img.blog.csdn.net/20160908233032196' width='285'>
+<img src='http://img.blog.csdn.net/20160908233039719' width='285'>
+<img src='http://img.blog.csdn.net/20160908233049265' width='285'>
+<img src='http://img.blog.csdn.net/20160908233057493' width='285'>
+<img src='http://img.blog.csdn.net20160908233110391/' width='285'>
+<img src='http://img.blog.csdn.net/20160908233120891' width='285'>
+<img src='http://img.blog.csdn.net/20160908233131516' width='285'>
+<img src='http://img.blog.csdn.net/20160908233139713' width='285'>
+<img src='http://img.blog.csdn.net/20160908233148135' width='285'>
+<img src='http://img.blog.csdn.net/20160908233157432' width='285'>
 
 ## Third Skins
 <img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/bootstyle-%E9%A6%96%E9%A1%B5.png' width='285'>
