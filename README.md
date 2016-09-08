@@ -79,12 +79,21 @@ See [here](http://solo.b3log.org/CHANGE_LOGS.html).
 * [NetBeans](https://netbeans.org)
 
 ## Skins
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
-<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='300'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/next.jpg' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/yilia.jpg' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/finding.jpg' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/metro-hot.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/timeline.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/ease.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/Mobile.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/andrea.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/classic.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/community.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/favourite.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/tree-house.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/i-nove.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/neoease.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/owmx-3.0.png' width='285'>
+<img src='https://github.com/b3log/solo-skins/blob/master/skin-preview/bruce.png' width='285'>
+
+## Third Skins
