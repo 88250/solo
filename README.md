@@ -98,4 +98,10 @@ See [here](http://solo.b3log.org/CHANGE_LOGS.html).
 
 ## Third Skins
 <img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/bootstyle-%E9%A6%96%E9%A1%B5.png' width='285'>
-<img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/bootstyle-%E9%A6%96%E9%A1%B5.png' width='285'>
+<img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/dashu03-%E9%A6%96%E9%A1%B5.png' width='285'>
+<img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/community-bubbles-%E9%A6%96%E9%A1%B5.png' width='285'>
+<img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Dot-B-%E9%A6%96%E9%A1%B5.png' width='285'>
+<img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Shawn-%E9%A6%96%E9%A1%B5.png' width='285'>
+<img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Coda-%E9%A6%96%E9%A1%B5.png' width='285'>
+<img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/5style-%E9%A6%96%E9%A1%B5.png' width='285'>
+<img src='https://github.com/b3log/solo-third-skins/blob/master/skin-preview/idream-%E9%A6%96%E9%A1%B5.png' width='285'>
