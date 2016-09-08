@@ -746,7 +746,6 @@ img {
 }
 
 .article-body {
-    overflow: auto;
     text-align: justify;
 }
 
