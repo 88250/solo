@@ -17,9 +17,9 @@
  * @description index for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.2.2, May 28, 2013
+ * @version 1.0.3.2, Sep 2, 2013
  */
-var Admin = function() {
+var Admin = function () {
     this.register = {};
     // 工具栏下的工具
     this.tools = ['#page-list', '#file-list', '#link-list', '#preference',
@@ -33,13 +33,13 @@ $.extend(Admin.prototype, {
     /**
      * @description  登出
      */
-    logout: function() {
+    logout: function () {
         window.location.href = latkeConfig.servePath + "/logout?goto=" + latkeConfig.servePath;
     },
     /**
      * @description 清除提示
      */
-    clearTip: function() {
+    clearTip: function () {
         $("#tipMsg").text("");
         $("#loadMsg").text("");
     },
@@ -47,7 +47,7 @@ $.extend(Admin.prototype, {
      * @description 根据当前页数设置 hash
      * @param {Int} currentPage 当前页
      */
-    setHashByPage: function(currentPage) {
+    setHashByPage: function (currentPage) {
         var hash = window.location.hash,
                 hashList = hash.split("/");
         if (/^\d*$/.test(hashList[hashList.length - 1])) {
@@ -61,13 +61,13 @@ $.extend(Admin.prototype, {
      * @description 设置某个 tab 被选择
      * @param {Stirng} id id tab id
      */
-    selectTab: function(id) {
+    selectTab: function (id) {
         window.location.hash = "#" + id;
     },
     /**
      * @description 根据当前 hash 解析出当前页数及 hash 数组。
      */
-    analyseHash: function() {
+    analyseHash: function () {
         var hash = window.location.hash;
         var tag = hash.substr(1, hash.length - 1);
         var tagList = tag.split("/");
@@ -86,7 +86,8 @@ $.extend(Admin.prototype, {
     /**
      * @description 根据当前 hash 设置当前 tab
      */
-    setCurByHash: function() {
+    setCurByHash: function () {
+        $(window).scrollTop(0);
         $("#tipMsg").text("");
         var tags = admin.analyseHash();
         var tab = tags.hashList[1],
@@ -103,7 +104,7 @@ $.extend(Admin.prototype, {
         if (tab !== "article") {
             admin.article.clearDraftTimer();
         } else if (tab === "article") {
-            admin.article.autoSaveDraftTimer = setInterval(function() {
+            admin.article.autoSaveDraftTimer = setInterval(function () {
                 admin.article._autoSaveToDraft();
             }, admin.article.AUTOSAVETIME);
         }
@@ -157,7 +158,7 @@ $.extend(Admin.prototype, {
         if ($("#tabsPanel_" + tab).length === 1) {
             if ($("#tabsPanel_" + tab).html().replace(/\s/g, "") === "") {
                 // 还未加载 HTML
-                $("#tabsPanel_" + tab).load("admin-" + tab + ".do", function() {
+                $("#tabsPanel_" + tab).load("admin-" + tab + ".do", function () {
                     // 页面加载完后，回调初始函数
                     if (tab === "article" && admin.article.status.id) {
                         // 当文章页面编辑器未初始化时，调用更新文章需先初始化编辑器
@@ -202,7 +203,7 @@ $.extend(Admin.prototype, {
     /**
      * @description 初始化整个后台
      */
-    init: function() {
+    init: function () {
         //window.onerror = Util.error;
 
         Util.killIE();
@@ -212,9 +213,9 @@ $.extend(Admin.prototype, {
         $("#tabs").tabs();
 
         // tipMsg
-        setInterval(function() {
+        setInterval(function () {
             if ($("#tipMsg").text() !== "") {
-                setTimeout(function() {
+                setTimeout(function () {
                     $("#tipMsg").text("");
                 }, 7000);
             }
@@ -225,20 +226,25 @@ $.extend(Admin.prototype, {
      * @description tools and article collapse
      * @param {Bom} it 触发事件对象
      */
-    collapseNav: function(it) {
+    collapseNav: function (it) {
         var subNav = $(it).next();
-        subNav.slideToggle("normal", function() {
+        subNav.slideToggle("normal", function () {
             if (this.style.display !== "none") {
-                $(it).find(".ico-arrow-down")[0].className = "ico-arrow-up";
+                $(it).find(".icon-chevron-down")[0].className = "icon-chevron-up right";
+                $(it).addClass('tab-current');
             } else {
-                $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
+                $(it).find(".icon-chevron-up")[0].className = "icon-chevron-down right";
+                $(it).removeClass('tab-current');
             }
+
+            $('#tabs > ul').height('auto');
+            $('#tabs > ul').height($('#tabs > ul').height() + 80);
         });
     },
     /**
      * @description 后台及当前页面所需插件初始化完后，对权限进行控制及当前页面属于 tools 时，tools 选项需展开。
      */
-    inited: function() {
+    inited: function () {
         // Removes functions with the current user role
         if (Label.userRole !== "adminRole") {
             for (var i = 0; i < this.adTools.length; i++) {
@@ -606,8 +612,17 @@ admin.editors.KindEditor = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Aug 13, 2015
+ * @version 1.2.1.4, Aug 26, 2016
  */
+
+Util.processClipBoard = function (text, cm) {
+    var text = toMarkdown(text, {converters: [
+        ], gfm: true});
+
+    // ascii 160 替换为 30
+    text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
+    return $.trim(text);
+};
 admin.editors.CodeMirror = {
     /*
      * @description 初始化编辑器
@@ -620,123 +635,37 @@ admin.editors.CodeMirror = {
      * @returns {obj} editor
      */
     init: function (conf) {
-        var it = this;
-
-        // load preview and clear
-        var previewHTML = "<div class='clear'></div>";
-        if (conf.kind !== "simple") {
-            previewHTML = "<div class='markdown-preivew'>" +
-                    "<div class='markdown-help ico-close'></div>" +
-                    "<div class='clear'></div>" +
-                    "<div class='markdown-preview-main none'></div>" +
-                    "<div class='markdown-help-main'>" + Label.markdownHelpLabel + "</div>"
-                    + "</div><div class='clear'></div>";
-        }
-        $("#" + conf.id).after(previewHTML);
-
         // init codemirror
-        if (conf.kind === "simple") {
-            this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
-                mode: 'markdown',
-                lineWrapping: true,
-                lineNumbers: true,
-                matchBrackets: true,
-                theme: "default",
-                height: conf.height
-            });
-        } else {
-            // preview 执行队列
-            it[conf.id + "Timers"] = [];
-
-            // 该编辑器是否第一次触发 preivew 事件
-            it[conf.id + "IsFirst"] = true;
-
-            var $preview = $("#" + conf.id).parent().find(".markdown-preivew"),
-                    $help = $("#" + conf.id).parent().find(".markdown-preivew").find(".markdown-help");
-            this[conf.id] = CodeMirror.fromTextArea(document.getElementById(conf.id), {
-                mode: 'markdown',
-                lineWrapping: true,
-                lineNumbers: true,
-                matchBrackets: true,
-                theme: "default",
-                height: conf.height,
-                onUpdate: function () {
-                    var update = function () {
-                        if (it[conf.id].getValue() === "") {
-                            return;
-                        }
-
-                        $.ajax({
-                            url: latkeConfig.servePath + "/console/markdown/2html",
-                            type: "POST",
-                            cache: false,
-                            data: JSON.stringify({markdownText: it[conf.id].getValue()}),
-                            success: function (data, textStatus) {
-                                if (data.sc) {
-                                    if (it[conf.id + "IsFirst"] && $help.hasClass("ico-close")) {
-                                        $help.click();
-                                    }
-                                    it[conf.id + "IsFirst"] = false;
-
-                                    $preview.find(".markdown-preview-main").html(data.html);
-                                } else {
-                                    $preview.find(".markdown-preview-main").html(data.msg);
-                                }
-                            }
-                        });
-                    }
-
-                    it[conf.id + "Timers"].push(update);
-                }
-            });
-
-            this._callPreview(conf.id, it[conf.id + "Timers"]);
-        }
-
-        if (conf.kind === "simple") {
-            // 摘要不需要 preview，设置其宽度
-            $("#" + conf.id).next().width("99%");
-        } else {
-            // 有 preview 时，绑定 preview 事件
-            this._bindEvent(conf.id);
-        }
+        var commentEditor = new CodeMirrorEditor({
+            element: document.getElementById(conf.id),
+            dragDrop: false,
+            lineWrapping: true,
+            toolbar: [
+                {name: 'bold'},
+                {name: 'italic'},
+                '|',
+                {name: 'link'},
+                {name: 'quote'},
+                {name: 'unordered-list'},
+                {name: 'ordered-list'},
+                '|',
+                {name: 'redo'},
+                {name: 'undo'},
+                '|',
+                {name: 'preview'}
+            ],
+            extraKeys: {
+                "Ctrl-/": "autocompleteEmoji"
+            },
+            status: false
+        });
+        commentEditor.render();
+        this[conf.id] = commentEditor.codemirror;
 
         // after render, call back function
         if (typeof (conf.fun) === "function") {
             conf.fun();
         }
-    },
-    /*
-     * @description 当有更新时每隔3秒 preview
-     * @param {string} id 编辑器 id
-     */
-    _callPreview: function (id) {
-        setInterval(function () {
-            var timers = admin.editors.CodeMirror[id + "Timers"];
-            $(document).queue("myAnimation", [timers[timers.length - 1]]);
-            $(document).dequeue("myAnimation");
-            admin.editors.CodeMirror[id + "Timers"] = [];
-        }, 2000);
-    },
-    /*
-     * @description 绑定编辑器 preview 事件
-     * @param {string} id 编辑器id
-     */
-    _bindEvent: function (id) {
-        var $preview = $("#" + id).parent().find(".markdown-preivew");
-
-        $preview.find(".markdown-help").click(function () {
-            var $it = $(this);
-            if ($it.hasClass("ico-help")) {
-                $it.removeClass("ico-help").addClass("ico-close");
-                $preview.find(".markdown-preview-main").hide();
-                $preview.find(".markdown-help-main").show();
-            } else {
-                $it.addClass("ico-help").removeClass("ico-close");
-                $preview.find(".markdown-preview-main").show();
-                $preview.find(".markdown-help-main").hide();
-            }
-        });
     },
     /*
      * @description 获取编辑器值
@@ -762,7 +691,7 @@ admin.editors.CodeMirror = {
      */
     remove: function (id) {
         this[id].toTextArea();
-        $(".markdown-preivew").remove();
+        $('.editor-toolbar').remove();
     }
 };/*
  * Copyright (c) 2010-2016, b3log.org & hacpai.com
@@ -825,8 +754,8 @@ $.extend(TablePaginate.prototype, {
             },
             "currentPage": 1,
             "errorMessage": Label.inputErrorLabel,
-            "nextPageText": Label.nextPagePabel,
-            "previousPageText": Label.previousPageLabel,
+            "nextPageText": '>',
+            "previousPageText": '<',
             "goText": Label.gotoLabel,
             "type": "custom",
             "custom": [1],
@@ -1188,7 +1117,7 @@ admin.article = {
                 }
 
                 $("#tagCheckboxPanel>span").remove("");
-                
+
                 var spans = "";
                 for (var i = 0; i < result.tags.length; i++) {
                     spans += "<span>" + result.tags[i].tagTitle + "</span>";
@@ -1263,42 +1192,11 @@ admin.article = {
      */
     init: function (fun) {
         this.currentEditorType = Label.editorType;
+
         // Inits Signs.
-        $.ajax({
-            url: latkeConfig.servePath + "/console/signs/",
-            type: "GET",
-            cache: false,
-            success: function (result, textStatus) {
-                $("#tipMsg").text(result.msg);
-                if (!result.sc) {
-                    $("#loadMsg").text("");
-                    return;
-                }
-
-                $(".signs button").each(function (i) {
-                    // Sets signs.
-                    if (i === result.signs.length) {
-                        $("#articleSign1").addClass("selected");
-                    } else {
-                        $("#articleSign" + result.signs[i].oId).tip({
-                            content: result.signs[i].signHTML === "" ? Label.signIsNullLabel :
-                                    result.signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
-                            position: "top"
-                        });
-                    }
-                    // Binds checkbox event.
-                    $(this).click(function () {
-                        if (this.className !== "selected") {
-                            $(".signs button").each(function () {
-                                this.className = "";
-                            });
-                            this.className = "selected";
-                        }
-                    });
-                });
-
-                $("#loadMsg").text("");
-            }
+        $(".signs button").click(function (i) {
+            $(".signs button").removeClass('selected');
+            $(this).addClass('selected');
         });
 
         // For tag auto-completion
@@ -1339,8 +1237,8 @@ admin.article = {
             } else {
                 admin.article.add(true);
             }
-        });
-
+        }
+        );
         $("#saveArticle").click(function () {
             if (admin.article.status.id) {
                 admin.article.update(admin.article.status.isArticle);
@@ -1358,26 +1256,26 @@ admin.article = {
             url: "http://upload.qiniu.com/",
             add: function (e, data) {
                 filename = data.files[0].name;
-                
+
                 data.submit();
             },
             formData: function (form) {
                 var data = form.serializeArray();
-                var ext = filename.substring(filename.lastIndexOf(".") + 1);  
-                
+                var ext = filename.substring(filename.lastIndexOf(".") + 1);
+
                 data.push({name: 'key', value: getUUID() + "." + ext});
                 data.push({name: 'token', value: qiniu.qiniuUploadToken});
-                
+
                 return data;
             },
             done: function (e, data) {
                 var qiniuKey = data.result.key;
                 if (!qiniuKey) {
                     alert("Upload error");
-                    
+
                     return;
                 }
-                
+
                 $('#articleUpload').after('<div id="uploadContent">!<a target="_blank" href="http://' + qiniu.qiniuDomain + qiniuKey + '">[' + filename + ']</a>(http://'
                         + qiniu.qiniuDomain + qiniuKey + ')</div>');
             },
@@ -1574,17 +1472,18 @@ admin.register.article = {
 
 function getUUID() {
     var d = new Date().getTime();
-    
-    var ret = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = (d + Math.random()*16)%16 | 0;
-        d = Math.floor(d/16);
-        return (c=='x' ? r : (r&0x3|0x8)).toString(16);
+
+    var ret = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
-    
+
     ret = ret.replace(new RegExp("-", 'g'), "");
-    
+
     return ret;
-};
+}
+;
 /*
  * Copyright (c) 2010-2016, b3log.org & hacpai.com
  *
@@ -1735,7 +1634,7 @@ admin.comment = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, May 28, 2013
+ * @version 1.0.2.5, Aug 23, 2016
  */
 
 /* article-list 相关操作 */
@@ -1799,7 +1698,7 @@ admin.articleList = {
                 articleData = [];
                 for (var i = 0; i < articles.length; i++) {
                     articleData[i] = {};
-                    articleData[i].title = "<a href='" + latkeConfig.servePath + articles[i].articlePermalink + "' target='_blank' title='" + articles[i].articleTitle + "' class='no-underline'>"
+                    articleData[i].title = "<a href=\"" + latkeConfig.servePath + articles[i].articlePermalink + "\" target='_blank' title='" + articles[i].articleTitle + "' class='no-underline'>"
                     + articles[i].articleTitle + "</a><span class='table-tag'>" + articles[i].articleTags + "</span>";
                     articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime);
                     articleData[i].comments = articles[i].articleCommentCount;
@@ -3020,10 +2919,6 @@ admin.preference = {
                 var signs = eval('(' + preference.signs + ')');
                 for (var j = 1; j < signs.length; j++) {
                     $("#preferenceSign" + j).val(signs[j].signHTML);
-                    $("#preferenceSignButton" + j).tip({
-                        content: signs[j].signHTML === "" ? Label.signIsNullLabel : signs[j].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""),
-                        position: "bottom"
-                    });
                 }
 
                 $("#articleListDisplay").val(preference.articleListStyle);
@@ -3177,8 +3072,6 @@ admin.preference = {
                         $("#articleSign" + signs[i].oId).tip("option", "content",
                                 signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
                     }
-                    $("#preferenceSignButton" + signs[i].oId).tip("option", "content",
-                            signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
                 }
 
                 $("#loadMsg").text("");
@@ -3508,7 +3401,7 @@ admin.userList = {
                     } else {
                         userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" +
                                 users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a>" +
+                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a> " +
                                 "<a href='javascript:void(0)' onclick=\"admin.userList.changeRole('" + users[i].oId + "')\">" + Label.changeRoleLabel + "</a>";
                         if ("defaultRole" === users[i].userRole) {
                             userData[i].isAdmin = Label.commonUserLabel;
@@ -3759,9 +3652,7 @@ admin.userList = {
 admin.register["user-list"] = {
     "obj": admin.userList,
     "init": admin.userList.init,
-    "refresh": function() {
-        admin.clearTip();
-    }
+    "refresh": admin.userList.getList
 }/*
  * Copyright (c) 2010-2016, b3log.org & hacpai.com
  *

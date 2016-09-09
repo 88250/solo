@@ -17,7 +17,7 @@
  * @description index for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.2.2, May 28, 2013
+ * @version 1.0.3.2, Sep 2, 2013
  */
 var Admin = function () {
     this.register = {};
@@ -230,10 +230,10 @@ $.extend(Admin.prototype, {
         var subNav = $(it).next();
         subNav.slideToggle("normal", function () {
             if (this.style.display !== "none") {
-                $(it).find(".ico-arrow-down")[0].className = "ico-arrow-up";
+                $(it).find(".icon-chevron-down")[0].className = "icon-chevron-up right";
                 $(it).addClass('tab-current');
             } else {
-                $(it).find(".ico-arrow-up")[0].className = "ico-arrow-down";
+                $(it).find(".icon-chevron-up")[0].className = "icon-chevron-down right";
                 $(it).removeClass('tab-current');
             }
 

@@ -18,7 +18,7 @@
  * skin next style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.1.1, Aug 23, 2016
+ * @version 0.2.2.1, Sep 6, 2016
 */
 /* start reset */
 html {
@@ -250,8 +250,10 @@ img {
 
 /* start framework */
 .wrapper {
-    width: 700px;
+    max-width: 700px;
+    min-width: 600px;
     margin: 0 auto;
+    padding: 0 10px;
 }
 
 .main {
@@ -263,12 +265,11 @@ img {
 .header {
     background: #f5f5f5;
     margin-bottom: 80px;
-    padding: 40px 45px;
+    padding: 40px 0px;
 }
 
 .logo-wrap {
     float: left;
-    margin-left: -20px;
     overflow: hidden;
     top: 0;
     opacity: 0;
@@ -384,6 +385,10 @@ img {
     z-index: 1050;
     cursor: pointer;
     -webkit-transform: translateZ(0);
+}
+
+.sidebar-toggle.has-toc .sidebar-toggle-line{
+    background: #87daff;
 }
 
 .sidebar-toggle-line {
@@ -570,6 +575,34 @@ img {
     font-size: 14px;
     line-height: 2;
 }
+
+.sidebar section {
+    opacity: 0;
+    position: relative;
+}
+
+.sidebar > ul > li {
+    display: inline-block;
+    cursor: pointer;
+    border-bottom: 1px solid transparent;
+    font-size: 14px;
+    color: #555;
+}
+
+.sidebar > ul > li:hover {
+    color: #f5f5f5;
+}
+
+.sidebar > ul > li.current {
+    color: #87daff;
+    border-bottom-color: #87daff;
+}
+
+.sidebar > ul > li:last-child {
+    margin-left: 10px;
+}
+
+
 /* end side */
 
 /* start list*/
@@ -710,6 +743,14 @@ img {
 
 #externalRelevantArticles ul {
     margin-top: 5px;
+}
+
+.article-body {
+    text-align: justify;
+}
+
+.article-body p {
+    margin: 0 0 25px 0;
 }
 /* end article */
 
@@ -936,13 +977,18 @@ ul.comments .comment-meta time {
 /* end archives */
 
 /* start responsive */
-
-@media (max-width: 700px) {
-    .b3-solo-list {
-        margin: 0;
-        padding: 0;
+@media (max-width: 1000px) {
+    .sidebar-toggle,
+    .sidebar {
+        display: none;
     }
 
+    body {
+        padding-right: 0 !important;
+    }
+}
+
+@media (max-width: 700px) {
     .page-archive .posts-collapse .archive-move-on {
         margin-left: 5px;
     }
@@ -950,9 +996,6 @@ ul.comments .comment-meta time {
     .posts-collapse {
         margin-left: 10px;
     }
-}
-
-@media (max-width: 500px) {
     pre {
         word-wrap: break-word;
         word-break: break-all;
@@ -972,7 +1015,6 @@ ul.comments .comment-meta time {
     .logo-line-after,
     .menu,
     .site-search,
-    .sidebar-toggle, 
     .back-to-top {
         display: none;
     }
@@ -990,18 +1032,9 @@ ul.comments .comment-meta time {
         background-color: #ddd;
         display: none;
     }
-
-    .header .wrapper {
-        padding: 0 10px;
-    }
-
-    .logo-wrap .site-title {
-        margin-left: 10px;
-    }
-
+    
     .wrapper {
-        width: auto;
-        margin: 0 10px;
+        min-width: inherit;
     }
 
     .btn-bar {
@@ -1028,6 +1061,12 @@ ul.comments .comment-meta time {
 
     .footer {
         text-align: center;
+        font-size: 12px;
+        padding: 10px 0;
+    }
+
+    .footer .fn-right {
+        float: none;
     }
 }
 /* end responsive */

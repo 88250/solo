@@ -33,7 +33,9 @@
                 &nbsp; | &nbsp;${viewsLabel} ${article.articleViewCount}°C
             </div>
         </header>
-        ${article.articleAbstract}
+        <div class="article-body">
+            ${article.articleAbstract}
+        </div>
         <div class="post-more-link">
             <a href="${servePath}${article.articlePermalink}#more" rel="contents">
                 ${readLabel} &raquo;

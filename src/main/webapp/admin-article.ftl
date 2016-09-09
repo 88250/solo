@@ -18,7 +18,7 @@
         <label>${tags1WithTips1Label}</label>
         <input id="tag" type="text"/>
     </div>
-    <div>
+    <div class="comment-content">
         <label>${abstract1Label}</label>
         <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
     </div>
