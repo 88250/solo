@@ -97,6 +97,7 @@ Solo 的诞生离不开以下开源项目：
 * [pegdown](https://github.com/sirthias/pegdown)：Java Markdown 处理库
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
 * [emoji-java](https://github.com/vdurmont/emoji-java)：Java Emoji 处理库
+* [FreeMarker](http://freemarker.org)：好用的 Java 模版引擎
 * [H2](https://github.com/h2database/h2database)：Java SQL 数据库
 * [Jetty](https://github.com/eclipse/jetty.project)：轻量级的 Java Web 容器
 * [Latke](https://github.com/b3log/latke)：简洁高效的 Java Web 框架 
