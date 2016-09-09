@@ -20,7 +20,7 @@ Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将�
 * 自定义公告 / 页脚
 * 多个签名档
 * 代码高亮
-* 多皮肤，多端适配
+* [多皮肤，多端适配](https://github.com/b3log/solo-skins/tree/master/skin-preview) / [社区皮肤](https://github.com/b3log/solo-third-skins/tree/master/skin-preview)
 * 多语言 / 国际化
 * 上传七牛云
 * 友情链接管理
@@ -170,7 +170,7 @@ Logo 征集中....
 
 ### 社区贡献的皮肤
 * [bootstyle](https://github.com/b3log/solo-third-skins/tree/master/bootstyle)
-![bootstyle](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/bootstyle.png?raw=true)
+![bootstyle](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/bootstyle.jpg?raw=true)
 
 * [dashu03](https://github.com/b3log/solo-third-skins/tree/master/dashu03)
 ![dashu03](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/dashu03.png?raw=true)
@@ -179,16 +179,16 @@ Logo 征集中....
 ![community-bubbles](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/community-bubbles.png?raw=true)
 
 * [Dot-B](https://github.com/b3log/solo-third-skins/tree/master/Dot-B)
-![Dot-B](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Dot-B.png?raw=true)
+![Dot-B](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Dot-B.jpg?raw=true)
 
 * [Shawn](https://github.com/b3log/solo-third-skins/tree/master/Shawn)
-![Shawn](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Shawn.png?raw=true)
+![Shawn](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Shawn.jpg?raw=true)
 
 * [Coda](https://github.com/b3log/solo-third-skins/tree/master/Coda)
-![Coda](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Coda.png?raw=true)
+![Coda](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Coda.jpg?raw=true)
 
 * [5styles](https://github.com/b3log/solo-third-skins/tree/master/5styles)
-![5styles](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/5styles.png?raw=true)
+![5styles](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/5styles.jpg?raw=true)
 
 * [idream](https://github.com/b3log/solo-third-skins/tree/master/idream)
-![idream](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/idream.png?raw=true)
+![idream](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/idream.jpg?raw=true)
