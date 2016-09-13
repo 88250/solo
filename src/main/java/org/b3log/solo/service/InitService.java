@@ -26,6 +26,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.RuntimeDatabase;
 import org.b3log.latke.RuntimeEnv;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -69,7 +70,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.9, Dec 17, 2015
+ * @version 1.4.2.10, Sep 13, 2016
  * @since 0.4.0
  */
 @Service
@@ -211,12 +212,19 @@ public class InitService {
         final RuntimeEnv runtimeEnv = Latkes.getRuntimeEnv();
 
         if (RuntimeEnv.LOCAL == runtimeEnv) {
-            LOGGER.log(Level.INFO, "Solo is running on [" + runtimeEnv + "] environment, database [{0}], creates all tables",
-                    Latkes.getRuntimeDatabase());
-            final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
+            LOGGER.log(Level.INFO, "Solo is running on [" + runtimeEnv + "] environment, database [{0}], creates "
+                    + "all tables", Latkes.getRuntimeDatabase());
 
+            if (RuntimeDatabase.H2 == Latkes.getRuntimeDatabase()) {
+                String dataDir = Latkes.getLocalProperty("jdbc.URL");
+                dataDir = dataDir.replace("~", System.getProperty("user.home"));
+                LOGGER.log(Level.INFO, "YOUR DATA will be stored in directory [" + dataDir + "], "
+                        + "please pay more attention to it~");
+            }
+
+            final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final CreateTableResult createTableResult : createTableResults) {
-                LOGGER.log(Level.INFO, "Create table result[tableName={0}, isSuccess={1}]",
+                LOGGER.log(Level.DEBUG, "Create table result[tableName={0}, isSuccess={1}]",
                         new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
             }
         }
@@ -491,7 +499,7 @@ public class InitService {
      * @throws Exception exception
      */
     private void initAdmin(final JSONObject requestJSONObject) throws Exception {
-        LOGGER.info("Initializing admin....");
+        LOGGER.debug("Initializing admin....");
         final JSONObject admin = new JSONObject();
 
         admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
@@ -505,7 +513,7 @@ public class InitService {
 
         userRepository.add(admin);
 
-        LOGGER.info("Initialized admin");
+        LOGGER.debug("Initialized admin");
     }
 
     /**
@@ -515,7 +523,7 @@ public class InitService {
      * @throws JSONException json exception
      */
     private void initStatistic() throws RepositoryException, JSONException {
-        LOGGER.info("Initializing statistic....");
+        LOGGER.debug("Initializing statistic....");
         final JSONObject statistic = new JSONObject();
 
         statistic.put(Keys.OBJECT_ID, Statistic.STATISTIC);
@@ -526,7 +534,7 @@ public class InitService {
         statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, 0);
         statisticRepository.add(statistic);
 
-        LOGGER.info("Initialized statistic");
+        LOGGER.debug("Initialized statistic");
     }
 
     /**
@@ -535,7 +543,7 @@ public class InitService {
      * @throws Exception exception
      */
     private void initReplyNotificationTemplate() throws Exception {
-        LOGGER.info("Initializing reply notification template");
+        LOGGER.debug("Initializing reply notification template");
 
         final JSONObject replyNotificationTemplate = new JSONObject(DefaultPreference.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
 
@@ -553,7 +561,7 @@ public class InitService {
         bodyOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("body"));
         optionRepository.add(bodyOpt);
 
-        LOGGER.info("Initialized reply notification template");
+        LOGGER.debug("Initialized reply notification template");
     }
 
     /**
@@ -563,7 +571,7 @@ public class InitService {
      * @throws Exception exception
      */
     private void initPreference(final JSONObject requestJSONObject) throws Exception {
-        LOGGER.info("Initializing preference....");
+        LOGGER.debug("Initializing preference....");
 
         final JSONObject noticeBoardOpt = new JSONObject();
         noticeBoardOpt.put(Keys.OBJECT_ID, Option.ID_C_NOTICE_BOARD);
@@ -788,7 +796,7 @@ public class InitService {
 
         TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
 
-        LOGGER.info("Initialized preference");
+        LOGGER.debug("Initialized preference");
     }
 
     /**
