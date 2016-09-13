@@ -60,7 +60,7 @@ import org.json.JSONObject;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.2.15, Sep 8, 2016
+ * @version 1.9.2.16, Sep 13, 2016
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -225,7 +225,9 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                LOGGER.warn("Can't not init default skin, please init Solo first");
+                LOGGER.info("Please open browser and visit [" + Latkes.getServePath() + "] to init your Solo, "
+                        + "and then enjoy it :-p");
+
                 return;
             }
 

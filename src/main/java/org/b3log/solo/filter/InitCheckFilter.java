@@ -41,7 +41,7 @@ import org.b3log.solo.service.InitService;
  * Checks initialization filter.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Dec 5, 2015
+ * @version 1.1.1.2, Sep 13, 2016
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -101,7 +101,7 @@ public final class InitCheckFilter implements Filter {
         }
 
         if (!initReported) {
-            LOGGER.log(Level.INFO, "Solo has not been initialized, so redirects to /init");
+            LOGGER.log(Level.DEBUG, "Solo has not been initialized, so redirects to /init");
             initReported = true;
         }
 
