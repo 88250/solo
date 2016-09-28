@@ -159,43 +159,8 @@ public class FeedProcessor {
             final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.getJSONObject(i);
-                final Entry entry = new Entry();
-
+                Entry entry = getEntry(hasMultipleUsers, authorName, articles, isFullContent, i);
                 feed.addEntry(entry);
-                final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
-
-                entry.setTitle(title);
-                final String summary = isFullContent
-                        ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                        : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
-
-                entry.setSummary(summary);
-                final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-
-                entry.setUpdated(updated);
-
-                final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
-
-                entry.setLink(link);
-                entry.setId(link);
-
-                if (hasMultipleUsers) {
-                    authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
-                }
-                entry.setAuthor(authorName);
-
-                final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
-                final String[] tagStrings = tagsString.split(",");
-
-                for (int j = 0; j < tagStrings.length; j++) {
-                    final Category catetory = new Category();
-
-                    entry.addCatetory(catetory);
-                    final String tag = tagStrings[j];
-
-                    catetory.setTerm(tag);
-                }
             }
 
             renderer.setContent(feed.toString());
@@ -208,6 +173,36 @@ public class FeedProcessor {
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    private Entry getEntry(final boolean hasMultipleUsers, String authorName, final JSONArray articles,
+            final boolean isFullContent, int i)
+            throws org.json.JSONException, org.b3log.latke.service.ServiceException {
+        final JSONObject article = articles.getJSONObject(i);
+        final Entry entry = new Entry();
+        final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
+        entry.setTitle(title);
+        final String summary = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+        entry.setSummary(summary);
+        final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+        entry.setUpdated(updated);
+        final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
+        entry.setLink(link);
+        entry.setId(link);
+        if (hasMultipleUsers) {
+            authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
+        }
+        entry.setAuthor(authorName);
+        final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
+        final String[] tagStrings = tagsString.split(",");
+        for (int j = 0; j < tagStrings.length; j++) {
+            final Category catetory = new Category();
+            entry.addCatetory(catetory);
+            final String tag = tagStrings[j];
+            catetory.setTerm(tag);
+        }
+        return entry;
     }
 
     /**
@@ -296,41 +291,8 @@ public class FeedProcessor {
             final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.size(); i++) {
-                final JSONObject article = articles.get(i);
-                final Entry entry = new Entry();
-
+                Entry entry = getEntryForArticle(articles, hasMultipleUsers, authorName, isFullContent, i);
                 feed.addEntry(entry);
-                final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
-
-                entry.setTitle(title);
-                final String summary = isFullContent
-                        ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                        : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
-
-                entry.setSummary(summary);
-                final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-
-                entry.setUpdated(updated);
-                final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
-
-                entry.setLink(link);
-                entry.setId(link);
-
-                if (hasMultipleUsers) {
-                    authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
-                }
-
-                entry.setAuthor(authorName);
-
-                final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
-                final String[] tagStrings = tagsString.split(",");
-
-                for (int j = 0; j < tagStrings.length; j++) {
-                    final Category catetory = new Category();
-
-                    entry.addCatetory(catetory);
-                    catetory.setTerm(tagStrings[j]);
-                }
             }
 
             renderer.setContent(feed.toString());
@@ -343,6 +305,35 @@ public class FeedProcessor {
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    private Entry getEntryForArticle(final List<JSONObject> articles, final boolean hasMultipleUsers, String authorName,
+            final boolean isFullContent, int i)
+            throws org.json.JSONException, org.b3log.latke.service.ServiceException {
+        final JSONObject article = articles.get(i);
+        final Entry entry = new Entry();
+        final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
+        entry.setTitle(title);
+        final String summary = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+        entry.setSummary(summary);
+        final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+        entry.setUpdated(updated);
+        final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
+        entry.setLink(link);
+        entry.setId(link);
+        if (hasMultipleUsers) {
+            authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
+        }
+        entry.setAuthor(authorName);
+        final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
+        final String[] tagStrings = tagsString.split(",");
+        for (int j = 0; j < tagStrings.length; j++) {
+            final Category catetory = new Category();
+            entry.addCatetory(catetory);
+            catetory.setTerm(tagStrings[j]);
+        }
+        return entry;
     }
 
     /**
@@ -403,45 +394,8 @@ public class FeedProcessor {
             final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.getJSONObject(i);
-                final Item item = new Item();
-
+                Item item = getItem(articles, hasMultipleUsers, authorName, isFullContent, i);
                 channel.addItem(item);
-                final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
-
-                item.setTitle(title);
-                final String description = isFullContent
-                        ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                        : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
-
-                item.setDescription(description);
-                final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-
-                item.setPubDate(pubDate);
-                final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
-
-                item.setLink(link);
-                item.setGUID(link);
-
-                final String authorEmail = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
-
-                if (hasMultipleUsers) {
-                    authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
-                }
-
-                item.setAuthor(authorEmail + "(" + authorName + ")");
-
-                final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
-                final String[] tagStrings = tagsString.split(",");
-
-                for (int j = 0; j < tagStrings.length; j++) {
-                    final org.b3log.solo.model.feed.rss.Category catetory = new org.b3log.solo.model.feed.rss.Category();
-
-                    item.addCatetory(catetory);
-                    final String tag = tagStrings[j];
-
-                    catetory.setTerm(tag);
-                }
             }
 
             renderer.setContent(channel.toString());
@@ -454,6 +408,38 @@ public class FeedProcessor {
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    private Item getItem(final JSONArray articles, final boolean hasMultipleUsers, String authorName,
+            final boolean isFullContent, int i)
+            throws org.json.JSONException, org.b3log.latke.service.ServiceException {
+        final JSONObject article = articles.getJSONObject(i);
+        final Item item = new Item();
+        final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
+        item.setTitle(title);
+        final String description = isFullContent
+                ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+        item.setDescription(description);
+        final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+        item.setPubDate(pubDate);
+        final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
+        item.setLink(link);
+        item.setGUID(link);
+        final String authorEmail = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
+        if (hasMultipleUsers) {
+            authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
+        }
+        item.setAuthor(authorEmail + "(" + authorName + ")");
+        final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
+        final String[] tagStrings = tagsString.split(",");
+        for (int j = 0; j < tagStrings.length; j++) {
+            final org.b3log.solo.model.feed.rss.Category catetory = new org.b3log.solo.model.feed.rss.Category();
+            item.addCatetory(catetory);
+            final String tag = tagStrings[j];
+            catetory.setTerm(tag);
+        }
+        return item;
     }
 
     /**
@@ -547,43 +533,8 @@ public class FeedProcessor {
             final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
 
             for (int i = 0; i < articles.size(); i++) {
-                final JSONObject article = articles.get(i);
-                final Item item = new Item();
-
+                Item item = getItemForArticles(articles, hasMultipleUsers, authorName, isFullContent, i);
                 channel.addItem(item);
-                final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
-
-                item.setTitle(title);
-                final String description = isFullContent
-                        ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                        : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
-
-                item.setDescription(description);
-                final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-
-                item.setPubDate(pubDate);
-                final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
-
-                item.setLink(link);
-                item.setGUID(link);
-
-                final String authorEmail = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
-
-                if (hasMultipleUsers) {
-                    authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
-                }
-
-                item.setAuthor(authorEmail + "(" + authorName + ")");
-
-                final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
-                final String[] tagStrings = tagsString.split(",");
-
-                for (int j = 0; j < tagStrings.length; j++) {
-                    final org.b3log.solo.model.feed.rss.Category catetory = new org.b3log.solo.model.feed.rss.Category();
-
-                    item.addCatetory(catetory);
-                    catetory.setTerm(tagStrings[j]);
-                }
             }
 
             renderer.setContent(channel.toString());
@@ -596,5 +547,36 @@ public class FeedProcessor {
                 throw new RuntimeException(ex);
             }
         }
+    }
+
+    private Item getItemForArticles(final List<JSONObject> articles, final boolean hasMultipleUsers, String authorName,
+            final boolean isFullContent, int i)
+            throws org.json.JSONException, org.b3log.latke.service.ServiceException {
+        final JSONObject article = articles.get(i);
+        final Item item = new Item();
+        final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
+        item.setTitle(title);
+        final String description = isFullContent
+                ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
+                : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+        item.setDescription(description);
+        final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
+        item.setPubDate(pubDate);
+        final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
+        item.setLink(link);
+        item.setGUID(link);
+        final String authorEmail = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
+        if (hasMultipleUsers) {
+            authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
+        }
+        item.setAuthor(authorEmail + "(" + authorName + ")");
+        final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
+        final String[] tagStrings = tagsString.split(",");
+        for (int j = 0; j < tagStrings.length; j++) {
+            final org.b3log.solo.model.feed.rss.Category catetory = new org.b3log.solo.model.feed.rss.Category();
+            item.addCatetory(catetory);
+            catetory.setTerm(tagStrings[j]);
+        }
+        return item;
     }
 }
