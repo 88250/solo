@@ -53,6 +53,7 @@ import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.LinkRepository;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.StatisticRepository;
 import org.b3log.solo.repository.TagArticleRepository;
@@ -70,7 +71,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.10, Sep 13, 2016
+ * @version 1.5.2.10, Nov 2, 2016
  * @since 0.4.0
  */
 @Service
@@ -134,6 +135,12 @@ public class InitService {
      */
     @Inject
     private CommentRepository commentRepository;
+
+    /**
+     * Link repository.
+     */
+    @Inject
+    private LinkRepository linkRepository;
 
     /**
      * Maximum count of initialization.
@@ -242,6 +249,7 @@ public class InitService {
                     initPreference(requestJSONObject);
                     initReplyNotificationTemplate();
                     initAdmin(requestJSONObject);
+                    initLink();
                 }
 
                 transaction.commit();
@@ -514,6 +522,24 @@ public class InitService {
         userRepository.add(admin);
 
         LOGGER.debug("Initialized admin");
+    }
+
+    /**
+     * Initializes link.
+     *
+     * @throws Exception exception
+     */
+    private void initLink() throws Exception {
+        final JSONObject link = new JSONObject();
+
+        link.put(Link.LINK_TITLE, "黑客派");
+        link.put(Link.LINK_ADDRESS, "https://hacpai.com");
+        link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
+
+        final int maxOrder = linkRepository.getMaxOrder();
+
+        link.put(Link.LINK_ORDER, maxOrder + 1);
+        final String ret = linkRepository.add(link);
     }
 
     /**
