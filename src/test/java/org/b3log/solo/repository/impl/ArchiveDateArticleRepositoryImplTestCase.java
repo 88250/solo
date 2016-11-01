@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import junit.framework.Assert;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
@@ -23,6 +22,7 @@ import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
@@ -36,7 +36,7 @@ public class ArchiveDateArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Adds successfully.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -61,37 +61,30 @@ public class ArchiveDateArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get By ArchiveDate Id.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
     public void getByArchiveDateId() throws Exception {
-        final ArchiveDateArticleRepository archiveDateArticleRepository =
-                getArchiveDateArticleRepository();
+        final ArchiveDateArticleRepository archiveDateArticleRepository = getArchiveDateArticleRepository();
 
-        final JSONObject found =
-                archiveDateArticleRepository.getByArchiveDateId(
-                "archiveDateId", 1, Integer.MAX_VALUE);
+        final JSONObject found = archiveDateArticleRepository.getByArchiveDateId("archiveDateId", 1, Integer.MAX_VALUE);
         Assert.assertNotNull(found);
 
-        final JSONObject notFound = archiveDateArticleRepository.
-                getByArchiveDateId("not found", 1, Integer.MAX_VALUE);
+        final JSONObject notFound = archiveDateArticleRepository.getByArchiveDateId("not found", 1, Integer.MAX_VALUE);
         Assert.assertNotNull(notFound);
     }
 
     /**
      * Get By Archive Id.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
     public void getByArticleId() throws Exception {
-        final ArchiveDateArticleRepository archiveDateArticleRepository =
-                getArchiveDateArticleRepository();
+        final ArchiveDateArticleRepository archiveDateArticleRepository = getArchiveDateArticleRepository();
 
-        Assert.assertNotNull(
-                archiveDateArticleRepository.getByArticleId("articleId"));
-        Assert.assertNull(
-                archiveDateArticleRepository.getByArticleId("not found"));
+        Assert.assertNotNull(archiveDateArticleRepository.getByArticleId("articleId"));
+        Assert.assertNull(archiveDateArticleRepository.getByArticleId("not found"));
     }
 }
