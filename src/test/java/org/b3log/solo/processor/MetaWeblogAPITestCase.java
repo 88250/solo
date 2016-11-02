@@ -7,6 +7,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Date;
 
 import javax.servlet.ReadListener;
 import javax.servlet.ServletContext;
@@ -14,6 +15,8 @@ import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.time.DateFormatUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.service.InitService;
@@ -63,6 +66,10 @@ public class MetaWeblogAPITestCase extends AbstractTestCase  {
         when(request.getRequestURI()).thenReturn("/apis/metaweblog");
         when(request.getMethod()).thenReturn("POST");
         
+//        Date date = (Date) DateFormatUtils.ISO_DATETIME_FORMAT.parseObject("2004-05-03T17:30:08");
+        Date date = DateUtils.parseDate("20040503T17:30:08", new String[]{"yyyyMMdd'T'HH:mm:ss", "yyyyMMdd'T'HH:mm:ss'Z'"});
+        
+        
 		final class MockServletInputStream extends ServletInputStream {
 			private ByteArrayInputStream stream;
 			public MockServletInputStream(byte[] data) {
@@ -102,7 +109,25 @@ public class MetaWeblogAPITestCase extends AbstractTestCase  {
 						.append("<value><string>pass</string></value>")
 					.append("</param>")
 					.append("<param>")
-						.append("<value><struct> <member><name>dateCreated</name><value><dateTime.iso8601>2004-05-03T17:30:08</dateTime.iso8601></value></member>   <member><name>title</name><value>title</value></member>  <member><name>description</name><value>description</value>  </member></struct></value>")
+						.append("<value>")
+							.append("<struct>")
+								.append("<member>")
+									.append("<name>dateCreated</name>")
+									.append("<value><dateTime.iso8601>20040503T17:30:08</dateTime.iso8601></value>")
+								.append("</member>")
+								.append("<member>")
+									.append("<name>title</name>")
+									.append("<value><string>title</string></value>")
+								.append("</member>")
+								.append("<member>")
+									.append("<name>description</name>")
+									.append("<value><string>description</string></value>")
+								.append("</member>")
+							.append("</struct>")
+						.append("</value>")
+					.append("</param>")
+					.append("<param>")
+						.append("<value><boolean>1</boolean></value>")
 					.append("</param>")
 				.append("</params>")
 			.append("</methodCall>");
