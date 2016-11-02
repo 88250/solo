@@ -15,9 +15,9 @@
  */
 package org.b3log.solo.processor.renderer;
 
-
 import freemarker.template.Configuration;
 import freemarker.template.Template;
+import freemarker.template.TemplateExceptionHandler;
 import java.io.IOException;
 import javax.servlet.ServletContext;
 import org.b3log.latke.logging.Logger;
@@ -25,13 +25,12 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.SoloServletListener;
 
-
 /**
- * <a href="http://freemarker.org">FreeMarker</a> HTTP response
- * renderer for administrator console and initialization rendering.
+ * <a href="http://freemarker.org">FreeMarker</a> HTTP response renderer for administrator console and initialization
+ * rendering.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Apr 15, 2014
+ * @version 1.0.1.2, Nov 2, 2016
  * @since 0.4.1
  */
 public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
@@ -53,6 +52,8 @@ public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
         final ServletContext servletContext = SoloServletListener.getServletContext();
 
         TEMPLATE_CFG.setServletContextForTemplateLoading(servletContext, "");
+        TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        TEMPLATE_CFG.setLogTemplateExceptions(false);
     }
 
     @Override
@@ -65,8 +66,10 @@ public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
     }
 
     @Override
-    protected void beforeRender(final HTTPRequestContext context) throws Exception {}
+    protected void beforeRender(final HTTPRequestContext context) throws Exception {
+    }
 
     @Override
-    protected void afterRender(final HTTPRequestContext context) throws Exception {}
+    protected void afterRender(final HTTPRequestContext context) throws Exception {
+    }
 }
