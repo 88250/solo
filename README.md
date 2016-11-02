@@ -65,7 +65,7 @@ Solo 的前端部分为了降低复杂度， 只依赖于 jQuery、编辑器、�
 
 ## 版本历史
 
-Solo 的**第一个版本发布于 2010 年**，我们对每个版本都进行了详细的变更记录，[这里](http://solo.b3log.org/CHANGE_LOGS.html)可以看到 Solo 成长的全貌 :seedling:
+Solo 的**第一个版本发布于 2010 年**，我们对每个版本都进行了详细的变更记录，[这里](http://solo.b3log.org/CHANGE_LOGS.html)可以看到 Solo 成长的全貌。
 
 每一次开发新版本时我们都会在开发分支上进行，尽量避免给其他开发者们带来困扰。因为我们知道只有专业和尽责才能让 Solo 这个开源项目走得更远，**谁让你我的征途是星辰和大海呢！**
 
@@ -73,7 +73,7 @@ Solo 的**第一个版本发布于 2010 年**，我们对每个版本都进行�
 
 Solo 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/solo/graphs/contributors)看到。
 
-我们非常期待你加入到这个项目中，无论是使用反馈还是代码补丁，都是对 Solo 的一份满满的爱 :heart:
+我们非常期待你加入到这个项目中，无论是使用反馈还是代码补丁，都是对 Solo 一份满满的爱 :heart:
 
 ## Terms
 
