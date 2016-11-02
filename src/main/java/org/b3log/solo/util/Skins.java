@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.util;
 
+import freemarker.template.TemplateExceptionHandler;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -44,7 +45,7 @@ import org.b3log.solo.model.Skin;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.4.7, Dec 27, 2015
+ * @version 1.1.4.8, Nov 2, 2016
  * @since 0.3.1
  */
 public final class Skins {
@@ -134,7 +135,12 @@ public final class Skins {
         final ServletContext servletContext = SoloServletListener.getServletContext();
 
         Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + skinDirName);
+        Templates.MAIN_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        Templates.MAIN_CFG.setLogTemplateExceptions(false);
+
         Templates.MOBILE_CFG.setServletContextForTemplateLoading(servletContext, "/skins/mobile");
+        Templates.MOBILE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        Templates.MOBILE_CFG.setLogTemplateExceptions(false);
     }
 
     /**
@@ -172,7 +178,7 @@ public final class Skins {
 
     /**
      * Gets skin directory name from the specified request.
-     * 
+     *
      * @param request the specified request
      * @return directory name, or {@code "default"} if not found
      */
@@ -181,7 +187,7 @@ public final class Skins {
 
         // 1. Get skin from query
         final String specifiedSkin = request.getParameter(Skin.SKIN);
-        
+
         if ("default".equals(specifiedSkin)) {
             return "default";
         }
