@@ -87,6 +87,6 @@ public class LinkQueryServiceTestCase extends AbstractTestCase {
         final JSONObject result = linkQueryService.getLinks(paginationRequest);
 
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.getJSONArray(Link.LINKS).length(), 1);
+        Assert.assertEquals(result.getJSONArray(Link.LINKS).length(), 2);
     }
 }

@@ -18,12 +18,14 @@ package org.b3log.solo;
 import java.sql.Connection;
 import java.util.Collection;
 import java.util.Locale;
+
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.ioc.config.Discoverer;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
+import org.b3log.solo.api.metaweblog.MetaWeblogAPI;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.b3log.solo.repository.ArticleRepository;
@@ -48,7 +50,24 @@ import org.b3log.solo.repository.impl.StatisticRepositoryImpl;
 import org.b3log.solo.repository.impl.TagArticleRepositoryImpl;
 import org.b3log.solo.repository.impl.TagRepositoryImpl;
 import org.b3log.solo.repository.impl.UserRepositoryImpl;
-import org.b3log.solo.service.*;
+import org.b3log.solo.service.ArchiveDateQueryService;
+import org.b3log.solo.service.ArticleMgmtService;
+import org.b3log.solo.service.ArticleQueryService;
+import org.b3log.solo.service.CommentMgmtService;
+import org.b3log.solo.service.CommentQueryService;
+import org.b3log.solo.service.InitService;
+import org.b3log.solo.service.LinkMgmtService;
+import org.b3log.solo.service.LinkQueryService;
+import org.b3log.solo.service.OptionMgmtService;
+import org.b3log.solo.service.OptionQueryService;
+import org.b3log.solo.service.PageMgmtService;
+import org.b3log.solo.service.PageQueryService;
+import org.b3log.solo.service.PreferenceMgmtService;
+import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.TagMgmtService;
+import org.b3log.solo.service.TagQueryService;
+import org.b3log.solo.service.UserMgmtService;
+import org.b3log.solo.service.UserQueryService;
 import org.testng.annotations.BeforeClass;
 
 /**
@@ -360,5 +379,10 @@ public abstract class AbstractTestCase {
      */
     public OptionQueryService getOptionQueryService() {
         return beanManager.getReference(OptionQueryService.class);
+    }
+    
+    
+    public MetaWeblogAPI getMetaWeblogAPI() {
+    	return beanManager.getReference(MetaWeblogAPI.class);
     }
 }
