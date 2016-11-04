@@ -28,7 +28,7 @@ import org.pegdown.PegDownProcessor;
  * Uses the <a href="http://markdown.tautua.org/">MarkdownPapers</a> as the converter.</p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.1, May 16, 2016
+ * @version 2.0.0.2, Nov 3, 2016
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -50,7 +50,7 @@ public final class Markdowns {
             return "";
         }
 
-        final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL, 5000);
+        final PegDownProcessor pegDownProcessor = new PegDownProcessor(Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS, 5000);
         String ret = pegDownProcessor.markdownToHtml(markdownText);
 
         if (!StringUtils.startsWith(ret, "<p>")) {
