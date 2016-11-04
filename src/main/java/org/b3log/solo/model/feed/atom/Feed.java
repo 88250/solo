@@ -15,20 +15,17 @@
  */
 package org.b3log.solo.model.feed.atom;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 import org.apache.commons.lang.time.DateFormatUtils;
 
-
 /**
  * Feed.
  *
  * <p>
- * See <a href="http://tools.ietf.org/html/rfc4287">RFC 4278</a> for more
- * details.
+ * See <a href="http://tools.ietf.org/html/rfc4287">RFC 4278</a> for more details.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -72,7 +69,7 @@ public final class Feed {
     /**
      * Entries.
      */
-    private List<Entry> entries = new ArrayList<Entry>();
+    private List<Entry> entries = new ArrayList<>();
 
     /**
      * Link variable.
@@ -166,7 +163,7 @@ public final class Feed {
 
     /**
      * Gets the id.
-     * 
+     *
      * @return id
      */
     public String getId() {
@@ -175,7 +172,7 @@ public final class Feed {
 
     /**
      * Sets the id with the specified id.
-     * 
+     *
      * @param id the specified id
      */
     public void setId(final String id) {
@@ -302,7 +299,7 @@ public final class Feed {
 
         stringBuilder.append(START_UPDATED_ELEMENT);
         stringBuilder.append(DateFormatUtils.format(// using ISO-8601 instead of RFC-3339
-            updated, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.getPattern(), TimeZone.getTimeZone(TIME_ZONE_ID)));
+                updated, DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.getPattern(), TimeZone.getTimeZone(TIME_ZONE_ID)));
         stringBuilder.append(END_UPDATED_ELEMENT);
 
         stringBuilder.append(START_AUTHOR_ELEMENT);

@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.model.feed.rss;
 
-
 /**
  * Category.
  *

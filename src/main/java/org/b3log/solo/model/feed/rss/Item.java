@@ -15,13 +15,11 @@
  */
 package org.b3log.solo.model.feed.rss;
 
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import org.apache.commons.lang.time.DateFormatUtils;
-
 
 /**
  * Item.
@@ -75,7 +73,7 @@ public final class Item {
     /**
      * Categories.
      */
-    private Set<Category> categories = new HashSet<Category>();
+    private Set<Category> categories = new HashSet<>();
 
     /**
      * Start guid element.
@@ -129,7 +127,7 @@ public final class Item {
 
     /**
      * Gets the GUID.
-     * 
+     *
      * @return GUID
      */
     public String getGUID() {
@@ -138,7 +136,7 @@ public final class Item {
 
     /**
      * Sets the GUID with the specified GUID.
-     * 
+     *
      * @param guid the specified GUID
      */
     public void setGUID(final String guid) {
