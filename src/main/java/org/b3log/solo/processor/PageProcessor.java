@@ -118,8 +118,6 @@ public class PageProcessor {
 
             Skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
             // See PermalinkFilter#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
 

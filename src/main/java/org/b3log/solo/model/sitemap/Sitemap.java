@@ -38,7 +38,7 @@ public final class Sitemap {
     /**
      * Start document.
      */
-    private static final String START_DOCUMENT = "<?xml version='1.0' encoding='UTF-8'?>";
+    private static final String START_DOCUMENT = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
 
     /**
      * Start URL set element.
@@ -53,7 +53,7 @@ public final class Sitemap {
     /**
      * URLs.
      */
-    private List<URL> urls = new ArrayList<URL>();
+    private List<URL> urls = new ArrayList<>();
 
     /**
      * Adds the specified url.
