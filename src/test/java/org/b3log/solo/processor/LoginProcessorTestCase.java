@@ -15,7 +15,9 @@
  */
 package org.b3log.solo.processor;
 
+import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -23,25 +25,23 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.Query;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * {@link FeedProcessor} test case.
+ * {@link LoginProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 4, 2016
+ * @version 1.0.0.0, Nov 5, 2016
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
-public class FeedProcessorTestCase extends AbstractTestCase {
+public class LoginProcessorTestCase extends AbstractTestCase {
 
     /**
      * Init.
@@ -64,16 +64,18 @@ public class FeedProcessorTestCase extends AbstractTestCase {
     }
 
     /**
-     * blogArticlesAtom.
+     * showLogin.
      *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void blogArticlesAtom() throws Exception {
+    public void showLogin() throws Exception {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/blog-articles-feed.do");
+        when(request.getRequestURI()).thenReturn("/login");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
         when(request.getMethod()).thenReturn("GET");
+        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
         dispatcherServlet.init();
@@ -87,23 +89,27 @@ public class FeedProcessorTestCase extends AbstractTestCase {
         dispatcherServlet.service(request, response);
 
         final String content = stringWriter.toString();
-        Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\"?>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用 Solo!</title>"));
     }
 
     /**
-     * tagArticlesAtom.
+     * login.
      *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void tagArticlesAtom() throws Exception {
+    public void login() throws Exception {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/tag-articles-feed.do");
-        when(request.getMethod()).thenReturn("GET");
+        when(request.getRequestURI()).thenReturn("/login");
+        when(request.getMethod()).thenReturn("POST");
 
-        final JSONObject tag = getTagRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
-        when(request.getQueryString()).thenReturn("tag=" + tag.optString(Keys.OBJECT_ID));
+        final JSONObject requestJSON = new JSONObject();
+        requestJSON.put(User.USER_EMAIL, "test@gmail.com");
+        requestJSON.put(User.USER_PASSWORD, "pass");
+
+        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
+        when(request.getReader()).thenReturn(reader);
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
         dispatcherServlet.init();
@@ -117,61 +123,6 @@ public class FeedProcessorTestCase extends AbstractTestCase {
         dispatcherServlet.service(request, response);
 
         final String content = stringWriter.toString();
-        Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));
-    }
-
-    /**
-     * blogArticlesRSS.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "init")
-    public void blogArticlesRSS() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/blog-articles-rss.do");
-        when(request.getMethod()).thenReturn("GET");
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
-        Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));
-    }
-
-    /**
-     * tagArticlesRSS.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "init")
-    public void tagArticlesRSS() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/tag-articles-rss.do");
-        when(request.getMethod()).thenReturn("GET");
-        final JSONObject tag = getTagRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
-        when(request.getQueryString()).thenReturn("tag=" + tag.optString(Keys.OBJECT_ID));
-
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
-        Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));
+        Assert.assertTrue(StringUtils.contains(content, "isLoggedIn\":true"));
     }
 }
