@@ -125,4 +125,94 @@ public class LoginProcessorTestCase extends AbstractTestCase {
         final String content = stringWriter.toString();
         Assert.assertTrue(StringUtils.contains(content, "isLoggedIn\":true"));
     }
+
+    /**
+     * logout.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void logout() throws Exception {
+        final HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
+        when(request.getRequestURI()).thenReturn("/logout");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getMethod()).thenReturn("GET");
+        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
+
+        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
+        dispatcherServlet.init();
+
+        final StringWriter stringWriter = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(stringWriter);
+
+        final HttpServletResponse response = mock(HttpServletResponse.class);
+        when(response.getWriter()).thenReturn(printWriter);
+
+        dispatcherServlet.service(request, response);
+
+        verify(response).sendRedirect("/");
+    }
+
+    /**
+     * showForgot.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void showForgot() throws Exception {
+        final HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
+        when(request.getRequestURI()).thenReturn("/forgot");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getMethod()).thenReturn("GET");
+        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
+
+        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
+        dispatcherServlet.init();
+
+        final StringWriter stringWriter = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(stringWriter);
+
+        final HttpServletResponse response = mock(HttpServletResponse.class);
+        when(response.getWriter()).thenReturn(printWriter);
+
+        dispatcherServlet.service(request, response);
+
+        final String content = stringWriter.toString();
+        Assert.assertTrue(StringUtils.contains(content, " <title>忘记密码 Solo!</title>"));
+    }
+
+    /**
+     * forgot.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void forgot() throws Exception {
+        final HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
+        when(request.getRequestURI()).thenReturn("/forgot");
+        when(request.getMethod()).thenReturn("POST");
+
+        final JSONObject requestJSON = new JSONObject();
+        requestJSON.put(User.USER_EMAIL, "test@gmail.com");
+
+        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
+        when(request.getReader()).thenReturn(reader);
+
+        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
+        dispatcherServlet.init();
+
+        final StringWriter stringWriter = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(stringWriter);
+
+        final HttpServletResponse response = mock(HttpServletResponse.class);
+        when(response.getWriter()).thenReturn(printWriter);
+
+        dispatcherServlet.service(request, response);
+
+        final String content = stringWriter.toString();
+        Assert.assertTrue(StringUtils.contains(content, "succeed\":true"));
+    }
 }
