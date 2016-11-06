@@ -43,7 +43,7 @@ import org.testng.annotations.Test;
  * {@link CommentProcessorTestCase} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 2, 2016
+ * @version 1.0.0.1, Nov 5, 2016
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -76,8 +76,6 @@ public class CommentProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void addPageComment() throws Exception {
-        addPage();
-
         final HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/add-page-comment.do");
@@ -120,8 +118,6 @@ public class CommentProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void addArticleComment() throws Exception {
-        addPage();
-
         final HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/add-article-comment.do");
