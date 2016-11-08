@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.4, May 30, 2015
+ * @version 1.1.2.5, Nov 8, 2016
  */
 
 /* page-list 相关操作 */
@@ -77,7 +77,7 @@ admin.pageList = {
         }
 
         admin.pageList.currentEditorType = Label.editorType;
-        admin.editors.pageEditor = new Editor({
+        admin.editors.pageEditor = new SoloEditor({
             language: language,
             kind: "all",
             id: "pageContent"

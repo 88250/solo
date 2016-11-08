@@ -17,13 +17,13 @@
  * @fileoverview editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.4, May 30, 2015
+ * @version 1.1.0.5, Nov 8, 2016
  */
 
 admin.editors = {};
 
 /*
- * @description Create Editor can use all editor. 
+ * @description Create SoloEditor can use all editor. 
  *                e.g: TinyMCE, wnd 
  * @constructor
  * @param conf 编辑器初始化参数
@@ -33,7 +33,7 @@ admin.editors = {};
  * @param conf.type 编辑器种类
  * @param conf.codeMirrorLanguage codeMirror 编辑器当前解析语言
  */
-var Editor = function (conf) {
+var SoloEditor = function (conf) {
     this._defaults = {
         type: "tinyMCE",
         kind: "",
@@ -45,7 +45,7 @@ var Editor = function (conf) {
     this._init();
 };
 
-$.extend(Editor.prototype, {
+$.extend(SoloEditor.prototype, {
     /*
      * @description 初始化
      */

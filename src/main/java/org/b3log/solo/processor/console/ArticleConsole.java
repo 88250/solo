@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor.console;
 
-
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,11 +37,11 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 
 /**
  * Article console request processing.
@@ -95,19 +94,19 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request, for example,
-     * <pre>
+     * @param request the specified http servlet request, for example,      <pre>
      * {
      *     "markdownText": ""
      * }
      * </pre>
+     *
      * @param response the specified http servlet response
      * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/markdown/2html", method = HTTPRequestMethod.POST)
     public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
 
         context.setRenderer(renderer);
@@ -117,8 +116,7 @@ public class ArticleConsole {
 
         result.put(Keys.STATUS_CODE, true);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-        final String markdownText = requestJSONObject.getString("markdownText");
+        final String markdownText = request.getParameter("markdownText");
 
         if (Strings.isEmptyOrNull(markdownText)) {
             result.put("html", "");
@@ -132,7 +130,8 @@ public class ArticleConsole {
         }
 
         try {
-            final String html = Markdowns.toHTML(markdownText);
+            String html = Emotions.convert(markdownText);
+            html = Markdowns.toHTML(html);
 
             result.put("html", html);
         } catch (final Exception e) {
@@ -179,7 +178,7 @@ public class ArticleConsole {
      */
     @RequestProcessing(value = "/console/article/*", method = HTTPRequestMethod.GET)
     public void getArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -207,13 +206,12 @@ public class ArticleConsole {
     }
 
     /**
-     * Gets articles(by crate date descending) by the specified request json
-     * object.
+     * Gets articles(by crate date descending) by the specified request json object.
      *
      * <p>
-     * The request URI contains the pagination arguments. For example, the 
-     * request URI is /console/articles/status/published/1/10/20, means the
-     * current page is 1, the page size is 10, and the window size is 20.
+     * The request URI contains the pagination arguments. For example, the request URI is
+     * /console/articles/status/published/1/10/20, means the current page is 1, the page size is 10, and the window size
+     * is 20.
      * </p>
      *
      * <p>
@@ -245,9 +243,9 @@ public class ArticleConsole {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/articles/status/*/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-        method = HTTPRequestMethod.GET)
+            method = HTTPRequestMethod.GET)
     public void getArticles(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -315,7 +313,7 @@ public class ArticleConsole {
      */
     @RequestProcessing(value = "/console/article/{articleId}", method = HTTPRequestMethod.DELETE)
     public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-        final String articleId) throws Exception {
+            final String articleId) throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -372,7 +370,7 @@ public class ArticleConsole {
      */
     @RequestProcessing(value = "/console/article/unpublish/*", method = HTTPRequestMethod.PUT)
     public void cancelPublishArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -431,7 +429,7 @@ public class ArticleConsole {
      */
     @RequestProcessing(value = "/console/article/canceltop/*", method = HTTPRequestMethod.PUT)
     public void cancelTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -490,7 +488,7 @@ public class ArticleConsole {
      */
     @RequestProcessing(value = "/console/article/puttop/*", method = HTTPRequestMethod.PUT)
     public void putTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -543,8 +541,7 @@ public class ArticleConsole {
      * </p>
      *
      * @param context the specified http request context
-     * @param request the specified http servlet request, for example,
-     * <pre>
+     * @param request the specified http servlet request, for example,      <pre>
      * {
      *     "article": {
      *         "oId": "",
@@ -561,12 +558,13 @@ public class ArticleConsole {
      *     }
      * }
      * </pre>
+     *
      * @param response the specified http servlet response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.PUT)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -621,8 +619,7 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request, for example,
-     * <pre>
+     * @param request the specified http servlet request, for example,      <pre>
      * {
      *     "article": {
      *         "articleTitle": "",
@@ -638,13 +635,14 @@ public class ArticleConsole {
      *     }
      * }
      * </pre>
+     *
      * @param response the specified http servlet response
      * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.POST)
     public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;

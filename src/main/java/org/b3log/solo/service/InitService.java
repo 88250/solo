@@ -71,7 +71,7 @@ import org.json.JSONObject;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.10, Nov 2, 2016
+ * @version 1.5.2.11, Nov 8, 2016
  * @since 0.4.0
  */
 @Service
@@ -310,7 +310,7 @@ public class InitService {
 
         article.put(Article.ARTICLE_ABSTRACT, content);
         article.put(Article.ARTICLE_CONTENT, content);
-        article.put(Article.ARTICLE_TAGS_REF, "B3log,Solo");
+        article.put(Article.ARTICLE_TAGS_REF, "Solo");
         article.put(Article.ARTICLE_PERMALINK, "/hello-solo");
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
@@ -336,9 +336,9 @@ public class InitService {
         final JSONObject comment = new JSONObject();
 
         comment.put(Keys.OBJECT_ID, articleId);
-        comment.put(Comment.COMMENT_NAME, "88250");
+        comment.put(Comment.COMMENT_NAME, "Daniel");
         comment.put(Comment.COMMENT_EMAIL, "dl88250@gmail.com");
-        comment.put(Comment.COMMENT_URL, "http://88250.b3log.org");
+        comment.put(Comment.COMMENT_URL, "https://hacpai.com/member/88250");
         comment.put(Comment.COMMENT_CONTENT, langPropsService.get("helloWorld.comment.content"));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
