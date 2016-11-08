@@ -56,25 +56,6 @@ Util.processClipBoard = function (clipboardData, cm) {
                     if (1 === node.attributes.length) {
                         return "";
                     }
-
-                    var requestJSONObject = {
-                        url: node.src
-                    };
-
-                    $.ajax({
-                        url: Label.servePath + "/fetch-upload",
-                        type: "POST",
-                        data: JSON.stringify(requestJSONObject),
-                        cache: false,
-                        success: function (result, textStatus) {
-                            if (result.sc) {
-                                var value = cm.getValue();
-                                value = value.replace(result.originalURL, result.url);
-                                cm.setValue(value);
-                            }
-                        }
-                    });
-
                     return "![](" + node.src + ")";
                 }
             }
