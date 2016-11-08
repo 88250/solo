@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.2, Aug 9, 2016
+ * @version 1.3.0.3, Nov 8, 2016
  * @since 0.6.0
  */
 public final class Option {
@@ -246,6 +246,7 @@ public final class Option {
      * <ul>
      * <li>"tinyMCE"</li>
      * <li>"CodeMirror-Markdown"</li>
+     * <li>"KindEditor"</li>
      * </ul>
      * </p>
      */
@@ -466,7 +467,7 @@ public final class Option {
         /**
          * Default editor type.
          */
-        public static final String DEFAULT_EDITOR_TYPE = "tinyMCE";
+        public static final String DEFAULT_EDITOR_TYPE = "CodeMirror-Markdown";
 
         static {
             final JSONArray signs = new JSONArray();
