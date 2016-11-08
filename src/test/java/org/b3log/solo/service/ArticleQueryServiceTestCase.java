@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
  * {@link ArticleQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jun 28, 2013
+ * @version 1.0.0.3, Nov 9, 2016
  */
 @Test(suiteName = "service")
 public class ArticleQueryServiceTestCase extends AbstractTestCase {
@@ -132,7 +132,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
     public void getArticlesByTag() throws Exception {
         final TagQueryService tagQueryService = getTagQueryService();
 
-        JSONObject result = tagQueryService.getTagByTitle("B3log");
+        JSONObject result = tagQueryService.getTagByTitle("Solo");
         Assert.assertNotNull(result);
 
         final JSONObject tag = result.getJSONObject(Tag.TAG);
