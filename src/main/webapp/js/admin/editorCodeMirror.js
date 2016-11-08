@@ -99,7 +99,7 @@ admin.editors.CodeMirror = {
             dragDrop: false,
             lineWrapping: true,
             status: false,
-            html2mdURL: latkeConfig.servePath + '/console/markdown/2html',
+            htmlURL: latkeConfig.servePath + '/console/markdown/2html',
             toolbar: [
                 {name: 'bold'},
                 {name: 'italic'},

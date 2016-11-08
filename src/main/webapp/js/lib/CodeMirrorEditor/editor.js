@@ -1133,7 +1133,7 @@
             cm.refresh();
             
             $.ajax({
-                url: editor.options.html2mdURL,
+                url: editor.options.htmlURL,
                 type: "POST",
                 cache: false,
                 data: {
@@ -1332,7 +1332,7 @@
         var text = cm.getValue();
 
         $.ajax({
-            url: editor.options.html2mdURL,
+            url: editor.options.htmlURL,
             type: "POST",
             cache: false,
             data: {
