@@ -62,12 +62,12 @@ public class TagProcessorTestCase extends AbstractTestCase {
     }
 
     /**
-     * showIndex.
+     * showTagArticles.
      *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void showIndex() throws Exception {
+    public void showTagArticles() throws Exception {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/tags/Solo");
