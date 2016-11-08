@@ -264,6 +264,14 @@
                     <check>true</check>
                     <format>xml</format>
                     <aggregate>true</aggregate>
+                    <instrumentation>
+                        <excludes>
+                            <exclude>org/b3log/solo/model/**</exclude>
+                            <exclude>org/b3log/solo/dev/**</exclude>
+                            <exclude>org/b3log/solo/SoloServletListener.class</exclude>
+                            <exclude>org/b3log/solo/Starter.class</exclude>
+                        </excludes>
+                    </instrumentation>
                 </configuration>
             </plugin>
             
