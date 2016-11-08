@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link TagQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Aug 3, 2015
+ * @version 1.0.0.3, Nov 9, 2016
  */
 @Test(suiteName = "service")
 public class TagQueryServiceTestCase extends AbstractTestCase {
@@ -64,9 +64,8 @@ public class TagQueryServiceTestCase extends AbstractTestCase {
 
         final List<JSONObject> tags = tagQueryService.getTags();
         Assert.assertNotNull(tags);
-        Assert.assertEquals(tags.size(), 2);
-        Assert.assertEquals(tags.get(0).getString(Tag.TAG_TITLE), "B3log");
-        Assert.assertEquals(tags.get(1).getString(Tag.TAG_TITLE), "Solo");
+        Assert.assertEquals(tags.size(), 1);
+        Assert.assertEquals(tags.get(0).getString(Tag.TAG_TITLE), "Solo");
     }
 
     /**
@@ -78,12 +77,12 @@ public class TagQueryServiceTestCase extends AbstractTestCase {
     public void getTagByTitle() throws Exception {
         final TagQueryService tagQueryService = getTagQueryService();
         
-        final JSONObject result = tagQueryService.getTagByTitle("B3log");
+        final JSONObject result = tagQueryService.getTagByTitle("Solo");
         Assert.assertNotNull(result);
         
         final JSONObject tag = result.getJSONObject(Tag.TAG);
         Assert.assertNotNull(tag);
-        Assert.assertEquals(tag.getString(Tag.TAG_TITLE), "B3log");
+        Assert.assertEquals(tag.getString(Tag.TAG_TITLE), "Solo");
         
     }
 }
