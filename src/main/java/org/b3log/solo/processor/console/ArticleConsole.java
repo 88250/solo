@@ -117,8 +117,7 @@ public class ArticleConsole {
 
         result.put(Keys.STATUS_CODE, true);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-        final String markdownText = requestJSONObject.getString("markdownText");
+        final String markdownText = request.getParameter("markdownText");
 
         if (Strings.isEmptyOrNull(markdownText)) {
             result.put("html", "");
