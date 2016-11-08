@@ -38,6 +38,52 @@ Util.processClipBoard = function (text, cm) {
 Util.startsWith = function (string, prefix) {
     return (string.match("^" + prefix) == prefix);
 };
+/**
+ * 粘贴中包含图片和文案时，需要处理为 markdown 语法
+ * @param {object} clipboardData
+ * @param {object} cm
+ * @returns {String}
+ */
+Util.processClipBoard = function (clipboardData, cm) {
+    if (clipboardData.getData("text/html") === '' && clipboardData.items.length === 2) {
+        return '';
+    }
+
+    var text = toMarkdown(clipboardData.getData("text/html"), {converters: [
+            {
+                filter: 'img',
+                replacement: function (innerHTML, node) {
+                    if (1 === node.attributes.length) {
+                        return "";
+                    }
+
+                    var requestJSONObject = {
+                        url: node.src
+                    };
+
+                    $.ajax({
+                        url: Label.servePath + "/fetch-upload",
+                        type: "POST",
+                        data: JSON.stringify(requestJSONObject),
+                        cache: false,
+                        success: function (result, textStatus) {
+                            if (result.sc) {
+                                var value = cm.getValue();
+                                value = value.replace(result.originalURL, result.url);
+                                cm.setValue(value);
+                            }
+                        }
+                    });
+
+                    return "![](" + node.src + ")";
+                }
+            }
+        ], gfm: true});
+
+    // ascii 160 替换为 30
+    text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
+    return $.trim(text);
+};
 
 admin.editors.CodeMirror = {
     /*
@@ -72,7 +118,7 @@ admin.editors.CodeMirror = {
                 var text = emojis[i];
                 if (Util.startsWith(text, input)) {
                     autocompleteHints.push({
-                        displayText: '<span style="font-size: 1rem;line-height:22px"><img style="width: 1rem;margin:3px 0;float:left" src="' 
+                        displayText: '<span style="font-size: 1rem;line-height:22px"><img style="width: 1rem;margin:3px 0;float:left" src="'
                                 + latkeConfig.servePath + '/js/lib/emojify.js-1.1.0/images/basic/' + text + '.png"> ' +
                                 displayText.toString() + '</span>',
                         text: ":" + text + ": "
