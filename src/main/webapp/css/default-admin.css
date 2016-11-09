@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.1.6.3, Nov 8, 2016
+* @version 2.1.6.4, Nov 9, 2016
 */
 
 /* start resset */
@@ -633,7 +633,7 @@ a[class*=" icon-"]:hover {
     font-weight: 400;
     text-align: center;
     white-space: nowrap;
-    vertical-align: middle;
+    vertical-align: baseline;
     cursor: pointer;
     user-select: none;
     background-image: none;
@@ -643,6 +643,7 @@ a[class*=" icon-"]:hover {
     color: #fff;
     height: auto;
     outline: none;
+    line-height: 18px;
 }
 
 .form button:hover {
@@ -823,35 +824,41 @@ button#submitArticle:hover,
     margin: 2px 12px 0 0;
 }
 .completed-panel {
-    background-color: #ECECEC;
-    border: 1px solid #CCCCCC;
+    background-color: #fff;
+    border: 1px solid #ddd;
     color: #0000CC;
     display: none;
     overflow: auto;
     padding: 2px;
     position: absolute;
     z-index: 10;
+    width: 50%;
+    border-top: 0;
 }
 .completed-panel a {
     display: block;
     text-decoration: none;
+    line-height: 26px;
+    padding: 0 5px;
 }
 .completed-panel a.selected {
-    background-color: #FFFFFF;
-    color: #D54121;
+    background-color: #f5f5f5;
+    color: #fa8564;
 }
 .completed-ck {
     margin-top: 9px;
 }
 
-.completed-ck span {
+.completed-ck span, 
+.signs button {
     margin: 5px 10px 5px 0;
     display: inline-block;
     background-color: #c7cbd6;
     border-color: #c7cbd6;
 }
 
-.completed-ck span:hover {
+.completed-ck span:hover, 
+.signs button:hover {
     background-color: #b0b5b9;
     border-color: #b0b5b9;
 }

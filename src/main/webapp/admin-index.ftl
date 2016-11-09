@@ -131,7 +131,8 @@
             </div>
         </div>
         <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>
-        <script src="${staticServePath}/js/lib/tiny_mce/tiny_mce.js"></script>
+        <script src="${servePath}/js/lib/tiny_mce/tiny_mce.js"></script>
+        <script src="${servePath}/js/lib/KindEditor/kindeditor-min.js"></script>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
