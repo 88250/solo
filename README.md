@@ -1,4 +1,4 @@
-# [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-~6.2K-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)
+# [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-~7.5K-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)
 
 ![Solo](http://img.blog.csdn.net/20160909004212828)
 
@@ -55,6 +55,13 @@ JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735
 Solo 的前端部分为了降低复杂度， 只依赖于 jQuery、编辑器、代码高亮等组件。管理后台的 SPA 框架、皮肤响应式 UI 都是我们自己实现的。
 
 **没有最好的轮子，只有最适合的轮子。** BTW，如果你想研究如何制造 Web 轮子，Solo 是一个不错的入口。
+
+另外，为了保证 Solo 的质量，我们也做了很多努力，包括：
+
+* 统一规范的编码风格
+* 完善的 javadoc 注释
+* 严格的分支、缺陷追踪管理
+* 不断完善的单元测试用例，目前覆盖率已达 **47%**
 
 ## 文档
 
