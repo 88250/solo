@@ -13,6 +13,7 @@
 * [鸣谢](#%E9%B8%A3%E8%B0%A2)
 * [界面截图](#%E7%95%8C%E9%9D%A2%E6%88%AA%E5%9B%BE)
   * [后台](#%E5%90%8E%E5%8F%B0)
+  * [编辑器](#%E7%BC%96%E8%BE%91%E5%99%A8)
   * [内置的皮肤](#%E5%86%85%E7%BD%AE%E7%9A%84%E7%9A%AE%E8%82%A4)
   * [社区贡献的皮肤](#%E7%A4%BE%E5%8C%BA%E8%B4%A1%E7%8C%AE%E7%9A%84%E7%9A%AE%E8%82%A4)
 
@@ -140,6 +141,10 @@ Logo 征集中....
 ![Admin - Post (TinyMCE/Markdown)](http://img.blog.csdn.net/20160909003905083)
 * Admin - Skins 
 ![Admin - Skins ](http://img.blog.csdn.net/20160909003855114)
+
+### 编辑器
+
+![editor](https://cloud.githubusercontent.com/assets/873584/20144758/9e70995e-a6d8-11e6-9bf8-1872994b4ff0.gif)
 
 ### 内置的皮肤
 
