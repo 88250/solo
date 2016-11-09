@@ -1,6 +1,22 @@
-# [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-~6.2K-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)
+# [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-~7.5K-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)
 
 ![Solo](http://img.blog.csdn.net/20160909004212828)
+
+* [简介](#%E7%AE%80%E4%BB%8B)
+* [功能](#%E5%8A%9F%E8%83%BD)
+* [安装](#%E5%AE%89%E8%A3%85)
+* [技术](#%E6%8A%80%E6%9C%AF)
+* [文档](#%E6%96%87%E6%A1%A3)
+* [版本历史](#%E7%89%88%E6%9C%AC%E5%8E%86%E5%8F%B2)
+* [贡献](#%E8%B4%A1%E7%8C%AE)
+* [Terms](#terms)
+* [鸣谢](#%E9%B8%A3%E8%B0%A2)
+* [界面截图](#%E7%95%8C%E9%9D%A2%E6%88%AA%E5%9B%BE)
+  * [后台](#%E5%90%8E%E5%8F%B0)
+  * [内置的皮肤](#%E5%86%85%E7%BD%AE%E7%9A%84%E7%9A%AE%E8%82%A4)
+  * [社区贡献的皮肤](#%E7%A4%BE%E5%8C%BA%E8%B4%A1%E7%8C%AE%E7%9A%84%E7%9A%AE%E8%82%A4)
+
+[![Activities](https://graphs.waffle.io/b3log/solo/throughput.svg)](https://waffle.io/b3log/solo/metrics/throughput)
 
 ## 简介
 
@@ -30,6 +46,7 @@ Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将�
 * Atom / RSS 订阅
 * Sitemap
 * MetaWeblog API
+* CDN 静态资源分离 
 
 如果有新版可用，升级过程也是非常简单的，只需要重新部署新版本就可以，不用运行额外的任何脚本。
 
@@ -50,11 +67,17 @@ JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735
 
 ## 技术
 
-为了尽量降低服务器的内存占用，顺带尝试[一些技术构想](https://hacpai.com/article/1403847528022)，我们开发了  [Latke](https://github.com/b3log/latke) 框架，并在此基础上构建了 Solo、Sym、XiaoV 等产品。这些产品反过来也会对框架提出需求，这是一个相互促进，共同演化的良性发展过程。
-
-Solo 的前端部分为了降低复杂度， 只依赖于 jQuery、编辑器、代码高亮等组件。管理后台的 SPA 框架、皮肤响应式 UI 都是我们自己实现的。
+* 后端框架：为了尽量降低服务器的内存占用，顺带尝试[一些技术构想](https://hacpai.com/article/1403847528022)，我们开发了 [Latke](https://github.com/b3log/latke) 框架，并在此基础上构建了 Solo、Sym、XiaoV 等产品。这些产品反过来也会对框架提出需求，这是一个相互促进，共同演化的良性发展过程
+* 前端框架：Solo 的前端部分为了降低复杂度， 只依赖于 jQuery、编辑器、代码高亮等组件。管理后台的 SPA 框架、皮肤响应式 UI 都是我们自己实现的
 
 **没有最好的轮子，只有最适合的轮子。** BTW，如果你想研究如何制造 Web 轮子，Solo 是一个不错的入口。
+
+另外，为了保证 Solo 的质量，我们也做了很多努力，包括：
+
+* 统一规范的编码风格
+* 完善的 javadoc 注释
+* 严格的分支、缺陷追踪管理
+* 不断完善的单元测试用例，目前覆盖率已达 **47%**
 
 ## 文档
 
