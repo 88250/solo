@@ -43,7 +43,6 @@ gulp.task('build', function () {
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js',
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js',
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
-        './src/main/webapp/js/lib/tiny_mce/tiny_mce.js',
         // codemirror
         './src/main/webapp/js/lib/CodeMirrorEditor/codemirror.js',
         './src/main/webapp/js/lib/editor/placeholder.js',
