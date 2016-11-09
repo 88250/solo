@@ -2,8 +2,6 @@
 
 ![Solo](http://img.blog.csdn.net/20160909004212828)
 
-[![Throughput Graph](https://graphs.waffle.io/b3log/solo/throughput.svg)](https://waffle.io/b3log/solo/metrics/throughput)
-
 * [简介](#%E7%AE%80%E4%BB%8B)
 * [功能](#%E5%8A%9F%E8%83%BD)
 * [安装](#%E5%AE%89%E8%A3%85)
@@ -17,6 +15,8 @@
   * [后台](#%E5%90%8E%E5%8F%B0)
   * [内置的皮肤](#%E5%86%85%E7%BD%AE%E7%9A%84%E7%9A%AE%E8%82%A4)
   * [社区贡献的皮肤](#%E7%A4%BE%E5%8C%BA%E8%B4%A1%E7%8C%AE%E7%9A%84%E7%9A%AE%E8%82%A4)
+
+[![Activities](https://graphs.waffle.io/b3log/solo/throughput.svg)](https://waffle.io/b3log/solo/metrics/throughput)
 
 ## 简介
 
