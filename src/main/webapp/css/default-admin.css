@@ -740,6 +740,10 @@ button#submitArticle:hover,
 .comment-content .CodeMirror {
     height: 170px;
 }
+
+#pagePagePanel {
+    margin-top: 0;
+}
 /* end article */
 
 /* start preference */
