@@ -2,6 +2,8 @@
 
 ![Solo](http://img.blog.csdn.net/20160909004212828)
 
+[![Throughput Graph](https://graphs.waffle.io/b3log/solo/throughput.svg)](https://waffle.io/b3log/solo/metrics/throughput)
+
 ## 简介
 
 [Solo](https://github.com/b3log/solo) 是一款**一个命令**就能搭建好的 Java 开源博客系统，并内置了 15+ 套精心制作的皮肤。除此之外，Solo 还有着非常活跃的[社区](https://hacpai.com/b3log)，文章分享到社区后可以让很多人看到，产生丰富的交流互动。
