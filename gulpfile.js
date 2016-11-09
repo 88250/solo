@@ -20,7 +20,7 @@
  * @file frontend tool.
  * 
  * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 1.3.2.0, Oct 8, 2016 
+ * @version 1.3.2.0, Nov 9, 2016 
  */
 
 'use strict';
@@ -44,7 +44,6 @@ gulp.task('build', function () {
         './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js',
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
         './src/main/webapp/js/lib/tiny_mce/tiny_mce.js',
-        './src/main/webapp/js/lib/KindEditor/kindeditor-min.js',
         // codemirror
         './src/main/webapp/js/lib/CodeMirrorEditor/codemirror.js',
         './src/main/webapp/js/lib/editor/placeholder.js',
