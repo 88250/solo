@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -41,16 +40,16 @@ import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
+import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
-
 
 /**
  * Page processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Nov 20, 2015
+ * @version 1.1.0.6, Nov 8, 2016
  * @since 0.3.1
  */
 @RequestProcessor
@@ -118,8 +117,6 @@ public class PageProcessor {
 
             Skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
             // See PermalinkFilter#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
 
@@ -141,9 +138,10 @@ public class PageProcessor {
             if ("CodeMirror-Markdown".equals(page.optString(Page.PAGE_EDITOR_TYPE))) {
                 Stopwatchs.start("Markdown Page[id=" + page.optString(Keys.OBJECT_ID) + "]");
 
-                final String content = page.optString(Page.PAGE_CONTENT);
-
-                page.put(Page.PAGE_CONTENT, Markdowns.toHTML(content));
+                String content = page.optString(Page.PAGE_CONTENT);
+                content = Emotions.convert(content);
+                content = Markdowns.toHTML(content);
+                page.put(Page.PAGE_CONTENT, content);
 
                 Stopwatchs.end();
             }

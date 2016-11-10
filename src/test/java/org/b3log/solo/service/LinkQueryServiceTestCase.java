@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * {@link LinkQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 11, 2012
+ * @version 1.0.0.2, Nov 2, 2016
  */
 @Test(suiteName = "service")
 public class LinkQueryServiceTestCase extends AbstractTestCase {
@@ -87,6 +87,6 @@ public class LinkQueryServiceTestCase extends AbstractTestCase {
         final JSONObject result = linkQueryService.getLinks(paginationRequest);
 
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.getJSONArray(Link.LINKS).length(), 1);
+        Assert.assertEquals(result.getJSONArray(Link.LINKS).length(), 2);
     }
 }

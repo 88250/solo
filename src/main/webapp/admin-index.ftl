@@ -7,7 +7,7 @@
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirrorEditor/codemirror.min.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight/styles/github.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight.js-9.6.0/styles/github.css?${staticResourceVersion}" />
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
     </head>
     <body onhashchange="admin.setCurByHash();">
@@ -131,7 +131,8 @@
             </div>
         </div>
         <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>
-        <script src="${staticServePath}/js/lib/tiny_mce/tiny_mce.js"></script>
+        <script src="${servePath}/js/lib/tiny_mce/tiny_mce.js"></script>
+        <script src="${servePath}/js/lib/KindEditor/kindeditor-min.js"></script>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>

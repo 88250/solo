@@ -86,4 +86,59 @@ public class BlogProcessorTestCase extends AbstractTestCase {
         final String content = stringWriter.toString();
         Assert.assertTrue(StringUtils.startsWith(content, "{\"staticServePath\":\"http://localhost:8080\""));
     }
+
+    /**
+     * getArticlesTags.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void getArticlesTags() throws Exception {
+        final HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
+        when(request.getRequestURI()).thenReturn("/blog/articles-tags");
+        when(request.getParameter("pwd")).thenReturn("pass");
+        when(request.getMethod()).thenReturn("GET");
+
+        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
+        dispatcherServlet.init();
+
+        final StringWriter stringWriter = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(stringWriter);
+
+        final HttpServletResponse response = mock(HttpServletResponse.class);
+        when(response.getWriter()).thenReturn(printWriter);
+
+        dispatcherServlet.service(request, response);
+
+        final String content = stringWriter.toString();
+        Assert.assertTrue(StringUtils.startsWith(content, "{\"data\":"));
+    }
+
+    /**
+     * getInterestTags.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void getInterestTags() throws Exception {
+        final HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
+        when(request.getRequestURI()).thenReturn("/blog/interest-tags");
+        when(request.getMethod()).thenReturn("GET");
+
+        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
+        dispatcherServlet.init();
+
+        final StringWriter stringWriter = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(stringWriter);
+
+        final HttpServletResponse response = mock(HttpServletResponse.class);
+        when(response.getWriter()).thenReturn(printWriter);
+
+        dispatcherServlet.service(request, response);
+
+        final String content = stringWriter.toString();
+        Assert.assertTrue(StringUtils.startsWith(content, "{\"data\":"));
+    }
 }

@@ -306,7 +306,7 @@ public class BlogProcessor {
 
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-        final Set<String> tagTitles = new HashSet<String>();
+        final Set<String> tagTitles = new HashSet<>();
 
         final List<JSONObject> topTags = tagQueryService.getTopTags(10);
         for (final JSONObject topTag : topTags) {

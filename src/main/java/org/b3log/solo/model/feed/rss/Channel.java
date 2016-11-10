@@ -15,23 +15,21 @@
  */
 package org.b3log.solo.model.feed.rss;
 
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.time.DateFormatUtils;
 
-
 /**
  * RSS 2.0 channel.
  *
  * <p>
- * See <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 at Harvard Law</a> 
+ * See <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 at Harvard Law</a>
  * for more details.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Nov 19, 2011
+ * @version 1.1.0.2, Nov 4, 2016
  * @see Item
  * @see Category
  * @since 0.3.1
@@ -76,7 +74,7 @@ public final class Channel {
     /**
      * Items.
      */
-    private List<Item> items = new ArrayList<Item>();
+    private List<Item> items = new ArrayList<>();
 
     /**
      * Time zone id.
@@ -86,8 +84,8 @@ public final class Channel {
     /**
      * Start.
      */
-    private static final String START = "<?xml version='1.0' encoding='UTF-8'?><rss version=\"2.0\" "
-        + "xmlns:atom=\"http://www.w3.org/2005/Atom\"><channel>";
+    private static final String START = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><rss version=\"2.0\" "
+            + "xmlns:atom=\"http://www.w3.org/2005/Atom\"><channel>";
 
     /**
      * End.
@@ -123,7 +121,7 @@ public final class Channel {
      * Atom link element.
      */
     private static final String ATOM_LINK_ELEMENT = "<atom:link href=\"" + ATOM_LINK_VARIABLE
-        + "\" rel=\"self\" type=\"application/rss+xml\" />";
+            + "\" rel=\"self\" type=\"application/rss+xml\" />";
 
     /**
      * Start description element.
@@ -161,13 +159,13 @@ public final class Channel {
     private static final String START_LAST_BUILD_DATE_ELEMENT = "<lastBuildDate>";
 
     /**
-     * End last build date  element.
+     * End last build date element.
      */
     private static final String END_LAST_BUILD_DATE_ELEMENT = "</lastBuildDate>";
 
     /**
      * Sets the atom link with the specified atom link.
-     * 
+     *
      * @param atomLink the specified atom link
      */
     public void setAtomLink(final String atomLink) {
@@ -176,7 +174,7 @@ public final class Channel {
 
     /**
      * Gets the atom link.
-     * 
+     *
      * @return atom link
      */
     public String getAtomLink() {
@@ -185,7 +183,7 @@ public final class Channel {
 
     /**
      * Gets the last build date.
-     * 
+     *
      * @return last build date
      */
     public Date getLastBuildDate() {
@@ -194,7 +192,7 @@ public final class Channel {
 
     /**
      * Sets the last build date with the specified last build date.
-     * 
+     *
      * @param lastBuildDate the specified last build date
      */
     public void setLastBuildDate(final Date lastBuildDate) {
@@ -203,7 +201,7 @@ public final class Channel {
 
     /**
      * Gets generator.
-     * 
+     *
      * @return generator
      */
     public String getGenerator() {
@@ -212,7 +210,7 @@ public final class Channel {
 
     /**
      * Sets the generator with the specified generator.
-     * 
+     *
      * @param generator the specified generator
      */
     public void setGenerator(final String generator) {

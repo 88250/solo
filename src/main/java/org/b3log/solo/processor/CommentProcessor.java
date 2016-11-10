@@ -106,9 +106,8 @@ public class CommentProcessor {
      *     "commentName": "",
      *     "commentEmail": "",
      *     "commentURL": "",
-     *     "commentContent": "",
-     *     "commentOriginalCommentId": "", // optional, if exists this key, the comment is an reply
-     *     "commentContent": "" // HTML
+     *     "commentContent": "", // HTML
+     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      * }
      * </pre>
      * @throws ServletException servlet exception

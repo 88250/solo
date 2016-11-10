@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.0.6.3, Sep 5, 2016
+* @version 2.1.6.4, Nov 9, 2016
 */
 
 /* start resset */
@@ -59,6 +59,124 @@ button.selected {
         url('fonts/icomoon.svg#icomoon') format('svg');
     font-weight: normal;
     font-style: normal;
+}
+
+.content-reset {
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+    word-wrap: break-word;
+    overflow: hidden;
+    line-height: 1.5; 
+}
+.content-reset ul,
+.content-reset ol {
+    padding-left: 2em;
+    margin-top: 0;
+    margin-bottom: 16px; 
+}
+.content-reset h1,
+.content-reset h2,
+.content-reset h3,
+.content-reset h4,
+.content-reset h5,
+.content-reset h6 {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    line-height: 1.25; 
+}
+.content-reset h1 {
+    padding-bottom: 0.3em;
+    font-size: 2em; 
+}
+.content-reset h2 {
+    padding-bottom: 0.3em;
+    font-size: 1.5em; 
+}
+.content-reset h3 {
+    font-size: 1.25em; 
+}
+.content-reset h4 {
+    font-size: 1em; 
+}
+.content-reset h5 {
+    font-size: 0.875em; 
+}
+.content-reset h6 {
+    font-size: 0.85em; 
+}
+.content-reset p {
+    margin-top: 0;
+    margin-bottom: 16px; 
+}
+.content-reset blockquote {
+    padding: 0 1em;
+    color: #777;
+    border-left: 0.25em solid #ddd;
+    margin-bottom: 16px; 
+}
+.content-reset blockquote p {
+    margin: 0; 
+}
+.content-reset iframe {
+    border: 1px solid #ccc; 
+}
+.content-reset table {
+    width: 100%;
+    border: 1px solid #dedede;
+    margin: 15px auto;
+    border-collapse: collapse;
+    empty-cells: show; 
+}
+.content-reset thead {
+    text-align: center; 
+}
+.content-reset td,
+.content-reset th {
+    height: 35px;
+    border: 1px solid #dedede;
+    padding: 0 10px; 
+}
+.content-reset th {
+    font-weight: bold;
+    text-align: center !important;
+    background: rgba(158, 188, 226, 0.2); 
+}
+.content-reset tbody tr:nth-child(2n) {
+    background: rgba(158, 188, 226, 0.12); 
+}
+.content-reset tr:hover {
+    background: #efefef; 
+}
+.content-reset code {
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(252, 41, 41, 0.12);
+    border-radius: 3px;
+    color: #d23f31;
+    font-family: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace; 
+}
+.content-reset pre > code {
+    padding: 0.5em;
+    border-radius: 0;
+    color: #333;
+    background-color: rgba(0, 0, 0, 0.04);
+    background-image: url(../images/code-bg.png);
+    background-size: 20px 20px;
+    border-radius: 5px; 
+}
+.content-reset kbd {
+    display: inline-block;
+    padding: 3px 5px;
+    font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    line-height: 10px;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fcfcfc;
+    border: solid 1px #ccc;
+    border-bottom-color: #bbb;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 #bbb; 
 }
 /* end reset */
 
@@ -343,7 +461,7 @@ a[class*=" icon-"]:hover {
     width: 100%;
     top: 0;
     background-color: #fff;
-    z-index: 1000;
+    z-index: 80;
 }
 
 #top>a {
@@ -515,7 +633,7 @@ a[class*=" icon-"]:hover {
     font-weight: 400;
     text-align: center;
     white-space: nowrap;
-    vertical-align: middle;
+    vertical-align: baseline;
     cursor: pointer;
     user-select: none;
     background-image: none;
@@ -525,6 +643,7 @@ a[class*=" icon-"]:hover {
     color: #fff;
     height: auto;
     outline: none;
+    line-height: 18px;
 }
 
 .form button:hover {
@@ -621,6 +740,10 @@ button#submitArticle:hover,
 .comment-content .CodeMirror {
     height: 170px;
 }
+
+#pagePagePanel {
+    margin-top: 0;
+}
 /* end article */
 
 /* start preference */
@@ -705,35 +828,41 @@ button#submitArticle:hover,
     margin: 2px 12px 0 0;
 }
 .completed-panel {
-    background-color: #ECECEC;
-    border: 1px solid #CCCCCC;
+    background-color: #fff;
+    border: 1px solid #ddd;
     color: #0000CC;
     display: none;
     overflow: auto;
     padding: 2px;
     position: absolute;
     z-index: 10;
+    width: 50%;
+    border-top: 0;
 }
 .completed-panel a {
     display: block;
     text-decoration: none;
+    line-height: 26px;
+    padding: 0 5px;
 }
 .completed-panel a.selected {
-    background-color: #FFFFFF;
-    color: #D54121;
+    background-color: #f5f5f5;
+    color: #fa8564;
 }
 .completed-ck {
     margin-top: 9px;
 }
 
-.completed-ck span {
+.completed-ck span, 
+.signs button {
     margin: 5px 10px 5px 0;
     display: inline-block;
     background-color: #c7cbd6;
     border-color: #c7cbd6;
 }
 
-.completed-ck span:hover {
+.completed-ck span:hover, 
+.signs button:hover {
     background-color: #b0b5b9;
     border-color: #b0b5b9;
 }

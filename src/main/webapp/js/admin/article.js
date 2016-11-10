@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.4, Jan 27, 2016
+ * @version 1.3.5.5, Nov 9, 2016
  */
 admin.article = {
     currentEditorType: '',
@@ -415,7 +415,7 @@ admin.article = {
                     height: 160,
                     buttonText: Label.selectLabel,
                     data: tags
-                });
+                }).width($("#tag").parent().width() - 68);
 
                 $("#loadMsg").text("");
             }
@@ -481,14 +481,14 @@ admin.article = {
         });
 
         // editor
-        admin.editors.articleEditor = new Editor({
+        admin.editors.articleEditor = new SoloEditor({
             id: "articleContent",
             kind: "all",
             fun: fun,
             height: 500
         });
 
-        admin.editors.abstractEditor = new Editor({
+        admin.editors.abstractEditor = new SoloEditor({
             id: "abstract",
             kind: "simple",
             height: 200

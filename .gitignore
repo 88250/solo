@@ -11,6 +11,8 @@
 !nb-configuration.xml
 !.travis.yml
 !Dockerfile
+!gulpfile.js
+!package.json
 
 src/main/webapp/skins/*
 !src/main/webapp/skins/mobile

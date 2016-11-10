@@ -36,15 +36,17 @@ import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * Article receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.7, Dec 31, 2015
+ * @version 1.0.2.7, Nov 8, 2016
  * @since 0.5.5
  */
 @RequestProcessor
@@ -140,8 +142,8 @@ public class ArticleReceiver {
             final JSONObject admin = userQueryService.getAdmin();
 
             article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.getString(User.USER_EMAIL));
-            final String plainTextContent = Jsoup.parse(article.optString(Article.ARTICLE_CONTENT)).text();
-
+            final String articleContent = article.optString(Article.ARTICLE_CONTENT);
+            final String plainTextContent = Jsoup.clean(Markdowns.toHTML(articleContent), Whitelist.none());
             if (plainTextContent.length() > ARTICLE_ABSTRACT_LENGTH) {
                 article.put(Article.ARTICLE_ABSTRACT, plainTextContent.substring(0, ARTICLE_ABSTRACT_LENGTH) + "....");
             } else {

@@ -51,6 +51,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
@@ -964,9 +965,10 @@ public class ArticleQueryService {
             } else if ("CodeMirror-Markdown".equals(article.optString(ARTICLE_EDITOR_TYPE))) {
                 // Markdown to HTML for content and abstract
                 Stopwatchs.start("Get Article Content [Markdown]");
-                final String content = article.optString(ARTICLE_CONTENT);
-
-                article.put(ARTICLE_CONTENT, Markdowns.toHTML(content));
+                String content = article.optString(ARTICLE_CONTENT);
+                content = Emotions.convert(content);
+                content = Markdowns.toHTML(content);
+                article.put(ARTICLE_CONTENT, content);
                 Stopwatchs.end();
             }
 
@@ -1001,16 +1003,19 @@ public class ArticleQueryService {
             Stopwatchs.start("Markdown Article[id=" + article.optString(Keys.OBJECT_ID) + "]");
 
             Stopwatchs.start("Content");
-            final String content = article.optString(ARTICLE_CONTENT);
-
-            article.put(ARTICLE_CONTENT, Markdowns.toHTML(content));
+            String content = article.optString(ARTICLE_CONTENT);
+            content = Emotions.convert(content);
+            content = Markdowns.toHTML(content);
+            article.put(ARTICLE_CONTENT, content);
             Stopwatchs.end();
 
-            final String abstractContent = article.optString(ARTICLE_ABSTRACT);
+            String abstractContent = article.optString(ARTICLE_ABSTRACT);
 
             if (!Strings.isEmptyOrNull(abstractContent)) {
                 Stopwatchs.start("Abstract");
-                article.put(ARTICLE_ABSTRACT, Markdowns.toHTML(abstractContent));
+                abstractContent = Emotions.convert(abstractContent);
+                abstractContent = Markdowns.toHTML(abstractContent);
+                article.put(ARTICLE_ABSTRACT, abstractContent);
                 Stopwatchs.end();
             }
 

@@ -952,7 +952,7 @@ public final class Emotions {
         for (final String emojiCode : EMOJIS) {
             final String emoji = ":" + emojiCode + ":";
             ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                    + staticServePath + "/js/lib/emojify.js/images/basic/" + emojiCode
+                    + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode
                     + ".png\" title=\"" + emoji + "\" width=\"20px\" height=\"20px\"></img>");
         }
 
