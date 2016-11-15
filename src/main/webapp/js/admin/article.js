@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.5, Nov 9, 2016
+ * @version 1.3.5.6, Nov 15, 2016
  */
 admin.article = {
     currentEditorType: '',
@@ -462,7 +462,7 @@ admin.article = {
             done: function (e, data) {
                 var qiniuKey = data.result.key;
                 if (!qiniuKey) {
-                    alert("Upload error");
+                    alert("Upload error, please check Qiniu configurations");
 
                     return;
                 }
@@ -471,7 +471,7 @@ admin.article = {
                         + qiniu.qiniuDomain + qiniuKey + ')</div>');
             },
             fail: function (e, data) {
-                alert("Upload error: " + data.errorThrown);
+                alert("Upload error, please check Qiniu configurations [" + data.errorThrown + "]");
             }
         }).on('fileuploadprocessalways', function (e, data) {
             var currentFile = data.files[data.index];
