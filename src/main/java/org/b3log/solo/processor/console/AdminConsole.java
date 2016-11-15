@@ -69,7 +69,7 @@ import org.json.JSONObject;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.9, Aug 10, 2016
+ * @version 1.3.2.10, Nov 15, 2016
  * @since 0.4.1
  */
 @RequestProcessor
@@ -169,7 +169,8 @@ public class AdminConsole {
                     final Auth auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY),
                             qiniu.optString(Option.ID_C_QINIU_SECRET_KEY));
 
-                    final String uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET));
+                    final String uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET),
+                            null, 3600 * 6, null);
                     dataModel.put("qiniuUploadToken", uploadToken);
                     dataModel.put(Option.ID_C_QINIU_DOMAIN, qiniu.optString(Option.ID_C_QINIU_DOMAIN));
                 } catch (final Exception e) {

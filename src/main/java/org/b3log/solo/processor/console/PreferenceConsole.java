@@ -47,7 +47,7 @@ import org.json.JSONObject;
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.8, Nov 20, 2015
+ * @version 1.2.0.9, Nov 15, 2016
  * @since 0.4.0
  */
 @RequestProcessor
@@ -437,7 +437,7 @@ public class PreferenceConsole {
             }
 
             preferenceMgmtService.updatePreference(preference);
-            
+
             final Cookie cookie = new Cookie(Skin.SKIN, preference.getString(Skin.SKIN_DIR_NAME));
             cookie.setPath("/");
             response.addCookie(cookie);
@@ -542,10 +542,10 @@ public class PreferenceConsole {
         try {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
-            final String accessKey = requestJSONObject.optString(Option.ID_C_QINIU_ACCESS_KEY);
-            final String secretKey = requestJSONObject.optString(Option.ID_C_QINIU_SECRET_KEY);
-            String domain = requestJSONObject.optString(Option.ID_C_QINIU_DOMAIN);
-            final String bucket = requestJSONObject.optString(Option.ID_C_QINIU_BUCKET);
+            final String accessKey = requestJSONObject.optString(Option.ID_C_QINIU_ACCESS_KEY).trim();
+            final String secretKey = requestJSONObject.optString(Option.ID_C_QINIU_SECRET_KEY).trim();
+            String domain = requestJSONObject.optString(Option.ID_C_QINIU_DOMAIN).trim();
+            final String bucket = requestJSONObject.optString(Option.ID_C_QINIU_BUCKET).trim();
 
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
