@@ -30,7 +30,7 @@ var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var cleanCSS = require('gulp-clean-css');
 
-gulp.task('build', function () {
+gulp.task('default', function () {
     // min css
     gulp.src('./src/main/webapp/js/lib/editor/codemirror.css')
             .pipe(cleanCSS())
