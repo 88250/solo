@@ -669,7 +669,8 @@ public class ArticleQueryService {
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
 
                 // Markdown to HTML for content and abstract
-                markdown(article);
+                //Delete by Zephyr:>在外部进行处理，避免出现重复处理的情况
+                //markdown(article);
 
                 ret.add(article);
             }

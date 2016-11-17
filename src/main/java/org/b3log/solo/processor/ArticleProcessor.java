@@ -813,8 +813,13 @@ public class ArticleProcessor {
                 final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                 filler.setArticlesExProperties(request, articles, author, preference);
+            } else{
+            	//Add by Zephyr:>
+            	//如果进入setArticlesExProperties方法，方法内部有markdown的过程，而原归档查询已经做了markdown，造成二次解析
+            	//将getArticlesByArchiveDate的MD注释，移到此处。
+            	articleQueryService.markdowns(articles);
             }
-
+            
             sort(preference, articles);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
