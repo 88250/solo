@@ -68,7 +68,8 @@ import org.jsoup.Jsoup;
  * Article processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.15, Nov 20, 2015
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.4.2.16, Nov 17, 2016
  * @since 0.3.1
  */
 @RequestProcessor
@@ -813,13 +814,8 @@ public class ArticleProcessor {
                 final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                 filler.setArticlesExProperties(request, articles, author, preference);
-            } else{
-            	//Add by Zephyr:>
-            	//如果进入setArticlesExProperties方法，方法内部有markdown的过程，而原归档查询已经做了markdown，造成二次解析
-            	//将getArticlesByArchiveDate的MD注释，移到此处。
-            	articleQueryService.markdowns(articles);
             }
-            
+
             sort(preference, articles);
 
             final Map<String, Object> dataModel = renderer.getDataModel();

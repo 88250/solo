@@ -63,7 +63,8 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
- * @version 1.1.2.4, Nov 20, 2015
+ * @author <a href="http://zephyr.b3log.org">Zephyr</a>
+ * @version 1.1.3.4, Nov 17, 2016
  * @since 0.3.5
  */
 @Service
@@ -667,10 +668,6 @@ public class ArticleQueryService {
                 }
 
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
-
-                // Markdown to HTML for content and abstract
-                //Delete by Zephyr:>在外部进行处理，避免出现重复处理的情况
-                //markdown(article);
 
                 ret.add(article);
             }
