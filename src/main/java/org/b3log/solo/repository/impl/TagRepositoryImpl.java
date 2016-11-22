@@ -16,7 +16,10 @@
 package org.b3log.solo.repository.impl;
 
 
+import java.text.Collator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.inject.Inject;
 import org.b3log.solo.model.Tag;
@@ -32,6 +35,7 @@ import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -44,6 +48,8 @@ import org.json.JSONObject;
  */
 @Repository
 public class TagRepositoryImpl extends AbstractRepository implements TagRepository {
+
+    private final static Comparator<Object> CHINA_COMPARE = Collator.getInstance(java.util.Locale.CHINA);
 
     /**
      * Public constructor.
@@ -75,12 +81,15 @@ public class TagRepositoryImpl extends AbstractRepository implements TagReposito
     @Override
     public List<JSONObject> getMostUsedTags(final int num) throws RepositoryException {
         final Query query = new Query().addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(num).setPageCount(
-            1);
+                1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
-        return CollectionUtils.jsonArrayToList(array);
+        List<JSONObject> tagJoList = CollectionUtils.jsonArrayToList(array);
+        sortJSONTagList(tagJoList);
+
+        return tagJoList;
     }
 
     @Override
@@ -101,10 +110,23 @@ public class TagRepositoryImpl extends AbstractRepository implements TagReposito
 
     /**
      * Sets tag article repository with the specified tag article repository.
-     * 
+     *
      * @param tagArticleRepository the specified tag article repository
      */
     public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
         this.tagArticleRepository = tagArticleRepository;
+    }
+
+    private void sortJSONTagList(List<JSONObject> tagJoList) {
+        Collections.sort(tagJoList, new Comparator<JSONObject>() {
+            @Override
+            public int compare(JSONObject o1, JSONObject o2) {
+                try {
+                    return CHINA_COMPARE.compare(o1.getString("tagTitle"), o2.getString("tagTitle"));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 }
