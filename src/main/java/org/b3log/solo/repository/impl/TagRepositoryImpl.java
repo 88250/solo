@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,18 +37,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 /**
  * Tag repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Nov 29, 2011
+ * @version 1.1.1.1, Nov 23, 2016
  * @since 0.3.1
  */
 @Repository
 public class TagRepositoryImpl extends AbstractRepository implements TagRepository {
 
-    private final static Comparator<Object> CHINA_COMPARE = Collator.getInstance(java.util.Locale.CHINA);
+    /**
+     * Tag-Article relation repository.
+     */
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Public constructor.
@@ -57,12 +59,6 @@ public class TagRepositoryImpl extends AbstractRepository implements TagReposito
     public TagRepositoryImpl() {
         super(Tag.TAG);
     }
-
-    /**
-     * Tag-Article relation repository.
-     */
-    @Inject
-    private TagArticleRepository tagArticleRepository;
 
     @Override
     public JSONObject getByTitle(final String tagTitle) throws RepositoryException {
@@ -117,13 +113,14 @@ public class TagRepositoryImpl extends AbstractRepository implements TagReposito
         this.tagArticleRepository = tagArticleRepository;
     }
 
-    private void sortJSONTagList(List<JSONObject> tagJoList) {
+    private void sortJSONTagList(final List<JSONObject> tagJoList) throws RepositoryException {
         Collections.sort(tagJoList, new Comparator<JSONObject>() {
             @Override
-            public int compare(JSONObject o1, JSONObject o2) {
+            public int compare(final JSONObject o1, final JSONObject o2) {
                 try {
-                    return CHINA_COMPARE.compare(o1.getString("tagTitle"), o2.getString("tagTitle"));
-                } catch (JSONException e) {
+                    return Collator.getInstance(java.util.Locale.CHINA)
+                            .compare(o1.getString(Tag.TAG_TITLE), o2.getString(Tag.TAG_TITLE));
+                } catch (final JSONException e) {
                     throw new RuntimeException(e);
                 }
             }
