@@ -13,7 +13,7 @@
     <div>
         <label>${uploadFileLabel}</label>
         <form id="articleUpload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" multiple=""/>
+            <input type="file" name="file" multiple=""/><span></span>
         </form>
     </div>
     <div>
