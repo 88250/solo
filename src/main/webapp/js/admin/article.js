@@ -467,7 +467,7 @@ admin.article = {
                     return;
                 }
 
-                $('#articleUpload').after('<div id="uploadContent">![' + filename + '](http://'
+                $('#articleUpload').after('<div id="uploadContent">![' + data.files[0].name + '](http://'
                         + qiniu.qiniuDomain + qiniuKey + ')</div>');
             },
             fail: function (e, data) {
