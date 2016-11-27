@@ -716,6 +716,10 @@ a[class*=" icon-"]:hover {
 /* end comments */
 
 /* start article */
+#articleUpload input {
+    width: 170px;
+}
+
 button#submitArticle,
 #unSubmitArticle {
     background-color: #fa8564;

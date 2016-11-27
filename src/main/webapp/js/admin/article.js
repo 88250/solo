@@ -449,6 +449,8 @@ admin.article = {
                 filename = data.files[0].name;
 
                 data.submit();
+
+                $('#articleUpload span').text('uploading...');
             },
             formData: function (form) {
                 var data = form.serializeArray();
@@ -460,18 +462,18 @@ admin.article = {
                 return data;
             },
             done: function (e, data) {
+                $('#articleUpload span').text('');
                 var qiniuKey = data.result.key;
                 if (!qiniuKey) {
                     alert("Upload error, please check Qiniu configurations");
 
                     return;
                 }
-
-                $('#articleUpload').after('<div id="uploadContent">![' + data.files[0].name + '](http://'
+                $('#articleUpload').after('<div>![' + data.files[0].name + '](http://'
                         + qiniu.qiniuDomain + qiniuKey + ')</div>');
             },
             fail: function (e, data) {
-                alert("Upload error, please check Qiniu configurations [" + data.errorThrown + "]");
+                $('#articleUpload span').text("Upload error, please check Qiniu configurations [" + data.errorThrown + "]");
             }
         }).on('fileuploadprocessalways', function (e, data) {
             var currentFile = data.files[data.index];
