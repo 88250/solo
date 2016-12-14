@@ -499,7 +499,7 @@ $.extend(Page.prototype, {
         var tips = this.tips;
         try {
             $.ajax({
-                url: "http://rhythm.b3log.org:80/get-articles-by-tags.do?tags=" + tags
+                url: "https://rhythm.b3log.org/get-articles-by-tags.do?tags=" + tags
                         + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
                 type: "GET",
                 cache: true,

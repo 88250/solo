@@ -444,7 +444,7 @@ admin.article = {
         var filename = "";
         $('#articleUpload').fileupload({
             multipart: true,
-            url: "http://upload.qiniu.com/",
+            url: "https://up.qbox.me",
             add: function (e, data) {
                 filename = data.files[0].name;
 
@@ -469,6 +469,7 @@ admin.article = {
 
                     return;
                 }
+
                 $('#articleUpload').after('<div>![' + data.files[0].name + '](http://'
                         + qiniu.qiniuDomain + qiniuKey + ')</div>');
             },
