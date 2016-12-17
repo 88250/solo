@@ -10,7 +10,7 @@
     <body>
         <div class="wrapper">
             <div class="wrap">
-                <div class="content" style="height: 380px;width: 760px">
+                <div class="content">
                     <div class="logo">
                         <a href="http://b3log.org" target="_blank">
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
