@@ -18,7 +18,7 @@
  * skin next style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.2.2.1, Sep 6, 2016
+ * @version 0.3.2.1, Dec 17, 2016
 */
 /* start reset */
 html {
@@ -693,6 +693,144 @@ img {
 /* end list*/
 
 /* start article */
+.article-body {
+    font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB","Microsoft Yahei",sans-serif;
+    word-wrap: break-word;
+    overflow: hidden;
+    line-height: 1.5
+}
+
+.article-body ul,.article-body ol {
+    padding-left: 2em;
+    margin-top: 0;
+    margin-bottom: 16px
+}
+
+.article-body li {
+    margin-top: 0.25em;
+}
+
+.article-body h1,.article-body h2,.article-body h3,.article-body h4,.article-body h5,.article-body h6 {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    line-height: 1.25
+}
+
+.article-body h1 {
+    padding-bottom: 0.3em;
+    font-size: 2em
+}
+
+.article-body h2 {
+    padding-bottom: 0.3em;
+    font-size: 1.5em
+}
+
+.article-body h3 {
+    font-size: 1.25em
+}
+
+.article-body h4 {
+    font-size: 1em
+}
+
+.article-body h5 {
+    font-size: 0.875em
+}
+
+.article-body h6 {
+    font-size: 0.85em
+}
+
+.article-body p {
+    margin-top: 0;
+    margin-bottom: 16px
+}
+
+.article-body blockquote {
+    padding: 0 1em;
+    color: #777;
+    border-left: 0.25em solid #ddd;
+    margin-bottom: 16px
+}
+
+.article-body blockquote p {
+    margin: 0
+}
+
+.article-body iframe {
+    border: 1px solid #ccc
+}
+
+.article-body table {
+    width: 100%;
+    border: 1px solid #dedede;
+    margin: 15px auto;
+    border-collapse: collapse;
+    empty-cells: show
+}
+
+.article-body thead {
+    text-align: center
+}
+
+.article-body td,.article-body th {
+    height: 35px;
+    border: 1px solid #dedede;
+    padding: 0 10px
+}
+
+.article-body th {
+    font-weight: bold;
+    text-align: center !important;
+    background: rgba(158,188,226,0.2)
+}
+
+.article-body tbody tr:nth-child(2n) {
+    background: rgba(158,188,226,0.12)
+}
+
+.article-body tr:hover {
+    background: #efefef
+}
+
+.article-body code {
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(252,41,41,0.12);
+    border-radius: 3px;
+    color: #d23f31;
+    font-family: mononoki,Consolas,"Liberation Mono",Menlo,Courier,monospace
+}
+
+.article-body pre>code {
+    padding: 0.5em;
+    border-radius: 0;
+    color: #333;
+    background-color: rgba(0,0,0,0.04);
+    background-image: url(../images/code-bg.png);
+    background-size: 20px 20px;
+    border-radius: 5px
+}
+
+.article-body kbd {
+    display: inline-block;
+    padding: 3px 5px;
+    font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    line-height: 10px;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fcfcfc;
+    border: solid 1px #ccc;
+    border-bottom-color: #bbb;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 #bbb
+}
+
+
+
 .post-header {
     text-align: center;
 }

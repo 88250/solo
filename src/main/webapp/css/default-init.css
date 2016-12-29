@@ -18,7 +18,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 1.0.1.7, Apr 15, 2016
+* @version 1.0.2.7, Dec 14, 2016
 */
 html {
     height: 100%;
@@ -146,7 +146,8 @@ button:active {
 .logo {
     float: left;
     padding: 162px 12px 0;
-    width: 153px;
+    width: 217px;
+    text-align: center;
 }
 
 .wrapper {
@@ -168,7 +169,7 @@ button:active {
     margin: 0 auto;
     padding: 0 0 28px 0;
     position: relative;
-    width: 700px;
+    width: 760px;
     top: 60px;
 }
 
@@ -225,7 +226,7 @@ button:active {
     padding: 5px;
 }
 
-.a-403, .a-500 {
+.a-403, .a-500, .a-404 {
     margin: 20px 50px 0 0 ;
     text-align: right;
 }
@@ -240,6 +241,10 @@ button:active {
 
 .a-500 {
     margin: 25px 35px 0 0 ;
+}
+
+.a-404 {
+    margin: 42px 35px 0 0;
 }
 /* end 403/404/500 */
 

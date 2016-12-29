@@ -10,8 +10,24 @@
     <body>
         <div class="wrapper">
             <div class="wrap">
-                <div class="content" style="height: 380px;width: 760px">
-                    <script type="text/javascript" src="http://www.qq.com/404/search_children.js?edition=small" charset="utf-8"></script>
+                <div class="content">
+                    <div class="logo">
+                        <a href="http://b3log.org" target="_blank">
+                            <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
+                        </a>
+                    </div>
+                    <div class="main">
+                        <h2>404 Not Found!</h2>
+                        <img class="img-t0t" width="488" src="${staticServePath}/images/404.gif" title="404" alt="500: not found!" />
+                        <div class="a-404">
+                            欢迎访问
+                            <a href="https://hacpai.com">黑客与画家</a>
+                        </div>
+                        <a href="http://b3log.org" target="_blank">
+                            <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
+                        </a>
+                    </div>
+                    <span class="clear"></span>
                 </div>
             </div>
         </div>
