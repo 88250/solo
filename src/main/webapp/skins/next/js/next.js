@@ -99,7 +99,7 @@ var NexT = {
             $('.sidebar').prepend(articleTocHTML);
             var $sectionF = $('.sidebar section:first').html($('.b3-solo-list')),
                     $sectionL = $('.sidebar section:last');
-
+            $sectionF.height($(window).height() - 90);
             // 切换 tab
             $('.sidebar > ul > li').click(function () {
                 if ($(this).data('tab') === 'toc') {
