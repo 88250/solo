@@ -52,7 +52,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.0.6, Dec 16, 2017
+ * @version 2.3.0.7, Jan 13, 2018
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -127,13 +127,13 @@ public final class Markdowns {
             MARKED_AVAILABLE = StringUtils.contains(html, "<p>Solo 大法好</p>");
 
             if (MARKED_AVAILABLE) {
-                LOGGER.log(Level.INFO, "[marked] is available, uses it for markdown processing");
+                LOGGER.log(Level.DEBUG, "[marked] is available, uses it for markdown processing");
             } else {
-                LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [flexmark] for markdown processing");
+                LOGGER.log(Level.DEBUG, "[marked] is not available, uses built-in [flexmark] for markdown processing");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.INFO, "[marked] is not available caused by [" + e.getMessage() + "], uses built-in [flexmark] for markdown processing. " +
-                    "Reads FAQ section \"如何获得更好的 Markdown 渲染效果？\" in user guide (https://hacpai.com/article/1492881378588) for more details.");
+            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [flexmark] for markdown processing. " +
+                    "Please reads FAQ section in user guide (https://hacpai.com/article/1492881378588) for more details.");
         }
     }
 
