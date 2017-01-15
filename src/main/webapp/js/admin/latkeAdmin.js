@@ -4105,7 +4105,7 @@ admin.register.main =  {
 admin.about = {
     init: function() {
         $.ajax({
-            url: "http://rhythm.b3log.org/version/solo/latest/" + Label.version,
+            url: window.location.protocol + '://' + "rhythm.b3log.org/version/solo/latest/" + Label.version,
             type: "GET",
             cache: false,
             dataType: "jsonp",

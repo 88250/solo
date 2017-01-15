@@ -579,6 +579,7 @@ img {
 .sidebar section {
     opacity: 0;
     position: relative;
+    overflow: auto;
 }
 
 .sidebar > ul > li {
