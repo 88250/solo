@@ -1,6 +1,6 @@
 /*
  * Symphony - A modern community (forum/SNS/blog) platform written in Java.
- * Copyright (C) 2012-2016,  b3log.org & hacpai.com
+ * Copyright (C) 2012-2017,  b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
  * @file frontend tool.
  * 
  * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 1.3.2.0, Nov 9, 2016 
+ * @version 1.4.2.0, Jan 21, 20167
  */
 
 'use strict';
@@ -32,10 +32,10 @@ var cleanCSS = require('gulp-clean-css');
 
 gulp.task('default', function () {
     // min css
-    gulp.src('./src/main/webapp/js/lib/editor/codemirror.css')
+    gulp.src('./src/main/webapp/js/lib/CodeMirrorEditor/codemirror.css')
             .pipe(cleanCSS())
             .pipe(concat('codemirror.min.css'))
-            .pipe(gulp.dest('./src/main/webapp/js/lib/editor/'));
+            .pipe(gulp.dest('./src/main/webapp/js/lib/CodeMirrorEditor/'));
     
     // concat js
     var jsJqueryUpload = ['./src/main/webapp/js/lib/jquery/jquery.min.js',
@@ -45,7 +45,7 @@ gulp.task('default', function () {
         './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
         // codemirror
         './src/main/webapp/js/lib/CodeMirrorEditor/codemirror.js',
-        './src/main/webapp/js/lib/editor/placeholder.js',
+        './src/main/webapp/js/lib/CodeMirrorEditor/placeholder.js',
         './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
         './src/main/webapp/js/lib/CodeMirrorEditor/editor.js',
         './src/main/webapp/js/lib/to-markdown.js',

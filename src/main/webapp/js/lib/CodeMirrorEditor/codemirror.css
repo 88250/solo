@@ -555,10 +555,11 @@ span.CodeMirror-selectedtext { background: none; }
     width: 21px;
     vertical-align: bottom;
     float: none;
-    overflow: hidden;
 }
+
 .editor-toolbar input {
     height: 1px;
+    margin-top: 8px;
 }
 .editor-toolbar form {
     display: inline;
@@ -603,7 +604,7 @@ span.CodeMirror-selectedtext { background: none; }
     padding: 0px 4px;
     left: 100%;
     background: #FDFDFD;
-    z-index: 9999;
+    z-index: 10;
     overflow: auto;
     -webkit-transition: left 0.2s ease;
     -moz-transition: left 0.2s ease;

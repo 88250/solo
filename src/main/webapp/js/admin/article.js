@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2016, b3log.org & hacpai.com
+ * Copyright (c) 2010-2017, b3log.org & hacpai.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.5.7, Nov 16, 2016
+ * @version 1.4.5.7, Jan 21, 2017
  */
 admin.article = {
     currentEditorType: '',
@@ -34,6 +34,52 @@ admin.article = {
     autoSaveDraftTimer: "",
     // 自动保存间隔
     AUTOSAVETIME: 1000 * 60,
+    /**
+     * 初始化上传组建
+     */
+    initUploadFile: function (id) {
+        var filename = "";
+        $('#' + id).fileupload({
+            multipart: true,
+            url: "https://up.qbox.me",
+            add: function (e, data) {
+                filename = data.files[0].name;
+
+                data.submit();
+
+                $('#' + id + ' span').text('uploading...');
+            },
+            formData: function (form) {
+                var data = form.serializeArray();
+                var ext = filename.substring(filename.lastIndexOf(".") + 1);
+
+                data.push({name: 'key', value: getUUID() + "." + ext});
+                data.push({name: 'token', value: qiniu.qiniuUploadToken});
+
+                return data;
+            },
+            done: function (e, data) {
+                $('#' + id + ' span').text('');
+                var qiniuKey = data.result.key;
+                if (!qiniuKey) {
+                    alert("Upload error, please check Qiniu configurations");
+
+                    return;
+                }
+
+                $('#' + id).after('<div>![' + data.files[0].name + '](http://'
+                        + qiniu.qiniuDomain + qiniuKey + ')</div>');
+            },
+            fail: function (e, data) {
+                $('#' + id + ' span').text("Upload error, please check Qiniu configurations [" + data.errorThrown + "]");
+            }
+        }).on('fileuploadprocessalways', function (e, data) {
+            var currentFile = data.files[data.index];
+            if (data.files.error && currentFile.error) {
+                alert(currentFile.error);
+            }
+        });
+    },
     /**
      * @description 获取文章并把值塞入发布文章页面 
      * @param {String} id 文章 id
@@ -374,7 +420,7 @@ admin.article = {
             }
         });
 
-        $(".markdown-preview-main").html("");
+        $(".editor-preview-active").html("").removeClass('editor-preview-active');
         $("#uploadContent").remove();
     },
     /**
@@ -438,50 +484,7 @@ admin.article = {
             }
         });
 
-        // upload
-        var qiniu = window.qiniu;
-
-        var filename = "";
-        $('#articleUpload').fileupload({
-            multipart: true,
-            url: "https://up.qbox.me",
-            add: function (e, data) {
-                filename = data.files[0].name;
-
-                data.submit();
-
-                $('#articleUpload span').text('uploading...');
-            },
-            formData: function (form) {
-                var data = form.serializeArray();
-                var ext = filename.substring(filename.lastIndexOf(".") + 1);
-
-                data.push({name: 'key', value: getUUID() + "." + ext});
-                data.push({name: 'token', value: qiniu.qiniuUploadToken});
-
-                return data;
-            },
-            done: function (e, data) {
-                $('#articleUpload span').text('');
-                var qiniuKey = data.result.key;
-                if (!qiniuKey) {
-                    alert("Upload error, please check Qiniu configurations");
-
-                    return;
-                }
-
-                $('#articleUpload').after('<div>![' + data.files[0].name + '](http://'
-                        + qiniu.qiniuDomain + qiniuKey + ')</div>');
-            },
-            fail: function (e, data) {
-                $('#articleUpload span').text("Upload error, please check Qiniu configurations [" + data.errorThrown + "]");
-            }
-        }).on('fileuploadprocessalways', function (e, data) {
-            var currentFile = data.files[data.index];
-            if (data.files.error && currentFile.error) {
-                alert(currentFile.error);
-            }
-        });
+        this.initUploadFile('articleUpload');
 
         // editor
         admin.editors.articleEditor = new SoloEditor({
