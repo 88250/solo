@@ -420,7 +420,7 @@ admin.article = {
             }
         });
 
-        $(".markdown-preview-main").html("");
+        $(".editor-preview-active").html("").removeClass('editor-preview-active');
         $("#uploadContent").remove();
     },
     /**
