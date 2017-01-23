@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010-2016, b3log.org & hacpai.com
+ * Copyright (c) 2010-2017, b3log.org & hacpai.com
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package org.b3log.solo.service;
 
 import java.io.IOException;
 import javax.inject.Inject;
+
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -46,7 +47,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.8, Nov 9, 2016
+ * @version 1.2.0.9, Jan 23, 2017
  * @since 1.2.0
  */
 @Service
@@ -55,7 +56,7 @@ public class UpgradeService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UpgradeService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UpgradeService.class);
 
     /**
      * Article repository.
@@ -111,7 +112,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "1.6.0";
+    private static final String FROM_VER = "1.7.0";
 
     /**
      * New version.
@@ -151,8 +152,8 @@ public class UpgradeService {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             LOGGER.log(Level.ERROR,
                     "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
-                    + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
-                    + "https://github.com/b3log/solo/issues/new</a>) ");
+                            + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
+                            + "https://github.com/b3log/solo/issues/new</a>) ");
         }
     }
 
@@ -188,7 +189,6 @@ public class UpgradeService {
 
     /**
      * Upgrades users.
-     *
      * <p>
      * Password hashing.
      * </p>
@@ -266,8 +266,8 @@ public class UpgradeService {
      * Send an email to the user who upgrades Solo with a discontinuous version.
      *
      * @throws ServiceException ServiceException
-     * @throws JSONException JSONException
-     * @throws IOException IOException
+     * @throws JSONException    JSONException
+     * @throws IOException      IOException
      */
     private void notifyUserByEmail() throws ServiceException, JSONException, IOException {
         final String adminEmail = preferenceQueryService.getPreference().getString(Option.ID_C_ADMIN_EMAIL);

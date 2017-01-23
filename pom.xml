@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.15.1.28, Nov 9, 2016
+    Version: 3.15.1.29, Jan 23, 2017
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
 -->
@@ -13,7 +13,7 @@
     <artifactId>solo</artifactId>
     <packaging>war</packaging>
     <name>Solo</name>
-    <version>1.7.0</version>
+    <version>1.8.0</version>
     <description>
         A blogging system written in Java, feel free to create your or your team own blog. 一个用 Java 实现的博客系统，为你或你的团队创建个博客吧。
     </description>
@@ -340,7 +340,7 @@
                     </mapping>
                     <useDefaultMapping>true</useDefaultMapping>
                     <properties>
-                        <year>2010-2016</year>
+                        <year>2010-2017</year>
                         <devTeam>b3log.org &amp; hacpai.com</devTeam>
                     </properties>
                     <encoding>UTF-8</encoding>
