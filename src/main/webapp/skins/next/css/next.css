@@ -18,7 +18,7 @@
  * skin next style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.3.2.1, Dec 17, 2016
+ * @version 0.3.3.1, Feb 16, 2017
 */
 /* start reset */
 html {
@@ -1134,11 +1134,6 @@ ul.comments .comment-meta time {
 
     .posts-collapse {
         margin-left: 10px;
-    }
-    pre {
-        word-wrap: break-word;
-        word-break: break-all;
-        white-space: normal;
     }
 
     .page-archive .archive-page-counter {
