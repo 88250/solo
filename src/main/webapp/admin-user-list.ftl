@@ -41,7 +41,7 @@
                 <label for="userPassword">${userPassword1Label}</label>
             </th>
             <td>
-                <input id="userPassword" type="password"/>
+                <input id="userPassword" type="password" autocomplete="new-password"/>
             </td>
         </tr>
         <tr>
