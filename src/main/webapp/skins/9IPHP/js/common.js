@@ -51,6 +51,12 @@ var Skin = {
     },
     init: function () {
         this._initCommon($('.icon-up'));
+
+        $('.navbar nav a').each(function () {
+            if (this.href === location.href) {
+                this.className = 'current'
+            }
+        });
     },
     _initArticleCommon: function () {
         // TOC

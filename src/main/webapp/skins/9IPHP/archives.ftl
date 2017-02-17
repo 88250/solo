@@ -9,36 +9,34 @@
     </head>
     <body>
         <#include "header.ftl">
-        <main class="main wrapper">
-            <div class="content page-archive">
-                <section class="posts-collapse">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-page-counter">
-                        ${ohLabel}..!  ${sumLabel} ${statistic.statisticPublishedBlogArticleCount} ${fightLabel}
+        <div class="wrapper">
+            <div class="main-wrap">
+                <main class="other">
+                    <span class="title">
+                         <h2><i class="icon-inbox"></i>
+                             &nbsp;${statistic.statisticPublishedBlogArticleCount} ${articleLabel}</h2>
                     </span>
                     <#if 0 != archiveDates?size>
-                    <#list archiveDates as archiveDate>
-                    <article>
-                        <header class="post-header">
-                            <h1>
+                        <ul class="list">
+                        <#list archiveDates as archiveDate>
+                            <li>
                                 <#if "en" == localeString?substring(0, 2)>
-                                <a class="post-title" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
-                                    ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})
-                                </a>
-                                <#else>
-                                <a class="post-title" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
-                                    ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})
-                                </a>
+                                    <a class="post-title" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
+                                        ${archiveDate.monthName} ${archiveDate.archiveDateYear}(${archiveDate.archiveDatePublishedArticleCount})
+                                    </a>
+                                    <#else>
+                                        <a class="post-title" href="${servePath}/archives/${archiveDate.archiveDateYear}/${archiveDate.archiveDateMonth}">
+                                            ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}(${archiveDate.archiveDatePublishedArticleCount})
+                                        </a>
                                 </#if>
-                            </h1>
-                        </header>
-                    </article>
-                    </#list>
+                            </li>
+                        </#list>
+                        </ul>
                     </#if>
-                </section>
+                </main>
+                <#include "side.ftl">
             </div>
-            <#include "side.ftl">
-        </main>
+        </div>
         <#include "footer.ftl">
     </body>
 </html>

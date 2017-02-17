@@ -833,11 +833,16 @@ aside {
     color: #555;
     text-decoration: none;
     line-height: 50px;
-    margin-right: 20px;
+    padding: 0 10px;
+    display: inline-block;
 }
 
 .navbar nav a:hover {
     color: #333;
+}
+
+.navbar nav a.current {
+    background-color: #eee;
 }
 
 .navbar form {
@@ -907,7 +912,8 @@ aside .ad {
     color: #fff;
     padding: 20px;
     margin-bottom: 20px;
-    border: 1px solid transparent
+    border: 1px solid transparent;
+    box-sizing: border-box;
 }
 
 aside .meta main {
@@ -922,7 +928,7 @@ aside .meta img {
     border-radius: 5px;
 }
 
-aside .tag {
+aside .tag.tooltipped {
     display: inline-block;
     padding: 2px 5px;
     margin-bottom: 10px;
@@ -938,6 +944,7 @@ aside .tag {
     border: 1px solid #ededed;
     margin-bottom: 20px;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 .post h1 {
@@ -969,11 +976,7 @@ aside .tag {
     color: #ff4d3a;
 }
 
-.post footer {
-    margin-top: 10px;
-}
-
-.post footer > a.tag {
+.tags > a.tag {
     color: #fff;
     font-size: 12px;
     display: inline-block;
@@ -982,11 +985,12 @@ aside .tag {
     padding: 0 5px;
     line-height: 22px;
     text-decoration: none;
+    margin-top: 10px;
 }
-.post footer > a.tag:before {
+.tags > a.tag:before {
     content: "#";
 }
-.post footer > a.tag:hover {
+.tags > a.tag:hover {
     background: #999;
 }
 
@@ -1013,7 +1017,7 @@ aside .tag {
     background-color: #eee;
 }
 
-.post .title h2 {
+.title h2 {
     font-size: 16px;
     font-weight: bold;
     padding-bottom: 10px;
@@ -1080,3 +1084,38 @@ aside .tag {
     height: 28px;
 }
 /* end comments */
+
+/* start other */
+.other {
+    border: 1px solid #ededed;
+    margin-bottom: 20px;
+    padding: 0 20px 20px;
+}
+/* end other */
+
+/* start responsive */
+@media (max-width: 900px) {
+    .navbar .form {
+        display: none;
+    }
+}
+@media (max-width: 700px) {
+    .wrapper {
+        width: 100%;
+        min-width: auto;
+    }
+
+    .main-wrap > main {
+        margin-right: 0;
+    }
+    .main-wrap {
+        display: block;
+    }
+
+    aside {
+        width: 100%;
+        padding: 20px 10px;
+        box-sizing: border-box;
+    }
+}
+/* end responsive */

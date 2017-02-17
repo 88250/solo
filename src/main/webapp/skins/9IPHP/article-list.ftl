@@ -41,7 +41,7 @@
         <div class="content-reset">
             ${article.articleAbstract}
         </div>
-        <footer class="fn-clear">
+        <footer class="fn-clear tags">
             <#list article.articleTags?split(",") as articleTag>
                 <a class="tag" rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                     ${articleTag}</a>

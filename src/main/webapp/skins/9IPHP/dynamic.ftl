@@ -11,7 +11,7 @@
         <#include "header.ftl">
         <div class="wrapper">
             <div class="main-wrap">
-                <main>
+                <main class="post">
                     <#if 0 != recentComments?size>
                         <ul class="comments" id="comments">
                             <#list recentComments as comment>

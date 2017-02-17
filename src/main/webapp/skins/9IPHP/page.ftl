@@ -10,15 +10,17 @@
     </head>
     <body>
         <#include "header.ftl">
-        <main class="main wrapper">
-            <div class="content">
-                <article class="post-body">
-                    ${page.pageContent}
-                </article>
-                <@comments commentList=pageComments article=page></@comments>
+        <div class="wrapper">
+            <div class="main-wrap">
+                <main>
+                    <article class="post">
+                        ${page.pageContent}
+                        <@comments commentList=pageComments article=page></@comments>
+                    </article>
+                </main>
+                <#include "side.ftl">
             </div>
-            <#include "side.ftl">
-        </main>
+        </div>
         <#include "footer.ftl">
         <@comment_script oId=page.oId></@comment_script>
     </body>

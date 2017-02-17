@@ -9,24 +9,26 @@
     </head>
     <body>
         <#include "header.ftl">
-        <main class="main wrapper">
-            <div class="content page-archive">
-                <section class="posts-collapse">
-                    <span class="archive-move-on"></span>
-                    <span class="archive-page-counter">
-                      ${ohLabel}..! 
-                        <#if "en" == localeString?substring(0, 2)>
-                        ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear} 
-                        <#else>
-                        ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}
-                        </#if>
-                        ${sumLabel} ${archiveDate.archiveDatePublishedArticleCount} ${fightLabel}
-                    </span>
-                </section>
-                <#include "article-list.ftl">
+        <div class="wrapper">
+            <div class="main-wrap">
+                <main>
+                    <div class="title">
+                        <h2 style="border-bottom:0">
+                            <i class="icon-inbox"></i>
+                            &nbsp;
+                            <#if "en" == localeString?substring(0, 2)>
+                            ${archiveDate.archiveDateMonth} ${archiveDate.archiveDateYear}
+                            <#else>
+                                ${archiveDate.archiveDateYear} ${yearLabel} ${archiveDate.archiveDateMonth} ${monthLabel}
+                            </#if>
+                            - ${archiveDate.archiveDatePublishedArticleCount} ${articleLabel}
+                        </h2>
+                    </div>
+                    <#include "article-list.ftl">
+                </main>
+                <#include "side.ftl">
             </div>
-            <#include "side.ftl">
-        </main>
+        </div>
         <#include "footer.ftl">
     </body>
 </html>

@@ -9,61 +9,62 @@
     </head>
     <body>
         <#include "header.ftl">
-        <main class="main wrapper">
-            <div class="content posts-collapse">
-                <div class="collection-title">
-                    <h2>
-                        ${tag.tagTitle}
-                        <small>${tagLabel}</small>
-                    </h2>
-                </div>
-                <#list articles as article>
-                <article>
-                    <header class="post-header">
-                        <h1>
+        <div class="wrapper">
+            <div class="main-wrap">
+                <main class="other">
+                    <div class="title">
+                        <h2><i class="icon-tags"></i>
+                            &nbsp;${tag.tagTitle}
+                            <small>${tagLabel}</small>
+                    </div>
+                    <ul class="list">
+                    <#list articles as article>
+                        <li>
                             <a class="post-title" href="${servePath}${article.articlePermalink}">
                                 <span>${article.articleTitle}</span>
                                 <#if article.articlePutTop>
-                                <sup>
-                                    ${topArticleLabel}
-                                </sup>
+                                    <sup>
+                                        ${topArticleLabel}
+                                    </sup>
                                 </#if>
                                 <#if article.hasUpdated>
-                                <sup>
-                                    ${updatedLabel}
-                                </sup>
+                                    <sup>
+                                        ${updatedLabel}
+                                    </sup>
                                 </#if>
+                                <time class="fn-right">
+                                   <i class="icon-date"></i> ${article.articleCreateDate?string("yyyy-MM-dd")}
+                                </time>
                             </a>
-                        </h1>
-                        <time class="post-time">
-                            ${article.articleCreateDate?string("MM-dd")}
-                        </time>
-                    </header>
-                </article>
-                </#list>
-
-                <#if 0 != paginationPageCount>
-                <nav class="pagination">
-                    <#if 1 != paginationPageNums?first>
-                    <a href="${servePath}${path}/${paginationPreviousPageNum}" class="extend next"><<</a>
-                    <a class="page-number" href="${servePath}${path}/1">1</a> ...
-                    </#if>
-                    <#list paginationPageNums as paginationPageNum>
-                    <#if paginationPageNum == paginationCurrentPageNum>
-                    <span class="page-number current">${paginationPageNum}</span>
-                    <#else>
-                    <a class="page-number" href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
-                    </#if>
+                        </li>
                     </#list>
-                    <#if paginationPageNums?last != paginationPageCount> ...
-                    <a href="${servePath}${path}/${paginationPageCount}" class="page-number">${paginationPageCount}</a>
-                    <a href="${servePath}${path}/${paginationNextPageNum}" class="extend next">>></a>
+                    </ul>
+
+                    <#if 0 != paginationPageCount>
+                        <div class="fn-clear">
+                            <nav class="pagination fn-right">
+                                <#if 1 != paginationPageNums?first>
+                                    <a href="${servePath}${path}/${paginationPreviousPageNum}" class="page-number">&laquo;</a>
+                                    <a class="page-number" href="${servePath}${path}/1">1</a> <span class="page-number">...</span>
+                                </#if>
+                                <#list paginationPageNums as paginationPageNum>
+                                    <#if paginationPageNum == paginationCurrentPageNum>
+                                        <span class="page-number current">${paginationPageNum}</span>
+                                        <#else>
+                                            <a class="page-number" href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
+                                    </#if>
+                                </#list>
+                                <#if paginationPageNums?last != paginationPageCount> <span class="page-number">...</span>
+                                    <a href="${servePath}${path}/${paginationPageCount}" class="page-number">${paginationPageCount}</a>
+                                    <a href="${servePath}${path}/${paginationNextPageNum}" class="page-number">&raquo;</a>
+                                </#if>
+                            </nav>
+                        </div>
                     </#if>
-                </nav>
-                </#if>
+                </main>
+                <#include "side.ftl">
             </div>
-            <#include "side.ftl">
-        </main>
+        </div>
         <#include "footer.ftl">
     </body>
 </html>
