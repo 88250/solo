@@ -56,7 +56,7 @@
                     </a>
             </nav>
             <div class="fn-right">
-                <form target="_blank" action="http://zhannei.baidu.com/cse/site">
+                <form class="form" target="_blank" action="http://zhannei.baidu.com/cse/site">
                     <input placeholder="${searchLabel}" id="search" type="text" name="q"/>
                     <button type="submit"><i class="icon-search"></i></button>
                     <input type="hidden" name="cc" value="${serverHost}">

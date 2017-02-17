@@ -526,7 +526,7 @@ a[class*=" icon-"]:hover {
     -webkit-transition: all .2s ease-out;
     -moz-transition: all .2s ease-out;
 }
-#emotions span:hover {
+.emotions span:hover {
     transform: scale(1.2) rotate(360deg);
     -webkit-transform: scale(1.2) rotate(360deg);
     -moz-transform: scale(1.2) rotate(360deg);
@@ -572,6 +572,23 @@ a[class*=" icon-"]:hover {
 }
 .em14 {
     background-position: -96px -48px;
+}
+
+#commentForm,
+#replyForm {
+    width: 100%;
+}
+
+.comments {
+    position: relative;
+}
+
+.comment-body-ref {
+    position: absolute;
+    width: 80%;
+    background-color: #fff;
+    right: 0;
+    border: 1px solid #eee;
 }
 /* end common */
 
@@ -713,6 +730,36 @@ a {
 .list a:hover {
     color: #ff4d3a;
 }
+
+.form input,
+.form textarea {
+    border: 1px solid #ccc;
+    background-color: #FAFAFA;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
+    padding: 0 10px;
+    width: 100%;
+    line-height: 28px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box
+}
+
+.form input:focus,
+.form textarea:focus {
+    background-color: #FFF;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset, 0 0 5px rgba(81, 167, 232, 0.5);
+    border: 1px solid #51A7E8
+}
+
+.form button {
+    background-color: #EB5750;
+    border: 0;
+    color: #fff;
+}
+
+.form button:hover {
+    background-color: #e42f19;
+}
 /* end reset common */
 
 /* start framework */
@@ -798,22 +845,8 @@ aside {
     margin-top: 8px;
 }
 
-.navbar input {
-    border: 1px solid #ccc;
-    background-color: #FAFAFA;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
-    padding: 0 40px 0 10px;
-    width: 100%;
-    line-height: 28px;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box
-}
-
-.navbar input:focus {
-    background-color: #FFF;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset, 0 0 5px rgba(81, 167, 232, 0.5);
-    border: 1px solid #51A7E8
+.navbar .form input {
+    padding-right: 40px;
 }
 
 .navbar button {
@@ -988,3 +1021,62 @@ aside .tag {
     margin-top: 20px;
 }
 /* end article list */
+
+/* start comments */
+.comments > li {
+    list-style: none;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 10px;
+}
+
+.comments > li > div {
+    display: flex;
+}
+
+.comments .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    margin-right: 20px;
+    background-size: contain;
+}
+
+.comments main {
+    flex: 1;
+    min-width: 1px;
+}
+
+.comments .content-reset {
+    margin-top: 10px;
+}
+
+.comments .user-name {
+    color: #666;
+    text-decoration: none;
+}
+
+.comments .user-name:hover {
+    color: #ff4d3a;
+}
+
+.comments .reply-btn {
+    float: right;
+    background-color: #ff4d3a;
+    color: #fff;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 2px 5px;
+}
+
+.comments .reply-btn:hover {
+    background-color: #e42f19;
+}
+
+#commentForm {
+    margin-top: 20px;
+}
+
+.form .captcha {
+    height: 28px;
+}
+/* end comments */

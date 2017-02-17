@@ -583,10 +583,11 @@ $.extend(Page.prototype, {
                 contentType: "application/json",
                 data: JSON.stringify(requestJSONObject),
                 success: function (result) {
+                    $("#submitCommentButton" + state).removeAttr("disabled");
                     if (!result.sc) {
                         $("#commentErrorTip" + state).html(result.msg);
-                        $("#comment" + state).val("").focus();
-                        $("#submitCommentButton" + state).removeAttr("disabled");
+                        $("#commentValidate" + state).val('');
+                        $("#captcha" + state).click();
                         if (!Util.isLoggedIn()) {
                             $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
                         }
@@ -613,8 +614,7 @@ $.extend(Page.prototype, {
                         result.userName = Util.getUserName();
                     }
 
-                    that.addCommentAjax(addComment(result, state), state);
-                    $("#submitCommentButton" + state).removeAttr("disabled");
+                    that.addCommentAjax(result.cmtTpl, state);
                 }
             });
         }
