@@ -614,7 +614,11 @@ $.extend(Page.prototype, {
                         result.userName = Util.getUserName();
                     }
 
-                    that.addCommentAjax(result.cmtTpl, state);
+                    if (typeof(addComment) === "undefined") {
+                        that.addCommentAjax(result.cmtTpl, state);
+                    } else {
+                        that.addCommentAjax(addComment(result, state), state);
+                    }
                 }
             });
         }
