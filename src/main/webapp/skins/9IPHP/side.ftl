@@ -1,10 +1,4 @@
-<div class="sidebar-toggle">
-    <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-    <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-    <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-</div>
-
-<aside class="sidebar">
+<aside>
     <section>
         <img class="site-author-image" src="${adminUser.userAvatar}" title="${userName}"/>
         <p class="site-author-name">${userName}</p>

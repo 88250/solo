@@ -17,83 +17,24 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.2.1.0, Sep 6, 2016
+ * @version 0.1.0.0, Feb 17, 2017
  */
 
 /**
- * @description next 皮肤脚本
+ * @description 皮肤脚本
  * @static
  */
-var NexT = {
-    init: function () {
-        $('.sidebar-toggle').click(function () {
-            var $sidebar = $('.sidebar');
-            if ($(this).hasClass('sidebar-active')) {
-                $(this).removeClass('sidebar-active');
-
-                $('body').animate({
-                    'padding-right': 0
-                });
-                $sidebar.animate({
-                    right: -320
-                });
-                $sidebar.find('section').css('opacity', 0);
-            } else {
-                $(this).addClass('sidebar-active');
-                $('body').animate({
-                    'padding-right': 320
-                });
-                $sidebar.animate({
-                    right: 0
-                }, function () {
-                    $sidebar.find('section:first').animate({
-                        'opacity': 1
-                    });
-                });
-            }
-        });
-
-        $('.site-nav-toggle').click(function () {
-            $('.site-nav').slideToggle();
-        });
-
-        $(document).ready(function () {
-            setTimeout(function () {
-                // logo animate
-                $('.logo-wrap').css('opacity', 1);
-                $('.logo-line-before i').animate({
-                    'left': '0'
-                }, function () {
-                    $('.site-title').css('opacity', 1).animate({
-                        'top': 0
-                    }, function () {
-                        $('.menu').css('opacity', 1).animate({
-                            'margin-top': '15px'
-                        });
-                        $('.main').css('opacity', 1).animate({
-                            'top': '0'
-                        }, function () {
-                            // 当有文章页面有目录时，回调不放这里，侧边栏就会一片空白
-                            if ($('.b3-solo-list li').length > 0 && $(window).width() > 1000) {
-                                $('.sidebar-toggle').click();
-                            }
-                        });
-                    });
-
-
-                });
-
-                $('.logo-line-after i').animate({
-                    'right': '0'
-                });
-            }, 500);
-
-            $('body').on('click', '.article-body img', function () {
-                window.open(this.src);
-            });
+var Skin = {
+    _initCommon: function () {
+        $('body').on('click', '.content-reset img', function () {
+            window.open(this.src);
         });
     },
-    initArticle: function () {
+    init: function () {
+        this._initCommon();
+    },
+    _initArticleCommon: function () {
+        // TOC
         if ($('.b3-solo-list li').length > 0 && $(window).width() > 1000) {
             // add color to sidebar menu
             $('.sidebar-toggle').addClass('has-toc');
@@ -133,6 +74,9 @@ var NexT = {
                 $(this).addClass('current');
             });
         }
+    },
+    initArticle: function () {
+        this._initArticleCommon();
     }
 };
-NexT.init();
+Skin.init();

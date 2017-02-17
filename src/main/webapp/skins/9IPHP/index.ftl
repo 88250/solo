@@ -13,12 +13,14 @@
     </head>
     <body>
         <#include "header.ftl">
-        <main class="main wrapper">
-            <div class="content">
-                <#include "article-list.ftl">
+        <div class="wrapper">
+            <div class="main-wrap">
+                <main>
+                    <#include "article-list.ftl">
+                </main>
+                <#include "side.ftl">
             </div>
-            <#include "side.ftl">
-        </main>
+        </div>
         <#include "footer.ftl">
     </body>
 </html>

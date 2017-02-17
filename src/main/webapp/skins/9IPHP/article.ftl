@@ -53,12 +53,10 @@
                         </#if>
                     </div>
                     <footer>
-                        <div class="post-tags">
-                            <#list article.articleTags?split(",") as articleTag>
-                            <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
-                                ${articleTag}</a>
-                            </#list>
-                        </div>
+                        <#list article.articleTags?split(",") as articleTag>
+                        <a rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                            ${articleTag}</a>
+                        </#list>
                         <div class="post-nav fn-clear">
                             <#if previousArticlePermalink??>
                             <div class="post-nav-prev post-nav-item fn-right">

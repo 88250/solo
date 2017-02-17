@@ -1,77 +1,63 @@
-<header class="header">
-    <div class="fn-clear wrapper">
-        <div class="fn-left">
-            <a href="${servePath}" rel="start">
-                ${blogTitle}
-            </a>
-            ${blogSubtitle}
-        </div>
-        <div class="fn-right">
-            <#if isLoggedIn>
-            <span class="links-of-author-item">
-                <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
-                    <i class="icon-setting"></i> ${adminLabel}
+<header>
+    <div class="banner">
+        <div class="fn-clear wrapper">
+            <h1 class="fn-inline">
+                <a href="${servePath}" rel="start">
+                    ${blogTitle}
                 </a>
-            </span>
-
-                <span class="links-of-author-item">
-                <a href="${logoutURL}">
-                    <i class="icon-logout"></i> ${logoutLabel}
-                </a>
-            </span>
-                <#else>
-            <span class="links-of-author-item">
-                <a href="${loginURL}">
-                    <i class="fa fa-github"></i> ${loginLabel}
-                </a>
-            </span>
-
-                    <span class="links-of-author-item">
-                <a href="${servePath}/register">
-                    <i class="icon-register"></i> ${registerLabel}
-                </a>
-            </span>
-            </#if>
+            </h1>
+            <small> &nbsp; ${blogSubtitle}</small>
+            <div class="fn-right">
+                <#if isLoggedIn>
+                    <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
+                        <i class="icon-setting"></i> ${adminLabel}
+                    </a>
+                    <a href="${logoutURL}">
+                        <i class="icon-logout"></i> ${logoutLabel}
+                    </a>
+                    <#else>
+                    <a href="${loginURL}">
+                        <i class="fa fa-github"></i> ${loginLabel}
+                    </a>
+                    <a href="${servePath}/register">
+                        <i class="icon-register"></i> ${registerLabel}
+                    </a>
+                </#if>
+            </div>
         </div>
     </div>
 
-    <nav>
-        <ul class="menu">
-            <#list pageNavigations as page>
-            <li class="menu-item">
-                <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
-                    ${page.pageTitle}
-                </a>
-            </li>
-            </#list>
-            <li class="menu-item">
-                <a href="${servePath}/dynamic.html" rel="section">
-                    ${dynamicLabel}
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="${servePath}/tags.html" rel="section">
-                    ${allTagsLabel}
-                </a>
-            </li>
-            <li class="menu-item">
-                <a href="${servePath}/archives.html">
-                    ${archiveLabel}
-                </a>
-            </li>
-            <li class="menu-item">
-                <a rel="alternate" href="${servePath}/blog-articles-rss.do" rel="section">
-                    RSS
-                </a>
-            </li>
-        </ul>
-
-        <div class="site-search">
-            <form target="_blank" action="http://zhannei.baidu.com/cse/site">
-                <input placeholder="${searchLabel}" id="search" type="text" name="q"/>
-                <input type="submit" value="" class="fn-none" />
-                <input type="hidden" name="cc" value="${serverHost}">
-            </form>
+    <div class="navbar">
+        <div class="fn-clear wrapper">
+            <nav class="fn-left">
+                    <#list pageNavigations as page>
+                        <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
+                            ${page.pageTitle}
+                        </a>
+                    </#list>
+                    <a href="${servePath}/dynamic.html" rel="section">
+                        <i class="icon-refresh"></i> ${dynamicLabel}
+                    </a>
+                    <a href="${servePath}/tags.html" rel="section">
+                        <i class="icon-tags"></i> ${allTagsLabel}
+                    </a>
+                    <a href="${servePath}/archives.html">
+                        <i class="icon-inbox"></i> ${archiveLabel}
+                    </a>
+                    <a rel="archive" href="${servePath}/links.html">
+                        <i class="icon-link"></i> ${linkLabel}
+                    </a>
+                    <a rel="alternate" href="${servePath}/blog-articles-rss.do" rel="section">
+                        <i class="icon-rss"></i> RSS
+                    </a>
+            </nav>
+            <div class="fn-right">
+                <form target="_blank" action="http://zhannei.baidu.com/cse/site">
+                    <input placeholder="${searchLabel}" id="search" type="text" name="q"/>
+                    <button type="submit"><i class="icon-search"></i></button>
+                    <input type="hidden" name="cc" value="${serverHost}">
+                </form>
+            </div>
         </div>
-    </nav>
+    </div>
 </header>

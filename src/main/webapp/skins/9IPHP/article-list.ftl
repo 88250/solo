@@ -1,9 +1,9 @@
-<section class="posts-expand">
+<div>
     <#list articles as article>
-    <article class="post-item">
+    <article class="post">
         <header>
             <h1>
-                <a class="post-title-link"  rel="bookmark" href="${servePath}${article.articlePermalink}">
+                <a rel="bookmark" href="${servePath}${article.articlePermalink}">
                     ${article.articleTitle}
                 </a>
                 <#if article.articlePutTop>
@@ -18,49 +18,59 @@
                 </#if>
             </h1>
 
-            <div class="post-meta">
-                <span>
-                    ${postTimeLabel}
+            <div class="meta">
+                <span class="tooltipped tooltipped-n" aria-label="${createDateLabel}">
+                    <i class="icon-date"></i>
                     <time>
                         ${article.articleCreateDate?string("yyyy-MM-dd")}
                     </time>
                 </span>
-                <span>
-                    &nbsp; | &nbsp;
+                &nbsp; | &nbsp;
+                <span class="tooltipped tooltipped-n" aria-label="${commentCountLabel}">
+                    <i class="icon-comments"></i>
                     <a href="${servePath}${article.articlePermalink}#comments">
-                        ${article.articleCommentCount} ${cmtLabel}</a>
+                        ${article.articleCommentCount} ${commentLabel}</a>
                 </span>
-                &nbsp; | &nbsp;${viewsLabel} ${article.articleViewCount}°C
+                &nbsp; | &nbsp;
+                <span class="tooltipped tooltipped-n" aria-label="${viewCountLabel}">
+                    <i class="icon-views"></i>
+                    ${article.articleViewCount} ${viewLabel}
+                </span>
             </div>
         </header>
-        <div class="article-body">
+        <div class="content-reset">
             ${article.articleAbstract}
         </div>
-        <div class="post-more-link">
-            <a href="${servePath}${article.articlePermalink}#more" rel="contents">
+        <footer class="fn-clear">
+            <#list article.articleTags?split(",") as articleTag>
+                <a class="tag" rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                    ${articleTag}</a>
+            </#list>
+            <a href="${servePath}${article.articlePermalink}#more" rel="contents" class="fn-right">
                 ${readLabel} &raquo;
             </a>
-        </div>
+        </footer>
     </article>
     </#list>
-</section>
 
-<#if 0 != paginationPageCount>
-<nav class="pagination">
-    <#if 1 != paginationPageNums?first>
-    <a href="${servePath}${path}/${paginationPreviousPageNum}" class="extend next"><<</a>
-    <a class="page-number" href="${servePath}${path}/1">1</a> ...
+
+    <#if 0 != paginationPageCount>
+    <nav class="pagination">
+        <#if 1 != paginationPageNums?first>
+        <a href="${servePath}${path}/${paginationPreviousPageNum}" class="extend next"><<</a>
+        <a class="page-number" href="${servePath}${path}/1">1</a> ...
+        </#if>
+        <#list paginationPageNums as paginationPageNum>
+        <#if paginationPageNum == paginationCurrentPageNum>
+        <span class="page-number current">${paginationPageNum}</span>
+        <#else>
+        <a class="page-number" href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
+        </#if>
+        </#list>
+        <#if paginationPageNums?last != paginationPageCount> ...
+        <a href="${servePath}${path}/${paginationPageCount}" class="page-number">${paginationPageCount}</a>
+        <a href="${servePath}${path}/${paginationNextPageNum}" class="extend next">>></a>
+        </#if>
+    </nav>
     </#if>
-    <#list paginationPageNums as paginationPageNum>
-    <#if paginationPageNum == paginationCurrentPageNum>
-    <span class="page-number current">${paginationPageNum}</span>
-    <#else>
-    <a class="page-number" href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
-    </#if>
-    </#list>
-    <#if paginationPageNums?last != paginationPageCount> ...
-    <a href="${servePath}${path}/${paginationPageCount}" class="page-number">${paginationPageCount}</a>
-    <a href="${servePath}${path}/${paginationNextPageNum}" class="extend next">>></a>
-    </#if>
-</nav>
-</#if>
+</div>
