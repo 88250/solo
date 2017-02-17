@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.8, Jun 28, 2016
+ * @version 1.3.0.9, Feb 18, 2017
  * @since 0.3.5
  */
 @Service
@@ -234,6 +234,7 @@ public class CommentQueryService {
 
             for (final JSONObject comment : comments) {
                 comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
+                comment.put("commentDate2", comment.get(Comment.COMMENT_DATE)); // 1.9.0 向后兼容
                 comment.put(Comment.COMMENT_NAME, comment.getString(Comment.COMMENT_NAME));
                 String url = comment.getString(Comment.COMMENT_URL);
                 if (StringUtils.contains(url, "<")) { // legacy issue https://github.com/b3log/solo/issues/12091

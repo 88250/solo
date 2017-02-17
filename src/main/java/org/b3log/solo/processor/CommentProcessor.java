@@ -29,13 +29,12 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Page;
+import org.b3log.solo.model.*;
 import org.b3log.solo.service.CommentMgmtService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
@@ -54,7 +53,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.3.2.12, Feb 17, 2017
+ * @version 1.3.2.13, Feb 18, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -90,6 +89,12 @@ public class CommentProcessor {
     private UserMgmtService userMgmtService;
 
     /**
+     * Preference query service.
+     */
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
+
+    /**
      * Adds a comment to a page.
      * <p>
      * Renders the response with a json object, for example,
@@ -122,15 +127,12 @@ public class CommentProcessor {
         final HttpServletResponse httpServletResponse = context.getResponse();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
-
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
         fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
-
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -149,11 +151,9 @@ public class CommentProcessor {
         }
 
         final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
         if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
-
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
@@ -162,7 +162,6 @@ public class CommentProcessor {
 
                 return;
             }
-
         }
 
         try {
@@ -171,13 +170,26 @@ public class CommentProcessor {
             final Map<String, Object> dataModel = new HashMap<>();
             dataModel.put(Comment.COMMENT, addResult);
 
-            final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
-            final Template template = Templates.MAIN_CFG.getTemplate("common-comment.ftl");
-            final StringWriter stringWriter = new StringWriter();
-            template.process(dataModel, stringWriter);
-            stringWriter.close();
+            final JSONObject page = addResult.optJSONObject(Page.PAGE);
+            page.put(Common.COMMENTABLE, addResult.opt(Common.COMMENTABLE));
+            page.put(Common.PERMALINK, addResult.opt(Common.PERMALINK));
+            dataModel.put(Article.ARTICLE, page);
 
-            addResult.put("cmtTpl", stringWriter.toString());
+            // https://github.com/b3log/solo/issues/12246
+            try {
+                final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+                final Template template = Templates.MAIN_CFG.getTemplate("common-comment.ftl");
+                final JSONObject preference = preferenceQueryService.getPreference();
+                Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
+                Keys.fillServer(dataModel);
+                final StringWriter stringWriter = new StringWriter();
+                template.process(dataModel, stringWriter);
+                stringWriter.close();
+                addResult.put("cmtTpl", stringWriter.toString());
+            } catch (final Exception e) {
+                // 1.9.0 向后兼容
+            }
+
             addResult.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(addResult);
@@ -223,15 +235,12 @@ public class CommentProcessor {
         final HttpServletResponse httpServletResponse = context.getResponse();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
-
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
         fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
-
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -241,7 +250,6 @@ public class CommentProcessor {
         }
 
         final HttpSession session = httpServletRequest.getSession(false);
-
         if (null == session) {
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
@@ -250,20 +258,16 @@ public class CommentProcessor {
         }
 
         final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
         if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
-
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
                 jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
 
                 return;
             }
-
         }
 
         try {
@@ -271,14 +275,26 @@ public class CommentProcessor {
 
             final Map<String, Object> dataModel = new HashMap<>();
             dataModel.put(Comment.COMMENT, addResult);
+            final JSONObject article = addResult.optJSONObject(Article.ARTICLE);
+            article.put(Common.COMMENTABLE, addResult.opt(Common.COMMENTABLE));
+            article.put(Common.PERMALINK, addResult.opt(Common.PERMALINK));
+            dataModel.put(Article.ARTICLE, article);
 
-            final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
-            final Template template = Templates.MAIN_CFG.getTemplate("common-comment.ftl");
-            final StringWriter stringWriter = new StringWriter();
-          template.process(dataModel, stringWriter);
-            stringWriter.close();
+            // https://github.com/b3log/solo/issues/12246
+            try {
+                final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+                final Template template = Templates.MAIN_CFG.getTemplate("common-comment.ftl");
+                final JSONObject preference = preferenceQueryService.getPreference();
+                Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
+                Keys.fillServer(dataModel);
+                final StringWriter stringWriter = new StringWriter();
+                template.process(dataModel, stringWriter);
+                stringWriter.close();
+                addResult.put("cmtTpl", stringWriter.toString());
+            } catch (final Exception e) {
+                // 1.9.0 向后兼容
+            }
 
-            addResult.put("cmtTpl", stringWriter.toString());
             addResult.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(addResult);
@@ -302,7 +318,6 @@ public class CommentProcessor {
         userMgmtService.tryLogInWithCookie(httpServletRequest, httpServletResponse);
 
         final JSONObject currentUser = userQueryService.getCurrentUser(httpServletRequest);
-
         if (null == currentUser) {
             return;
         }
