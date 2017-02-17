@@ -16,12 +16,7 @@
 package org.b3log.solo.processor;
 
 
-import java.io.IOException;
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import freemarker.template.Template;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -33,6 +28,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
@@ -42,13 +38,23 @@ import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
+
 
 /**
  * Comment processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.2.2.12, Dec 29, 2015
+ * @version 1.3.2.12, Feb 17, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -76,7 +82,7 @@ public class CommentProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
-    
+
     /**
      * User management service.
      */
@@ -85,8 +91,8 @@ public class CommentProcessor {
 
     /**
      * Adds a comment to a page.
-     *
-     * <p> Renders the response with a json object, for example,
+     * <p>
+     * Renders the response with a json object, for example,
      * <pre>
      * {
      *     "oId": generatedCommentId,
@@ -96,22 +102,19 @@ public class CommentProcessor {
      *     "commentThumbnailURL": "",
      *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
      * }
-     * </pre> </p>
-     *
-     * @param context the specified context, including a request json object, for example,      
-     * <pre>
-     * {
-     *     "captcha": "",
-     *     "oId": pageId,
-     *     "commentName": "",
-     *     "commentEmail": "",
-     *     "commentURL": "",
-     *     "commentContent": "", // HTML
-     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
-     * }
      * </pre>
+     * </p>
+     *
+     * @param context the specified context, including a request json object, for example,
+     *                "captcha": "",
+     *                "oId": pageId,
+     *                "commentName": "",
+     *                "commentEmail": "",
+     *                "commentURL": "",
+     *                "commentContent": "", // HTML
+     *                "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      * @throws ServletException servlet exception
-     * @throws IOException io exception
+     * @throws IOException      io exception
      */
     @RequestProcessing(value = "/add-page-comment.do", method = HTTPRequestMethod.POST)
     public void addPageComment(final HTTPRequestContext context) throws ServletException, IOException {
@@ -165,6 +168,16 @@ public class CommentProcessor {
         try {
             final JSONObject addResult = commentMgmtService.addPageComment(requestJSONObject);
 
+            final Map<String, Object> dataModel = new HashMap<>();
+            dataModel.put(Comment.COMMENT, addResult);
+
+            final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+            final Template template = Templates.MAIN_CFG.getTemplate("common-comment.ftl");
+            final StringWriter stringWriter = new StringWriter();
+            template.process(dataModel, stringWriter);
+            stringWriter.close();
+
+            addResult.put("cmtTpl", stringWriter.toString());
             addResult.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(addResult);
@@ -178,9 +191,8 @@ public class CommentProcessor {
 
     /**
      * Adds a comment to an article.
-     *
-     *
-     * <p> Renders the response with a json object, for example,
+     * <p>
+     * Renders the response with a json object, for example,
      * <pre>
      * {
      *     "oId": generatedCommentId,
@@ -192,21 +204,18 @@ public class CommentProcessor {
      *     "commentContent": "" // HTML
      * }
      * </pre>
+     * </p>
      *
-     * @param context the specified context, including a request json object, for example,      
-     * <pre>
-     * {
-     *     "captcha": "",
-     *     "oId": articleId,
-     *     "commentName": "",
-     *     "commentEmail": "",
-     *     "commentURL": "",
-     *     "commentContent": "",
-     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
-     * }
-     * </pre>
+     * @param context the specified context, including a request json object, for example,
+     *                "captcha": "",
+     *                "oId": articleId,
+     *                "commentName": "",
+     *                "commentEmail": "",
+     *                "commentURL": "",
+     *                "commentContent": "",
+     *                "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      * @throws ServletException servlet exception
-     * @throws IOException io exception
+     * @throws IOException      io exception
      */
     @RequestProcessing(value = "/add-article-comment.do", method = HTTPRequestMethod.POST)
     public void addArticleComment(final HTTPRequestContext context) throws ServletException, IOException {
@@ -273,14 +282,14 @@ public class CommentProcessor {
     /**
      * Fills commenter info if logged in.
      *
-     * @param requestJSONObject the specified request json object
-     * @param httpServletRequest the specified HTTP servlet request
+     * @param requestJSONObject   the specified request json object
+     * @param httpServletRequest  the specified HTTP servlet request
      * @param httpServletResponse the specified HTTP servlet response
      */
-    private void fillCommenter(final JSONObject requestJSONObject, 
-        final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) {
+    private void fillCommenter(final JSONObject requestJSONObject,
+                               final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) {
         userMgmtService.tryLogInWithCookie(httpServletRequest, httpServletResponse);
-        
+
         final JSONObject currentUser = userQueryService.getCurrentUser(httpServletRequest);
 
         if (null == currentUser) {
