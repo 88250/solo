@@ -593,14 +593,11 @@ a[class*=" icon-"]:hover {
 /* end common */
 
 /* start reset common */
+.icon-list:before {
+  content: "\f0ca";
+}
 .icon-home:before {
   content: "\f015";
-}
-.icon-logout:before {
-  content: "\ea14";
-}
-.icon-views:before {
-  content: "\e900";
 }
 .icon-comments:before {
   content: "\f0e6";
@@ -625,6 +622,12 @@ a[class*=" icon-"]:hover {
 }
 .icon-refresh:before {
   content: "\f021";
+}
+.icon-logout:before {
+  content: "\ea14";
+}
+.icon-views:before {
+  content: "\e900";
 }
 .icon-register:before {
   content: "\e973";
@@ -1103,19 +1106,57 @@ aside .tag.tooltipped {
     .wrapper {
         width: 100%;
         min-width: auto;
+        padding: 0 10px;
+        box-sizing: border-box;
     }
 
     .main-wrap > main {
         margin-right: 0;
     }
-    .main-wrap {
+
+    .main-wrap,
+    .responsive {
         display: block;
     }
 
     aside {
         width: 100%;
-        padding: 20px 10px;
         box-sizing: border-box;
+    }
+
+    .banner {
+        margin-bottom: 20px;
+    }
+
+    .banner small,
+    .banner .fn-right,
+    .navbar {
+        display: none;
+    }
+
+    .icon-list {
+        position: absolute;
+        right: 10px;
+        top: 20px;
+        background-color: #fff;
+        font-size: 20px;
+        padding: 8px 6px;
+        cursor: pointer;
+    }
+
+    .responsive .list {
+        background-color: #fff;
+        position: absolute;
+        width: 100%;
+        border: 1px solid #eee;
+        left: 0;
+        display: none;
+        z-index: 10;
+        top: 75px;
+    }
+
+    .responsive .list li.current {
+        background-color: #eee;
     }
 }
 /* end responsive */

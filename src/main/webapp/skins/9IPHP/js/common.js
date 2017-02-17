@@ -40,6 +40,10 @@ var Skin = {
                 $goTop.hide();
             }
 
+            if ($(window).width() < 701) {
+                return false;
+            }
+
             if ($(window).scrollTop() > $banner.height()) {
                 $navbar.addClass('pin');
                 $('.main-wrap').parent().css('margin-top', '86px')
@@ -56,6 +60,16 @@ var Skin = {
             if (this.href === location.href) {
                 this.className = 'current'
             }
+        });
+
+        $('.responsive .list a').each(function () {
+            if (this.href === location.href) {
+                $(this).parent().addClass('current');
+            }
+        });
+
+        $('.responsive .icon-list').click(function () {
+            $('.responsive .list').slideToggle();
         });
     },
     _initArticleCommon: function () {
