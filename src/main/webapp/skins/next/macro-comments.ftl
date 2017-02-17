@@ -132,7 +132,7 @@
                             if (commentable) {
                                 commentHTML += '<a class="fn-right" href="javascript:replyTo(\'' + result.oId + '\');">${replyLabel}</a>';
                             }
-                            commentHTML += '</div><div class="comment-content">' +
+                            commentHTML += '</div><div class="comment-content post-body article-body">' +
                                     Util.replaceEmString($("#comment" + state).val())
                                     + '</div></div></li>';
                             return commentHTML;

@@ -18,7 +18,7 @@
  * skin next style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.3.3.1, Feb 16, 2017
+ * @version 0.4.3.1, Feb 16, 2017
 */
 /* start reset */
 html {
@@ -699,6 +699,10 @@ img {
     word-wrap: break-word;
     overflow: hidden;
     line-height: 1.5
+}
+
+.article-body img {
+    cursor: pointer;
 }
 
 .article-body ul,.article-body ol {
