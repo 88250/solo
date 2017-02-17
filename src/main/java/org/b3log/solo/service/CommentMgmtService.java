@@ -57,7 +57,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.8, May 10, 2016
+ * @version 1.3.2.9, Feb 17, 2017
  * @since 0.3.5
  */
 @Service
@@ -399,7 +399,8 @@ public class CommentMgmtService {
      *     "commentThumbnailURL": "",
      *     "commentSharpURL": "",
      *     "commentContent": "", // processed XSS HTML
-     *     "commentName": "" // processed XSS
+     *     "commentName": "", // processed XSS
+     *     "commentURL": "" // optional
      * }
      * </pre>
      *
@@ -462,6 +463,7 @@ public class CommentMgmtService {
 
             ret.put(Comment.COMMENT_NAME, commentName);
             ret.put(Comment.COMMENT_CONTENT, commentContent);
+            ret.put(Comment.COMMENT_URL, commentURL);
 
             ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
@@ -519,7 +521,8 @@ public class CommentMgmtService {
      *     "commentThumbnailURL": "",
      *     "commentSharpURL": "",
      *     "commentContent": "", // processed XSS HTML
-     *     "commentName": "" // processed XSS
+     *     "commentName": "", // processed XSS
+     *     "commentURL": "" // optional
      * }
      * </pre>
      *
@@ -561,6 +564,7 @@ public class CommentMgmtService {
 
             ret.put(Comment.COMMENT_NAME, commentName);
             ret.put(Comment.COMMENT_CONTENT, commentContent);
+            ret.put(Comment.COMMENT_URL, commentURL);
 
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);

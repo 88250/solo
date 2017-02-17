@@ -269,7 +269,18 @@ public class CommentProcessor {
         try {
             final JSONObject addResult = commentMgmtService.addArticleComment(requestJSONObject);
 
+            final Map<String, Object> dataModel = new HashMap<>();
+            dataModel.put(Comment.COMMENT, addResult);
+
+            final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+            final Template template = Templates.MAIN_CFG.getTemplate("common-comment.ftl");
+            final StringWriter stringWriter = new StringWriter();
+          template.process(dataModel, stringWriter);
+            stringWriter.close();
+
+            addResult.put("cmtTpl", stringWriter.toString());
             addResult.put(Keys.STATUS_CODE, true);
+
             renderer.setJSONObject(addResult);
         } catch (final Exception e) {
 
