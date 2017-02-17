@@ -30,6 +30,10 @@
     <div class="navbar">
         <div class="fn-clear wrapper">
             <nav class="fn-left">
+                    <a href="${servePath}">
+                        <i class="icon-home"></i>
+                        ${indexLabel}
+                    </a>
                     <#list pageNavigations as page>
                         <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
                             ${page.pageTitle}

@@ -66,33 +66,35 @@
                                     ${articleTag}</a>
                             </#list>
 
-                            <div class="article-cr">
-                                转载请注明来源：
-                                <a href="http://9iphp.com/web/laravel/laravel-5-acl-define.html">使用Laravel5.1自带权限控制系统 ACL</a> -
-                                <a href="http://9iphp.com" title="" data-original-title="Specs' Blog-就爱PHP">Specs' Blog-就爱PHP</a>
-                            </div>
+                            <#-- div class="copyright">
+                                ${articleCP1Label}
+                                <a rel="bookmark" href="${servePath}${article.articlePermalink}">
+                                    ${article.articleTitle}
+                                </a> -
+                                <a href="${servePath}">
+                                    ${blogTitle}
+                                </a>
+                            </div -->
 
-                            <div class="post-nav fn-clear">
+                            <div class="rel fn-clear">
                                 <#if previousArticlePermalink??>
-                                    <div class="fn-left">
-                                        <a href="${servePath}${previousArticlePermalink}" rel="prev"
-                                           aria-label="${previousArticleTitle}">
-                                            ${previousArticleLabel}
-                                        </a>
-                                    </div>
+                                    <a href="${servePath}${previousArticlePermalink}" rel="prev"
+                                       class="fn-left tooltipped tooltipped-n"
+                                       aria-label="${previousArticleTitle}">
+                                        ${previousArticleLabel}
+                                    </a>
                                 </#if>
                                 <#if nextArticlePermalink??>
-                                    <div class="fn-right">
-                                        <a href="${servePath}${nextArticlePermalink}" rel="next"
-                                           aria-label="${nextArticleTitle}">
-                                            ${nextArticleLabel}
-                                        </a>
-                                    </div>
+                                    <a href="${servePath}${nextArticlePermalink}" rel="next"
+                                       class="fn-right tooltipped tooltipped-n"
+                                       aria-label="${nextArticleTitle}">
+                                        ${nextArticleLabel}
+                                    </a>
                                 </#if>
                             </div>
                         </footer>
+                        <div id="externalRelevantArticles" class="list"></div>
                         <@comments commentList=articleComments article=article></@comments>
-                        <div id="externalRelevantArticles"></div>
                     </article>
                 </main>
                 <#include "side.ftl">
@@ -102,7 +104,8 @@
         <@comment_script oId=article.oId>
         page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
         <#if 0 != externalRelevantArticlesDisplayCount>
-        page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>");
+        page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>"
+            , "<header class='title'><h2>${externalRelevantArticlesLabel}</h2></header>");
         </#if>
         </@comment_script>    
     </body>

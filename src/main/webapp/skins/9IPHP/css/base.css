@@ -576,6 +576,9 @@ a[class*=" icon-"]:hover {
 /* end common */
 
 /* start reset common */
+.icon-home:before {
+  content: "\f015";
+}
 .icon-logout:before {
   content: "\ea14";
 }
@@ -683,6 +686,32 @@ a {
 
 .ft-gray {
     color: #aaa;
+}
+
+.list,
+.module main.list {
+    padding: 0;
+}
+
+.list li {
+    list-style: none;
+    border-bottom: 1px solid #eee;
+    line-height: 40px;
+    padding: 0 20px;
+}
+
+.list li:last-child {
+    border-bottom: 0;
+}
+
+.list a {
+    color: #666;
+    text-decoration: none;
+    display: block;
+}
+
+.list a:hover {
+    color: #ff4d3a;
 }
 /* end reset common */
 
@@ -808,6 +837,7 @@ aside {
     padding: 30px 0;
     text-align: center;
     background: #111;
+    margin-top: 30px;
     color: #fff;
 }
 
@@ -868,27 +898,6 @@ aside .tag {
     margin-right: 10px;
     line-height: 22px;
 }
-
-aside .list {
-    padding: 0;
-}
-
-aside .list li {
-    list-style: none;
-    border-bottom: 1px solid #eee;
-    line-height: 40px;
-    padding: 0 20px;
-}
-
-aside .list li:last-child {
-    border-bottom: 0;
-}
-
-aside .list a {
-    color: #666;
-    text-decoration: none;
-    display: block;
-}
 /* end side */
 
 /* start article list */
@@ -946,5 +955,36 @@ aside .list a {
 }
 .post footer > a.tag:hover {
     background: #999;
+}
+
+.post footer .copyright {
+    padding: 10px;
+    font-size: 14px;
+    line-height: 16px;
+    border: 1px solid #ff4d3a;
+    border-left-width: 20px;
+    margin: 20px 0;
+}
+
+.post .rel a {
+    display: inline-block;
+    padding: 5px 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    text-decoration: none;
+    margin: 20px 0;
+}
+
+.post .rel a:hover {
+    background-color: #eee;
+}
+
+.post .title h2 {
+    font-size: 16px;
+    font-weight: bold;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f1f1;
+    margin-top: 20px;
 }
 /* end article list */
