@@ -9,7 +9,7 @@
                 <#else>
                 <a class="user-name" href="${comment.commentURL}" target="_blank">${comment.commentName}</a>
                 </#if>
-                <#if true> comment.isReply
+                <#if false> comment.isReply
                 @
                 <a class="user-name" href="${servePath}${article.permalink}#${comment.commentOriginalCommentId}"
                    onmouseover="page.showComment(this, '${comment.commentOriginalCommentId}', 23);"

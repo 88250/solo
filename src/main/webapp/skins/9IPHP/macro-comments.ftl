@@ -1,7 +1,5 @@
 <#macro comments commentList article>
-<#if commentList?size gt 0>
-    <header class='title'><h2>${commentList?size} ${commentLabel}</h2></header>
-</#if>
+<header class='title'><h2>${commentLabel}</h2></header>
 <ul class="comments" id="comments">
     <#list commentList as comment>
         <#include 'common-comment.ftl'/>
