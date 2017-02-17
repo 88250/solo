@@ -17,7 +17,7 @@
                     </a>
                     <#else>
                     <a href="${loginURL}">
-                        <i class="fa fa-github"></i> ${loginLabel}
+                        <i class="icon-login"></i> ${loginLabel}
                     </a>
                     <a href="${servePath}/register">
                         <i class="icon-register"></i> ${registerLabel}

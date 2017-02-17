@@ -25,13 +25,32 @@
  * @static
  */
 var Skin = {
-    _initCommon: function () {
+    _initCommon: function ($goTop) {
         $('body').on('click', '.content-reset img', function () {
             window.open(this.src);
         });
+
+        var $banner = $('header .banner'),
+        $navbar = $('header .navbar');
+
+        $(window).scroll(function () {
+            if ($(window).scrollTop() > 125) {
+                $goTop.show();
+            } else {
+                $goTop.hide();
+            }
+
+            if ($(window).scrollTop() > $banner.height()) {
+                $navbar.addClass('pin');
+                $('.main-wrap').parent().css('margin-top', '86px')
+            } else {
+                $navbar.removeClass('pin');
+                $('.main-wrap').parent().css('margin-top', '0')
+            }
+        });
     },
     init: function () {
-        this._initCommon();
+        this._initCommon($('.icon-up'));
     },
     _initArticleCommon: function () {
         // TOC

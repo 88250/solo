@@ -9,25 +9,27 @@
     </head>
     <body>
         <#include "header.ftl">
-        <main class="main wrapper">
-            <div class="content">
-                <div class="tag-cloud">
+        <div class="wrapper">
+            <div class="main-wrap">
+                <main>
+                    <div class="tag-cloud">
                         ${sumLabel} ${tags?size} ${tagLabel}
-                    <ul class="tag-cloud-tags fn-clear" id="tags">
-                        <#list tags as tag>
-                        <li>
-                            <a rel="tag" data-count="${tag.tagPublishedRefCount}"
-                               href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
-                                <span>${tag.tagTitle}</span>
-                                (<b>${tag.tagPublishedRefCount}</b>)
-                            </a>
-                        </li>
-                        </#list>
-                    </ul>
-                </div>
+                        <ul class="tag-cloud-tags fn-clear" id="tags">
+                            <#list tags as tag>
+                                <li>
+                                    <a rel="tag" data-count="${tag.tagPublishedRefCount}"
+                                       href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
+                                        <span>${tag.tagTitle}</span>
+                                        (<b>${tag.tagPublishedRefCount}</b>)
+                                    </a>
+                                </li>
+                            </#list>
+                        </ul>
+                    </div>
+                </main>
+                <#include "side.ftl">
             </div>
-            <#include "side.ftl">
-        </main>
+        </div>
         <#include "footer.ftl">
         <script>
             Util.buildTags();

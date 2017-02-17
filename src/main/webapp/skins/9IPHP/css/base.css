@@ -576,6 +576,9 @@ a[class*=" icon-"]:hover {
 /* end common */
 
 /* start reset common */
+.icon-logout:before {
+  content: "\ea14";
+}
 .icon-views:before {
   content: "\e900";
 }
@@ -625,6 +628,62 @@ a {
     transition: all .3s;
     outline: none;
 }
+
+.pagination {
+    margin-bottom: 30px;
+    line-height: 30px;
+    font-family: Georgia;
+}
+
+.pagination .page-number:first-child {
+    border-left: 1px solid #ddd;
+}
+
+.pagination .page-number {
+    display: inline-block;
+    padding: 0 10px;
+    border: 1px solid #ddd;
+    border-left:0;
+    text-decoration: none;
+    float: left;
+}
+
+.pagination a.page-number:hover {
+    color: #ff4d3a;
+    background-color: #eee;
+}
+
+.pagination .page-number.current {
+    color: #fff;
+    background: #ff4d3a;
+    border-color: #ff4d3a;
+    margin-left: -1px;
+}
+
+.module {
+    box-shadow: .0 1px 1px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.module header h2 {
+    border-bottom: 1px solid #ff4d3a;
+    padding: 10px;
+    line-height: 18px;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.module main {
+    padding: 20px;
+}
+
+.ft-warn {
+    color: #ff4d3a;
+}
+
+.ft-gray {
+    color: #aaa;
+}
 /* end reset common */
 
 /* start framework */
@@ -634,6 +693,7 @@ a {
     min-width: 720px;
     max-width: 1300px;
 }
+
 aside {
     width: 28%;
     min-width: 236px;
@@ -643,7 +703,7 @@ aside {
     display: flex;
 }
 
-main {
+.main-wrap > main {
     margin-right: 30px;
     flex: 1;
     min-width: 1px;
@@ -659,6 +719,7 @@ main {
 .banner h1 a {
     color: #fff;
     line-height: 75px;
+    text-decoration: none;
 }
 
 .banner small {
@@ -682,6 +743,14 @@ main {
     border-bottom: 1px solid #eee;
     height: 50px;
     margin-bottom: 30px;
+}
+
+.navbar.pin {
+    position: fixed;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.95);
+    top: 0;
+    z-index: 10;
 }
 
 .navbar nav a {
@@ -734,6 +803,94 @@ main {
 }
 /* end header */
 
+/* start footer */
+.footer {
+    padding: 30px 0;
+    text-align: center;
+    background: #111;
+    color: #fff;
+}
+
+.footer a {
+    color: #ff4d3a;
+    text-decoration: none;
+}
+
+.icon-up {
+    position: fixed;
+    bottom: 122px;
+    right: 20px;
+    color: #fff;
+    background-color: #111;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    line-height: 28px;
+    border-radius: 15px;
+    transition: all .3s;
+    cursor: pointer;
+    display: none;
+}
+
+.icon-up:hover {
+    background-color: #ff4d3a;
+}
+/* end footer */
+
+/* start side */
+aside .ad {
+    background-color: #3cbc8d;
+    border-color: #36a96b;
+    color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid transparent
+}
+
+aside .meta main {
+    text-align: right;
+    line-height: 20px;
+}
+
+aside .meta img {
+    float: left;
+    height: 80px;
+    width: 80px;
+    border-radius: 5px;
+}
+
+aside .tag {
+    display: inline-block;
+    padding: 2px 5px;
+    margin-bottom: 10px;
+    border: 1px solid #e1e1e1;
+    text-decoration: none;
+    margin-right: 10px;
+    line-height: 22px;
+}
+
+aside .list {
+    padding: 0;
+}
+
+aside .list li {
+    list-style: none;
+    border-bottom: 1px solid #eee;
+    line-height: 40px;
+    padding: 0 20px;
+}
+
+aside .list li:last-child {
+    border-bottom: 0;
+}
+
+aside .list a {
+    color: #666;
+    text-decoration: none;
+    display: block;
+}
+/* end side */
+
 /* start article list */
 .post {
     border: 1px solid #ededed;
@@ -773,16 +930,16 @@ main {
 .post footer {
     margin-top: 10px;
 }
+
 .post footer > a.tag {
     color: #fff;
     font-size: 12px;
-    display: block;
-    float: left;
-    background: #bbb;
+    display: inline-block;
+    background-color: #bbb;
     margin-right: 10px;
     padding: 0 5px;
-    margin-top: 2px;
     line-height: 22px;
+    text-decoration: none;
 }
 .post footer > a.tag:before {
     content: "#";

@@ -1,16 +1,14 @@
-<footer class="footer">
-    <div class="wrapper fn-clear">
-        <a href="${servePath}">${blogTitle}</a>  •
-        ${onlineVisitor1Label}${onlineVisitorCnt} <br/>
-        &copy; ${year}
-        ${footerContent}
-        Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
-        <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
-        
-        <div class="fn-right">Theme by <a href="http://iissnan.com/" target="_blank">IIssNan</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.</div>
-    </div>
+<footer class="footer fn-clear">
+    &copy; ${year}
+    ${footerContent}
+    <a href="${servePath}">${blogTitle}</a>  &nbsp;   • &nbsp;
+    <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}  <br/>
+
+    Powered by <a href="http://b3log.org" target="_blank">B3log</a> 开源 &nbsp;
+    <span class="ft-warn">&heartsuit;</span>
+    Theme by <a href="https://github.com/9IPHP/9IPHP" target="_blank">9IPHP</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
 </footer>
-<div class="back-to-top" onclick="Util.goTop()"></div>
+<div class="icon-up" onclick="Util.goTop()"></div>
 
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
