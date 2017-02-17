@@ -25,7 +25,7 @@ import org.json.JSONObject;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.3, Nov 8, 2016
+ * @version 1.3.0.4, Feb 17, 2017
  * @since 0.6.0
  */
 public final class Option {
@@ -355,7 +355,7 @@ public final class Option {
         /**
          * Default skin directory name.
          */
-        public static final String DEFAULT_SKIN_DIR_NAME = "next";
+        public static final String DEFAULT_SKIN_DIR_NAME = "9IPHP";
 
         /**
          * Default language.
