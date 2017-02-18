@@ -30,6 +30,7 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
@@ -41,7 +42,7 @@ import org.testng.annotations.Test;
  * {@link ArticleProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 8, 2016
+ * @version 1.0.1.0, Feb 18, 2017
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -79,7 +80,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getRequestURI()).thenReturn("/articles/archives/"
                 + DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM") + "/1");
         when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
@@ -112,7 +113,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getRequestURI()).thenReturn("/get-article-content");
         when(request.getParameter("id")).thenReturn(articleId);
         when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
@@ -141,7 +142,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/articles/1");
         when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
@@ -173,7 +174,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/articles/authors/" + userId + "/1");
         when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
@@ -202,7 +203,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/get-random-articles.do");
         when(request.getMethod()).thenReturn("POST");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
@@ -234,7 +235,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/article/id/" + articleId + "/relevant/articles");
         when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
@@ -263,7 +264,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/articles/tags/Solo/1");
         when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
@@ -293,7 +294,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getRequestURI()).thenReturn("/archives/"
                 + DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM") + "/1");
         when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
@@ -324,7 +325,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/pagepermalink");
         when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
         when(request.getAttribute(Article.ARTICLE)).thenReturn(article);
 
@@ -361,7 +362,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getRequestURI()).thenReturn("/console/article-pwd");
         when(request.getMethod()).thenReturn("GET");
         when(request.getParameter("articleId")).thenReturn(articleId);
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
@@ -393,7 +394,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/authors/" + userId + "/1");
         when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
