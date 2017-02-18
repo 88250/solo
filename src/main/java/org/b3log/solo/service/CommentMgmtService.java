@@ -57,7 +57,7 @@ import org.jsoup.safety.Whitelist;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.8, May 10, 2016
+ * @version 1.3.2.10, Feb 18, 2017
  * @since 0.3.5
  */
 @Service
@@ -399,7 +399,13 @@ public class CommentMgmtService {
      *     "commentThumbnailURL": "",
      *     "commentSharpURL": "",
      *     "commentContent": "", // processed XSS HTML
-     *     "commentName": "" // processed XSS
+     *     "commentName": "", // processed XSS
+     *     "commentURL": "", // optional
+     *     "isReply": boolean,
+     *     "page": {},
+     *     "commentOriginalCommentId": "" // optional
+     *     "commentable": boolean,
+     *     "permalink": "" // page.pagePermalink
      * }
      * </pre>
      *
@@ -407,18 +413,21 @@ public class CommentMgmtService {
      */
     public JSONObject addPageComment(final JSONObject requestJSONObject) throws ServiceException {
         final JSONObject ret = new JSONObject();
+        ret.put(Common.IS_REPLY, false);
 
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
             final String pageId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject page = pageRepository.get(pageId);
+            ret.put(Page.PAGE, page);
             final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
             final String commentContent = requestJSONObject.getString(Comment.COMMENT_CONTENT);
 
             final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+            ret.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
 
@@ -436,6 +445,11 @@ public class CommentMgmtService {
 
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
+            ret.put("commentDate2", date);
+
+            ret.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && page.getBoolean(Page.PAGE_COMMENTABLE));
+            ret.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
+
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
                 if (null != originalComment) {
@@ -444,6 +458,8 @@ public class CommentMgmtService {
 
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                     ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
+
+                    ret.put(Common.IS_REPLY, true);
                 } else {
                     LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]", originalCommentId,
                             commentName, commentContent);
@@ -462,6 +478,7 @@ public class CommentMgmtService {
 
             ret.put(Comment.COMMENT_NAME, commentName);
             ret.put(Comment.COMMENT_CONTENT, commentContent);
+            ret.put(Comment.COMMENT_URL, commentURL);
 
             ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
@@ -519,7 +536,13 @@ public class CommentMgmtService {
      *     "commentThumbnailURL": "",
      *     "commentSharpURL": "",
      *     "commentContent": "", // processed XSS HTML
-     *     "commentName": "" // processed XSS
+     *     "commentName": "", // processed XSS
+     *     "commentURL": "", // optional
+     *     "isReply": boolean,
+     *     "article": {},
+     *     "commentOriginalCommentId": "", // optional
+     *     "commentable": boolean,
+     *     "permalink": "" // article.articlePermalink
      * }
      * </pre>
      *
@@ -527,18 +550,21 @@ public class CommentMgmtService {
      */
     public JSONObject addArticleComment(final JSONObject requestJSONObject) throws ServiceException {
         final JSONObject ret = new JSONObject();
+        ret.put(Common.IS_REPLY, false);
 
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
             final String articleId = requestJSONObject.getString(Keys.OBJECT_ID);
             final JSONObject article = articleRepository.get(articleId);
+            ret.put(Article.ARTICLE, article);
             final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
             final String commentContent = requestJSONObject.getString(Comment.COMMENT_CONTENT);
 
             final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
+            ret.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
 
@@ -558,9 +584,14 @@ public class CommentMgmtService {
 
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
+            ret.put("commentDate2", date);
+
+            ret.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));
+            ret.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
 
             ret.put(Comment.COMMENT_NAME, commentName);
             ret.put(Comment.COMMENT_CONTENT, commentContent);
+            ret.put(Comment.COMMENT_URL, commentURL);
 
             if (!Strings.isEmptyOrNull(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
@@ -570,6 +601,8 @@ public class CommentMgmtService {
 
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
                     ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
+
+                    ret.put(Common.IS_REPLY, true);
                 } else {
                     LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
                             new String[]{originalCommentId, commentName, commentContent});

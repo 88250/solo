@@ -28,6 +28,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.service.InitService;
@@ -42,7 +43,7 @@ import org.testng.annotations.Test;
  * {@link PageProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 5, 2016
+ * @version 1.0.1.0, Feb 18, 2017
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -81,7 +82,7 @@ public class PageProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/pagepermalink");
         when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn("next");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
         when(request.getAttribute(Page.PAGE)).thenReturn(page);
 

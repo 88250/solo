@@ -16,12 +16,7 @@
 package org.b3log.solo.processor;
 
 
-import java.io.IOException;
-import javax.inject.Inject;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import freemarker.template.Template;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -33,14 +28,24 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Page;
+import org.b3log.latke.util.freemarker.Templates;
+import org.b3log.solo.model.*;
 import org.b3log.solo.service.CommentMgmtService;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
+
+import javax.inject.Inject;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -48,7 +53,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.2.2.12, Dec 29, 2015
+ * @version 1.3.2.13, Feb 18, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -76,7 +81,7 @@ public class CommentProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
-    
+
     /**
      * User management service.
      */
@@ -84,9 +89,15 @@ public class CommentProcessor {
     private UserMgmtService userMgmtService;
 
     /**
+     * Preference query service.
+     */
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
+
+    /**
      * Adds a comment to a page.
-     *
-     * <p> Renders the response with a json object, for example,
+     * <p>
+     * Renders the response with a json object, for example,
      * <pre>
      * {
      *     "oId": generatedCommentId,
@@ -96,22 +107,19 @@ public class CommentProcessor {
      *     "commentThumbnailURL": "",
      *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
      * }
-     * </pre> </p>
-     *
-     * @param context the specified context, including a request json object, for example,      
-     * <pre>
-     * {
-     *     "captcha": "",
-     *     "oId": pageId,
-     *     "commentName": "",
-     *     "commentEmail": "",
-     *     "commentURL": "",
-     *     "commentContent": "", // HTML
-     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
-     * }
      * </pre>
+     * </p>
+     *
+     * @param context the specified context, including a request json object, for example,
+     *                "captcha": "",
+     *                "oId": pageId,
+     *                "commentName": "",
+     *                "commentEmail": "",
+     *                "commentURL": "",
+     *                "commentContent": "", // HTML
+     *                "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      * @throws ServletException servlet exception
-     * @throws IOException io exception
+     * @throws IOException      io exception
      */
     @RequestProcessing(value = "/add-page-comment.do", method = HTTPRequestMethod.POST)
     public void addPageComment(final HTTPRequestContext context) throws ServletException, IOException {
@@ -119,15 +127,12 @@ public class CommentProcessor {
         final HttpServletResponse httpServletResponse = context.getResponse();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
-
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
         fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
-
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -146,11 +151,9 @@ public class CommentProcessor {
         }
 
         final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
         if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
-
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
 
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
@@ -159,11 +162,33 @@ public class CommentProcessor {
 
                 return;
             }
-
         }
 
         try {
             final JSONObject addResult = commentMgmtService.addPageComment(requestJSONObject);
+
+            final Map<String, Object> dataModel = new HashMap<>();
+            dataModel.put(Comment.COMMENT, addResult);
+
+            final JSONObject page = addResult.optJSONObject(Page.PAGE);
+            page.put(Common.COMMENTABLE, addResult.opt(Common.COMMENTABLE));
+            page.put(Common.PERMALINK, addResult.opt(Common.PERMALINK));
+            dataModel.put(Article.ARTICLE, page);
+
+            // https://github.com/b3log/solo/issues/12246
+            try {
+                final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+                final Template template = Templates.MAIN_CFG.getTemplate("common-comment.ftl");
+                final JSONObject preference = preferenceQueryService.getPreference();
+                Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
+                Keys.fillServer(dataModel);
+                final StringWriter stringWriter = new StringWriter();
+                template.process(dataModel, stringWriter);
+                stringWriter.close();
+                addResult.put("cmtTpl", stringWriter.toString());
+            } catch (final Exception e) {
+                // 1.9.0 向后兼容
+            }
 
             addResult.put(Keys.STATUS_CODE, true);
 
@@ -178,9 +203,8 @@ public class CommentProcessor {
 
     /**
      * Adds a comment to an article.
-     *
-     *
-     * <p> Renders the response with a json object, for example,
+     * <p>
+     * Renders the response with a json object, for example,
      * <pre>
      * {
      *     "oId": generatedCommentId,
@@ -192,21 +216,18 @@ public class CommentProcessor {
      *     "commentContent": "" // HTML
      * }
      * </pre>
+     * </p>
      *
-     * @param context the specified context, including a request json object, for example,      
-     * <pre>
-     * {
-     *     "captcha": "",
-     *     "oId": articleId,
-     *     "commentName": "",
-     *     "commentEmail": "",
-     *     "commentURL": "",
-     *     "commentContent": "",
-     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
-     * }
-     * </pre>
+     * @param context the specified context, including a request json object, for example,
+     *                "captcha": "",
+     *                "oId": articleId,
+     *                "commentName": "",
+     *                "commentEmail": "",
+     *                "commentURL": "",
+     *                "commentContent": "",
+     *                "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      * @throws ServletException servlet exception
-     * @throws IOException io exception
+     * @throws IOException      io exception
      */
     @RequestProcessing(value = "/add-article-comment.do", method = HTTPRequestMethod.POST)
     public void addArticleComment(final HTTPRequestContext context) throws ServletException, IOException {
@@ -214,15 +235,12 @@ public class CommentProcessor {
         final HttpServletResponse httpServletResponse = context.getResponse();
 
         final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
-
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
         fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
-
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -232,7 +250,6 @@ public class CommentProcessor {
         }
 
         final HttpSession session = httpServletRequest.getSession(false);
-
         if (null == session) {
             jsonObject.put(Keys.STATUS_CODE, false);
             jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
@@ -241,26 +258,45 @@ public class CommentProcessor {
         }
 
         final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-
         session.removeAttribute(CaptchaProcessor.CAPTCHA);
 
         if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
-
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-
             if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
                 jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
 
                 return;
             }
-
         }
 
         try {
             final JSONObject addResult = commentMgmtService.addArticleComment(requestJSONObject);
 
+            final Map<String, Object> dataModel = new HashMap<>();
+            dataModel.put(Comment.COMMENT, addResult);
+            final JSONObject article = addResult.optJSONObject(Article.ARTICLE);
+            article.put(Common.COMMENTABLE, addResult.opt(Common.COMMENTABLE));
+            article.put(Common.PERMALINK, addResult.opt(Common.PERMALINK));
+            dataModel.put(Article.ARTICLE, article);
+
+            // https://github.com/b3log/solo/issues/12246
+            try {
+                final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+                final Template template = Templates.MAIN_CFG.getTemplate("common-comment.ftl");
+                final JSONObject preference = preferenceQueryService.getPreference();
+                Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
+                Keys.fillServer(dataModel);
+                final StringWriter stringWriter = new StringWriter();
+                template.process(dataModel, stringWriter);
+                stringWriter.close();
+                addResult.put("cmtTpl", stringWriter.toString());
+            } catch (final Exception e) {
+                // 1.9.0 向后兼容
+            }
+
             addResult.put(Keys.STATUS_CODE, true);
+
             renderer.setJSONObject(addResult);
         } catch (final Exception e) {
 
@@ -273,16 +309,15 @@ public class CommentProcessor {
     /**
      * Fills commenter info if logged in.
      *
-     * @param requestJSONObject the specified request json object
-     * @param httpServletRequest the specified HTTP servlet request
+     * @param requestJSONObject   the specified request json object
+     * @param httpServletRequest  the specified HTTP servlet request
      * @param httpServletResponse the specified HTTP servlet response
      */
-    private void fillCommenter(final JSONObject requestJSONObject, 
-        final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) {
+    private void fillCommenter(final JSONObject requestJSONObject,
+                               final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) {
         userMgmtService.tryLogInWithCookie(httpServletRequest, httpServletResponse);
-        
-        final JSONObject currentUser = userQueryService.getCurrentUser(httpServletRequest);
 
+        final JSONObject currentUser = userQueryService.getCurrentUser(httpServletRequest);
         if (null == currentUser) {
             return;
         }
