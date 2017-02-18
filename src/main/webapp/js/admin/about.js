@@ -18,14 +18,14 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, May 28, 2013
+ * @version 1.0.1.4, Feb 18, 2017
  */
 
 /* about 相关操作 */
 admin.about = {
     init: function() {
         $.ajax({
-            url: window.location.protocol + '://' + "rhythm.b3log.org/version/solo/latest/" + Label.version,
+            url: "https://rhythm.b3log.org/version/solo/latest/" + Label.version,
             type: "GET",
             cache: false,
             dataType: "jsonp",
