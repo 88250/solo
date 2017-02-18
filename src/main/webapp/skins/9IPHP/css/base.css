@@ -18,7 +18,7 @@
  * skin style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.0.0, Feb 16, 2017
+ * @version 0.1.1.0, Feb 18, 2017
 */
 /* start common */
 html {
@@ -572,6 +572,10 @@ a[class*=" icon-"]:hover {
 }
 .em14 {
     background-position: -96px -48px;
+}
+
+.b3-solo-list {
+    display: none;
 }
 
 #commentForm,
