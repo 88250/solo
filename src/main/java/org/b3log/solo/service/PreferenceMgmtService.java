@@ -48,7 +48,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.11, Nov 23, 2015
+ * @version 1.3.2.11, Feb 18, 2017
  * @since 0.4.0
  */
 @Service
@@ -354,14 +354,6 @@ public class PreferenceMgmtService {
             final JSONObject relevantArticlesDisplayCountOpt = optionRepository.get(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
             relevantArticlesDisplayCountOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT));
             optionRepository.update(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT, relevantArticlesDisplayCountOpt);
-
-            final JSONObject replyNotiTplBodyOpt = optionRepository.get(Option.ID_C_REPLY_NOTI_TPL_BODY);
-            replyNotiTplBodyOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_REPLY_NOTI_TPL_BODY));
-            optionRepository.update(Option.ID_C_REPLY_NOTI_TPL_BODY, replyNotiTplBodyOpt);
-
-            final JSONObject replyNotiTplSubjectOpt = optionRepository.get(Option.ID_C_REPLY_NOTI_TPL_SUBJECT);
-            replyNotiTplSubjectOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_REPLY_NOTI_TPL_SUBJECT));
-            optionRepository.update(Option.ID_C_REPLY_NOTI_TPL_SUBJECT, replyNotiTplSubjectOpt);
 
             final JSONObject signsOpt = optionRepository.get(Option.ID_C_SIGNS);
             signsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SIGNS));
