@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.6, Nov 8, 2016
+ * @version 1.2.3.7, Feb 18, 2017
  */
 var Page = function (tips) {
     this.currentCommentId = "";
