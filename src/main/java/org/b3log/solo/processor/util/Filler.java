@@ -70,7 +70,7 @@ import org.json.JSONObject;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.11.13, Dec 17, 2015
+ * @version 1.5.11.13, Feb 26, 2017
  * @since 0.3.1
  */
 @Service
@@ -908,7 +908,7 @@ public class Filler {
      * @param author the specified author
      * @param preference the specified preference
      * @throws ServiceException service exception
-     * @see #setArticlesExProperties(java.util.List, org.json.JSONObject)
+     * @see #setArticlesExProperties(HttpServletRequest, List, JSONObject, JSONObject)
      */
     private void setArticleExProperties(final HttpServletRequest request,
             final JSONObject article, final JSONObject author, final JSONObject preference)
@@ -970,7 +970,7 @@ public class Filler {
      * @param article the specified article
      * @param preference the specified preference
      * @throws ServiceException service exception
-     * @see #setArticlesExProperties(java.util.List, org.json.JSONObject)
+     * @see #setArticlesExProperties(HttpServletRequest, List, JSONObject)
      */
     private void setArticleExProperties(final HttpServletRequest request,
             final JSONObject article, final JSONObject preference) throws ServiceException {
@@ -1016,7 +1016,7 @@ public class Filler {
      * Sets some extra properties into the specified article with the specified author and preference.
      *
      * <p>
-     * The batch version of method {@linkplain #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)}.
+     * The batch version of method {@linkplain #setArticleExProperties(HttpServletRequest, JSONObject, JSONObject, JSONObject)}.
      * </p>
      *
      * <p>
@@ -1035,7 +1035,7 @@ public class Filler {
      * @param author the specified author
      * @param preference the specified preference
      * @throws ServiceException service exception
-     * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)
+     * @see #setArticleExProperties(HttpServletRequest, JSONObject, JSONObject, JSONObject)
      */
     public void setArticlesExProperties(final HttpServletRequest request,
             final List<JSONObject> articles, final JSONObject author, final JSONObject preference)
@@ -1049,7 +1049,7 @@ public class Filler {
      * Sets some extra properties into the specified article with the specified preference.
      *
      * <p>
-     * The batch version of method {@linkplain #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)}.
+     * The batch version of method {@linkplain #setArticleExProperties(HttpServletRequest, JSONObject, JSONObject)}.
      * </p>
      *
      * <p>
@@ -1067,7 +1067,7 @@ public class Filler {
      * @param articles the specified articles
      * @param preference the specified preference
      * @throws ServiceException service exception
-     * @see #setArticleExProperties(org.json.JSONObject, org.json.JSONObject)
+     * @see #setArticleExProperties(HttpServletRequest, JSONObject, JSONObject)
      */
     public void setArticlesExProperties(final HttpServletRequest request,
             final List<JSONObject> articles, final JSONObject preference)

@@ -544,9 +544,6 @@ public class ArticleQueryService {
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
                 article.put(ARTICLE_UPDATE_TIME, ((Date) article.get(ARTICLE_UPDATE_DATE)).getTime());
 
-                // Markdown to HTML for content and abstract
-                markdown(article);
-
                 // Remove unused properties
                 for (int j = 0; j < excludes.length(); j++) {
                     article.remove(excludes.optString(j));
@@ -608,9 +605,6 @@ public class ArticleQueryService {
                 }
 
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
-
-                // Markdown to HTML for content and abstract
-                markdown(article);
 
                 ret.add(article);
             }
@@ -914,9 +908,6 @@ public class ArticleQueryService {
                 final JSONObject article = articles.getJSONObject(i);
 
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
-
-                // Markdown to HTML for content and abstract
-                markdown(article);
 
                 ret.add(article);
             }
