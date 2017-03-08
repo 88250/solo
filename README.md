@@ -62,7 +62,9 @@ JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735
 
 执行完成后顺利的话你就可以看到 Solo 的初始化界面了 :tada: 
 
-详细的配置请浏览[用户指南](https://github.com/b3log/solo/wiki/standalone_mode)。如果你碰到问题，请提 [issue](https://github.com/b3log/solo/issues/new) 或到[社区](https://hacpai.com/tag/Solo)发帖，我们会尽量在第一时间帮助你解决问题。
+* 详细的配置请浏览[用户指南](https://github.com/b3log/solo/wiki/standalone_mode)
+* 默认只有两套皮肤，如果你需要更多的皮肤，请到 [solo-skins](https://github.com/b3log/solo-skins) 获取
+* 如果你碰到问题，请提 [issue](https://github.com/b3log/solo/issues/new) 或到[社区](https://hacpai.com/tag/Solo)发帖，我们会尽量在第一时间帮助你解决问题
 
 另外，如果你想用 Solo 但又不想自己维护服务器，那可以尝试购买我们搭建好的 Solo 直接[使用](http://b3log.org/services/#solo)。
 
