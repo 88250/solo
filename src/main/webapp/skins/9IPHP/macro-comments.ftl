@@ -91,7 +91,7 @@
                         };
                         (function () {
                             page.load();
-                            Skin.initArticle();
+                            Skin.initArticle("${tocLabel}", "${siteViewLabel}");
                             // emotions
                             page.replaceCommentsEm("#comments .comment-content");
                             <#nested>

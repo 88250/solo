@@ -18,7 +18,7 @@
  * skin style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.1.0, Feb 18, 2017
+ * @version 0.2.1.0, Mar 14, 2017
 */
 /* start common */
 html {
@@ -574,10 +574,6 @@ a[class*=" icon-"]:hover {
     background-position: -96px -48px;
 }
 
-.b3-solo-list {
-    display: none;
-}
-
 #commentForm,
 #replyForm {
     width: 100%;
@@ -943,6 +939,30 @@ aside .tag.tooltipped {
     text-decoration: none;
     margin-right: 10px;
     line-height: 22px;
+}
+
+aside.has-toc > ul > li {
+    list-style: none;
+    float: left;
+    width: 50%;
+    margin: 0;
+    cursor: pointer;
+    line-height: 18px;
+    font-size: 16px;
+    text-align: center;
+    font-weight: 400;
+}
+
+aside.has-toc ul > li.current {
+    color: #ff4d3a;
+}
+
+aside .b3-solo-list {
+    font-size: 14px;
+}
+
+aside.has-toc > section:last-child {
+    margin-top: 20px;
 }
 /* end side */
 
