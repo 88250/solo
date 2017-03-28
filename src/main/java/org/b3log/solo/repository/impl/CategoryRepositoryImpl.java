@@ -1,0 +1,74 @@
+/*
+ * Copyright (c) 2010-2017, b3log.org & hacpai.com
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.b3log.solo.repository.impl;
+
+import org.b3log.latke.Keys;
+import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.solo.model.Category;
+import org.b3log.solo.repository.CategoryRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+/**
+ * Category repository.
+ *
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.0, Mar 28, 2017
+ * @since 2.0.0
+ */
+@Repository
+public class CategoryRepositoryImpl extends AbstractRepository implements CategoryRepository {
+
+    /**
+     * Public constructor.
+     */
+    public CategoryRepositoryImpl() {
+        super(Category.CATEGORY);
+    }
+
+    @Override
+    public JSONObject getByTitle(final String categoryTitle) throws RepositoryException {
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Category.CATEGORY_TITLE, FilterOperator.EQUAL, categoryTitle)).
+                setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
+
+    @Override
+    public JSONObject getByURI(final String categoryURI) throws RepositoryException {
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Category.CATEGORY_URI, FilterOperator.EQUAL, categoryURI)).
+                setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
+}
