@@ -93,7 +93,7 @@
                             page.load();
                             Skin.initArticle("${tocLabel}", "${siteViewLabel}");
                             // emotions
-                            page.replaceCommentsEm("#comments .comment-content");
+                            page.replaceCommentsEm("#comments .content-reset");
                             <#nested>
                         })();
 </script>
