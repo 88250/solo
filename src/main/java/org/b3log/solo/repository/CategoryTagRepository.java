@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.repository;
 
+import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
 
@@ -22,10 +23,10 @@ import org.json.JSONObject;
  * Category-Tag relation repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 28, 2017
+ * @version 1.0.0.1, Mar 30, 2017
  * @since 2.0.0
  */
-public interface CategoryTagRepository {
+public interface CategoryTagRepository extends Repository {
 
     /**
      * Gets category-tag relations by the specified category id.
