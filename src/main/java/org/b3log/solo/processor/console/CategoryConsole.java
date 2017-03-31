@@ -92,6 +92,61 @@ public class CategoryConsole {
     private LangPropsService langPropsService;
 
     /**
+     * Gets a category by the specified request.
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "category": {
+     *         "oId": "",
+     *         "categoryTitle": "",
+     *         "categoryURI": "",
+     *         ....
+     *     }
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request  the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context  the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/category/*", method = HTTPRequestMethod.GET)
+    public void getCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        if (!userQueryService.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        try {
+            final String requestURI = request.getRequestURI();
+            final String categoryId = requestURI.substring((Latkes.getContextPath() + "/console/category/").length());
+
+            final JSONObject result = categoryQueryService.getCategory(categoryId);
+            if (null == result) {
+                renderer.setJSONObject(QueryResults.defaultResult());
+
+                return;
+            }
+
+            renderer.setJSONObject(result);
+            result.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
+
+    /**
      * Removes a category by the specified request.
      * <p>
      * Renders the response with a json object, for example,
