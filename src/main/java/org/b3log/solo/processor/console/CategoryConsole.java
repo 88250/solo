@@ -17,6 +17,7 @@ package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
@@ -30,7 +31,9 @@ import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.CategoryMgmtService;
+import org.b3log.solo.service.CategoryQueryService;
 import org.b3log.solo.service.TagQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 
@@ -60,6 +63,18 @@ public class CategoryConsole {
      */
     @Inject
     private CategoryMgmtService categoryMgmtService;
+
+    /**
+     * Category query service.
+     */
+    @Inject
+    private CategoryQueryService categoryQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Tag query service.
@@ -166,6 +181,67 @@ public class CategoryConsole {
 
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
+        }
+    }
+
+    /**
+     * Gets categories by the specified request json object.
+     * <p>
+     * The request URI contains the pagination arguments. For example, the request URI is /console/categories/1/10/20, means
+     * the current page is 1, the page size is 10, and the window size is 20.
+     * </p>
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "pagination": {
+     *         "paginationPageCount": 100,
+     *         "paginationPageNums": [1, 2, 3, 4, 5]
+     *     },
+     *     "categories": [{
+     *         "oId": "",
+     *         "categoryTitle": "",
+     *         "categoryURI": "",
+     *         ....
+     *      }, ....]
+     *     "sc": true
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request  the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context  the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/categories/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
+    public void getCategories(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        if (!userQueryService.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        try {
+            final String requestURI = request.getRequestURI();
+            final String path = requestURI.substring((Latkes.getContextPath() + "/console/categories/").length());
+
+            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
+
+            final JSONObject result = categoryQueryService.getCategoris(requestJSONObject);
+
+            result.put(Keys.STATUS_CODE, true);
+            renderer.setJSONObject(result);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
     }
 }
