@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor.console;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -27,13 +28,17 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Category;
+import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.CategoryMgmtService;
+import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Category console request processing.
@@ -55,6 +60,12 @@ public class CategoryConsole {
      */
     @Inject
     private CategoryMgmtService categoryMgmtService;
+
+    /**
+     * Tag query service.
+     */
+    @Inject
+    private TagQueryService tagQueryService;
 
     /**
      * Language service.
@@ -80,6 +91,7 @@ public class CategoryConsole {
      *                 "categoryURI": "", // optional
      *                 "categoryDescription": "", // optional
      *                 "categoryOrder": "", // optional, uses 10 instead if not specified
+     *                 "categoryTags": "tag1, tag2" // optional
      * @param response the specified http servlet response
      * @param context  the specified http request context
      * @throws Exception exception
@@ -95,6 +107,34 @@ public class CategoryConsole {
 
         try {
             final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+
+            String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
+            tagsStr = tagsStr.replaceAll("，", ",").replaceAll("、", ",");
+            final String[] tagTitles = tagsStr.split(",");
+
+            String addArticleWithTagFirstLabel = langPropsService.get("addArticleWithTagFirstLabel");
+
+            final List<JSONObject> tags = new ArrayList<>();
+            for (int i = 0; i < tagTitles.length; i++) {
+                String tagTitle = StringUtils.trim(tagTitles[i]);
+                if (StringUtils.isBlank(tagTitle)) {
+                    continue;
+                }
+
+                final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
+                if (null == tag) {
+                    addArticleWithTagFirstLabel = addArticleWithTagFirstLabel.replace("{tag}", tagTitle);
+
+                    final JSONObject jsonObject = QueryResults.defaultResult();
+                    renderer.setJSONObject(jsonObject);
+                    jsonObject.put(Keys.MSG, addArticleWithTagFirstLabel);
+
+                    return;
+                }
+
+                tags.add(tag);
+            }
+
             final String title = requestJSONObject.optString(Category.CATEGORY_TITLE, "Category");
             final String uri = requestJSONObject.optString(Category.CATEGORY_URI, "/Category");
             final String desc = requestJSONObject.optString(Category.CATEGORY_DESCRIPTION);
@@ -107,6 +147,14 @@ public class CategoryConsole {
             category.put(Category.CATEGORY_ORDER, order);
 
             final String categoryId = categoryMgmtService.addCategory(category);
+
+            for (final JSONObject tag : tags) {
+                final JSONObject categoryTag = new JSONObject();
+                categoryTag.put(Category.CATEGORY + "_" + Keys.OBJECT_ID, categoryId);
+                categoryTag.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
+
+                categoryMgmtService.addCategoryTag(categoryTag);
+            }
 
             ret.put(Keys.OBJECT_ID, categoryId);
             ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));

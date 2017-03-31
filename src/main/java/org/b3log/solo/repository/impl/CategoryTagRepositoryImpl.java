@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * Category-Tag relation repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 28, 2017
+ * @version 1.1.0.0, Mar 31, 2017
  * @since 2.0.0
  */
 @Repository
@@ -52,6 +52,16 @@ public class CategoryTagRepositoryImpl extends AbstractRepository implements Cat
     }
 
     @Override
+    public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)
+            throws RepositoryException {
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).
+                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
+
+        return get(query);
+    }
+
+    @Override
     public void removeByCategoryId(final String categoryId) throws RepositoryException {
         final Query query = new Query().
                 setFilter(new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId));
@@ -63,12 +73,13 @@ public class CategoryTagRepositoryImpl extends AbstractRepository implements Cat
     }
 
     @Override
-    public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)
-            throws RepositoryException {
+    public void removeByTagId(final String tagId) throws RepositoryException {
         final Query query = new Query().
-                setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).
-                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
-
-        return get(query);
+                setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
+        final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
+        for (int i = 0; i < relations.length(); i++) {
+            final JSONObject rel = relations.optJSONObject(i);
+            remove(rel.optString(Keys.OBJECT_ID));
+        }
     }
 }

@@ -23,7 +23,7 @@ import org.json.JSONObject;
  * Category-Tag relation repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 30, 2017
+ * @version 1.1.0.1, Mar 31, 2017
  * @since 2.0.0
  */
 public interface CategoryTagRepository extends Repository {
@@ -52,14 +52,6 @@ public interface CategoryTagRepository extends Repository {
             throws RepositoryException;
 
     /**
-     * Removes category-tag relations by the specified category id.
-     *
-     * @param categoryId the specified category id
-     * @throws RepositoryException repository exception
-     */
-    void removeByCategoryId(final String categoryId) throws RepositoryException;
-
-    /**
      * Gets category-tag relations by the specified tag id.
      *
      * @param tagId          the specified tag id
@@ -81,4 +73,20 @@ public interface CategoryTagRepository extends Repository {
      */
     JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)
             throws RepositoryException;
+
+    /**
+     * Removes category-tag relations by the specified category id.
+     *
+     * @param categoryId the specified category id
+     * @throws RepositoryException repository exception
+     */
+    void removeByCategoryId(final String categoryId) throws RepositoryException;
+
+    /**
+     * Removes category-tag relations by the specified tag id.
+     *
+     * @param tagId the specified tag id
+     * @throws RepositoryException repository exception
+     */
+    void removeByTagId(final String tagId) throws RepositoryException;
 }
