@@ -36,13 +36,12 @@ import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Category query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 30, 2017
+ * @version 1.0.0.1, Mar 31, 2017
  * @since 2.0.0
  */
 @Service
@@ -170,16 +169,14 @@ public class CategoryQueryService {
     /**
      * Gets categories by the specified request json object.
      *
-     * @param requestJSONObject the specified request json object, for example,      <pre>
-     *                                                                            {
-     *                                                                                "categoryTitle": "", // optional
-     *                                                                                "paginationCurrentPageNum": 1,
-     *                                                                                "paginationPageSize": 20,
-     *                                                                                "paginationWindowSize": 10
-     *                                                                            }, see {@link Pagination} for more details
-     *                                                                            </pre>
-     * @param categoryFields    the specified category fields to return
-     * @return for example,      <pre>
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "categoryTitle": "", // optional
+     *                          "paginationCurrentPageNum": 1,
+     *                          "paginationPageSize": 20,
+     *                          "paginationWindowSize": 10
+     *                          see {@link Pagination} for more details
+     * @return for example,
+     * <pre>
      * {
      *     "pagination": {
      *         "paginationPageCount": 100,
@@ -196,7 +193,7 @@ public class CategoryQueryService {
      * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getCategoris(final JSONObject requestJSONObject, final Map<String, Class<?>> categoryFields) throws ServiceException {
+    public JSONObject getCategoris(final JSONObject requestJSONObject) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
@@ -206,9 +203,6 @@ public class CategoryQueryService {
                 addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).
                 addSort(Category.CATEGORY_TAG_CNT, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-        for (final Map.Entry<String, Class<?>> field : categoryFields.entrySet()) {
-            query.addProjection(field.getKey(), field.getValue());
-        }
 
         if (requestJSONObject.has(Category.CATEGORY_TITLE)) {
             query.setFilter(new PropertyFilter(Category.CATEGORY_TITLE, FilterOperator.EQUAL,
