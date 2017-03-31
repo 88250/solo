@@ -205,6 +205,10 @@ public class CategoryMgmtService {
     @Transactional
     public void updateCategory(final String categoryId, final JSONObject category) throws ServiceException {
         try {
+            final JSONObject oldCategory = categoryRepository.get(categoryId);
+            category.put(Category.CATEGORY_ORDER, oldCategory.optInt(Category.CATEGORY_ORDER));
+            category.put(Category.CATEGORY_TAG_CNT, oldCategory.optInt(Category.CATEGORY_TAG_CNT));
+
             categoryRepository.update(categoryId, category);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Updates a category [id=" + categoryId + "] failed", e);
