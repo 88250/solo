@@ -261,7 +261,6 @@ public class CategoryConsole {
      *                 "categoryTitle": "",
      *                 "categoryURI": "", // optional
      *                 "categoryDescription": "", // optional
-     *                 "categoryOrder": "", // optional, uses 10 instead if not specified
      *                 "categoryTags": "tag1, tag2" // optional
      * @param context  the specified http request context
      * @param response the specified http servlet response
@@ -318,13 +317,11 @@ public class CategoryConsole {
                 uri = '/' + uri;
             }
             final String desc = requestJSONObject.optString(Category.CATEGORY_DESCRIPTION);
-            final int order = requestJSONObject.optInt(Category.CATEGORY_ORDER);
 
             final JSONObject category = new JSONObject();
             category.put(Category.CATEGORY_TITLE, title);
             category.put(Category.CATEGORY_URI, URLEncoder.encode(uri, "UTF-8"));
             category.put(Category.CATEGORY_DESCRIPTION, desc);
-            category.put(Category.CATEGORY_ORDER, order);
 
             final String categoryId = requestJSONObject.optString(Keys.OBJECT_ID);
             categoryMgmtService.updateCategory(categoryId, category);
@@ -368,7 +365,6 @@ public class CategoryConsole {
      *                 "categoryTitle": "",
      *                 "categoryURI": "", // optional
      *                 "categoryDescription": "", // optional
-     *                 "categoryOrder": "", // optional, uses 10 instead if not specified
      *                 "categoryTags": "tag1, tag2" // optional
      * @param response the specified http servlet response
      * @param context  the specified http request context
@@ -425,13 +421,11 @@ public class CategoryConsole {
                 uri = '/' + uri;
             }
             final String desc = requestJSONObject.optString(Category.CATEGORY_DESCRIPTION);
-            final int order = requestJSONObject.optInt(Category.CATEGORY_ORDER);
 
             final JSONObject category = new JSONObject();
             category.put(Category.CATEGORY_TITLE, title);
             category.put(Category.CATEGORY_URI, URLEncoder.encode(uri, "UTF-8"));
             category.put(Category.CATEGORY_DESCRIPTION, desc);
-            category.put(Category.CATEGORY_ORDER, order);
 
             final String categoryId = categoryMgmtService.addCategory(category);
 

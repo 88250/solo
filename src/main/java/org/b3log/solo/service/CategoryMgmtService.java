@@ -62,7 +62,7 @@ public class CategoryMgmtService {
      * Changes the order of a category specified by the given category id with the specified direction.
      *
      * @param categoryId the given category id
-     * @param direction the specified direction, "up"/"down"
+     * @param direction  the specified direction, "up"/"down"
      * @throws ServiceException service exception
      */
     public void changeOrder(final String categoryId, final String direction)
@@ -181,7 +181,9 @@ public class CategoryMgmtService {
             record.put(Category.CATEGORY_URI, category.optString(Category.CATEGORY_URI));
             record.put(Category.CATEGORY_TITLE, category.optString(Category.CATEGORY_TITLE));
             record.put(Category.CATEGORY_DESCRIPTION, category.optString(Category.CATEGORY_DESCRIPTION));
-            record.put(Category.CATEGORY_ORDER, 10);
+
+            final int maxOrder = categoryRepository.getMaxOrder();
+            category.put(Category.CATEGORY_ORDER, maxOrder + 1);
 
             final String ret = categoryRepository.add(record);
 
