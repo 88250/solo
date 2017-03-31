@@ -28,10 +28,6 @@ admin.categoryList = {
         pageCount: 1,
         currentPage: 1
     },
-    categoryInfo: {
-        'oId': "",
-        "categoryRole": ""
-    },
     /* 
      * 初始化 table, pagination
      */
@@ -125,7 +121,7 @@ admin.categoryList = {
                     categoryData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.categoryList.get('" +
                             categories[i].oId + "')\">" + Label.updateLabel + "</a>\
                             <a href='javascript:void(0)' onclick=\"admin.categoryList.del('" + categories[i].oId + "', '" +
-                            categories[i].categoryName + "')\">" + Label.removeLabel + "</a> ";
+                            categories[i].categoryTitle + "')\">" + Label.removeLabel + "</a> ";
 
                     that.tablePagination.updateTablePagination(categoryData, pageNum, result.pagination);
 
@@ -182,10 +178,10 @@ admin.categoryList = {
         }
     },
     /*
-     * 获取用户
+     * 获取单个分类
      * @id 用户 id
      */
-    get: function(id, categoryRole) {
+    get: function(id) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
         $("#categoryUpdate").dialog("open");
@@ -201,43 +197,29 @@ admin.categoryList = {
                     return;
                 }
 
-                var $categoryEmailUpdate = $("#categoryEmailUpdate");
-                $("#categoryNameUpdate").val(result.category.categoryName).data("categoryInfo", {
-                    'oId': id,
-                    "categoryRole": categoryRole
-                });
-                $categoryEmailUpdate.val(result.category.categoryEmail);
-                if ("adminRole" === categoryRole) {
-                    $categoryEmailUpdate.attr("disabled", "disabled");
-                } else {
-                    $categoryEmailUpdate.removeAttr("disabled");
-                }
-                
-                $("#categoryURLUpdate").val(result.category.categoryURL);
-                $("#categoryPasswordUpdate").val(result.category.categoryPassword);
-                $("#categoryAvatarUpdate").val(result.category.categoryAvatar);
+                $("#categoryNameUpdate").val(result.category.categoryTitle).data("oId", id);
+                $("#categoryURIUpdate").val(result.category.categoryURI);
+                $("#categoryDescUpdate").val(result.category.categoryDesc);
+                $("#categoryTagsUpdate").val(result.category.categoryTags);
 
                 $("#loadMsg").text("");
             }
         });
     },
     /*
-     * 更新用户
+     * 更新分类
      */
     update: function() {
         if (this.validate("Update")) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
 
-            var categoryInfo = $("#categoryNameUpdate").data("categoryInfo");
             var requestJSONObject = {
-                "categoryName": $("#categoryNameUpdate").val(),
-                "oId": categoryInfo.oId,
-                "categoryEmail": $("#categoryEmailUpdate").val(),
-                "categoryURL": $("#categoryURLUpdate").val(),
-                "categoryRole": categoryInfo.categoryRole,
-                "categoryPassword": $("#categoryPasswordUpdate").val(),
-                "categoryAvatar": $("#categoryAvatarUpdate").val()
+                "categoryTitle": $("#categoryNameUpdate").val(),
+                "oId": $("#categoryNameUpdate").data("oId"),
+                "categoryTags": $("#categoryTagsUpdate").val(),
+                "categoryURI": $("#categoryURIUpdate").val(),
+                "categoryDesc": $("#categoryDescUpdate").val()
             };
 
             $.ajax({
@@ -261,9 +243,9 @@ admin.categoryList = {
         }
     },
     /*
-     * 删除用户
-     * @id 用户 id
-     * @categoryName 用户名称
+     * 删除分类
+     * @id 分类 id
+     * @categoryName 分类名称
      */
     del: function(id, categoryName) {
         var isDelete = confirm(Label.confirmRemoveLabel + Label.categoryLabel + '"' + categoryName + '"?');
@@ -298,39 +280,6 @@ admin.categoryList = {
                 }
             });
         }
-    },
-    /**
-     * 修改角色
-     * @param id
-     */
-    changeRole: function(id) {
-        $("#tipMsg").text("");
-        $.ajax({
-            url: latkeConfig.servePath + "/console/changeRole/" + id,
-            type: "GET",
-            cache: false,
-            success: function(result, textStatus) {
-                $("#tipMsg").text(result.msg);
-                if (!result.sc) {
-                    $("#loadMsg").text("");
-                    return;
-                }
-
-                var pageNum = admin.categoryList.pageInfo.currentPage;
-                if (admin.categoryList.pageInfo.currentCount === 1 && admin.categoryList.pageInfo.pageCount !== 1 &&
-                        admin.categoryList.pageInfo.currentPage === admin.categoryList.pageInfo.pageCount) {
-                    admin.categoryList.pageInfo.pageCount--;
-                    pageNum = admin.categoryList.pageInfo.pageCount;
-                }
-                var hashList = window.location.hash.split("/");
-                if (pageNum !== parseInt(hashList[hashList.length - 1])) {
-                    admin.setHashByPage(pageNum);
-                }
-                admin.categoryList.getList(pageNum);
-
-                $("#loadMsg").text("");
-            }
-        });
     },
     /*
      * 验证字段

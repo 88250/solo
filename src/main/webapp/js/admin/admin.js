@@ -17,7 +17,7 @@
  * @description index for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.3.2, Sep 2, 2013
+ * @version 1.1.3.2, Mar 31, 2017
  */
 var Admin = function () {
     this.register = {};
