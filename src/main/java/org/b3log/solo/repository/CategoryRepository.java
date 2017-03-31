@@ -23,7 +23,7 @@ import org.json.JSONObject;
  * Category repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 30, 2017
+ * @version 1.1.0.1, Apr 1, 2017
  * @since 2.0.0
  */
 public interface CategoryRepository extends Repository {
@@ -45,4 +45,39 @@ public interface CategoryRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     JSONObject getByURI(final String categoryURI) throws RepositoryException;
+
+    /**
+     * Gets the maximum order.
+     *
+     * @return order number, returns {@code -1} if not found
+     * @throws RepositoryException repository exception
+     */
+    int getMaxOrder() throws RepositoryException;
+
+    /**
+     * Gets the upper category of the category specified by the given id.
+     *
+     * @param id the given id
+     * @return upper category, returns {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    JSONObject getUpper(final String id) throws RepositoryException;
+
+    /**
+     * Gets the under category of the category specified by the given id.
+     *
+     * @param id the given id
+     * @return under category, returns {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    JSONObject getUnder(final String id) throws RepositoryException;
+
+    /**
+     * Gets a category by the specified order.
+     *
+     * @param order the specified order
+     * @return category, returns {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    JSONObject getByOrder(final int order) throws RepositoryException;
 }

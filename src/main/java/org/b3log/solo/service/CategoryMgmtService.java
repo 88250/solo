@@ -35,7 +35,7 @@ import javax.inject.Inject;
  * Category management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Mar 31, 2017
+ * @version 1.2.0.0, Apr 1, 2017
  * @since 2.0.0
  */
 @Service
@@ -57,6 +57,58 @@ public class CategoryMgmtService {
      */
     @Inject
     private CategoryTagRepository categoryTagRepository;
+
+    /**
+     * Changes the order of a category specified by the given category id with the specified direction.
+     *
+     * @param categoryId the given category id
+     * @param direction the specified direction, "up"/"down"
+     * @throws ServiceException service exception
+     */
+    public void changeOrder(final String categoryId, final String direction)
+            throws ServiceException {
+        final Transaction transaction = categoryRepository.beginTransaction();
+
+        try {
+            final JSONObject srcCategory = categoryRepository.get(categoryId);
+            final int srcCategoryOrder = srcCategory.getInt(Category.CATEGORY_ORDER);
+
+            JSONObject targetCategory;
+
+            if ("up".equals(direction)) {
+                targetCategory = categoryRepository.getUpper(categoryId);
+            } else { // Down
+                targetCategory = categoryRepository.getUnder(categoryId);
+            }
+
+            if (null == targetCategory) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
+                LOGGER.log(Level.WARN, "Cant not find the target category of source category [order={0}]", srcCategoryOrder);
+
+                return;
+            }
+
+            // Swaps
+            srcCategory.put(Category.CATEGORY_ORDER, targetCategory.getInt(Category.CATEGORY_ORDER));
+            targetCategory.put(Category.CATEGORY_ORDER, srcCategoryOrder);
+
+            categoryRepository.update(srcCategory.getString(Keys.OBJECT_ID), srcCategory);
+            categoryRepository.update(targetCategory.getString(Keys.OBJECT_ID), targetCategory);
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Changes category's order failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
 
     /**
      * Removes a category-tag relation.

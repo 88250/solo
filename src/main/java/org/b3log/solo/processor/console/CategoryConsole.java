@@ -29,6 +29,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Category;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.CategoryMgmtService;
 import org.b3log.solo.service.CategoryQueryService;
@@ -90,6 +91,59 @@ public class CategoryConsole {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Changes a category order by the specified category id and direction.
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request  the specified http servlet request, for example,
+     *                 "oId": "",
+     *                 "direction": "" // "up"/"down"
+     * @param response the specified http servlet response
+     * @param context  the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/category/order/", method = HTTPRequestMethod.PUT)
+    public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        if (!userQueryService.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+        try {
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            final String categoryId = requestJSONObject.getString(Keys.OBJECT_ID);
+            final String direction = requestJSONObject.getString(Common.DIRECTION);
+
+            categoryMgmtService.changeOrder(categoryId, direction);
+
+            ret.put(Keys.STATUS_CODE, true);
+            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+
+            renderer.setJSONObject(ret);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
+        }
+    }
 
     /**
      * Gets a category by the specified request.

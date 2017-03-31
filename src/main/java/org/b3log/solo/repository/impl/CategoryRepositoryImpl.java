@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * Category repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 28, 2017
+ * @version 1.1.0.0, Apr 1, 2017
  * @since 2.0.0
  */
 @Repository
@@ -66,6 +66,88 @@ public class CategoryRepositoryImpl extends AbstractRepository implements Catego
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
         if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
+
+    @Override
+    public int getMaxOrder() throws RepositoryException {
+        final Query query = new Query();
+
+        query.addSort(Category.CATEGORY_ORDER, SortDirection.DESCENDING);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return -1;
+        }
+
+        return array.optJSONObject(0).optInt(Category.CATEGORY_ORDER);
+    }
+
+    @Override
+    public JSONObject getByOrder(final int order) throws RepositoryException {
+        final Query query = new Query();
+
+        query.setFilter(new PropertyFilter(Category.CATEGORY_ORDER, FilterOperator.EQUAL, order));
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
+
+    @Override
+    public JSONObject getUpper(final String id) throws RepositoryException {
+        final JSONObject category = get(id);
+
+        if (null == category) {
+            return null;
+        }
+
+        final Query query = new Query();
+
+        query.setFilter(new PropertyFilter(Category.CATEGORY_ORDER, FilterOperator.LESS_THAN, category.optInt(Category.CATEGORY_ORDER))).
+                addSort(Category.CATEGORY_ORDER, SortDirection.DESCENDING);
+        query.setCurrentPageNum(1);
+        query.setPageSize(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (1 != array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
+
+    @Override
+    public JSONObject getUnder(final String id) throws RepositoryException {
+        final JSONObject category = get(id);
+
+        if (null == category) {
+            return null;
+        }
+
+        final Query query = new Query();
+
+        query.setFilter(new PropertyFilter(Category.CATEGORY_ORDER, FilterOperator.GREATER_THAN, category.optInt(Category.CATEGORY_ORDER))).
+                addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING);
+        query.setCurrentPageNum(1);
+        query.setPageSize(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        if (1 != array.length()) {
             return null;
         }
 
