@@ -87,7 +87,7 @@ admin.categoryList = {
                 var categories = result.categories;
                 var categoryData = [];
                 admin.categoryList.pageInfo.currentCount = categories.length;
-                admin.categoryList.pageInfo.pageCount = result.pagination.paginationPageCount;
+                admin.categoryList.pageInfo.pageCount = result.pagination.paginationPageCount === 0 ? 1 : result.pagination.paginationPageCount;
 
                 for (var i = 0; i < categories.length; i++) {
                     categoryData[i] = {};
@@ -119,9 +119,8 @@ admin.categoryList = {
                             categories[i].categoryTitle + "')\">" + Label.removeLabel + "</a> ";
 
                     that.tablePagination.updateTablePagination(categoryData, pageNum, result.pagination);
-
-                    $("#loadMsg").text("");
                 }
+                $("#loadMsg").text("");
             }
         });
     },
@@ -192,10 +191,10 @@ admin.categoryList = {
                     return;
                 }
 
-                $("#categoryNameUpdate").val(result.category.categoryTitle).data("oId", id);
-                $("#categoryURIUpdate").val(result.category.categoryURI);
-                $("#categoryDescUpdate").val(result.category.categoryDesc);
-                $("#categoryTagsUpdate").val(result.category.categoryTags);
+                $("#categoryNameUpdate").val(result.categoryTitle).data("oId", id);
+                $("#categoryURIUpdate").val(result.categoryURI);
+                $("#categoryDescUpdate").val(result.categoryDesc);
+                $("#categoryTagsUpdate").val(result.categoryTags);
 
                 $("#loadMsg").text("");
             }
