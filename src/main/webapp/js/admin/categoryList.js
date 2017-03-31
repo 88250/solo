@@ -309,7 +309,7 @@ admin.categoryList = {
         };
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/category/",
+            url: latkeConfig.servePath + "/console/category/order",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),
