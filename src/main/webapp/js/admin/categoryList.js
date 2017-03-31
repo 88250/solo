@@ -112,6 +112,7 @@ admin.categoryList = {
 
                     categoryData[i].categoryTitle = categories[i].categoryTitle;
                     categoryData[i].categoryURI = categories[i].categoryURI;
+                    categoryData[i].categoryDesc = categories[i].categoryDescription;
 
                     categoryData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.categoryList.get('" +
                             categories[i].oId + "')\">" + Label.updateLabel + "</a>\
@@ -308,7 +309,7 @@ admin.categoryList = {
         };
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/link/category/",
+            url: latkeConfig.servePath + "/console/category/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),
