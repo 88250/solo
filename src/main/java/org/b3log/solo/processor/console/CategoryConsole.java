@@ -396,8 +396,8 @@ public class CategoryConsole {
                     continue;
                 }
 
-                final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
-                if (null == tag) {
+                final JSONObject tagResult = tagQueryService.getTagByTitle(tagTitle);
+                if (null == tagResult) {
                     addArticleWithTagFirstLabel = addArticleWithTagFirstLabel.replace("{tag}", tagTitle);
 
                     final JSONObject jsonObject = QueryResults.defaultResult();
@@ -411,7 +411,7 @@ public class CategoryConsole {
                     continue;
                 }
 
-                tags.add(tag);
+                tags.add(tagResult.optJSONObject(Tag.TAG));
                 deduplicate.add(tagTitle);
             }
 
