@@ -121,6 +121,7 @@
         "userLabel": "${userLabel}",
         "changeRoleLabel": "${changeRoleLabel}",
         "visitorUserLabel": "${visitorUserLabel}",
+        "categoryTooLongLabel": "${categoryTooLongLabel}",
         "autoSaveLabel": "${autoSaveLabel}"
     };    
     

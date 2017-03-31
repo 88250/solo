@@ -37,20 +37,24 @@ admin.categoryList = {
      */
     init: function(page) {
         this.tablePagination.buildTable([{
+                text: "",
+                index: "linkOrder",
+                width: 60
+            }, {
                 style: "padding-left: 12px;",
-                text: Label.commentNameLabel,
-                index: "categoryName",
+                text: Label.linkTitleLabel,
+                index: "categoryTitle",
                 width: 230
             }, {
                 style: "padding-left: 12px;",
-                text: Label.commentEmailLabel,
-                index: "categoryEmail",
-                minWidth: 180
+                text: 'URI',
+                index: "categoryURI",
+                width: 230
             }, {
                 style: "padding-left: 12px;",
-                text: Label.roleLabel,
-                index: "isAdmin",
-                width: 120
+                text: Label.linkDescriptionLabel,
+                index: "categoryDesc",
+                minWidth: 180
             }]);
 
         this.tablePagination.initPagination();
@@ -84,37 +88,44 @@ admin.categoryList = {
                     return;
                 }
 
-                var categorys = result.categorys;
+                var categories = result.categories;
                 var categoryData = [];
-                admin.categoryList.pageInfo.currentCount = categorys.length;
+                admin.categoryList.pageInfo.currentCount = categories.length;
                 admin.categoryList.pageInfo.pageCount = result.pagination.paginationPageCount;
-                if (categorys.length < 1) {
+                if (categories.length < 1) {
                     $("#tipMsg").text("No category  " + Label.reportIssueLabel);
                     $("#loadMsg").text("");
                     return;
                 }
 
-                for (var i = 0; i < categorys.length; i++) {
+                for (var i = 0; i < categories.length; i++) {
                     categoryData[i] = {};
-                    categoryData[i].categoryName = categorys[i].categoryName;
-                    categoryData[i].categoryEmail = categorys[i].categoryEmail;
-
-                    if ("adminRole" === categorys[i].categoryRole) {
-                        categoryData[i].isAdmin = "&nbsp;" + Label.administratorLabel;
-                        categoryData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.categoryList.get('" +
-                                categorys[i].oId + "', '" + categorys[i].categoryRole + "')\">" + Label.updateLabel + "</a>";
+                    if (i === 0) {
+                        if (categories.length === 1) {
+                            categoryData[i].linkOrder = "";
+                        } else {
+                            categoryData[i].linkOrder = '<div class="table-center" style="width:14px">\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                            </div>';
+                        }
+                    } else if (i === categories.length - 1) {
+                        categoryData[i].linkOrder = '<div class="table-center" style="width:14px">\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                            </div>';
                     } else {
-                        categoryData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.categoryList.get('" +
-                                categorys[i].oId + "', '" + categorys[i].categoryRole + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.categoryList.del('" + categorys[i].oId + "', '" + categorys[i].categoryName + "')\">" + Label.removeLabel + "</a> " +
-                                "<a href='javascript:void(0)' onclick=\"admin.categoryList.changeRole('" + categorys[i].oId + "')\">" + Label.changeRoleLabel + "</a>";
-                        if ("defaultRole" === categorys[i].categoryRole) {
-                            categoryData[i].isAdmin = Label.commonUserLabel;
-                        }
-                        else {
-                            categoryData[i].isAdmin = Label.visitorUserLabel;
-                        }
+                        categoryData[i].linkOrder = '<div class="table-center" style="width:38px">\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                            </div>';
                     }
+
+                    categoryData[i].categoryTitle = categories[i].categoryTitle;
+                    categoryData[i].categoryURI = categories[i].categoryURI;
+
+                    categoryData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.categoryList.get('" +
+                            categories[i].oId + "')\">" + Label.updateLabel + "</a>\
+                            <a href='javascript:void(0)' onclick=\"admin.categoryList.del('" + categories[i].oId + "', '" +
+                            categories[i].categoryName + "')\">" + Label.removeLabel + "</a> ";
 
                     that.tablePagination.updateTablePagination(categoryData, pageNum, result.pagination);
 
@@ -124,7 +135,7 @@ admin.categoryList = {
         });
     },
     /*
-     * 添加用户
+     * 添加分类
      */
     add: function() {
         if (this.validate()) {
@@ -133,10 +144,9 @@ admin.categoryList = {
 
             var requestJSONObject = {
                 "categoryName": $("#categoryName").val(),
-                "categoryEmail": $("#categoryEmail").val(),
-                "categoryURL": $("#categoryURL").val(),
-                "categoryPassword": $("#categoryPassword").val(),
-                "categoryAvatar": $("#categoryAvatar").val()
+                "categoryTags": $("#categoryTags").val(),
+                "categoryURI": $("#categoryURI").val(),
+                "categoryDesc": $("#categoryDesc").val()
             };
 
             $.ajax({
@@ -152,10 +162,9 @@ admin.categoryList = {
                     }
 
                     $("#categoryName").val("");
-                    $("#categoryEmail").val("");
-                    $("#categoryURL").val("");
-                    $("#categoryPassword").val("");
-                    $("#categoryAvatar").val("");
+                    $("#categoryTags").val("");
+                    $("#categoryURI").val("");
+                    $("#categoryDesc").val("");
                     if (admin.categoryList.pageInfo.currentCount === Label.PAGE_SIZE &&
                             admin.categoryList.pageInfo.currentPage === admin.categoryList.pageInfo.pageCount) {
                         admin.categoryList.pageInfo.pageCount++;
@@ -332,22 +341,43 @@ admin.categoryList = {
             status = "";
         }
         var categoryName = $("#categoryName" + status).val().replace(/(^\s*)|(\s*$)/g, "");
-        if (2 > categoryName.length || categoryName.length > 20) {
-            $("#tipMsg").text(Label.nameTooLongLabel);
+        if (2 > categoryName.length || categoryName.length > 32) {
+            $("#tipMsg").text(Label.categoryTooLongLabel);
             $("#categoryName" + status).focus();
-        } else if ($("#categoryEmail" + status).val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text(Label.mailCannotEmptyLabel);
-            $("#categoryEmail" + status).focus();
-        } else if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#categoryEmail" + status).val())) {
-            $("#tipMsg").text(Label.mailInvalidLabel);
-            $("#categoryEmail" + status).focus();
-        } else if ($("#categoryPassword" + status).val() === "") {
-            $("#tipMsg").text(Label.passwordEmptyLabel);
-            $("#categoryPassword" + status).focus();
+        } else if ($.trim($("#categoryTags" + status).val()) === "") {
+            $("#tipMsg").text(Label.tagsEmptyLabel);
+            $("#categoryTags" + status).focus();
         } else {
             return true;
         }
         return false;
+    },
+    /*
+     * 调换顺序
+     */
+    changeOrder: function (id, order, status) {
+        $("#loadMsg").text(Label.loadingLabel);
+        $("#tipMsg").text("");
+
+        var requestJSONObject = {
+            "oId": id.toString(),
+            "direction": status
+        };
+
+        $.ajax({
+            url: latkeConfig.servePath + "/console/link/category/",
+            type: "PUT",
+            cache: false,
+            data: JSON.stringify(requestJSONObject),
+            success: function(result, textStatus){
+                $("#tipMsg").text(result.msg);
+
+                // Refershes the link list
+                admin.categoryList.getList(admin.categoryList.pageInfo.currentPage);
+
+                $("#loadMsg").text("");
+            }
+        });
     }
 };
 

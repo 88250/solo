@@ -76,7 +76,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div id="tabs_category">
+                                <div id="tabs_category-list">
                                     <a href="#tools/category-list">${categoryListLabel}</a>
                                 </div>
                             </li>
