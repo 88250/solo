@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.15.1.32, Mar 19, 2017
+    Version: 3.16.1.32, Mar 31, 2017
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
+    Author: <a href="http://vanessa.b3log.org">Vanessa</a>
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -383,6 +384,7 @@
                         <param>preference.js</param>
                         <param>pluginList.js</param>
                         <param>userList.js</param>
+                        <param>categoryList.js</param>
                         <param>commentList.js</param>
                         <param>plugin.js</param>
                         <param>main.js</param>

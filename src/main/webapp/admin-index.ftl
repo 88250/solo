@@ -76,6 +76,11 @@
                                 </div>
                             </li>
                             <li>
+                                <div id="tabs_category">
+                                    <a href="#tools/category-list">${categoryListLabel}</a>
+                                </div>
+                            </li>
+                            <li>
                                 <div id="tabs_page-list">
                                     <a href="#tools/page-list">${navMgmtLabel}</a>
                                 </div>
@@ -118,6 +123,7 @@
                 <div id="tabsPanel_draft-list" class="none"></div>
                 <div id="tabsPanel_link-list" class="none"></div>
                 <div id="tabsPanel_preference" class="none"></div>
+                <div id="tabsPanel_category-list" class="none"></div>
                 <div id="tabsPanel_page-list" class="none"></div>
                 <div id="tabsPanel_others" class="none"></div>
                 <div id="tabsPanel_user-list" class="none"></div>
@@ -151,6 +157,7 @@
         <script src="${staticServePath}/js/admin/preference.js"></script>
         <script src="${staticServePath}/js/admin/pluginList.js"></script>
         <script src="${staticServePath}/js/admin/userList.js"></script>
+        <script src="${staticServePath}/js/admin/categoryList.js"></script>
         <script src="${staticServePath}/js/admin/commentList.js"></script>
         <script src="${staticServePath}/js/admin/plugin.js"></script>
         <script src="${staticServePath}/js/admin/main.js"></script>
