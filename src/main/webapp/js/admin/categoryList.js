@@ -88,11 +88,6 @@ admin.categoryList = {
                 var categoryData = [];
                 admin.categoryList.pageInfo.currentCount = categories.length;
                 admin.categoryList.pageInfo.pageCount = result.pagination.paginationPageCount;
-                if (categories.length < 1) {
-                    $("#tipMsg").text("No category  " + Label.reportIssueLabel);
-                    $("#loadMsg").text("");
-                    return;
-                }
 
                 for (var i = 0; i < categories.length; i++) {
                     categoryData[i] = {};
