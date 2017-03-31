@@ -194,8 +194,8 @@ admin.categoryList = {
 
                 $("#categoryNameUpdate").val(result.categoryTitle).data("oId", id);
                 $("#categoryURIUpdate").val(result.categoryURI);
-                $("#categoryDescUpdate").val(result.categoryDesc);
-                $("#categoryTagsUpdate").val(result.categoryTags);
+                $("#categoryDescUpdate").val(result.categoryDescription);
+                $("#categoryTagsUpdate").val(result.categoryTags.join(','));
 
                 $("#loadMsg").text("");
             }
