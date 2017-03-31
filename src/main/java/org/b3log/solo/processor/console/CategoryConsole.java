@@ -189,6 +189,14 @@ public class CategoryConsole {
                 return;
             }
 
+            final StringBuilder tagBuilder = new StringBuilder();
+            final List<JSONObject> tags = (List<JSONObject>) result.opt(Category.CATEGORY_T_TAGS);
+            for (final JSONObject tag : tags) {
+                tagBuilder.append(tag.optString(Tag.TAG_TITLE)).append(",");
+            }
+            tagBuilder.deleteCharAt(tagBuilder.length() - 1);
+            result.put(Category.CATEGORY_T_TAGS, tagBuilder.toString());
+
             renderer.setJSONObject(result);
             result.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
