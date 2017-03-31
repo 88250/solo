@@ -119,8 +119,8 @@ admin.categoryList = {
                             <a href='javascript:void(0)' onclick=\"admin.categoryList.del('" + categories[i].oId + "', '" +
                             categories[i].categoryTitle + "')\">" + Label.removeLabel + "</a> ";
 
-                    that.tablePagination.updateTablePagination(categoryData, pageNum, result.pagination);
                 }
+                that.tablePagination.updateTablePagination(categoryData, pageNum, result.pagination);
                 $("#loadMsg").text("");
             }
         });
