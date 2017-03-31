@@ -40,14 +40,17 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 31, 2017
+ * @version 1.1.0.0, Apr 1, 2017
  * @since 2.0.0
  */
 @RequestProcessor
@@ -87,6 +90,157 @@ public class CategoryConsole {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Removes a category by the specified request.
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request  the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context  the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/category/*", method = HTTPRequestMethod.DELETE)
+    public void removeCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        if (!userQueryService.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject jsonObject = new JSONObject();
+        renderer.setJSONObject(jsonObject);
+        try {
+            final String categoryId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/category/").length());
+            categoryMgmtService.removeCategory(categoryId);
+
+            jsonObject.put(Keys.STATUS_CODE, true);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, langPropsService.get("removeFailLabel"));
+        }
+    }
+
+    /**
+     * Updates a category by the specified request.
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request  the specified http servlet request,
+     *                 "oId": "",
+     *                 "categoryTitle": "",
+     *                 "categoryURI": "", // optional
+     *                 "categoryDescription": "", // optional
+     *                 "categoryOrder": "", // optional, uses 10 instead if not specified
+     *                 "categoryTags": "tag1, tag2" // optional
+     * @param context  the specified http request context
+     * @param response the specified http servlet response
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/category/", method = HTTPRequestMethod.PUT)
+    public void updateCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+
+        final JSONObject ret = new JSONObject();
+        renderer.setJSONObject(ret);
+
+        try {
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+
+            String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
+            tagsStr = tagsStr.replaceAll("，", ",").replaceAll("、", ",");
+            final String[] tagTitles = tagsStr.split(",");
+
+            String addArticleWithTagFirstLabel = langPropsService.get("addArticleWithTagFirstLabel");
+
+            final List<JSONObject> tags = new ArrayList<>();
+            final Set<String> deduplicate = new HashSet<>();
+            for (int i = 0; i < tagTitles.length; i++) {
+                String tagTitle = StringUtils.trim(tagTitles[i]);
+                if (StringUtils.isBlank(tagTitle)) {
+                    continue;
+                }
+
+                final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
+                if (null == tag) {
+                    addArticleWithTagFirstLabel = addArticleWithTagFirstLabel.replace("{tag}", tagTitle);
+
+                    final JSONObject jsonObject = QueryResults.defaultResult();
+                    renderer.setJSONObject(jsonObject);
+                    jsonObject.put(Keys.MSG, addArticleWithTagFirstLabel);
+
+                    return;
+                }
+
+                if (deduplicate.contains(tagTitle)) {
+                    continue;
+                }
+
+                tags.add(tag);
+                deduplicate.add(tagTitle);
+            }
+
+            final String title = requestJSONObject.optString(Category.CATEGORY_TITLE, "Category");
+            String uri = requestJSONObject.optString(Category.CATEGORY_URI, "Category");
+            if (!StringUtils.startsWith(uri, "/")) {
+                uri = '/' + uri;
+            }
+            final String desc = requestJSONObject.optString(Category.CATEGORY_DESCRIPTION);
+            final int order = requestJSONObject.optInt(Category.CATEGORY_ORDER);
+
+            final JSONObject category = new JSONObject();
+            category.put(Category.CATEGORY_TITLE, title);
+            category.put(Category.CATEGORY_URI, URLEncoder.encode(uri, "UTF-8"));
+            category.put(Category.CATEGORY_DESCRIPTION, desc);
+            category.put(Category.CATEGORY_ORDER, order);
+
+            final String categoryId = requestJSONObject.optString(Keys.OBJECT_ID);
+            categoryMgmtService.updateCategory(categoryId, category);
+            categoryMgmtService.removeCategoryTags(categoryId); // remove old relations
+
+            // add new relations
+            for (final JSONObject tag : tags) {
+                final JSONObject categoryTag = new JSONObject();
+                categoryTag.put(Category.CATEGORY + "_" + Keys.OBJECT_ID, categoryId);
+                categoryTag.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
+
+                categoryMgmtService.addCategoryTag(categoryTag);
+            }
+
+            ret.put(Keys.OBJECT_ID, categoryId);
+            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+            ret.put(Keys.STATUS_CODE, true);
+        } catch (final ServiceException e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+
+            final JSONObject jsonObject = QueryResults.defaultResult();
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, e.getMessage());
+        }
+    }
 
     /**
      * Adds a category with the specified request.
@@ -130,6 +284,7 @@ public class CategoryConsole {
             String addArticleWithTagFirstLabel = langPropsService.get("addArticleWithTagFirstLabel");
 
             final List<JSONObject> tags = new ArrayList<>();
+            final Set<String> deduplicate = new HashSet<>();
             for (int i = 0; i < tagTitles.length; i++) {
                 String tagTitle = StringUtils.trim(tagTitles[i]);
                 if (StringUtils.isBlank(tagTitle)) {
@@ -147,17 +302,25 @@ public class CategoryConsole {
                     return;
                 }
 
+                if (deduplicate.contains(tagTitle)) {
+                    continue;
+                }
+
                 tags.add(tag);
+                deduplicate.add(tagTitle);
             }
 
             final String title = requestJSONObject.optString(Category.CATEGORY_TITLE, "Category");
-            final String uri = requestJSONObject.optString(Category.CATEGORY_URI, "/Category");
+            String uri = requestJSONObject.optString(Category.CATEGORY_URI, "Category");
+            if (!StringUtils.startsWith(uri, "/")) {
+                uri = '/' + uri;
+            }
             final String desc = requestJSONObject.optString(Category.CATEGORY_DESCRIPTION);
             final int order = requestJSONObject.optInt(Category.CATEGORY_ORDER);
 
             final JSONObject category = new JSONObject();
             category.put(Category.CATEGORY_TITLE, title);
-            category.put(Category.CATEGORY_URI, uri);
+            category.put(Category.CATEGORY_URI, URLEncoder.encode(uri, "UTF-8"));
             category.put(Category.CATEGORY_DESCRIPTION, desc);
             category.put(Category.CATEGORY_ORDER, order);
 
@@ -178,7 +341,6 @@ public class CategoryConsole {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
-
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }

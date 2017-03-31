@@ -35,7 +35,7 @@ import javax.inject.Inject;
  * Category management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 30, 2017
+ * @version 1.1.0.0, Mar 31, 2017
  * @since 2.0.0
  */
 @Service
@@ -171,7 +171,24 @@ public class CategoryMgmtService {
             categoryTagRepository.removeByCategoryId(categoryId);
             categoryRepository.remove(categoryId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Updates a category [id=" + categoryId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Remove a category [id=" + categoryId + "] failed", e);
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Removes category-tag relations by the given category id.
+     *
+     * @param categoryId the given category id
+     * @throws ServiceException service exception
+     */
+    @Transactional
+    public void removeCategoryTags(final String categoryId) throws ServiceException {
+        try {
+            categoryTagRepository.removeByCategoryId(categoryId);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Remove category-tag [categoryId=" + categoryId + "] failed", e);
 
             throw new ServiceException(e);
         }
