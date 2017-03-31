@@ -133,10 +133,10 @@ admin.categoryList = {
             $("#tipMsg").text("");
 
             var requestJSONObject = {
-                "categoryName": $("#categoryName").val(),
+                "categoryTitle": $("#categoryName").val(),
                 "categoryTags": $("#categoryTags").val(),
                 "categoryURI": $("#categoryURI").val(),
-                "categoryDesc": $("#categoryDesc").val()
+                "categoryDescription": $("#categoryDesc").val()
             };
 
             $.ajax({

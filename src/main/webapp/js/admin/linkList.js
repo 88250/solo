@@ -30,8 +30,7 @@ admin.linkList = {
         currentPage: 1
     },
     id: "",
-    
-    /* 
+    /*
      * 初始化 table, pagination
      */
     init: function (page) {
