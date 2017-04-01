@@ -51,7 +51,7 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Apr 1, 2017
+ * @version 1.1.0.1, Apr 1, 2017
  * @since 2.0.0
  */
 @RequestProcessor
@@ -294,14 +294,15 @@ public class CategoryConsole {
 
             final List<JSONObject> tags = new ArrayList<>();
             final Set<String> deduplicate = new HashSet<>();
+
             for (int i = 0; i < tagTitles.length; i++) {
                 String tagTitle = StringUtils.trim(tagTitles[i]);
                 if (StringUtils.isBlank(tagTitle)) {
                     continue;
                 }
 
-                final JSONObject tag = tagQueryService.getTagByTitle(tagTitle);
-                if (null == tag) {
+                final JSONObject tagResult = tagQueryService.getTagByTitle(tagTitle);
+                if (null == tagResult) {
                     addArticleWithTagFirstLabel = addArticleWithTagFirstLabel.replace("{tag}", tagTitle);
 
                     final JSONObject jsonObject = QueryResults.defaultResult();
@@ -315,7 +316,7 @@ public class CategoryConsole {
                     continue;
                 }
 
-                tags.add(tag);
+                tags.add(tagResult.optJSONObject(Tag.TAG));
                 deduplicate.add(tagTitle);
             }
 
