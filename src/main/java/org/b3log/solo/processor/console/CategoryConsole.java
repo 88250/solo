@@ -41,7 +41,6 @@ import org.json.JSONObject;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -320,19 +319,41 @@ public class CategoryConsole {
                 deduplicate.add(tagTitle);
             }
 
+            final String categoryId = requestJSONObject.optString(Keys.OBJECT_ID);
+
             final String title = requestJSONObject.optString(Category.CATEGORY_TITLE, "Category");
-            String uri = requestJSONObject.optString(Category.CATEGORY_URI, "Category");
+            JSONObject mayExist = categoryQueryService.getByTitle(title);
+            if (null != mayExist && !mayExist.optString(Keys.OBJECT_ID).equals(categoryId)) {
+                final JSONObject jsonObject = QueryResults.defaultResult();
+                renderer.setJSONObject(jsonObject);
+                jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryLabel"));
+
+                return;
+            }
+
+            String uri = requestJSONObject.optString(Category.CATEGORY_URI, title);
+            if (StringUtils.isBlank(uri)) {
+                uri = title;
+            }
             if (!StringUtils.startsWith(uri, "/")) {
                 uri = '/' + uri;
             }
+            mayExist = categoryQueryService.getByURI(uri);
+            if (null != mayExist && !mayExist.optString(Keys.OBJECT_ID).equals(categoryId)) {
+                final JSONObject jsonObject = QueryResults.defaultResult();
+                renderer.setJSONObject(jsonObject);
+                jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryURILabel"));
+
+                return;
+            }
+
             final String desc = requestJSONObject.optString(Category.CATEGORY_DESCRIPTION);
 
             final JSONObject category = new JSONObject();
             category.put(Category.CATEGORY_TITLE, title);
-            category.put(Category.CATEGORY_URI, URLEncoder.encode(uri, "UTF-8"));
+            category.put(Category.CATEGORY_URI, uri);
             category.put(Category.CATEGORY_DESCRIPTION, desc);
 
-            final String categoryId = requestJSONObject.optString(Keys.OBJECT_ID);
             categoryMgmtService.updateCategory(categoryId, category);
             categoryMgmtService.removeCategoryTags(categoryId); // remove old relations
 
@@ -425,15 +446,36 @@ public class CategoryConsole {
             }
 
             final String title = requestJSONObject.optString(Category.CATEGORY_TITLE, "Category");
-            String uri = requestJSONObject.optString(Category.CATEGORY_URI, "Category");
+            JSONObject mayExist = categoryQueryService.getByTitle(title);
+            if (null != mayExist) {
+                final JSONObject jsonObject = QueryResults.defaultResult();
+                renderer.setJSONObject(jsonObject);
+                jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryLabel"));
+
+                return;
+            }
+
+            String uri = requestJSONObject.optString(Category.CATEGORY_URI, title);
+            if (StringUtils.isBlank(uri)) {
+                uri = title;
+            }
             if (!StringUtils.startsWith(uri, "/")) {
                 uri = '/' + uri;
             }
+            mayExist = categoryQueryService.getByURI(uri);
+            if (null != mayExist) {
+                final JSONObject jsonObject = QueryResults.defaultResult();
+                renderer.setJSONObject(jsonObject);
+                jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryURILabel"));
+
+                return;
+            }
+
             final String desc = requestJSONObject.optString(Category.CATEGORY_DESCRIPTION);
 
             final JSONObject category = new JSONObject();
             category.put(Category.CATEGORY_TITLE, title);
-            category.put(Category.CATEGORY_URI, URLEncoder.encode(uri, "UTF-8"));
+            category.put(Category.CATEGORY_URI, uri);
             category.put(Category.CATEGORY_DESCRIPTION, desc);
 
             final String categoryId = categoryMgmtService.addCategory(category);

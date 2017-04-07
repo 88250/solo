@@ -17,7 +17,9 @@
  * category list for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.0.0, Mar 31, 2016
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.1, Apr 7, 2017
+ * @since 2.0.0
  */
 
 /* category-list 相关操作 */
@@ -214,7 +216,7 @@ admin.categoryList = {
                 "oId": $("#categoryNameUpdate").data("oId"),
                 "categoryTags": $("#categoryTagsUpdate").val(),
                 "categoryURI": $("#categoryURIUpdate").val(),
-                "categoryDesc": $("#categoryDescUpdate").val()
+                "categoryDescription": $("#categoryDescUpdate").val()
             };
 
             $.ajax({
