@@ -335,9 +335,7 @@ public class CategoryConsole {
             if (StringUtils.isBlank(uri)) {
                 uri = title;
             }
-            if (!StringUtils.startsWith(uri, "/")) {
-                uri = '/' + uri;
-            }
+
             mayExist = categoryQueryService.getByURI(uri);
             if (null != mayExist && !mayExist.optString(Keys.OBJECT_ID).equals(categoryId)) {
                 final JSONObject jsonObject = QueryResults.defaultResult();
@@ -459,9 +457,7 @@ public class CategoryConsole {
             if (StringUtils.isBlank(uri)) {
                 uri = title;
             }
-            if (!StringUtils.startsWith(uri, "/")) {
-                uri = '/' + uri;
-            }
+
             mayExist = categoryQueryService.getByURI(uri);
             if (null != mayExist) {
                 final JSONObject jsonObject = QueryResults.defaultResult();
