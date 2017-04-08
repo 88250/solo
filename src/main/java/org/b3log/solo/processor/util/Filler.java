@@ -811,7 +811,7 @@ public class Filler {
                 fillRecentComments(dataModel, preference);
             }
 
-            if (Templates.hasExpression(template, "<#list mostUsedCategories as tag>")) {
+            if (Templates.hasExpression(template, "<#list mostUsedCategories as category>")) {
                 fillMostUsedCategories(dataModel, preference);
             }
 
