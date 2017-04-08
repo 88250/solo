@@ -322,7 +322,12 @@ blockquote {
     padding: 0;
 }
 
-.dropper ul#head-pages li, .dropper ul#head-cats li, .dropper ul#head-tags li li, .dropper ul#head-account li, ul#tweets li {
+.dropper ul#head-pages li,
+.dropper ul#head-cats li,
+.dropper ul#head-tags li,
+.dropper ul#head-account li,
+.dropper ul#head-category li,
+ul#tweets li {
     border-bottom: 1px solid #1d1d1d;
     background: url(../core/core-images/arrow.png) no-repeat right center;
     border-top: 1px solid #363636;
@@ -348,7 +353,10 @@ blockquote {
     text-decoration: underline;
 }
 
-.dropper ul#head-cats li:hover, .dropper ul#head-tags li li:hover, .dropper ul#head-pages li:hover {
+.dropper ul#head-cats li:hover,
+.dropper ul#head-tags li li:hover,
+.dropper ul#head-category li li:hover,
+.dropper ul#head-pages li:hover {
     background-color: #222;
     border-top: 1px solid #222;
     position: relative;
@@ -761,7 +769,7 @@ input#search-submit {
 img.head-close {
     display: inline;
     position: relative;
-    top: 6px;
+    top: 0px;
     left: 5px;
 }
 

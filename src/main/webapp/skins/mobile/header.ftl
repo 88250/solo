@@ -28,6 +28,7 @@
                 <a href="#head-pages"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Pages.png" alt=""/></a>
                 <a href="#head-tags"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Tags.png" alt=""/></a>
                 <a href="#head-cats"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Archives.png" alt=""/></a>
+                <a href="#head-category"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Archives.png" alt=""/></a>
             </div>
 
             <ul id="head-pages">
@@ -57,6 +58,19 @@
                     </#if>
                 </li>
                 </#list>
+                </#if>
+            </ul>
+
+            <ul id="head-category">
+                <#if 0 != mostUsedCategories?size>
+                    <#list mostUsedCategories as category>
+                        <li>
+                            <a href="${servePath}/category/${category.categoryURI}"
+                               aria-label="${category.categoryTagCnt} ${tagsLabel}"
+                               class="tag tooltipped tooltipped-n">
+                                ${category.categoryTitle}</a>
+                        </li>
+                    </#list>
                 </#if>
             </ul>
 
