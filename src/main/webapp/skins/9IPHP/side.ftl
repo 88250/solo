@@ -11,8 +11,7 @@
                 <header><h2>${categoryLabel}</h2></header>
                 <main>
                     <#list mostUsedTags as tag>
-                        <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})"
-                           href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}"
+                        <a href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}"
                             class="tag tooltipped tooltipped-n" aria-label="${tag.tagPublishedRefCount} ${countLabel}${articleLabel}">
                                 ${tag.tagTitle}</a>
                     </#list>
@@ -25,7 +24,7 @@
                 <header><h2>${tagsLabel}</h2></header>
                 <main>
                     <#list mostUsedTags as tag>
-                        <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})"
+                        <a rel="tag"
                            href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}"
                             class="tag tooltipped tooltipped-n" aria-label="${tag.tagPublishedRefCount} ${countLabel}${articleLabel}">
                                 ${tag.tagTitle}</a>

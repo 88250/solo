@@ -3930,7 +3930,7 @@ admin.categoryList = {
 
         $("#categoryUpdate").dialog({
             width: 700,
-            height: 250,
+            height: 260,
             "modal": true,
             "hideFooter": true
         });

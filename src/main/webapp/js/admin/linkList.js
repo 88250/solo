@@ -60,7 +60,7 @@ admin.linkList = {
         
         $("#updateLink").dialog({
             width: 700,
-            height: 180,
+            height: 210,
             "modal": true,
             "hideFooter": true
         });

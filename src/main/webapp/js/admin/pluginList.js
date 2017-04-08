@@ -171,6 +171,6 @@ admin.register["plugin-list"] = {
     "obj": admin.pluginList,
     "init": admin.pluginList.init,
     "refresh": function() {
-        admin.claerTip();
+        $("#loadMsg").text("");
     }
 };
