@@ -40,7 +40,7 @@ admin.categoryList = {
                 width: 60
             }, {
                 style: "padding-left: 12px;",
-                text: Label.linkTitleLabel,
+                text: Label.titleLabel,
                 index: "categoryTitle",
                 width: 230
             }, {
@@ -50,7 +50,7 @@ admin.categoryList = {
                 width: 230
             }, {
                 style: "padding-left: 12px;",
-                text: Label.linkDescriptionLabel,
+                text: Label.linkDescription1Label,
                 index: "categoryDesc",
                 minWidth: 180
             }]);

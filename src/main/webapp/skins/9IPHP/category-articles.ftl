@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <@head title="${tag.tagTitle} - ${blogTitle}">
-        <meta name="keywords" content="${metaKeywords},${tag.tagTitle}"/>
+        <@head title="${category.categoryTitle} - ${blogTitle}">
+        <meta name="keywords" content="${metaKeywords},${category.categoryTitle}"/>
         <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
         </@head>
     </head>
@@ -14,8 +14,10 @@
                 <main>
                     <div class="title">
                         <h2 class="tip"><i class="icon-category"></i>
-                            &nbsp;${tag.tagTitle}
-                            <small>${categoryLabel}</small>
+                            &nbsp;${category.categoryTitle}
+                            <small>${category.categoryDescription}</small>
+                        </h2>
+
                     </div>
                     <#include "article-list.ftl">
                 </main>

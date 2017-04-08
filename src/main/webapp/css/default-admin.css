@@ -45,11 +45,6 @@ a:hover {
     text-decoration: underline;
 }
 
-button.selected {
-    background: url("../images/bowknot/completed.png") no-repeat scroll right bottom transparent !important;
-    color: #D54121 !important;
-    border-color: #b0b5b9 !important;
-}
 @font-face {
     font-family: 'icomoon';
     src:url('fonts/icomoon.eot?1450');
@@ -177,6 +172,33 @@ button.selected {
     border-bottom-color: #bbb;
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #bbb; 
+}
+
+
+button,
+.completed-ck span {
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid #1fb5ad;
+    border-radius: 4px;
+    background-color: #1fb5ad;
+    color: #fff;
+    height: auto;
+    outline: none;
+    line-height: 18px;
+}
+
+button:hover {
+    background-color: #1ca59e;
+    border-color: #1ca59e;
 }
 /* end reset */
 
@@ -417,7 +439,8 @@ a[class*=" icon-"]:hover {
 #tabsPanel_plugin-list,
 #tabsPanel_page-list > div:first-child,
 #tabsPanel_user-list > div:first-child,
-#tabsPanel_link-list > div:first-child{
+#tabsPanel_category-list > div:first-child,
+#tabsPanel_link-list > div:first-child {
     background-color: #FFF;
     border-radius: 4px;
     margin-bottom: 40px;
@@ -624,32 +647,6 @@ a[class*=" icon-"]:hover {
 .form input[type='text']:focus, .form input[type='password']:focus, .form textarea:focus {
     box-shadow: none;
     border-color: #1fb5ad;
-} 
-
-.form button,
-.completed-ck span {
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 400;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    cursor: pointer;
-    user-select: none;
-    background-image: none;
-    border: 1px solid #1fb5ad;
-    border-radius: 4px;
-    background-color: #1fb5ad;
-    color: #fff;
-    height: auto;
-    outline: none;
-    line-height: 18px;
-}
-
-.form button:hover {
-    background-color: #1ca59e;
-    border-color: #1ca59e;
 }
 /* end form */
 
@@ -872,9 +869,11 @@ button#submitArticle:hover,
     border-color: #b0b5b9;
 }
 
-.completed-ck span.selected {
-    color: #D54121;
-    background: url(../images/bowknot/completed.png) no-repeat right bottom;
+.completed-ck span.selected,
+.signs button.selected {
+    background-color: #1ca59e;
+    border-color: #1ca59e;
+    color: #fff;
 }
 .dialog-background {
     background-color: #000000;
@@ -903,7 +902,7 @@ button#submitArticle:hover,
 }
 
 .dialog-header-bg {
-    background: url("../images/icon.png") repeat scroll center bottom #F1F1F1;
+    background: #F1F1F1;
     border-color: #C0C0C0 #D9D9D9 #D9D9D9;
     border-radius: 6px 6px 0 0;
     border-style: solid;
@@ -928,7 +927,7 @@ button#submitArticle:hover,
 
 .dialog-main {
     background-color: #FFFFFF;
-    border: 2px solid #666666;
+    border: 1px solid #666666;
     border-color: #C0C0C0 #D9D9D9 #D9D9D9;
     border-top-width: 0;
     padding: 12px;

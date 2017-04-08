@@ -51,7 +51,8 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.2.3.4, Apr 8, 2017
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.2.4.4, Apr 8, 2017
  * @since 0.3.5
  */
 @Service
@@ -177,8 +178,8 @@ public class ArticleQueryService {
                 articleIds.add(tagArticles.optJSONObject(i).optString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
             }
 
-            query = new Query().setFilter(CompositeFilterOperator.and(
-                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds))).
+            query = new Query().setFilter(
+                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
             final List<JSONObject> articles = new ArrayList<>();

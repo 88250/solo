@@ -6,14 +6,15 @@
             </div>
         </#if>
 
-        <#if 0 != mostUsedTags?size>
+        <#if 0 != mostUsedCategories?size>
             <div class="module">
                 <header><h2>${categoryLabel}</h2></header>
                 <main>
-                    <#list mostUsedTags as tag>
-                        <a href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}"
-                            class="tag tooltipped tooltipped-n" aria-label="${tag.tagPublishedRefCount} ${countLabel}${articleLabel}">
-                                ${tag.tagTitle}</a>
+                    <#list mostUsedCategories as category>
+                        <a href="${servePath}/category/${category.categoryURI}"
+                           aria-label="${category.categoryTagCnt} ${cntLabel}${tagsLabel}"
+                           class="tag tooltipped tooltipped-n">
+                                ${category.categoryTitle}</a>
                     </#list>
                 </main>
             </div>
@@ -26,7 +27,8 @@
                     <#list mostUsedTags as tag>
                         <a rel="tag"
                            href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}"
-                            class="tag tooltipped tooltipped-n" aria-label="${tag.tagPublishedRefCount} ${countLabel}${articleLabel}">
+                           class="tag tooltipped tooltipped-n"
+                           aria-label="${tag.tagPublishedRefCount} ${countLabel}${articleLabel}">
                                 ${tag.tagTitle}</a>
                     </#list>
                 </main>

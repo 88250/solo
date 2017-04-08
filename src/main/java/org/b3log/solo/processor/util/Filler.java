@@ -57,7 +57,8 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  * Filler utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.11.13, Apr 8, 2017
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 1.6.12.13, Apr 8, 2017
  * @since 0.3.1
  */
 @Service
@@ -755,7 +756,7 @@ public class Filler {
                 fillRecentComments(dataModel, preference);
             }
 
-            if (Templates.hasExpression(template, "<#list mostUsedCategories as tag>")) {
+            if (Templates.hasExpression(template, "<#list mostUsedCategories as category>")) {
                 fillMostUsedCategories(dataModel, preference);
             }
 
