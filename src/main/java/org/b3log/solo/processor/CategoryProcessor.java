@@ -28,17 +28,15 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
-import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Tag;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -48,7 +46,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -56,7 +53,7 @@ import java.util.Map;
  * Category processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 7, 2017
+ * @version 1.0.0.1, Apr 8, 2017
  * @since 2.0.0
  */
 @RequestProcessor
@@ -98,10 +95,10 @@ public class CategoryProcessor {
     private UserQueryService userQueryService;
 
     /**
-     * Tag query service.
+     * Category query service.
      */
     @Inject
-    private TagQueryService tagQueryService;
+    private CategoryQueryService categoryQueryService;
 
     /**
      * Statistic management service.
@@ -110,18 +107,18 @@ public class CategoryProcessor {
     private StatisticMgmtService statisticMgmtService;
 
     /**
-     * Gets the request page number from the specified request URI and tag title.
+     * Gets the request page number from the specified request URI and category URI.
      *
-     * @param requestURI the specified request URI
-     * @param tagTitle   the specified tag title
+     * @param requestURI  the specified request URI
+     * @param categoryURI the specified category URI
      * @return page number, returns {@code -1} if the specified request URI can not convert to an number
      */
-    private static int getCurrentPageNum(final String requestURI, final String tagTitle) {
-        if (Strings.isEmptyOrNull(tagTitle)) {
+    private static int getCurrentPageNum(final String requestURI, final String categoryURI) {
+        if (Strings.isEmptyOrNull(categoryURI)) {
             return -1;
         }
 
-        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/tags/" + tagTitle + "/").length());
+        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/category/" + categoryURI + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
     }
@@ -171,42 +168,33 @@ public class CategoryProcessor {
             final int currentPageNum = getCurrentPageNum(requestURI, categoryURI);
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
 
             LOGGER.log(Level.DEBUG, "Category [URI={0}, currentPageNum={1}]", categoryURI, currentPageNum);
 
             categoryURI = URLDecoder.decode(categoryURI, "UTF-8");
-            final JSONObject result = tagQueryService.getTagByTitle(categoryURI);
+            final JSONObject category = categoryQueryService.getByURI(categoryURI);
 
-            if (null == result) {
+            if (null == category) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
 
-            final JSONObject tag = result.getJSONObject(Tag.TAG);
-            final String tagId = tag.getString(Keys.OBJECT_ID);
+            dataModel.put(Category.CATEGORY, category);
 
             final JSONObject preference = preferenceQueryService.getPreference();
+            final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
+            final String categoryId = category.optString(Keys.OBJECT_ID);
+
+            final JSONObject result = articleQueryService.getCategoryArticles(categoryId, currentPageNum, pageSize);
+            final List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
 
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
-            final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
-
-            final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
-
-            if (articles.isEmpty()) {
-                try {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                    return;
-                } catch (final IOException ex) {
-                    LOGGER.error(ex.getMessage());
-                }
-            }
-
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
-
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(request, articles, preference);
             } else {
@@ -216,36 +204,18 @@ public class CategoryProcessor {
                 filler.setArticlesExProperties(request, articles, author, preference);
             }
 
-            final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
-            final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
-
-            LOGGER.log(Level.TRACE, "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
-                    new Object[]{currentPageNum, pageSize, pageCount, windowSize});
-            final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-
-            LOGGER.log(Level.TRACE, "tag-articles[pageNums={0}]", pageNums);
-
-            Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
+            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+            final List<Integer> pageNums = (List) result.optJSONObject(Pagination.PAGINATION).opt(Pagination.PAGINATION_PAGE_NUMS);
 
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
-            dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(categoryURI, "UTF-8"));
-            dataModel.put(Keys.OBJECT_ID, tagId);
-            dataModel.put(Tag.TAG, tag);
+            dataModel.put(Common.PATH, "/category/" + URLEncoder.encode(categoryURI, "UTF-8"));
 
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
 
             statisticMgmtService.incBlogViewCount(request, response);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
-        } catch (final JSONException e) {
+        } catch (final ServiceException | JSONException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             try {
