@@ -495,25 +495,6 @@ a[class*=" icon-"]:hover {
     text-decoration: none;
     color: #4285f4
 }
-@font-face {
-    font-family: 'icomoon';
-    src: url("fonts/icomoon.eot?68j667");
-    src: url("fonts/icomoon.eot?68j667#iefix") format("embedded-opentype"), url("fonts/icomoon.ttf?68j667") format("truetype"), url("fonts/icomoon.woff?68j667") format("woff"), url("fonts/icomoon.svg?68j667#icomoon") format("svg");
-    font-weight: normal;
-    font-style: normal
-}
-[class^="icon-"],
-[class*=" icon-"] {
-    font-family: 'icomoon' !important;
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale
-}
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09,
 .em10, .em11, .em12, .em13, .em14 {
     cursor: pointer;
@@ -593,6 +574,32 @@ a[class*=" icon-"]:hover {
 /* end common */
 
 /* start reset common */
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?oyqnlj');
+  src:  url('fonts/icomoon.eot?oyqnlj#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?oyqnlj') format('truetype'),
+    url('fonts/icomoon.woff?oyqnlj') format('woff'),
+    url('fonts/icomoon.svg?oyqnlj#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .icon-list:before {
   content: "\f0ca";
 }
@@ -623,6 +630,9 @@ a[class*=" icon-"]:hover {
 .icon-refresh:before {
   content: "\f021";
 }
+.icon-category:before {
+  content: "\e9bc";
+}
 .icon-logout:before {
   content: "\ea14";
 }
@@ -641,6 +651,7 @@ a[class*=" icon-"]:hover {
 .icon-rss:before {
   content: "\e901";
 }
+
 *::selection {
     background: none repeat scroll 0% 0% #3D4450;
     color: #FFF;
@@ -1050,6 +1061,10 @@ aside.has-toc > section:last-child {
     padding-bottom: 10px;
     border-bottom: 1px solid #f1f1f1;
     margin-top: 20px;
+}
+
+.title > h2.tip {
+    border-bottom: 0
 }
 /* end article list */
 

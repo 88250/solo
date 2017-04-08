@@ -13,9 +13,9 @@
             <div class="main-wrap">
                 <main>
                     <div class="title">
-                        <h2 class="tip"><i class="icon-tags"></i>
+                        <h2 class="tip"><i class="icon-category"></i>
                             &nbsp;${tag.tagTitle}
-                            <small>${tagLabel}</small>
+                            <small>${categoryLabel}</small>
                     </div>
                     <#include "article-list.ftl">
                 </main>

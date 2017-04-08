@@ -13,7 +13,7 @@
             <div class="main-wrap">
                 <main>
                     <div class="title">
-                        <h2 style="border-bottom:0">
+                        <h2 class="tip">
                             <i class="icon-inbox"></i>
                             &nbsp;
                             <#if "en" == localeString?substring(0, 2)>

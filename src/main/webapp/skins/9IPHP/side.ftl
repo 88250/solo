@@ -8,7 +8,21 @@
 
         <#if 0 != mostUsedTags?size>
             <div class="module">
-                <header><h2>${popTagsLabel}</h2></header>
+                <header><h2>${categoryLabel}</h2></header>
+                <main>
+                    <#list mostUsedTags as tag>
+                        <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})"
+                           href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}"
+                            class="tag tooltipped tooltipped-n" aria-label="${tag.tagPublishedRefCount} ${countLabel}${articleLabel}">
+                                ${tag.tagTitle}</a>
+                    </#list>
+                </main>
+            </div>
+        </#if>
+
+        <#if 0 != mostUsedTags?size>
+            <div class="module">
+                <header><h2>${tagsLabel}</h2></header>
                 <main>
                     <#list mostUsedTags as tag>
                         <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})"
