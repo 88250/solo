@@ -18,16 +18,23 @@ package org.b3log.solo.repository.impl;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Category;
+import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.CategoryRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.text.Collator;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * Category repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Apr 1, 2017
+ * @version 1.1.0.1, Apr 8, 2017
  * @since 2.0.0
  */
 @Repository
@@ -105,6 +112,20 @@ public class CategoryRepositoryImpl extends AbstractRepository implements Catego
     }
 
     @Override
+    public List<JSONObject> getMostUsedCategories(final int num) throws RepositoryException {
+        final Query query = new Query().addSort(Category.CATEGORY_TAG_CNT, SortDirection.DESCENDING).
+                setCurrentPageNum(1).setPageSize(num).setPageCount(1);
+
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+
+        final List<JSONObject> ret = CollectionUtils.jsonArrayToList(array);
+        sortJSONCategoryList(ret);
+
+        return ret;
+    }
+
+    @Override
     public JSONObject getUpper(final String id) throws RepositoryException {
         final JSONObject category = get(id);
 
@@ -152,5 +173,15 @@ public class CategoryRepositoryImpl extends AbstractRepository implements Catego
         }
 
         return array.optJSONObject(0);
+    }
+
+    private void sortJSONCategoryList(final List<JSONObject> tagJoList) {
+        Collections.sort(tagJoList, new Comparator<JSONObject>() {
+            @Override
+            public int compare(final JSONObject o1, final JSONObject o2) {
+                return Collator.getInstance(java.util.Locale.CHINA).
+                        compare(o1.optString(Tag.TAG_TITLE), o2.optString(Tag.TAG_TITLE));
+            }
+        });
     }
 }

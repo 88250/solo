@@ -20,7 +20,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.4.5.1, Nov 1, 2015
+ * @version 1.5.5.1, Apr 8, 2017
  * @since 0.3.1
  */
 public final class Common {
@@ -34,6 +34,11 @@ public final class Common {
      * Most used tags.
      */
     public static final String MOST_USED_TAGS = "mostUsedTags";
+
+    /**
+     * Most used categories.
+     */
+    public static final String MOST_USED_CATEGORIES = "mostUsedCategories";
 
     /**
      * Most comment count articles.
@@ -174,7 +179,7 @@ public final class Common {
      * Key of current user.
      */
     public static final String CURRENT_USER = "currentUser";
-    
+
     /**
      * Key of admin user.
      */

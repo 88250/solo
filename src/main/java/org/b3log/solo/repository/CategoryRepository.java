@@ -19,11 +19,13 @@ import org.b3log.latke.repository.Repository;
 import org.b3log.latke.repository.RepositoryException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Category repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Apr 1, 2017
+ * @version 1.2.0.1, Apr 8, 2017
  * @since 2.0.0
  */
 public interface CategoryRepository extends Repository {
@@ -80,4 +82,13 @@ public interface CategoryRepository extends Repository {
      * @throws RepositoryException repository exception
      */
     JSONObject getByOrder(final int order) throws RepositoryException;
+
+    /**
+     * Gets most used categories (contains the most tags) with the specified number.
+     *
+     * @param num the specified number
+     * @return a list of most used categories, returns an empty list if not found
+     * @throws RepositoryException repository exception
+     */
+    List<JSONObject> getMostUsedCategories(final int num) throws RepositoryException;
 }

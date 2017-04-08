@@ -142,9 +142,8 @@ public class ArticleQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) Collections.emptyList());
 
         try {
-            final JSONArray categoryTags =
-                    categoryTagRepository.getByCategoryId(categoryId, 1, Integer.MAX_VALUE)
-                            .optJSONArray(Keys.RESULTS);
+            final JSONArray categoryTags = categoryTagRepository.getByCategoryId(
+                    categoryId, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS);
             if (categoryTags.length() <= 0) {
                 return ret;
             }
