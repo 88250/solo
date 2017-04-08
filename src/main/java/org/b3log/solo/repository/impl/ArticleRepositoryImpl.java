@@ -15,19 +15,10 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.CompositeFilterOperator;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
@@ -35,6 +26,10 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Article repository.
@@ -233,7 +228,7 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
         final JSONObject result1 = get(query);
         final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
 
-        final List<JSONObject> list1 = CollectionUtils.<JSONObject>jsonArrayToList(array1);
+        final List<JSONObject> list1 = CollectionUtils.jsonArrayToList(array1);
 
         ret.addAll(list1);
 
@@ -252,7 +247,7 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
             final JSONObject result2 = get(query);
             final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
 
-            final List<JSONObject> list2 = CollectionUtils.<JSONObject>jsonArrayToList(array2);
+            final List<JSONObject> list2 = CollectionUtils.jsonArrayToList(array2);
 
             ret.addAll(list2);
         }

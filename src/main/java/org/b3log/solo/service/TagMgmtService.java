@@ -17,6 +17,7 @@ package org.b3log.solo.service;
 
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -29,7 +30,6 @@ import org.b3log.solo.repository.TagRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
 import java.util.List;
 
 

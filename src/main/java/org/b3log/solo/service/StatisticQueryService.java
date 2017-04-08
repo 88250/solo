@@ -16,7 +16,7 @@
 package org.b3log.solo.service;
 
 
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;

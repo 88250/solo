@@ -16,6 +16,7 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
@@ -28,8 +29,6 @@ import org.b3log.solo.repository.CategoryRepository;
 import org.b3log.solo.repository.CategoryTagRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import javax.inject.Inject;
 
 /**
  * Category management service.

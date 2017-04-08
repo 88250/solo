@@ -15,14 +15,6 @@
  */
 package org.b3log.solo;
 
-import java.util.ResourceBundle;
-import java.util.Set;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
@@ -55,6 +47,15 @@ import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.service.UpgradeService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * Solo Servlet listener.

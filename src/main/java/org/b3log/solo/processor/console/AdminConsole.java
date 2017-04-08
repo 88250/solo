@@ -25,6 +25,7 @@ import org.b3log.latke.RuntimeDatabase;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
@@ -52,7 +53,6 @@ import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

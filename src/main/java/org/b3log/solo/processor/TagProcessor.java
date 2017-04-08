@@ -15,17 +15,9 @@
  */
 package org.b3log.solo.processor;
 
-import java.io.IOException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -45,15 +37,20 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.processor.util.Filler;
-import org.b3log.solo.service.ArticleQueryService;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.service.StatisticMgmtService;
-import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Tag processor.
@@ -145,7 +142,7 @@ public class TagProcessor {
                 return;
             }
 
-            LOGGER.log(Level.DEBUG, "Tag[title={0}, currentPageNum={1}]", new Object[]{tagTitle, currentPageNum});
+            LOGGER.log(Level.DEBUG, "Tag[title={0}, currentPageNum={1}]", tagTitle, currentPageNum);
 
             tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
@@ -191,7 +188,7 @@ public class TagProcessor {
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
 
             LOGGER.log(Level.TRACE, "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
-                    new Object[]{currentPageNum, pageSize, pageCount, windowSize});
+                    currentPageNum, pageSize, pageCount, windowSize);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
             LOGGER.log(Level.TRACE, "tag-articles[pageNums={0}]", pageNums);

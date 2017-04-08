@@ -16,12 +16,9 @@
 package org.b3log.solo.processor.console;
 
 
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
@@ -39,6 +36,10 @@ import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 
 /**

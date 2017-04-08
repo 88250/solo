@@ -2109,7 +2109,7 @@ admin.register["draft-list"] =  {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.5, Nov 8, 2016
+ * @version 1.2.2.5, Apr 9, 2017
  */
 
 /* page-list 相关操作 */
@@ -2231,7 +2231,7 @@ admin.pageList = {
                         } else {
                             pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
                                         <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" \
-                                        class="table-downIcon"></span></div>';
+                                        class="icon-move-down"></span></div>';
                         }
                     } else if (i === pages.length - 1) {
                         pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
@@ -2240,7 +2240,7 @@ admin.pageList = {
                     } else {
                         pageData[i].pageOrder = '<div class="table-center" style="width:38px">\
                                     <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
-                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                                     </div>';
                     }
 
@@ -2701,7 +2701,7 @@ admin.register.others = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Feb 23, 2013
+ * @version 1.1.1.4, Apr 9, 2017
  */
 
 /* link-list 相关操作 */
@@ -2743,7 +2743,7 @@ admin.linkList = {
         
         $("#updateLink").dialog({
             width: 700,
-            height: 180,
+            height: 210,
             "modal": true,
             "hideFooter": true
         });
@@ -2785,7 +2785,7 @@ admin.linkList = {
                             linkData[i].linkOrder = "";
                         } else {
                             linkData[i].linkOrder = '<div class="table-center" style="width:14px">\
-                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                             </div>';
                         }
                     } else if (i === links.length - 1) {
@@ -2795,7 +2795,7 @@ admin.linkList = {
                     } else {
                         linkData[i].linkOrder = '<div class="table-center" style="width:38px">\
                                 <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
-                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                             </div>';
                     }
                     
@@ -3504,7 +3504,7 @@ admin.register["plugin-list"] = {
     "obj": admin.pluginList,
     "init": admin.pluginList.init,
     "refresh": function() {
-        admin.claerTip();
+        $("#loadMsg").text("");
     }
 };
 /*
@@ -3568,7 +3568,7 @@ admin.userList = {
 
         $("#userUpdate").dialog({
             width: 700,
-            height: 250,
+            height: 300,
             "modal": true,
             "hideFooter": true
         });
@@ -3888,7 +3888,7 @@ admin.register["user-list"] = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 7, 2017
+ * @version 1.0.1.1, Apr 9, 2017
  * @since 2.0.0
  */
 
@@ -3910,7 +3910,7 @@ admin.categoryList = {
                 width: 60
             }, {
                 style: "padding-left: 12px;",
-                text: Label.linkTitleLabel,
+                text: Label.titleLabel,
                 index: "categoryTitle",
                 width: 230
             }, {
@@ -3920,7 +3920,7 @@ admin.categoryList = {
                 width: 230
             }, {
                 style: "padding-left: 12px;",
-                text: Label.linkDescriptionLabel,
+                text: Label.descriptionLabel,
                 index: "categoryDesc",
                 minWidth: 180
             }]);
@@ -3968,7 +3968,7 @@ admin.categoryList = {
                             categoryData[i].linkOrder = "";
                         } else {
                             categoryData[i].linkOrder = '<div class="table-center" style="width:14px">\
-                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                             </div>';
                         }
                     } else if (i === categories.length - 1) {
@@ -3977,8 +3977,8 @@ admin.categoryList = {
                             </div>';
                     } else {
                         categoryData[i].linkOrder = '<div class="table-center" style="width:38px">\
-                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
-                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                             </div>';
                     }
 

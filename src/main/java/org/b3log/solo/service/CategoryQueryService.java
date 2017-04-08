@@ -16,6 +16,7 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -32,7 +33,6 @@ import org.b3log.solo.repository.TagRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -227,7 +227,7 @@ public class CategoryQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
         final JSONArray data = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> categories = CollectionUtils.<JSONObject>jsonArrayToList(data);
+        final List<JSONObject> categories = CollectionUtils.jsonArrayToList(data);
 
         ret.put(Category.CATEGORIES, categories);
 

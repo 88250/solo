@@ -16,9 +16,7 @@
 package org.b3log.solo.service;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -32,6 +30,9 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.solo.repository.PluginRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**

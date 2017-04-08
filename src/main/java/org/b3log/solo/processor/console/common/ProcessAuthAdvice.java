@@ -15,21 +15,19 @@
  */
 package org.b3log.solo.processor.console.common;
 
-
-import java.io.IOException;
-import java.util.Map;
-import javax.inject.Named;
-import javax.inject.Singleton;
-
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
-
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.latke.servlet.advice.RequestReturnAdviceException;
 import org.b3log.solo.service.UserQueryService;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Map;
 
 
 /**

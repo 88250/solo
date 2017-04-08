@@ -16,10 +16,11 @@
 package org.b3log.solo.util.comparator;
 
 
-import java.util.Comparator;
-import java.util.Date;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
+
+import java.util.Comparator;
+import java.util.Date;
 
 
 /**

@@ -15,16 +15,10 @@
  */
 package org.b3log.solo.processor;
 
-import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
@@ -43,13 +37,16 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.service.ArticleQueryService;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.service.StatisticQueryService;
-import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.service.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Blog processor.

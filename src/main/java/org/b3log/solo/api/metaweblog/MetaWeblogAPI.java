@@ -15,19 +15,13 @@
  */
 package org.b3log.solo.api.metaweblog;
 
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-import javax.inject.Inject;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -43,16 +37,19 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.service.ArticleMgmtService;
-import org.b3log.solo.service.ArticleQueryService;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.service.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 import org.jsoup.Jsoup;
+
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
 
 /**
  * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> requests processing.
@@ -423,7 +420,7 @@ public class MetaWeblogAPI {
             }
         }
 
-        final boolean publish = 1 == params.getJSONObject(INDEX_PUBLISH).getJSONObject("value").getInt("boolean") ? true : false;
+        final boolean publish = 1 == params.getJSONObject(INDEX_PUBLISH).getJSONObject("value").getInt("boolean");
 
         ret.put(Article.ARTICLE_IS_PUBLISHED, publish);
 

@@ -18,6 +18,7 @@ package org.b3log.solo.processor;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -51,7 +52,6 @@ import org.b3log.solo.util.Randoms;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -367,7 +367,7 @@ public class LoginProcessor {
 
             user.put(User.USER_PASSWORD, newPwd);
             userMgmtService.updateUser(user);
-            LOGGER.log(Level.DEBUG, "[{0}]'s password updated successfully.", new Object[] {userEmail});
+            LOGGER.log(Level.DEBUG, "[{0}]'s password updated successfully.", userEmail);
 
             jsonObject.put("succeed", true);
             jsonObject.put("to", Latkes.getServePath() + "/login?from=reset");
@@ -428,7 +428,7 @@ public class LoginProcessor {
         jsonObject.put("to", Latkes.getServePath() + "/login?from=forgot");
         jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessSend"));
 
-        LOGGER.log(Level.DEBUG, "Sent a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", new Object[] {mailSubject, mailBody, userEmail});
+        LOGGER.log(Level.DEBUG, "Sent a mail[mailSubject={0}, mailBody=[{1}] to [{2}]", mailSubject, mailBody, userEmail);
     }
 
     /**

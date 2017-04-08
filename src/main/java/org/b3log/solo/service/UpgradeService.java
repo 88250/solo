@@ -15,10 +15,8 @@
  */
 package org.b3log.solo.service;
 
-import java.io.IOException;
-import javax.inject.Inject;
-
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -41,6 +39,8 @@ import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 /**
  * Upgrade service.

@@ -16,12 +16,10 @@
 package org.b3log.solo.service;
 
 
-import java.util.List;
-import java.util.Map;
-import javax.inject.Inject;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
@@ -37,6 +35,9 @@ import org.b3log.solo.repository.PluginRepository;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
+import java.util.Map;
 
 
 /**

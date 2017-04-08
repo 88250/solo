@@ -16,7 +16,8 @@
 package org.b3log.solo.util;
 
 
-import org.b3log.solo.model.*;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Page;
 import org.json.JSONException;
 import org.json.JSONObject;
 

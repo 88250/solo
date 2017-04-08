@@ -19,6 +19,7 @@ package org.b3log.solo.processor.util;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -28,7 +29,6 @@ import org.b3log.solo.service.TagQueryService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 

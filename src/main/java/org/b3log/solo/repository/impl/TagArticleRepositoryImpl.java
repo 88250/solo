@@ -16,21 +16,17 @@
 package org.b3log.solo.repository.impl;
 
 
-import java.util.List;
+import org.b3log.latke.Keys;
+import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagArticleRepository;
-import org.b3log.latke.Keys;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.latke.util.CollectionUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.List;
 
 
 /**

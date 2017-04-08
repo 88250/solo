@@ -16,6 +16,7 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -38,7 +39,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -270,11 +270,7 @@ public class ArticleQueryService {
 
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
 
-        if (null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
-            return false;
-        }
-
-        return true; // Visitor or NOT logged in
+        return !(null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE)));
     }
 
     /**

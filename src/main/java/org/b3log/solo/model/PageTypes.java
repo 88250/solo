@@ -93,7 +93,7 @@ public enum PageTypes {
      * @param langLabel the specified language label
      * @param typeName the specified type name
      */
-    private PageTypes(final String langLabel, final String typeName) {
+    PageTypes(final String langLabel, final String typeName) {
         this.langLabel = langLabel;
         this.typeName = typeName;
     }

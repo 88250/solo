@@ -16,18 +16,13 @@
 package org.b3log.solo.service;
 
 
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import javax.inject.Inject;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -39,25 +34,20 @@ import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.model.ArchiveDate;
-import org.b3log.solo.model.Article;
-import static org.b3log.solo.model.Article.*;
-import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Tag;
-import org.b3log.solo.model.UserExt;
-import org.b3log.solo.repository.ArchiveDateArticleRepository;
-import org.b3log.solo.repository.ArchiveDateRepository;
-import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.TagArticleRepository;
-import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.model.*;
+import org.b3log.solo.repository.*;
 import org.b3log.solo.util.Comments;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
+import static org.b3log.solo.model.Article.*;
 
 
 /**
@@ -702,9 +692,8 @@ public class ArticleMgmtService {
                 }
                 tagRepository.update(tagId, tag);
                 LOGGER.log(Level.TRACE, "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
-                    new Object[] {
-                    tag.getString(Tag.TAG_TITLE), tag.getInt(Tag.TAG_REFERENCE_COUNT), tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
-                    articleId});
+                        tag.getString(Tag.TAG_TITLE), tag.getInt(Tag.TAG_REFERENCE_COUNT), tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
+                        articleId);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Decs tag references count of article[id" + articleId + "] failed", e);
@@ -967,7 +956,7 @@ public class ArticleMgmtService {
 
             if (null == tag) {
                 LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
-                    new Object[] {tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                        tagTitle, article.optString(Article.ARTICLE_TITLE));
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
                 tag.put(Tag.TAG_REFERENCE_COUNT, 1);
@@ -982,7 +971,7 @@ public class ArticleMgmtService {
             } else {
                 tagId = tag.optString(Keys.OBJECT_ID);
                 LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
-                    new Object[] {tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE)});
+                        tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE));
                 final JSONObject tagTmp = new JSONObject();
 
                 tagTmp.put(Keys.OBJECT_ID, tagId);

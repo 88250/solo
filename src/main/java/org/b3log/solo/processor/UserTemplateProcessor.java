@@ -17,13 +17,9 @@ package org.b3log.solo.processor;
 
 
 import freemarker.template.Template;
-import java.io.IOException;
-import java.util.Map;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
@@ -41,6 +37,11 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Map;
 
 
 /**
@@ -105,7 +106,7 @@ public class UserTemplateProcessor {
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
 
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-        LOGGER.log(Level.DEBUG, "Shows page[requestURI={0}, templateName={1}]", new Object[] {requestURI, templateName});
+        LOGGER.log(Level.DEBUG, "Shows page[requestURI={0}, templateName={1}]", requestURI, templateName);
 
         final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
 
