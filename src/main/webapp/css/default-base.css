@@ -17,7 +17,7 @@
  * base style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.2.2, Aug 27, 2012
+ * @version 1.0.3.2, Apr 8, 2017
 */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dd, dl, ol {
     margin: 0;
@@ -55,10 +55,6 @@ h4 {
 
 textarea {
     overflow: auto;
-}
-
-li {
-    margin-left: 12px;
 }
 
 button, .button {

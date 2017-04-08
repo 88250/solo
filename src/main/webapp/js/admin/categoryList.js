@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 7, 2017
+ * @version 1.0.1.1, Apr 9, 2017
  * @since 2.0.0
  */
 
@@ -50,7 +50,7 @@ admin.categoryList = {
                 width: 230
             }, {
                 style: "padding-left: 12px;",
-                text: Label.linkDescription1Label,
+                text: Label.descriptionLabel,
                 index: "categoryDesc",
                 minWidth: 180
             }]);
@@ -98,17 +98,17 @@ admin.categoryList = {
                             categoryData[i].linkOrder = "";
                         } else {
                             categoryData[i].linkOrder = '<div class="table-center" style="width:14px">\
-                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                             </div>';
                         }
                     } else if (i === categories.length - 1) {
                         categoryData[i].linkOrder = '<div class="table-center" style="width:14px">\
-                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
                             </div>';
                     } else {
                         categoryData[i].linkOrder = '<div class="table-center" style="width:38px">\
-                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
-                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                             </div>';
                     }
 

@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.5, Nov 8, 2016
+ * @version 1.2.2.5, Apr 9, 2017
  */
 
 /* page-list 相关操作 */
@@ -140,16 +140,16 @@ admin.pageList = {
                         } else {
                             pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
                                         <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" \
-                                        class="table-downIcon"></span></div>';
+                                        class="icon-move-down"></span></div>';
                         }
                     } else if (i === pages.length - 1) {
                         pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
-                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
                                     </div>';
                     } else {
                         pageData[i].pageOrder = '<div class="table-center" style="width:38px">\
-                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
-                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
+                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                                     </div>';
                     }
 

@@ -2235,11 +2235,11 @@ admin.pageList = {
                         }
                     } else if (i === pages.length - 1) {
                         pageData[i].pageOrder = '<div class="table-center" style="width:14px">\
-                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
                                     </div>';
                     } else {
                         pageData[i].pageOrder = '<div class="table-center" style="width:38px">\
-                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                    <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
                                     <span onclick="admin.pageList.changeOrder(' + pages[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
                                     </div>';
                     }
@@ -2790,11 +2790,11 @@ admin.linkList = {
                         }
                     } else if (i === links.length - 1) {
                         linkData[i].linkOrder = '<div class="table-center" style="width:14px">\
-                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
                             </div>';
                     } else {
                         linkData[i].linkOrder = '<div class="table-center" style="width:38px">\
-                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
                                 <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
                             </div>';
                     }
@@ -3973,7 +3973,7 @@ admin.categoryList = {
                         }
                     } else if (i === categories.length - 1) {
                         categoryData[i].linkOrder = '<div class="table-center" style="width:14px">\
-                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                <span onclick="admin.categoryList.changeOrder(' + categories[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
                             </div>';
                     } else {
                         categoryData[i].linkOrder = '<div class="table-center" style="width:38px">\
