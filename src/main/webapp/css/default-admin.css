@@ -661,6 +661,14 @@ a[class*=" icon-"]:hover {
     box-shadow: none;
     border-color: #1fb5ad;
 }
+
+table.form label {
+    margin: 10px 0 0 0;
+}
+
+table.form th {
+    vertical-align: initial;
+}
 /* end form */
 
 /* start module */
