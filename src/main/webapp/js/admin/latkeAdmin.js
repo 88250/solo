@@ -3888,7 +3888,7 @@ admin.register["user-list"] = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Apr 9, 2017
+ * @version 1.1.1.1, Apr 10, 2017
  * @since 2.0.0
  */
 
@@ -3933,6 +3933,37 @@ admin.categoryList = {
             height: 260,
             "modal": true,
             "hideFooter": true
+        });
+
+        // For tag auto-completion
+        $.ajax({// Gets all tags
+            url: latkeConfig.servePath + "/console/tags",
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+                $("#tipMsg").text(result.msg);
+                if (!result.sc) {
+                    $("#loadMsg").text("");
+                    return;
+                }
+
+                if (0 >= result.tags.length) {
+                    return;
+                }
+
+                var tags = [];
+                for (var i = 0; i < result.tags.length; i++) {
+                    tags.push(result.tags[i].tagTitle);
+                }
+
+                $("#categoryTags").completed({
+                    height: 160,
+                    buttonText: Label.selectLabel,
+                    data: tags
+                }).width($("#categoryTags").parent().width() - 68);
+
+                $("#loadMsg").text("");
+            }
         });
     },
     /* 
