@@ -27,7 +27,8 @@
 
 Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将只有“20%”用户使用的功能添加进来，只有这样才能保持博客系统本该有的纯净，足够轻量才能带来简约的使用体验。
 
-* Markdown / TinyMCE / KindEditor
+* Markdown / TinyMCE / KindEditor / Emoji
+* [聚合分类](https://github.com/b3log/solo/issues/12256) / 标签
 * 自定义导航（页面、链接）
 * 草稿夹
 * 评论/回复邮件提醒
@@ -200,6 +201,7 @@ Logo 征集中....
 
 
 ### 社区贡献的皮肤
+
 * [bootstyle](https://github.com/b3log/solo-third-skins/tree/master/bootstyle)
 ![bootstyle](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/bootstyle.jpg?raw=true)
 
