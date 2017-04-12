@@ -230,7 +230,7 @@ public class CommentReceiver {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
                     LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
-                            new String[]{originalCommentId, commentName, commentContent});
+                            originalCommentId, commentName, commentContent);
                 }
             } else {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");

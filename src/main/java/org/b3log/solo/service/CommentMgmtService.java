@@ -609,7 +609,7 @@ public class CommentMgmtService {
                     ret.put(Common.IS_REPLY, true);
                 } else {
                     LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
-                            new String[]{originalCommentId, commentName, commentContent});
+                            originalCommentId, commentName, commentContent);
                 }
             }
             setCommentThumbnailURL(comment);
