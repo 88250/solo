@@ -41,7 +41,7 @@ import java.util.List;
  * Category query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 31, 2017
+ * @version 1.0.1.1, Apr 12, 2017
  * @since 2.0.0
  */
 @Service
@@ -244,6 +244,10 @@ public class CategoryQueryService {
     public JSONObject getCategory(final String categoryId) throws ServiceException {
         try {
             final JSONObject ret = categoryRepository.get(categoryId);
+            if (null == ret) {
+                return null;
+            }
+
             final List<JSONObject> tags = getTags(categoryId);
             ret.put(Category.CATEGORY_T_TAGS, (Object) tags);
 
