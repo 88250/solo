@@ -35,7 +35,7 @@ import java.util.Locale;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.9, Mar 28, 2017
+ * @version 2.2.0.9, Apr 12, 2017
  * @see #beforeClass()
  */
 public abstract class AbstractTestCase {
@@ -52,6 +52,7 @@ public abstract class AbstractTestCase {
      * <li>Initializes Latke runtime</li>
      * <li>Instantiates repositories</li>
      * </ol>
+     * </p>
      *
      * @throws Exception exception
      */
@@ -195,6 +196,24 @@ public abstract class AbstractTestCase {
      */
     public OptionRepository getOptionRepository() {
         return beanManager.getReference(OptionRepositoryImpl.class);
+    }
+
+    /**
+     * Gets category query service.
+     *
+     * @return category query service
+     */
+    public CategoryQueryService getCategoryQueryService() {
+        return beanManager.getReference(CategoryQueryService.class);
+    }
+
+    /**
+     * Gets category management service.
+     *
+     * @return category management service
+     */
+    public CategoryMgmtService getCategoryMgmtService() {
+        return beanManager.getReference(CategoryMgmtService.class);
     }
 
     /**
