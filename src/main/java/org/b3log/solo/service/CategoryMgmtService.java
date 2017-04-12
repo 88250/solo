@@ -182,7 +182,9 @@ public class CategoryMgmtService {
             record.put(Category.CATEGORY_DESCRIPTION, category.optString(Category.CATEGORY_DESCRIPTION));
 
             final int maxOrder = categoryRepository.getMaxOrder();
-            record.put(Category.CATEGORY_ORDER, maxOrder + 1);
+            final int order = maxOrder + 1;
+            record.put(Category.CATEGORY_ORDER, order);
+            category.put(Category.CATEGORY_ORDER, order);
 
             final String ret = categoryRepository.add(record);
 
