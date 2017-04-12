@@ -16,25 +16,21 @@
 package org.b3log.solo.repository.impl;
 
 
-import java.text.ParseException;
-import java.util.Iterator;
-import java.util.List;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -70,7 +66,7 @@ public class ArchiveDateRepositoryImpl extends AbstractRepository implements Arc
             throw new RepositoryException("Can not parse archive date [" + archiveDate + "]");
         }
 
-        LOGGER.log(Level.TRACE, "Archive date [{0}] parsed to time [{1}]", new Object[] {archiveDate, time});
+        LOGGER.log(Level.TRACE, "Archive date [{0}] parsed to time [{1}]", archiveDate, time);
 
         final Query query = new Query();
 

@@ -16,12 +16,9 @@
 package org.b3log.solo.model.feed.atom;
 
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TimeZone;
 import org.apache.commons.lang.time.DateFormatUtils;
+
+import java.util.*;
 
 
 /**

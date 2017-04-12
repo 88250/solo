@@ -15,14 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.*;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -30,6 +22,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
@@ -45,12 +38,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
-import org.b3log.latke.util.Dates;
-import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.*;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
@@ -63,6 +51,14 @@ import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.*;
 
 /**
  * Article processor.
@@ -670,7 +666,7 @@ public class ArticleProcessor {
 
             final String authorId = getAuthorId(requestURI);
 
-            LOGGER.log(Level.DEBUG, "Request author articles[requestURI={0}, authorId={1}]", new Object[]{requestURI, authorId});
+            LOGGER.log(Level.DEBUG, "Request author articles[requestURI={0}, authorId={1}]", requestURI, authorId);
 
             final int currentPageNum = getAuthorCurrentPageNum(requestURI, authorId);
 
@@ -679,7 +675,7 @@ public class ArticleProcessor {
                 return;
             }
 
-            LOGGER.log(Level.DEBUG, "Request author articles[authorId={0}, currentPageNum={1}]", new Object[]{authorId, currentPageNum});
+            LOGGER.log(Level.DEBUG, "Request author articles[authorId={0}, currentPageNum={1}]", authorId, currentPageNum);
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
@@ -777,7 +773,7 @@ public class ArticleProcessor {
                 return;
             }
 
-            LOGGER.log(Level.DEBUG, "Request archive date[string={0}, currentPageNum={1}]", new Object[]{archiveDateString, currentPageNum});
+            LOGGER.log(Level.DEBUG, "Request archive date[string={0}, currentPageNum={1}]", archiveDateString, currentPageNum);
             final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
 
             if (null == result) {

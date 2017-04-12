@@ -7,6 +7,12 @@
         <meta name="keywords" content="${article.articleTags}" />
         <meta name="description" content="${article.articleAbstract?html}" />
         </@head>
+        <#if previousArticlePermalink??>
+            <link rel="prev" title="${previousArticleTitle}" href="${servePath}${previousArticlePermalink}">
+        </#if>
+        <#if nextArticlePermalink??>
+            <link rel="next" title="${nextArticleTitle}" href="${servePath}${nextArticlePermalink}">
+        </#if>
     </head>
     <body class="classic-wptouch-bg">
         <#include "header.ftl">

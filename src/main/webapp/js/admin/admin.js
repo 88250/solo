@@ -17,16 +17,16 @@
  * @description index for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.3.2, Sep 2, 2013
+ * @version 1.1.3.2, Mar 31, 2017
  */
 var Admin = function () {
     this.register = {};
     // 工具栏下的工具
     this.tools = ['#page-list', '#file-list', '#link-list', '#preference',
-        '#user-list', '#plugin-list', '#others'];
+        '#user-list', '#plugin-list', '#others', '#category-list'];
     // 多用户时，一般用户不能使用的功能
     this.adTools = ['link-list', 'preference', 'file-list', 'page-list',
-        'user-list', 'plugin-list', 'others'];
+        'user-list', 'plugin-list', 'others', 'category-list'];
 };
 
 $.extend(Admin.prototype, {

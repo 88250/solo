@@ -16,16 +16,6 @@
 package org.b3log.solo.util;
 
 import freemarker.template.TemplateExceptionHandler;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import javax.servlet.ServletContext;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
@@ -40,6 +30,13 @@ import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Skin;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 /**
  * Skin utilities.
@@ -86,7 +83,7 @@ public final class Skins {
             if (null == langs) {
                 LANG_MAP.clear(); // Collect unused skin languages
 
-                LOGGER.log(Level.DEBUG, "Loading skin [dirName={0}, locale={1}]", new Object[]{currentSkinDirName, localeString});
+                LOGGER.log(Level.DEBUG, "Loading skin [dirName={0}, locale={1}]", currentSkinDirName, localeString);
                 langs = new HashMap<String, String>();
 
                 final String language = Locales.getLanguage(localeString);
@@ -107,7 +104,7 @@ public final class Skins {
 
                 LANG_MAP.put(langName, langs);
                 LOGGER.log(Level.DEBUG, "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
-                        new Object[]{currentSkinDirName, localeString, langs.size()});
+                        currentSkinDirName, localeString, langs.size());
             }
 
             dataModel.putAll(langs); // Fills the current skin's language configurations

@@ -16,9 +16,8 @@
 package org.b3log.solo.service;
 
 
-import java.util.List;
-import javax.inject.Inject;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
@@ -26,16 +25,19 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.repository.CategoryTagRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 
 /**
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Oct 26, 2011
+ * @version 1.0.0.2, Mar 31, 2017
  * @since 0.4.0
  */
 @Service
@@ -59,11 +61,17 @@ public class TagMgmtService {
     private TagRepository tagRepository;
 
     /**
+     * Category-tag repository.
+     */
+    @Inject
+    private CategoryTagRepository categoryTagRepository;
+
+    /**
      * Decrements reference count of every tag of an published article specified
      * by the given article id.
      *
      * @param articleId the given article id
-     * @throws JSONException json exception
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     public void decTagPublishedRefCount(final String articleId) throws JSONException, RepositoryException {
@@ -99,6 +107,7 @@ public class TagMgmtService {
                 if (0 == tagRefCnt) {
                     final String tagId = tag.getString(Keys.OBJECT_ID);
 
+                    categoryTagRepository.removeByTagId(tagId);
                     tagRepository.remove(tagId);
                 }
             }
@@ -117,7 +126,7 @@ public class TagMgmtService {
 
     /**
      * Sets the tag repository with the specified tag repository.
-     * 
+     *
      * @param tagRepository the specified tag repository
      */
     public void setTagRepository(final TagRepository tagRepository) {
@@ -126,7 +135,7 @@ public class TagMgmtService {
 
     /**
      * Sets the tag query service with the specified tag query service.
-     * 
+     *
      * @param tagQueryService the specified tag query service
      */
     public void setTagQueryService(final TagQueryService tagQueryService) {

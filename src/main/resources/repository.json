@@ -1,9 +1,64 @@
 {
     "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "1.3.1.1, Dec 13, 2015",
-    "authors": ["Liang Ding"],
+    "version": "2.3.1.1, Mar 28, 2017",
+    "authors": [
+        "Liang Ding"
+    ],
     "since": "0.4.0",
     "repositories": [
+        {
+            "name": "category",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "categoryTitle",
+                    "type": "String",
+                    "length": 64
+                },
+                {
+                    "name": "categoryURI",
+                    "type": "String",
+                    "length": 32
+                },
+                {
+                    "name": "categoryDescription",
+                    "type": "String",
+                    "length": 512
+                },
+                {
+                    "name": "categoryOrder",
+                    "type": "int"
+                },
+                {
+                    "name": "categoryTagCnt",
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "name": "category_tag",
+            "keys": [
+                {
+                    "name": "oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "category_oId",
+                    "type": "String",
+                    "length": 19
+                },
+                {
+                    "name": "tag_oId",
+                    "type": "String",
+                    "length": 19
+                }
+            ]
+        },
         {
             "name": "archiveDate",
             "keys": [

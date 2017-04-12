@@ -15,11 +15,9 @@
  */
 package org.b3log.solo.processor.console;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -39,12 +37,15 @@ import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * User console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.0.4, Nov 20, 2015
+ * @version 1.2.0.5, Mar 31, 2017
  * @since 0.4.0
  */
 @RequestProcessor
@@ -81,7 +82,6 @@ public class UserConsole {
 
     /**
      * Updates a user by the specified request.
-     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -92,19 +92,15 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request, for example,      <pre>
-     * {
-     *     "oId": "",
-     *     "userName": "",
-     *     "userEmail": "",
-     *     "userPassword": "", // Unhashed
-     *     "userRole": "", // optional
-     *     "userURL": "", // optional
-     *     "userAvatar": "" // optional
-     * }
-     * </pre>
-     *
-     * @param context the specified http request context
+     * @param request  the specified http servlet request, for example,
+     *                 "oId": "",
+     *                 "userName": "",
+     *                 "userEmail": "",
+     *                 "userPassword": "", // Unhashed
+     *                 "userRole": "", // optional
+     *                 "userURL": "", // optional
+     *                 "userAvatar": "" // optional
+     * @param context  the specified http request context
      * @param response the specified http servlet response
      * @throws Exception exception
      */
@@ -143,7 +139,6 @@ public class UserConsole {
 
     /**
      * Adds a user with the specified request.
-     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -155,19 +150,15 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request, for example,      <pre>
-     * {
-     *     "userName": "",
-     *     "userEmail": "",
-     *     "userPassword": "",
-     *     "userURL": "", // optional, uses 'servePath' instead if not specified
-     *     "userRole": "", // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not specified
-     *     "userAvatar": "" // optional
-     * }
-     * </pre>
-     *
+     * @param request  the specified http servlet request, for example,
+     *                 "userName": "",
+     *                 "userEmail": "",
+     *                 "userPassword": "",
+     *                 "userURL": "", // optional, uses 'servePath' instead if not specified
+     *                 "userRole": "", // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not specified
+     *                 "userAvatar": "" // optional
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.POST)
@@ -218,7 +209,6 @@ public class UserConsole {
 
     /**
      * Removes a user by the specified request.
-     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -229,9 +219,9 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.DELETE)
@@ -243,16 +233,12 @@ public class UserConsole {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
-
         renderer.setJSONObject(jsonObject);
-
         try {
             final String userId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/user/").length());
-
             userMgmtService.removeUser(userId);
 
             jsonObject.put(Keys.STATUS_CODE, true);
@@ -271,7 +257,6 @@ public class UserConsole {
      * The request URI contains the pagination arguments. For example, the request URI is /console/users/1/10/20, means
      * the current page is 1, the page size is 10, and the window size is 20.
      * </p>
-     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -287,21 +272,20 @@ public class UserConsole {
      *         "userPassword": "",
      *         "roleName": ""
      *      }, ....]
-     *     "sc": "GET_USERS_SUCC"
+     *     "sc": true
      * }
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/users/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
     public void getUsers(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
 
         if (!userQueryService.isAdminLoggedIn(request)) {
@@ -316,15 +300,12 @@ public class UserConsole {
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
             final JSONObject result = userQueryService.getUsers(requestJSONObject);
-
             result.put(Keys.STATUS_CODE, true);
-
             renderer.setJSONObject(result);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
-
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -332,7 +313,6 @@ public class UserConsole {
 
     /**
      * Gets a user by the specified request.
-     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -349,9 +329,9 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.GET)
@@ -363,15 +343,12 @@ public class UserConsole {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
-
         try {
             final String requestURI = request.getRequestURI();
             final String userId = requestURI.substring((Latkes.getContextPath() + "/console/user/").length());
 
             final JSONObject result = userQueryService.getUser(userId);
-
             if (null == result) {
                 renderer.setJSONObject(QueryResults.defaultResult());
 
@@ -380,12 +357,10 @@ public class UserConsole {
 
             renderer.setJSONObject(result);
             result.put(Keys.STATUS_CODE, true);
-
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
-
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -393,7 +368,6 @@ public class UserConsole {
 
     /**
      * Change a user role.
-     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -404,9 +378,9 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/changeRole/*", method = HTTPRequestMethod.GET)
@@ -418,21 +392,16 @@ public class UserConsole {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
-
         renderer.setJSONObject(jsonObject);
-
         try {
             final String userId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/changeRole/").length());
-
             userMgmtService.changeRole(userId);
 
             jsonObject.put(Keys.STATUS_CODE, true);
             jsonObject.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
-
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

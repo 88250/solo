@@ -15,17 +15,13 @@
  */
 package org.b3log.solo.service;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Date;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -35,7 +31,10 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.urlfetch.*;
+import org.b3log.latke.urlfetch.HTTPRequest;
+import org.b3log.latke.urlfetch.HTTPResponse;
+import org.b3log.latke.urlfetch.URLFetchService;
+import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
@@ -52,6 +51,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Date;
 
 /**
  * Comment management service.
@@ -251,7 +255,7 @@ public class CommentMgmtService {
         message.setHtmlBody(mailBody);
 
         LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
-                new Object[]{mailSubject, mailBody, adminEmail});
+                mailSubject, mailBody, adminEmail);
 
         mailService.send(message);
     }
@@ -605,7 +609,7 @@ public class CommentMgmtService {
                     ret.put(Common.IS_REPLY, true);
                 } else {
                     LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
-                            new String[]{originalCommentId, commentName, commentContent});
+                            originalCommentId, commentName, commentContent);
                 }
             }
             setCommentThumbnailURL(comment);

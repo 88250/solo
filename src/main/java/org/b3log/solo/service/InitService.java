@@ -15,19 +15,13 @@
  */
 package org.b3log.solo.service;
 
-import java.net.URL;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeDatabase;
 import org.b3log.latke.RuntimeEnv;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -49,16 +43,7 @@ import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.model.Option.DefaultPreference;
-import org.b3log.solo.repository.ArchiveDateArticleRepository;
-import org.b3log.solo.repository.ArchiveDateRepository;
-import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.LinkRepository;
-import org.b3log.solo.repository.OptionRepository;
-import org.b3log.solo.repository.StatisticRepository;
-import org.b3log.solo.repository.TagArticleRepository;
-import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.repository.*;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Thumbnails;
@@ -66,6 +51,13 @@ import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import javax.servlet.ServletContext;
+import java.net.URL;
+import java.text.ParseException;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Solo initialization service.
@@ -232,7 +224,7 @@ public class InitService {
             final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
             for (final CreateTableResult createTableResult : createTableResults) {
                 LOGGER.log(Level.DEBUG, "Create table result[tableName={0}, isSuccess={1}]",
-                        new Object[]{createTableResult.getName(), createTableResult.isSuccess()});
+                        createTableResult.getName(), createTableResult.isSuccess());
             }
         }
 
@@ -478,7 +470,7 @@ public class InitService {
             final JSONObject tag = new JSONObject();
 
             LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
-                    new Object[]{tagTitle, article.optString(Article.ARTICLE_TITLE)});
+                    tagTitle, article.optString(Article.ARTICLE_TITLE));
             tag.put(Tag.TAG_TITLE, tagTitle);
             tag.put(Tag.TAG_REFERENCE_COUNT, 1);
             tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);

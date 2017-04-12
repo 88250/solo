@@ -15,12 +15,10 @@
  */
 package org.b3log.solo.processor.console;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -42,6 +40,9 @@ import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Article console request processing.
@@ -261,7 +262,7 @@ public class ArticleConsole {
 
             path = path.substring((status + "/").length());
 
-            final boolean published = "published".equals(status) ? true : false;
+            final boolean published = "published".equals(status);
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 

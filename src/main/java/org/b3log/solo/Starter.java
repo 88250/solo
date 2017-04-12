@@ -15,16 +15,7 @@
  */
 package org.b3log.solo;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.net.URI;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.logging.Level;
@@ -34,6 +25,10 @@ import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Slf4jLog;
 import org.eclipse.jetty.webapp.WebAppContext;
+
+import java.awt.*;
+import java.io.File;
+import java.net.URI;
 
 /**
  * Solo with embedded Jetty, <a href="https://github.com/b3log/solo/issues/12037">standalone mode</a>.

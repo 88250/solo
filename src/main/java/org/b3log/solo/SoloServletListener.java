@@ -15,14 +15,6 @@
  */
 package org.b3log.solo;
 
-import java.util.ResourceBundle;
-import java.util.Set;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletRequestEvent;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
@@ -56,11 +48,20 @@ import org.b3log.solo.service.UpgradeService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import java.util.ResourceBundle;
+import java.util.Set;
+
 /**
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.2.19, Feb 20, 2017
+ * @version 1.9.2.20, Apr 10, 2017
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -68,7 +69,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Solo version.
      */
-    public static final String VERSION = "1.9.0";
+    public static final String VERSION = "2.0.0";
 
     /**
      * Logger.

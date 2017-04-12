@@ -15,11 +15,12 @@
  */
 package org.b3log.solo.model.feed.atom;
 
+import org.apache.commons.lang.time.DateFormatUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-import org.apache.commons.lang.time.DateFormatUtils;
 
 /**
  * Feed.

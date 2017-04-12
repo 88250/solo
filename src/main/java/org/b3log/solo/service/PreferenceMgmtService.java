@@ -15,18 +15,12 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.service.LangPropsService;
-import org.b3log.solo.util.TimeZones;
-import org.b3log.solo.util.Skins;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.Set;
-import javax.inject.Inject;
-import javax.servlet.ServletContext;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Locales;
@@ -35,12 +29,18 @@ import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.repository.OptionRepository;
+import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import static org.b3log.solo.model.Skin.SKINS;
-import static org.b3log.solo.model.Skin.SKIN_DIR_NAME;
-import static org.b3log.solo.model.Skin.SKIN_NAME;
-import org.b3log.solo.repository.OptionRepository;
+
+import javax.servlet.ServletContext;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Set;
+
+import static org.b3log.solo.model.Skin.*;
 import static org.b3log.solo.util.Skins.getSkinDirNames;
 import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
 

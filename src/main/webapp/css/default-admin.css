@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.1.6.4, Nov 9, 2016
+* @version 2.1.7.4, Apr 8, 2017
 */
 
 /* start resset */
@@ -43,22 +43,6 @@ a:active {
 
 a:hover {
     text-decoration: underline;
-}
-
-button.selected {
-    background: url("../images/bowknot/completed.png") no-repeat scroll right bottom transparent !important;
-    color: #D54121 !important;
-    border-color: #b0b5b9 !important;
-}
-@font-face {
-    font-family: 'icomoon';
-    src:url('fonts/icomoon.eot?1450');
-    src:url('fonts/icomoon.eot?#iefix') format('embedded-opentype'),
-        url('fonts/icomoon.ttf?1450') format('truetype'),
-        url('fonts/icomoon.woff?1450') format('woff'),
-        url('fonts/icomoon.svg#icomoon') format('svg');
-    font-weight: normal;
-    font-style: normal;
 }
 
 .content-reset {
@@ -178,22 +162,251 @@ button.selected {
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #bbb; 
 }
+
+
+button,
+.completed-ck span {
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    cursor: pointer;
+    user-select: none;
+    background-image: none;
+    border: 1px solid #1fb5ad;
+    border-radius: 4px;
+    background-color: #1fb5ad;
+    color: #fff;
+    height: auto;
+    outline: none;
+    line-height: 18px;
+}
+
+button:hover {
+    background-color: #1ca59e;
+    border-color: #1ca59e;
+}
 /* end reset */
 
 /* start ico */
-[class^="icon-"], [class*=" icon-"] {
-    font-family: 'icomoon';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    /* Better Font Rendering =========== */
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+@font-face {
+  font-family: 'icomoon';
+  src:  url('fonts/icomoon.eot?f71494');
+  src:  url('fonts/icomoon.eot?f71494#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.ttf?f71494') format('truetype'),
+    url('fonts/icomoon.woff?f71494') format('woff'),
+    url('fonts/icomoon.svg?f71494#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
+[class^="icon-"], [class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'icomoon' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-move-down:before {
+  content: "\e90a";
+}
+.icon-move-up:before {
+  content: "\e90b";
+}
+.icon-points:before {
+  content: "\e900";
+}
+.icon-goods:before {
+  content: "\e904";
+}
+.icon-bold:before {
+  content: "\e000";
+}
+.icon-italic:before {
+  content: "\e001";
+}
+.icon-quote:before {
+  content: "\e003";
+}
+.icon-unordered-list:before {
+  content: "\e004";
+}
+.icon-ordered-list:before {
+  content: "\e005";
+}
+.icon-link:before {
+  content: "\e006";
+}
+.icon-image:before {
+  content: "\e007";
+}
+.icon-play:before {
+  content: "\e008";
+}
+.icon-music:before {
+  content: "\e009";
+}
+.icon-contract:before {
+  content: "\e00a";
+}
+.icon-fullscreen:before {
+  content: "\e00b";
+}
+.icon-question:before {
+  content: "\e00c";
+}
+.icon-info:before {
+  content: "\e00d";
+}
+.icon-undo:before {
+  content: "\e00e";
+}
+.icon-redo:before {
+  content: "\e00f";
+}
+.icon-code:before {
+  content: "\e011";
+}
+.icon-preview:before {
+  content: "\e002";
+}
+.icon-navigation:before {
+  content: "\e903";
+}
+.icon-thumbs-down:before {
+  content: "\e901";
+}
+.icon-thumbs-up:before {
+  content: "\e902";
+}
+.icon-video:before {
+  content: "\f057";
+}
+.icon-feed:before {
+  content: "\e61f";
+}
+.icon-article:before {
+  content: "\e61d";
+}
+.icon-star:before {
+  content: "\e600";
+}
+.icon-register:before {
+  content: "\e602";
+}
+.icon-logout:before {
+  content: "\e603";
+}
+.icon-setting:before {
+  content: "\e604";
+}
+.icon-google:before {
+  content: "\e605";
+}
+.icon-search:before {
+  content: "\e606";
+}
+.icon-weibo:before {
+  content: "\e607";
+}
+.icon-date:before {
+  content: "\e608";
+}
+.icon-view:before {
+  content: "\e609";
+}
+.icon-cmts:before {
+  content: "\e60a";
+}
+.icon-refresh:before {
+  content: "\e60b";
+}
+.icon-up:before {
+  content: "\e60c";
+}
+.icon-twitter:before {
+  content: "\e60d";
+}
+.icon-edit:before {
+  content: "\e60e";
+}
+.icon-tencent:before {
+  content: "\e60f";
+}
+.icon-tag:before {
+  content: "\e610";
+}
+.icon-tags:before {
+  content: "\e611";
+}
+.icon-addfile:before {
+  content: "\e612";
+}
+.icon-login:before {
+  content: "\e613";
+}
+.icon-articles:before {
+  content: "\e614";
+}
+.icon-userrole:before {
+  content: "\e615";
+}
+.icon-email:before {
+  content: "\e616";
+}
+.icon-flag:before {
+  content: "\e617";
+}
+.icon-chevron-down:before {
+  content: "\e618";
+}
+.icon-chevron-up:before {
+  content: "\e619";
+}
+.icon-reply:before {
+  content: "\e61a";
+}
+.icon-clock:before {
+  content: "\e61b";
+}
+.icon-compass:before {
+  content: "\e61c";
+}
+.icon-heart:before {
+  content: "\e9da";
+}
+.icon-locked:before {
+  content: "\e61e";
+}
+.icon-close:before {
+  content: "\e909";
+}
+.icon-wechat:before {
+  content: "\e907";
+}
+.icon-upload:before {
+  content: "\f0ee";
+}
+.icon-copy:before {
+  content: "\e908";
+}
+.icon-time:before {
+  content: "\e906";
+}
+.icon-sortasc:before {
+  content: "\e905";
+}
 a[class^="icon-"], 
 a[class*=" icon-"] {
     color: #333;
@@ -204,194 +417,12 @@ a[class*=" icon-"]:hover {
     text-decoration: none;
     color: #4183c4;
 }
-
-.icon-upload:before {
-    content: "\f0ee";
-}
-.icon-copy:before {
-    content: "\e908";
-}
-.icon-time:before {
-    content: "\e906";
-}
-.icon-sortasc:before {
-    content: "\e905";
-}
-.icon-locked:before {
-    content: "\e61e";
-}
-.icon-close:before {
-    content: "\e909";
-}
-.icon-points:before {
-    content: "\e900";
-}
-.icon-goods:before {
-    content: "\e904";
-}
-.icon-bold:before {
-    content: "\e000";
-}
-.icon-italic:before {
-    content: "\e001";
-}
-.icon-quote:before {
-    content: "\e003";
-}
-.icon-unordered-list:before {
-    content: "\e004";
-}
-.icon-ordered-list:before {
-    content: "\e005";
-}
-.icon-link:before {
-    content: "\e006";
-}
-.icon-image:before {
-    content: "\e007";
-}
-.icon-play:before {
-    content: "\e008";
-}
-.icon-music:before {
-    content: "\e009";
-}
-.icon-contract:before {
-    content: "\e00a";
-}
-.icon-fullscreen:before {
-    content: "\e00b";
-}
-.icon-question:before {
-    content: "\e00c";
-}
-.icon-info:before {
-    content: "\e00d";
-}
-.icon-undo:before {
-    content: "\e00e";
-}
-.icon-redo:before {
-    content: "\e00f";
-}
-.icon-code:before {
-    content: "\e011";
-}
-.icon-preview:before {
-    content: "\e002";
-}
-.icon-navigation:before {
-    content: "\e903";
-}
-.icon-thumbs-down:before {
-    content: "\e901";
-}
-.icon-thumbs-up:before {
-    content: "\e902";
-}
-.icon-video:before {
-    content: "\f057";
-}
-.icon-feed:before {
-    content: "\e61f";
-}
-.icon-article:before {
-    content: "\e61d";
-}
-.icon-star:before {
-    content: "\e600";
-}
-.icon-register:before {
-    content: "\e602";
-}
-.icon-logout:before {
-    content: "\e603";
-}
-.icon-setting:before {
-    content: "\e604";
-}
-.icon-google:before {
-    content: "\e605";
-}
-.icon-search:before {
-    content: "\e606";
-}
-.icon-weibo:before {
-    content: "\e607";
-}
-.icon-date:before {
-    content: "\e608";
-}
-.icon-view:before {
-    content: "\e609";
-}
-.icon-cmts:before {
-    content: "\e60a";
-}
-.icon-refresh:before {
-    content: "\e60b";
-}
-.icon-up:before {
-    content: "\e60c";
-}
-.icon-twitter:before {
-    content: "\e60d";
-}
-.icon-edit:before {
-    content: "\e60e";
-}
-.icon-tencent:before {
-    content: "\e60f";
-}
-.icon-tag:before {
-    content: "\e610";
-}
-.icon-tags:before {
-    content: "\e611";
-}
-.icon-addfile:before {
-    content: "\e612";
-}
-.icon-login:before {
-    content: "\e613";
-}
-.icon-articles:before {
-    content: "\e614";
-}
-.icon-userrole:before {
-    content: "\e615";
-}
-.icon-email:before {
-    content: "\e616";
-}
-.icon-flag:before {
-    content: "\e617";
-}
-.icon-chevron-down:before {
-    content: "\e618";
-    margin-right: 10px;
-}
-.icon-chevron-up:before {
-    content: "\e619";
-    margin-right: 10px;
-}
-.icon-reply:before {
-    content: "\e61a";
-}
-.icon-clock:before {
-    content: "\e61b";
-}
-.icon-compass:before {
-    content: "\e61c";
-}
-.icon-heart:before {
-    content: "\e9da";
-}
-.icon-wechat:before {
-    content: "\e907";
-}
 .aboutIcon {
     background-position: -16px -48px;
+}
+.icon-move-down,
+.icon-move-up {
+    cursor: pointer;
 }
 /* end ico */
 
@@ -404,6 +435,7 @@ a[class*=" icon-"]:hover {
 #tabsPanel {
     margin: 50px 0 0 240px;
     padding: 15px;
+    min-height: 100px;
 }
 
 #tabsPanel>div {
@@ -416,7 +448,8 @@ a[class*=" icon-"]:hover {
 #tabsPanel_plugin-list,
 #tabsPanel_page-list > div:first-child,
 #tabsPanel_user-list > div:first-child,
-#tabsPanel_link-list > div:first-child{
+#tabsPanel_category-list > div:first-child,
+#tabsPanel_link-list > div:first-child {
     background-color: #FFF;
     border-radius: 4px;
     margin-bottom: 40px;
@@ -556,6 +589,10 @@ a[class*=" icon-"]:hover {
 #tabs .aboutIcon {
     display: none;
 }
+#tabs .icon-chevron-up,
+#tabs .icon-chevron-down {
+    margin-right: 10px;
+}
 /* end first tabs */
 
 /* start sub tabs */
@@ -623,32 +660,14 @@ a[class*=" icon-"]:hover {
 .form input[type='text']:focus, .form input[type='password']:focus, .form textarea:focus {
     box-shadow: none;
     border-color: #1fb5ad;
-} 
-
-.form button,
-.completed-ck span {
-    padding: 6px 12px;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 400;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    cursor: pointer;
-    user-select: none;
-    background-image: none;
-    border: 1px solid #1fb5ad;
-    border-radius: 4px;
-    background-color: #1fb5ad;
-    color: #fff;
-    height: auto;
-    outline: none;
-    line-height: 18px;
 }
 
-.form button:hover {
-    background-color: #1ca59e;
-    border-color: #1ca59e;
+table.form label {
+    margin: 10px 0 0 0;
+}
+
+table.form th {
+    vertical-align: initial;
 }
 /* end form */
 
@@ -871,9 +890,11 @@ button#submitArticle:hover,
     border-color: #b0b5b9;
 }
 
-.completed-ck span.selected {
-    color: #D54121;
-    background: url(../images/bowknot/completed.png) no-repeat right bottom;
+.completed-ck span.selected,
+.signs button.selected {
+    background-color: #1ca59e;
+    border-color: #1ca59e;
+    color: #fff;
 }
 .dialog-background {
     background-color: #000000;
@@ -882,7 +903,7 @@ button#submitArticle:hover,
     height: 100%;
     left: 0;
     opacity: .3;
-    position: absolute;
+    position: fixed;
     top: 0;
     width: 100%;
     z-index: 90;
@@ -902,7 +923,7 @@ button#submitArticle:hover,
 }
 
 .dialog-header-bg {
-    background: url("../images/icon.png") repeat scroll center bottom #F1F1F1;
+    background: #F1F1F1;
     border-color: #C0C0C0 #D9D9D9 #D9D9D9;
     border-radius: 6px 6px 0 0;
     border-style: solid;
@@ -911,8 +932,7 @@ button#submitArticle:hover,
     height: 34px;
 }
 
-.dialog-close-icon {
-    background: url("../images/bowknot/dialog-close.png") no-repeat scroll 0 0 transparent;
+.dialog-header-bg .icon-close {
     cursor: pointer;
     float: right;
     height: 18px;
@@ -921,13 +941,9 @@ button#submitArticle:hover,
     width: 22px;
 }
 
-.dialog-close-icon:hover {
-    background-image: url("../images/bowknot/dialog-close-hover.png");
-}
-
 .dialog-main {
     background-color: #FFFFFF;
-    border: 2px solid #666666;
+    border: 1px solid #666666;
     border-color: #C0C0C0 #D9D9D9 #D9D9D9;
     border-top-width: 0;
     padding: 12px;
@@ -1038,18 +1054,6 @@ button#submitArticle:hover,
 }
 .table-center {
     margin: 0 auto;
-}
-.table-upIcon,.table-downIcon {
-    background-image: url("../images/icon.png");
-    cursor: pointer;
-    float: left;
-    height: 16px;
-    width: 16px;
-    background-position: -81px -32px;
-}
-.table-upIcon {
-    background-position: -64px -32px;
-    margin-right: 6px;
 }
 
 .table-tag {

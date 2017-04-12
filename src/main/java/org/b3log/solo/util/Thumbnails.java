@@ -16,8 +16,9 @@
 package org.b3log.solo.util;
 
 
-import java.util.ResourceBundle;
 import org.b3log.latke.util.MD5;
+
+import java.util.ResourceBundle;
 
 
 /**
@@ -36,8 +37,8 @@ public final class Thumbnails {
     /**
      * Gravatar address.
      */
-    public static final String GRAVATAR;;
-    
+    public static final String GRAVATAR;
+
     static {
         final ResourceBundle b3log = ResourceBundle.getBundle("b3log");
         

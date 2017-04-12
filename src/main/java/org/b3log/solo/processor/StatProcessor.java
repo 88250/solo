@@ -16,7 +16,7 @@
 package org.b3log.solo.processor;
 
 
-import javax.inject.Inject;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -64,6 +64,6 @@ public class StatProcessor {
     public void onlineVisitorCountRefresher(final HTTPRequestContext context) {
         context.setRenderer(new DoNothingRenderer());
 
-        statisticMgmtService.removeExpiredOnlineVisitor();
+        StatisticMgmtService.removeExpiredOnlineVisitor();
     }
 }

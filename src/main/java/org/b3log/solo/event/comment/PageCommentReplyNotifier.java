@@ -65,7 +65,7 @@ public final class PageCommentReplyNotifier extends AbstractEventListener<JSONOb
         final JSONObject page = eventData.optJSONObject(Page.PAGE);
 
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-            new Object[] {event.getType(), eventData, PageCommentReplyNotifier.class.getName()});
+                event.getType(), eventData, PageCommentReplyNotifier.class.getName());
         final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
 
         if (Strings.isEmptyOrNull(originalCommentId)) {
@@ -123,7 +123,7 @@ public final class PageCommentReplyNotifier extends AbstractEventListener<JSONOb
 
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
-                new Object[] {mailSubject, mailBody, originalCommentEmail});
+                    mailSubject, mailBody, originalCommentEmail);
             mailService.send(message);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

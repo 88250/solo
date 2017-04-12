@@ -15,9 +15,6 @@
  */
 package org.b3log.solo.event.rhythm;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Date;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
@@ -39,6 +36,10 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
 
 /**
  * This listener is responsible for sending article to B3log Rhythm.
@@ -83,7 +84,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
         final JSONObject data = event.getData();
 
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                new Object[]{event.getType(), data, ArticleSender.class.getName()});
+                event.getType(), data, ArticleSender.class.getName());
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
 
@@ -108,7 +109,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
             if (Latkes.getServePath().contains("localhost")) {
                 LOGGER.log(Level.INFO, "Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-                        new Object[]{originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE)});
+                        originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE));
                 return;
             }
 

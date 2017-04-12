@@ -15,10 +15,11 @@
  */
 package org.b3log.solo.model.feed.rss;
 
+import org.apache.commons.lang.time.DateFormatUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import org.apache.commons.lang.time.DateFormatUtils;
 
 /**
  * RSS 2.0 channel.

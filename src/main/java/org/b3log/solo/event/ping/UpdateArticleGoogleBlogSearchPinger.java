@@ -16,8 +16,6 @@
 package org.b3log.solo.event.ping;
 
 
-import java.net.URL;
-import java.net.URLEncoder;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
@@ -34,6 +32,9 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
+
+import java.net.URL;
+import java.net.URLEncoder;
 
 
 /**
@@ -93,7 +94,7 @@ public final class UpdateArticleGoogleBlogSearchPinger extends AbstractEventList
             if (Latkes.getServePath().contains("localhost")) {
                 LOGGER.log(Level.TRACE,
                     "Solo runs on local server, so should not ping " + "Google Blog Search Service for the article[title={0}]",
-                    new Object[] {article.getString(Article.ARTICLE_TITLE)});
+                        article.getString(Article.ARTICLE_TITLE));
                 return;
             }
 

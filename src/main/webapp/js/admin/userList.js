@@ -59,7 +59,7 @@ admin.userList = {
 
         $("#userUpdate").dialog({
             width: 700,
-            height: 250,
+            height: 300,
             "modal": true,
             "hideFooter": true
         });

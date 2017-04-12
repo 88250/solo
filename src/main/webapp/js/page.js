@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.7, Feb 18, 2017
+ * @version 1.2.4.7, Mar 30, 2017
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -615,7 +615,7 @@ $.extend(Page.prototype, {
                     }
 
                     if (typeof(addComment) === "undefined") { // https://github.com/b3log/solo/issues/12246
-                        that.addCommentAjax(result.cmtTpl, state);
+                        that.addCommentAjax(Util.replaceEmString(result.cmtTpl), state);
                     } else { // 1.9.0 向后兼容
                         that.addCommentAjax(addComment(result, state), state);
                     }

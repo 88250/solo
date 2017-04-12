@@ -18,12 +18,13 @@ package org.b3log.solo.processor.renderer;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
-import java.io.IOException;
-import javax.servlet.ServletContext;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.solo.SoloServletListener;
+
+import javax.servlet.ServletContext;
+import java.io.IOException;
 
 /**
  * <a href="http://freemarker.org">FreeMarker</a> HTTP response renderer for administrator console and initialization

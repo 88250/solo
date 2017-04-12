@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Feb 23, 2013
+ * @version 1.1.1.4, Apr 9, 2017
  */
 
 /* link-list 相关操作 */
@@ -30,8 +30,7 @@ admin.linkList = {
         currentPage: 1
     },
     id: "",
-    
-    /* 
+    /*
      * 初始化 table, pagination
      */
     init: function (page) {
@@ -61,7 +60,7 @@ admin.linkList = {
         
         $("#updateLink").dialog({
             width: 700,
-            height: 180,
+            height: 210,
             "modal": true,
             "hideFooter": true
         });
@@ -103,17 +102,17 @@ admin.linkList = {
                             linkData[i].linkOrder = "";
                         } else {
                             linkData[i].linkOrder = '<div class="table-center" style="width:14px">\
-                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                             </div>';
                         }
                     } else if (i === links.length - 1) {
                         linkData[i].linkOrder = '<div class="table-center" style="width:14px">\
-                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
+                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
                             </div>';
                     } else {
                         linkData[i].linkOrder = '<div class="table-center" style="width:38px">\
-                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="table-upIcon"></span>\
-                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="table-downIcon"></span>\
+                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'up\');" class="icon-move-up"></span>\
+                                <span onclick="admin.linkList.changeOrder(' + links[i].oId + ', ' + i + ', \'down\');" class="icon-move-down"></span>\
                             </div>';
                     }
                     

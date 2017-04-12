@@ -15,10 +15,9 @@
  */
 package org.b3log.solo.service;
 
-import java.io.IOException;
-import javax.inject.Inject;
-
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -26,6 +25,7 @@ import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
@@ -42,12 +42,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Statement;
+
 /**
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.10, Feb 20, 2017
+ * @version 1.2.0.11, Apr 10, 2017
  * @since 1.2.0
  */
 @Service
@@ -57,67 +61,56 @@ public class UpgradeService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UpgradeService.class);
-
+    /**
+     * Step for article updating.
+     */
+    private static final int STEP = 50;
+    /**
+     * Mail Service.
+     */
+    private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
+    /**
+     * Old version.
+     */
+    private static final String FROM_VER = "1.9.0";
+    /**
+     * New version.
+     */
+    private static final String TO_VER = SoloServletListener.VERSION;
+    /**
+     * Whether the email has been sent.
+     */
+    private static boolean sent = false;
     /**
      * Article repository.
      */
     @Inject
     private ArticleRepository articleRepository;
-
     /**
      * Comment repository.
      */
     @Inject
     private CommentRepository commentRepository;
-
     /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
-
     /**
      * Option repository.
      */
     @Inject
     private OptionRepository optionRepository;
-
-    /**
-     * Step for article updating.
-     */
-    private static final int STEP = 50;
-
     /**
      * Preference Query Service.
      */
     @Inject
     private PreferenceQueryService preferenceQueryService;
-
-    /**
-     * Mail Service.
-     */
-    private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
-
-    /**
-     * Whether the email has been sent.
-     */
-    private static boolean sent = false;
-
     /**
      * Language service.
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * Old version.
-     */
-    private static final String FROM_VER = "1.8.0";
-
-    /**
-     * New version.
-     */
-    private static final String TO_VER = SoloServletListener.VERSION;
 
     /**
      * Upgrades if need.
@@ -130,7 +123,6 @@ public class UpgradeService {
             }
 
             final String currentVer = preference.getString(Option.ID_C_VERSION);
-
             if (SoloServletListener.VERSION.equals(currentVer)) {
                 return;
             }
@@ -165,9 +157,34 @@ public class UpgradeService {
     private void perform() throws Exception {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
-        Transaction transaction = optionRepository.beginTransaction();
+        Transaction transaction = null;
 
         try {
+            final Connection connection = Connections.getConnection();
+            final Statement statement = connection.createStatement();
+
+            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+            statement.execute("CREATE TABLE `" + tablePrefix + "category` (\n" +
+                    "  `oId` varchar(19) NOT NULL,\n" +
+                    "  `categoryTitle` varchar(64) NOT NULL,\n" +
+                    "  `categoryURI` varchar(32) NOT NULL,\n" +
+                    "  `categoryDescription` text NOT NULL,\n" +
+                    "  `categoryOrder` int(11) NOT NULL,\n" +
+                    "  `categoryTagCnt` int(11) NOT NULL,\n" +
+                    "  PRIMARY KEY (`oId`)\n" +
+                    ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+            statement.execute("CREATE TABLE `" + tablePrefix + "category_tag` (\n" +
+                    "  `oId` varchar(19) NOT NULL,\n" +
+                    "  `category_oId` varchar(19) NOT NULL,\n" +
+                    "  `tag_oId` varchar(19) NOT NULL,\n" +
+                    "  PRIMARY KEY (`oId`)\n" +
+                    ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+            statement.close();
+            connection.commit();
+            connection.close();
+
+            transaction = optionRepository.beginTransaction();
+
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);

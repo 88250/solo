@@ -15,15 +15,12 @@
  */
 package org.b3log.solo.service;
 
-import javax.inject.Inject;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -40,6 +37,10 @@ import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONObject;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * User management service.
@@ -175,12 +176,12 @@ public class UserMgmtService {
             oldUser.put(User.USER_EMAIL, userNewEmail);
             oldUser.put(User.USER_NAME, userName);
 
-            final boolean mybeHashed = HASHED_PASSWORD_LENGTH == userPassword.length();
+            final boolean maybeHashed = HASHED_PASSWORD_LENGTH == userPassword.length();
             final String newHashedPassword = MD5.hash(userPassword);
             final String oldHashedPassword = oldUser.optString(User.USER_PASSWORD);
 
             if (!"demo.b3log.org".equals(Latkes.getServerHost())) { // Skips the Solo Online Demo (http://demo.b3log.org)
-                if (!mybeHashed || (!oldHashedPassword.equals(userPassword) && !oldHashedPassword.equals(newHashedPassword))) {
+                if (!maybeHashed || (!oldHashedPassword.equals(userPassword) && !oldHashedPassword.equals(newHashedPassword))) {
                     oldUser.put(User.USER_PASSWORD, newHashedPassword);
                 }
             }
@@ -213,7 +214,7 @@ public class UserMgmtService {
     }
 
     /**
-     * Swithches the user role between "defaultRole" and "visitorRole" by the specified user id.
+     * Switches the user role between "defaultRole" and "visitorRole" by the specified user id.
      *
      * @param userId the specified user id
      * @throws ServiceException exception

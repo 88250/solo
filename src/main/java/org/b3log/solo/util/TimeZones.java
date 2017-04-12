@@ -16,8 +16,9 @@
 package org.b3log.solo.util;
 
 
-import java.util.TimeZone;
 import org.b3log.latke.util.freemarker.Templates;
+
+import java.util.TimeZone;
 
 
 /**

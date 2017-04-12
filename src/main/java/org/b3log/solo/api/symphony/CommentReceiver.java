@@ -15,16 +15,11 @@
  */
 package org.b3log.solo.api.symphony;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Date;
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
@@ -51,6 +46,12 @@ import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Comments;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Date;
 
 /**
  * Comment receiver (from B3log Symphony).
@@ -229,7 +230,7 @@ public class CommentReceiver {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
                     LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
-                            new String[]{originalCommentId, commentName, commentContent});
+                            originalCommentId, commentName, commentContent);
                 }
             } else {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");

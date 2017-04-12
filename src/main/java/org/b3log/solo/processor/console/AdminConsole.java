@@ -16,19 +16,6 @@
 package org.b3log.solo.processor.console;
 
 import com.qiniu.util.Auth;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.UUID;
-import javax.inject.Inject;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import jodd.io.ZipUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +25,7 @@ import org.b3log.latke.RuntimeDatabase;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
@@ -65,11 +53,20 @@ import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONObject;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.*;
+
 /**
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.10, Nov 15, 2016
+ * @version 1.3.2.11, Mar 31, 2017
  * @since 0.4.1
  */
 @RequestProcessor
@@ -208,20 +205,20 @@ public class AdminConsole {
      * @param context the specified context
      */
     @RequestProcessing(value = {"/admin-article.do",
-        "/admin-article-list.do",
-        "/admin-comment-list.do",
-        "/admin-link-list.do",
-        "/admin-page-list.do",
-        "/admin-others.do",
-        "/admin-draft-list.do",
-        "/admin-user-list.do",
-        "/admin-plugin-list.do",
-        "/admin-main.do",
-        "/admin-about.do"},
+            "/admin-article-list.do",
+            "/admin-comment-list.do",
+            "/admin-link-list.do",
+            "/admin-page-list.do",
+            "/admin-others.do",
+            "/admin-draft-list.do",
+            "/admin-user-list.do",
+            "/admin-category-list.do",
+            "/admin-plugin-list.do",
+            "/admin-main.do",
+            "/admin-about.do"},
             method = HTTPRequestMethod.GET)
     public void showAdminFunctions(final HttpServletRequest request, final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-
         context.setRenderer(renderer);
 
         final String requestURI = request.getRequestURI();
@@ -235,11 +232,8 @@ public class AdminConsole {
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         dataModel.put("isMySQL", RuntimeDatabase.MYSQL == Latkes.getRuntimeDatabase());
-
         dataModel.putAll(langs);
-
         Keys.fillRuntime(dataModel);
-
         dataModel.put(Option.ID_C_LOCALE_STRING, locale.toString());
 
         fireFreeMarkerActionEvent(templateName, dataModel);
@@ -300,9 +294,9 @@ public class AdminConsole {
     /**
      * Exports data as SQL file.
      *
-     * @param request the specified HTTP servlet request
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @param context the specified HTTP request context
+     * @param context  the specified HTTP request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/export/sql", method = HTTPRequestMethod.GET)
@@ -377,7 +371,7 @@ public class AdminConsole {
      * Fires FreeMarker action event with the host template name and data model.
      *
      * @param hostTemplateName the specified host template name
-     * @param dataModel the specified data model
+     * @param dataModel        the specified data model
      */
     private void fireFreeMarkerActionEvent(final String hostTemplateName, final Map<String, Object> dataModel) {
         try {

@@ -16,19 +16,6 @@
 package org.b3log.solo.processor;
 
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
-import java.util.Enumeration;
-import java.util.Random;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.RuntimeEnv;
@@ -43,6 +30,16 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.PNGRenderer;
 import org.b3log.solo.SoloServletListener;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.Random;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 
 /**
@@ -112,7 +109,7 @@ public class CaptchaProcessor {
             final HttpSession httpSession = request.getSession(false);
 
             if (null != httpSession) {
-                LOGGER.log(Level.DEBUG, "Captcha[{0}] for session[id={1}]", new Object[] {captcha, httpSession.getId()});
+                LOGGER.log(Level.DEBUG, "Captcha[{0}] for session[id={1}]", captcha, httpSession.getId());
                 httpSession.setAttribute(CAPTCHA, captcha);
             }
 
