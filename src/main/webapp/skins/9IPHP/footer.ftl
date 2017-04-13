@@ -2,7 +2,7 @@
     &copy; ${year}
     ${footerContent}
     <a href="${servePath}">${blogTitle}</a>  &nbsp;   • &nbsp;
-    <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}  <br/>
+    <a href="https://hacpai.com/tag/solo" target="_blank">Solo</a> ${version}  <br/>
 
     Powered by <a href="http://b3log.org" target="_blank">B3log</a> 开源 &nbsp;
     <span class="ft-warn">&heartsuit;</span>
