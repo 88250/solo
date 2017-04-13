@@ -133,7 +133,7 @@
             </div>
             <div class="clear"></div>
             <div class="footer">
-                Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
+                Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="https://hacpai.com/tag/solo" target="_blank">Solo</a> ${version}
             </div>
         </div>
         <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>
