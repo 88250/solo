@@ -5,7 +5,7 @@
             <script type="text/javascript">function switch_delayer() { location.reload();}</script>${mobileLabel} <a id="switch-link" onclick="wptouch_switch_confirmation('normal');" href="javascript:void(0)"></a>		</div>
     </center>
     <p><span style="color: gray;">&copy; ${year}</span> - <a href="${servePath}">${blogTitle}</a>${footerContent}</p>
-    <p>Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version},
+    <p>Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="https://hacpai.com/tag/solo" target="_blank">Solo</a> ${version},
         Theme by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a></p>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
