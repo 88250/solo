@@ -81,6 +81,7 @@
             </div>
         </div>
         <span class="clear" />
+        <br>
     </div>
 </div>
 ${plugins}
