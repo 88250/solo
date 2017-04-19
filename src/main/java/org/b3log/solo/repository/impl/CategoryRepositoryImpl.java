@@ -34,7 +34,7 @@ import java.util.List;
  * Category repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Apr 8, 2017
+ * @version 1.1.0.2, Apr 19, 2017
  * @since 2.0.0
  */
 @Repository
@@ -113,7 +113,7 @@ public class CategoryRepositoryImpl extends AbstractRepository implements Catego
 
     @Override
     public List<JSONObject> getMostUsedCategories(final int num) throws RepositoryException {
-        final Query query = new Query().addSort(Category.CATEGORY_TAG_CNT, SortDirection.DESCENDING).
+        final Query query = new Query().addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).
                 setCurrentPageNum(1).setPageSize(num).setPageCount(1);
 
         final JSONObject result = get(query);
