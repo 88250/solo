@@ -50,7 +50,7 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Apr 1, 2017
+ * @version 1.1.1.1, Apr 22, 2017
  * @since 2.0.0
  */
 @RequestProcessor
@@ -276,6 +276,12 @@ public class CategoryConsole {
     @RequestProcessing(value = "/console/category/", method = HTTPRequestMethod.PUT)
     public void updateCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
+        if (!userQueryService.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -293,7 +299,6 @@ public class CategoryConsole {
 
             final List<JSONObject> tags = new ArrayList<>();
             final Set<String> deduplicate = new HashSet<>();
-
             for (int i = 0; i < tagTitles.length; i++) {
                 String tagTitle = StringUtils.trim(tagTitles[i]);
                 if (StringUtils.isBlank(tagTitle)) {
@@ -401,6 +406,12 @@ public class CategoryConsole {
     @RequestProcessing(value = "/console/category/", method = HTTPRequestMethod.POST)
     public void addCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
+        if (!userQueryService.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -529,14 +540,14 @@ public class CategoryConsole {
     @RequestProcessing(value = "/console/categories/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
     public void getCategories(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
 
         try {
             final String requestURI = request.getRequestURI();
