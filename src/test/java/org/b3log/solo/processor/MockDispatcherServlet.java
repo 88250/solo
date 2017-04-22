@@ -37,7 +37,7 @@ import org.b3log.latke.servlet.renderer.HTTP500Renderer;
  * Mock dispatcher servlet for unit tests.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 1, 2016
+ * @version 1.0.0.1, Apr 22, 2017
  * @since 1.7.0
  */
 public class MockDispatcherServlet {
@@ -45,7 +45,7 @@ public class MockDispatcherServlet {
     /**
      * the holder of all the sys-handler.
      */
-    public static final List<Handler> SYS_HANDLER = new ArrayList<Handler>();
+    private static final List<Handler> SYS_HANDLER = new ArrayList<>();
 
     public void init() throws ServletException {
         SYS_HANDLER.add(new RequestPrepareHandler());
@@ -55,7 +55,7 @@ public class MockDispatcherServlet {
         SYS_HANDLER.add(new MethodInvokeHandler());
     }
 
-    protected void service(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+    public void service(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
         final HTTPRequestContext httpRequestContext = new HTTPRequestContext();
 
         httpRequestContext.setRequest(req);
