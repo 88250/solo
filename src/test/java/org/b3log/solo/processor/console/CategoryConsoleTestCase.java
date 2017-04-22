@@ -141,6 +141,6 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
 
         category = getCategoryQueryService().getByTitle("新的分类1");
         Assert.assertNotNull(category);
-        //Assert.assertEquals(category.optInt(Category.CATEGORY_TAG_CNT), 1); // https://github.com/b3log/solo/issues/12274
+        Assert.assertEquals(category.optInt(Category.CATEGORY_TAG_CNT), 1); // https://github.com/b3log/solo/issues/12274
     }
 }

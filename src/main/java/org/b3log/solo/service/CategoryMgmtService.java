@@ -152,12 +152,16 @@ public class CategoryMgmtService {
     @Transactional
     public void addCategoryTag(final JSONObject categoryTag) throws ServiceException {
         try {
+            categoryTagRepository.add(categoryTag);
+
             final String categoryId = categoryTag.optString(Category.CATEGORY + "_" + Keys.OBJECT_ID);
             final JSONObject category = categoryRepository.get(categoryId);
-            category.put(Category.CATEGORY_TAG_CNT, category.optInt(Category.CATEGORY_TAG_CNT) + 1);
+            final int tagCount =
+                    categoryTagRepository.getByCategoryId(categoryId, 1, Integer.MAX_VALUE).
+                            optJSONArray(Keys.RESULTS).length();
+            category.put(Category.CATEGORY_TAG_CNT, tagCount);
 
             categoryRepository.update(categoryId, category);
-            categoryTagRepository.add(categoryTag);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds a category-tag relation failed", e);
 
