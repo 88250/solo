@@ -516,32 +516,26 @@ span.CodeMirror-selectedtext { background: none; }
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
     border-bottom-width: 0;
     border-radius: 3px 3px 0 0;
+    height: 34px;
 }
 .editor-toolbar a,
 .editor-toolbar label {
-    display: inline-block;
-    text-align: center;
-    text-decoration: none !important;
+    text-decoration: none!important;
     font-size: 16px;
     color: #666;
-    width: 23px;
-    height: 23px;
-    margin: 2px;
-    border: 1px solid transparent;
-    border-radius: 3px;
+    padding: 5px 10px;
     cursor: pointer;
+    line-height: 24px;
+    display: inline-block;
+    top: -1px;
 }
-.editor-toolbar a:hover, .editor-toolbar a.active,
+.editor-toolbar a:hover,
+.editor-toolbar a.active,
+.editor-toolbar a.focus,
 .editor-toolbar label:hover,
 .editor-toolbar label.active {
-    background: #fcfcfc;
-    border-color: #95a5a6;
-    color: #777;
-}
-
-.editor-toolbar a.active {
-    color: #911;
-    border-color: #911;
+    background: #666;
+    color: #fff;
 }
 
 .editor-toolbar a:before,
@@ -550,19 +544,19 @@ span.CodeMirror-selectedtext { background: none; }
 }
 
 .editor-toolbar label.icon-upload {
-    padding: 0 1px;
-    height: 23px;
-    width: 21px;
-    vertical-align: bottom;
-    float: none;
+    margin: 0;
+    position: relative;
 }
-
 .editor-toolbar input {
     height: 1px;
-    margin-top: 8px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0.001;
 }
 .editor-toolbar form {
-    display: inline;
+    overflow: hidden;
+    display: initial;
 }
 .editor-toolbar i.separator {
     display: inline-block;
