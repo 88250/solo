@@ -57,7 +57,7 @@ import java.util.Date;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.11, Dec 31, 2015
+ * @version 1.1.1.12, Apr 25, 2017
  * @since 0.5.5
  */
 @RequestProcessor
@@ -137,6 +137,7 @@ public class CommentReceiver {
      *         "commentAuthorName": "",
      *         "commentAuthorEmail": "",
      *         "commentAuthorURL": "",
+     *         "commentAuthorThumbnailURL": "",
      *         "commentContent": "",
      *         "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      *     }
@@ -186,17 +187,16 @@ public class CommentReceiver {
             final String commentName = symphonyCmt.getString("commentAuthorName");
             final String commentEmail = symphonyCmt.getString("commentAuthorEmail").trim().toLowerCase();
             String commentURL = symphonyCmt.optString("commentAuthorURL");
-
             if (!commentURL.contains("://")) {
                 commentURL = "http://" + commentURL;
             }
-
             try {
                 new URL(commentURL);
             } catch (final MalformedURLException e) {
                 LOGGER.log(Level.WARN, "The comment URL is invalid [{0}]", commentURL);
                 commentURL = "";
             }
+            final String commentThumbnailURL = symphonyCmt.getString("commentAuthorThumbnailURL");
 
             final String commentId = symphonyCmt.optString(Keys.OBJECT_ID);
             String commentContent = symphonyCmt.getString(Comment.COMMENT_CONTENT);
@@ -213,6 +213,7 @@ public class CommentReceiver {
             comment.put(Comment.COMMENT_NAME, commentName);
             comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
+            comment.put(Comment.COMMENT_THUMBNAIL_URL, commentThumbnailURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             final Date date = new Date();
 
@@ -237,7 +238,6 @@ public class CommentReceiver {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             }
 
-            commentMgmtService.setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL, comment.getString(Comment.COMMENT_THUMBNAIL_URL));
             // Sets comment on article....
             comment.put(Comment.COMMENT_ON_ID, articleId);
