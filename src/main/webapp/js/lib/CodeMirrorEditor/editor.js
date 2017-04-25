@@ -1042,24 +1042,35 @@
     /**
      * Create icon element for toolbar.
      */
-    function createIcon(name, options) {
-        options = options || {};
-        if (name === 'image') {
+    function createIcon(options) {
+        if (options.name === 'image') {
             return $(options.html)[0];
         }
-        var el = document.createElement('a');
-
-        var shortcut = options.shortcut || shortcuts[name];
-        if (shortcut) {
-            shortcut = fixShortcut(shortcut);
-            el.title = shortcut;
-            el.title = el.title.replace('Cmd', '⌘');
-            if (isMac) {
-                el.title = el.title.replace('Alt', '⌥');
-            }
+        var ariaLabels = {
+            bold: Label.addBoldLabel + ' <ctrl+b>',
+            italic: Label.addItalicLabel + ' <ctrl+i>',
+            quote: Label.insertQuoteLabel + ' <ctrl+e>',
+            'unordered-list': Label.addBulletedLabel + ' <ctrl+l>',
+            'ordered-list': Label.addNumberedListLabel + ' <shift+ctrl+l>',
+            'link': Label.addLinkLabel + ' <ctrl+k>',
+            redo: Label.redoLabel + ' <shift+ctrl+z>',
+            undo: Label.undoLabel + ' <ctrl+z>',
+            preview: Label.previewLabel + ' <ctrl+d>',
+            question: Label.helpLabel,
+            fullscreen: Label.fullscreenLabel + ' <shift+ctrl+a>'
         }
 
-        el.className = options.className || 'icon-' + name;
+
+        var el = document.createElement('a');
+
+        var label = ariaLabels[options.name]
+        if (isMac) {
+            label = label.replace('cmd', '⌘').replace('shift', '⇧');
+        }
+
+        el.className = 'tooltipped tooltipped-n';
+        el.setAttribute('aria-label', label)
+        el.innerHTML = "<span class='icon-" + options.name + "'></span>"
         return el;
     }
 
@@ -1111,8 +1122,8 @@
         var cm = editor.codemirror,
         wrap = editor.codemirror.getWrapperElement();
         
-        if ('icon-fullscreen' === editor.toolbar.fullscreen.className) {
-            editor.toolbar.fullscreen.className = 'icon-contract';
+        if ('icon-fullscreen' === editor.toolbar.fullscreen.children[0].className) {
+            editor.toolbar.fullscreen.children[0].className = 'icon-contract';
             editor.toolbar.preview.style.display = 'none';
             if (editor.toolbar.preview.className.indexOf('active') > -1) {
                 editor.toolbar.preview.click();
@@ -1150,7 +1161,7 @@
             return false;
         }
 
-        editor.toolbar.fullscreen.className = 'icon-fullscreen';
+        editor.toolbar.fullscreen.children[0].className = 'icon-fullscreen';
         editor.toolbar.preview.style.display = 'inline';
         $(editor.element.parentElement).css({
             'position': 'inherit'
@@ -1543,9 +1554,7 @@
         for (var i = 0; i < items.length; i++) {
             (function (item) {
                 var el;
-                if (item.name) {
-                    el = createIcon(item.name, item);
-                } else if (item === '|') {
+                if (item === '|') {
                     el = createSep();
                 } else {
                     el = createIcon(item);

@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.4, Jan 21, 2017
+ * @version 1.4.2.4, Apr 25, 2017
  */
 
 Util.processClipBoard = function (text, cm) {
@@ -224,17 +224,13 @@ admin.editors.CodeMirror = {
             toolbar: [
                 {name: 'bold'},
                 {name: 'italic'},
-                '|',
                 {name: 'quote'},
+                {name: 'link'},
                 {name: 'unordered-list'},
                 {name: 'ordered-list'},
-                '|',
-                {name: 'link'},
-                {name: 'image', html: '<form id="' + conf.id + 'fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
-                '|',
+                {name: 'image', html: '<span style="display: inline-block;top:1px" class="tooltipped tooltipped-n" aria-label="' + Label.uploadFilesLabel + '" ><form id="' + conf.id + 'fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form></span>'},
                 {name: 'redo'},
                 {name: 'undo'},
-                '|',
                 {name: 'preview'},
                 {name: 'fullscreen'}],
             extraKeys: {

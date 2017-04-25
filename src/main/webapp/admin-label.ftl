@@ -123,7 +123,19 @@
         "visitorUserLabel": "${visitorUserLabel}",
         "categoryTooLongLabel": "${categoryTooLongLabel}",
         "descriptionLabel": "${descriptionLabel}",
-        "autoSaveLabel": "${autoSaveLabel}"
+        "autoSaveLabel": "${autoSaveLabel}",
+        "addBoldLabel": '${addBoldLabel}',
+        "addItalicLabel": '${addItalicLabel}',
+        "insertQuoteLabel": '${insertQuoteLabel}',
+        "addBulletedLabel": '${addBulletedLabel}',
+        "addNumberedListLabel": '${addNumberedListLabel}',
+        "addLinkLabel": '${addLinkLabel}',
+        "undoLabel": '${undoLabel}',
+        "redoLabel": '${redoLabel}',
+        "previewLabel": '${previewLabel}',
+        "helpLabel": '${helpLabel}',
+        "fullscreenLabel": '${fullscreenLabel}',
+        "uploadFilesLabel": '${uploadFilesLabel}'
     };    
     
     admin.init();
