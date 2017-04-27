@@ -608,16 +608,17 @@ admin.editors.KindEditor = {
  * limitations under the License.
  */
 /**
- * @fileoverview markdowm CodeMirror editor 
+ * @fileoverview markdowm CodeMirror editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.4, Jan 21, 2017
+ * @version 1.4.2.4, Apr 25, 2017
  */
 
 Util.processClipBoard = function (text, cm) {
-    var text = toMarkdown(text, {converters: [
-        ], gfm: true});
+    var text = toMarkdown(text, {
+        converters: [], gfm: true
+    });
 
     // ascii 160 替换为 30
     text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
@@ -643,7 +644,8 @@ Util.processClipBoard = function (clipboardData, cm) {
         return '';
     }
 
-    var text = toMarkdown(clipboardData.getData("text/html"), {converters: [
+    var text = toMarkdown(clipboardData.getData("text/html"), {
+        converters: [
             {
                 filter: 'img',
                 replacement: function (innerHTML, node) {
@@ -653,7 +655,19 @@ Util.processClipBoard = function (clipboardData, cm) {
                     return "![](" + node.src + ")";
                 }
             }
-        ], gfm: true});
+        ], gfm: true
+    });
+
+    // code 中 <, > 进行转义
+    var codes = text.split('```');
+    if (codes.length > 1) {
+        for (var i = 0, iMax = codes.length; i < iMax; i++) {
+            if (i % 2 === 1) {
+                codes[i] = codes[i].replace(/<\/span><span style="color:#\w{6};">/g, '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+        }
+    }
+    text = codes.join('```');
 
     // ascii 160 替换为 30
     text = $('<div>' + text + '</div>').text().replace(/\n{2,}/g, '\n\n').replace(/ /g, ' ');
@@ -661,97 +675,99 @@ Util.processClipBoard = function (clipboardData, cm) {
 };
 
 Util.initUploadFile = function (obj) {
-        var isImg = false;
-        $('#' + obj.id).fileupload({
-            multipart: true,
-            pasteZone: obj.pasteZone,
-            dropZone: obj.pasteZone,
-            url: "https://up.qbox.me/",
-            paramName: "file",
-            add: function (e, data) {
-                if (data.files[0].name) {
-                    var processName = data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
-                    filename = getUUID() + '-' + processName;
+    var isImg = false;
+    $('#' + obj.id).fileupload({
+        multipart: true,
+        pasteZone: obj.pasteZone,
+        dropZone: obj.pasteZone,
+        url: "https://up.qbox.me/",
+        paramName: "file",
+        add: function (e, data) {
+            if (data.files[0].name) {
+                var processName = data.files[0].name.match(/[a-zA-Z0-9.]/g).join('');
+                filename = getUUID() + '-' + processName;
 
-                    // 文件名称全为中文时，移除 ‘-’
-                    if (processName.split('.')[0] === '') {
-                        filename = getUUID() + processName;
-                    }
-                } else {
-                    filename = getUUID() + '.' + data.files[0].type.split("/")[1];
+                // 文件名称全为中文时，移除 ‘-’
+                if (processName.split('.')[0] === '') {
+                    filename = getUUID() + processName;
                 }
+            } else {
+                filename = getUUID() + '.' + data.files[0].type.split("/")[1];
+            }
 
 
-                if (window.File && window.FileReader && window.FileList && window.Blob) {
-                    var reader = new FileReader();
-                    reader.readAsArrayBuffer(data.files[0]);
-                    reader.onload = function (evt) {
-                        var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
-                        isImg = data.files[0].type.indexOf('image') === 0 ? true : false;
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+                var reader = new FileReader();
+                reader.readAsArrayBuffer(data.files[0]);
+                reader.onload = function (evt) {
+                    var fileBuf = new Uint8Array(evt.target.result.slice(0, 11));
+                    isImg = data.files[0].type.indexOf('image') === 0 ? true : false;
 
-                        data.submit();
-                    }
-                } else {
                     data.submit();
                 }
-            },
-            formData: function (form) {
-                var data = form.serializeArray();
-
-                data.push({name: 'key', value: "file/" + (new Date()).getFullYear() + "/"
-                            + ((new Date()).getMonth() + 1) + '/' + filename});
-
-                data.push({name: 'token', value: obj.qiniuUploadToken});
-
-                return data;
-            },
-            submit: function (e, data) {
-                if (obj.editor.replaceRange) {
-                    var cursor = obj.editor.getCursor();
-                    obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
-                } else {
-                    $('#' + obj.id + ' input').prop('disabled', false);
-                }
-            },
-            done: function (e, data) {
-                var qiniuKey = data.result.key;
-                if (!qiniuKey) {
-                    alert("Upload error");
-
-                    return;
-                }
-
-                if (obj.editor.replaceRange) {
-                    var cursor = obj.editor.getCursor();
-
-                    if (isImg) {
-                        obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
-                                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
-                    } else {
-                        obj.editor.replaceRange('[' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
-                                CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
-                    }
-                } else {
-                    obj.editor.$it.val('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n');
-                    $('#' + obj.id + ' input').prop('disabled', false);
-                }
-            },
-            fail: function (e, data) {
-                alert("Upload error: " + data.errorThrown);
-                if (obj.editor.replaceRange) {
-                    var cursor = obj.editor.getCursor();
-                    obj.editor.replaceRange('',
-                            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
-                } else {
-                    $('#' + obj.id + ' input').prop('disabled', false);
-                }
+            } else {
+                data.submit();
             }
-        }).on('fileuploadprocessalways', function (e, data) {
-            var currentFile = data.files[data.index];
-            if (data.files.error && currentFile.error) {
-                alert(currentFile.error);
+        },
+        formData: function (form) {
+            var data = form.serializeArray();
+
+            data.push({
+                name: 'key', value: "file/" + (new Date()).getFullYear() + "/"
+                + ((new Date()).getMonth() + 1) + '/' + filename
+            });
+
+            data.push({name: 'token', value: obj.qiniuUploadToken});
+
+            return data;
+        },
+        submit: function (e, data) {
+            if (obj.editor.replaceRange) {
+                var cursor = obj.editor.getCursor();
+                obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
+            } else {
+                $('#' + obj.id + ' input').prop('disabled', false);
             }
-        });
+        },
+        done: function (e, data) {
+            var qiniuKey = data.result.key;
+            if (!qiniuKey) {
+                alert("Upload error");
+
+                return;
+            }
+
+            if (obj.editor.replaceRange) {
+                var cursor = obj.editor.getCursor();
+
+                if (isImg) {
+                    obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
+                        CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                } else {
+                    obj.editor.replaceRange('[' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
+                        CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+                }
+            } else {
+                obj.editor.$it.val('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n');
+                $('#' + obj.id + ' input').prop('disabled', false);
+            }
+        },
+        fail: function (e, data) {
+            alert("Upload error: " + data.errorThrown);
+            if (obj.editor.replaceRange) {
+                var cursor = obj.editor.getCursor();
+                obj.editor.replaceRange('',
+                    CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+            } else {
+                $('#' + obj.id + ' input').prop('disabled', false);
+            }
+        }
+    }).on('fileuploadprocessalways', function (e, data) {
+        var currentFile = data.files[data.index];
+        if (data.files.error && currentFile.error) {
+            alert(currentFile.error);
+        }
+    });
 }
 
 admin.editors.CodeMirror = {
@@ -788,8 +804,8 @@ admin.editors.CodeMirror = {
                 if (Util.startsWith(text, input)) {
                     autocompleteHints.push({
                         displayText: '<span style="font-size: 1rem;line-height:22px"><img style="width: 1rem;margin:3px 0;float:left" src="'
-                                + latkeConfig.servePath + '/js/lib/emojify.js-1.1.0/images/basic/' + text + '.png"> ' +
-                                displayText.toString() + '</span>',
+                        + latkeConfig.servePath + '/js/lib/emojify.js-1.1.0/images/basic/' + text + '.png"> ' +
+                        displayText.toString() + '</span>',
                         text: ":" + text + ": "
                     });
                     matchCnt++;
@@ -818,17 +834,16 @@ admin.editors.CodeMirror = {
             toolbar: [
                 {name: 'bold'},
                 {name: 'italic'},
-                '|',
                 {name: 'quote'},
+                {name: 'link'},
                 {name: 'unordered-list'},
                 {name: 'ordered-list'},
-                '|',
-                {name: 'link'},
-                {name: 'image', html: '<form id="' + conf.id + 'fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form>'},
-                '|',
+                {
+                    name: 'image',
+                    html: '<span style="display: inline-block;top:1px" class="tooltipped tooltipped-n" aria-label="' + Label.uploadFilesLabel + '" ><form id="' + conf.id + 'fileUpload" method="POST" enctype="multipart/form-data"><label class="icon-upload"><input type="file"/></label></form></span>'
+                },
                 {name: 'redo'},
                 {name: 'undo'},
-                '|',
                 {name: 'preview'},
                 {name: 'fullscreen'}],
             extraKeys: {
