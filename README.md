@@ -27,7 +27,7 @@
 
 Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将只有“20%”用户使用的功能添加进来，只有这样才能保持博客系统本该有的纯净，足够轻量才能带来简约的使用体验。
 
-* Markdown / TinyMCE / KindEditor / Emoji
+* Markdown / Emoji
 * [聚合分类](https://github.com/b3log/solo/issues/12256) / 标签
 * 自定义导航（页面、链接）
 * 草稿夹
@@ -111,8 +111,6 @@ Solo 的诞生离不开以下开源项目：
 
 * [jQuery](https://github.com/jquery/jquery)：使用最广泛的 JavaScript 工具库
 * [CodeMirror](https://github.com/codemirror/CodeMirror)：Markdown 编辑器内核
-* [KindEditor](https://github.com/kindsoft/kindeditor)：一个富文本编辑器
-* [TinyMCE](https://github.com/tinymce/tinymce)：又一个富文本编辑器
 * [SyntaxHighlighter](https://github.com/syntaxhighlighter/syntaxhighlighter)：一个代码高亮库
 * [Highlight.js](https://github.com/isagalaev/highlight.js)：又一个代码高亮库
 * [emojify.js](https://github.com/Ranks/emojify.js)：前端 Emoji 处理库

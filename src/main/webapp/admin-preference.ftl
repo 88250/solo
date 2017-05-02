@@ -161,6 +161,7 @@
                     </select>
                 </td>
             </tr>
+            <#-- https://github.com/b3log/solo/issues/12285
             <tr>
                 <th>
                     <label for="editorType">${editType1Label}</label>
@@ -173,6 +174,7 @@
                     </select>
                 </td>
             </tr>
+            -->
             <tr>
                 <th>
                     <label for="articleListDisplay">${articleListDisplay1Label}</label>
