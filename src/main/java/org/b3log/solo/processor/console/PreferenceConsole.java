@@ -54,7 +54,7 @@ public class PreferenceConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PreferenceConsole.class);
-    
+
     /**
      * Preference URI prefix.
      */
@@ -369,6 +369,7 @@ public class PreferenceConsole {
      *                 "allowVisitDraftViaPermalink": boolean,
      *                 "allowRegister": boolean,
      *                 "articleListStyle": "",
+     *                 "editorType": "",
      *                 "commentable": boolean,
      *                 "feedOutputMode: "",
      *                 "feedOutputCnt": int

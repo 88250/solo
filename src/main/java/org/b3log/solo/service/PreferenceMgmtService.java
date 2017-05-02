@@ -48,7 +48,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.11, Feb 18, 2017
+ * @version 1.3.2.12, May 2, 2017
  * @since 0.4.0
  */
 @Service
@@ -57,7 +57,7 @@ public class PreferenceMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PreferenceMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PreferenceMgmtService.class);
 
     /**
      * Preference query service.
@@ -79,7 +79,6 @@ public class PreferenceMgmtService {
 
     /**
      * Loads skins for the specified preference and initializes templates loading.
-     *
      * <p>
      * If the skins directory has been changed, persists the change into preference.
      * </p>
@@ -120,14 +119,13 @@ public class PreferenceMgmtService {
 
         if (!skinDirNames.contains(currentSkinDirName)) {
             LOGGER.log(Level.WARN, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName="
-                    + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead.",
-                    currentSkinDirName);
+                    + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead.", currentSkinDirName);
             if (!skinDirNames.contains(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME)) {
                 LOGGER.log(Level.ERROR, "Can not find skin[dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "]");
 
                 throw new IllegalStateException(
                         "Can not find default skin[dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME
-                        + "], please redeploy your Solo and make sure contains this default skin!");
+                                + "], please redeploy your Solo and make sure contains this default skin!");
             }
 
             preference.put(SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
@@ -137,7 +135,6 @@ public class PreferenceMgmtService {
         }
 
         final String skinsString = skinArray.toString();
-
         if (!skinsString.equals(preference.getString(SKINS))) {
             LOGGER.debug("The skins directory has been changed, persists the change into preference");
             preference.put(SKINS, skinsString);
@@ -147,7 +144,6 @@ public class PreferenceMgmtService {
         setDirectoryForTemplateLoading(preference.getString(SKIN_DIR_NAME));
 
         final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
-
         if ("zh_CN".equals(localeString)) {
             TimeZones.setTimeZone("Asia/Shanghai");
         }
@@ -193,9 +189,7 @@ public class PreferenceMgmtService {
      * @throws ServiceException service exception
      */
     public void updatePreference(final JSONObject preference) throws ServiceException {
-        @SuppressWarnings("unchecked")
         final Iterator<String> keys = preference.keys();
-
         while (keys.hasNext()) {
             final String key = keys.next();
 
@@ -216,11 +210,9 @@ public class PreferenceMgmtService {
 
             for (final String dirName : skinDirNames) {
                 final JSONObject skin = new JSONObject();
-
                 skinArray.put(skin);
 
                 final String name = Latkes.getSkinName(dirName);
-
                 skin.put(Skin.SKIN_NAME, name);
                 skin.put(Skin.SKIN_DIR_NAME, dirName);
             }
@@ -280,7 +272,9 @@ public class PreferenceMgmtService {
             optionRepository.update(Option.ID_C_COMMENTABLE, commentableOpt);
 
             final JSONObject editorTypeOpt = optionRepository.get(Option.ID_C_EDITOR_TYPE);
-            editorTypeOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_EDITOR_TYPE));
+            // https://github.com/b3log/solo/issues/12285
+            // editorTypeOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_EDITOR_TYPE));
+            editorTypeOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_EDITOR_TYPE);
             optionRepository.update(Option.ID_C_EDITOR_TYPE, editorTypeOpt);
 
             final JSONObject enableArticleUpdateHintOpt = optionRepository.get(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT);
