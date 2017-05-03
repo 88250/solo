@@ -82,8 +82,8 @@ JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735
 ## 文档
 
 * [用户指南](https://hacpai.com/article/1492881378588)：安装、配置、备份以及常见问题
-* [开发指南](https://github.com/b3log/solo/wiki/Pre_dev)：开发环境、项目结构、框架说明
-* [皮肤开发](https://github.com/b3log/solo/wiki/Develop_steps)：开发步骤、模版变量
+* [开发指南](https://hacpai.com/article/1493822943172)：开发环境、项目结构、框架说明
+* [皮肤开发](https://hacpai.com/article/1493814851007)：开发步骤、模版变量
 * [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)：插件机制、处理流程
 
 ## 版本历史
@@ -122,7 +122,6 @@ Solo 的诞生离不开以下开源项目：
 * [H2](https://github.com/h2database/h2database)：Java SQL 数据库
 * [Jetty](https://github.com/eclipse/jetty.project)：轻量级的 Java Web 容器
 * [Latke](https://github.com/b3log/latke)：简洁高效的 Java Web 框架 
-* [NetBeans](https://netbeans.org)：全宇宙暂时排名第三的 IDE
 * [IntelliJ IDEA](https://www.jetbrains.com/idea)：全宇宙暂时排名第二的 IDE
 
 ----
