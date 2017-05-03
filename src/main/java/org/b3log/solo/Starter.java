@@ -39,7 +39,7 @@ import java.net.URI;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Dec 23, 2015
+ * @version 1.1.0.8, May 4, 2017
  * @since 1.2.0
  */
 public final class Starter {
@@ -142,7 +142,7 @@ public final class Starter {
         }
         Latkes.setScanPath("org.b3log.solo"); // For Latke IoC 
 
-        logger.info("Standalone mode, see [https://github.com/b3log/solo/wiki/standalone_mode] for more details.");
+        logger.info("Standalone mode, see [https://github.com/b3log/solo/issues/12037] for more details.");
         Latkes.initRuntimeEnv();
 
         String webappDirLocation = "src/main/webapp/"; // POM structure in dev env
