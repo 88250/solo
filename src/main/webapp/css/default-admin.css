@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.2.7.4, Apr 25, 2017
+* @version 2.3.7.4, May 5, 2017
 */
 
 /* start resset */
@@ -999,12 +999,13 @@ button#submitArticle:hover,
     margin: 20px 0;
 }
 
-.ico-alipay-me {
-    background-image: url("../images/alipay-me.png");
-    font-size: 20px;
-    height: 24px;
-    margin: 20px 0;
-    width: 126px;
+.content-reset .about-list li {
+    border: 0;
+}
+
+.content-reset .about-list li:hover {
+    background-color: #fff;
+    text-decoration: underline;
 }
 /* end about */
 

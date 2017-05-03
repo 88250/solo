@@ -95,7 +95,6 @@
     <include path="/plugins/**/*.htm" />
         
     <include path="/CHANGE_LOGS.html" />
-    <include path="/README.txt" />
     <include path="/LICENSE.txt" />
         
 </static-files>
