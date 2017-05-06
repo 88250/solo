@@ -57,15 +57,18 @@ public class UserMgmtService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(UserMgmtService.class);
+
     /**
      * Length of hashed password.
      */
     private static final int HASHED_PASSWORD_LENGTH = 32;
+
     /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
+
     /**
      * Language service.
      */
@@ -120,7 +123,6 @@ public class UserMgmtService {
             LOGGER.log(Level.TRACE, "Parses cookie failed, clears the cookie [name=b3log-latke]");
 
             final Cookie cookie = new Cookie("b3log-latke", null);
-
             cookie.setMaxAge(0);
             cookie.setPath("/");
 
@@ -230,6 +232,7 @@ public class UserMgmtService {
             }
 
             userRepository.update(userId, oldUser);
+
             transaction.commit();
         } catch (final RepositoryException e) {
             if (transaction.isActive()) {

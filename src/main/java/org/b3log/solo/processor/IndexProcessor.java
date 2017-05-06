@@ -52,13 +52,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Index processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.2.6, Dec 27, 2015
+ * @version 1.2.3.6, May 7, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -117,13 +118,22 @@ public class IndexProcessor {
             if (null != specifiedSkin) {
                 if ("default".equals(specifiedSkin)) {
                     specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
+
+                    final Cookie cookie = new Cookie("skin", null);
+                    cookie.setMaxAge(0);
+                    cookie.setPath("/");
+                    response.addCookie(cookie);
                 }
             } else {
                 specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
             }
-            Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(),
-                    "/skins/" + specifiedSkin);
-            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
+
+            final Set<String> skinDirNames = Skins.getSkinDirNames();
+            if (skinDirNames.contains(specifiedSkin)) {
+                Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(),
+                        "/skins/" + specifiedSkin);
+                request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
+            }
 
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
@@ -146,9 +156,11 @@ public class IndexProcessor {
             statisticMgmtService.incBlogViewCount(request, response);
 
             // https://github.com/b3log/solo/issues/12060
-            final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
-            cookie.setPath("/");
-            response.addCookie(cookie);
+            if (!preference.optString(Skin.SKIN_DIR_NAME).equals(specifiedSkin) && !Requests.mobileRequest(request)) {
+                final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
+                cookie.setPath("/");
+                response.addCookie(cookie);
+            }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

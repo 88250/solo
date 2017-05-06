@@ -16,6 +16,7 @@
 package org.b3log.solo.util;
 
 import freemarker.template.TemplateExceptionHandler;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
@@ -25,6 +26,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
@@ -42,7 +44,7 @@ import java.util.*;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.4.8, Nov 2, 2016
+ * @version 1.1.5.8, May 7, 2017
  * @since 0.3.1
  */
 public final class Skins {
@@ -67,9 +69,9 @@ public final class Skins {
      * Fills the specified data model with the current skink's (WebRoot/skins/${skinName}/lang/lang_xx_XX.properties)
      * and core language (WebRoot/WEB-INF/classes/lang_xx_XX.properties) configurations.
      *
-     * @param localeString the specified locale string
+     * @param localeString       the specified locale string
      * @param currentSkinDirName the specified current skin directory name
-     * @param dataModel the specified data model
+     * @param dataModel          the specified data model
      * @throws ServiceException service exception
      */
     public static void fillLangs(final String localeString, final String currentSkinDirName, final Map<String, Object> dataModel)
@@ -157,8 +159,7 @@ public final class Skins {
 
         final Set<String> ret = new HashSet<String>();
 
-        @SuppressWarnings("unchecked")
-        final Set<String> resourcePaths = servletContext.getResourcePaths("/skins");
+        @SuppressWarnings("unchecked") final Set<String> resourcePaths = servletContext.getResourcePaths("/skins");
 
         for (final String path : resourcePaths) {
             final String dirName = path.substring("/skins".length() + 1, path.length() - 1);
@@ -174,7 +175,8 @@ public final class Skins {
     }
 
     /**
-     * Gets skin directory name from the specified request.
+     * Gets skin directory name from the specified request. Refers to https://github.com/b3log/solo/issues/12060 for
+     * more details.
      *
      * @param request the specified request
      * @return directory name, or {@code "default"} if not found
@@ -182,16 +184,18 @@ public final class Skins {
     public static String getSkinDirName(final HttpServletRequest request) {
         // https://github.com/b3log/solo/issues/12060
 
+        if (Requests.mobileRequest(request)) {
+            return (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME); // resolved in listener
+        }
+
         // 1. Get skin from query
         final String specifiedSkin = request.getParameter(Skin.SKIN);
-
         if ("default".equals(specifiedSkin)) {
             return "default";
         }
 
         if (!Strings.isEmptyOrNull(specifiedSkin)) {
             final Set<String> skinDirNames = Skins.getSkinDirNames();
-
             if (skinDirNames.contains(specifiedSkin)) {
                 return specifiedSkin;
             } else {

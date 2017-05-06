@@ -61,7 +61,7 @@ import java.util.Set;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.2.20, Apr 10, 2017
+ * @version 1.9.3.20, May 7, 2017
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -315,7 +315,6 @@ public final class SoloServletListener extends AbstractServletListener {
             final String requestURI = httpServletRequest.getRequestURI();
 
             String desiredView = Requests.mobileSwitchToggle(httpServletRequest);
-
             if (desiredView == null && !Requests.mobileRequest(httpServletRequest) || desiredView != null && desiredView.equals("normal")) {
                 desiredView = preference.getString(Skin.SKIN_DIR_NAME);
             } else {
