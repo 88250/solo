@@ -31,6 +31,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -60,13 +61,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.*;
 
 /**
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.11, Mar 31, 2017
+ * @version 1.4.2.11, May 8, 2017
  * @since 0.4.1
  */
 @RequestProcessor
@@ -75,7 +79,7 @@ public class AdminConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(AdminConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AdminConsole.class);
 
     /**
      * Language service.
@@ -231,7 +235,8 @@ public class AdminConsole {
         final Map<String, String> langs = langPropsService.getAll(locale);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModel.put("isMySQL", RuntimeDatabase.MYSQL == Latkes.getRuntimeDatabase());
+        dataModel.put("supportExport", RuntimeDatabase.MYSQL == Latkes.getRuntimeDatabase()
+                || RuntimeDatabase.H2 == Latkes.getRuntimeDatabase());
         dataModel.putAll(langs);
         Keys.fillRuntime(dataModel);
         dataModel.put(Option.ID_C_LOCALE_STRING, locale.toString());
@@ -308,41 +313,81 @@ public class AdminConsole {
             return;
         }
 
-        if (!Latkes.runsWithJDBCDatabase() || RuntimeDatabase.MYSQL != Latkes.getRuntimeDatabase()) {
-            context.renderJSON().renderMsg("Just support MySQL export now");
+        if (!Latkes.runsWithJDBCDatabase()) {
+            context.renderJSON().renderMsg("Just support MySQL/H2 export now");
 
             return;
         }
 
+        final RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
+
         final String dbUser = Latkes.getLocalProperty("jdbc.username");
         final String dbPwd = Latkes.getLocalProperty("jdbc.password");
         final String dbURL = Latkes.getLocalProperty("jdbc.URL");
-        String db = StringUtils.substringAfterLast(dbURL, "/");
-        db = StringUtils.substringBefore(db, "?");
+        String sql; // exported SQL script
 
-        String sql;
-        try {
-            if (StringUtils.isNotBlank(dbPwd)) {
-                sql = Execs.exec("mysqldump -u" + dbUser + " -p" + dbPwd + " --databases " + db);
-            } else {
-                sql = Execs.exec("mysqldump -u" + dbUser + " --databases " + db);
+        if (RuntimeDatabase.MYSQL == runtimeDatabase) {
+            String db = StringUtils.substringAfterLast(dbURL, "/");
+            db = StringUtils.substringBefore(db, "?");
+
+            try {
+                if (StringUtils.isNotBlank(dbPwd)) {
+                    sql = Execs.exec("mysqldump -u" + dbUser + " -p" + dbPwd + " --databases " + db);
+                } else {
+                    sql = Execs.exec("mysqldump -u" + dbUser + " --databases " + db);
+                }
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Export failed", e);
+                context.renderJSON().renderMsg("Export failed, please check log");
+
+                return;
             }
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Export failed", e);
+        } else if (RuntimeDatabase.H2 == runtimeDatabase) {
+            final Connection connection = Connections.getConnection();
+            final Statement statement = connection.createStatement();
+
+            try {
+                final StringBuilder sqlBuilder = new StringBuilder();
+                final ResultSet resultSet = statement.executeQuery("SCRIPT");
+                while (resultSet.next()) {
+                    final String stmt = resultSet.getString(1);
+                    sqlBuilder.append(stmt).append(Strings.LINE_SEPARATOR);
+                }
+                resultSet.close();
+                statement.close();
+
+                sql = sqlBuilder.toString();
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Export failed", e);
+                context.renderJSON().renderMsg("Export failed, please check log");
+
+                return;
+            } finally {
+                if (null != connection) {
+                    connection.close();
+                }
+            }
+        } else {
+            context.renderJSON().renderMsg("Just support MySQL/H2 export now");
+
+            return;
+        }
+
+        if (StringUtils.isBlank(sql)) {
             context.renderJSON().renderMsg("Export failed, please check log");
 
             return;
         }
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
-        String localFilePath = tmpDir + "/b3_solo_" + UUID.randomUUID().toString() + ".sql";
-        LOGGER.info(localFilePath);
+        String localFilePath = tmpDir + File.separator + "b3_solo_" + UUID.randomUUID().toString() + ".sql";
+        LOGGER.trace(localFilePath);
         final File localFile = new File(localFilePath);
 
         try {
             final byte[] data = sql.getBytes("UTF-8");
 
-            OutputStream output = new FileOutputStream(localFile);
+            final OutputStream output = new FileOutputStream(localFile);
             IOUtils.write(data, output);
             IOUtils.closeQuietly(output);
 
@@ -364,6 +409,7 @@ public class AdminConsole {
             context.renderJSON().renderMsg("Export failed, please check log");
 
             return;
+
         }
     }
 
