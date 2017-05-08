@@ -47,7 +47,7 @@
     </div>
     <div id="tabOthersPanel_other" class="none">
         <button class="margin12" onclick="admin.others.removeUnusedTags();">${removeUnusedTagsLabel}</button>
-        <#if isMySQL>
+        <#if supportExport>
         <button class="margin12" onclick="admin.others.exportSQL();">${exportSQLLabel}</button>
         </#if>
     </div>
