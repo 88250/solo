@@ -1,21 +1,12 @@
-# [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-11K+-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)
-
-![Solo](https://cloud.githubusercontent.com/assets/873584/23685877/634dcda4-03e1-11e7-95e1-30c9e435eb7e.jpg)
+# <img src="https://cloud.githubusercontent.com/assets/873584/26024695/4defcb5e-3809-11e7-9755-fa4d22c45718.png"> [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-11K+-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224) 
 
 * [简介](#%E7%AE%80%E4%BB%8B)
 * [功能](#%E5%8A%9F%E8%83%BD)
 * [安装](#%E5%AE%89%E8%A3%85)
-* [技术](#%E6%8A%80%E6%9C%AF)
 * [文档](#%E6%96%87%E6%A1%A3)
-* [版本历史](#%E7%89%88%E6%9C%AC%E5%8E%86%E5%8F%B2)
-* [贡献](#%E8%B4%A1%E7%8C%AE)
+* [技术](#%E6%8A%80%E6%9C%AF)
 * [Terms](#terms)
 * [鸣谢](#%E9%B8%A3%E8%B0%A2)
-* [界面截图](#%E7%95%8C%E9%9D%A2%E6%88%AA%E5%9B%BE)
-  * [后台](#%E5%90%8E%E5%8F%B0)
-  * [编辑器](#%E7%BC%96%E8%BE%91%E5%99%A8)
-  * [内置的皮肤](#%E5%86%85%E7%BD%AE%E7%9A%84%E7%9A%AE%E8%82%A4)
-  * [社区贡献的皮肤](#%E7%A4%BE%E5%8C%BA%E8%B4%A1%E7%8C%AE%E7%9A%84%E7%9A%AE%E8%82%A4)
 
 [![Activities](https://graphs.waffle.io/b3log/solo/throughput.svg)](https://waffle.io/b3log/solo/metrics/throughput)
 
@@ -65,6 +56,13 @@ JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735
 
 另外，如果你想用 Solo 但又不想自己维护服务器，那可以尝试购买我们搭建好的 Solo 直接[使用](http://b3log.org/services/#solo)。
 
+## 文档
+
+* [用户指南](https://hacpai.com/article/1492881378588)：安装、配置、备份以及常见问题
+* [开发指南](https://hacpai.com/article/1493822943172)：开发环境、项目结构、框架说明
+* [皮肤开发](https://hacpai.com/article/1493814851007)：开发步骤、模版变量
+* [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)：插件机制、处理流程
+
 ## 技术
 
 * 后端框架：为了尽量降低服务器的内存占用，顺带尝试[一些技术构想](https://hacpai.com/article/1403847528022)，我们开发了 [Latke](https://github.com/b3log/latke) 框架，并在此基础上构建了 Solo、Sym、XiaoV 等产品。这些产品反过来也会对框架提出需求，这是一个相互促进，共同演化的良性发展过程
@@ -78,25 +76,6 @@ JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735
 * 完善的 javadoc 注释
 * 严格的分支、缺陷追踪管理
 * 不断完善的测试用例、持续集成
-
-## 文档
-
-* [用户指南](https://hacpai.com/article/1492881378588)：安装、配置、备份以及常见问题
-* [开发指南](https://hacpai.com/article/1493822943172)：开发环境、项目结构、框架说明
-* [皮肤开发](https://hacpai.com/article/1493814851007)：开发步骤、模版变量
-* [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)：插件机制、处理流程
-
-## 版本历史
-
-Solo 的**第一个版本发布于 2010 年**，我们对每个版本都进行了详细的变更记录，[这里](http://solo.b3log.org/CHANGE_LOGS.html)可以看到 Solo 成长的全貌。
-
-每一次开发新版本时我们都会在开发分支上进行，尽量避免给其他开发者们带来困扰。因为我们知道只有专业和尽责才能让 Solo 这个开源项目走得更远，**谁让你我的征途是星辰和大海呢！**
-
-## 贡献
-
-Solo 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/solo/graphs/contributors)看到。
-
-我们非常期待你加入到这个项目中，无论是使用反馈还是代码补丁，都是对 Solo 一份满满的爱 :heart:
 
 ## Terms
 
@@ -126,96 +105,8 @@ Solo 的诞生离不开以下开源项目：
 
 ----
 
-Logo 征集中....
-
-----
-
-## 界面截图 
-
-### 后台
-
-* Admin - Post (TinyMCE/Markdown)
-![Admin - Post (TinyMCE/Markdown)](http://img.blog.csdn.net/20160909003905083)
-* Admin - Skins 
-![Admin - Skins ](http://img.blog.csdn.net/20160909003855114)
-
-### 编辑器
-
-![editor](https://cloud.githubusercontent.com/assets/873584/20144758/9e70995e-a6d8-11e6-9bf8-1872994b4ff0.gif)
-
-### 内置的皮肤
-
-* [next](https://github.com/b3log/solo-skins/tree/master/next)
-![next](https://github.com/b3log/solo-skins/blob/master/skin-preview/next.jpg?raw=true)
-
-* [yilia](https://github.com/b3log/solo-skins/tree/master/yilia)
-![yilia](https://github.com/b3log/solo-skins/blob/master/skin-preview/yilia.jpg?raw=true)
-
-* [finding](https://github.com/b3log/solo-skins/tree/master/finding)
-![finding](https://github.com/b3log/solo-skins/blob/master/skin-preview/finding.jpg?raw=true)
-
-* [metro-hot](https://github.com/b3log/solo-skins/tree/master/metro-hot)
-![metro-hot](https://github.com/b3log/solo-skins/blob/master/skin-preview/metro-hot.jpg?raw=true)
-
-* [timeline](https://github.com/b3log/solo-skins/tree/master/timeline)
-![timeline](https://github.com/b3log/solo-skins/blob/master/skin-preview/timeline.jpg?raw=true)
-
-* [ease](https://github.com/b3log/solo-skins/tree/master/ease)
-![ease](https://github.com/b3log/solo-skins/blob/master/skin-preview/ease.jpg?raw=true)
-
-* [mobile](https://github.com/b3log/solo-skins/tree/master/mobile) <br>
-![mobile](https://github.com/b3log/solo-skins/blob/master/skin-preview/mobile.jpg?raw=true)
-
-* [andrea](https://github.com/b3log/solo-skins/tree/master/andrea)
-![andrea](https://github.com/b3log/solo-skins/blob/master/skin-preview/andrea.jpg?raw=true)
-
-* [classic](https://github.com/b3log/solo-skins/tree/master/classic)
-![classic](https://github.com/b3log/solo-skins/blob/master/skin-preview/classic.jpg?raw=true)
-
-* [community](https://github.com/b3log/solo-skins/tree/master/community)
-![community](https://github.com/b3log/solo-skins/blob/master/skin-preview/community.jpg?raw=true)
-
-* [favourite](https://github.com/b3log/solo-skins/tree/master/favourite)
-![favourite](https://github.com/b3log/solo-skins/blob/master/skin-preview/favourite.jpg?raw=true)
-
-* [tree-house](https://github.com/b3log/solo-skins/tree/master/tree-house)
-![tree-house](https://github.com/b3log/solo-skins/blob/master/skin-preview/tree-house.jpg?raw=true)
-
-* [i-nove](https://github.com/b3log/solo-skins/tree/master/i-nove)
-![i-nove](https://github.com/b3log/solo-skins/blob/master/skin-preview/i-nove.jpg?raw=true)
-
-* [neoease](https://github.com/b3log/solo-skins/tree/master/neoease)
-![neoease](https://github.com/b3log/solo-skins/blob/master/skin-preview/neoease.jpg?raw=true)
-
-* [owmx-3.0](https://github.com/b3log/solo-skins/tree/master/owmx-3.0)
-![owmx-3.0](https://github.com/b3log/solo-skins/blob/master/skin-preview/owmx-3.0.jpg?raw=true)
-
-* [bruce](https://github.com/b3log/solo-skins/tree/master/bruce)
-![bruce](https://github.com/b3log/solo-skins/blob/master/skin-preview/bruce.jpg?raw=true)
-
-
-### 社区贡献的皮肤
-
-* [bootstyle](https://github.com/b3log/solo-third-skins/tree/master/bootstyle)
-![bootstyle](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/bootstyle.jpg?raw=true)
-
-* [dashu03](https://github.com/b3log/solo-third-skins/tree/master/dashu03)
-![dashu03](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/dashu03.png?raw=true)
-
-* [community-bubbles](https://github.com/b3log/solo-third-skins/tree/master/community-bubbles)
-![community-bubbles](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/community-bubbles.png?raw=true)
-
-* [Dot-B](https://github.com/b3log/solo-third-skins/tree/master/Dot-B)
-![Dot-B](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Dot-B.jpg?raw=true)
-
-* [Shawn](https://github.com/b3log/solo-third-skins/tree/master/Shawn)
-![Shawn](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Shawn.jpg?raw=true)
-
-* [Coda](https://github.com/b3log/solo-third-skins/tree/master/Coda)
-![Coda](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/Coda.jpg?raw=true)
-
-* [5styles](https://github.com/b3log/solo-third-skins/tree/master/5styles)
-![5styles](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/5styles.jpg?raw=true)
-
-* [idream](https://github.com/b3log/solo-third-skins/tree/master/idream)
-![idream](https://github.com/b3log/solo-third-skins/blob/master/skin-preview/idream.jpg?raw=true)
+<p align = "center">
+<strong>专业、简约、稳定、极速的 Java 博客</strong>
+<br><br>
+<img src="https://cloud.githubusercontent.com/assets/873584/26024667/c031e40a-3808-11e7-9176-f2c9af01bd64.png">
+</p>
