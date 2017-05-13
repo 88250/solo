@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.16.1.36, Apr 22, 2017
+    Version: 3.16.1.37, May 13, 2017
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -92,14 +92,6 @@
         <url>https://github.com/b3log/solo/issues</url>
     </issueManagement>
 
-    <mailingLists>
-        <mailingList>
-            <name>b3log-solo-dev</name>
-            <archive>https://groups.google.com/group/b3log-solo-dev</archive>
-            <post>b3log-solo-dev@googlegroups.com</post>
-        </mailingList>
-    </mailingLists>
-
     <scm>
         <url>https://github.com/b3log/solo</url>
     </scm>
@@ -107,7 +99,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <org.b3log.latke.version>2.3.10</org.b3log.latke.version>
+        <org.b3log.latke.version>2.3.11</org.b3log.latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
