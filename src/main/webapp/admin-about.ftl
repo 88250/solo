@@ -5,7 +5,7 @@
     <div class="module-body padding12">
         <div class="about-logo">
             <a href="http://b3log.org" target="_blank">
-                <img src="${staticServePath}/images/logo.png" alt="Solo" title="Solo" />
+                <img src="${staticServePath}/images/logo.jpg" alt="Solo" title="Solo" />
             </a>
         </div>
         <div class="left content-reset" style="width: 73%">

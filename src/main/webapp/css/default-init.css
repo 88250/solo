@@ -18,8 +18,9 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 1.0.2.7, Dec 14, 2016
+* @version 1.0.2.8, May 13, 2017
 */
+
 html {
     height: 100%;
     overflow: hidden;
@@ -40,8 +41,6 @@ body {
 
 h2 {  
     background-color:#ECECEC;
-    background-image:linear-gradient(#F9F9F9, #ECECEC);
-    background-repeat:repeat-x;
     border-radius: 4px 4px 0 0;
     font-size: 16px;
     margin: 0;
