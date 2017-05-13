@@ -18,11 +18,11 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 1.0.2.7, Dec 14, 2016
+* @version 1.0.2.8, May 13, 2017
 */
+
 html {
     height: 100%;
-    overflow: hidden;
 }
 
 html,body {
@@ -31,7 +31,7 @@ html,body {
 }
 
 body {
-    background-color: #F3F1E5;
+    background-color: #fff;
     color: #333;
     font-family: \5fae\8f6f\96c5\9ed1;
     font-size: small;
@@ -39,9 +39,7 @@ body {
 }
 
 h2 {  
-    background-color:#ECECEC;
-    background-image:linear-gradient(#F9F9F9, #ECECEC);
-    background-repeat:repeat-x;
+    background-color: #F3F1E5;
     border-radius: 4px 4px 0 0;
     font-size: 16px;
     margin: 0;
@@ -130,14 +128,6 @@ button:active {
     display: none;
 }
 
-.main .icon {
-    position: absolute;
-    right: 0px;
-    top: 0px;
-    width:16px;
-    height:16px;
-}
-
 .solo {
     color: orangered;
     font-weight: bold;
@@ -145,32 +135,22 @@ button:active {
 
 .logo {
     float: left;
-    padding: 162px 12px 0;
+    padding: 142px 12px 0;
     width: 217px;
     text-align: center;
-}
-
-.wrapper {
-    height: auto;
-    min-height: 100%;
-    position: relative;
 }
 
 .wrap {
     border-top: 5px solid #E6E5D9;
     min-height: 400px;
+    padding: 110px 0;
+    background-color: #F3F1E5;
 }
 
 .content {
-    background: url("../images/zz.jpg") repeat-x scroll center bottom white;
-    border-color: #E6E5D9;
-    border-style: solid solid none;
-    border-width: 1px;
+    background-color: #fff;
     margin: 0 auto;
-    padding: 0 0 28px 0;
-    position: relative;
     width: 760px;
-    top: 60px;
 }
 
 .main {
@@ -180,7 +160,7 @@ button:active {
     margin: 24px 0;
     padding: 12px 24px;
     width: 470px;
-    height: 338px;
+    min-height: 300px;
 }
 
 .main a {
@@ -194,11 +174,8 @@ button:active {
 .footerWrapper {
     background-color: #FFFFFF;
     border-top: 1px solid #E6E5D9;
-    bottom: 0;
     padding: 12px 0;
-    position: absolute;
     text-align: center;
-    width: 100%;
 }
 
 .footerWrapper a {
@@ -221,7 +198,6 @@ button:active {
 
 /* start 403/404/500 */
 .img-403, .img-500 {
-    box-shadow: 0 0 5px #E6E5D9;
     margin: 20px 0 0 45px;
     padding: 5px;
 }
@@ -271,7 +247,6 @@ button:active {
 /* start init */
 #init {
     position: absolute;
-    top: 81px;
     width: 470px;
 }
 
