@@ -56,12 +56,14 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.20, May 7, 2017
+ * @version 1.9.3.20, May 20, 2017
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -70,11 +72,6 @@ public final class SoloServletListener extends AbstractServletListener {
      * Solo version.
      */
     public static final String VERSION = "2.0.0";
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(SoloServletListener.class.getName());
 
     /**
      * JSONO print indent factor.
@@ -97,9 +94,9 @@ public final class SoloServletListener extends AbstractServletListener {
     public static final String FAVICON_API;
 
     /**
-     * Bean manager.
+     * Logger.
      */
-    private LatkeBeanManager beanManager;
+    private static final Logger LOGGER = Logger.getLogger(SoloServletListener.class);
 
     static {
         final ResourceBundle b3log = ResourceBundle.getBundle("b3log");
@@ -108,6 +105,15 @@ public final class SoloServletListener extends AbstractServletListener {
         B3LOG_SYMPHONY_SERVE_PATH = b3log.getString("symphony.servePath");
         FAVICON_API = b3log.getString("faviconAPI");
     }
+
+    /**
+     * Bean manager.
+     */
+    private LatkeBeanManager beanManager;
+    /**
+     * Request lock.
+     */
+    private Lock requestLock = new ReentrantLock();
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
@@ -171,14 +177,13 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
-        final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
+        requestLock.lock();
 
+        final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
         Requests.log(httpServletRequest, Level.DEBUG, LOGGER);
 
         final String requestURI = httpServletRequest.getRequestURI();
-
         Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
-
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
             LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
@@ -199,17 +204,21 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
-        Stopwatchs.end();
+        try {
+            Stopwatchs.end();
 
-        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
-        Stopwatchs.release();
+            LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+            Stopwatchs.release();
 
-        super.requestDestroyed(servletRequestEvent);
+            super.requestDestroyed(servletRequestEvent);
+        } finally {
+            requestLock.unlock();
+        }
     }
 
     /**
      * Loads preference.
-     *
+     * <p>
      * <p>
      * Loads preference from repository, loads skins from skin directory then sets it into preference if the skins
      * changed.
