@@ -58,7 +58,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.12.13, Apr 8, 2017
+ * @version 1.6.13.13, May 21, 2017
  * @since 0.3.1
  */
 @Service
@@ -67,90 +67,108 @@ public class Filler {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Filler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Filler.class);
+
     /**
      * {@code true} for published.
      */
     private static final boolean PUBLISHED = true;
+
     /**
      * User service.
      */
     private static UserService userService = UserServiceFactory.getUserService();
+
     /**
      * Topbar utilities.
      */
     @Inject
     private TopBars topBars;
+
     /**
      * Article repository.
      */
     @Inject
     private ArticleRepository articleRepository;
+
     /**
      * Comment repository.
      */
     @Inject
     private CommentRepository commentRepository;
+
     /**
      * Archive date repository.
      */
     @Inject
     private ArchiveDateRepository archiveDateRepository;
+
     /**
      * Category repository.
      */
     @Inject
     private CategoryRepository categoryRepository;
+
     /**
      * Tag repository.
      */
     @Inject
     private TagRepository tagRepository;
+
     /**
      * Link repository.
      */
     @Inject
     private LinkRepository linkRepository;
+
     /**
      * Page repository.
      */
     @Inject
     private PageRepository pageRepository;
+
     /**
      * Statistic query service.
      */
     @Inject
     private StatisticQueryService statisticQueryService;
+
     /**
      * User repository.
      */
     @Inject
     private UserRepository userRepository;
+
     /**
      * Option query service..
      */
     @Inject
     private OptionQueryService optionQueryService;
+
     /**
      * Article query service.
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
     /**
      * Tag query service.
      */
     @Inject
     private TagQueryService tagQueryService;
+
     /**
      * User query service.
      */
     @Inject
     private UserQueryService userQueryService;
+
     /**
      * Fill tag article..
      */
     @Inject
     private FillTagArticles fillTagArticles;
+
     /**
      * Event manager.
      */
@@ -685,6 +703,10 @@ public class Filler {
             fillMinified(dataModel);
             fillPageNavigations(dataModel);
             fillStatistic(dataModel);
+
+            fillMostUsedTags(dataModel, preference);
+            fillArchiveDates(dataModel, preference);
+            fillMostUsedCategories(dataModel, preference);
         } catch (final JSONException e) {
             LOGGER.log(Level.ERROR, "Fills blog header failed", e);
             throw new ServiceException(e);
@@ -756,14 +778,6 @@ public class Filler {
                 fillRecentComments(dataModel, preference);
             }
 
-            if (Templates.hasExpression(template, "<#list mostUsedCategories as category>")) {
-                fillMostUsedCategories(dataModel, preference);
-            }
-
-            if (Templates.hasExpression(template, "<#list mostUsedTags as tag>")) {
-                fillMostUsedTags(dataModel, preference);
-            }
-
             if (Templates.hasExpression(template, "<#list mostCommentArticles as article>")) {
                 fillMostCommentArticles(dataModel, preference);
             }
@@ -771,11 +785,6 @@ public class Filler {
             if (Templates.hasExpression(template, "<#list mostViewCountArticles as article>")) {
                 fillMostViewCountArticles(dataModel, preference);
             }
-
-            if (Templates.hasExpression(template, "<#list archiveDates as archiveDate>")) {
-                fillArchiveDates(dataModel, preference);
-            }
-
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Fills side failed", e);
             throw new ServiceException(e);
@@ -811,24 +820,12 @@ public class Filler {
                 fillRecentComments(dataModel, preference);
             }
 
-            if (Templates.hasExpression(template, "<#list mostUsedCategories as category>")) {
-                fillMostUsedCategories(dataModel, preference);
-            }
-
-            if (Templates.hasExpression(template, "<#list mostUsedTags as tag>")) {
-                fillMostUsedTags(dataModel, preference);
-            }
-
             if (Templates.hasExpression(template, "<#list mostCommentArticles as article>")) {
                 fillMostCommentArticles(dataModel, preference);
             }
 
             if (Templates.hasExpression(template, "<#list mostViewCountArticles as article>")) {
                 fillMostViewCountArticles(dataModel, preference);
-            }
-
-            if (Templates.hasExpression(template, "<#list archiveDates as archiveDate>")) {
-                fillArchiveDates(dataModel, preference);
             }
 
             if (Templates.hasExpression(template, "<#include \"side.ftl\"/>")) {
@@ -1024,10 +1021,8 @@ public class Filler {
     /**
      * Sets some extra properties into the specified article with the specified author and preference.
      * <p>
-     * <p>
      * The batch version of method {@linkplain #setArticleExProperties(HttpServletRequest, JSONObject, JSONObject, JSONObject)}.
      * </p>
-     * <p>
      * <p>
      * Article ext properties:
      * <pre>
@@ -1057,10 +1052,8 @@ public class Filler {
     /**
      * Sets some extra properties into the specified article with the specified preference.
      * <p>
-     * <p>
      * The batch version of method {@linkplain #setArticleExProperties(HttpServletRequest, JSONObject, JSONObject)}.
      * </p>
-     * <p>
      * <p>
      * Article ext properties:
      * <pre>
@@ -1088,7 +1081,6 @@ public class Filler {
 
     /**
      * Processes the abstract of the specified article with the specified preference.
-     * <p>
      * <p>
      * <ul>
      * <li>If the abstract is {@code null}, sets it with ""</li>
