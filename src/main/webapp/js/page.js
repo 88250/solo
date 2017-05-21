@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.4.7, Mar 30, 2017
+ * @version 1.3.0.0, May 21, 2017
  */
 var Page = function (tips) {
     this.currentCommentId = "";
@@ -38,7 +38,7 @@ $.extend(Page.prototype, {
         $("#emotions" + name + " span").click(function () {
             var $comment = $("#comment" + name);
             var endPosition = _it._getCursorEndPosition($comment[0]);
-            var key = "[" + this.className + "]",
+            var key = this.title + ' ',
                     textValue = $comment[0].value;
             textValue = textValue.substring(0, endPosition) + key + textValue.substring(endPosition, textValue.length);
             $("#comment" + name).val(textValue);
@@ -46,10 +46,10 @@ $.extend(Page.prototype, {
                 endPosition -= textValue.split('\n').length - 1;
                 var oR = $comment[0].createTextRange();
                 oR.collapse(true);
-                oR.moveStart('character', endPosition + 6);
+                oR.moveStart('character', endPosition + key.length);
                 oR.select();
             } else {
-                $comment[0].setSelectionRange(endPosition + 6, endPosition + 6);
+                $comment[0].setSelectionRange(endPosition + key.length, endPosition + key.length);
             }
         });
     },
@@ -614,11 +614,7 @@ $.extend(Page.prototype, {
                         result.userName = Util.getUserName();
                     }
 
-                    if (typeof(addComment) === "undefined") { // https://github.com/b3log/solo/issues/12246
-                        that.addCommentAjax(Util.replaceEmString(result.cmtTpl), state);
-                    } else { // 1.9.0 向后兼容
-                        that.addCommentAjax(addComment(result, state), state);
-                    }
+                    that.addCommentAjax(Util.replaceEmString(result.cmtTpl), state);
                 }
             });
         }

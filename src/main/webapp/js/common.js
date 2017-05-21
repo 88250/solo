@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.6, Nov 28, 2013
+ * @version 1.1.0.0, May 21, 2017
  */
 
 /**
@@ -102,10 +102,9 @@ var Util = {
         str = commentSplited[0];
         for (var j = 1; j < commentSplited.length; j++) {
             var key = commentSplited[j].substr(0, 2);
-            str += "<img src='" + latkeConfig.staticServePath + "/skins/" +
-                    Label.skinDirName + "/images/emotions/em" + key + ".png' alt='" +
+            str += "<img width='20' src='" + latkeConfig.staticServePath + "/images/emotions/em" + key + ".png' alt='" +
                     Label["em" + key + "Label"] + "' title='" +
-                    Label["em" + key + "Label"] + "'/>" + commentSplited[j].substr(3);
+                    Label["em" + key + "Label"] + "'/> " + commentSplited[j].substr(3);
         }
         return str;
     },

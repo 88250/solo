@@ -17,7 +17,7 @@
  * base style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.3.2, Apr 8, 2017
+ * @version 1.0.3.3, May 21, 2017
 */
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dd, dl, ol {
     margin: 0;
@@ -400,7 +400,8 @@ button:hover,.button:hover {
 /* start emotions */
 .em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, 
 .em10, .em11, .em12, .em13, .em14 {
-    background-image: url("../images/emotions/classic/emotions-classic.png");
+    background-image: url("../images/emotions/emotions.png");
+    background-size: 120px;
     float: left;
     height: 24px;
     margin-right: 5px;

@@ -953,8 +953,7 @@ button#submitArticle:hover,
     border-radius: 3px;
     box-shadow: 1px 1px 3px #333333;
     line-height: 16px;
-    margin: 24px 12px;
-    padding: 5px;
+    margin: 10px;
     text-align: center;
 }
 
