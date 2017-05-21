@@ -35,6 +35,7 @@ import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
@@ -53,7 +54,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.3.2.13, Feb 18, 2017
+ * @version 1.3.2.14, May 21, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -185,7 +186,10 @@ public class CommentProcessor {
                 final StringWriter stringWriter = new StringWriter();
                 template.process(dataModel, stringWriter);
                 stringWriter.close();
-                addResult.put("cmtTpl", stringWriter.toString());
+                String cmtTpl = stringWriter.toString();
+                cmtTpl = Emotions.convert(cmtTpl);
+
+                addResult.put("cmtTpl", cmtTpl);
             } catch (final Exception e) {
                 // 1.9.0 向后兼容
             }
@@ -290,7 +294,10 @@ public class CommentProcessor {
                 final StringWriter stringWriter = new StringWriter();
                 template.process(dataModel, stringWriter);
                 stringWriter.close();
-                addResult.put("cmtTpl", stringWriter.toString());
+                String cmtTpl = stringWriter.toString();
+                cmtTpl = Emotions.convert(cmtTpl);
+
+                addResult.put("cmtTpl", cmtTpl);
             } catch (final Exception e) {
                 // 1.9.0 向后兼容
             }
