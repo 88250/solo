@@ -614,11 +614,7 @@ $.extend(Page.prototype, {
                         result.userName = Util.getUserName();
                     }
 
-                    if (typeof(addComment) === "undefined") { // https://github.com/b3log/solo/issues/12246
-                        that.addCommentAjax(Util.replaceEmString(result.cmtTpl), state);
-                    } else { // 1.9.0 向后兼容
-                        that.addCommentAjax(addComment(result, state), state);
-                    }
+                    that.addCommentAjax(Util.replaceEmString(result.cmtTpl), state);
                 }
             });
         }
