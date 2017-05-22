@@ -58,7 +58,7 @@
         <div class="clear"></div>
     </div>
     <div class="right">
-        <button class="marginRight12" id="saveArticle">${saveLabel}</button>
+        <button class="marginRight12" id="saveArticle">${saveLabel}${draftListLabel}</button>
         <button id="submitArticle">${publishLabel}</button>
         <button id="unSubmitArticle" class="none" onclick="admin.article.unPublish();">${unPublishLabel}</button>
     </div>
