@@ -51,7 +51,7 @@ import java.sql.Statement;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.12, May 2, 2017
+ * @version 1.2.0.13, May 25, 2017
  * @since 1.2.0
  */
 @Service
@@ -75,7 +75,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "1.9.0";
+    private static final String FROM_VER = "2.0.0";
 
     /**
      * New version.
@@ -169,39 +169,15 @@ public class UpgradeService {
 
         Transaction transaction = null;
         try {
-            final Connection connection = Connections.getConnection();
-            final Statement statement = connection.createStatement();
-
-            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            statement.execute("CREATE TABLE `" + tablePrefix + "category` (\n" +
-                    "  `oId` varchar(19) NOT NULL,\n" +
-                    "  `categoryTitle` varchar(64) NOT NULL,\n" +
-                    "  `categoryURI` varchar(32) NOT NULL,\n" +
-                    "  `categoryDescription` text NOT NULL,\n" +
-                    "  `categoryOrder` int(11) NOT NULL,\n" +
-                    "  `categoryTagCnt` int(11) NOT NULL,\n" +
-                    "  PRIMARY KEY (`oId`)\n" +
-                    ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-            statement.execute("CREATE TABLE `" + tablePrefix + "category_tag` (\n" +
-                    "  `oId` varchar(19) NOT NULL,\n" +
-                    "  `category_oId` varchar(19) NOT NULL,\n" +
-                    "  `tag_oId` varchar(19) NOT NULL,\n" +
-                    "  PRIMARY KEY (`oId`)\n" +
-                    ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-            statement.close();
-            connection.commit();
-            connection.close();
-
             transaction = optionRepository.beginTransaction();
 
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
-            // https://github.com/b3log/solo/issues/12285
-//            final JSONObject editorTypeOpt = optionRepository.get(Option.ID_C_EDITOR_TYPE);
-//            editorTypeOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_EDITOR_TYPE);
-//            optionRepository.update(Option.ID_C_EDITOR_TYPE, editorTypeOpt);
+            final JSONObject editorTypeOpt = optionRepository.get(Option.ID_C_EDITOR_TYPE);
+            editorTypeOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_EDITOR_TYPE);
+            optionRepository.update(Option.ID_C_EDITOR_TYPE, editorTypeOpt);
 
             transaction.commit();
 
@@ -216,6 +192,36 @@ public class UpgradeService {
         }
 
         LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
+    }
+
+    /**
+     * Upgrade database tables.
+     *
+     * @throws Exception exception
+     */
+    private void upgradeTables() throws Exception {
+        final Connection connection = Connections.getConnection();
+        final Statement statement = connection.createStatement();
+
+        final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+        statement.execute("CREATE TABLE `" + tablePrefix + "category` (\n" +
+                "  `oId` varchar(19) NOT NULL,\n" +
+                "  `categoryTitle` varchar(64) NOT NULL,\n" +
+                "  `categoryURI` varchar(32) NOT NULL,\n" +
+                "  `categoryDescription` text NOT NULL,\n" +
+                "  `categoryOrder` int(11) NOT NULL,\n" +
+                "  `categoryTagCnt` int(11) NOT NULL,\n" +
+                "  PRIMARY KEY (`oId`)\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+        statement.execute("CREATE TABLE `" + tablePrefix + "category_tag` (\n" +
+                "  `oId` varchar(19) NOT NULL,\n" +
+                "  `category_oId` varchar(19) NOT NULL,\n" +
+                "  `tag_oId` varchar(19) NOT NULL,\n" +
+                "  PRIMARY KEY (`oId`)\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+        statement.close();
+        connection.commit();
+        connection.close();
     }
 
     /**

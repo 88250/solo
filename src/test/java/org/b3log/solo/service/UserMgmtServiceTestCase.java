@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link UserMgmtService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, May 16, 2013
+ * @version 1.0.0.3, May 25, 2017
  */
 @Test(suiteName = "service")
 public class UserMgmtServiceTestCase extends AbstractTestCase {
@@ -44,7 +44,7 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
 
         final JSONObject requestJSONObject = new JSONObject();
 
-        requestJSONObject.put(User.USER_NAME, "user1 name");
+        requestJSONObject.put(User.USER_NAME, "user1name");
         requestJSONObject.put(User.USER_EMAIL, "test1@gmail.com");
         requestJSONObject.put(User.USER_PASSWORD, "pass1");
 
@@ -63,7 +63,7 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
 
         JSONObject requestJSONObject = new JSONObject();
 
-        requestJSONObject.put(User.USER_NAME, "user2 name");
+        requestJSONObject.put(User.USER_NAME, "user2name");
         requestJSONObject.put(User.USER_EMAIL, "test2@gmail.com");
         requestJSONObject.put(User.USER_PASSWORD, "pass2");
         requestJSONObject.put(User.USER_ROLE, Role.ADMIN_ROLE);
@@ -72,16 +72,16 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
         Assert.assertNotNull(id);
 
         requestJSONObject.put(Keys.OBJECT_ID, id);
-        requestJSONObject.put(User.USER_NAME, "user2 new name");
+        requestJSONObject.put(User.USER_NAME, "user2newname");
 
         userMgmtService.updateUser(requestJSONObject);
 
         Assert.assertEquals(getUserQueryService().getUser(id).getJSONObject(
-                User.USER).getString(User.USER_NAME), "user2 new name");
+                User.USER).getString(User.USER_NAME), "user2newname");
 
         // Do not update password
         requestJSONObject.put(Keys.OBJECT_ID, id);
-        requestJSONObject.put(User.USER_NAME, "user2 name");
+        requestJSONObject.put(User.USER_NAME, "user2name");
         requestJSONObject.put(User.USER_EMAIL, "test2@gmail.com");
         requestJSONObject.put(User.USER_PASSWORD, "pass2");
 
