@@ -47,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.1.0.7, May 6, 2017
+ * @version 1.1.0.8, May 25, 2017
  * @since 0.4.0
  */
 @Service
@@ -162,13 +162,16 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
             }
 
+            oldUser.put(User.USER_EMAIL, userNewEmail);
+
             // Update
             final String userName = requestJSONObject.optString(User.USER_NAME);
-            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-
-            oldUser.put(User.USER_EMAIL, userNewEmail);
+            if (UserExt.invalidUserName(userName)) {
+                throw new ServiceException(langPropsService.get("userNameInvalidLabel"));
+            }
             oldUser.put(User.USER_NAME, userName);
 
+            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
             final boolean maybeHashed = HASHED_PASSWORD_LENGTH == userPassword.length();
             final String newHashedPassword = MD5.hash(userPassword);
             final String oldHashedPassword = oldUser.optString(User.USER_PASSWORD);
