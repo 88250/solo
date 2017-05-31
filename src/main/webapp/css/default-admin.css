@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.3.7.4, May 5, 2017
+* @version 2.3.8.4, May 31, 2017
 */
 
 /* start resset */
@@ -907,14 +907,12 @@ table.form th {
     width: 170px;
 }
 
-button#submitArticle,
-#unSubmitArticle {
+button#submitArticle {
     background-color: #fa8564;
     border-color: #fa8564;
 }
 
-button#submitArticle:hover,
-#unSubmitArticle:hover{
+button#submitArticle:hover {
     background-color: #ec6459;
     border-color: #ec6459;
 }

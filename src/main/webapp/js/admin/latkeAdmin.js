@@ -1049,7 +1049,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.5.7, Jan 21, 2017
+ * @version 1.4.6.7, May 21, 2017
  */
 admin.article = {
     currentEditorType: '',
@@ -1400,10 +1400,12 @@ admin.article = {
         if (this.status) {
             if (this.status.isArticle) {
                 $("#unSubmitArticle").show();
-                $("#submitArticle").hide();
+                $("#saveArticle").hide();
+                $("#submitArticle").show();
             } else {
                 $("#submitArticle").show();
                 $("#unSubmitArticle").hide();
+                $("#saveArticle").show();
             }
             if (this.status.articleHadBeenPublished) {
                 $("#postToCommunityPanel").hide();
@@ -1414,6 +1416,7 @@ admin.article = {
         } else {
             $("#submitArticle").show();
             $("#unSubmitArticle").hide();
+            $("#saveArticle").show();
             // 1.0.0 开始默认会发布到社区
             // $("#postToCommunityPanel").show();
         }
