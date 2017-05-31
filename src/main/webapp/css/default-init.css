@@ -54,7 +54,6 @@ input {
     font-size: 13px;
     margin: 15px 0;
     padding: 7px 8px;
-    transition: all 0.15s ease-in 0s;
     vertical-align: middle;
     width: 410px;
     font-family: \5fae\8f6f\96c5\9ed1;
@@ -142,7 +141,6 @@ button:active {
 
 .wrap {
     border-top: 5px solid #E6E5D9;
-    min-height: 400px;
     padding: 110px 0;
     background-color: #F3F1E5;
 }
@@ -157,10 +155,9 @@ button:active {
     border-left: 1px solid #E6E5D9;
     float: right;
     font-size: 15px;
-    margin: 24px 0;
-    padding: 12px 24px;
+    padding: 20px;
     width: 470px;
-    min-height: 300px;
+    min-height: 360px;
 }
 
 .main a {
@@ -197,11 +194,6 @@ button:active {
 /* end article-pwd */
 
 /* start 403/404/500 */
-.img-403, .img-500 {
-    margin: 20px 0 0 45px;
-    padding: 5px;
-}
-
 .a-403, .a-500, .a-404 {
     margin: 20px 50px 0 0 ;
     text-align: right;
@@ -211,8 +203,12 @@ button:active {
     margin: 10px 75px 0 0 ;
 }
 
-.img-500 {
-    margin: 20px 0 0 25px;
+.img-500,
+.img-403,
+.img-404 {
+    max-width: 100%;
+    margin: 20px 0 ;
+    padding: 0;
 }
 
 .a-500 {
@@ -250,10 +246,6 @@ button:active {
     width: 470px;
 }
 
-#init .form {
-    padding: 10px 20px;
-}
-
 #init input,
 .register input {
     margin: 5px 0;
@@ -282,3 +274,44 @@ button:active {
     margin-left: 10px;
 }
 /* end init */
+
+/* start responsive */
+@media (max-width: 780px) {
+    .wrap {
+        padding: 40px 0;
+    }
+
+    .content {
+        width: auto;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .main {
+        border: 0;
+        float: none;
+        width: auto;
+    }
+
+    input {
+        width: 100%;
+        box-sizing: border-box;
+        display: block;
+    }
+
+    .a-500,
+    .a-403,
+    .a-404 {
+        margin: 0 20px 0 0;
+    }
+
+    #init {
+        width: 100%;
+        padding: 0 20px;
+        box-sizing: border-box;
+        left: 0;
+    }
+}
+/* end responsive */
