@@ -1,4 +1,4 @@
-FROM maven:3.2-jdk-7-onbuild
+FROM maven:3
 MAINTAINER Liang Ding <dl88250@gmail.com>
 
 ADD . /solo
@@ -7,3 +7,5 @@ RUN mvn install
 WORKDIR /solo/target/solo
 
 EXPOSE 8080
+
+CMD ["/bin/sh", "-c", "java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter"]
