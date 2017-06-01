@@ -64,9 +64,9 @@ var Util = {
         var addKillPanel = function() {
             if (Cookie.readCookie("showKill") === "") {
                 var left = ($(window).width() - 701) / 2,
-                top = ($(window).height() - 420) / 2;
+                top1 = ($(window).height() - 420) / 2;
                 $("body").append("<div style='display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6; top: 0px;z-index:11'></div>"
-                        + "<iframe style='left:" + left + "px;z-index:20;top: " + top + "px; position: fixed; border: 0px none; width: 701px; height: 420px;' src='" + latkeConfig.servePath + "/kill-browser'></iframe>");
+                        + "<iframe style='left:" + left + "px;z-index:20;top: " + top1 + "px; position: fixed; border: 0px none; width: 701px; height: 420px;' src='" + latkeConfig.servePath + "/kill-browser'></iframe>");
             }
         };
 

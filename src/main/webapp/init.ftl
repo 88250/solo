@@ -62,7 +62,7 @@
     var getUserInfo = function() {
         if (validate()) {
             $("#init").animate({
-                "top": -100
+                "top": -$('#user').height() + ($('.main h2').offset().top + 10)
             });
 
             $("#user").animate({
@@ -87,7 +87,7 @@
 
     var returnTo = function() {
         $("#init").animate({
-            "top": 190
+            "top": $('.main h2').offset().top + 42
         });
 
         $("#user").animate({
@@ -155,7 +155,7 @@
         }
 
         $('.main').css({
-            height: '336px',
+            height: '350px',
             'overflow': 'hidden'
         })
     })();

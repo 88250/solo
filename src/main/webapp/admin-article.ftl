@@ -58,9 +58,9 @@
         <div class="clear"></div>
     </div>
     <div class="right">
+        <button id="unSubmitArticle" class="none marginRight12" onclick="admin.article.unPublish();">${unPublishLabel}</button>
         <button class="marginRight12" id="saveArticle">${saveLabel}${draftListLabel}</button>
         <button id="submitArticle">${publishLabel}</button>
-        <button id="unSubmitArticle" class="none" onclick="admin.article.unPublish();">${unPublishLabel}</button>
     </div>
     <div class="clear"></div>
 </div>
