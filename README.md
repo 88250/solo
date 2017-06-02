@@ -43,8 +43,6 @@ Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将�
 
 如果有新版可用，升级过程也是非常简单的，只需要重新部署新版本就可以，不用运行额外的任何脚本。
 
-另外，如果你想让我们将 Solo 修改为 CMS，我们只能对你说：“出门[右转](https://github.com/WordPress/WordPress)”。 
-
 ## 安装
 
 JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)最新的 Solo 包解压，进入解压目录执行：
