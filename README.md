@@ -94,7 +94,7 @@ Solo 的诞生离不开以下开源项目：
 * [Highlight.js](https://github.com/isagalaev/highlight.js)：又一个代码高亮库
 * [emojify.js](https://github.com/Ranks/emojify.js)：前端 Emoji 处理库
 * [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
-* [pegdown](https://github.com/sirthias/pegdown)：Java Markdown 处理库
+* [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
 * [emoji-java](https://github.com/vdurmont/emoji-java)：Java Emoji 处理库
 * [FreeMarker](http://freemarker.org)：好用的 Java 模版引擎

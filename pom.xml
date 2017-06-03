@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.16.1.38, May 25, 2017
+    Version: 3.16.1.39, Jun 2, 2017
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -105,6 +105,7 @@
         <slf4j.version>1.7.5</slf4j.version>
         <jsoup.version>1.9.1</jsoup.version>
         <pegdown.version>1.6.0</pegdown.version>
+        <flexmark.version>0.19.5</flexmark.version>
         <qiniu.version>7.0.4.1</qiniu.version>
         <jetty.version>9.2.7.v20150116</jetty.version>
         <commons-cli.version>1.3.1</commons-cli.version>
@@ -179,6 +180,26 @@
             <groupId>org.pegdown</groupId>
             <artifactId>pegdown</artifactId>
             <version>${pegdown.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>${flexmark.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-pdf-converter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-youtrack-converter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-jira-converter</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
