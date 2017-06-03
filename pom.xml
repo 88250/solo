@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.16.1.39, Jun 2, 2017
+    Version: 3.16.1.39, Jun 3, 2017
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -104,7 +104,6 @@
         <servlet.version>3.1.0</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
         <jsoup.version>1.9.1</jsoup.version>
-        <pegdown.version>1.6.0</pegdown.version>
         <flexmark.version>0.19.5</flexmark.version>
         <qiniu.version>7.0.4.1</qiniu.version>
         <jetty.version>9.2.7.v20150116</jetty.version>
@@ -174,12 +173,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.pegdown</groupId>
-            <artifactId>pegdown</artifactId>
-            <version>${pegdown.version}</version>
         </dependency>
 
         <dependency>
