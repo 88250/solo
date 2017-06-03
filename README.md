@@ -43,8 +43,6 @@ Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将�
 
 如果有新版可用，升级过程也是非常简单的，只需要重新部署新版本就可以，不用运行额外的任何脚本。
 
-另外，如果你想让我们将 Solo 修改为 CMS，我们只能对你说：“出门[右转](https://github.com/WordPress/WordPress)”。 
-
 ## 安装
 
 JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)最新的 Solo 包解压，进入解压目录执行：
@@ -94,7 +92,7 @@ Solo 的诞生离不开以下开源项目：
 * [Highlight.js](https://github.com/isagalaev/highlight.js)：又一个代码高亮库
 * [emojify.js](https://github.com/Ranks/emojify.js)：前端 Emoji 处理库
 * [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
-* [pegdown](https://github.com/sirthias/pegdown)：Java Markdown 处理库
+* [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
 * [emoji-java](https://github.com/vdurmont/emoji-java)：Java Emoji 处理库
 * [FreeMarker](http://freemarker.org)：好用的 Java 模版引擎
