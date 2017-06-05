@@ -87,7 +87,6 @@ public class ArchiveDateQueryService {
 
         try {
             final JSONObject archiveDate = archiveDateRepository.getByArchiveDate(archiveDateString);
-
             if (null == archiveDate) {
                 return null;
             }
