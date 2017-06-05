@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4..16, Jun 5, 2017
+ * @version 1.4.3.16, Jun 6, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -283,7 +283,7 @@ public class ArticleProcessor {
      * @return page number
      */
     private static int getAuthorCurrentPageNum(final String requestURI, final String authorId) {
-        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/authors/" + authorId + "/").length());
+        final String pageNumString = StringUtils.substring(requestURI, (Latkes.getContextPath() + "/authors/" + authorId + "/").length());
 
         return Requests.getCurrentPageNum(pageNumString);
     }
