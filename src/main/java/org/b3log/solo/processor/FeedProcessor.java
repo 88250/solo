@@ -61,7 +61,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
- * @version 1.1.0.6, Sep 28, 2016
+ * @version 1.1.0.6, Jun 11, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -70,7 +70,7 @@ public class FeedProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FeedProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FeedProcessor.class);
 
     /**
      * Article query service.
@@ -172,7 +172,7 @@ public class FeedProcessor {
     }
 
     private Entry getEntry(final boolean hasMultipleUsers, String authorName, final JSONArray articles,
-            final boolean isFullContent, int i)
+                           final boolean isFullContent, int i)
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.getJSONObject(i);
         final Entry ret = new Entry();
@@ -220,7 +220,8 @@ public class FeedProcessor {
         final String queryString = request.getQueryString();
 
         if (Strings.isEmptyOrNull(queryString)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
             return;
         }
 
@@ -305,7 +306,7 @@ public class FeedProcessor {
     }
 
     private Entry getEntryForArticle(final List<JSONObject> articles, final boolean hasMultipleUsers, String authorName,
-            final boolean isFullContent, int i)
+                                     final boolean isFullContent, int i)
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.get(i);
         final Entry ret = new Entry();
@@ -409,7 +410,7 @@ public class FeedProcessor {
     }
 
     private Item getItem(final JSONArray articles, final boolean hasMultipleUsers, String authorName,
-            final boolean isFullContent, int i)
+                         final boolean isFullContent, int i)
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.getJSONObject(i);
         final Item ret = new Item();
@@ -459,7 +460,8 @@ public class FeedProcessor {
         final String queryString = request.getQueryString();
 
         if (Strings.isEmptyOrNull(queryString)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
             return;
         }
 
@@ -549,7 +551,7 @@ public class FeedProcessor {
     }
 
     private Item getItemForArticles(final List<JSONObject> articles, final boolean hasMultipleUsers, String authorName,
-            final boolean isFullContent, int i)
+                                    final boolean isFullContent, int i)
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.get(i);
         final Item ret = new Item();
