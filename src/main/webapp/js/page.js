@@ -377,7 +377,8 @@ $.extend(Page.prototype, {
             dataType: "script",
             cache: true,
             success: function () {
-                hljs.initHighlightingOnLoad();
+                hljs.initHighlighting.called = false;
+                hljs.initHighlighting();
             }
         });
 

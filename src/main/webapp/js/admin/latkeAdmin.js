@@ -1049,7 +1049,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.6.7, May 21, 2017
+ * @version 1.4.5.7, May 21, 2017
  */
 admin.article = {
     currentEditorType: '',

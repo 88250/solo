@@ -61,7 +61,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
- * @version 1.1.0.6, Sep 28, 2016
+ * @version 1.1.0.6, Jun 11, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -70,7 +70,7 @@ public class FeedProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FeedProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FeedProcessor.class);
 
     /**
      * Article query service.
@@ -172,7 +172,7 @@ public class FeedProcessor {
     }
 
     private Entry getEntry(final boolean hasMultipleUsers, String authorName, final JSONArray articles,
-            final boolean isFullContent, int i)
+                           final boolean isFullContent, int i)
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.getJSONObject(i);
         final Entry ret = new Entry();
@@ -211,27 +211,22 @@ public class FeedProcessor {
     @RequestProcessing(value = {"/tag-articles-feed.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void tagArticlesAtom(final HTTPRequestContext context) throws IOException {
         final AtomRenderer renderer = new AtomRenderer();
-
         context.setRenderer(renderer);
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String queryString = request.getQueryString();
+        final String tagId = request.getParameter(Keys.OBJECT_ID);
+        if (Strings.isEmptyOrNull(tagId)) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
-        if (Strings.isEmptyOrNull(queryString)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-
-        final String oIdMap = queryString.split("&")[0];
-        final String tagId = oIdMap.split("=")[1];
 
         final Feed feed = new Feed();
 
         try {
             final JSONObject tag = tagRepository.get(tagId);
-
             if (null == tag) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -305,7 +300,7 @@ public class FeedProcessor {
     }
 
     private Entry getEntryForArticle(final List<JSONObject> articles, final boolean hasMultipleUsers, String authorName,
-            final boolean isFullContent, int i)
+                                     final boolean isFullContent, int i)
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.get(i);
         final Entry ret = new Entry();
@@ -343,14 +338,12 @@ public class FeedProcessor {
     public void blogArticlesRSS(final HTTPRequestContext context) {
         final HttpServletResponse response = context.getResponse();
         final RssRenderer renderer = new RssRenderer();
-
         context.setRenderer(renderer);
 
         final Channel channel = new Channel();
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
-
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -409,7 +402,7 @@ public class FeedProcessor {
     }
 
     private Item getItem(final JSONArray articles, final boolean hasMultipleUsers, String authorName,
-            final boolean isFullContent, int i)
+                         final boolean isFullContent, int i)
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.getJSONObject(i);
         final Item ret = new Item();
@@ -453,24 +446,19 @@ public class FeedProcessor {
         final HttpServletRequest request = context.getRequest();
 
         final RssRenderer renderer = new RssRenderer();
-
         context.setRenderer(renderer);
 
-        final String queryString = request.getQueryString();
+        final String tagId = request.getParameter(Keys.OBJECT_ID);
+        if (Strings.isEmptyOrNull(tagId)) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
-        if (Strings.isEmptyOrNull(queryString)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
-
-        final String oIdMap = queryString.split("&")[0];
-        final String tagId = oIdMap.split("=")[1];
 
         final Channel channel = new Channel();
 
         try {
             final JSONObject tag = tagRepository.get(tagId);
-
             if (null == tag) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -549,7 +537,7 @@ public class FeedProcessor {
     }
 
     private Item getItemForArticles(final List<JSONObject> articles, final boolean hasMultipleUsers, String authorName,
-            final boolean isFullContent, int i)
+                                    final boolean isFullContent, int i)
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.get(i);
         final Item ret = new Item();
