@@ -15,11 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
@@ -28,16 +23,23 @@ import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * {@link FeedProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 4, 2016
+ * @version 1.0.0.1, Jun 13, 2017
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -103,7 +105,7 @@ public class FeedProcessorTestCase extends AbstractTestCase {
         when(request.getMethod()).thenReturn("GET");
 
         final JSONObject tag = getTagRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
-        when(request.getQueryString()).thenReturn("tag=" + tag.optString(Keys.OBJECT_ID));
+        when(request.getParameter(Keys.OBJECT_ID)).thenReturn(tag.optString(Keys.OBJECT_ID));
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
         dispatcherServlet.init();
@@ -158,7 +160,7 @@ public class FeedProcessorTestCase extends AbstractTestCase {
         when(request.getRequestURI()).thenReturn("/tag-articles-rss.do");
         when(request.getMethod()).thenReturn("GET");
         final JSONObject tag = getTagRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
-        when(request.getQueryString()).thenReturn("tag=" + tag.optString(Keys.OBJECT_ID));
+        when(request.getParameter(Keys.OBJECT_ID)).thenReturn(tag.optString(Keys.OBJECT_ID));
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
         dispatcherServlet.init();
