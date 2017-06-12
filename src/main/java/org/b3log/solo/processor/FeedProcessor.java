@@ -211,28 +211,22 @@ public class FeedProcessor {
     @RequestProcessing(value = {"/tag-articles-feed.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void tagArticlesAtom(final HTTPRequestContext context) throws IOException {
         final AtomRenderer renderer = new AtomRenderer();
-
         context.setRenderer(renderer);
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
-        final String queryString = request.getQueryString();
-
-        if (Strings.isEmptyOrNull(queryString)) {
+        final String tagId = request.getParameter(Keys.OBJECT_ID);
+        if (Strings.isEmptyOrNull(tagId)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
 
-        final String oIdMap = queryString.split("&")[0];
-        final String tagId = oIdMap.split("=")[1];
-
         final Feed feed = new Feed();
 
         try {
             final JSONObject tag = tagRepository.get(tagId);
-
             if (null == tag) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -344,14 +338,12 @@ public class FeedProcessor {
     public void blogArticlesRSS(final HTTPRequestContext context) {
         final HttpServletResponse response = context.getResponse();
         final RssRenderer renderer = new RssRenderer();
-
         context.setRenderer(renderer);
 
         final Channel channel = new Channel();
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
-
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -454,25 +446,19 @@ public class FeedProcessor {
         final HttpServletRequest request = context.getRequest();
 
         final RssRenderer renderer = new RssRenderer();
-
         context.setRenderer(renderer);
 
-        final String queryString = request.getQueryString();
-
-        if (Strings.isEmptyOrNull(queryString)) {
+        final String tagId = request.getParameter(Keys.OBJECT_ID);
+        if (Strings.isEmptyOrNull(tagId)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
 
-        final String oIdMap = queryString.split("&")[0];
-        final String tagId = oIdMap.split("=")[1];
-
         final Channel channel = new Channel();
 
         try {
             final JSONObject tag = tagRepository.get(tagId);
-
             if (null == tag) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
