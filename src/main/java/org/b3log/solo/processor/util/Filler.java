@@ -41,6 +41,8 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.service.*;
+import org.b3log.solo.util.Emotions;
+import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Thumbnails;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
@@ -58,7 +60,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.13.13, May 21, 2017
+ * @version 1.6.14.13, Jun 16, 2017
  * @since 0.3.1
  */
 @Service
@@ -545,21 +547,28 @@ public class Filler {
             final List<JSONObject> recentComments = commentRepository.getRecentComments(recentCommentDisplayCnt);
 
             for (final JSONObject comment : recentComments) {
-                final String content = comment.getString(Comment.COMMENT_CONTENT);
-                comment.put(Comment.COMMENT_CONTENT, content);
+                String commentContent = comment.optString(Comment.COMMENT_CONTENT);
+                commentContent = Emotions.convert(commentContent);
+                commentContent = Markdowns.toHTML(commentContent);
+                comment.put(Comment.COMMENT_CONTENT, commentContent);
+
                 comment.put(Comment.COMMENT_NAME, comment.getString(Comment.COMMENT_NAME));
                 comment.put(Comment.COMMENT_URL, comment.getString(Comment.COMMENT_URL));
 
                 comment.remove(Comment.COMMENT_EMAIL); // Erases email for security reason
+
+                final String email = comment.optString(Comment.COMMENT_EMAIL);
+                final String thumbnailURL = comment.optString(Comment.COMMENT_THUMBNAIL_URL);
+                if (Strings.isEmptyOrNull(thumbnailURL)) {
+                    comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.getGravatarURL(email, "128"));
+                }
             }
 
             dataModel.put(Common.RECENT_COMMENTS, recentComments);
 
-        } catch (final JSONException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fills recent comments failed", e);
-            throw new ServiceException(e);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Fills recent comments failed", e);
+
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
@@ -960,7 +969,6 @@ public class Filler {
      * Sets some extra properties into the specified article with the specified preference, performs content and
      * abstract editor processing.
      * <p>
-     * <p>
      * Article ext properties:
      * <pre>
      * {
@@ -978,8 +986,7 @@ public class Filler {
      * @throws ServiceException service exception
      * @see #setArticlesExProperties(HttpServletRequest, List, JSONObject)
      */
-    private void setArticleExProperties(final HttpServletRequest request,
-                                        final JSONObject article, final JSONObject preference) throws ServiceException {
+    private void setArticleExProperties(final HttpServletRequest request, final JSONObject article, final JSONObject preference) throws ServiceException {
         try {
             final JSONObject author = articleQueryService.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
