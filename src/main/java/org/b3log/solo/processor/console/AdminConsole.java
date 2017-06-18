@@ -70,7 +70,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.2.11, May 8, 2017
+ * @version 1.5.2.11, Jun 18, 2017
  * @since 0.4.1
  */
 @RequestProcessor
@@ -116,6 +116,16 @@ public class AdminConsole {
      */
     @Inject
     private EventManager eventManager;
+
+    /**
+     * Imports markdown files.
+     *
+     * @param context
+     * @param request
+     */
+    public void importMDs(final HTTPRequestContext context, final HttpServletRequest request) {
+        
+    }
 
     /**
      * Shows administrator index with the specified context.
