@@ -67,7 +67,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.13, Jun 8, 2017
+ * @version 1.0.0.14, Jun 25, 2017
  * @since 0.4.0
  */
 @RequestProcessor
@@ -152,11 +152,6 @@ public class MetaWeblogAPI {
      * Argument "publish" index.
      */
     private static final int INDEX_PUBLISH = 4;
-
-    /**
-     * Article abstract length.
-     */
-    private static final int ARTICLE_ABSTRACT_LENGTH = 500;
 
     /**
      * Preference query service.
@@ -375,14 +370,7 @@ public class MetaWeblogAPI {
                 final String content = member.getJSONObject("value").getString("string");
 
                 ret.put(Article.ARTICLE_CONTENT, content);
-
-                final String plainTextContent = Jsoup.parse(content).text();
-
-                if (plainTextContent.length() > ARTICLE_ABSTRACT_LENGTH) {
-                    ret.put(Article.ARTICLE_ABSTRACT, plainTextContent.substring(0, ARTICLE_ABSTRACT_LENGTH));
-                } else {
-                    ret.put(Article.ARTICLE_ABSTRACT, plainTextContent);
-                }
+                ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(Jsoup.parse(content).text()));
             } else if ("categories".equals(name)) {
                 final StringBuilder tagBuilder = new StringBuilder();
 
