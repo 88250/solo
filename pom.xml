@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.16.1.40, Jun 14, 2017
+    Version: 3.17.1.40, Jun 25, 2017
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -60,31 +60,6 @@
             <timezone>+8</timezone>
         </developer>
 
-        <developer>
-            <id>wmainlove@gmail.com</id>
-            <name>Liceng Yao</name>
-            <email>wmainlove@gmail.com</email>
-            <url>http://love.b3log.org</url>
-            <roles>
-                <role>Committer</role>
-            </roles>
-            <organization>B3log</organization>
-            <organizationUrl>http://b3log.org</organizationUrl>
-            <timezone>+8</timezone>
-        </developer>
-
-        <developer>
-            <id>dongxu.wang@acm.org</id>
-            <name>Dongxu Wang</name>
-            <email>dongxu.wang@acm.org</email>
-            <url>http://dx.b3log.org</url>
-            <roles>
-                <role>Committer</role>
-            </roles>
-            <organization>B3log</organization>
-            <organizationUrl>http://b3log.org</organizationUrl>
-            <timezone>+8</timezone>
-        </developer>
     </developers>
 
     <issueManagement>
@@ -110,6 +85,7 @@
         <commons-cli.version>1.3.1</commons-cli.version>
         <emoji-java.version>3.2.0</emoji-java.version>
         <jodd.version>3.6.6</jodd.version>
+        <snakeyaml.version>1.18</snakeyaml.version>
 
         <!-- maven plugin -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -229,6 +205,12 @@
             <groupId>org.jodd</groupId>
             <artifactId>jodd-http</artifactId>
             <version>${jodd.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
         </dependency>
 
         <dependency>
