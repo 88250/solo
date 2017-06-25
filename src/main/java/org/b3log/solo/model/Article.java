@@ -15,12 +15,15 @@
  */
 package org.b3log.solo.model;
 
+import org.b3log.solo.util.Markdowns;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 /**
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.6, Jan 8, 2013
+ * @version 1.1.1.6, Jun 25, 2017
  * @since 0.3.1
  */
 public final class Article {
@@ -137,13 +140,34 @@ public final class Article {
 
     /**
      * Key of article editor type.
-     * 
-     * @see Preference#EDITOR_TYPE
      */
     public static final String ARTICLE_EDITOR_TYPE = "articleEditorType";
+
+    //// constants
+
+    /**
+     * Article abstract length.
+     */
+    private static final int ARTICLE_ABSTRACT_LENGTH = 500;
 
     /**
      * Private default constructor.
      */
-    private Article() {}
+    private Article() {
+    }
+
+    /**
+     * Gets the abstract of the specified content.
+     *
+     * @param content the specified content
+     * @return the abstract
+     */
+    public static String getAbstract(final String content) {
+        final String plainTextContent = Jsoup.clean(Markdowns.toHTML(content), Whitelist.none());
+        if (plainTextContent.length() > ARTICLE_ABSTRACT_LENGTH) {
+            return plainTextContent.substring(0, ARTICLE_ABSTRACT_LENGTH) + "....";
+        }
+
+        return plainTextContent;
+    }
 }

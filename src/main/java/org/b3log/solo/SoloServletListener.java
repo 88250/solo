@@ -41,10 +41,7 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.impl.OptionRepositoryImpl;
-import org.b3log.solo.service.PreferenceMgmtService;
-import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.service.StatisticMgmtService;
-import org.b3log.solo.service.UpgradeService;
+import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
@@ -63,7 +60,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.21, May 25, 2017
+ * @version 1.9.3.22, Jun 25, 2017
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -126,6 +123,11 @@ public final class SoloServletListener extends AbstractServletListener {
         // Upgrade check (https://github.com/b3log/solo/issues/12040)
         final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
         upgradeService.upgrade();
+
+        // Import check (https://github.com/b3log/solo/issues/12293)
+        final ImportService importService = beanManager.getReference(ImportService.class);
+        importService.importMarkdowns();
+
         JdbcRepository.dispose();
 
         // Set default skin, loads from preference later
