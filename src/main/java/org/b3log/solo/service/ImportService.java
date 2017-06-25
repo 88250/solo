@@ -123,6 +123,8 @@ public class ImportService {
 
         final String content = StringUtils.substringAfter(fileContent, frontMatter);
         ret.put(Article.ARTICLE_CONTENT, content);
+
+        
         ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(content));
 
         final String date = (String) elems.get("date");
@@ -163,6 +165,12 @@ public class ImportService {
         }
         if (null == tags) {
             tags = map.get("categories");
+        }
+        if (null == tags) {
+            tags = map.get("keyword");
+        }
+        if (null == tags) {
+            tags = map.get("keywords");
         }
         if (null == tags) {
             ret.add(DEFAULT_TAG);
