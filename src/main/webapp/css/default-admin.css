@@ -680,17 +680,29 @@ a[class*=" icon-"]:hover {
 
 #top > .right a{
     color: #555;
-    line-height: 50px;
-    margin: 0 10px;
+    line-height: 32px;
+    margin: 8px 10px;
     border: 1px solid #f6f6f6;
     background-color: #f6f6f6;
     border-radius: 100px;
-    padding: 10px;
+    padding: 0 10px;
     text-decoration: none;
+    display: inline-block;
 }
 
 #top > .right a:hover {
     color: #333;
+}
+
+#top .avatar {
+    height: 25px;
+    width: 25px;
+    border-radius: 20px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    float: left;
+    margin: 3px 6px 0 0;
 }
 /* end top-nav */
 

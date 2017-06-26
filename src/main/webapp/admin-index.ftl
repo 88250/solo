@@ -20,7 +20,11 @@
                 </a>
                
                 <span class="right"> 
-                    <a href="${servePath}" title='${indexLabel}'>${indexLabel}</a><a href='javascript:admin.logout();' title='${logoutLabel}'>${logoutLabel}</a>
+                    <a href="${servePath}" title='${indexLabel}'>
+                        <div class="avatar" style="background-image: url(${gravatar})"></div>
+                        ${userName}
+                    </a>
+                    <a href='javascript:admin.logout();' title='${logoutLabel}'>${logoutLabel}</a>
                 </span>
             </div>
             <div id="tabs">
