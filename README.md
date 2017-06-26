@@ -35,6 +35,7 @@ Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将�
 * 友情链接管理
 * 多用户写作，团队博客
 * SQL 文件导出
+* [Hexo/Jekyll 导入](https://hacpai.com/article/1498490209748)
 * 插件系统
 * Atom / RSS 订阅
 * Sitemap
