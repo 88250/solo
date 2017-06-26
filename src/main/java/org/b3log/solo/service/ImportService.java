@@ -15,16 +15,13 @@ import org.yaml.snakeyaml.Yaml;
 
 import javax.servlet.ServletContext;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Import service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 25, 2017
+ * @version 1.0.0.1, Jun 26, 2017
  * @since 2.2.0
  */
 @Service
@@ -87,6 +84,7 @@ public class ImportService {
 
                 final String id = articleMgmtService.addArticle(request);
                 FileUtils.moveFile(md, new File(md.getPath() + "." + id));
+                LOGGER.info("Imported article [" + article.optString(Article.ARTICLE_TITLE) + "]");
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Import file [" + fileName + "] failed", e);
             }
@@ -100,8 +98,13 @@ public class ImportService {
         }
 
         final JSONObject ret = new JSONObject();
+        final Yaml yaml = new Yaml();
+        Map elems;
 
-        if (StringUtils.isBlank(frontMatter)) { // plain markdown
+        try {
+            elems = (Map) yaml.load(frontMatter);
+        } catch (final Exception e) {
+            // treat it as plain markdown
             ret.put(Article.ARTICLE_TITLE, StringUtils.substringBeforeLast(fileName, "."));
             ret.put(Article.ARTICLE_CONTENT, fileContent);
             ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(fileContent));
@@ -113,8 +116,6 @@ public class ImportService {
             return ret;
         }
 
-        final Yaml yaml = new Yaml();
-        final Map elems = (Map) yaml.load(frontMatter);
         String title = (String) elems.get("title");
         if (StringUtils.isBlank(title)) {
             title = StringUtils.substringBeforeLast(fileName, ".");
@@ -124,17 +125,10 @@ public class ImportService {
         final String content = StringUtils.substringAfter(fileContent, frontMatter);
         ret.put(Article.ARTICLE_CONTENT, content);
 
-        
         ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(content));
 
-        final String date = (String) elems.get("date");
-        if (StringUtils.isNotBlank(date)) {
-            try {
-                ret.put(Article.ARTICLE_CREATE_DATE, DateUtils.parseDate(date, new String[]{"yyyy/MM/dd HH:mm:ss"}));
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Parse date [" + date + "] failed", e);
-            }
-        }
+        final Date date = parseDate(elems);
+        ret.put(Article.ARTICLE_CREATE_DATE, date);
 
         final String permalink = (String) elems.get("permalink");
         if (StringUtils.isNotBlank(permalink)) {
@@ -154,6 +148,27 @@ public class ImportService {
         ret.put(Article.ARTICLE_VIEW_PWD, "");
 
         return ret;
+    }
+
+    private Date parseDate(final Map map) {
+        Object date = map.get("date");
+        if (null == date) {
+            return new Date();
+        }
+
+        if (date instanceof String) {
+            try {
+                return DateUtils.parseDate((String) date, new String[]{
+                        "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy HH:mm:ss",
+                        "dd-MM-yyyy HH:mm:ss", "yyyyMMdd HH:mm:ss"});
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Parse date [" + date + "] failed", e);
+            }
+        } else if (date instanceof Date) {
+            return (Date) date;
+        }
+
+        return new Date();
     }
 
     private List<String> parseTags(final Map map) {
