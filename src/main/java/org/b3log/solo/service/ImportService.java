@@ -8,6 +8,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
@@ -30,7 +31,7 @@ public class ImportService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UpgradeService.class);
+    private static final Logger LOGGER = Logger.getLogger(ImportService.class);
 
     /**
      * Default tag.
@@ -50,45 +51,66 @@ public class ImportService {
     private UserQueryService userQueryService;
 
     public void importMarkdowns() {
-        final ServletContext servletContext = SoloServletListener.getServletContext();
-        final String markdownsPath = servletContext.getRealPath("markdowns");
-        LOGGER.debug("Import directory [" + markdownsPath + "]");
+        new Thread(() -> {
+            final ServletContext servletContext = SoloServletListener.getServletContext();
+            final String markdownsPath = servletContext.getRealPath("markdowns");
+            LOGGER.debug("Import directory [" + markdownsPath + "]");
 
-        JSONObject admin;
-        try {
-            admin = userQueryService.getAdmin();
-        } catch (final Exception e) {
-            return;
-        }
-
-        if (null == admin) { // Not init yet
-            return;
-        }
-
-        final String adminEmail = admin.optString(User.USER_EMAIL);
-
-        final Collection<File> mds = FileUtils.listFiles(new File(markdownsPath), new String[]{"md"}, true);
-        for (final File md : mds) {
-            final String fileName = md.getName();
-            if (StringUtils.equalsIgnoreCase(fileName, "README.md")) {
-                continue;
-            }
-
+            JSONObject admin;
             try {
-                final String fileContent = FileUtils.readFileToString(md, "UTF-8");
-                final JSONObject article = parseArticle(fileName, fileContent);
-                article.put(Article.ARTICLE_AUTHOR_EMAIL, adminEmail);
-
-                final JSONObject request = new JSONObject();
-                request.put(Article.ARTICLE, article);
-
-                final String id = articleMgmtService.addArticle(request);
-                FileUtils.moveFile(md, new File(md.getPath() + "." + id));
-                LOGGER.info("Imported article [" + article.optString(Article.ARTICLE_TITLE) + "]");
+                admin = userQueryService.getAdmin();
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Import file [" + fileName + "] failed", e);
+                return;
             }
-        }
+
+            if (null == admin) { // Not init yet
+                return;
+            }
+
+            final String adminEmail = admin.optString(User.USER_EMAIL);
+
+            int succCnt = 0, failCnt = 0;
+            final Set<String> failSet = new TreeSet<>();
+            final Collection<File> mds = FileUtils.listFiles(new File(markdownsPath), new String[]{"md"}, true);
+            for (final File md : mds) {
+                final String fileName = md.getName();
+                if (StringUtils.equalsIgnoreCase(fileName, "README.md")) {
+                    continue;
+                }
+
+                try {
+                    final String fileContent = FileUtils.readFileToString(md, "UTF-8");
+                    final JSONObject article = parseArticle(fileName, fileContent);
+                    article.put(Article.ARTICLE_AUTHOR_EMAIL, adminEmail);
+
+                    final JSONObject request = new JSONObject();
+                    request.put(Article.ARTICLE, article);
+
+                    final String id = articleMgmtService.addArticle(request);
+                    FileUtils.moveFile(md, new File(md.getPath() + "." + id));
+                    LOGGER.info("Imported article [" + article.optString(Article.ARTICLE_TITLE) + "]");
+                    succCnt++;
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Import file [" + fileName + "] failed", e);
+
+                    failCnt++;
+                    failSet.add(fileName);
+                }
+            }
+
+            final StringBuilder logBuilder = new StringBuilder();
+            logBuilder.append("[").append(succCnt).append("] imported, [").append(failCnt).append("] failed");
+            if (failCnt > 0) {
+                logBuilder.append(": ").append(Strings.LINE_SEPARATOR);
+
+                for (final String fail : failSet) {
+                    logBuilder.append("    ").append(fail).append(Strings.LINE_SEPARATOR);
+                }
+            } else {
+                logBuilder.append(" :p");
+            }
+            LOGGER.info(logBuilder.toString());
+        }).start();
     }
 
     private JSONObject parseArticle(final String fileName, final String fileContent) {

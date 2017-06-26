@@ -43,14 +43,13 @@ import java.util.Date;
 
 /**
  * This listener is responsible for sending article to B3log Rhythm.
- *
  * <p>
  * The B3log Rhythm article update interface: http://rhythm.b3log.org/article (POST).
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.0.2.8, Nov 20, 2015
+ * @version 1.0.2.9, Jun 26, 2017
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -58,12 +57,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleSender.class.getName());
-
-    /**
-     * URL fetch service.
-     */
-    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+    private static final Logger LOGGER = Logger.getLogger(ArticleSender.class);
 
     /**
      * URL of adding article to Rhythm.
@@ -79,6 +73,11 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
         }
     }
 
+    /**
+     * URL fetch service.
+     */
+    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
     @Override
     public void action(final Event<JSONObject> event) throws EventException {
         final JSONObject data = event.getData();
@@ -87,7 +86,6 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 event.getType(), data, ArticleSender.class.getName());
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
-
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 LOGGER.log(Level.DEBUG, "Ignores post article[title={0}] to Rhythm", originalArticle.getString(Article.ARTICLE_TITLE));
 
@@ -98,7 +96,6 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-
             if (null == preference) {
                 throw new EventException("Not found preference");
             }
@@ -108,7 +105,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             }
 
             if (Latkes.getServePath().contains("localhost")) {
-                LOGGER.log(Level.INFO, "Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
+                LOGGER.log(Level.TRACE, "Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
                         originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE));
                 return;
             }
