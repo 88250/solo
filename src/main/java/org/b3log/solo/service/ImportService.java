@@ -160,9 +160,13 @@ public class ImportService {
             try {
                 return DateUtils.parseDate((String) date, new String[]{
                         "yyyy/MM/dd HH:mm:ss", "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy HH:mm:ss",
-                        "dd-MM-yyyy HH:mm:ss", "yyyyMMdd HH:mm:ss"});
+                        "dd-MM-yyyy HH:mm:ss", "yyyyMMdd HH:mm:ss",
+                        "yyyy/MM/dd HH:mm", "yyyy-MM-dd HH:mm", "dd/MM/yyyy HH:mm",
+                        "dd-MM-yyyy HH:mm", "yyyyMMdd HH:mm"});
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Parse date [" + date + "] failed", e);
+
+                throw new RuntimeException(e);
             }
         } else if (date instanceof Date) {
             return (Date) date;
@@ -193,13 +197,19 @@ public class ImportService {
             return ret;
         }
 
-        if (tags instanceof List) {
-            ret.addAll((List) tags);
-
-            return ret;
+        if (tags instanceof String) {
+            final String[] tagArr = ((String) tags).split(" ");
+            tags = Arrays.asList(tagArr);
         }
-
-        ret.add((String) tags);
+        final TreeSet tagSet = new TreeSet();
+        for (final String tag : (List<String>) tags) {
+            if (StringUtils.isBlank(tag)) {
+                tagSet.add(DEFAULT_TAG);
+            } else {
+                tagSet.add(tag);
+            }
+        }
+        ret.addAll(tagSet);
 
         return ret;
     }
