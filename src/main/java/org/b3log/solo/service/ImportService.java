@@ -65,6 +65,10 @@ public class ImportService {
     @Inject
     private UserQueryService userQueryService;
 
+    /**
+     * Imports markdowns files as articles. See <a href="https://hacpai.com/article/1498490209748">Solo 支持 Hexo/Jekyll 数据导入</a> for
+     * more details.
+     */
     public void importMarkdowns() {
         new Thread(() -> {
             final ServletContext servletContext = SoloServletListener.getServletContext();
@@ -162,7 +166,8 @@ public class ImportService {
         final String content = StringUtils.substringAfter(fileContent, frontMatter);
         ret.put(Article.ARTICLE_CONTENT, content);
 
-        ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(content));
+        final String abs = parseAbstract(elems, content);
+        ret.put(Article.ARTICLE_ABSTRACT, abs);
 
         final Date date = parseDate(elems);
         ret.put(Article.ARTICLE_CREATE_DATE, date);
@@ -185,6 +190,21 @@ public class ImportService {
         ret.put(Article.ARTICLE_VIEW_PWD, "");
 
         return ret;
+    }
+
+    private String parseAbstract(final Map map, final String content) {
+        String ret = (String) map.get("description");
+        if (null == ret) {
+            ret = (String) map.get("summary");
+        }
+        if (null == ret) {
+            ret = (String) map.get("abstract");
+        }
+        if (StringUtils.isNotBlank(ret)) {
+            return ret;
+        }
+
+        return Article.getAbstract(content);
     }
 
     private Date parseDate(final Map map) {
