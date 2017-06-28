@@ -401,6 +401,7 @@ public class PreferenceConsole {
             preferenceMgmtService.updatePreference(preference);
 
             final Cookie cookie = new Cookie(Skin.SKIN, preference.getString(Skin.SKIN_DIR_NAME));
+            cookie.setMaxAge(60 * 60); // 1 hour
             cookie.setPath("/");
             response.addCookie(cookie);
 
