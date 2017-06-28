@@ -59,7 +59,7 @@ import java.util.Set;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.3.6, May 7, 2017
+ * @version 1.2.4.6, Jun 28, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -97,8 +97,8 @@ public class IndexProcessor {
     /**
      * Shows index with the specified context.
      *
-     * @param context the specified context
-     * @param request the specified HTTP servlet request
+     * @param context  the specified context
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      */
     @RequestProcessing(value = {"/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
@@ -119,8 +119,8 @@ public class IndexProcessor {
                 if ("default".equals(specifiedSkin)) {
                     specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
 
-                    final Cookie cookie = new Cookie("skin", null);
-                    cookie.setMaxAge(0);
+                    final Cookie cookie = new Cookie(Skin.SKIN, null);
+                    cookie.setMaxAge(60 * 60); // 1 hour
                     cookie.setPath("/");
                     response.addCookie(cookie);
                 }
@@ -158,6 +158,7 @@ public class IndexProcessor {
             // https://github.com/b3log/solo/issues/12060
             if (!preference.optString(Skin.SKIN_DIR_NAME).equals(specifiedSkin) && !Requests.mobileRequest(request)) {
                 final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
+                cookie.setMaxAge(60 * 60); // 1 hour
                 cookie.setPath("/");
                 response.addCookie(cookie);
             }
@@ -175,8 +176,8 @@ public class IndexProcessor {
     /**
      * Shows kill browser page with the specified context.
      *
-     * @param context the specified context
-     * @param request the specified HTTP servlet request
+     * @param context  the specified context
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      */
     @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
@@ -212,8 +213,8 @@ public class IndexProcessor {
     /**
      * Show register page.
      *
-     * @param context the specified context
-     * @param request the specified HTTP servlet request
+     * @param context  the specified context
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      */
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
