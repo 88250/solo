@@ -37,7 +37,7 @@ import java.util.*;
  * Import service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jun 26, 2017
+ * @version 1.0.0.2, Jul 3, 2017
  * @since 2.2.0
  */
 @Service
@@ -91,6 +91,10 @@ public class ImportService {
             int succCnt = 0, failCnt = 0;
             final Set<String> failSet = new TreeSet<>();
             final Collection<File> mds = FileUtils.listFiles(new File(markdownsPath), new String[]{"md"}, true);
+            if (null == mds || mds.isEmpty()) {
+                return;
+            }
+
             for (final File md : mds) {
                 final String fileName = md.getName();
                 if (StringUtils.equalsIgnoreCase(fileName, "README.md")) {
@@ -115,6 +119,10 @@ public class ImportService {
                     failCnt++;
                     failSet.add(fileName);
                 }
+            }
+
+            if (0 == succCnt && 0 == failCnt) {
+                return;
             }
 
             final StringBuilder logBuilder = new StringBuilder();
