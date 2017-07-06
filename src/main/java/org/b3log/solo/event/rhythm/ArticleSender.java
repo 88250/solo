@@ -49,7 +49,7 @@ import java.util.Date;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.0.2.9, Jun 26, 2017
+ * @version 1.0.2.10, Jul 6, 2017
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -136,7 +136,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put("blogHost", Latkes.getServePath());
             requestJSONObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
             requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
-            requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());
+            requestJSONObject.put("clientRuntimeEnv", "LOCAL");
 
             httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
 

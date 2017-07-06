@@ -70,7 +70,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.11, Jun 18, 2017
+ * @version 1.5.2.12, Jul 6, 2017
  * @since 0.4.1
  */
 @RequestProcessor
@@ -118,16 +118,6 @@ public class AdminConsole {
     private EventManager eventManager;
 
     /**
-     * Imports markdown files.
-     *
-     * @param context
-     * @param request
-     */
-    public void importMDs(final HTTPRequestContext context, final HttpServletRequest request) {
-        
-    }
-
-    /**
      * Shows administrator index with the specified context.
      *
      * @param request the specified request
@@ -149,11 +139,9 @@ public class AdminConsole {
 
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         final String userName = currentUser.optString(User.USER_NAME);
-
         dataModel.put(User.USER_NAME, userName);
 
         final String roleName = currentUser.optString(User.USER_ROLE);
-
         dataModel.put(User.USER_ROLE, roleName);
 
         final String email = currentUser.optString(User.USER_EMAIL);
@@ -287,7 +275,6 @@ public class AdminConsole {
 
         final StringBuilder timeZoneIdOptions = new StringBuilder();
         final String[] availableIDs = TimeZone.getAvailableIDs();
-
         for (int i = 0; i < availableIDs.length; i++) {
             final String id = availableIDs[i];
             String option;
@@ -323,13 +310,13 @@ public class AdminConsole {
             return;
         }
 
-        if (!Latkes.runsWithJDBCDatabase()) {
+        final RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
+
+        if (RuntimeDatabase.H2 != runtimeDatabase && RuntimeDatabase.MYSQL != runtimeDatabase) {
             context.renderJSON().renderMsg("Just support MySQL/H2 export now");
 
             return;
         }
-
-        final RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
 
         final String dbUser = Latkes.getLocalProperty("jdbc.username");
         final String dbPwd = Latkes.getLocalProperty("jdbc.password");

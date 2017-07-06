@@ -43,9 +43,9 @@ import java.net.URL;
 
 /**
  * This listener is responsible for sending comment to B3log Symphony.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Nov 20, 2015
+ * @version 1.0.0.5, Jul 6, 2017
  * @since 0.5.5
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -53,7 +53,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentSender.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentSender.class);
 
     /**
      * URL fetch service.
@@ -87,7 +87,6 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-
             if (null == preference) {
                 throw new EventException("Not found preference");
             }
@@ -113,7 +112,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
 
             requestJSONObject.put(Comment.COMMENT, comment);
             requestJSONObject.put("clientVersion", SoloServletListener.VERSION);
-            requestJSONObject.put("clientRuntimeEnv", Latkes.getRuntimeEnv().name());
+            requestJSONObject.put("clientRuntimeEnv", "LOCAL");
             requestJSONObject.put("clientName", "B3log Solo");
             requestJSONObject.put("clientHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
             requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
@@ -131,7 +130,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
 
     /**
      * Gets the event type {@linkplain EventTypes#ADD_COMMENT_TO_ARTICLE}.
-     * 
+     *
      * @return event type
      */
     @Override
