@@ -233,8 +233,8 @@ public class AdminConsole {
         final Map<String, String> langs = langPropsService.getAll(locale);
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        dataModel.put("supportExport", RuntimeDatabase.MYSQL == Latkes.getRuntimeDatabase()
-                || RuntimeDatabase.H2 == Latkes.getRuntimeDatabase());
+        dataModel.put("supportExport", Latkes.RuntimeDatabase.MYSQL == Latkes.getRuntimeDatabase()
+                || Latkes.RuntimeDatabase.H2 == Latkes.getRuntimeDatabase());
         dataModel.putAll(langs);
         Keys.fillRuntime(dataModel);
         dataModel.put(Option.ID_C_LOCALE_STRING, locale.toString());
@@ -310,9 +310,8 @@ public class AdminConsole {
             return;
         }
 
-        final RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
-
-        if (RuntimeDatabase.H2 != runtimeDatabase && RuntimeDatabase.MYSQL != runtimeDatabase) {
+        final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
+        if (Latkes.RuntimeDatabase.H2 != runtimeDatabase && Latkes.RuntimeDatabase.MYSQL != runtimeDatabase) {
             context.renderJSON().renderMsg("Just support MySQL/H2 export now");
 
             return;
@@ -323,7 +322,7 @@ public class AdminConsole {
         final String dbURL = Latkes.getLocalProperty("jdbc.URL");
         String sql; // exported SQL script
 
-        if (RuntimeDatabase.MYSQL == runtimeDatabase) {
+        if (Latkes.RuntimeDatabase.MYSQL == runtimeDatabase) {
             String db = StringUtils.substringAfterLast(dbURL, "/");
             db = StringUtils.substringBefore(db, "?");
 
@@ -339,7 +338,7 @@ public class AdminConsole {
 
                 return;
             }
-        } else if (RuntimeDatabase.H2 == runtimeDatabase) {
+        } else if (Latkes.RuntimeDatabase.H2 == runtimeDatabase) {
             final Connection connection = Connections.getConnection();
             final Statement statement = connection.createStatement();
 
