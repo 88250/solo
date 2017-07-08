@@ -204,7 +204,7 @@ public class InitService {
 
         LOGGER.log(Level.INFO, "Solo is running with database [{0}], creates all tables", Latkes.getRuntimeDatabase());
 
-        if (RuntimeDatabase.H2 == Latkes.getRuntimeDatabase()) {
+        if (Latkes.RuntimeDatabase.H2 == Latkes.getRuntimeDatabase()) {
             String dataDir = Latkes.getLocalProperty("jdbc.URL");
             dataDir = dataDir.replace("~", System.getProperty("user.home"));
             LOGGER.log(Level.INFO, "YOUR DATA will be stored in directory [" + dataDir + "], "

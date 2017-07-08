@@ -77,7 +77,7 @@ public class ArticleGenerator {
     @RequestProcessing(value = "/dev/articles/gen/*", method = HTTPRequestMethod.GET)
     public void genArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
         throws IOException {
-        if (RuntimeMode.DEVELOPMENT != Latkes.getRuntimeMode()) {
+        if (Latkes.RuntimeMode.DEVELOPMENT != Latkes.getRuntimeMode()) {
             LOGGER.log(Level.WARN, "Article generation just for development mode, " + "current runtime mode is [{0}]",
                 Latkes.getRuntimeMode());
             response.sendRedirect(Latkes.getServePath());

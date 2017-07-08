@@ -138,7 +138,7 @@ public final class Starter {
         Latkes.setStaticServerPort(staticServerPort);
         String runtimeMode = commandLine.getOptionValue("runtime_mode");
         if (null != runtimeMode) {
-            Latkes.setRuntimeMode(RuntimeMode.valueOf(runtimeMode));
+            Latkes.setRuntimeMode(Latkes.RuntimeMode.valueOf(runtimeMode));
         }
         Latkes.setScanPath("org.b3log.solo"); // For Latke IoC 
 
