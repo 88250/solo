@@ -17,7 +17,6 @@ package org.b3log.solo;
 
 import org.apache.commons.cli.*;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeMode;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
@@ -32,14 +31,14 @@ import java.net.URI;
 
 /**
  * Solo with embedded Jetty, <a href="https://github.com/b3log/solo/issues/12037">standalone mode</a>.
- *
+ * <p>
  * <ul>
  * <li>Windows: java -cp WEB-INF/lib/*;WEB-INF/classes org.b3log.solo.Starter</li>
  * <li>Unix-like: java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.8, May 4, 2017
+ * @version 1.1.0.9, Jul 9, 2017
  * @since 1.2.0
  */
 public final class Starter {
@@ -50,6 +49,12 @@ public final class Starter {
         } catch (final Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Starter() {
     }
 
     /**
@@ -140,7 +145,7 @@ public final class Starter {
         if (null != runtimeMode) {
             Latkes.setRuntimeMode(Latkes.RuntimeMode.valueOf(runtimeMode));
         }
-        Latkes.setScanPath("org.b3log.solo"); // For Latke IoC 
+        Latkes.setScanPath("org.b3log.solo"); // For Latke IoC
 
         logger.info("Standalone mode, see [https://github.com/b3log/solo/issues/12037] for more details.");
         Latkes.initRuntimeEnv();
@@ -181,11 +186,5 @@ public final class Starter {
         }
 
         server.join();
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Starter() {
     }
 }

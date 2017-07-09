@@ -19,7 +19,6 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.RuntimeDatabase;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -62,7 +61,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.12, Jul 6, 2017
+ * @version 1.5.2.13, Jul 9, 2017
  * @since 0.4.0
  */
 @Service
@@ -72,6 +71,16 @@ public class InitService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InitService.class);
+
+    /**
+     * Maximum count of initialization.
+     */
+    private static final int MAX_RETRIES_CNT = 3;
+
+    /**
+     * Initialized time zone id.
+     */
+    private static final String INIT_TIME_ZONE_ID = "Asia/Shanghai";
 
     /**
      * Statistic repository.
@@ -132,16 +141,6 @@ public class InitService {
      */
     @Inject
     private LinkRepository linkRepository;
-
-    /**
-     * Maximum count of initialization.
-     */
-    private static final int MAX_RETRIES_CNT = 3;
-
-    /**
-     * Initialized time zone id.
-     */
-    private static final String INIT_TIME_ZONE_ID = "Asia/Shanghai";
 
     /**
      * Language service.
