@@ -51,7 +51,7 @@ import java.sql.Statement;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.13, May 25, 2017
+ * @version 1.2.0.14, Jul 10, 2017
  * @since 1.2.0
  */
 @Service
@@ -75,7 +75,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "2.0.0";
+    private static final String FROM_VER = "2.1.0";
 
     /**
      * New version.
@@ -174,10 +174,6 @@ public class UpgradeService {
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
-
-            final JSONObject editorTypeOpt = optionRepository.get(Option.ID_C_EDITOR_TYPE);
-            editorTypeOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_EDITOR_TYPE);
-            optionRepository.update(Option.ID_C_EDITOR_TYPE, editorTypeOpt);
 
             transaction.commit();
 
