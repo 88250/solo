@@ -42,7 +42,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.wanglay.com">Lei Wang</a>
- * @version 1.2.1.7, May 6, 2016
+ * @version 1.2.2.7, Jul 11, 2017
  * @since 0.3.1
  */
 public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObject> {
@@ -50,7 +50,7 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleCommentReplyNotifier.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleCommentReplyNotifier.class);
 
     /**
      * Mail service.
@@ -88,14 +88,17 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
         try {
             final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
             final JSONObject originalComment = commentRepository.get(originalCommentId);
-            final String originalCommentEmail = originalComment.getString(Comment.COMMENT_EMAIL);
 
+            final String originalCommentEmail = originalComment.getString(Comment.COMMENT_EMAIL);
             if (originalCommentEmail.equalsIgnoreCase(commentEmail)) {
                 return;
             }
 
-            final JSONObject preference = preferenceQueryService.getPreference();
+            if (!Strings.isEmail(originalCommentEmail)) {
+                return;
+            }
 
+            final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
                 throw new EventException("Not found preference");
             }
@@ -145,10 +148,11 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
             message.setHtmlBody(mailBody);
             LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
                     mailSubject, mailBody, originalCommentEmail);
-            mailService.send(message);
 
+            mailService.send(message);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
+
             throw new EventException("Reply notifier error!");
         }
     }
