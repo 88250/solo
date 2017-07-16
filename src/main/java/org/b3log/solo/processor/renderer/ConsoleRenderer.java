@@ -31,23 +31,23 @@ import java.io.IOException;
  * rendering.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Nov 2, 2016
+ * @version 1.0.1.3, Jul 16, 2017
  * @since 0.4.1
  */
 public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ConsoleRenderer.class.getName());
 
     /**
      * FreeMarker configuration.
      */
     public static final Configuration TEMPLATE_CFG;
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ConsoleRenderer.class);
+
     static {
-        TEMPLATE_CFG = new Configuration();
+        TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_0);
         TEMPLATE_CFG.setDefaultEncoding("UTF-8");
 
         final ServletContext servletContext = SoloServletListener.getServletContext();
