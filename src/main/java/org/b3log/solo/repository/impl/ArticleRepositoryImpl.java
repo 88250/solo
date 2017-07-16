@@ -35,7 +35,7 @@ import java.util.List;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.10, Jun 13, 2015
+ * @version 1.1.3.11, Jul 16, 2017
  * @since 0.3.1
  */
 @Repository
@@ -44,7 +44,7 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleRepositoryImpl.class);
 
     /**
      * Random range.
@@ -61,16 +61,21 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
     @Override
     public JSONObject getByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
             throws RepositoryException {
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, authorEmail), new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(
-                1);
+        final Query query = new Query().
+                setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, authorEmail),
+                        new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
+                addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).
+                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
 
         return get(query);
     }
 
     @Override
     public JSONObject getByPermalink(final String permalink) throws RepositoryException {
-        final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE_PERMALINK, FilterOperator.EQUAL, permalink)).setPageCount(
-                1);
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Article.ARTICLE_PERMALINK, FilterOperator.EQUAL, permalink)).
+                setPageCount(1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -100,8 +105,11 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
 
     @Override
     public List<JSONObject> getMostCommentArticles(final int num) throws RepositoryException {
-        final Query query = new Query().addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).setCurrentPageNum(1).setPageSize(num).setPageCount(
-                1);
+        final Query query = new Query().
+                addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).
+                addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
+                setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
+                setCurrentPageNum(1).setPageSize(num).setPageCount(1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -113,11 +121,10 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
     public List<JSONObject> getMostViewCountArticles(final int num) throws RepositoryException {
         final Query query = new Query();
 
-        query.addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
-        query.setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
-        query.setCurrentPageNum(1);
-        query.setPageSize(num);
-        query.setPageCount(1);
+        query.addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).
+                addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
+                setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
+                setCurrentPageNum(1).setPageSize(num).setPageCount(1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -130,16 +137,18 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
         final JSONObject currentArticle = get(articleId);
         final Date currentArticleCreateDate = (Date) currentArticle.opt(Article.ARTICLE_CREATE_DATE);
 
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_CREATE_DATE,
-                FilterOperator.LESS_THAN, currentArticleCreateDate), new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
-                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(1).setPageCount(1).
+        final Query query = new Query().
+                setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Article.ARTICLE_CREATE_DATE, FilterOperator.LESS_THAN, currentArticleCreateDate),
+                        new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
+                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING).
+                setCurrentPageNum(1).setPageSize(1).setPageCount(1).
                 addProjection(Article.ARTICLE_TITLE, String.class).
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_ABSTRACT, String.class);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
         if (1 != array.length()) {
             return null;
         }
@@ -163,17 +172,18 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
         final JSONObject currentArticle = get(articleId);
         final Date currentArticleCreateDate = (Date) currentArticle.opt(Article.ARTICLE_CREATE_DATE);
 
-        final Query query = new Query().setFilter(CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_CREATE_DATE,
-                FilterOperator.GREATER_THAN, currentArticleCreateDate),
-                new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
-                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(1).setPageCount(1).
+        final Query query = new Query().
+                setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Article.ARTICLE_CREATE_DATE, FilterOperator.GREATER_THAN, currentArticleCreateDate),
+                        new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
+                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.ASCENDING).
+                setCurrentPageNum(1).setPageSize(1).setPageCount(1).
                 addProjection(Article.ARTICLE_TITLE, String.class).
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
                 addProjection(Article.ARTICLE_ABSTRACT, String.class);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
         if (1 != array.length()) {
             return null;
         }
@@ -195,7 +205,6 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
     @Override
     public boolean isPublished(final String articleId) throws RepositoryException {
         final JSONObject article = get(articleId);
-
         if (null == article) {
             return false;
         }
@@ -205,7 +214,7 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
 
     @Override
     public List<JSONObject> getRandomly(final int fetchSize) throws RepositoryException {
-        final List<JSONObject> ret = new ArrayList<JSONObject>();
+        final List<JSONObject> ret = new ArrayList();
 
         if (0 == count()) {
             return ret;
@@ -220,29 +229,24 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
         query.setFilter(
                 CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
                         new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                        new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)));
-        query.setCurrentPageNum(1);
-        query.setPageSize(fetchSize);
-        query.setPageCount(1);
+                        new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
+                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
 
         final JSONObject result1 = get(query);
         final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
 
         final List<JSONObject> list1 = CollectionUtils.jsonArrayToList(array1);
-
         ret.addAll(list1);
 
         final int reminingSize = fetchSize - array1.length();
-
         if (0 != reminingSize) { // Query for remains
             query = new Query();
             query.setFilter(
-                    CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
+                    CompositeFilterOperator.and(
+                            new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                            new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)));
-            query.setCurrentPageNum(1);
-            query.setPageSize(reminingSize);
-            query.setPageCount(1);
+                            new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
+                    setCurrentPageNum(1).setPageSize(reminingSize).setPageCount(1);
 
             final JSONObject result2 = get(query);
             final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
