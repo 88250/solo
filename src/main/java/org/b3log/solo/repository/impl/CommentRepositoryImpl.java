@@ -23,6 +23,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.cache.CommentCache;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.ArticleRepository;
@@ -38,7 +39,7 @@ import java.util.List;
  * Comment repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Oct 18, 2011
+ * @version 1.0.0.9, Jul 16, 2017
  * @since 0.3.1
  */
 @Repository
@@ -47,7 +48,7 @@ public class CommentRepositoryImpl extends AbstractRepository implements Comment
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentRepositoryImpl.class);
 
     /**
      * Article repository.
@@ -56,10 +57,48 @@ public class CommentRepositoryImpl extends AbstractRepository implements Comment
     private ArticleRepository articleRepository;
 
     /**
+     * Comment cache.
+     */
+    @Inject
+    private CommentCache commentCache;
+
+    /**
      * Public constructor.
      */
     public CommentRepositoryImpl() {
         super(Comment.COMMENT);
+    }
+
+    @Override
+    public void remove(final String id) throws RepositoryException {
+        super.remove(id);
+
+        commentCache.removeComment(id);
+    }
+
+    @Override
+    public JSONObject get(final String id) throws RepositoryException {
+        JSONObject ret = commentCache.getComment(id);
+        if (null != ret) {
+            return ret;
+        }
+
+        ret = super.get(id);
+        if (null == ret) {
+            return null;
+        }
+
+        commentCache.putComment(ret);
+
+        return ret;
+    }
+
+    @Override
+    public void update(final String id, final JSONObject comment) throws RepositoryException {
+        super.update(id, comment);
+
+        comment.put(Keys.OBJECT_ID, id);
+        commentCache.putComment(comment);
     }
 
     @Override
@@ -79,12 +118,13 @@ public class CommentRepositoryImpl extends AbstractRepository implements Comment
 
     @Override
     public List<JSONObject> getComments(final String onId, final int currentPageNum, final int pageSize)
-        throws RepositoryException {
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setFilter(new PropertyFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId)).setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(
-            1);
+            throws RepositoryException {
+        final Query query = new Query().
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setFilter(new PropertyFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId)).
+                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
 
         final JSONObject result = get(query);
-
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
         return CollectionUtils.jsonArrayToList(array);
@@ -93,12 +133,12 @@ public class CommentRepositoryImpl extends AbstractRepository implements Comment
     @Override
     @SuppressWarnings("unchecked")
     public List<JSONObject> getRecentComments(final int num) throws RepositoryException {
-        final Query query = new Query().addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(num).setPageCount(
-            1);
+        final Query query = new Query().
+                addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
+                setCurrentPageNum(1).setPageSize(num).setPageCount(1);
 
         List<JSONObject> ret;
         final JSONObject result = get(query);
-
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
 
         ret = CollectionUtils.jsonArrayToList(array);
@@ -137,7 +177,7 @@ public class CommentRepositoryImpl extends AbstractRepository implements Comment
 
     /**
      * Sets the article repository with the specified article repository.
-     * 
+     *
      * @param articleRepository the specified article repository
      */
     public void setArticleRepository(final ArticleRepository articleRepository) {
