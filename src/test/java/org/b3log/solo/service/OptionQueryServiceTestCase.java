@@ -51,7 +51,7 @@ public class OptionQueryServiceTestCase extends AbstractTestCase {
         JSONObject option = new JSONObject();
         option.put(Keys.OBJECT_ID, Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
         option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_BROADCAST);
-        option.put(Option.OPTION_VALUE, 0L);
+        option.put(Option.OPTION_VALUE, 5L);
 
         final String id = optionMgmtService.addOrUpdateOption(option);
         Assert.assertNotNull(id);
@@ -63,6 +63,6 @@ public class OptionQueryServiceTestCase extends AbstractTestCase {
 
         options = optionQueryService.getOptions(Option.CATEGORY_C_BROADCAST);
         Assert.assertNotNull(options);
-        Assert.assertEquals(options.optLong(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME), 0L);
+        Assert.assertEquals(options.optLong(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME), 5L);
     }
 }

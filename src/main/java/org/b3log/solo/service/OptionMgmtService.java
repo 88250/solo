@@ -45,10 +45,10 @@ public class OptionMgmtService {
 
     /**
      * Adds or updates the specified option.
-     * 
+     *
      * @param option the specified option
      * @return option id
-     * @throws ServiceException 
+     * @throws ServiceException
      */
     public String addOrUpdateOption(final JSONObject option) throws ServiceException {
         final Transaction transaction = optionRepository.beginTransaction();
@@ -84,8 +84,8 @@ public class OptionMgmtService {
     }
 
     /**
-     * Removes the option specified by the given option id. 
-     * 
+     * Removes the option specified by the given option id.
+     *
      * @param optionId the given option id
      * @throws ServiceException service exception
      */
@@ -107,7 +107,7 @@ public class OptionMgmtService {
 
     /**
      * Sets the option repository with the specified option repository.
-     * 
+     *
      * @param optionRepository the specified option repository
      */
     public void setOptionRepository(final OptionRepository optionRepository) {
