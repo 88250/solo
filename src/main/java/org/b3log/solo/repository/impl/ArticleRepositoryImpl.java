@@ -16,11 +16,13 @@
 package org.b3log.solo.repository.impl;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.cache.ArticleCache;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
 import org.json.JSONArray;
@@ -52,10 +54,48 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
     private static final double RANDOM_RANGE = 0.1D;
 
     /**
+     * Article cache.
+     */
+    @Inject
+    private ArticleCache articleCache;
+
+    /**
      * Public constructor.
      */
     public ArticleRepositoryImpl() {
         super(Article.ARTICLE);
+    }
+
+    @Override
+    public void remove(final String id) throws RepositoryException {
+        super.remove(id);
+
+        articleCache.removeArticle(id);
+    }
+
+    @Override
+    public JSONObject get(final String id) throws RepositoryException {
+        JSONObject ret = articleCache.getArticle(id);
+        if (null != ret) {
+            return ret;
+        }
+
+        ret = super.get(id);
+        if (null == ret) {
+            return null;
+        }
+
+        articleCache.putArticle(ret);
+
+        return ret;
+    }
+
+    @Override
+    public void update(final String id, final JSONObject article) throws RepositoryException {
+        super.update(id, article);
+
+        article.put(Keys.OBJECT_ID, id);
+        articleCache.putArticle(article);
     }
 
     @Override
@@ -79,7 +119,6 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
         if (0 == array.length()) {
             return null;
         }
@@ -89,13 +128,10 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
 
     @Override
     public List<JSONObject> getRecentArticles(final int fetchSize) throws RepositoryException {
-        final Query query = new Query();
-
-        query.setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
-        query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
-        query.setCurrentPageNum(1);
-        query.setPageSize(fetchSize);
-        query.setPageCount(1);
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
+                addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
+                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -119,9 +155,8 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
 
     @Override
     public List<JSONObject> getMostViewCountArticles(final int num) throws RepositoryException {
-        final Query query = new Query();
-
-        query.addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).
+        final Query query = new Query().
+                addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).
                 addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
                 setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
                 setCurrentPageNum(1).setPageSize(num).setPageCount(1);
@@ -224,10 +259,9 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
 
         LOGGER.log(Level.TRACE, "Random mid[{0}]", mid);
 
-        Query query = new Query();
-
-        query.setFilter(
-                CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
+        Query query = new Query().
+                setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
                         new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
                         new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
                 setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
