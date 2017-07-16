@@ -20,10 +20,15 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.5.5.1, Apr 8, 2017
+ * @version 1.5.5.2, Jul 16, 2017
  * @since 0.3.1
  */
 public final class Common {
+
+    /**
+     * Key of data.
+     */
+    public static final String DATA = "data";
 
     /**
      * Key of direction.
