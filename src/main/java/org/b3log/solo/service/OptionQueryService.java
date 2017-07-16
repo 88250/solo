@@ -48,7 +48,7 @@ public class OptionQueryService {
 
     /**
      * Gets an option with the specified option id.
-     * 
+     *
      * @param optionId the specified option id
      * @return an option, returns {@code null} if not found
      * @throws ServiceException service exception
@@ -63,11 +63,10 @@ public class OptionQueryService {
 
     /**
      * Gets options with the specified category.
-     * 
      * <p>
      * All options with the specified category will be merged into one json object as the return value.
      * </p>
-     * 
+     *
      * @param category the specified category
      * @return all options with the specified category, for example,
      * <pre>
@@ -79,14 +78,12 @@ public class OptionQueryService {
      * @throws ServiceException service exception
      */
     public JSONObject getOptions(final String category) throws ServiceException {
-        final Query query = new Query();
-
-        query.setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, category));
+        final Query query = new Query().
+                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, category));
 
         try {
             final JSONObject result = optionRepository.get(query);
             final JSONArray options = result.getJSONArray(Keys.RESULTS);
-
             if (0 == options.length()) {
                 return null;
             }
@@ -107,7 +104,7 @@ public class OptionQueryService {
 
     /**
      * Sets the option repository with the specified option repository.
-     * 
+     *
      * @param optionRepository the specified option repository
      */
     public void setOptionRepository(final OptionRepository optionRepository) {
