@@ -16,6 +16,7 @@
 package org.b3log.solo;
 
 import org.b3log.latke.Latkes;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.ioc.config.Discoverer;
@@ -35,7 +36,7 @@ import java.util.Locale;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.9, Apr 12, 2017
+ * @version 2.3.0.9, Jul 16, 2017
  * @see #beforeClass()
  */
 public abstract class AbstractTestCase {
@@ -47,12 +48,10 @@ public abstract class AbstractTestCase {
 
     /**
      * Before class.
-     * <p>
      * <ol>
      * <li>Initializes Latke runtime</li>
      * <li>Instantiates repositories</li>
      * </ol>
-     * </p>
      *
      * @throws Exception exception
      */
@@ -70,6 +69,19 @@ public abstract class AbstractTestCase {
         connection.close();
 
         JdbcRepositories.initAllTables();
+    }
+
+    /**
+     * After class.
+     * <ul>
+     * <li>Clears all caches</li>
+     * </ul>
+     *
+     * @throws Exception
+     */
+    @BeforeClass
+    public void afterClass() throws Exception {
+        CacheFactory.clearAll();
     }
 
     /**
