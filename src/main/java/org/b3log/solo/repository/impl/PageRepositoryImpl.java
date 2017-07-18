@@ -15,11 +15,12 @@
  */
 package org.b3log.solo.repository.impl;
 
-
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.cache.PageCache;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.PageRepository;
 import org.json.JSONArray;
@@ -27,22 +28,59 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-
 /**
  * Page repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Dec 31, 2011
+ * @version 1.1.0.9, Jul 18, 2017
  * @since 0.3.1
  */
 @Repository
 public class PageRepositoryImpl extends AbstractRepository implements PageRepository {
 
     /**
+     * Page cache.
+     */
+    @Inject
+    private PageCache pageCache;
+
+    /**
      * Public constructor.
      */
     public PageRepositoryImpl() {
         super(Page.PAGE);
+    }
+
+    @Override
+    public void remove(final String id) throws RepositoryException {
+        super.remove(id);
+
+        pageCache.removePage(id);
+    }
+
+    @Override
+    public JSONObject get(final String id) throws RepositoryException {
+        JSONObject ret = pageCache.getPage(id);
+        if (null != ret) {
+            return ret;
+        }
+
+        ret = super.get(id);
+        if (null == ret) {
+            return null;
+        }
+
+        pageCache.putPage(ret);
+
+        return ret;
+    }
+
+    @Override
+    public void update(final String id, final JSONObject page) throws RepositoryException {
+        super.update(id, page);
+
+        page.put(Keys.OBJECT_ID, id);
+        pageCache.putPage(page);
     }
 
     @Override
@@ -80,7 +118,7 @@ public class PageRepositoryImpl extends AbstractRepository implements PageReposi
         }
 
         final Query query = new Query().setFilter(new PropertyFilter(Page.PAGE_ORDER, FilterOperator.LESS_THAN, page.optInt(Page.PAGE_ORDER))).addSort(Page.PAGE_ORDER, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(1).setPageCount(
-            1);
+                1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -101,7 +139,7 @@ public class PageRepositoryImpl extends AbstractRepository implements PageReposi
         }
 
         final Query query = new Query().setFilter(new PropertyFilter(Page.PAGE_ORDER, FilterOperator.GREATER_THAN, page.optInt(Page.PAGE_ORDER))).addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(1).setPageCount(
-            1);
+                1);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
