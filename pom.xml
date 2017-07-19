@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.17.1.43, Jul 10, 2017
+    Version: 3.17.2.43, Jul 20, 2017
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -16,7 +16,8 @@
     <name>Solo</name>
     <version>2.2.0</version>
     <description>
-        A blogging system written in Java, feel free to create your or your team own blog. 一个用 Java 实现的博客系统，为你或你的团队创建个博客吧！
+        A blogging system written in Java, feel free to create your or your team own blog. 一个用 Java
+        实现的博客系统，为你或你的团队创建个博客吧！
     </description>
     <inceptionYear>2010</inceptionYear>
 
@@ -239,9 +240,6 @@
                 <version>${coveralls-maven-plugin.version}</version>
                 <configuration>
                     <repoToken>PmmgdTzVuYQAsiOHNZ67bNDuqwDRSKvlm</repoToken>
-                    <formats>
-                        <format>xml</format>
-                    </formats>
                 </configuration>
             </plugin>
 
