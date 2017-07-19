@@ -77,6 +77,6 @@ public final class MarkdownsTestCase {
         markdownText = "The first: &#39; <br/> The second: &AElig;";
         html = Markdowns.toHTML(markdownText);
 
-        Assert.assertEquals(html, "<p>The first: ' <br/> The second: ?</p>");
+        Assert.assertEquals(html, "<p>The first: ' <br/> The second: Æ</p>\n");
     }
 }

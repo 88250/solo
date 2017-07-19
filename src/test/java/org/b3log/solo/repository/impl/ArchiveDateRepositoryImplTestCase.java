@@ -15,22 +15,22 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.List;
 import junit.framework.Assert;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 /**
  * {@link ArchiveDateRepositoryImpl} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 18, 2013
+ * @version 1.0.0.2, Jul 20, 2017
  */
 @Test(suiteName = "repository")
 public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
@@ -70,6 +70,7 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
 
         final JSONObject archiveDate = archiveDateRepository.getByArchiveDate("2011/12");
         Assert.assertNotNull(archiveDate);
-        System.out.println(archiveDate.toString(SoloServletListener.JSON_PRINT_INDENT_FACTOR));
+        Assert.assertEquals(archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT), 1);
+        //System.out.println(archiveDate.toString(SoloServletListener.JSON_PRINT_INDENT_FACTOR));
     }
 }

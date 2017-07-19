@@ -47,7 +47,7 @@ public class OptionMgmtServiceTestCase extends AbstractTestCase {
         option.put(Option.OPTION_VALUE, 0L);
 
         final String id = optionMgmtService.addOrUpdateOption(option);
-        System.out.println(id);
+        //System.out.println(id);
         Assert.assertNotNull(id);
 
         final JSONObject opt = getOptionQueryService().getOptionById(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
@@ -69,7 +69,7 @@ public class OptionMgmtServiceTestCase extends AbstractTestCase {
         option.put(Option.OPTION_VALUE, 0L);
 
         final String id = optionMgmtService.addOrUpdateOption(option); // Add
-        System.out.println(id);
+        //System.out.println(id);
         Assert.assertNotNull(id);
 
         option = new JSONObject();

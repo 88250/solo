@@ -15,17 +15,11 @@
  */
 package org.b3log.solo.util;
 
-import java.io.FileInputStream;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.List;
-import java.util.Locale;
-import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
-import org.testng.annotations.Test;
 import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import java.util.Locale;
 
 /**
  * {@link org.b3log.solo.util.Thumbnails} test case.
@@ -38,7 +32,7 @@ public final class ThumbnailsTestCase {
 
     /**
      * Test method for {@linkplain Thumbnails#getGravatarURL(java.lang.String, java.lang.String)}.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -48,6 +42,6 @@ public final class ThumbnailsTestCase {
 
         final String gravatarURL = Thumbnails.getGravatarURL("test@b3log.org", "128");
 
-        System.out.println(gravatarURL);
+        Assert.assertEquals(gravatarURL, Thumbnails.GRAVATAR + "bd7e4673cf7fa4b4777353008c86e093?s=128");
     }
 }
