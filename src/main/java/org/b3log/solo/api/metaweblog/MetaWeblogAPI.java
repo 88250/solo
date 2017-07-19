@@ -67,7 +67,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.14, Jun 25, 2017
+ * @version 1.0.0.15, Jul 19, 2017
  * @since 0.4.0
  */
 @RequestProcessor
@@ -358,7 +358,7 @@ public class MetaWeblogAPI {
                 try {
                     date = (Date) DateFormatUtils.ISO_DATETIME_FORMAT.parseObject(dateString);
                 } catch (final ParseException e) {
-                    LOGGER.log(Level.WARN,
+                    LOGGER.log(Level.DEBUG,
                             "Parses article create date failed with ISO8601, retry to parse with "
                                     + "pattern[yyyy-MM-dd'T'HH:mm:ss, yyyyMMdd'T'HH:mm:ss'Z']");
                     date = DateUtils.parseDate(dateString, new String[]{"yyyyMMdd'T'HH:mm:ss", "yyyyMMdd'T'HH:mm:ss'Z'"});

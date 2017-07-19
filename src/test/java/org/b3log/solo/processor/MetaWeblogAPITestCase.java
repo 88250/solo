@@ -15,19 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Date;
-import javax.servlet.ReadListener;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.model.User;
@@ -38,10 +25,27 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import javax.servlet.ReadListener;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Date;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 /**
  * {@link org.b3log.solo.api.metaweblog.MetaWeblogAPI} test case.
  *
  * @author yugt
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.0.0.1, Jul 19, 2017
+ * @since 1.7.0
  */
 @Test(suiteName = "api")
 public class MetaWeblogAPITestCase extends AbstractTestCase {
@@ -158,7 +162,7 @@ public class MetaWeblogAPITestCase extends AbstractTestCase {
         dispatcherServlet.service(request, response);
 
         final String content = stringWriter.toString();
-        System.out.println("xxxxxcontent:" + content);
+        // System.out.println("xxxxxcontent:" + content);
         Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));
     }
 
@@ -188,8 +192,8 @@ public class MetaWeblogAPITestCase extends AbstractTestCase {
 //        
 //        
 //    }
-    class Struct {
 
+    class Struct {
         String title = "title";
         String link = "link";
         String description = "description";
