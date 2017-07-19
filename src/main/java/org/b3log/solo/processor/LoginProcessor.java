@@ -48,6 +48,7 @@ import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
+import org.b3log.solo.util.Mails;
 import org.b3log.solo.util.Randoms;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,13 +62,11 @@ import java.util.Map;
 
 /**
  * Login/logout processor.
- * 
- * <p>Initializes administrator</p>.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.1.7, Nov 20, 2015
+ * @version 1.1.1.8, Jul 20, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -76,7 +75,7 @@ public class LoginProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LoginProcessor.class);
 
     /**
      * User query service.
@@ -147,7 +146,6 @@ public class LoginProcessor {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
-
         if (Strings.isEmptyOrNull(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         }
@@ -167,8 +165,7 @@ public class LoginProcessor {
 
     /**
      * Logins.
-     * 
-     * <p> 
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -185,10 +182,8 @@ public class LoginProcessor {
         final HttpServletRequest request = context.getRequest();
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
-
         renderer.setJSONObject(jsonObject);
 
         try {
@@ -208,7 +203,6 @@ public class LoginProcessor {
             LOGGER.log(Level.INFO, "Login[email={0}]", userEmail);
 
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
-
             if (null == user) {
                 LOGGER.log(Level.WARN, "Not found user[email={0}]", userEmail);
                 return;
@@ -280,7 +274,6 @@ public class LoginProcessor {
 
     /**
      * Resets forgotten password.
-     * 
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -298,10 +291,8 @@ public class LoginProcessor {
         final HttpServletRequest request = context.getRequest();
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
-
         renderer.setJSONObject(jsonObject);
 
         try {
@@ -319,10 +310,10 @@ public class LoginProcessor {
             LOGGER.log(Level.INFO, "Login[email={0}]", userEmail);
 
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
-
             if (null == user) {
                 LOGGER.log(Level.WARN, "Not found user[email={0}]", userEmail);
                 jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
+
                 return;
             }
 
@@ -334,7 +325,6 @@ public class LoginProcessor {
 
     /**
      * Resets forgotten password.
-     *
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -403,7 +393,7 @@ public class LoginProcessor {
         final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
         final String mailSubject = langPropsService.get("resetPwdMailSubject");
         final String mailBody = langPropsService.get("resetPwdMailBody") + " " + Latkes.getServePath() + "/forgot?token=" + token
-            + "&login=" + userEmail;
+                + "&login=" + userEmail;
         final MailService.Message message = new MailService.Message();
 
         final JSONObject option = new JSONObject();
@@ -422,7 +412,11 @@ public class LoginProcessor {
         message.setSubject(mailSubject);
         message.setHtmlBody(mailBody);
 
-        mailService.send(message);
+        if (Mails.isConfigured()) {
+            mailService.send(message);
+        } else {
+            LOGGER.log(Level.INFO, "Do not send mail caused by not configure mail.properties");
+        }
 
         jsonObject.put("succeed", true);
         jsonObject.put("to", Latkes.getServePath() + "/login?from=forgot");
@@ -442,7 +436,7 @@ public class LoginProcessor {
      * @throws ServiceException the ServiceException
      */
     private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL,
-        final HttpServletRequest request) throws JSONException, ServiceException {
+                            final HttpServletRequest request) throws JSONException, ServiceException {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
 
         renderer.setTemplateName(pageTemplate);

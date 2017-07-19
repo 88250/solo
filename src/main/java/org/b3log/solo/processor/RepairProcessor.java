@@ -47,6 +47,7 @@ import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.service.StatisticQueryService;
+import org.b3log.solo.util.Mails;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -59,12 +60,11 @@ import java.util.concurrent.ExecutionException;
 
 /**
  * Provides patches on some special issues.
- *
  * <p>
  * See AuthFilter filter configurations in web.xml for authentication.</p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.11, Nov 20, 2015
+ * @version 1.2.0.12, Jul 20, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -73,7 +73,12 @@ public class RepairProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(RepairProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RepairProcessor.class);
+
+    /**
+     * Mail service.
+     */
+    private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
 
     /**
      * Bean manager.
@@ -92,11 +97,6 @@ public class RepairProcessor {
      */
     @Inject
     private PreferenceMgmtService preferenceMgmtService;
-
-    /**
-     * Mail service.
-     */
-    private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
 
     /**
      * Tag repository.
@@ -185,15 +185,12 @@ public class RepairProcessor {
 
     /**
      * Restores the statistics.
-     *
-     * <p>
      * <ul>
      * <li>Uses the value of {@link Statistic#STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT} for
      * {@link Statistic#STATISTIC_BLOG_COMMENT_COUNT}</li>
      * <li>Uses the value of {@link Statistic#STATISTIC_PUBLISHED_ARTICLE_COUNT} for
      * {@link Statistic#STATISTIC_BLOG_ARTICLE_COUNT}</li>
      * </ul>
-     * </p>
      *
      * @param context the specified context
      */
@@ -238,7 +235,6 @@ public class RepairProcessor {
     @RequestProcessing(value = "/fix/restore-signs.do", method = HTTPRequestMethod.GET)
     public void restoreSigns(final HTTPRequestContext context) {
         final TextHTMLRenderer renderer = new TextHTMLRenderer();
-
         context.setRenderer(renderer);
 
         try {
@@ -249,18 +245,23 @@ public class RepairProcessor {
 
             preferenceMgmtService.updatePreference(preference);
 
-            // Sends the sample signs to developer
-            final Message msg = new MailService.Message();
+            renderer.setContent("Restores signs succeeded.");
 
+            // Sends the sample signs to developer
+            if (!Mails.isConfigured()) {
+                return;
+            }
+
+            final Message msg = new MailService.Message();
             msg.setFrom(preference.getString(Option.ID_C_ADMIN_EMAIL));
             msg.addRecipient("DL88250@gmail.com");
             msg.setSubject("Restore signs");
             msg.setHtmlBody(originalSigns + "<p>Admin email: " + preference.getString(Option.ID_C_ADMIN_EMAIL) + "</p>");
 
             MAIL_SVC.send(msg);
-            renderer.setContent("Restores signs succeeded.");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
+
             renderer.setContent("Restores signs failed, error msg[" + e.getMessage() + "]");
         }
     }
@@ -422,7 +423,7 @@ public class RepairProcessor {
      * Removes data in the specified repository.
      *
      * @param repository the specified repository
-     * @throws ExecutionException execution exception
+     * @throws ExecutionException   execution exception
      * @throws InterruptedException interrupted exception
      */
     private void remove(final Repository repository) throws ExecutionException, InterruptedException {

@@ -15,12 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -34,9 +28,18 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
-import static org.mockito.Mockito.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Map;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * {@link ArticleProcessor} test case.
@@ -409,6 +412,6 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         dispatcherServlet.service(request, response);
 
         final String content = stringWriter.toString();
-        // Assert.assertTrue(StringUtils.contains(content, "Solo 示例"));
+        Assert.assertTrue(StringUtils.contains(content, "Solo 示例"));
     }
 }

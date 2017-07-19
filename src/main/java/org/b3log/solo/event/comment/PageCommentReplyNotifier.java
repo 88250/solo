@@ -35,13 +35,14 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.util.Mails;
 import org.json.JSONObject;
 
 /**
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.3, Jul 11, 2017
+ * @version 1.0.2.4, Jul 20, 2017
  * @since 0.3.1
  */
 public final class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> {
@@ -68,6 +69,10 @@ public final class PageCommentReplyNotifier extends AbstractEventListener<JSONOb
 
         if (Strings.isEmptyOrNull(originalCommentId)) {
             LOGGER.log(Level.DEBUG, "This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
+            return;
+        }
+
+        if (!Mails.isConfigured()) {
             return;
         }
 

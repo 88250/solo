@@ -43,10 +43,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Emotions;
-import org.b3log.solo.util.Markdowns;
-import org.b3log.solo.util.Thumbnails;
+import org.b3log.solo.util.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -61,7 +58,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.11, Jul 19, 2017
+ * @version 1.3.2.12, Jul 20, 2017
  * @since 0.3.5
  */
 @Service
@@ -182,6 +179,10 @@ public class CommentMgmtService {
                                      final JSONObject comment,
                                      final JSONObject originalComment,
                                      final JSONObject preference) throws IOException, JSONException {
+        if (!Mails.isConfigured()) {
+            return;
+        }
+
         final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
         final String commentId = comment.getString(Keys.OBJECT_ID);
         final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
@@ -202,7 +203,6 @@ public class CommentMgmtService {
 
         if (null != originalComment && comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
             final String originalEmail = originalComment.getString(Comment.COMMENT_EMAIL);
-
             if (originalEmail.equalsIgnoreCase(adminEmail)) {
                 LOGGER.log(Level.DEBUG, "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
                         commentId);
@@ -213,7 +213,6 @@ public class CommentMgmtService {
         final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
         boolean isArticle = true;
         String title = articleOrPage.optString(Article.ARTICLE_TITLE);
-
         if (Strings.isEmptyOrNull(title)) {
             title = articleOrPage.getString(Page.PAGE_TITLE);
             isArticle = false;
@@ -221,7 +220,6 @@ public class CommentMgmtService {
 
         final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
         final MailService.Message message = new MailService.Message();
-
         message.setFrom(adminEmail);
         message.addRecipient(adminEmail);
         String mailSubject;

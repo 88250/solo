@@ -35,6 +35,7 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.util.Mails;
 import org.json.JSONObject;
 
 /**
@@ -42,7 +43,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.wanglay.com">Lei Wang</a>
- * @version 1.2.2.7, Jul 11, 2017
+ * @version 1.2.2.8, Jul 20, 2017
  * @since 0.3.1
  */
 public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObject> {
@@ -77,6 +78,10 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
         if (Latkes.getServePath().contains("localhost")) {
             LOGGER.log(Level.INFO, "Solo runs on local server, so should not send mail");
 
+            return;
+        }
+
+        if (!Mails.isConfigured()) {
             return;
         }
 
