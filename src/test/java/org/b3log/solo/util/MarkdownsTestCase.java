@@ -52,7 +52,7 @@ public final class MarkdownsTestCase {
 
         final URL testFile = MarkdownsTestCase.class.getResource("/markdown_syntax.text");
         final String path = URLDecoder.decode(testFile.getPath(), "UTF-8");
-        System.out.println(path);
+        //System.out.println(path);
 
         final StringBuilder markdownTextBuilder = new StringBuilder();
         @SuppressWarnings("unchecked") final List<String> lines = IOUtils.readLines(new FileInputStream(path));
@@ -70,13 +70,13 @@ public final class MarkdownsTestCase {
 
         //System.out.println(html);
 
-        System.out.println("Stopwatch: ");
-        System.out.println(Stopwatchs.getTimingStat());
+        //System.out.println("Stopwatch: ");
+        //System.out.println(Stopwatchs.getTimingStat());
 
         // HTML entity test
         markdownText = "The first: &#39; <br/> The second: &AElig;";
         html = Markdowns.toHTML(markdownText);
 
-        System.out.println(html);
+        Assert.assertEquals(html, "<p>The first: ' <br/> The second: ?</p>");
     }
 }
