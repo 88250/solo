@@ -15,26 +15,32 @@
  */
 package org.b3log.solo.repository.impl;
 
-
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.solo.cache.UserCache;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 
 /**
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Nov 10, 2011
+ * @version 1.1.0.8, Jul 22, 2017
  * @since 0.3.1
  */
 @Repository
 public class UserRepositoryImpl extends AbstractRepository implements UserRepository {
+
+    /**
+     * User cache.
+     */
+    @Inject
+    private UserCache userCache;
 
     /**
      * Public constructor.
@@ -44,19 +50,57 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
     }
 
     @Override
-    public JSONObject getByEmail(final String email) throws RepositoryException {
-        final Query query = new Query().setPageCount(1);
+    public void remove(final String id) throws RepositoryException {
+        super.remove(id);
 
-        query.setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
+        userCache.removeUser(id);
+    }
+
+    @Override
+    public JSONObject get(final String id) throws RepositoryException {
+        JSONObject ret = userCache.getUser(id);
+        if (null != ret) {
+            return ret;
+        }
+
+        ret = super.get(id);
+        if (null == ret) {
+            return null;
+        }
+
+        userCache.putUser(ret);
+
+        return ret;
+    }
+
+    @Override
+    public void update(final String id, final JSONObject user) throws RepositoryException {
+        super.update(id, user);
+
+        user.put(Keys.OBJECT_ID, id);
+        userCache.putUser(user);
+    }
+
+    @Override
+    public JSONObject getByEmail(final String email) throws RepositoryException {
+        JSONObject ret = userCache.getUserByEmail(email);
+        if (null != ret) {
+            return ret;
+        }
+
+        final Query query = new Query().setPageCount(1).
+                setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
         if (0 == array.length()) {
             return null;
         }
 
-        return array.optJSONObject(0);
+        ret = array.optJSONObject(0);
+        userCache.putUser(ret);
+
+        return ret;
     }
 
     @Override
@@ -64,7 +108,6 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
         final Query query = new Query().setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)).setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
         if (0 == array.length()) {
             return null;
         }
@@ -75,7 +118,6 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
     @Override
     public boolean isAdminEmail(final String email) throws RepositoryException {
         final JSONObject user = getByEmail(email);
-
         if (null == user) {
             return false;
         }
