@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.repository.FilterOperator;
@@ -29,12 +28,11 @@ import org.b3log.solo.repository.OptionRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-
 /**
  * Option query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 16, 2013
+ * @version 1.0.0.1, Jul 22, 2017
  * @since 0.6.0
  */
 @Service
@@ -93,7 +91,7 @@ public class OptionQueryService {
             for (int i = 0; i < options.length(); i++) {
                 final JSONObject option = options.getJSONObject(i);
 
-                ret.put(option.getString(Keys.OBJECT_ID), option.getString(Option.OPTION_VALUE));
+                ret.put(option.getString(Keys.OBJECT_ID), option.opt(Option.OPTION_VALUE));
             }
 
             return ret;
