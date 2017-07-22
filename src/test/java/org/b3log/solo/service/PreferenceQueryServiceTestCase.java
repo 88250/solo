@@ -58,8 +58,7 @@ public class PreferenceQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getPreference() throws Exception {
-        final PreferenceQueryService preferenceQueryService
-                = getPreferenceQueryService();
+        final PreferenceQueryService preferenceQueryService = getPreferenceQueryService();
         final JSONObject preference = preferenceQueryService.getPreference();
 
         Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), Option.DefaultPreference.DEFAULT_BLOG_TITLE);
@@ -72,10 +71,8 @@ public class PreferenceQueryServiceTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getReplyNotificationTemplate() throws Exception {
-        final PreferenceQueryService preferenceQueryService
-                = getPreferenceQueryService();
-        final JSONObject replyNotificationTemplate
-                = preferenceQueryService.getReplyNotificationTemplate();
+        final PreferenceQueryService preferenceQueryService = getPreferenceQueryService();
+        final JSONObject replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
 
         Assert.assertEquals(replyNotificationTemplate.toString(), Option.DefaultPreference.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
     }
