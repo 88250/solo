@@ -15,8 +15,11 @@
  */
 package org.b3log.solo.cache;
 
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 
 /**
@@ -33,7 +36,7 @@ public class PreferenceCache {
     /**
      * Preference cache.
      */
-    private JSONObject preference;
+    private Cache cache = CacheFactory.getCache(Option.CATEGORY_C_PREFERENCE);
 
     /**
      * Get the preference.
@@ -41,7 +44,7 @@ public class PreferenceCache {
      * @return preference
      */
     public JSONObject getPreference() {
-        return preference;
+        return cache.get(Option.CATEGORY_C_PREFERENCE);
     }
 
     /**
@@ -50,13 +53,13 @@ public class PreferenceCache {
      * @param preference the specified preference
      */
     public void putPreference(final JSONObject preference) {
-        this.preference = preference;
+        cache.put(Option.CATEGORY_C_PREFERENCE, preference);
     }
 
     /**
      * Clears the preference.
      */
     public void clear() {
-        preference = null;
+        cache.removeAll();
     }
 }

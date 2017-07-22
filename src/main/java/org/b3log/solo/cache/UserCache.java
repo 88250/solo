@@ -16,14 +16,13 @@
 package org.b3log.solo.cache;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.model.User;
 import org.b3log.solo.util.JSONs;
 import org.json.JSONObject;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * User cache.
@@ -39,12 +38,12 @@ public class UserCache {
     /**
      * Id, User.
      */
-    private static final Map<String, JSONObject> ID_CACHE = new ConcurrentHashMap<>();
+    private static final Cache ID_CACHE = CacheFactory.getCache(User.USERS + "ID");
 
     /**
      * Email, User.
      */
-    private static final Map<String, JSONObject> EMAIL_CACHE = new ConcurrentHashMap<>();
+    private static final Cache EMAIL_CACHE = CacheFactory.getCache(User.USERS + "Email");
 
     /**
      * Gets a user by the specified user id.
