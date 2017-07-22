@@ -21,6 +21,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.solo.cache.PreferenceCache;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
 import org.json.JSONObject;
@@ -51,6 +52,12 @@ public class PreferenceQueryService {
      */
     @Inject
     private OptionQueryService optionQueryService;
+
+    /**
+     * Preference cache.
+     */
+    @Inject
+    private PreferenceCache preferenceCache;
 
     /**
      * Gets the reply notification template.
@@ -86,7 +93,13 @@ public class PreferenceQueryService {
                 return null;
             }
 
-            return optionQueryService.getOptions(Option.CATEGORY_C_PREFERENCE);
+            JSONObject ret = preferenceCache.getPreference();
+            if (null == ret) {
+                ret = optionQueryService.getOptions(Option.CATEGORY_C_PREFERENCE);
+                preferenceCache.putPreference(ret);
+            }
+
+            return ret;
         } catch (final RepositoryException e) {
             return null;
         }

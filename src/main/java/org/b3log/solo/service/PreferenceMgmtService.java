@@ -27,6 +27,7 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.cache.PreferenceCache;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
@@ -48,7 +49,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.12, May 2, 2017
+ * @version 1.3.2.13, Jul 22, 2017
  * @since 0.4.0
  */
 @Service
@@ -76,6 +77,12 @@ public class PreferenceMgmtService {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Preference cache.
+     */
+    @Inject
+    private PreferenceCache preferenceCache;
 
     /**
      * Loads skins for the specified preference and initializes templates loading.
@@ -172,6 +179,8 @@ public class PreferenceMgmtService {
             optionRepository.update(Option.ID_C_REPLY_NOTI_TPL_SUBJECT, subjectOpt);
 
             transaction.commit();
+
+            preferenceCache.clear();
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -374,6 +383,8 @@ public class PreferenceMgmtService {
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
             transaction.commit();
+
+            preferenceCache.clear();
 
             final ServletContext servletContext = SoloServletListener.getServletContext();
 
