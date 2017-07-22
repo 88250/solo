@@ -51,7 +51,7 @@ public class ArticleCache {
      * @return article, returns {@code null} if not found
      */
     public JSONObject getArticle(final String id) {
-        final JSONObject article = (JSONObject) ARTICLE_CACHE.get(id);
+        final JSONObject article = ARTICLE_CACHE.get(id);
         if (null == article) {
             return null;
         }
