@@ -738,6 +738,7 @@ a[class*=" icon-"]:hover {
     line-height: 18px;
     height: 18px;
     transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 #tabs a:hover,
