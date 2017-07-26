@@ -51,7 +51,12 @@ public class ErrorProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class);
+
+    /**
+     * User service.
+     */
+    private static UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Filler.
@@ -72,15 +77,10 @@ public class ErrorProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * User service.
-     */
-    private static UserService userService = UserServiceFactory.getUserService();
-
-    /**
      * Shows the user template page.
      *
-     * @param context the specified context
-     * @param request the specified HTTP servlet request
+     * @param context  the specified context
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      * @throws IOException io exception
      */

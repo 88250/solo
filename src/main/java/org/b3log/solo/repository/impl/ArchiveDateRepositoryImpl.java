@@ -44,7 +44,7 @@ public class ArchiveDateRepositoryImpl extends AbstractRepository implements Arc
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArchiveDateRepositoryImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArchiveDateRepositoryImpl.class);
 
     /**
      * Public constructor.

@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor.console;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -41,7 +40,6 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * Plugin console request processing.
  *
@@ -55,7 +53,7 @@ public class PageConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageConsole.class);
 
     /**
      * User query service.
@@ -83,7 +81,6 @@ public class PageConsole {
 
     /**
      * Updates a page by the specified request.
-     * 
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -94,36 +91,34 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request, for example,
-     * <pre>
-     * {
-     *     "page": {
-     *         "oId": "",
-     *         "pageTitle": "",
-     *         "pageContent": "",
-     *         "pageOrder": int,
-     *         "pageCommentCount": int,
-     *         "pagePermalink": "",
-     *         "pageCommentable": boolean,
-     *         "pageType": "",
-     *         "pageOpenTarget": ""
-     *     }
-     * }, see {@link org.b3log.solo.model.Page} for more details
-     * </pre>
+     * @param request  the specified http servlet request, for example,
+     *                 {
+     *                 "page": {
+     *                 "oId": "",
+     *                 "pageTitle": "",
+     *                 "pageContent": "",
+     *                 "pageOrder": int,
+     *                 "pageCommentCount": int,
+     *                 "pagePermalink": "",
+     *                 "pageCommentable": boolean,
+     *                 "pageType": "",
+     *                 "pageOpenTarget": ""
+     *                 }
+     *                 }, see {@link org.b3log.solo.model.Page} for more details
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.PUT)
     public void updatePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -149,7 +144,6 @@ public class PageConsole {
 
     /**
      * Removes a page by the specified request.
-     * 
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -160,25 +154,23 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.DELETE)
     public void removePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
-
         final JSONObject jsonObject = new JSONObject();
-
         renderer.setJSONObject(jsonObject);
 
         try {
@@ -199,7 +191,6 @@ public class PageConsole {
 
     /**
      * Adds a page with the specified request.
-     * 
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -210,34 +201,32 @@ public class PageConsole {
      * }
      * </pre>
      * </p>
-     * 
-     * @param context the specified http request context
-     * @param request the specified http servlet request, for example,
-     * <pre>
-     * {
-     *     "page": {
-     *         "pageTitle": "",
-     *         "pageContent": "",
-     *         "pagePermalink": "" // optional,
-     *         "pageCommentable": boolean,
-     *         "pageType": "",
-     *         "pageOpenTarget": ""
-     *     }
-     * }, see {@link org.b3log.solo.model.Page} for more details
-     * </pre>
+     *
+     * @param context  the specified http request context
+     * @param request  the specified http servlet request, for example,
+     *                 {
+     *                 "page": {
+     *                 "pageTitle": "",
+     *                 "pageContent": "",
+     *                 "pagePermalink": "" // optional,
+     *                 "pageCommentable": boolean,
+     *                 "pageType": "",
+     *                 "pageOpenTarget": ""
+     *                 }
+     *                 }, see {@link org.b3log.solo.model.Page} for more details
      * @param response the specified http servlet response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.POST)
     public void addPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -264,7 +253,6 @@ public class PageConsole {
 
     /**
      * Changes a page order by the specified page id and direction.
-     * 
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -275,27 +263,25 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request, for example,
-     * <pre>
-     * {
-     *     "oId": "",
-     *     "direction": "" // "up"/"down"
-     * }
-     * </pre>
+     * @param request  the specified http servlet request, for example,
+     *                 {
+     *                 "oId": "",
+     *                 "direction": "" // "up"/"down"
+     *                 }
      * @param response the specified http servlet response
-     * @param context the specified http request context
-     * @throws Exception exception 
+     * @param context  the specified http request context
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/order/", method = HTTPRequestMethod.PUT)
     public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -323,7 +309,6 @@ public class PageConsole {
 
     /**
      * Gets a page by the specified request.
-     * 
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -341,21 +326,21 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.GET)
     public void getPage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
 
         try {
@@ -385,7 +370,6 @@ public class PageConsole {
 
     /**
      * Gets pages by the specified request.
-     * 
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -406,23 +390,23 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws Exception exception
      * @see Requests#PAGINATION_PATH_PATTERN
      */
     @RequestProcessing(value = "/console/pages/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-        method = HTTPRequestMethod.GET)
+            method = HTTPRequestMethod.GET)
     public void getPages(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-        throws Exception {
+            throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
 
         try {
@@ -432,7 +416,6 @@ public class PageConsole {
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
 
             final JSONObject result = pageQueryService.getPages(requestJSONObject);
-
             final JSONArray pages = result.optJSONArray(Page.PAGES);
 
             // Site-internal URLs process

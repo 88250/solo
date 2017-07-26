@@ -53,7 +53,7 @@ public class TagConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagConsole.class);
 
     /**
      * Tag query service.
@@ -81,7 +81,6 @@ public class TagConsole {
 
     /**
      * Gets all tags.
-     * 
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -95,16 +94,16 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/console/tags", method = HTTPRequestMethod.GET)
     public void getTags(final HttpServletRequest request,
-        final HttpServletResponse response,
-        final HTTPRequestContext context)
-        throws IOException {
+                        final HttpServletResponse response,
+                        final HTTPRequestContext context)
+            throws IOException {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -112,11 +111,8 @@ public class TagConsole {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
-
         final JSONObject jsonObject = new JSONObject();
-
         renderer.setJSONObject(jsonObject);
 
         try {
@@ -132,7 +128,6 @@ public class TagConsole {
 
     /**
      * Gets all unused tags.
-     * 
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -146,17 +141,17 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/console/tag/unused",
-        method = HTTPRequestMethod.GET)
+            method = HTTPRequestMethod.GET)
     public void getUnusedTags(final HttpServletRequest request,
-        final HttpServletResponse response,
-        final HTTPRequestContext context)
-        throws IOException {
+                              final HttpServletResponse response,
+                              final HTTPRequestContext context)
+            throws IOException {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -164,11 +159,8 @@ public class TagConsole {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
-
         final JSONObject jsonObject = new JSONObject();
-
         renderer.setJSONObject(jsonObject);
 
         final List<JSONObject> unusedTags = new ArrayList<JSONObject>();
@@ -197,7 +189,6 @@ public class TagConsole {
 
     /**
      * Removes all unused tags.
-     * 
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -207,28 +198,26 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param request the specified http servlet request
+     * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @param context the specified http request context
+     * @param context  the specified http request context
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/console/tag/unused",
-        method = HTTPRequestMethod.DELETE)
+            method = HTTPRequestMethod.DELETE)
     public void removeUnusedTags(final HttpServletRequest request,
-        final HttpServletResponse response,
-        final HTTPRequestContext context)
-        throws IOException {
+                                 final HttpServletResponse response,
+                                 final HTTPRequestContext context)
+            throws IOException {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
-
         final JSONObject jsonObject = new JSONObject();
-
         renderer.setJSONObject(jsonObject);
 
         try {
