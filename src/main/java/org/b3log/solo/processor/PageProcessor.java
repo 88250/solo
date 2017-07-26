@@ -58,7 +58,7 @@ public class PageProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageProcessor.class);
 
     /**
      * Language service.

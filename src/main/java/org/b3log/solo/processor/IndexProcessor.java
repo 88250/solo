@@ -68,7 +68,7 @@ public class IndexProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class);
 
     /**
      * Filler.
@@ -93,6 +93,18 @@ public class IndexProcessor {
      */
     @Inject
     private StatisticMgmtService statisticMgmtService;
+
+    /**
+     * Gets the request page number from the specified request URI.
+     *
+     * @param requestURI the specified request URI
+     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
+     */
+    private static int getCurrentPageNum(final String requestURI) {
+        final String pageNumString = StringUtils.substringAfterLast(requestURI, "/");
+
+        return Requests.getCurrentPageNum(pageNumString);
+    }
 
     /**
      * Shows index with the specified context.
@@ -248,18 +260,6 @@ public class IndexProcessor {
     }
 
     /**
-     * Gets the request page number from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
-     */
-    private static int getCurrentPageNum(final String requestURI) {
-        final String pageNumString = StringUtils.substringAfterLast(requestURI, "/");
-
-        return Requests.getCurrentPageNum(pageNumString);
-    }
-
-    /**
      * Kill browser (kill-browser.ftl) HTTP response renderer.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -271,7 +271,7 @@ public class IndexProcessor {
         /**
          * Logger.
          */
-        private static final Logger LOGGER = Logger.getLogger(KillBrowserRenderer.class.getName());
+        private static final Logger LOGGER = Logger.getLogger(KillBrowserRenderer.class);
 
         @Override
         public void render(final HTTPRequestContext context) {

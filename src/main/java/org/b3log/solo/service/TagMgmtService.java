@@ -46,7 +46,7 @@ public class TagMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagMgmtService.class);
 
     /**
      * Tag query service.
