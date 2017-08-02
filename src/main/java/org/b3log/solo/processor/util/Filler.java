@@ -60,7 +60,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.14.13, Jun 16, 2017
+ * @version 1.6.14.14, Aug 2, 2017
  * @since 0.3.1
  */
 @Service
@@ -519,7 +519,6 @@ public class Filler {
             final List<JSONObject> recentArticles = articleRepository.getRecentArticles(recentArticleDisplayCnt);
 
             dataModel.put(Common.RECENT_ARTICLES, recentArticles);
-
         } catch (final JSONException e) {
             LOGGER.log(Level.ERROR, "Fills recent articles failed", e);
             throw new ServiceException(e);
@@ -906,7 +905,6 @@ public class Filler {
      * Sets some extra properties into the specified article with the specified author and preference, performs content
      * and abstract editor processing.
      * <p>
-     * <p>
      * Article ext properties:
      * <pre>
      * {
@@ -978,7 +976,8 @@ public class Filler {
      *     "authorThumbnailURL": "",
      *     "hasUpdated": boolean
      * }
-     * </pre> </p>
+     * </pre>
+     * </p>
      *
      * @param request    the specified HTTP servlet request
      * @param article    the specified article
@@ -1039,7 +1038,8 @@ public class Filler {
      *     "authorId": "",
      *     "hasUpdated": boolean
      * }
-     * </pre> </p>
+     * </pre>
+     * </p>
      *
      * @param request    the specified HTTP servlet request
      * @param articles   the specified articles
@@ -1070,7 +1070,8 @@ public class Filler {
      *     "authorId": "",
      *     "hasUpdated": boolean
      * }
-     * </pre> </p>
+     * </pre>
+     * </p>
      *
      * @param request    the specified HTTP servlet request
      * @param articles   the specified articles
@@ -1088,13 +1089,11 @@ public class Filler {
 
     /**
      * Processes the abstract of the specified article with the specified preference.
-     * <p>
      * <ul>
      * <li>If the abstract is {@code null}, sets it with ""</li>
      * <li>If user configured preference "titleOnly", sets the abstract with ""</li>
      * <li>If user configured preference "titleAndContent", sets the abstract with the content of the article</li>
      * </ul>
-     * </p>
      *
      * @param preference the specified preference
      * @param article    the specified article
