@@ -11,6 +11,7 @@
 </noscript>
 <!-- Prowl: if DM is sent, let's tell the user what happened -->
 <!-- #start The Search Overlay -->
+<#--
 <div id="wptouch-search"> 
     <div id="wptouch-search-inner">
         <form target="_blank" id="searchform" action="http://zhannei.baidu.com/cse/site">
@@ -21,6 +22,7 @@
         </form>
     </div>
 </div>
+-->
 <div id="wptouch-menu" class="dropper"> 		
     <div id="wptouch-menu-inner">
         <div id="menu-head">
@@ -90,7 +92,7 @@
 
 <div id="drop-fade">
 
-    <a id="searchopen" class="top" href="javascript:void(0)">${searchLabel}</a>
+    <#--<a id="searchopen" class="top" href="javascript:void(0)">${searchLabel}</a>-->
     <!-- #start the Prowl Message Area -->
     <div id="prowl-message" style="display:none">
         <div id="push-style-bar"></div><!-- filler to get the styling just right -->
