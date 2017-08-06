@@ -15,11 +15,9 @@
  */
 package org.b3log.solo.util;
 
-
 import org.b3log.latke.util.MD5;
 
 import java.util.Random;
-
 
 /**
  * Generate random stuff, <p> currently only support random alpha and digital

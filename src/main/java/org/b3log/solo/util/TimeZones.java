@@ -15,11 +15,9 @@
  */
 package org.b3log.solo.util;
 
-
 import org.b3log.latke.util.freemarker.Templates;
 
 import java.util.TimeZone;
-
 
 /**
  * Time zone utilities.
@@ -44,5 +42,6 @@ public final class TimeZones {
     /**
      * Private default constructor.
      */
-    private TimeZones() {}
+    private TimeZones() {
+    }
 }

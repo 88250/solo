@@ -15,13 +15,11 @@
  */
 package org.b3log.solo.util.comparator;
 
-
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
 
 import java.util.Comparator;
 import java.util.Date;
-
 
 /**
  * Article comparator by update date.
@@ -29,13 +27,13 @@ import java.util.Date;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Dec 30, 2010
  */
-public final class ArticleUpdateDateComparator
-    implements Comparator<JSONObject> {
+public final class ArticleUpdateDateComparator implements Comparator<JSONObject> {
 
     /**
      * Package default constructor.
      */
-    ArticleUpdateDateComparator() {}
+    ArticleUpdateDateComparator() {
+    }
 
     @Override
     public int compare(final JSONObject article1, final JSONObject article2) {

@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.util.comparator;
 
-
 /**
  * Comparators utilities.
  *
@@ -42,5 +41,6 @@ public final class Comparators {
     /**
      * Private default constructor.
      */
-    private Comparators() {}
+    private Comparators() {
+    }
 }
