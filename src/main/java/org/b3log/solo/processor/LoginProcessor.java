@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -58,7 +57,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Map;
-
 
 /**
  * Login/logout processor.
@@ -351,23 +349,23 @@ public class LoginProcessor {
             final JSONObject requestJSONObject;
 
             requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
-			final String token = requestJSONObject.getString("token");
-			final String newPwd = requestJSONObject.getString("newPwd");
-			final JSONObject passwordResetOption = optionQueryService.getOptionById(token);
+            final String token = requestJSONObject.getString("token");
+            final String newPwd = requestJSONObject.getString("newPwd");
+            final JSONObject passwordResetOption = optionQueryService.getOptionById(token);
 
-			if (null == passwordResetOption) {
-				LOGGER.log(Level.WARN, "Not found user by that token:[{0}]", token);
-				jsonObject.put("succeed", true);
-				jsonObject.put("to", Latkes.getServePath() + "/login?from=reset");
-				jsonObject.put(Keys.MSG, langPropsService.get("resetPwdFailedMsg"));
-				return;
-			}
-			final String userEmail = passwordResetOption.getString(Option.OPTION_VALUE);
-			final JSONObject user = userQueryService.getUserByEmail(userEmail);
+            if (null == passwordResetOption) {
+                LOGGER.log(Level.WARN, "Not found user by that token:[{0}]", token);
+                jsonObject.put("succeed", true);
+                jsonObject.put("to", Latkes.getServePath() + "/login?from=reset");
+                jsonObject.put(Keys.MSG, langPropsService.get("resetPwdFailedMsg"));
+                return;
+            }
+            final String userEmail = passwordResetOption.getString(Option.OPTION_VALUE);
+            final JSONObject user = userQueryService.getUserByEmail(userEmail);
 
-			user.put(User.USER_PASSWORD, newPwd);
-			userMgmtService.updateUser(user);
-			// TODO delete expired token
+            user.put(User.USER_PASSWORD, newPwd);
+            userMgmtService.updateUser(user);
+            // TODO delete expired token
             LOGGER.log(Level.DEBUG, "[{0}]'s password updated successfully.", userEmail);
 
             jsonObject.put("succeed", true);
@@ -403,17 +401,17 @@ public class LoginProcessor {
         final String token = new Randoms().nextStringWithMD5();
         final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
         final String mailSubject = langPropsService.get("resetPwdMailSubject");
-		final String mailBody = langPropsService.get("resetPwdMailBody") + " " + Latkes.getServePath()
-				+ "/forgot?token=" + token;
+        final String mailBody = langPropsService.get("resetPwdMailBody") + " " + Latkes.getServePath()
+                + "/forgot?token=" + token;
         final MailService.Message message = new MailService.Message();
 
         final JSONObject option = new JSONObject();
 
-		option.put(Keys.OBJECT_ID, token);
-		option.put(Option.OPTION_CATEGORY, "passwordReset");
-		option.put(Option.OPTION_VALUE, userEmail);
-		final Transaction transaction = optionRepository.beginTransaction();
-		optionRepository.add(option);
+        option.put(Keys.OBJECT_ID, token);
+        option.put(Option.OPTION_CATEGORY, "passwordReset");
+        option.put(Option.OPTION_VALUE, userEmail);
+        final Transaction transaction = optionRepository.beginTransaction();
+        optionRepository.add(option);
         transaction.commit();
 
         message.setFrom(adminEmail);
@@ -470,7 +468,7 @@ public class LoginProcessor {
         } else {
             // TODO verify the expired time in the tokenObj
             dataModel.put("inputType", "password");
-			dataModel.put("tokenHidden", token);
+            dataModel.put("tokenHidden", token);
         }
 
         final String from = request.getParameter("from");
