@@ -18,8 +18,8 @@ ${forgotLabel}
         <label for="emailOrPassword">
         ${userPasswordLabel}
         </label>
-        <input id="emailOrPassword"/>
-        <input type="hidden" id="userEmailHidden" value="${userEmailHidden}" />
+        <input type="password" id="emailOrPassword"/>
+		<input type="hidden" id="token" value="${tokenHidden}" />
         <button id="sendBtn" onclick='reset();'>${ok}</button>
         <span id="tip"></span>
     </div>
@@ -52,7 +52,7 @@ ${forgotLabel}
         }
         var requestJSONObject = {
             "newPwd": $("#emailOrPassword").val(),
-            "userEmail": $("#userEmailHidden").val()
+            "token": $("#token").val()
         };
 
         $("#tip").html("<img src='${staticServePath}/images/loading.gif'/> loading...");
