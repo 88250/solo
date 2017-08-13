@@ -146,6 +146,8 @@ public class LoginProcessor {
         String destinationURL = request.getParameter(Common.GOTO);
         if (Strings.isEmptyOrNull(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
+        } else if (!isInternalLinks(destinationURL)) {
+            destinationURL = "/";
         }
 
         final HttpServletResponse response = context.getResponse();
@@ -244,7 +246,7 @@ public class LoginProcessor {
 
         String destinationURL = httpServletRequest.getParameter(Common.GOTO);
 
-        if (Strings.isEmptyOrNull(destinationURL)) {
+        if (Strings.isEmptyOrNull(destinationURL) || !isInternalLinks(destinationURL)) {
             destinationURL = "/";
         }
 
@@ -265,6 +267,8 @@ public class LoginProcessor {
 
         if (Strings.isEmptyOrNull(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
+        } else if (!isInternalLinks(destinationURL)) {
+            destinationURL = "/";
         }
 
         renderPage(context, "reset-pwd.ftl", destinationURL, request);
@@ -483,5 +487,16 @@ public class LoginProcessor {
 
         Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
+    }
+
+    /**
+     * Preventing unvalidated redirects and forwards¡£See more at:
+     * <a>https://www.owasp.org/index.php/
+     * Unvalidated_Redirects_and_Forwards_Cheat_Sheet</a>
+     * 
+     * @return whether the destinationURL is an internal link
+     */
+    private boolean isInternalLinks(String destinationURL) {
+        return destinationURL.startsWith(Latkes.getServePath());
     }
 }
