@@ -61,7 +61,8 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
- * @version 1.1.0.6, Jun 11, 2017
+ * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
+ * @version 1.1.0.7, Aug 13, 2017
  * @since 0.3.1
  */
 @RequestProcessor

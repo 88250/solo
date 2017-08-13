@@ -64,7 +64,8 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.1.1.8, Jul 20, 2017
+ * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
+ * @version 1.1.1.9, Aug 13, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -490,10 +491,10 @@ public class LoginProcessor {
     }
 
     /**
-     * Preventing unvalidated redirects and forwards¡£See more at:
-     * <a>https://www.owasp.org/index.php/
-     * Unvalidated_Redirects_and_Forwards_Cheat_Sheet</a>
-     * 
+     * Preventing unvalidated redirects and forwards. See more at:
+     * <a href="https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet">https://www.owasp.org/index.php/
+     * Unvalidated_Redirects_and_Forwards_Cheat_Sheet</a>.
+     *
      * @return whether the destinationURL is an internal link
      */
     private boolean isInternalLinks(String destinationURL) {
