@@ -30,14 +30,14 @@ import org.testng.annotations.Test;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.0.0.3, May 25, 2017
+ * @version 1.0.0.4, Aug 14, 2017
  */
 @Test(suiteName = "service")
 public class UserMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Add User.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -56,7 +56,7 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Update User.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "addUser")
@@ -64,7 +64,6 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
         final UserMgmtService userMgmtService = getUserMgmtService();
 
         JSONObject requestJSONObject = new JSONObject();
-
         requestJSONObject.put(User.USER_NAME, "user2name");
         requestJSONObject.put(User.USER_EMAIL, "test2@gmail.com");
         requestJSONObject.put(User.USER_PASSWORD, "pass2");
@@ -92,42 +91,38 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
         Assert.assertEquals(getUserQueryService().getUser(id).getJSONObject(
                 User.USER).getString(User.USER_PASSWORD), MD5.hash("pass2"));
     }
-    
+
     /**
      * Valid User.
      *
-     *@throws Exception exception
+     * @throws Exception exception
      */
     @Test
-    public void ValidUser() throws Exception {
+    public void validUser() throws Exception {
         final UserMgmtService userMgmtService = getUserMgmtService();
 
         final JSONObject requestJSONObject = new JSONObject();
-
         requestJSONObject.put(User.USER_NAME, "user1 name");
         requestJSONObject.put(User.USER_EMAIL, "test1@gmail.com");
         requestJSONObject.put(User.USER_PASSWORD, "pass1");
-        
+
         try {
             final String id = userMgmtService.addUser(requestJSONObject);
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             Assert.assertTrue(e instanceof ServiceException);
         }
-
     }
-    
+
     /**
-     * Vallid XSS username.
+     * Valid XSS username.
      *
-     *@throws Exception exception
+     * @throws Exception exception
      */
     @Test(expectedExceptions = ServiceException.class)
     public void XSSUser() throws Exception {
         final UserMgmtService userMgmtService = getUserMgmtService();
 
         final JSONObject requestJSONObject = new JSONObject();
-
         requestJSONObject.put(User.USER_NAME, "username");
         requestJSONObject.put(User.USER_EMAIL, "<script></script>");
 
@@ -136,20 +131,18 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Remove User.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "addUser")
     public void removeUser() throws Exception {
         final UserMgmtService userMgmtService = getUserMgmtService();
 
-        final JSONObject user =
-                getUserQueryService().getUserByEmail("test1@gmail.com");
+        final JSONObject user = getUserQueryService().getUserByEmail("test1@gmail.com");
         Assert.assertNotNull(user);
 
         userMgmtService.removeUser(user.getString(Keys.OBJECT_ID));
 
-        Assert.assertNull(
-                getUserQueryService().getUserByEmail("test1@gmail.com"));
+        Assert.assertNull(getUserQueryService().getUserByEmail("test1@gmail.com"));
     }
 }

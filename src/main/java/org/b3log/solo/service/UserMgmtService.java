@@ -49,7 +49,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.0.10, Aug 13, 2017
+ * @version 1.1.0.11, Aug 14, 2017
  * @since 0.4.0
  */
 @Service
@@ -278,6 +278,7 @@ public class UserMgmtService {
             if (!Strings.isEmail(userEmail)) {
                 throw new ServiceException(langPropsService.get("mailInvalidLabel"));
             }
+
             final JSONObject duplicatedUser = userRepository.getByEmail(userEmail);
 
             if (null != duplicatedUser) {
