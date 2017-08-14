@@ -48,7 +48,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.1.0.9, Aug 11, 2017
+ * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
+ * @version 1.1.0.10, Aug 13, 2017
  * @since 0.4.0
  */
 @Service
@@ -274,6 +275,9 @@ public class UserMgmtService {
         try {
             final JSONObject user = new JSONObject();
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL).trim().toLowerCase();
+            if (!Strings.isEmail(userEmail)) {
+                throw new ServiceException(langPropsService.get("mailInvalidLabel"));
+            }
             final JSONObject duplicatedUser = userRepository.getByEmail(userEmail);
 
             if (null != duplicatedUser) {
@@ -287,6 +291,9 @@ public class UserMgmtService {
             user.put(User.USER_EMAIL, userEmail);
 
             final String userName = requestJSONObject.optString(User.USER_NAME);
+            if (UserExt.invalidUserName(userName)) {
+                throw new ServiceException(langPropsService.get("userNameInvalidLabel"));
+            }
             user.put(User.USER_NAME, userName);
 
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);

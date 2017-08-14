@@ -19,6 +19,7 @@ import junit.framework.Assert;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.MD5;
 import org.b3log.solo.AbstractTestCase;
 import org.json.JSONObject;
@@ -28,6 +29,7 @@ import org.testng.annotations.Test;
  * {@link UserMgmtService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
  * @version 1.0.0.3, May 25, 2017
  */
 @Test(suiteName = "service")
@@ -89,6 +91,47 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
 
         Assert.assertEquals(getUserQueryService().getUser(id).getJSONObject(
                 User.USER).getString(User.USER_PASSWORD), MD5.hash("pass2"));
+    }
+    
+    /**
+     * Valid User.
+     *
+     *@throws Exception exception
+     */
+    @Test
+    public void ValidUser() throws Exception {
+        final UserMgmtService userMgmtService = getUserMgmtService();
+
+        final JSONObject requestJSONObject = new JSONObject();
+
+        requestJSONObject.put(User.USER_NAME, "user1 name");
+        requestJSONObject.put(User.USER_EMAIL, "test1@gmail.com");
+        requestJSONObject.put(User.USER_PASSWORD, "pass1");
+        
+        try {
+            final String id = userMgmtService.addUser(requestJSONObject);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            Assert.assertTrue(e instanceof ServiceException);
+        }
+
+    }
+    
+    /**
+     * Vallid XSS username.
+     *
+     *@throws Exception exception
+     */
+    @Test(expectedExceptions = ServiceException.class)
+    public void XSSUser() throws Exception {
+        final UserMgmtService userMgmtService = getUserMgmtService();
+
+        final JSONObject requestJSONObject = new JSONObject();
+
+        requestJSONObject.put(User.USER_NAME, "username");
+        requestJSONObject.put(User.USER_EMAIL, "<script></script>");
+
+        final String id = userMgmtService.addUser(requestJSONObject);
     }
 
     /**
