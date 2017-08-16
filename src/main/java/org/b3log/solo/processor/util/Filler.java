@@ -60,7 +60,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.14.14, Aug 2, 2017
+ * @version 1.6.14.15, Aug 16, 2017
  * @since 0.3.1
  */
 @Service
@@ -192,8 +192,7 @@ public class Filler {
      * @param preference     the specified preference
      * @throws ServiceException service exception
      */
-    public void fillIndexArticles(final HttpServletRequest request,
-                                  final Map<String, Object> dataModel, final int currentPageNum, final JSONObject preference)
+    public void fillIndexArticles(final HttpServletRequest request, final Map<String, Object> dataModel, final int currentPageNum, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Index Articles");
 
@@ -418,7 +417,7 @@ public class Filler {
                     if (!dateString.equals(lastDateString)) {
                         archiveDates2.add(archiveDate);
                     } else {
-                        LOGGER.log(Level.WARN, "Found a duplicated archive date [{0}]", dateString);
+                        LOGGER.log(Level.DEBUG, "Found a duplicated archive date [{0}]", dateString);
                     }
                 }
             }
@@ -902,8 +901,7 @@ public class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified author and preference, performs content
-     * and abstract editor processing.
+     * Sets some extra properties into the specified article with the specified author and preference, performs content and abstract editor processing.
      * <p>
      * Article ext properties:
      * <pre>
@@ -964,8 +962,7 @@ public class Filler {
     }
 
     /**
-     * Sets some extra properties into the specified article with the specified preference, performs content and
-     * abstract editor processing.
+     * Sets some extra properties into the specified article with the specified preference, performs content and abstract editor processing.
      * <p>
      * Article ext properties:
      * <pre>
