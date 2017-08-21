@@ -53,7 +53,7 @@ import java.util.Map;
  * Category processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Apr 10, 2017
+ * @version 1.0.1.2, Apr 21, 2017
  * @since 2.0.0
  */
 @RequestProcessor
@@ -192,6 +192,13 @@ public class CategoryProcessor {
             final JSONObject result = articleQueryService.getCategoryArticles(categoryId, currentPageNum, pageSize);
             final List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
 
+            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+            if (0 == pageCount) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
+            }
+
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
@@ -202,13 +209,6 @@ public class CategoryProcessor {
                 final JSONObject author = articleQueryService.getAuthor(articles.get(0));
 
                 filler.setArticlesExProperties(request, articles, author, preference);
-            }
-
-            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-            if (0 == pageCount) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return;
             }
 
             final List<Integer> pageNums = (List) result.optJSONObject(Pagination.PAGINATION).opt(Pagination.PAGINATION_PAGE_NUMS);
