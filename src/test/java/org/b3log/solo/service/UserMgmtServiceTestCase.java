@@ -19,6 +19,7 @@ import junit.framework.Assert;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.MD5;
 import org.b3log.solo.AbstractTestCase;
 import org.json.JSONObject;
@@ -28,14 +29,15 @@ import org.testng.annotations.Test;
  * {@link UserMgmtService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, May 25, 2017
+ * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
+ * @version 1.0.0.4, Aug 14, 2017
  */
 @Test(suiteName = "service")
 public class UserMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Add User.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -54,7 +56,7 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Update User.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "addUser")
@@ -62,7 +64,6 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
         final UserMgmtService userMgmtService = getUserMgmtService();
 
         JSONObject requestJSONObject = new JSONObject();
-
         requestJSONObject.put(User.USER_NAME, "user2name");
         requestJSONObject.put(User.USER_EMAIL, "test2@gmail.com");
         requestJSONObject.put(User.USER_PASSWORD, "pass2");
@@ -92,21 +93,56 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
     }
 
     /**
+     * Valid User.
+     *
+     * @throws Exception exception
+     */
+    @Test
+    public void validUser() throws Exception {
+        final UserMgmtService userMgmtService = getUserMgmtService();
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(User.USER_NAME, "user1 name");
+        requestJSONObject.put(User.USER_EMAIL, "test1@gmail.com");
+        requestJSONObject.put(User.USER_PASSWORD, "pass1");
+
+        try {
+            final String id = userMgmtService.addUser(requestJSONObject);
+        } catch (Exception e) {
+            Assert.assertTrue(e instanceof ServiceException);
+        }
+    }
+
+    /**
+     * Valid XSS username.
+     *
+     * @throws Exception exception
+     */
+    @Test(expectedExceptions = ServiceException.class)
+    public void XSSUser() throws Exception {
+        final UserMgmtService userMgmtService = getUserMgmtService();
+
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(User.USER_NAME, "username");
+        requestJSONObject.put(User.USER_EMAIL, "<script></script>");
+
+        final String id = userMgmtService.addUser(requestJSONObject);
+    }
+
+    /**
      * Remove User.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "addUser")
     public void removeUser() throws Exception {
         final UserMgmtService userMgmtService = getUserMgmtService();
 
-        final JSONObject user =
-                getUserQueryService().getUserByEmail("test1@gmail.com");
+        final JSONObject user = getUserQueryService().getUserByEmail("test1@gmail.com");
         Assert.assertNotNull(user);
 
         userMgmtService.removeUser(user.getString(Keys.OBJECT_ID));
 
-        Assert.assertNull(
-                getUserQueryService().getUserByEmail("test1@gmail.com"));
+        Assert.assertNull(getUserQueryService().getUserByEmail("test1@gmail.com"));
     }
 }
