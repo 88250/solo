@@ -17,7 +17,7 @@
     <div class="content">
         <div class="logo">
             <a href="http://b3log.org" target="_blank">
-                <img border="0" alt="Solo" title="Solo" src="${staticServePath}/images/logo.jpg"/>
+                <img width="128" border="0" alt="Solo" title="Solo" src="${staticServePath}/images/logo.png"/>
             </a>
         </div>
         <div class="main">
