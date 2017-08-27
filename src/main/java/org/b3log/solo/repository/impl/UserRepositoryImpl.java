@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.8, Jul 22, 2017
+ * @version 1.1.0.9, Aug 27, 2017
  * @since 0.3.1
  */
 @Repository
@@ -79,6 +79,10 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
 
         user.put(Keys.OBJECT_ID, id);
         userCache.putUser(user);
+
+        if (Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE))) {
+            userCache.putAdmin(user);
+        }
     }
 
     @Override
@@ -105,6 +109,11 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
 
     @Override
     public JSONObject getAdmin() throws RepositoryException {
+        JSONObject ret = userCache.getAdmin();
+        if (null != ret) {
+            return ret;
+        }
+
         final Query query = new Query().setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)).setPageCount(1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -112,7 +121,10 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
             return null;
         }
 
-        return array.optJSONObject(0);
+        ret = array.optJSONObject(0);
+        userCache.putAdmin(ret);
+
+        return ret;
     }
 
     @Override

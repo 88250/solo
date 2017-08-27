@@ -20,6 +20,7 @@ import org.b3log.latke.cache.Cache;
 import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.solo.util.JSONs;
 import org.json.JSONObject;
@@ -28,7 +29,7 @@ import org.json.JSONObject;
  * User cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 22, 2017
+ * @version 1.1.0.0, Aug 27, 2017
  * @since 2.3.0
  */
 @Named
@@ -44,6 +45,29 @@ public class UserCache {
      * Email, User.
      */
     private static final Cache EMAIL_CACHE = CacheFactory.getCache(User.USERS + "Email");
+
+    /**
+     * Admin user.
+     */
+    private static final Cache ADMIN_CACHE = CacheFactory.getCache("adminUser");
+
+    /**
+     * Gets the admin user.
+     *
+     * @return admin user
+     */
+    public JSONObject getAdmin() {
+        return ADMIN_CACHE.get(Role.ADMIN_ROLE);
+    }
+
+    /**
+     * Adds or updates the admin user.
+     *
+     * @param admin the specified admin user
+     */
+    public void putAdmin(final JSONObject admin) {
+        ADMIN_CACHE.put(Role.ADMIN_ROLE, admin);
+    }
 
     /**
      * Gets a user by the specified user id.
