@@ -38,11 +38,7 @@ public class PageCache {
     /**
      * Page cache.
      */
-    private static final Cache PAGE_CACHE = CacheFactory.getCache(Page.PAGES);
-
-    static {
-        PAGE_CACHE.setMaxCount(128);
-    }
+    private Cache cache = CacheFactory.getCache(Page.PAGES);
 
     /**
      * Gets a page by the specified page id.
@@ -51,7 +47,7 @@ public class PageCache {
      * @return page, returns {@code null} if not found
      */
     public JSONObject getPage(final String id) {
-        final JSONObject page = PAGE_CACHE.get(id);
+        final JSONObject page = cache.get(id);
         if (null == page) {
             return null;
         }
@@ -67,7 +63,7 @@ public class PageCache {
     public void putPage(final JSONObject page) {
         final String pageId = page.optString(Keys.OBJECT_ID);
 
-        PAGE_CACHE.put(pageId, JSONs.clone(page));
+        cache.put(pageId, JSONs.clone(page));
     }
 
     /**
@@ -76,6 +72,6 @@ public class PageCache {
      * @param id the specified page id
      */
     public void removePage(final String id) {
-        PAGE_CACHE.remove(id);
+        cache.remove(id);
     }
 }

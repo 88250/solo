@@ -38,11 +38,7 @@ public class OptionCache {
     /**
      * Option cache.
      */
-    private static final Cache CACHE = CacheFactory.getCache(Option.OPTIONS);
-
-    static {
-        CACHE.setMaxCount(512);
-    }
+    private Cache CACHE = CacheFactory.getCache(Option.OPTIONS);
 
     /**
      * Gets an option by the specified option id.

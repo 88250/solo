@@ -38,11 +38,7 @@ public class CommentCache {
     /**
      * Comment cache.
      */
-    private static final Cache cache = CacheFactory.getCache(Comment.COMMENTS);
-
-    static {
-        cache.setMaxCount(512);
-    }
+    private Cache cache = CacheFactory.getCache(Comment.COMMENTS);
 
     /**
      * Gets a comment by the specified comment id.

@@ -39,17 +39,17 @@ public class UserCache {
     /**
      * Id, User.
      */
-    private static final Cache ID_CACHE = CacheFactory.getCache(User.USERS + "ID");
+    private Cache idCache = CacheFactory.getCache(User.USERS + "ID");
 
     /**
      * Email, User.
      */
-    private static final Cache EMAIL_CACHE = CacheFactory.getCache(User.USERS + "Email");
+    private Cache emailCache = CacheFactory.getCache(User.USERS + "Email");
 
     /**
      * Admin user.
      */
-    private static final Cache ADMIN_CACHE = CacheFactory.getCache("adminUser");
+    private Cache adminCache = CacheFactory.getCache("adminUser");
 
     /**
      * Gets the admin user.
@@ -57,7 +57,7 @@ public class UserCache {
      * @return admin user
      */
     public JSONObject getAdmin() {
-        return ADMIN_CACHE.get(Role.ADMIN_ROLE);
+        return adminCache.get(Role.ADMIN_ROLE);
     }
 
     /**
@@ -66,7 +66,7 @@ public class UserCache {
      * @param admin the specified admin user
      */
     public void putAdmin(final JSONObject admin) {
-        ADMIN_CACHE.put(Role.ADMIN_ROLE, admin);
+        adminCache.put(Role.ADMIN_ROLE, admin);
     }
 
     /**
@@ -76,7 +76,7 @@ public class UserCache {
      * @return user, returns {@code null} if not found
      */
     public JSONObject getUser(final String userId) {
-        final JSONObject user = ID_CACHE.get(userId);
+        final JSONObject user = idCache.get(userId);
         if (null == user) {
             return null;
         }
@@ -91,7 +91,7 @@ public class UserCache {
      * @return user, returns {@code null} if not found
      */
     public JSONObject getUserByEmail(final String userEmail) {
-        final JSONObject user = EMAIL_CACHE.get(userEmail);
+        final JSONObject user = emailCache.get(userEmail);
         if (null == user) {
             return null;
         }
@@ -105,8 +105,8 @@ public class UserCache {
      * @param user the specified user
      */
     public void putUser(final JSONObject user) {
-        ID_CACHE.put(user.optString(Keys.OBJECT_ID), JSONs.clone(user));
-        EMAIL_CACHE.put(user.optString(User.USER_EMAIL), JSONs.clone(user));
+        idCache.put(user.optString(Keys.OBJECT_ID), JSONs.clone(user));
+        emailCache.put(user.optString(User.USER_EMAIL), JSONs.clone(user));
     }
 
     /**
@@ -115,14 +115,14 @@ public class UserCache {
      * @param id the specified user id
      */
     public void removeUser(final String id) {
-        final JSONObject user = ID_CACHE.get(id);
+        final JSONObject user = idCache.get(id);
         if (null == user) {
             return;
         }
 
-        ID_CACHE.remove(id);
+        idCache.remove(id);
 
         final String email = user.optString(User.USER_EMAIL);
-        EMAIL_CACHE.remove(email);
+        emailCache.remove(email);
     }
 }

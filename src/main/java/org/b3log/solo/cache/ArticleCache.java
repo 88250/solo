@@ -38,11 +38,7 @@ public class ArticleCache {
     /**
      * Article cache.
      */
-    private static final Cache ARTICLE_CACHE = CacheFactory.getCache(Article.ARTICLES);
-
-    static {
-        ARTICLE_CACHE.setMaxCount(128);
-    }
+    private Cache cache = CacheFactory.getCache(Article.ARTICLES);
 
     /**
      * Gets an article by the specified article id.
@@ -51,7 +47,7 @@ public class ArticleCache {
      * @return article, returns {@code null} if not found
      */
     public JSONObject getArticle(final String id) {
-        final JSONObject article = ARTICLE_CACHE.get(id);
+        final JSONObject article = cache.get(id);
         if (null == article) {
             return null;
         }
@@ -67,7 +63,7 @@ public class ArticleCache {
     public void putArticle(final JSONObject article) {
         final String articleId = article.optString(Keys.OBJECT_ID);
 
-        ARTICLE_CACHE.put(articleId, JSONs.clone(article));
+        cache.put(articleId, JSONs.clone(article));
     }
 
     /**
@@ -76,6 +72,6 @@ public class ArticleCache {
      * @param id the specified article id
      */
     public void removeArticle(final String id) {
-        ARTICLE_CACHE.remove(id);
+        cache.remove(id);
     }
 }
