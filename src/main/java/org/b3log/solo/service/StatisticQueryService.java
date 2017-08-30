@@ -41,7 +41,7 @@ public class StatisticQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatisticQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StatisticQueryService.class);
 
     /**
      * Statistic repository.

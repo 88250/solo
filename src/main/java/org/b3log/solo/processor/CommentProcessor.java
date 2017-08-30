@@ -63,7 +63,7 @@ public class CommentProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentProcessor.class);
 
     /**
      * Language service.

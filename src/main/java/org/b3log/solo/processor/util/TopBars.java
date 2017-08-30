@@ -61,7 +61,7 @@ public class TopBars {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TopBars.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TopBars.class);
 
     /**
      * User service.

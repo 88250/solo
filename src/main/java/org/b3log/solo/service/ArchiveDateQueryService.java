@@ -42,7 +42,7 @@ public class ArchiveDateQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArchiveDateQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArchiveDateQueryService.class);
 
     /**
      * Archive date repository.

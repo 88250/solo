@@ -47,7 +47,7 @@ public class LinkQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinkQueryService.class);
 
     /**
      * Link repository.

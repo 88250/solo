@@ -53,7 +53,7 @@ public class PluginMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PluginMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PluginMgmtService.class);
 
     /**
      * Plugin repository.

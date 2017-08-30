@@ -47,7 +47,7 @@ public class PageQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageQueryService.class);
 
     /**
      * Page repository.

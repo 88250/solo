@@ -41,7 +41,7 @@ public class LinkMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(LinkMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(LinkMgmtService.class);
 
     /**
      * Link repository.

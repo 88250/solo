@@ -55,7 +55,7 @@ public class StatisticMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatisticMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StatisticMgmtService.class);
 
     /**
      * Statistic repository.

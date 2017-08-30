@@ -66,7 +66,7 @@ public class CommentReceiver {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentReceiver.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(CommentReceiver.class);
 
     /**
      * Comment management service.

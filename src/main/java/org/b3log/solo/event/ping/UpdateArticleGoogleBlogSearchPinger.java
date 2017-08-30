@@ -58,7 +58,7 @@ public final class UpdateArticleGoogleBlogSearchPinger extends AbstractEventList
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UpdateArticleGoogleBlogSearchPinger.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UpdateArticleGoogleBlogSearchPinger.class);
 
     /**
      * URL fetch service.

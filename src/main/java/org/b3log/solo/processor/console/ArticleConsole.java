@@ -57,7 +57,7 @@ public class ArticleConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArticleConsole.class);
 
     /**
      * Article management service.

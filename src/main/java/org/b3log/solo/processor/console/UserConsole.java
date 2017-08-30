@@ -54,7 +54,7 @@ public class UserConsole {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserConsole.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserConsole.class);
 
     /**
      * User query service.

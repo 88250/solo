@@ -60,7 +60,7 @@ public final class PermalinkFilter implements Filter {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PermalinkFilter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PermalinkFilter.class);
 
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {}

@@ -47,7 +47,7 @@ public class StatProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(StatProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(StatProcessor.class);
 
     /**
      * Statistic management service.

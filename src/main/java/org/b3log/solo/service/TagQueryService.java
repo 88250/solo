@@ -47,7 +47,7 @@ public class TagQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagQueryService.class);
 
     /**
      * Tag repository.

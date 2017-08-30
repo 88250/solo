@@ -45,7 +45,7 @@ public class ListHandler extends AbstractEventListener<JSONObject> {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ListHandler.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ListHandler.class);
 
     @Override
     public String getEventType() {

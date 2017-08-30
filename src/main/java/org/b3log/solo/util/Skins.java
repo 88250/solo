@@ -52,7 +52,7 @@ public final class Skins {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Skins.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(Skins.class);
 
     /**
      * Properties map.

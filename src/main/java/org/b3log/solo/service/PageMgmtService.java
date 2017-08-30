@@ -50,7 +50,7 @@ public class PageMgmtService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PageMgmtService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PageMgmtService.class);
 
     /**
      * Page repository.

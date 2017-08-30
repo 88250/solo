@@ -45,7 +45,7 @@ public final class InitCheckFilter implements Filter {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(InitCheckFilter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(InitCheckFilter.class);
 
     /**
      * Whether initialization info reported.

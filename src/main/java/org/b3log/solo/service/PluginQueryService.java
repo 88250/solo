@@ -48,7 +48,7 @@ public class PluginQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PluginQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PluginQueryService.class);
 
     /**
      * Plugin repository.

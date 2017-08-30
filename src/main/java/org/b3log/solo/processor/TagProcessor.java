@@ -65,7 +65,7 @@ public class TagProcessor {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(TagProcessor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(TagProcessor.class);
 
     /**
      * Filler.

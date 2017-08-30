@@ -310,7 +310,7 @@ public final class Option {
         /**
          * Logger.
          */
-        private static final Logger LOGGER = Logger.getLogger(DefaultPreference.class.getName());
+        private static final Logger LOGGER = Logger.getLogger(DefaultPreference.class);
 
         /**
          * Default recent article display count.

@@ -43,7 +43,7 @@ public class PermalinkQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PermalinkQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PermalinkQueryService.class);
 
     /**
      * Page repository.

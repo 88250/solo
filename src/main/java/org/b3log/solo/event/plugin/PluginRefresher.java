@@ -45,7 +45,7 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PluginRefresher.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PluginRefresher.class);
 
     @Override
     public void action(final Event<List<AbstractPlugin>> event) throws EventException {

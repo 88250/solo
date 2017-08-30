@@ -53,7 +53,7 @@ public class UserQueryService {
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(UserQueryService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserQueryService.class);
 
     /**
      * User service.
