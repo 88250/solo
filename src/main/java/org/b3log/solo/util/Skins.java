@@ -39,6 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Skin utilities.
@@ -57,7 +58,7 @@ public final class Skins {
     /**
      * Properties map.
      */
-    private static final Map<String, Map<String, String>> LANG_MAP = new HashMap<String, Map<String, String>>();
+    private static final Map<String, Map<String, String>> LANG_MAP = new HashMap<>();
 
     /**
      * Private default constructor.
@@ -155,11 +156,10 @@ public final class Skins {
      * @return a set of skin name, returns an empty set if not found
      */
     public static Set<String> getSkinDirNames() {
+        final Set<String> ret = new HashSet<>();
+
         final ServletContext servletContext = SoloServletListener.getServletContext();
-
-        final Set<String> ret = new HashSet<String>();
-
-        @SuppressWarnings("unchecked") final Set<String> resourcePaths = servletContext.getResourcePaths("/skins");
+        final Set<String> resourcePaths = servletContext.getResourcePaths("/skins");
 
         for (final String path : resourcePaths) {
             final String dirName = path.substring("/skins".length() + 1, path.length() - 1);
@@ -182,8 +182,6 @@ public final class Skins {
      * @return directory name, or {@code "default"} if not found
      */
     public static String getSkinDirName(final HttpServletRequest request) {
-        // https://github.com/b3log/solo/issues/12060
-
         if (Requests.mobileRequest(request)) {
             return (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME); // resolved in listener
         }
