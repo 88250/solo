@@ -37,7 +37,7 @@ import java.util.List;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.11, Jul 16, 2017
+ * @version 1.1.3.12, Aug 30, 2017
  * @since 0.3.1
  */
 @Repository
@@ -113,6 +113,11 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
 
     @Override
     public JSONObject getByPermalink(final String permalink) throws RepositoryException {
+        JSONObject ret = articleCache.getArticleByPermalink(permalink);
+        if (null != ret) {
+            return ret;
+        }
+
         final Query query = new Query().
                 setFilter(new PropertyFilter(Article.ARTICLE_PERMALINK, FilterOperator.EQUAL, permalink)).
                 setPageCount(1);
@@ -123,7 +128,10 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
             return null;
         }
 
-        return array.optJSONObject(0);
+        ret = array.optJSONObject(0);
+        articleCache.putArticle(ret);
+
+        return ret;
     }
 
     @Override
