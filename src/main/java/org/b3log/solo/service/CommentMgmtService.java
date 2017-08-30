@@ -58,7 +58,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.12, Jul 20, 2017
+ * @version 1.3.3.0, Aug 31, 2017
  * @since 0.3.5
  */
 @Service
@@ -355,13 +355,7 @@ public class CommentMgmtService {
             commentName = Jsoup.clean(commentName, Whitelist.none());
             requestJSONObject.put(Comment.COMMENT_NAME, commentName);
 
-            // content Markdown & XSS process 
-            commentContent = Markdowns.toHTML(commentContent);
-            commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
-
-            // Emoji
             commentContent = Emotions.toAliases(commentContent);
-
             requestJSONObject.put(Comment.COMMENT_CONTENT, commentContent);
 
             return ret;
@@ -582,7 +576,10 @@ public class CommentMgmtService {
             ret.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
 
             ret.put(Comment.COMMENT_NAME, commentName);
-            ret.put(Comment.COMMENT_CONTENT, commentContent);
+            String cmtContent = Emotions.convert(commentContent);
+            cmtContent = Markdowns.toHTML(cmtContent);
+            cmtContent = Jsoup.clean(cmtContent, Whitelist.relaxed());
+            ret.put(Comment.COMMENT_CONTENT, cmtContent);
             ret.put(Comment.COMMENT_URL, commentURL);
 
             if (!Strings.isEmptyOrNull(originalCommentId)) {

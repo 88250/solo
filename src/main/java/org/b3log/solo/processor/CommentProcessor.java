@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import freemarker.template.Template;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
@@ -48,13 +47,12 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * Comment processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.3.2.14, May 21, 2017
+ * @version 1.3.3.0, Aug 31, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -295,7 +293,6 @@ public class CommentProcessor {
                 template.process(dataModel, stringWriter);
                 stringWriter.close();
                 String cmtTpl = stringWriter.toString();
-                cmtTpl = Emotions.convert(cmtTpl);
 
                 addResult.put("cmtTpl", cmtTpl);
             } catch (final Exception e) {
