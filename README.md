@@ -44,6 +44,30 @@ Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将�
 
 如果有新版可用，升级过程也是非常简单的，只需要重新部署新版本就可以，不用运行额外的任何脚本。
 
+## 界面
+
+编辑文章
+
+![5f7258675e0143c79e15ddffabf02147-article.png](https://img.hacpai.com/file/2017/8/5f7258675e0143c79e15ddffabf02147-article.png) 
+
+选择皮肤
+
+![ac9a044c18ec4dd4a9356caf698d7fe8-skin.png](https://img.hacpai.com/file/2017/8/ac9a044c18ec4dd4a9356caf698d7fe8-skin.png) 
+
+前台界面
+
+* [9IPHP](http://88250.b3log.org/?skin=9IPHP)
+* [andrea](http://88250.b3log.org/?skin=andrea)
+* [bruce](http://88250.b3log.org/?skin=bruce)
+* [ease](http://88250.b3log.org/?skin=ease)
+* [favourite](http://88250.b3log.org/?skin=favourite)
+* [finding](http://88250.b3log.org/?skin=finding)
+* [i-nove](http://88250.b3log.org/?skin=i-nove)
+* [neoease](http://88250.b3log.org/?skin=neoease)
+* [next](http://88250.b3log.org/?skin=next)
+* [i-nove](http://88250.b3log.org/?skin=i-nove)
+* [yilia](http://88250.b3log.org/?skin=yilia)
+
 ## 安装
 
 JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)最新的 Solo 包解压，进入解压目录执行：
