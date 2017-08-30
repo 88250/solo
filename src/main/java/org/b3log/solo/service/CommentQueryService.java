@@ -40,6 +40,8 @@ import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Whitelist;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ import java.util.List;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.9, Jun 15, 2017
+ * @version 1.3.2.0, Aug 31, 2017
  * @since 0.3.5
  */
 @Service
@@ -190,6 +192,7 @@ public class CommentQueryService {
                 String commentContent = comment.optString(Comment.COMMENT_CONTENT);
                 commentContent = Emotions.convert(commentContent);
                 commentContent = Markdowns.toHTML(commentContent);
+                commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
                 comment.put(Comment.COMMENT_CONTENT, commentContent);
 
                 comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
@@ -253,6 +256,7 @@ public class CommentQueryService {
                 String commentContent = comment.optString(Comment.COMMENT_CONTENT);
                 commentContent = Emotions.convert(commentContent);
                 commentContent = Markdowns.toHTML(commentContent);
+                commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
                 comment.put(Comment.COMMENT_CONTENT, commentContent);
 
                 ret.add(comment);
