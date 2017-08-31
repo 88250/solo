@@ -60,7 +60,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.23, Jul 10, 2017
+ * @version 1.9.3.24, Aug 31, 2017
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -68,7 +68,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Solo version.
      */
-    public static final String VERSION = "2.2.0";
+    public static final String VERSION = "2.3.0";
 
     /**
      * JSONO print indent factor.
