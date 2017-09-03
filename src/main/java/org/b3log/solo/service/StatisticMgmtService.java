@@ -28,11 +28,15 @@ import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Statistic;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.StatisticRepository;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -40,22 +44,40 @@ import java.util.Map;
 
 /**
  * Statistic management service.
- *
  * <p>
  * <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is NOT cluster-safe.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 18, 2012
+ * @version 1.0.0.1, Sep 3, 2017
  * @since 0.5.0
  */
 @Service
 public class StatisticMgmtService {
 
     /**
+     * Online visitor cache.
+     * <p>
+     * <p>
+     * &lt;ip, recentTime&gt;
+     * </p>
+     */
+    public static final Map<String, Long> ONLINE_VISITORS = new HashMap<>();
+
+    /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(StatisticMgmtService.class);
+
+    /**
+     * Online visitor expiration in 5 minutes.
+     */
+    private static final int ONLINE_VISITOR_EXPIRATION = 300000;
+
+    /**
+     * Cookie expiry of "visited".
+     */
+    private static final int COOKIE_EXPIRY = 60 * 60 * 24; // 24 hours
 
     /**
      * Statistic repository.
@@ -76,31 +98,118 @@ public class StatisticMgmtService {
     private ArticleRepository articleRepository;
 
     /**
-     * Online visitor cache.
-     *
-     * <p>
-     * &lt;ip, recentTime&gt;
-     * </p>
+     * Removes the expired online visitor.
      */
-    public static final Map<String, Long> ONLINE_VISITORS = new HashMap<String, Long>();
+    public static void removeExpiredOnlineVisitor() {
+        final long currentTimeMillis = System.currentTimeMillis();
+
+        final Iterator<Map.Entry<String, Long>> iterator = ONLINE_VISITORS.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            final Map.Entry<String, Long> onlineVisitor = iterator.next();
+
+            if (currentTimeMillis > (onlineVisitor.getValue() + ONLINE_VISITOR_EXPIRATION)) {
+                iterator.remove();
+                LOGGER.log(Level.TRACE, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
+            }
+        }
+
+        LOGGER.log(Level.DEBUG, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
+    }
 
     /**
-     * Online visitor expiration in 5 minutes.
+     * Determines whether the specified request has been served.
+     * <p>
+     * A "served request" is a request a URI as former one. For example, if a client is request "/test", all requests from the client
+     * subsequent in 24 hours will be treated as served requests, requested URIs save in client cookie (name: "visited").
+     * </p>
+     * <p>
+     * If the specified request has not been served, appends the request URI in client cookie.
+     * </p>
+     * <p>
+     * Sees this issue (https://github.com/b3log/solo/issues/44) for more details.
+     * </p>
+     *
+     * @param request  the specified request
+     * @param response the specified response
+     * @return {@code true} if the specified request has been served, returns {@code false} otherwise
      */
-    private static final int ONLINE_VISITOR_EXPIRATION = 300000;
+    public static boolean hasBeenServed(final HttpServletRequest request, final HttpServletResponse response) {
+        final Cookie[] cookies = request.getCookies();
+        if (null == cookies || 0 == cookies.length) {
+            return false;
+        }
+
+        Cookie cookie;
+        boolean needToCreate = true;
+        boolean needToAppend = true;
+        JSONArray cookieJSONArray = null;
+
+        try {
+            for (int i = 0; i < cookies.length; i++) {
+                cookie = cookies[i];
+
+                if (!"visited".equals(cookie.getName())) {
+                    continue;
+                }
+
+                final String value = URLDecoder.decode(cookie.getValue(), "UTF-8");
+                cookieJSONArray = new JSONArray(value);
+                if (null == cookieJSONArray || 0 == cookieJSONArray.length()) {
+                    return false;
+                }
+
+                needToCreate = false;
+
+                for (int j = 0; j < cookieJSONArray.length(); j++) {
+                    final String visitedURL = cookieJSONArray.optString(j);
+
+                    if (request.getRequestURI().equals(visitedURL)) {
+                        needToAppend = false;
+                        return true;
+                    }
+                }
+            }
+
+            if (needToCreate) {
+                final StringBuilder builder = new StringBuilder("[").append("\"").append(request.getRequestURI()).append("\"]");
+                final Cookie c = new Cookie("visited", URLEncoder.encode(builder.toString(), "UTF-8"));
+                c.setMaxAge(COOKIE_EXPIRY);
+                c.setPath("/");
+                response.addCookie(c);
+            } else if (needToAppend) {
+                cookieJSONArray.put(request.getRequestURI());
+
+                final Cookie c = new Cookie("visited", URLEncoder.encode(cookieJSONArray.toString(), "UTF-8"));
+                c.setMaxAge(COOKIE_EXPIRY);
+                c.setPath("/");
+                response.addCookie(c);
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Parses cookie failed, clears the cookie[name=visited]");
+
+            final Cookie c = new Cookie("visited", null);
+            c.setMaxAge(0);
+            c.setPath("/");
+
+            response.addCookie(c);
+        }
+
+        return false;
+    }
 
     /**
      * Blog statistic view count +1.
-     *
+     * <p>
      * <p>
      * If it is a search engine bot made the specified request, will NOT increment blog statistic view count.
      * </p>
-     *
+     * <p>
      * <p>
      * There is a cron job (/console/stat/viewcnt) to flush the blog view count from cache to datastore.
      * </p>
      *
-     * @param request the specified request
+     * @param request  the specified request
      * @param response the specified response
      * @throws ServiceException service exception
      * @see Requests#searchEngineBotRequest(javax.servlet.http.HttpServletRequest)
@@ -110,7 +219,7 @@ public class StatisticMgmtService {
             return;
         }
 
-        if (Requests.hasBeenServed(request, response)) {
+        if (hasBeenServed(request, response)) {
             return;
         }
 
@@ -139,7 +248,7 @@ public class StatisticMgmtService {
             }
 
             LOGGER.log(Level.ERROR, "Updates blog view count failed", e);
-            
+
             return;
         }
 
@@ -181,7 +290,7 @@ public class StatisticMgmtService {
     /**
      * Blog statistic article count -1.
      *
-     * @throws JSONException json exception
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     public void decBlogArticleCount() throws JSONException, RepositoryException {
@@ -198,7 +307,7 @@ public class StatisticMgmtService {
     /**
      * Blog statistic published article count -1.
      *
-     * @throws JSONException json exception
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     public void decPublishedBlogArticleCount() throws JSONException, RepositoryException {
@@ -215,7 +324,7 @@ public class StatisticMgmtService {
     /**
      * Blog statistic comment count +1.
      *
-     * @throws JSONException json exception
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     public void incBlogCommentCount() throws JSONException, RepositoryException {
@@ -231,7 +340,7 @@ public class StatisticMgmtService {
     /**
      * Blog statistic comment(published article) count +1.
      *
-     * @throws JSONException json exception
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     public void incPublishedBlogCommentCount() throws JSONException, RepositoryException {
@@ -241,14 +350,14 @@ public class StatisticMgmtService {
             throw new RepositoryException("Not found statistic");
         }
         statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT,
-            statistic.getInt(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT) + 1);
+                statistic.getInt(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT) + 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
     /**
      * Blog statistic comment count -1.
      *
-     * @throws JSONException json exception
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     public void decBlogCommentCount() throws JSONException, RepositoryException {
@@ -265,7 +374,7 @@ public class StatisticMgmtService {
     /**
      * Blog statistic comment(published article) count -1.
      *
-     * @throws JSONException json exception
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     public void decPublishedBlogCommentCount() throws JSONException, RepositoryException {
@@ -276,7 +385,7 @@ public class StatisticMgmtService {
         }
 
         statistic.put(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT,
-            statistic.getInt(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT) - 1);
+                statistic.getInt(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT) - 1);
         statisticRepository.update(Statistic.STATISTIC, statistic);
     }
 
@@ -284,7 +393,7 @@ public class StatisticMgmtService {
      * Sets blog comment count with the specified count.
      *
      * @param count the specified count
-     * @throws JSONException json exception
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     public void setBlogCommentCount(final int count) throws JSONException, RepositoryException {
@@ -302,7 +411,7 @@ public class StatisticMgmtService {
      * Sets blog comment(published article) count with the specified count.
      *
      * @param count the specified count
-     * @throws JSONException json exception
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     public void setPublishedBlogCommentCount(final int count) throws JSONException, RepositoryException {
@@ -327,26 +436,6 @@ public class StatisticMgmtService {
         LOGGER.log(Level.DEBUG, "Current request [IP={0}]", remoteAddr);
 
         ONLINE_VISITORS.put(remoteAddr, System.currentTimeMillis());
-        LOGGER.log(Level.DEBUG, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
-    }
-
-    /**
-     * Removes the expired online visitor.
-     */
-    public static void removeExpiredOnlineVisitor() {
-        final long currentTimeMillis = System.currentTimeMillis();
-
-        final Iterator<Map.Entry<String, Long>> iterator = ONLINE_VISITORS.entrySet().iterator();
-
-        while (iterator.hasNext()) {
-            final Map.Entry<String, Long> onlineVisitor = iterator.next();
-
-            if (currentTimeMillis > (onlineVisitor.getValue() + ONLINE_VISITOR_EXPIRATION)) {
-                iterator.remove();
-                LOGGER.log(Level.TRACE, "Removed online visitor[ip={0}]", onlineVisitor.getKey());
-            }
-        }
-
         LOGGER.log(Level.DEBUG, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }
 

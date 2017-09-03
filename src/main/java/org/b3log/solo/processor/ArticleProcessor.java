@@ -1082,7 +1082,7 @@ public class ArticleProcessor {
             filler.fillSide(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            if (!Requests.hasBeenServed(request, response)) {
+            if (!StatisticMgmtService.hasBeenServed(request, response)) {
                 articleMgmtService.incViewCount(articleId);
             }
 
