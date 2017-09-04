@@ -14,6 +14,8 @@
 
 [Solo](https://github.com/b3log/solo) 是一款**一个命令**就能搭建好的 Java 开源博客系统，并内置了 15+ 套精心制作的皮肤。除此之外，Solo 还有着非常活跃的[社区](https://hacpai.com/b3log)，文章分享到社区后可以让很多人看到，产生丰富的交流互动。
 
+Solo 的第一个版本发布于 2010 年，至今已经非常成熟稳定，请放心使用 :smirk_cat:
+
 ## 功能 
 
 Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将只有“20%”用户使用的功能添加进来，只有这样才能保持博客系统本该有的纯净，足够轻量才能带来简约的使用体验。
@@ -81,9 +83,7 @@ JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735
 * Windows: `java -cp WEB-INF/lib/*;WEB-INF/classes org.b3log.solo.Starter`
 * Unix-like: `java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter`
 
-**更多细节请参考 [Solo 用户指南](https://hacpai.com/article/1492881378588)。**
-
-另外，如果你想用 Solo 但又不想自己维护服务器，那可以尝试购买我们搭建好的 Solo 直接[使用](http://b3log.org/services/#solo)。
+**更多细节请参考 [Solo 用户指南](https://hacpai.com/article/1492881378588)。另外，如果你想用 Solo 但又不想自己维护服务器，可以购买我们搭建好的 Solo 直接[使用](http://b3log.org/services/#solo)。**
 
 ## 文档
 
