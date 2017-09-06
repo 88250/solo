@@ -45,7 +45,7 @@ import java.net.URL;
  * This listener is responsible for sending comment to B3log Symphony.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Jul 6, 2017
+ * @version 1.0.1.0, Sep 6, 2017
  * @since 0.5.5
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -114,7 +114,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put("clientVersion", SoloServletListener.VERSION);
             requestJSONObject.put("clientRuntimeEnv", "LOCAL");
             requestJSONObject.put("clientName", "B3log Solo");
-            requestJSONObject.put("clientHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
+            requestJSONObject.put("clientHost", Latkes.getServePath());
             requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
             requestJSONObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
 

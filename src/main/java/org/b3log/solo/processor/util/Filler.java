@@ -60,7 +60,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.14.15, Aug 16, 2017
+ * @version 1.6.15.0, Sep 6, 2017
  * @since 0.3.1
  */
 @Service
@@ -589,7 +589,7 @@ public class Filler {
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
 
             dataModel.put(Option.ID_C_BLOG_TITLE, blogTitle);
-            dataModel.put("blogHost", Latkes.getServerHost() + ":" + Latkes.getServerPort());
+            dataModel.put("blogHost", Latkes.getServePath());
 
             dataModel.put(Common.VERSION, SoloServletListener.VERSION);
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
