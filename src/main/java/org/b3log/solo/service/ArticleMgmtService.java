@@ -54,7 +54,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.8, Jun 25, 2017
+ * @version 1.2.2.9, Sep 6, 2017
  * @since 0.3.5
  */
 @Service
@@ -1011,14 +1011,13 @@ public class ArticleMgmtService {
     /**
      * Removes article comments by the specified article id.
      * <p>
-     * <p> Removes related comments, sets article/blog comment statistic count.
+     * Removes related comments, sets article/blog comment statistic count.
      * </p>
      *
      * @param articleId the specified article id
-     * @throws JSONException       json exception
-     * @throws RepositoryException repository exception
+     * @throws Exception exception
      */
-    private void removeArticleComments(final String articleId) throws JSONException, RepositoryException {
+    private void removeArticleComments(final String articleId) throws Exception {
         final int removedCnt = commentRepository.removeComments(articleId);
         int blogCommentCount = statisticQueryService.getBlogCommentCount();
 
@@ -1027,7 +1026,7 @@ public class ArticleMgmtService {
 
         final JSONObject article = articleRepository.get(articleId);
 
-        if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+        if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
             int publishedBlogCommentCount = statisticQueryService.getPublishedBlogCommentCount();
 
             publishedBlogCommentCount -= removedCnt;

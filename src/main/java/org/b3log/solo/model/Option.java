@@ -203,7 +203,6 @@ public final class Option {
 
     /**
      * Key of article list display style.
-     *
      * <p>
      * Optional values:
      * <ul>
@@ -222,7 +221,6 @@ public final class Option {
 
     /**
      * Key of feed (Atom/RSS) output mode.
-     *
      * <p>
      * Optional values:
      * <ul>
@@ -240,9 +238,8 @@ public final class Option {
 
     /**
      * Key of editor type.
-     *
-     * Optional values:
      * <p>
+     * Optional values:
      * <ul>
      * <li>"tinyMCE"</li>
      * <li>"CodeMirror-Markdown"</li>
@@ -282,6 +279,31 @@ public final class Option {
      */
     public static final String ID_C_FOOTER_CONTENT = "footerContent";
 
+    /**
+     * Key of statistic blog view count.
+     */
+    public static final String ID_C_STATISTIC_BLOG_VIEW_COUNT = "statisticBlogViewCount";
+
+    /**
+     * Key of statistic blog comment count.
+     */
+    public static final String ID_C_STATISTIC_BLOG_COMMENT_COUNT = "statisticBlogCommentCount";
+
+    /**
+     * Key of statistic blog comment(published article) count.
+     */
+    public static final String ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT = "statisticPublishedBlogCommentCount";
+
+    /**
+     * Key of statistic blog article count.
+     */
+    public static final String ID_C_STATISTIC_BLOG_ARTICLE_COUNT = "statisticBlogArticleCount";
+
+    /**
+     * Key of statistic blog published article count.
+     */
+    public static final String ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT = "statisticPublishedBlogArticleCount";
+
     // Category constants
     /**
      * Broadcast.
@@ -299,6 +321,17 @@ public final class Option {
     public static final String CATEGORY_C_PREFERENCE = "preference";
 
     /**
+     * Statistic.
+     */
+    public static final String CATEGORY_C_STATISTIC = "statistic";
+
+    /**
+     * Private constructor.
+     */
+    private Option() {
+    }
+
+    /**
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -306,11 +339,6 @@ public final class Option {
      * @since 0.3.1
      */
     public static final class DefaultPreference {
-
-        /**
-         * Logger.
-         */
-        private static final Logger LOGGER = Logger.getLogger(DefaultPreference.class);
 
         /**
          * Default recent article display count.
@@ -469,34 +497,35 @@ public final class Option {
          */
         public static final String DEFAULT_EDITOR_TYPE = "CodeMirror-Markdown";
 
+        /**
+         * Logger.
+         */
+        private static final Logger LOGGER = Logger.getLogger(DefaultPreference.class);
+
         static {
             final JSONArray signs = new JSONArray();
-
             final int signLength = 4;
 
             try {
                 for (int i = 0; i < signLength; i++) {
                     final JSONObject sign = new JSONObject();
-
                     sign.put(Keys.OBJECT_ID, i);
                     signs.put(sign);
-
                     sign.put(Sign.SIGN_HTML, "");
                 }
 
-                // Sign(id=0) is the 'empty' sign, used for article user needn't
-                // a sign
+                // Sign(id=0) is the 'empty' sign, used for article user needn't a sign
                 DEFAULT_SIGNS = signs.toString();
 
                 final JSONObject replyNotificationTemplate = new JSONObject();
-
                 replyNotificationTemplate.put("subject", "${blogTitle}: New reply of your comment");
                 replyNotificationTemplate.put("body",
                         "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"
-                        + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
+                                + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
                 DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Creates sign error!", e);
+
                 throw new IllegalStateException(e);
             }
         }
@@ -506,11 +535,5 @@ public final class Option {
          */
         private DefaultPreference() {
         }
-    }
-
-    /**
-     * Private constructor.
-     */
-    private Option() {
     }
 }

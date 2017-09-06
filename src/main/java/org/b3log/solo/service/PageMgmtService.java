@@ -98,22 +98,21 @@ public class PageMgmtService {
      * Updates a page by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "page": {
-     *         "oId": "",
-     *         "pageTitle": "",
-     *         "pageContent": "",
-     *         "pageOrder": int,
-     *         "pageCommentCount": int,
-     *         "pagePermalink": "",
-     *         "pageCommentable": boolean,
-     *         "pageType": "",
-     *         "pageOpenTarget": "",
-     *         "pageEditorType": "" // optional, preference specified if not exists this key
-     *     }
-     * }, see {@link Page} for more details
-     * </pre>
-     *
+     *                          {
+     *                              "page": {
+     *                                  "oId": "",
+     *                                  "pageTitle": "",
+     *                                  "pageContent": "",
+     *                                  "pageOrder": int,
+     *                                  "pageCommentCount": int,
+     *                                  "pagePermalink": "",
+     *                                  "pageCommentable": boolean,
+     *                                  "pageType": "",
+     *                                  "pageOpenTarget": "",
+     *                                  "pageEditorType": "" // optional, preference specified if not exists this key
+     *                              }
+     *                          }, see {@link Page} for more details
+     *                          </pre>
      * @throws ServiceException service exception
      */
     public void updatePage(final JSONObject requestJSONObject) throws ServiceException {
@@ -219,19 +218,18 @@ public class PageMgmtService {
      * Adds a page with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,      <pre>
-     * {
-     *     "page": {
-     *         "pageTitle": "",
-     *         "pageContent": "",
-     *         "pageOpenTarget": "",
-     *         "pageCommentable": boolean,
-     *         "pageType": "",
-     *         "pagePermalink": "", // optional
-     *         "pageEditorType": "" // optional, preference specified if not exists this key
-     *     }
-     * }, see {@link Page} for more details
-     * </pre>
-     *
+     *                          {
+     *                              "page": {
+     *                                  "pageTitle": "",
+     *                                  "pageContent": "",
+     *                                  "pageOpenTarget": "",
+     *                                  "pageCommentable": boolean,
+     *                                  "pageType": "",
+     *                                  "pagePermalink": "", // optional
+     *                                  "pageEditorType": "" // optional, preference specified if not exists this key
+     *                              }
+     *                          }, see {@link Page} for more details
+     *                          </pre>
      * @return generated page id
      * @throws ServiceException if permalink format checks failed or persists failed
      */
@@ -307,7 +305,7 @@ public class PageMgmtService {
     /**
      * Changes the order of a page specified by the given page id with the specified direction.
      *
-     * @param pageId the given page id
+     * @param pageId    the given page id
      * @param direction the specified direction, "up"/"down"
      * @throws ServiceException service exception
      */
@@ -357,16 +355,16 @@ public class PageMgmtService {
 
     /**
      * Removes page comments by the specified page id.
-     *
+     * <p>
      * <p>
      * Removes related comments, sets page/blog comment statistic count.
      * </p>
      *
      * @param pageId the specified page id
      * @throws JSONException json exception
-     * @throws RepositoryException repository exception
+     * @throws Exception     exception
      */
-    private void removePageComments(final String pageId) throws JSONException, RepositoryException {
+    private void removePageComments(final String pageId) throws Exception {
         final int removedCnt = commentRepository.removeComments(pageId);
 
         int blogCommentCount = statisticQueryService.getBlogCommentCount();

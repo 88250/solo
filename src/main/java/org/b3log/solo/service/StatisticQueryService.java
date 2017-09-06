@@ -15,24 +15,19 @@
  */
 package org.b3log.solo.service;
 
-
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.solo.model.Statistic;
-import org.b3log.solo.repository.StatisticRepository;
-import org.json.JSONException;
+import org.b3log.solo.model.Option;
 import org.json.JSONObject;
-
 
 /**
  * Statistic query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 18, 2012
+ * @version 2.0.0.0, Sep 6, 2017
  * @since 0.5.0
  */
 @Service
@@ -44,14 +39,14 @@ public class StatisticQueryService {
     private static final Logger LOGGER = Logger.getLogger(StatisticQueryService.class);
 
     /**
-     * Statistic repository.
+     * Option query service.
      */
     @Inject
-    private StatisticRepository statisticRepository;
+    private OptionQueryService optionQueryService;
 
     /**
      * Gets the online visitor count.
-     * 
+     *
      * @return online visitor count
      */
     public static int getOnlineVisitorCount() {
@@ -62,98 +57,85 @@ public class StatisticQueryService {
      * Get blog comment count.
      *
      * @return blog comment count
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
+     * @throws ServiceException service exception
      */
-    public int getBlogCommentCount() throws JSONException, RepositoryException {
-        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
-
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
+    public int getBlogCommentCount() throws ServiceException {
+        final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT);
+        if (null == opt) {
+            throw new ServiceException("Not found statistic");
         }
 
-        return statistic.getInt(Statistic.STATISTIC_BLOG_COMMENT_COUNT);
+        return opt.optInt(Option.OPTION_VALUE);
     }
 
     /**
      * Get blog comment(published article) count.
      *
      * @return blog comment count
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
+     * @throws ServiceException service exception
      */
-    public int getPublishedBlogCommentCount() throws JSONException, RepositoryException {
-        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
-
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
+    public int getPublishedBlogCommentCount() throws ServiceException {
+        final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
+        if (null == opt) {
+            throw new ServiceException("Not found statistic");
         }
 
-        return statistic.getInt(Statistic.STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
+        return opt.optInt(Option.OPTION_VALUE);
     }
 
     /**
      * Gets blog statistic published article count.
      *
      * @return published blog article count
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
+     * @throws ServiceException service exception
      */
-    public int getPublishedBlogArticleCount() throws JSONException, RepositoryException {
-        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
-
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
+    public int getPublishedBlogArticleCount() throws ServiceException {
+        final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
+        if (null == opt) {
+            throw new ServiceException("Not found statistic");
         }
 
-        return statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT);
+        return opt.optInt(Option.OPTION_VALUE);
     }
 
     /**
      * Gets blog statistic article count.
      *
      * @return blog article count
-     * @throws JSONException json exception
-     * @throws RepositoryException repository exception
+     * @throws ServiceException service exception
      */
-    public int getBlogArticleCount() throws JSONException, RepositoryException {
-        final JSONObject statistic = statisticRepository.get(Statistic.STATISTIC);
-
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
+    public int getBlogArticleCount() throws ServiceException {
+        final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT);
+        if (null == opt) {
+            throw new ServiceException("Not found statistic");
         }
 
-        return statistic.getInt(Statistic.STATISTIC_BLOG_ARTICLE_COUNT);
+        return opt.optInt(Option.OPTION_VALUE);
     }
 
     /**
      * Gets the statistic.
-     * 
+     *
      * @return statistic, returns {@code null} if not found
      * @throws ServiceException if repository exception
      */
     public JSONObject getStatistic() throws ServiceException {
-        try {
-            final JSONObject ret = statisticRepository.get(Statistic.STATISTIC);
+        final JSONObject ret = optionQueryService.getOptions(Option.CATEGORY_C_STATISTIC);
+        if (null == ret) {
+            LOGGER.log(Level.WARN, "Can not load statistic from repository");
 
-            if (null == ret) {
-                LOGGER.log(Level.WARN, "Can not load statistic from repository");
-                return null;
-            }
-
-            return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-            throw new IllegalStateException(e);
+            return null;
         }
+
+        return ret;
     }
 
     /**
-     * Sets the statistic repository with the specified statistic repository.
-     * 
-     * @param statisticRepository the specified statistic repository
+     * Sets the option query service with the specified option query service.
+     *
+     * @param optionQueryService the specified option query service
      */
-    public void setStatisticRepository(final StatisticRepository statisticRepository) {
-        this.statisticRepository = statisticRepository;
+    public void setOptionQueryService(final OptionQueryService optionQueryService) {
+        this.optionQueryService = optionQueryService;
     }
 }

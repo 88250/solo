@@ -52,7 +52,7 @@ import java.sql.Statement;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.16, Aug 31, 2017
+ * @version 1.2.0.17, Sep 6, 2017
  * @since 1.2.0
  */
 @Service
@@ -119,6 +119,12 @@ public class UpgradeService {
     private PreferenceQueryService preferenceQueryService;
 
     /**
+     * Statistic query service.
+     */
+    @Inject
+    private StatisticQueryService statisticQueryService;
+
+    /**
      * Language service.
      */
     @Inject
@@ -170,15 +176,48 @@ public class UpgradeService {
 
         Transaction transaction = null;
         try {
+            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+            final JSONObject statistic = optionRepository.select("SELECT * FROM `" + tablePrefix + "statistic`").get(0);
+
             transaction = optionRepository.beginTransaction();
 
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
+            final JSONObject statisticBlogArticleCountOpt = new JSONObject();
+            statisticBlogArticleCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT);
+            statisticBlogArticleCountOpt.put(Option.OPTION_VALUE, statistic.optString(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT));
+            statisticBlogArticleCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(statisticBlogArticleCountOpt);
+
+            final JSONObject statisticBlogCommentCountOpt = new JSONObject();
+            statisticBlogCommentCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT);
+            statisticBlogCommentCountOpt.put(Option.OPTION_VALUE, statistic.optString(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT));
+            statisticBlogCommentCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(statisticBlogCommentCountOpt);
+
+            final JSONObject statisticBlogViewCountOpt = new JSONObject();
+            statisticBlogViewCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_VIEW_COUNT);
+            statisticBlogViewCountOpt.put(Option.OPTION_VALUE, statistic.optString(Option.ID_C_STATISTIC_BLOG_VIEW_COUNT));
+            statisticBlogViewCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(statisticBlogViewCountOpt);
+
+            final JSONObject statisticPublishedBlogArticleCountOpt = new JSONObject();
+            statisticPublishedBlogArticleCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
+            statisticPublishedBlogArticleCountOpt.put(Option.OPTION_VALUE, statistic.optString(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT));
+            statisticPublishedBlogArticleCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(statisticPublishedBlogArticleCountOpt);
+
+            final JSONObject statisticPublishedBlogCommentCountOpt = new JSONObject();
+            statisticPublishedBlogCommentCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
+            statisticPublishedBlogCommentCountOpt.put(Option.OPTION_VALUE, statistic.optString(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
+            statisticPublishedBlogCommentCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
+            optionRepository.add(statisticPublishedBlogCommentCountOpt);
+
             transaction.commit();
 
-            LOGGER.log(Level.INFO, "Updated preference");
+            dropTables();
         } catch (final Exception e) {
             if (null != transaction && transaction.isActive()) {
                 transaction.rollback();
@@ -189,6 +228,22 @@ public class UpgradeService {
         }
 
         LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
+    }
+
+    /**
+     * Drops database tables.
+     *
+     * @throws Exception exception
+     */
+    private void dropTables() throws Exception {
+        final Connection connection = Connections.getConnection();
+        final Statement statement = connection.createStatement();
+
+        final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+        statement.execute("DROP TABLE `" + tablePrefix + "statistic`;");
+        statement.close();
+        connection.commit();
+        connection.close();
     }
 
     /**

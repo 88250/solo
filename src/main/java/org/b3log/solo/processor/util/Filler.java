@@ -60,7 +60,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.15.0, Sep 6, 2017
+ * @version 1.6.15.1, Sep 6, 2017
  * @since 0.3.1
  */
 @Service
@@ -201,7 +201,7 @@ public class Filler {
             final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final JSONObject statistic = statisticQueryService.getStatistic();
-            final int publishedArticleCnt = statistic.getInt(Statistic.STATISTIC_PUBLISHED_ARTICLE_COUNT);
+            final int publishedArticleCnt = statistic.getInt(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) publishedArticleCnt / (double) pageSize);
 
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(pageCount).setFilter(
@@ -891,7 +891,7 @@ public class Filler {
             LOGGER.debug("Filling statistic....");
             final JSONObject statistic = statisticQueryService.getStatistic();
 
-            dataModel.put(Statistic.STATISTIC, statistic);
+            dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Fills statistic failed", e);
             throw new ServiceException(e);
