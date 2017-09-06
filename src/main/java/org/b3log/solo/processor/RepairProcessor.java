@@ -183,50 +183,6 @@ public class RepairProcessor {
     }
 
     /**
-     * Restores the statistics.
-     * <ul>
-     * <li>Uses the value of {@link Option#ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT} for
-     * {@link Option#ID_C_STATISTIC_BLOG_COMMENT_COUNT}</li>
-     * <li>Uses the value of {@link Option#ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT} for
-     * {@link Option#ID_C_STATISTIC_BLOG_ARTICLE_COUNT}</li>
-     * </ul>
-     *
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/fix/restore-stat.do", method = HTTPRequestMethod.GET)
-    public void restoreStat(final HTTPRequestContext context) {
-        final TextHTMLRenderer renderer = new TextHTMLRenderer();
-
-        context.setRenderer(renderer);
-
-        try {
-            final JSONObject statistic = statisticQueryService.getStatistic();
-
-            if (statistic.has(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT) && statistic.has(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT)) {
-                LOGGER.info("No need for repairing statistic");
-                renderer.setContent("No need for repairing statistic.");
-
-                return;
-            }
-
-            if (!statistic.has(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT)) {
-                statistic.put(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT, statistic.getInt(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
-            }
-
-            if (!statistic.has(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT)) {
-                statistic.put(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT, statistic.getInt(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT));
-            }
-
-            statisticMgmtService.updateStatistic(statistic);
-
-            renderer.setContent("Restores statistic succeeded.");
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-            renderer.setContent("Restores statistics failed, error msg[" + e.getMessage() + "]");
-        }
-    }
-
-    /**
      * Restores the signs of preference to default.
      *
      * @param context the specified context

@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.service;
 
-
-import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -26,6 +24,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Requests;
+import org.b3log.solo.cache.StatisticCache;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.OptionRepository;
@@ -40,7 +39,6 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 
 /**
  * Statistic management service.
@@ -95,6 +93,12 @@ public class StatisticMgmtService {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * Statistic cache.
+     */
+    @Inject
+    private StatisticCache statisticCache;
 
     /**
      * Removes the expired online visitor.
@@ -221,8 +225,7 @@ public class StatisticMgmtService {
         }
 
         final Transaction transaction = optionRepository.beginTransaction();
-        JSONObject statistic = null;
-
+        JSONObject statistic;
         try {
             statistic = optionRepository.get(Option.ID_C_STATISTIC_BLOG_VIEW_COUNT);
             if (null == statistic) {
@@ -233,7 +236,7 @@ public class StatisticMgmtService {
 
             statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
 
-            optionRepository.update(Option.ID_C_STATISTIC_BLOG_VIEW_COUNT, statistic);
+            updateStatistic(Option.ID_C_STATISTIC_BLOG_VIEW_COUNT, statistic);
 
             transaction.commit();
         } catch (final RepositoryException e) {
@@ -261,7 +264,7 @@ public class StatisticMgmtService {
         }
 
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
-        optionRepository.update(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT, statistic);
+        updateStatistic(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT, statistic);
     }
 
     /**
@@ -276,7 +279,7 @@ public class StatisticMgmtService {
         }
 
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
-        optionRepository.update(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT, statistic);
+        updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT, statistic);
     }
 
     /**
@@ -291,7 +294,7 @@ public class StatisticMgmtService {
         }
 
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) - 1);
-        optionRepository.update(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT, statistic);
+        updateStatistic(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT, statistic);
     }
 
     /**
@@ -306,7 +309,7 @@ public class StatisticMgmtService {
         }
 
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) - 1);
-        optionRepository.update(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT, statistic);
+        updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT, statistic);
     }
 
     /**
@@ -320,7 +323,7 @@ public class StatisticMgmtService {
             throw new RepositoryException("Not found statistic");
         }
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
-        optionRepository.update(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT, statistic);
+        updateStatistic(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT, statistic);
     }
 
     /**
@@ -334,7 +337,7 @@ public class StatisticMgmtService {
             throw new RepositoryException("Not found statistic");
         }
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
-        optionRepository.update(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
+        updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
     }
 
     /**
@@ -349,7 +352,7 @@ public class StatisticMgmtService {
         }
 
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) - 1);
-        optionRepository.update(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT, statistic);
+        updateStatistic(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT, statistic);
     }
 
     /**
@@ -364,7 +367,7 @@ public class StatisticMgmtService {
         }
 
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) - 1);
-        optionRepository.update(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
+        updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
     }
 
     /**
@@ -380,7 +383,7 @@ public class StatisticMgmtService {
         }
 
         statistic.put(Option.OPTION_VALUE, count);
-        optionRepository.update(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT, statistic);
+        updateStatistic(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT, statistic);
     }
 
     /**
@@ -396,7 +399,7 @@ public class StatisticMgmtService {
         }
 
         statistic.put(Option.OPTION_VALUE, count);
-        optionRepository.update(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
+        updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
     }
 
     /**
@@ -416,23 +419,13 @@ public class StatisticMgmtService {
     /**
      * Updates the statistic with the specified statistic.
      *
+     * @param id        the specified statistic id
      * @param statistic the specified statistic
-     * @throws ServiceException service exception
+     * @throws RepositoryException repository exception
      */
-    public void updateStatistic(final JSONObject statistic) throws ServiceException {
-        final Transaction transaction = optionRepository.beginTransaction();
-
-        try {
-            optionRepository.update(statistic.optString(Keys.OBJECT_ID), statistic);
-            transaction.commit();
-        } catch (final RepositoryException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LOGGER.log(Level.ERROR, "Updates statistic failed", e);
-        }
-
-        LOGGER.log(Level.DEBUG, "Updates statistic successfully");
+    private void updateStatistic(final String id, final JSONObject statistic) throws RepositoryException {
+        optionRepository.update(id, statistic);
+        statisticCache.clear();
     }
 
     /**

@@ -16,10 +16,10 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.solo.cache.StatisticCache;
 import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 
@@ -43,6 +43,12 @@ public class StatisticQueryService {
      */
     @Inject
     private OptionQueryService optionQueryService;
+
+    /**
+     * Statistic cache.
+     */
+    @Inject
+    private StatisticCache statisticCache;
 
     /**
      * Gets the online visitor count.
@@ -120,11 +126,10 @@ public class StatisticQueryService {
      * @throws ServiceException if repository exception
      */
     public JSONObject getStatistic() throws ServiceException {
-        final JSONObject ret = optionQueryService.getOptions(Option.CATEGORY_C_STATISTIC);
+        JSONObject ret = statisticCache.getStatistic();
         if (null == ret) {
-            LOGGER.log(Level.WARN, "Can not load statistic from repository");
-
-            return null;
+            ret = optionQueryService.getOptions(Option.CATEGORY_C_STATISTIC);
+            statisticCache.putStatistic(ret);
         }
 
         return ret;
