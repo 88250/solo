@@ -36,7 +36,7 @@ import java.util.Locale;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.0.9, Jul 16, 2017
+ * @version 2.3.0.10, Sep 6, 2017
  * @see #beforeClass()
  */
 public abstract class AbstractTestCase {
@@ -190,15 +190,6 @@ public abstract class AbstractTestCase {
      */
     public PluginRepository getPluginRepository() {
         return beanManager.getReference(PluginRepositoryImpl.class);
-    }
-
-    /**
-     * Gets statistic repository.
-     *
-     * @return statistic repository
-     */
-    public StatisticRepository getStatisticRepository() {
-        return beanManager.getReference(StatisticRepositoryImpl.class);
     }
 
     /**
