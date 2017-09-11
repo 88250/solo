@@ -55,15 +55,12 @@
                     <i class="icon-rss"></i> RSS
                 </a>
             </nav>
-            <#--
             <div class="fn-right">
-                <form class="form" target="_blank" action="http://zhannei.baidu.com/cse/site">
+                <form class="form" action="${servePath}/search">
                     <input placeholder="${searchLabel}" id="search" type="text" name="q"/>
                     <button type="submit"><i class="icon-search"></i></button>
-                    <input type="hidden" name="cc" value="${serverHost}">
                 </form>
             </div>
-            -->
         </div>
     </div>
 </header>
