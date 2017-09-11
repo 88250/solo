@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
@@ -25,18 +24,20 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 /**
  * {@link ArticleQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Nov 9, 2016
+ * @version 1.1.0.0, Sep 12, 2017
  */
 @Test(suiteName = "service")
 public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Init.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -55,8 +56,28 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
     }
 
     /**
+     * Search articles.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void searchKeyword() throws Exception {
+        final ArticleQueryService articleQueryService = getArticleQueryService();
+
+        JSONObject result = articleQueryService.searchKeyword("欢迎", 1, 20);
+        Assert.assertNotNull(result);
+        List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
+        Assert.assertEquals(articles.size(), 1);
+
+        result = articleQueryService.searchKeyword("不存在的", 1, 20);
+        Assert.assertNotNull(result);
+        articles = (List<JSONObject>) result.opt(Article.ARTICLES);
+        Assert.assertEquals(articles.size(), 0);
+    }
+
+    /**
      * Get Recent Articles.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
@@ -69,7 +90,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get Article.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "getRecentArticles")
@@ -88,7 +109,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get Article By Id.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "getRecentArticles")
@@ -107,7 +128,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get Article Content.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "getRecentArticles")
@@ -125,7 +146,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get Articles By Tag.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
@@ -148,7 +169,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get Archives By Archive Date.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
