@@ -124,6 +124,51 @@ public class ArticleQueryService {
     private LangPropsService langPropsService;
 
     /**
+     * Searches articles with the specified keyword.
+     *
+     * @param keyword        the specified keyword
+     * @param currentPageNum the specified current page number
+     * @param pageSize       the specified page size
+     * @return result
+     * @throws ServiceException service exception
+     */
+    public JSONObject searchKeyword(final String keyword, final int currentPageNum, final int pageSize)
+            throws ServiceException {
+        final JSONObject ret = new JSONObject();
+        ret.put(Article.ARTICLES, (Object) Collections.emptyList());
+
+        final JSONObject pagination = new JSONObject();
+        ret.put(Pagination.PAGINATION, pagination);
+        pagination.put(Pagination.PAGINATION_PAGE_COUNT, 0);
+        pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) Collections.emptyList());
+
+        try {
+            final Query query = new Query().setFilter(CompositeFilterOperator.or(
+                    new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
+                    new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%")
+            )).setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+
+            final JSONObject result = articleRepository.get(query);
+
+            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final int windowSize = preference.optInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
+
+            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
+            ret.put(Article.ARTICLES, (Object) articles);
+
+            return ret;
+        } catch (final RepositoryException | ServiceException e) {
+            LOGGER.log(Level.ERROR, "Searches articles error", e);
+
+            throw new ServiceException(e);
+        }
+    }
+
+    /**
      * Gets category articles.
      *
      * @param categoryId     the specified category id
