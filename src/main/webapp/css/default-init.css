@@ -18,13 +18,8 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 1.0.2.8, May 13, 2017
+* @version 1.1.0.0, Sep 12, 2017
 */
-
-html {
-    height: 100%;
-}
-
 html,body {
     margin: 0;
     padding: 0;
@@ -496,7 +491,9 @@ button:active {
         width: auto;
     }
 
-    .logo {
+    .logo,
+    .search__header img,
+    .search__header > .fn-right {
         display: none;
     }
 
@@ -523,6 +520,32 @@ button:active {
         padding: 0 20px;
         box-sizing: border-box;
         left: 0;
+    }
+
+    .search__input {
+        float: none;
+    }
+
+    .search__input input {
+        margin: 0;
+    }
+
+    .search__input button {
+        position: absolute;
+        right: 20px;
+        height: 32px;
+        line-height: 16px;
+    }
+
+    .search {
+        padding: 20px;
+        width: 100%;
+        min-height: auto;
+        box-sizing: border-box;
+    }
+
+    .search__articles {
+        width: auto;
     }
 }
 /* end responsive */
