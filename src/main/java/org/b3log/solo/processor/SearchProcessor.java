@@ -118,6 +118,11 @@ public class SearchProcessor {
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
+
+            filler.fillBlogHeader(request, context.getResponse(), dataModel, preference);
+            filler.fillBlogFooter(request, dataModel, preference);
+            filler.fillSide(request, dataModel, preference);
+
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(request, articles, preference);
