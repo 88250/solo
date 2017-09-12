@@ -194,29 +194,15 @@ button:active {
 /* end article-pwd */
 
 /* start 403/404/500 */
-.a-403, .a-500, .a-404 {
-    margin: 20px 50px 0 0 ;
+.a-error {
     text-align: right;
 }
 
-.a-403 {
-    margin: 10px 75px 0 0 ;
-}
-
-.img-500,
-.img-403,
-.img-404 {
+.img-error {
     max-width: 100%;
-    margin: 20px 0 ;
+    margin: 20px auto;
     padding: 0;
-}
-
-.a-500 {
-    margin: 25px 35px 0 0 ;
-}
-
-.a-404 {
-    margin: 42px 35px 0 0;
+    display: block;
 }
 /* end 403/404/500 */
 
