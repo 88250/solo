@@ -123,6 +123,22 @@ button:active {
     overflow: hidden;
 }
 
+.fn-clear:before,
+.fn-clear:after {
+    display: table;
+    content: ""
+}
+.fn-clear:after {
+    clear: both
+}
+.fn-left {
+    float: left
+}
+
+.fn-right {
+    float: right;
+}
+
 .none {
     display: none;
 }
@@ -260,6 +276,215 @@ button:active {
     margin-left: 10px;
 }
 /* end init */
+
+/* start search */
+.content-reset {
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+    word-wrap: break-word;
+    overflow: auto;
+    line-height: 1.5;
+    font-size: 13px;
+    word-break: break-all;
+    color: #545454;
+}
+
+.content-reset ul,
+.content-reset ol {
+    padding-left: 2em;
+    margin-top: 0;
+    margin-bottom: 16px
+}
+.content-reset li {
+    margin-top: 0.25em
+}
+.content-reset h1,
+.content-reset h2,
+.content-reset h3,
+.content-reset h4,
+.content-reset h5,
+.content-reset h6 {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    line-height: 1.25
+}
+.content-reset h1 {
+    padding-bottom: 0.3em;
+    font-size: 2em;
+    border-bottom: 1px solid #eee
+}
+.content-reset h2 {
+    padding-bottom: 0.3em;
+    font-size: 1.5em;
+    border-bottom: 1px solid #eee
+}
+.content-reset h3 {
+    font-size: 1.25em
+}
+.content-reset h4 {
+    font-size: 1em
+}
+.content-reset h5 {
+    font-size: 0.875em
+}
+.content-reset h6 {
+    font-size: 0.85em
+}
+.content-reset hr {
+    height: 2px;
+    padding: 0;
+    margin: 5px 0;
+    background-color: #e7e7e7;
+    border: 0
+}
+.content-reset p {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.content-reset blockquote {
+    padding: 0 1em;
+    color: #777;
+    border-left: 0.25em solid #ddd;
+    margin-bottom: 16px
+}
+.content-reset blockquote p {
+    margin: 0
+}
+.content-reset iframe {
+    border: 1px solid #ccc
+}
+.content-reset table {
+    width: 100%;
+    border: 1px solid #dedede;
+    margin: 15px auto;
+    border-collapse: collapse;
+    empty-cells: show
+}
+.content-reset thead {
+    text-align: center
+}
+.content-reset td,
+.content-reset th {
+    height: 35px;
+    border: 1px solid #dedede;
+    padding: 0 10px
+}
+.content-reset th {
+    font-weight: bold;
+    text-align: center !important;
+    background: rgba(158, 188, 226, 0.2)
+}
+.content-reset tbody tr:nth-child(2n) {
+    background: rgba(158, 188, 226, 0.12)
+}
+.content-reset tr:hover {
+    background: #efefef
+}
+.content-reset code {
+    padding: 0.2em 0.4em;
+    margin: 0;
+    font-size: 85%;
+    background-color: rgba(252, 41, 41, 0.12);
+    border-radius: 3px;
+    color: #d23f31;
+    font-family: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace
+}
+.content-reset pre>code {
+    padding: 0.5em;
+    border-radius: 0;
+    color: #333;
+    background-color: rgba(0, 0, 0, 0.04);
+    background-size: 20px 20px;
+    border-radius: 5px
+}
+.content-reset kbd {
+    display: inline-block;
+    padding: 3px 5px;
+    font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+    line-height: 10px;
+    color: #555;
+    vertical-align: middle;
+    background-color: #fcfcfc;
+    border: solid 1px #ccc;
+    border-bottom-color: #bbb;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 #bbb
+}
+
+.search {
+    border-top: 5px solid #e6e5d9;
+    background-color: #f3f1e5;
+    padding: 20px 0 20px 84px;
+    min-height: 480px;
+}
+
+.search__header {
+    margin: 20px;
+}
+
+.search__header a {
+    line-height: 44px;
+}
+
+.search__input input {
+    margin: 0 10px 0 20px;
+    height: 32px;
+    line-height: 32px;
+    float: left;
+    font-size: 16px;
+    padding: 5px 10px;
+}
+
+.search__input button {
+    height: 44px;
+    margin: 0;
+    float: left;
+}
+
+.search__articles {
+    width: 600px;
+}
+
+.search__articles header h1 {
+    margin: 0;
+}
+
+.search__articles header h1 > a {
+    font-size: 18px;
+    text-decoration: none;
+    font-weight: normal;
+}
+
+.search__articles .meta {
+    font-size: 14px;
+    color: #999;
+}
+
+.search__articles footer {
+    margin-bottom: 30px;
+}
+
+.search__articles footer a {
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.search__articles footer a:hover,
+.search__articles header h1 > a:hover,
+.search__pagination a:hover {
+    text-decoration: underline;
+}
+
+.search__pagination a {
+    color: #4285f4;
+    text-decoration: none;
+}
+
+.search__pagination a,
+.search__pagination span {
+    margin-right: 5px;
+}
+/* end search */
 
 /* start responsive */
 @media (max-width: 780px) {

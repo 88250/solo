@@ -47,6 +47,7 @@ import java.util.Map;
  * Search processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.0.0.0, Sep 12, 2017
  * @since 2.4.0
  */
@@ -109,11 +110,12 @@ public class SearchProcessor {
         if (!Strings.isNumeric(page)) {
             page = "1";
         }
+        final int pageNum = Integer.valueOf(page);
         String keyword = request.getParameter(Common.KEYWORD);
         keyword = Jsoup.clean(keyword, Whitelist.none());
 
         dataModel.put(Common.KEYWORD, keyword);
-        final JSONObject result = articleQueryService.searchKeyword(keyword, Integer.valueOf(page), 15);
+        final JSONObject result = articleQueryService.searchKeyword(keyword, pageNum, 15);
         final List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
 
         try {
@@ -133,7 +135,9 @@ public class SearchProcessor {
             }
 
             dataModel.put(Article.ARTICLES, articles);
-            dataModel.put(Pagination.PAGINATION, result.opt(Pagination.PAGINATION));
+            final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
+            pagination.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, pageNum);
+            dataModel.put(Pagination.PAGINATION, pagination);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Search articles failed");
 
