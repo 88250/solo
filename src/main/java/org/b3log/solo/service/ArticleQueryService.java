@@ -122,7 +122,7 @@ public class ArticleQueryService {
      */
     @Inject
     private LangPropsService langPropsService;
-
+    
     /**
      * Searches articles with the specified keyword.
      *
@@ -130,10 +130,8 @@ public class ArticleQueryService {
      * @param currentPageNum the specified current page number
      * @param pageSize       the specified page size
      * @return result
-     * @throws ServiceException service exception
      */
-    public JSONObject searchKeyword(final String keyword, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public JSONObject searchKeyword(final String keyword, final int currentPageNum, final int pageSize) {
         final JSONObject ret = new JSONObject();
         ret.put(Article.ARTICLES, (Object) Collections.emptyList());
 
@@ -159,13 +157,11 @@ public class ArticleQueryService {
 
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             ret.put(Article.ARTICLES, (Object) articles);
-
-            return ret;
         } catch (final RepositoryException | ServiceException e) {
             LOGGER.log(Level.ERROR, "Searches articles error", e);
-
-            throw new ServiceException(e);
         }
+
+        return ret;
     }
 
     /**
