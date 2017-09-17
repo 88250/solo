@@ -100,6 +100,7 @@ public final class Starter {
         options.addOption(runtimeModeOpt);
 
         options.addOption("h", "help", false, "print help for the command");
+        options.addOption("no", "not_open", false, "not auto open in the browser");
 
         final HelpFormatter helpFormatter = new HelpFormatter();
         final CommandLineParser commandLineParser = new DefaultParser();
@@ -180,7 +181,9 @@ public final class Starter {
         final String contextPath = Latkes.getContextPath();
 
         try {
-            Desktop.getDesktop().browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath));
+            if (!commandLine.hasOption("no")) {
+                Desktop.getDesktop().browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath));
+            }
         } catch (final Throwable e) {
             // Ignored
         }
