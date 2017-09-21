@@ -61,7 +61,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.14, Sep 6, 2017
+ * @version 1.5.2.15, Sep 21, 2017
  * @since 0.4.0
  */
 @Service
@@ -201,7 +201,7 @@ public class InitService {
             return;
         }
 
-        LOGGER.log(Level.INFO, "Solo is running with database [{0}], creates all tables", Latkes.getRuntimeDatabase());
+        LOGGER.log(Level.DEBUG, "Solo is running with database [{0}], creates all tables", Latkes.getRuntimeDatabase());
 
         if (Latkes.RuntimeDatabase.H2 == Latkes.getRuntimeDatabase()) {
             String dataDir = Latkes.getLocalProperty("jdbc.URL");

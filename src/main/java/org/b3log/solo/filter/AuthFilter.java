@@ -36,7 +36,7 @@ import java.io.IOException;
  * Authentication filter.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jul 10, 2013
+ * @version 1.0.0.5, Sep 21, 2017
  * @since 0.3.1
  */
 public final class AuthFilter implements Filter {
@@ -47,21 +47,21 @@ public final class AuthFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(AuthFilter.class);
 
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {}
+    public void init(final FilterConfig filterConfig) throws ServletException {
+    }
 
     /**
-     * If the specified request is NOT made by an authenticated user, sends 
-     * error 403.
+     * If the specified request is NOT made by an authenticated user, sends error 403.
      *
-     * @param request the specified request
+     * @param request  the specified request
      * @param response the specified response
-     * @param chain filter chain
-     * @throws IOException io exception
+     * @param chain    filter chain
+     * @throws IOException      io exception
      * @throws ServletException servlet exception
      */
     @Override
-    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException,
-            ServletException {
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
+            throws IOException, ServletException {
         final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 
@@ -73,16 +73,14 @@ public final class AuthFilter implements Filter {
             userMgmtService.tryLogInWithCookie(httpServletRequest, httpServletResponse);
 
             final JSONObject currentUser = userQueryService.getCurrentUser(httpServletRequest);
-
             if (null == currentUser) {
-                LOGGER.warn("The request has been forbidden");
+                LOGGER.debug("The request has been forbidden");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                 return;
             }
 
             final String userRole = currentUser.optString(User.USER_ROLE);
-
             if (Role.VISITOR_ROLE.equals(userRole)) {
                 LOGGER.warn("The request [Visitor] has been forbidden");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -99,5 +97,6 @@ public final class AuthFilter implements Filter {
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }
