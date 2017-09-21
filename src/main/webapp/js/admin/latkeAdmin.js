@@ -2127,7 +2127,7 @@ admin.register["draft-list"] =  {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.5, Apr 9, 2017
+ * @version 1.2.3.6, Sep 21, 2017
  */
 
 /* page-list 相关操作 */
@@ -2262,7 +2262,11 @@ admin.pageList = {
                                     </div>';
                     }
 
-                    pageData[i].pageTitle = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>" +
+                    var pageIcon = '';
+                    if (pages[i].pageIcon !== '') {
+                      pageIcon = "<img class='navigation-icon' src='" + pages[i].pageIcon + "'/> ";
+                    }
+                    pageData[i].pageTitle = pageIcon + "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>" +
                             pages[i].pageTitle + "</a>";
                     pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                             + pages[i].pagePermalink + "</a>";
@@ -2305,6 +2309,7 @@ admin.pageList = {
                 $("#pageTitle").val(result.page.pageTitle);
                 $("#pagePermalink").val(result.page.pagePermalink);
                 $("#pageTarget").val(result.page.pageOpenTarget);
+                $("#pageIcon").val(result.page.pageIcon);
                 if (result.page.pageType === "page") {
                     $($(".fn-type").get(1)).click();
                 } else {
@@ -2387,7 +2392,8 @@ admin.pageList = {
                     "pagePermalink": pagePermalink,
                     "pageCommentable": $("#pageCommentable").prop("checked"),
                     "pageType": admin.pageList.type,
-                    "pageOpenTarget": $("#pageTarget").val()
+                    "pageOpenTarget": $("#pageTarget").val(),
+                    "pageIcon": $("#pageIcon").val()
                 }
             };
 
@@ -2406,6 +2412,7 @@ admin.pageList = {
                     admin.pageList.id = "";
                     $("#pagePermalink").val("");
                     $("#pageTitle").val("");
+                    $("#pageIcon").val("");
                     $("#pageCommentable").prop("cheked", false);
                     $("#pageTarget").val("_self");
                     $($(".fn-type").get(0)).click();
@@ -2453,7 +2460,8 @@ admin.pageList = {
                     "pageCommentable": $("#pageCommentable").prop("checked"),
                     "pageType": admin.pageList.type,
                     "pageOpenTarget": $("#pageTarget").val(),
-                    "pageEditorType": admin.pageList.currentEditorType
+                    "pageEditorType": admin.pageList.currentEditorType,
+                    "pageIcon": $("#pageIcon").val()
                 }
             };
 
@@ -2473,6 +2481,7 @@ admin.pageList = {
 
                     admin.pageList.getList(admin.pageList.pageInfo.currentPage);
                     $("#pageTitle").val("");
+                    $("#pageIcon").val("");
                     $("#pagePermalink").val("");
                     $("#pageCommentable").prop("cheked", false);
                     $("#pageTarget").val("_self");
