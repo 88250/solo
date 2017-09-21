@@ -65,7 +65,7 @@ import java.util.Map;
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.1.9, Aug 13, 2017
+ * @version 1.1.1.10, Sep 21, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -200,8 +200,6 @@ public class LoginProcessor {
             if (Strings.isEmptyOrNull(userEmail) || Strings.isEmptyOrNull(userPwd)) {
                 return;
             }
-
-            LOGGER.log(Level.INFO, "Login[email={0}]", userEmail);
 
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
             if (null == user) {
