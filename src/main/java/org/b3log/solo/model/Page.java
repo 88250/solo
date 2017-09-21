@@ -15,12 +15,11 @@
  */
 package org.b3log.solo.model;
 
-
 /**
  * This class defines all page model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Apr 29, 2012
+ * @version 1.1.0.0, Sep 21, 2017
  * @since 0.3.1
  */
 public final class Page {
@@ -72,36 +71,34 @@ public final class Page {
 
     /**
      * Key of page type.
-     * 
      * <p>
      * Available values:
-     *   <ul>
-     *     <li>link</li>
-     *     No contents (pageContent), if users clicked, just jump to the given address specified by the permalink.
-     *     <li>page</li>
-     *     A normal customized page.
-     *   </ul>
+     * <ul>
+     * <li>link</li>
+     * No contents (pageContent), if users clicked, just jump to the given address specified by the permalink.
+     * <li>page</li>
+     * A normal customized page.
+     * </ul>
      * </p>
      */
     public static final String PAGE_TYPE = "pageType";
 
     /**
      * Key of open target.
-     * 
      * <p>
-     * Available values: 
-     *   <ul>
-     *     <li>_blank</li>
-     *     Opens the linked document in a new window or tab.
-     *     <li>_self</li>
-     *     Opens the linked document in the same frame as it was clicked (this is default).
-     *     <li>_parent</li>
-     *     Opens the linked document in the parent frame.
-     *     <li>_top</li>
-     *     Opens the linked document in the full body of the window.
-     *     <li><i>frame name</i></li>
-     *     Opens the linked document in a named frame.
-     *   </ul>
+     * Available values:
+     * <ul>
+     * <li>_blank</li>
+     * Opens the linked document in a new window or tab.
+     * <li>_self</li>
+     * Opens the linked document in the same frame as it was clicked (this is default).
+     * <li>_parent</li>
+     * Opens the linked document in the parent frame.
+     * <li>_top</li>
+     * Opens the linked document in the full body of the window.
+     * <li><i>frame name</i></li>
+     * Opens the linked document in a named frame.
+     * </ul>
      * See <a href="http://www.w3schools.com/tags/att_a_target.asp">here</a> for more details.
      * </p>
      */
@@ -109,13 +106,17 @@ public final class Page {
 
     /**
      * Key of page editor type.
-     * 
-     * @see Preference#EDITOR_TYPE
      */
     public static final String PAGE_EDITOR_TYPE = "pageEditorType";
 
     /**
+     * Key of icon URL.
+     */
+    public static final String PAGE_ICON = "pageIcon";
+
+    /**
      * Private default constructor.
      */
-    private Page() {}
+    private Page() {
+    }
 }
