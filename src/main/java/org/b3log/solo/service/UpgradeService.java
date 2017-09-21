@@ -52,7 +52,7 @@ import java.sql.Statement;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.17, Sep 6, 2017
+ * @version 1.2.0.18, Sep 12, 2017
  * @since 1.2.0
  */
 @Service
@@ -76,7 +76,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "2.2.0";
+    private static final String FROM_VER = "2.3.0";
 
     /**
      * New version.
@@ -174,12 +174,11 @@ public class UpgradeService {
     private void perform() throws Exception {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
-        Transaction transaction = null;
+        final Transaction transaction = optionRepository.beginTransaction();
         try {
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            final JSONObject statistic = optionRepository.select("SELECT * FROM `" + tablePrefix + "statistic`").get(0);
 
-            transaction = optionRepository.beginTransaction();
+            final JSONObject statistic = optionRepository.select("SELECT * FROM `" + tablePrefix + "statistic`;").get(0);
 
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
@@ -218,6 +217,7 @@ public class UpgradeService {
             transaction.commit();
 
             dropTables();
+            alterTables();
         } catch (final Exception e) {
             if (null != transaction && transaction.isActive()) {
                 transaction.rollback();
@@ -228,6 +228,22 @@ public class UpgradeService {
         }
 
         LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
+    }
+
+    /**
+     * Alters database tables.
+     *
+     * @throws Exception exception
+     */
+    private void alterTables() throws Exception {
+        final Connection connection = Connections.getConnection();
+        final Statement statement = connection.createStatement();
+
+        final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` ADD `pageIcon` VARCHAR(255) NOT NULL;");
+        statement.close();
+        connection.commit();
+        connection.close();
     }
 
     /**
