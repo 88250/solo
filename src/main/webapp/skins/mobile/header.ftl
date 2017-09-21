@@ -36,7 +36,7 @@
             <ul id="head-pages">
                 <li id="admin" data-login="${isLoggedIn?string}"><a href="${servePath}/admin-index.do#main"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Home.png" alt=""/>Admin</a></li>
                 <#list pageNavigations as page>
-                <li><a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/Apps.png" alt=""/>${page.pageTitle}</a></li>
+                <li><a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a></li>
                 </#list>           
                 <li><a rel="alternate" href="${servePath}/blog-articles-rss.do"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/RSS.png" alt="" />RSS Feed</a></li>
                 <li><a href="${servePath}/search?keyword=">Search</a></li>

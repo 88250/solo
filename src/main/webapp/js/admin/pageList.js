@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.6, Sep 21, 2017
+ * @version 1.2.3.6, Sep 21, 2017
  */
 
 /* page-list 相关操作 */
@@ -153,7 +153,11 @@ admin.pageList = {
                                     </div>';
                     }
 
-                    pageData[i].pageTitle = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>" +
+                    var pageIcon = '';
+                    if (pages[i].pageIcon !== '') {
+                      pageIcon = "<img class='navigation-icon' src='" + pages[i].pageIcon + "'/> ";
+                    }
+                    pageData[i].pageTitle = pageIcon + "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>" +
                             pages[i].pageTitle + "</a>";
                     pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                             + pages[i].pagePermalink + "</a>";
@@ -299,6 +303,7 @@ admin.pageList = {
                     admin.pageList.id = "";
                     $("#pagePermalink").val("");
                     $("#pageTitle").val("");
+                    $("#pageIcon").val("");
                     $("#pageCommentable").prop("cheked", false);
                     $("#pageTarget").val("_self");
                     $($(".fn-type").get(0)).click();

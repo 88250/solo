@@ -18,7 +18,7 @@
  * skin style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.2.1.0, Mar 14, 2017
+ * @version 0.3.9.9, Sep 21 2017
 */
 /* start common */
 html {
@@ -883,6 +883,13 @@ aside {
 .navbar button:hover {
     background-color: #e42f19;
 }
+
+.page-icon {
+    float: left;
+    height: 14px;
+    width: 14px;
+    margin: 18px 5px 0 0;
+}
 /* end header */
 
 /* start footer */
@@ -1143,6 +1150,10 @@ aside.has-toc > section:last-child {
     }
 }
 @media (max-width: 700px) {
+    .page-icon {
+        margin: 13px 3px 0 0;
+    }
+
     .wrapper {
         width: 100%;
         min-width: auto;

@@ -334,6 +334,7 @@ ul#tweets li {
     padding: 0;
     text-align: left;
     margin: 0;
+    list-style: none;
 }
 
 .dropper ul#head-account li.text {
