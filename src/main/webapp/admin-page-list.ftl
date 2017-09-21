@@ -15,6 +15,10 @@
         <input id="pagePermalink" type="text"/>
     </div>
     <div>
+        <label>${icon1Label}</label>
+        <input id="pageIcon" type="text"/>
+    </div>
+    <div>
         <label>${openMethod1Label}</label>
         <select id="pageTarget">
             <option value="_self">${targetSelfLabel}</option>

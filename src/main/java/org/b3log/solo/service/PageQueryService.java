@@ -71,7 +71,8 @@ public class PageQueryService {
      *         "pageCommentCount": int,
      *         "pageCommentable": boolean,
      *         "pageType": "",
-     *         "pageOpenTarget": ""
+     *         "pageOpenTarget": "",
+     *         "pageIcon": ""
      *     }
      * }
      * </pre>, returns {@code null} if not found
@@ -82,7 +83,6 @@ public class PageQueryService {
 
         try {
             final JSONObject page = pageRepository.get(pageId);
-
             if (null == page) {
                 return null;
             }

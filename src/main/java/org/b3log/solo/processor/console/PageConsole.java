@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  * Plugin console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Aug 9, 2012
+ * @version 1.0.0.3, Sep 21, 2017
  * @since 0.4.0
  */
 @RequestProcessor
@@ -102,7 +102,8 @@ public class PageConsole {
      *                 "pagePermalink": "",
      *                 "pageCommentable": boolean,
      *                 "pageType": "",
-     *                 "pageOpenTarget": ""
+     *                 "pageOpenTarget": "",
+     *                 "pageIcon": ""
      *                 }
      *                 }, see {@link org.b3log.solo.model.Page} for more details
      * @param response the specified http servlet response
@@ -211,7 +212,8 @@ public class PageConsole {
      *                 "pagePermalink": "" // optional,
      *                 "pageCommentable": boolean,
      *                 "pageType": "",
-     *                 "pageOpenTarget": ""
+     *                 "pageOpenTarget": "",
+     *                 "pageIcon": ""
      *                 }
      *                 }, see {@link org.b3log.solo.model.Page} for more details
      * @param response the specified http servlet response
@@ -321,6 +323,7 @@ public class PageConsole {
      *         "pageOrder": int,
      *         "pagePermalink": "",
      *         "pageCommentCount": int,
+     *         "pageIcon": ""
      *     }
      * }
      * </pre>
@@ -348,7 +351,6 @@ public class PageConsole {
             final String pageId = requestURI.substring((Latkes.getContextPath() + "/console/page/").length());
 
             final JSONObject result = pageQueryService.getPage(pageId);
-
             if (null == result) {
                 renderer.setJSONObject(QueryResults.defaultResult());
 
@@ -362,7 +364,6 @@ public class PageConsole {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
-
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -383,7 +384,8 @@ public class PageConsole {
      *         "pageTitle": "",
      *         "pageCommentCount": int,
      *         "pageOrder": int,
-     *         "pagePermalink": ""
+     *         "pagePermalink": "",
+     *         .{@link PageMgmtService...}
      *      }, ....]
      *     "sc": "GET_PAGES_SUCC"
      * }
