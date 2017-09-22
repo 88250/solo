@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
@@ -25,18 +24,20 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 /**
  * {@link PageRepositoryImpl} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, May 1, 2012
+ * @version 1.0.0.3, Sep 22, 2017
  */
 @Test(suiteName = "repository")
 public class PageRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Adds successfully.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -56,6 +57,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
         page.put(Page.PAGE_EDITOR_TYPE, "");
+        page.put(Page.PAGE_ICON, "");
 
         final Transaction transaction = pageRepository.beginTransaction();
         pageRepository.add(page);
@@ -68,7 +70,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get By Permalink.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
@@ -84,7 +86,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get Max Order.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
@@ -102,6 +104,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
         page.put(Page.PAGE_EDITOR_TYPE, "");
+        page.put(Page.PAGE_ICON, "");
 
         final Transaction transaction = pageRepository.beginTransaction();
         pageRepository.add(page);
@@ -113,7 +116,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get Under and Upper.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = {"add", "getMaxOrder"})
@@ -131,25 +134,22 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
         page.put(Page.PAGE_EDITOR_TYPE, "");
+        page.put(Page.PAGE_ICON, "");
 
         final Transaction transaction = pageRepository.beginTransaction();
         pageRepository.add(page);
         transaction.commit();
 
-        final JSONObject page2 =
-                pageRepository.getByPermalink("page2 permalink");
+        final JSONObject page2 = pageRepository.getByPermalink("page2 permalink");
         Assert.assertNotNull(page2);
 
-        final JSONObject page1 =
-                pageRepository.getUpper(page2.getString(Keys.OBJECT_ID));
+        final JSONObject page1 = pageRepository.getUpper(page2.getString(Keys.OBJECT_ID));
         Assert.assertNotNull(page1);
 
-        final JSONObject page3 =
-                pageRepository.getUnder(page2.getString(Keys.OBJECT_ID));
+        final JSONObject page3 = pageRepository.getUnder(page2.getString(Keys.OBJECT_ID));
         Assert.assertNotNull(page3);
 
-        final JSONObject notFound =
-                pageRepository.getUpper(page1.getString(Keys.OBJECT_ID));
+        final JSONObject notFound = pageRepository.getUpper(page1.getString(Keys.OBJECT_ID));
         Assert.assertNull(notFound);
 
         Assert.assertNull(pageRepository.getUpper("not found"));
@@ -158,7 +158,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get By Order.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = {"add", "getMaxOrder"})
