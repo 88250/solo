@@ -15,7 +15,7 @@
     <artifactId>solo</artifactId>
     <packaging>war</packaging>
     <name>Solo</name>
-    <version>2.3.0</version>
+    <version>2.4.0</version>
     <description>
         A blogging system written in Java, feel free to create your or your team own blog.
         一个用 Java 实现的博客系统，为你或你的团队创建个博客吧！
