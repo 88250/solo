@@ -50,7 +50,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.2, Jul 3, 2017
+ * @version 2.2.0.3, Sep 22, 2017
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -124,7 +124,8 @@ public final class Markdowns {
                 LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [flexmark] for markdown processing");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.INFO, "[marked] is not available caused by [" + e.getMessage() + "], uses built-in [flexmark] for markdown processing");
+            LOGGER.log(Level.INFO, "[marked] is not available caused by [" + e.getMessage() + "], uses built-in [flexmark] for markdown processing. " +
+                    "Reads FAQ section in user guide (https://hacpai.com/article/1492881378588) for more details.");
         }
     }
 
