@@ -52,7 +52,7 @@ import java.sql.Statement;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.18, Sep 12, 2017
+ * @version 1.2.0.19, Sep 22, 2017
  * @since 1.2.0
  */
 @Service
@@ -175,6 +175,8 @@ public class UpgradeService {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
         final Transaction transaction = optionRepository.beginTransaction();
+        final boolean isH2database = Latkes.getRuntimeDatabase() == Latkes.RuntimeDatabase.H2;
+
         try {
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
 
@@ -186,31 +188,41 @@ public class UpgradeService {
 
             final JSONObject statisticBlogArticleCountOpt = new JSONObject();
             statisticBlogArticleCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT);
-            statisticBlogArticleCountOpt.put(Option.OPTION_VALUE, statistic.optString(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT));
+            statisticBlogArticleCountOpt.put(Option.OPTION_VALUE, statistic.optString(
+                    isH2database ? Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT.toUpperCase() :
+                            Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT));
             statisticBlogArticleCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
             optionRepository.add(statisticBlogArticleCountOpt);
 
             final JSONObject statisticBlogCommentCountOpt = new JSONObject();
             statisticBlogCommentCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT);
-            statisticBlogCommentCountOpt.put(Option.OPTION_VALUE, statistic.optString(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT));
+            statisticBlogCommentCountOpt.put(Option.OPTION_VALUE, statistic.optString(
+                    isH2database ? Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT.toUpperCase() :
+                            Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT));
             statisticBlogCommentCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
             optionRepository.add(statisticBlogCommentCountOpt);
 
             final JSONObject statisticBlogViewCountOpt = new JSONObject();
             statisticBlogViewCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_VIEW_COUNT);
-            statisticBlogViewCountOpt.put(Option.OPTION_VALUE, statistic.optString(Option.ID_C_STATISTIC_BLOG_VIEW_COUNT));
+            statisticBlogViewCountOpt.put(Option.OPTION_VALUE, statistic.optString(
+                    isH2database ? Option.ID_C_STATISTIC_BLOG_VIEW_COUNT.toUpperCase() :
+                            Option.ID_C_STATISTIC_BLOG_VIEW_COUNT));
             statisticBlogViewCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
             optionRepository.add(statisticBlogViewCountOpt);
 
             final JSONObject statisticPublishedBlogArticleCountOpt = new JSONObject();
             statisticPublishedBlogArticleCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
-            statisticPublishedBlogArticleCountOpt.put(Option.OPTION_VALUE, statistic.optString(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT));
+            statisticPublishedBlogArticleCountOpt.put(Option.OPTION_VALUE, statistic.optString(
+                    isH2database ? Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT.toUpperCase() :
+                            Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT));
             statisticPublishedBlogArticleCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
             optionRepository.add(statisticPublishedBlogArticleCountOpt);
 
             final JSONObject statisticPublishedBlogCommentCountOpt = new JSONObject();
             statisticPublishedBlogCommentCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
-            statisticPublishedBlogCommentCountOpt.put(Option.OPTION_VALUE, statistic.optString(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
+            statisticPublishedBlogCommentCountOpt.put(Option.OPTION_VALUE, statistic.optString(
+                    isH2database ? Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT.toUpperCase() :
+                            Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
             statisticPublishedBlogCommentCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
             optionRepository.add(statisticPublishedBlogCommentCountOpt);
 
