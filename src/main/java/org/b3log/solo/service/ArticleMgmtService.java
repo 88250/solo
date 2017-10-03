@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -49,12 +48,11 @@ import java.util.List;
 
 import static org.b3log.solo.model.Article.*;
 
-
 /**
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.9, Sep 6, 2017
+ * @version 1.2.2.10, Oct 3, 2017
  * @since 0.3.5
  */
 @Service
@@ -363,11 +361,8 @@ public class ArticleMgmtService {
 
             // Update
             final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
-
             article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
-
             articleRepository.update(articleId, article);
-
             article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
 
             if (publishNewArticle) {
@@ -439,15 +434,11 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public String addArticle(final JSONObject requestJSONObject) throws ServiceException {
-        // TODO: add article args check
-
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
             final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
-
             final String ret = addArticleInternal(article);
-
             transaction.commit();
 
             return ret;
@@ -665,7 +656,6 @@ public class ArticleMgmtService {
 
         try {
             article.put(Article.ARTICLE_VIEW_COUNT, article.getInt(Article.ARTICLE_VIEW_COUNT) + 1);
-
             articleRepository.update(articleId, article);
 
             transaction.commit();
