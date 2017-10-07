@@ -893,7 +893,6 @@ public class ArticleMgmtService {
     /**
      * Removes tag-article relations by the specified article id and tag ids of the relations to be removed.
      * <p>
-     * <p>
      * Removes all relations if not specified the tag ids.
      * </p>
      *
