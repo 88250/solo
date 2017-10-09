@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.0.0, Sep 13, 2017
+ * @version 1.3.1.0, Oct 9, 2017
  * @since 0.3.5
  */
 @Service
@@ -141,10 +141,13 @@ public class ArticleQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) Collections.emptyList());
 
         try {
-            final Query query = new Query().setFilter(CompositeFilterOperator.or(
-                    new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
-                    new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%")
-            )).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+            final Query query = new Query().setFilter(
+                    CompositeFilterOperator.and(
+                            new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true),
+                            CompositeFilterOperator.or(
+                                    new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
+                                    new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%"))
+                    )).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize);
 
             final JSONObject result = articleRepository.get(query);
 
