@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -48,7 +49,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.0.0, Sep 12, 2017
+ * @version 1.0.1.0, Oct 11, 2017
  * @since 2.4.0
  */
 @RequestProcessor
@@ -112,6 +113,9 @@ public class SearchProcessor {
         }
         final int pageNum = Integer.valueOf(page);
         String keyword = request.getParameter(Common.KEYWORD);
+        if (StringUtils.isBlank(keyword)) {
+            keyword = "";
+        }
         keyword = Jsoup.clean(keyword, Whitelist.none());
 
         dataModel.put(Common.KEYWORD, keyword);
