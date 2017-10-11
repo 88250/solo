@@ -28,7 +28,7 @@
 </div>
 <div class="footerWrapper">
     <div class="footer">
-        Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • Solo ${version}
+        Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="https://hacpai.com/tag/Solo" target="_blank">Solo</a> ${version}
     </div>
 </div>
 </body>
