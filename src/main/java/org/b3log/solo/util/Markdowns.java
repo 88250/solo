@@ -50,7 +50,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.3, Sep 22, 2017
+ * @version 2.2.0.4, Oct 18, 2017
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -63,8 +63,7 @@ public final class Markdowns {
     /**
      * Language service.
      */
-    private static final LangPropsService LANG_PROPS_SERVICE
-            = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
+    private static final LangPropsService LANG_PROPS_SERVICE = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
 
     /**
      * Markdown to HTML timeout.
@@ -125,7 +124,7 @@ public final class Markdowns {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.INFO, "[marked] is not available caused by [" + e.getMessage() + "], uses built-in [flexmark] for markdown processing. " +
-                    "Reads FAQ section in user guide (https://hacpai.com/article/1492881378588) for more details.");
+                    "Reads FAQ section \"如何获得更好的 Markdown 渲染效果？\" in user guide (https://hacpai.com/article/1492881378588) for more details.");
         }
     }
 
