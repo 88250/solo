@@ -14,7 +14,9 @@
             <div class="main-wrap">
                 <main>
                     <article class="post">
+                        <div class="content-reset">
                         ${page.pageContent}
+                        </div>
                         <@comments commentList=pageComments article=page></@comments>
                     </article>
                 </main>
