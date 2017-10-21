@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -62,7 +61,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.0.7, Aug 13, 2017
+ * @version 1.1.0.8, Oct 21, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -129,10 +128,10 @@ public class FeedProcessor {
             final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE);
             final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
 
-            feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
-            feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
+            feed.setTitle(blogTitle);
+            feed.setSubtitle(blogSubtitle);
             feed.setUpdated(new Date());
-            feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
+            feed.setAuthor(blogTitle);
             feed.setLink(Latkes.getServePath() + "/blog-articles-feed.do");
             feed.setId(Latkes.getServePath() + "/");
 
@@ -177,10 +176,10 @@ public class FeedProcessor {
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.getJSONObject(i);
         final Entry ret = new Entry();
-        final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
+        final String title = article.getString(Article.ARTICLE_TITLE);
         ret.setTitle(title);
-        final String summary = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+        final String summary = isFullContent ? article.getString(Article.ARTICLE_CONTENT)
+                : article.optString(Article.ARTICLE_ABSTRACT);
         ret.setSummary(summary);
         final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
         ret.setUpdated(updated);
@@ -188,7 +187,7 @@ public class FeedProcessor {
         ret.setLink(link);
         ret.setId(link);
         if (hasMultipleUsers) {
-            authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
+            authorName = articleQueryService.getAuthor(article).getString(User.USER_NAME);
         }
         ret.setAuthor(authorName);
         final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
@@ -246,10 +245,10 @@ public class FeedProcessor {
             final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE) + ", " + tagTitle;
             final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
 
-            feed.setTitle(StringEscapeUtils.escapeXml(blogTitle));
-            feed.setSubtitle(StringEscapeUtils.escapeXml(blogSubtitle));
+            feed.setTitle(blogTitle);
+            feed.setSubtitle(blogSubtitle);
             feed.setUpdated(new Date());
-            feed.setAuthor(StringEscapeUtils.escapeXml(blogTitle));
+            feed.setAuthor(blogTitle);
             feed.setLink(Latkes.getServePath() + "/tag-articles-feed.do");
             feed.setId(Latkes.getServePath() + "/");
 
@@ -305,10 +304,10 @@ public class FeedProcessor {
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.get(i);
         final Entry ret = new Entry();
-        final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
+        final String title = article.getString(Article.ARTICLE_TITLE);
         ret.setTitle(title);
-        final String summary = isFullContent ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+        final String summary = isFullContent ? article.getString(Article.ARTICLE_CONTENT)
+                : article.optString(Article.ARTICLE_ABSTRACT);
         ret.setSummary(summary);
         final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
         ret.setUpdated(updated);
@@ -316,7 +315,7 @@ public class FeedProcessor {
         ret.setLink(link);
         ret.setId(link);
         if (hasMultipleUsers) {
-            authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
+            authorName = articleQueryService.getAuthor(article).getString(User.USER_NAME);
         }
         ret.setAuthor(authorName);
         final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
@@ -354,7 +353,7 @@ public class FeedProcessor {
             final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE);
             final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
 
-            channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
+            channel.setTitle(blogTitle);
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/blog-articles-rss.do");
@@ -407,11 +406,11 @@ public class FeedProcessor {
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.getJSONObject(i);
         final Item ret = new Item();
-        final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
+        final String title = article.getString(Article.ARTICLE_TITLE);
         ret.setTitle(title);
         final String description = isFullContent
-                ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+                ? article.getString(Article.ARTICLE_CONTENT)
+                : article.optString(Article.ARTICLE_ABSTRACT);
         ret.setDescription(description);
         final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
         ret.setPubDate(pubDate);
@@ -419,7 +418,7 @@ public class FeedProcessor {
         ret.setLink(link);
         ret.setGUID(link);
         if (hasMultipleUsers) {
-            authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
+            authorName = articleQueryService.getAuthor(article).getString(User.USER_NAME);
         }
         ret.setAuthor(authorName);
         final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
@@ -477,7 +476,7 @@ public class FeedProcessor {
             final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE) + ", " + tagTitle;
             final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
 
-            channel.setTitle(StringEscapeUtils.escapeXml(blogTitle));
+            channel.setTitle(blogTitle);
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/tag-articles-rss.do");
@@ -541,11 +540,11 @@ public class FeedProcessor {
             throws org.json.JSONException, org.b3log.latke.service.ServiceException {
         final JSONObject article = articles.get(i);
         final Item ret = new Item();
-        final String title = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
+        final String title = article.getString(Article.ARTICLE_TITLE);
         ret.setTitle(title);
         final String description = isFullContent
-                ? StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_CONTENT))
-                : StringEscapeUtils.escapeXml(article.optString(Article.ARTICLE_ABSTRACT));
+                ? article.getString(Article.ARTICLE_CONTENT)
+                : article.optString(Article.ARTICLE_ABSTRACT);
         ret.setDescription(description);
         final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
         ret.setPubDate(pubDate);
@@ -554,7 +553,7 @@ public class FeedProcessor {
         ret.setGUID(link);
         final String authorEmail = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
         if (hasMultipleUsers) {
-            authorName = StringEscapeUtils.escapeXml(articleQueryService.getAuthor(article).getString(User.USER_NAME));
+            authorName = articleQueryService.getAuthor(article).getString(User.USER_NAME);
         }
         ret.setAuthor(authorEmail + "(" + authorName + ")");
         final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
