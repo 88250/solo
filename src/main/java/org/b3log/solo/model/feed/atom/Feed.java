@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.model.feed.atom;
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -26,9 +24,13 @@ import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -188,16 +190,14 @@ public final class Feed {
         try {
             final DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             final Document doc = db.parse(new InputSource(new StringReader(xml)));
+            final Transformer transformer = TransformerFactory.newInstance().newTransformer();
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+            final StreamResult result = new StreamResult(new StringWriter());
+            final DOMSource source = new DOMSource(doc);
+            transformer.transform(source, result);
 
-            final OutputFormat format = new OutputFormat(doc);
-            format.setIndenting(true);
-            format.setIndent(2);
-            format.setLineWidth(Integer.MAX_VALUE);
-            final Writer outxml = new StringWriter();
-            final XMLSerializer serializer = new XMLSerializer(outxml, format);
-            serializer.serialize(doc);
-
-            return outxml.toString();
+            return result.getWriter().toString();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "format pretty XML failed", e);
 
