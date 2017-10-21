@@ -135,7 +135,7 @@ public class FeedProcessor {
             feed.setLink(Latkes.getServePath() + "/blog-articles-feed.do");
             feed.setId(Latkes.getServePath() + "/");
 
-            final List<Filter> filters = new ArrayList<Filter>();
+            final List<Filter> filters = new ArrayList<>();
 
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
@@ -195,8 +195,7 @@ public class FeedProcessor {
         for (final String tagString : tagStrings) {
             final Category catetory = new Category();
             ret.addCatetory(catetory);
-            final String tag = tagString;
-            catetory.setTerm(tag);
+            catetory.setTerm(tagString);
         }
 
         return ret;
@@ -260,7 +259,7 @@ public class FeedProcessor {
                 return;
             }
 
-            final List<JSONObject> articles = new ArrayList<JSONObject>();
+            final List<JSONObject> articles = new ArrayList<>();
 
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation = tagArticleRelations.getJSONObject(i);
@@ -365,7 +364,7 @@ public class FeedProcessor {
             channel.setLanguage(language + '-' + country);
             channel.setDescription(blogSubtitle);
 
-            final List<Filter> filters = new ArrayList<Filter>();
+            final List<Filter> filters = new ArrayList<>();
 
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
@@ -426,8 +425,7 @@ public class FeedProcessor {
         for (final String tagString : tagStrings) {
             final org.b3log.solo.model.feed.rss.Category catetory = new org.b3log.solo.model.feed.rss.Category();
             ret.addCatetory(catetory);
-            final String tag = tagString;
-            catetory.setTerm(tag);
+            catetory.setTerm(tagString);
         }
 
         return ret;
@@ -496,7 +494,7 @@ public class FeedProcessor {
                 return;
             }
 
-            final List<JSONObject> articles = new ArrayList<JSONObject>();
+            final List<JSONObject> articles = new ArrayList<>();
 
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation = tagArticleRelations.getJSONObject(i);
