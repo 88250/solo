@@ -15,22 +15,32 @@
  */
 package org.b3log.solo.model.feed.rss;
 
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.solo.processor.FeedProcessor;
+import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * RSS 2.0 channel.
- *
  * <p>
- * See <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 at Harvard Law</a>
- * for more details.
+ * See <a href="http://cyber.law.harvard.edu/rss/rss.html">RSS 2.0 at Harvard Law</a> for more details.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Nov 4, 2016
+ * @version 1.1.0.3, Oct 21, 2017
  * @see Item
  * @see Category
  * @since 0.3.1
@@ -38,49 +48,14 @@ import java.util.List;
 public final class Channel {
 
     /**
-     * Title.
-     */
-    private String title;
-
-    /**
-     * Link.
-     */
-    private String link;
-
-    /**
-     * Atom link.
-     */
-    private String atomLink;
-
-    /**
-     * Description.
-     */
-    private String description;
-
-    /**
-     * Generator.
-     */
-    private String generator;
-
-    /**
-     * Last build date.
-     */
-    private Date lastBuildDate;
-
-    /**
-     * Language.
-     */
-    private String language;
-
-    /**
-     * Items.
-     */
-    private List<Item> items = new ArrayList<>();
-
-    /**
      * Time zone id.
      */
     public static final String TIME_ZONE_ID = "Asia/Shanghai";
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(FeedProcessor.class);
 
     /**
      * Start.
@@ -165,12 +140,71 @@ public final class Channel {
     private static final String END_LAST_BUILD_DATE_ELEMENT = "</lastBuildDate>";
 
     /**
-     * Sets the atom link with the specified atom link.
-     *
-     * @param atomLink the specified atom link
+     * Title.
      */
-    public void setAtomLink(final String atomLink) {
-        this.atomLink = atomLink;
+    private String title;
+
+    /**
+     * Link.
+     */
+    private String link;
+
+    /**
+     * Atom link.
+     */
+    private String atomLink;
+
+    /**
+     * Description.
+     */
+    private String description;
+
+    /**
+     * Generator.
+     */
+    private String generator;
+
+    /**
+     * Last build date.
+     */
+    private Date lastBuildDate;
+
+    /**
+     * Language.
+     */
+    private String language;
+
+    /**
+     * Items.
+     */
+    private List<Item> items = new ArrayList<>();
+
+    /**
+     * Returns pretty print of the specified xml string.
+     *
+     * @param xml the specified xml string
+     * @return the pretty print of the specified xml string
+     * @throws Exception exception
+     */
+    private static String format(final String xml) {
+        try {
+            final DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            final Document doc = db.parse(new InputSource(new StringReader(xml)));
+
+            final OutputFormat format = new OutputFormat(doc);
+            format.setIndenting(true);
+            format.setIndent(2);
+            format.setLineWidth(Integer.MAX_VALUE);
+            final Writer outxml = new StringWriter();
+            final XMLSerializer serializer = new XMLSerializer(outxml, format);
+            serializer.serialize(doc);
+
+            return outxml.toString();
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "format pretty XML failed", e);
+
+            return xml;
+        }
     }
 
     /**
@@ -180,6 +214,15 @@ public final class Channel {
      */
     public String getAtomLink() {
         return atomLink;
+    }
+
+    /**
+     * Sets the atom link with the specified atom link.
+     *
+     * @param atomLink the specified atom link
+     */
+    public void setAtomLink(final String atomLink) {
+        this.atomLink = atomLink;
     }
 
     /**
@@ -337,6 +380,6 @@ public final class Channel {
 
         stringBuilder.append(END);
 
-        return stringBuilder.toString();
+        return format(stringBuilder.toString());
     }
 }
