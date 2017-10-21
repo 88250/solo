@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
  * {@link FeedProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jun 13, 2017
+ * @version 1.0.0.2, Oct 21, 2017
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -89,7 +89,7 @@ public class FeedProcessorTestCase extends AbstractTestCase {
         dispatcherServlet.service(request, response);
 
         final String content = stringWriter.toString();
-        Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\"?>"));
+        Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));
     }
 
     /**
