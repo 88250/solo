@@ -41,14 +41,17 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.*;
+import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Skin;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.ExportService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Thumbnails;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.ServletOutputStream;
@@ -101,6 +104,12 @@ public class AdminConsole {
      */
     @Inject
     private UserQueryService userQueryService;
+
+    /**
+     * Export service.
+     */
+    @Inject
+    private ExportService exportService;
 
     /**
      * Filler.
@@ -422,9 +431,7 @@ public class AdminConsole {
             return;
         }
 
-        final JSONObject json = new JSONObject();
-        final JSONArray articles = new JSONArray();
-        json.put(Article.ARTICLES, articles);
+        final JSONObject json = exportService.getJSONs();
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
         String localFilePath = tmpDir + File.separator + "b3_solo_" + UUID.randomUUID().toString() + ".json";
