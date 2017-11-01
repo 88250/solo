@@ -50,6 +50,7 @@
         <#if supportExport>
         <button class="margin12" onclick="admin.others.exportSQL();">${exportSQLLabel}</button>
         </#if>
+        <button class="margin12" onclick="admin.others.exportJSON();">${exportJSONLabel}</button>
     </div>
 </div>
 ${plugins}

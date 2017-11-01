@@ -19,7 +19,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, Nov 1, 2017
+ * @version 1.2.0.0, Nov 1, 2017
  */
 
 /* oterhs 相关操作 */
@@ -78,6 +78,27 @@ admin.others = {
         if (!result.sc) {
           // 再发一次请求进行正式下载
           window.location = latkeConfig.servePath + "/console/export/sql";
+        } else {
+          $("#tipMsg").text(result.msg);
+        }
+      }
+    });
+  },
+  /*
+ * @description 导出数据为 JSON 文件
+ */
+  exportJSON: function () {
+    $("#tipMsg").text("");
+
+    $.ajax({
+      url: latkeConfig.servePath + "/console/export/json",
+      type: "GET",
+      cache: false,
+      success: function (result, textStatus) {
+        // AJAX 下载文件的话这里会发两次请求，用 sc 来判断是否是文件，如果没有 sc 说明文件可以下载（实际上就是 result）
+        if (!result.sc) {
+          // 再发一次请求进行正式下载
+          window.location = latkeConfig.servePath + "/console/export/json";
         } else {
           $("#tipMsg").text(result.msg);
         }

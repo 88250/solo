@@ -41,16 +41,14 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
-import org.b3log.solo.model.UserExt;
+import org.b3log.solo.model.*;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Thumbnails;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.ServletOutputStream;
@@ -69,7 +67,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.13, Jul 9, 2017
+ * @version 1.6.0.0, Nov 1, 2017
  * @since 0.4.1
  */
 @RequestProcessor
@@ -404,7 +402,60 @@ public class AdminConsole {
             context.renderJSON().renderMsg("Export failed, please check log");
 
             return;
+        }
+    }
 
+    /**
+     * Exports data as JSON file.
+     *
+     * @param request  the specified HTTP servlet request
+     * @param response the specified HTTP servlet response
+     * @param context  the specified HTTP request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/export/json", method = HTTPRequestMethod.GET)
+    public void exportJSON(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        if (!userQueryService.isAdminLoggedIn(request)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        final JSONObject json = new JSONObject();
+        final JSONArray articles = new JSONArray();
+        json.put(Article.ARTICLES, articles);
+
+        final String tmpDir = System.getProperty("java.io.tmpdir");
+        String localFilePath = tmpDir + File.separator + "b3_solo_" + UUID.randomUUID().toString() + ".json";
+        LOGGER.trace(localFilePath);
+        final File localFile = new File(localFilePath);
+
+        try {
+            final byte[] data = json.toString(4).getBytes("UTF-8");
+
+            final OutputStream output = new FileOutputStream(localFile);
+            IOUtils.write(data, output);
+            IOUtils.closeQuietly(output);
+
+            final File zipFile = ZipUtil.zip(localFile);
+
+            final FileInputStream inputStream = new FileInputStream(zipFile);
+            final byte[] zipData = IOUtils.toByteArray(inputStream);
+            IOUtils.closeQuietly(inputStream);
+
+            response.setContentType("application/zip");
+            response.setHeader("Content-Disposition", "attachment; filename=\"solo.json.zip\"");
+
+            final ServletOutputStream outputStream = response.getOutputStream();
+            outputStream.write(zipData);
+            outputStream.flush();
+            outputStream.close();
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Export failed", e);
+            context.renderJSON().renderMsg("Export failed, please check log");
+
+            return;
         }
     }
 
