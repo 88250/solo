@@ -52,7 +52,7 @@ import java.sql.Statement;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.19, Sep 22, 2017
+ * @version 1.2.0.20, Nov 8, 2017
  * @since 1.2.0
  */
 @Service
@@ -82,11 +82,6 @@ public class UpgradeService {
      * New version.
      */
     private static final String TO_VER = SoloServletListener.VERSION;
-
-    /**
-     * Whether the email has been sent.
-     */
-    private static boolean sent = false;
 
     /**
      * Article repository.
@@ -151,12 +146,10 @@ public class UpgradeService {
                 return;
             }
 
-            LOGGER.log(Level.WARN, "Attempt to skip more than one version to upgrade. Expected: {0}; Actually: {1}", FROM_VER, currentVer);
+            LOGGER.log(Level.ERROR, "Attempt to skip more than one version to upgrade. Expected: {0}, Actually: {1}", FROM_VER, currentVer);
+            notifyUserByEmail();
 
-            if (!sent) {
-                notifyUserByEmail();
-                sent = true;
-            }
+            System.exit(-1);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             LOGGER.log(Level.ERROR,
