@@ -50,7 +50,7 @@ import java.util.Set;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.6, Sep 6, 2017
+ * @version 1.3.0.7, Nov 8, 2017
  * @since 0.4.6
  */
 @RequestProcessor
@@ -106,8 +106,10 @@ public class BlogProcessor {
      * <li>Serve path</li>
      * <li>Static serve path</li>
      * <li>Solo version</li>
-     * <li>Runtime environment (LOCAL)</li>
+     * <li>Runtime mode</li>
+     * <li>Runtime database</li>
      * <li>Locale</li>
+     * <li>Admin username</li>
      * </ul>
      *
      * @param context the specified context
@@ -122,16 +124,16 @@ public class BlogProcessor {
 
         jsonObject.put("recentArticleTime", articleQueryService.getRecentArticleTime());
         final JSONObject statistic = statisticQueryService.getStatistic();
-
         jsonObject.put("articleCount", statistic.getLong(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT));
         jsonObject.put("commentCount", statistic.getLong(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
         jsonObject.put("tagCount", tagQueryService.getTagCount());
         jsonObject.put("servePath", Latkes.getServePath());
         jsonObject.put("staticServePath", Latkes.getStaticServePath());
         jsonObject.put("version", SoloServletListener.VERSION);
-        jsonObject.put("locale", Latkes.getLocale());
         jsonObject.put("runtimeMode", Latkes.getRuntimeMode());
         jsonObject.put("runtimeDatabase", Latkes.getRuntimeDatabase());
+        jsonObject.put("locale", Latkes.getLocale());
+        jsonObject.put("userName", userQueryService.getAdmin().optString(User.USER_NAME));
     }
 
     /**
