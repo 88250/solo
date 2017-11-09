@@ -1359,23 +1359,23 @@
         preview.className += ' editor-preview-active'
       }, 1);
       toolbar.className += ' active';
-    }
-    var text = cm.getValue();
+      var text = cm.getValue();
 
-    $.ajax({
-      url: editor.options.htmlURL,
-      type: "POST",
-      cache: false,
-      data: {
-        markdownText: text
-      },
-      success: function (result, textStatus) {
-        preview.innerHTML = result.html;
-        hljs.initHighlighting.called = false;
-        hljs.initHighlighting();
-        Util.parseMarkdown();
-      }
-    });
+      $.ajax({
+        url: editor.options.htmlURL,
+        type: "POST",
+        cache: false,
+        data: {
+          markdownText: text
+        },
+        success: function (result, textStatus) {
+          preview.innerHTML = result.html;
+          Util.parseMarkdown();
+          hljs.initHighlighting.called = false;
+          hljs.initHighlighting();
+        }
+      });
+    }
   }
 
   function _replaceSelection (cm, active, start, end) {

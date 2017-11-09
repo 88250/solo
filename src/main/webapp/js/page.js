@@ -422,7 +422,6 @@ $.extend(Page.prototype, {
     } catch (e) {
       document.write("<script src=\"" + latkeConfig.staticServePath + "/js/lib/json2.js\"><\/script>");
     }
-    Util.parseMarkdown();
   },
   /*
    * @description 加载随机文章

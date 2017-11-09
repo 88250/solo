@@ -39,5 +39,7 @@
         "em13Label": "${em13Label}",
         "em14Label": "${em14Label}"
     };
+
+    Util.parseMarkdown();
 </script>
 ${plugins}
