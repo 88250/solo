@@ -30,10 +30,11 @@ var Util = {
    * 按需加载 MathJax 及 flow
    * @returns {undefined}
    */
-  parseMarkdown: function () {
+  parseMarkdown: function (className) {
     var hasMathJax = false;
     var hasFlow = false;
-    $('.content-reset').each(function () {
+    var className = className || 'article-body';
+    $('.' + className).each(function () {
       $(this).find('p').each(function () {
         if ($(this).text().indexOf('$\\') > -1 || $(this).text().indexOf('$$') > -1) {
           hasMathJax = true;
@@ -73,7 +74,7 @@ var Util = {
 
     if (hasFlow) {
       var initFlow = function () {
-        $('.content-reset code.lang-flow, .content-reset code.language-flow').each(function (index) {
+        $('.' + className + ' code.lang-flow, .' + className +  ' code.language-flow').each(function (index) {
           var $it = $(this);
           var id = 'symFlow' + (new Date()).getTime() + index;
           $it.hide();
@@ -241,6 +242,7 @@ var Util = {
 //window.onerror = Util.error;
     Util.killIE();
     Util.setTopBar();
+    Util.parseMarkdown();
   },
   /**
    * @description 替换侧边栏表情为图片

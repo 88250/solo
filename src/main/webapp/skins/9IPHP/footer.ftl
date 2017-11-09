@@ -40,6 +40,6 @@
         "em14Label": "${em14Label}"
     };
 
-    Util.parseMarkdown();
+    Util.parseMarkdown('content-reset');
 </script>
 ${plugins}
