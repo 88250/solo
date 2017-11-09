@@ -35,7 +35,7 @@ var Util = {
     var hasFlow = false;
     $('.content-reset').each(function () {
       $(this).find('p').each(function () {
-        if ($(this).text().indexOf('$/') > -1 || $(this).text().indexOf('$$') > -1) {
+        if ($(this).text().indexOf('$\\') > -1 || $(this).text().indexOf('$$') > -1) {
           hasMathJax = true;
         }
       });
@@ -52,17 +52,10 @@ var Util = {
             displayMath: [['$$', '$$']],
             processEscapes: true,
             processEnvironments: true,
-            skipTags: ['pre', 'code']
+            skipTags: ['pre', 'code', 'script']
           }
         });
-        MathJax.Hub.Queue(function () {
-          var all = MathJax.Hub.getAllJax(), i;
-          for (i = 0; i < all.length; i += 1) {
-            if ($(all[i].SourceElement().parentNode).closest('.content-reset') === 1) {
-              all[i].SourceElement().parentNode.className += 'has-jax';
-            }
-          }
-        });
+        MathJax.Hub.Typeset();
       };
 
       if (typeof MathJax !== 'undefined') {
