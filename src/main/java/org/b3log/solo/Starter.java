@@ -37,7 +37,7 @@ import java.net.URI;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, Jul 9, 2017
+ * @version 1.1.0.10, Nov 9, 2017
  * @since 1.2.0
  */
 public final class Starter {
@@ -186,6 +186,16 @@ public final class Starter {
         } catch (final Throwable e) {
             // Ignored
         }
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                server.stop();
+            } catch (final Exception e) {
+                logger.log(Level.ERROR, "Server stop failed", e);
+
+                System.exit(-1);
+            }
+        }));
 
         server.join();
     }
