@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -29,11 +31,14 @@ import org.b3log.solo.repository.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.*;
+import java.util.stream.Collectors;
+
 /**
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 2, 2017
+ * @version 1.1.0.0, Nov 11, 2017
  * @since 2.5.0
  */
 @Service
@@ -122,6 +127,70 @@ public class ExportService {
     @Inject
     private UserRepository userRepository;
 
+    /**
+     * Exports as Hexo markdown format.
+     *
+     * @return posts, password posts and drafts, <pre>
+     * {
+     *     "posts": [
+     *         {
+     *             "front": "", // yaml front matter,
+     *             "title": "",
+     *             "content": ""
+     *         }, ....
+     *     ],
+     *     "passwords": [], // format is same as post
+     *     "drafts": [] // format is same as post
+     * }
+     * </pre>
+     */
+    public JSONObject exportHexoMDs() {
+        final JSONObject ret = new JSONObject();
+        final List<JSONObject> posts = new ArrayList<>();
+        ret.put("posts", (Object) posts);
+        final List<JSONObject> passwords = new ArrayList<>();
+        ret.put("passwords", (Object) passwords);
+        final List<JSONObject> drafts = new ArrayList<>();
+        ret.put("drafts", (Object) drafts);
+
+        final JSONArray articles = getJSONs(articleRepository);
+        for (int i = 0; i < articles.length(); i++) {
+            final JSONObject article = articles.optJSONObject(i);
+            final Map<String, Object> front = new LinkedHashMap<>();
+            final String title = article.optString(Article.ARTICLE_TITLE);
+            front.put("title", title);
+            front.put("date", DateFormatUtils.format((Date) article.opt(Article.ARTICLE_CREATE_DATE), "yyyy-MM-dd HH:mm:ss"));
+            front.put("updated", DateFormatUtils.format((Date) article.opt(Article.ARTICLE_UPDATE_DATE), "yyyy-MM-dd HH:mm:ss"));
+            final List<String> tags = Arrays.stream(article.optString(Article.ARTICLE_TAGS_REF).split(",")).filter(StringUtils::isNotBlank).map(String::trim).collect(Collectors.toList());
+            if (tags.isEmpty()) {
+                tags.add("Solo");
+            }
+            front.put("tags", tags);
+            front.put("permalink", article.optString(Article.ARTICLE_PERMALINK));
+            final JSONObject one = new JSONObject();
+            one.put("front", front);
+            one.put("title", title);
+            one.put("content", article.optString(Article.ARTICLE_CONTENT));
+
+            if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                posts.add(one);
+
+                continue;
+            } else if (StringUtils.isNotBlank(article.optString(Article.ARTICLE_VIEW_PWD))) {
+                passwords.add(one);
+
+                continue;
+            } else {
+                drafts.add(one);
+            }
+        }
+
+        return ret;
+    }
+
+    /**
+     * Gets all data as JSON format.
+     */
     public JSONObject getJSONs() {
         final JSONObject ret = new JSONObject();
         final JSONArray archiveDates = getJSONs(archiveDateRepository);
