@@ -19,6 +19,7 @@ import com.qiniu.util.Auth;
 import jodd.io.ZipUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
@@ -70,7 +71,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.0, Nov 1, 2017
+ * @version 1.6.0.1, Nov 11, 2017
  * @since 0.4.1
  */
 @RequestProcessor
@@ -382,7 +383,8 @@ public class AdminConsole {
         }
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
-        String localFilePath = tmpDir + File.separator + "b3_solo_" + UUID.randomUUID().toString() + ".sql";
+        final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
+        String localFilePath = tmpDir + File.separator + "solo-" + date + ".sql";
         LOGGER.trace(localFilePath);
         final File localFile = new File(localFilePath);
 
@@ -400,7 +402,8 @@ public class AdminConsole {
             IOUtils.closeQuietly(inputStream);
 
             response.setContentType("application/zip");
-            response.setHeader("Content-Disposition", "attachment; filename=\"solo.sql.zip\"");
+            final String fileName = "solo-" + date + ".sql.zip";
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
             final ServletOutputStream outputStream = response.getOutputStream();
             outputStream.write(zipData);
@@ -434,7 +437,8 @@ public class AdminConsole {
         final JSONObject json = exportService.getJSONs();
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
-        String localFilePath = tmpDir + File.separator + "b3_solo_" + UUID.randomUUID().toString() + ".json";
+        final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
+        String localFilePath = tmpDir + File.separator + "solo-" + date + ".json";
         LOGGER.trace(localFilePath);
         final File localFile = new File(localFilePath);
 
@@ -452,7 +456,8 @@ public class AdminConsole {
             IOUtils.closeQuietly(inputStream);
 
             response.setContentType("application/zip");
-            response.setHeader("Content-Disposition", "attachment; filename=\"solo.json.zip\"");
+            final String fileName = "solo-" + date + ".json.zip";
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
             final ServletOutputStream outputStream = response.getOutputStream();
             outputStream.write(zipData);
