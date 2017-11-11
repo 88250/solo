@@ -408,7 +408,7 @@ public class AdminConsole {
             IOUtils.closeQuietly(inputStream);
 
             response.setContentType("application/zip");
-            final String fileName = "solo-" + date + ".sql.zip";
+            final String fileName = "solo-sql-" + date + ".zip";
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
             final ServletOutputStream outputStream = response.getOutputStream();
@@ -462,7 +462,7 @@ public class AdminConsole {
             IOUtils.closeQuietly(inputStream);
 
             response.setContentType("application/zip");
-            final String fileName = "solo-" + date + ".json.zip";
+            final String fileName = "solo-json-" + date + ".zip";
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
             final ServletOutputStream outputStream = response.getOutputStream();
@@ -498,12 +498,13 @@ public class AdminConsole {
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
         final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
-        String localFilePath = tmpDir + File.separator + "solo-" + date + "-hexo/";
+        String localFilePath = tmpDir + File.separator + "solo-hexo-" + date;
         LOGGER.trace(localFilePath);
         final File localFile = new File(localFilePath);
-        final File postDir = new File(localFilePath + "posts");
-        final File passwordDir = new File(localFilePath + "passwords");
-        final File draftDir = new File(localFilePath + "drafts");
+
+        final File postDir = new File(localFilePath + File.separator + "posts");
+        final File passwordDir = new File(localFilePath + File.separator + "passwords");
+        final File draftDir = new File(localFilePath + File.separator + "drafts");
 
         try {
             if (!postDir.mkdirs()) {
@@ -532,7 +533,7 @@ public class AdminConsole {
             IOUtils.closeQuietly(inputStream);
 
             response.setContentType("application/zip");
-            final String fileName = "solo-" + date + ".hexo.zip";
+            final String fileName = "solo-hexo-" + date + ".zip";
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
             final ServletOutputStream outputStream = response.getOutputStream();
@@ -575,7 +576,7 @@ public class AdminConsole {
             final String text = article.optString("front") + "\n----\n" + article.optString("content");
 
             try {
-                final OutputStream output = new FileOutputStream(dirPath + filename);
+                final OutputStream output = new FileOutputStream(dirPath + File.separator + filename);
                 IOUtils.write(text.getBytes("UTF-8"), output);
                 IOUtils.closeQuietly(output);
             } catch (final Exception e) {
