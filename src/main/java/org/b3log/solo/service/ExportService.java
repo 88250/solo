@@ -174,12 +174,12 @@ public class ExportService {
             one.put("title", title);
             one.put("content", article.optString(Article.ARTICLE_CONTENT));
 
-            if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                posts.add(one);
+            if (StringUtils.isNotBlank(article.optString(Article.ARTICLE_VIEW_PWD))) {
+                passwords.add(one);
 
                 continue;
-            } else if (StringUtils.isNotBlank(article.optString(Article.ARTICLE_VIEW_PWD))) {
-                passwords.add(one);
+            } else if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                posts.add(one);
 
                 continue;
             } else {

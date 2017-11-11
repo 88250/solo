@@ -323,6 +323,8 @@ public class AdminConsole {
             return;
         }
 
+        Thread.sleep(550); // 前端会发两次请求，文件名又是按秒生成，所以两次请求需要错开至少 1 秒避免文件名冲突
+
         final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
         if (Latkes.RuntimeDatabase.H2 != runtimeDatabase && Latkes.RuntimeDatabase.MYSQL != runtimeDatabase) {
             context.renderJSON().renderMsg("Just support MySQL/H2 export now");
@@ -440,7 +442,7 @@ public class AdminConsole {
             return;
         }
 
-        final JSONObject json = exportService.getJSONs();
+        Thread.sleep(550);
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
         final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
@@ -449,6 +451,7 @@ public class AdminConsole {
         final File localFile = new File(localFilePath);
 
         try {
+            final JSONObject json = exportService.getJSONs();
             final byte[] data = json.toString(4).getBytes("UTF-8");
 
             final OutputStream output = new FileOutputStream(localFile);
@@ -494,7 +497,7 @@ public class AdminConsole {
             return;
         }
 
-        final JSONObject result = exportService.exportHexoMDs();
+        Thread.sleep(550);
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
         final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
@@ -517,12 +520,11 @@ public class AdminConsole {
                 throw new Exception("Create dir [" + draftDir.getPath() + "] failed");
             }
 
+            final JSONObject result = exportService.exportHexoMDs();
             final List<JSONObject> posts = (List<JSONObject>) result.opt("posts");
             exportHexoMd(posts, postDir.getPath());
-
             final List<JSONObject> passwords = (List<JSONObject>) result.opt("passwords");
             exportHexoMd(passwords, passwordDir.getPath());
-
             final List<JSONObject> drafts = (List<JSONObject>) result.opt("drafts");
             exportHexoMd(drafts, draftDir.getPath());
 
