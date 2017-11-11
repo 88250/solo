@@ -38,7 +38,7 @@ import java.util.*;
  * Import service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Aug 31, 2017
+ * @version 1.0.1.1, Nov 11, 2017
  * @since 2.2.0
  */
 @Service
@@ -145,9 +145,11 @@ public class ImportService {
         }).start();
     }
 
-    private JSONObject parseArticle(final String fileName, final String fileContent) {
-        String frontMatter = StringUtils.substringBetween(fileContent, "---", "---");
+    private JSONObject parseArticle(final String fileName, String fileContent) {
+        fileContent = StringUtils.trim(fileContent);
+        String frontMatter = StringUtils.substringBefore(fileContent, "---");
         if (StringUtils.isBlank(frontMatter)) {
+            fileContent = StringUtils.substringAfter(fileContent, "---");
             frontMatter = StringUtils.substringBefore(fileContent, "---");
         }
 
@@ -176,7 +178,11 @@ public class ImportService {
         }
         ret.put(Article.ARTICLE_TITLE, title);
 
-        final String content = StringUtils.substringAfter(fileContent, frontMatter);
+        String content = StringUtils.substringAfter(fileContent, frontMatter);
+        if (StringUtils.startsWith(content, "---")) {
+            content = StringUtils.substringAfter(content, "---");
+            content = StringUtils.trim(content);
+        }
         ret.put(Article.ARTICLE_CONTENT, content);
 
         final String abs = parseAbstract(elems, content);
