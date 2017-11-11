@@ -572,8 +572,8 @@ public class AdminConsole {
 
     private void exportHexoMd(final List<JSONObject> articles, final String dirPath) {
         articles.forEach(article -> {
-            final String filename = sanitizeFilename(article.optString("title"));
-            final String text = article.optString("front") + "\n----\n" + article.optString("content");
+            final String filename = sanitizeFilename(article.optString("title")) + ".md";
+            final String text = article.optString("front") + "---\n" + article.optString("content");
 
             try {
                 final OutputStream output = new FileOutputStream(dirPath + File.separator + filename);

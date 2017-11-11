@@ -30,6 +30,7 @@ import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.yaml.snakeyaml.Yaml;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -159,7 +160,8 @@ public class ExportService {
             final Map<String, Object> front = new LinkedHashMap<>();
             final String title = article.optString(Article.ARTICLE_TITLE);
             front.put("title", title);
-            front.put("date", DateFormatUtils.format((Date) article.opt(Article.ARTICLE_CREATE_DATE), "yyyy-MM-dd HH:mm:ss"));
+            final String date = DateFormatUtils.format((Date) article.opt(Article.ARTICLE_CREATE_DATE), "yyyy-MM-dd HH:mm:ss");
+            front.put("date", date);
             front.put("updated", DateFormatUtils.format((Date) article.opt(Article.ARTICLE_UPDATE_DATE), "yyyy-MM-dd HH:mm:ss"));
             final List<String> tags = Arrays.stream(article.optString(Article.ARTICLE_TAGS_REF).split(",")).filter(StringUtils::isNotBlank).map(String::trim).collect(Collectors.toList());
             if (tags.isEmpty()) {
@@ -168,7 +170,7 @@ public class ExportService {
             front.put("tags", tags);
             front.put("permalink", article.optString(Article.ARTICLE_PERMALINK));
             final JSONObject one = new JSONObject();
-            one.put("front", front);
+            one.put("front", new Yaml().dump(front));
             one.put("title", title);
             one.put("content", article.optString(Article.ARTICLE_CONTENT));
 
