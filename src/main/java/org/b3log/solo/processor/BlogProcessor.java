@@ -50,7 +50,7 @@ import java.util.Set;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.8, Nov 14, 2017
+ * @version 1.3.1.0, Nov 15, 2017
  * @since 0.4.6
  */
 @RequestProcessor
@@ -140,9 +140,13 @@ public class BlogProcessor {
         jsonObject.put("runtimeDatabase", Latkes.getRuntimeDatabase());
         jsonObject.put("locale", Latkes.getLocale());
         jsonObject.put("userName", userQueryService.getAdmin().optString(User.USER_NAME));
+        jsonObject.put("qiniuDomain", "");
+        jsonObject.put("qiniuBucket", "");
         final JSONObject qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
-        jsonObject.put("qiniuDomain", qiniu.optString(Option.ID_C_QINIU_DOMAIN));
-        jsonObject.put("qiniuBucket", qiniu.optString(Option.ID_C_QINIU_BUCKET));
+        if (null != qiniu) {
+            jsonObject.put("qiniuDomain", qiniu.optString(Option.ID_C_QINIU_DOMAIN));
+            jsonObject.put("qiniuBucket", qiniu.optString(Option.ID_C_QINIU_BUCKET));
+        }
     }
 
     /**
