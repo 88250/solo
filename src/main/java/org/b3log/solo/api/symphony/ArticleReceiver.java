@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  * Article receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.3.8, Jan 25, 2017
+ * @version 1.0.4.0, Nov 20, 2017
  * @since 0.5.5
  */
 @RequestProcessor
@@ -109,9 +109,7 @@ public class ArticleReceiver {
     public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
 
         try {
@@ -136,11 +134,8 @@ public class ArticleReceiver {
             article.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
             article.put(Article.ARTICLE_COMMENTABLE, true);
             article.put(Article.ARTICLE_VIEW_PWD, "");
-            String content = article.getString(Article.ARTICLE_CONTENT);
+            final String content = article.getString(Article.ARTICLE_CONTENT);
             final String articleId = article.getString(Keys.OBJECT_ID);
-
-//            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='https://hacpai.com/article/" + articleId
-//                + "' target='_blank'>黑客派</a></i></p>";
             article.put(Article.ARTICLE_CONTENT, content);
 
             articleMgmtService.addArticle(requestJSONObject);
@@ -224,11 +219,9 @@ public class ArticleReceiver {
             article.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
             article.put(Article.ARTICLE_COMMENTABLE, true);
             article.put(Article.ARTICLE_VIEW_PWD, "");
-            String content = article.getString(Article.ARTICLE_CONTENT);
-
-//            content += "\n\n<p style='font-size: 12px;'><i>该文章同步自 <a href='https://hacpai.com/article/" + articleId
-//                + "' target='_blank'>黑客派</a></i></p>";
+            final String content = article.getString(Article.ARTICLE_CONTENT);
             article.put(Article.ARTICLE_CONTENT, content);
+            article.put(Article.ARTICLE_SIGN_ID, "1");
 
             articleMgmtService.updateArticle(requestJSONObject);
 
