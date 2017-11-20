@@ -473,7 +473,6 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_TAGS_REF, tagsString);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);
-
             // Step 2; Set comment/view count to 0
             article.put(Article.ARTICLE_COMMENT_COUNT, 0);
             article.put(Article.ARTICLE_VIEW_COUNT, 0);
@@ -498,11 +497,9 @@ public class ArticleMgmtService {
             archiveDate(article);
             // Step 8: Set permalink
             final String permalink = getPermalinkForAddArticle(article);
-
             article.put(Article.ARTICLE_PERMALINK, permalink);
             // Step 9: Add article sign id
             final String signId = article.optString(Article.ARTICLE_SIGN_ID, "1");
-
             article.put(Article.ARTICLE_SIGN_ID, signId);
             // Step 10: Set had been published status
             article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
