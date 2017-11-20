@@ -17,6 +17,7 @@ package org.b3log.solo.processor.console;
 
 import com.qiniu.util.Auth;
 import jodd.io.ZipUtil;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -71,7 +72,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.0, Nov 11, 2017
+ * @version 1.7.0.1, Nov 20, 2017
  * @since 0.4.1
  */
 @RequestProcessor
@@ -575,12 +576,10 @@ public class AdminConsole {
     private void exportHexoMd(final List<JSONObject> articles, final String dirPath) {
         articles.forEach(article -> {
             final String filename = sanitizeFilename(article.optString("title")) + ".md";
-            final String text = article.optString("front") + "---\n" + article.optString("content");
+            final String text = article.optString("front") + "---" + Strings.LINE_SEPARATOR + article.optString("content");
 
             try {
-                final OutputStream output = new FileOutputStream(dirPath + File.separator + filename);
-                IOUtils.write(text.getBytes("UTF-8"), output);
-                IOUtils.closeQuietly(output);
+                FileUtils.writeStringToFile(new File(dirPath + File.separator + filename), text, "UTF-8");
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Write markdown file failed", e);
             }
