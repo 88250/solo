@@ -65,7 +65,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.3.16, Jun 6, 2017
+ * @version 1.4.4.0, Nov 24, 2017
  * @since 0.3.1
  */
 @RequestProcessor
@@ -533,7 +533,6 @@ public class ArticleProcessor {
         final int currentPageNum = getArticlesPagedCurrentPageNum(request.getRequestURI());
 
         Stopwatchs.start("Get Articles Paged[pageNum=" + currentPageNum + ']');
-
         try {
             jsonObject.put(Keys.STATUS_CODE, true);
 
@@ -542,18 +541,15 @@ public class ArticleProcessor {
             final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final StringBuilder pathBuilder = new StringBuilder();
-
             pathBuilder.append(currentPageNum).append('/').append(pageSize).append('/').append(windowSize);
 
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(pathBuilder.toString());
-
             requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, true);
-
+            requestJSONObject.put(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, preference.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT));
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
             final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
 
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
-
             if (hasMultipleUsers) {
                 filler.setArticlesExProperties(request, articles, preference);
             } else if (!articles.isEmpty()) {
@@ -571,7 +567,6 @@ public class ArticleProcessor {
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
     }

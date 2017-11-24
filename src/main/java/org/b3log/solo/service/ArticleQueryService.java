@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.1.0, Oct 9, 2017
+ * @version 1.3.2.0, Nov 24, 2017
  * @since 0.3.5
  */
 @Service
@@ -570,7 +570,8 @@ public class ArticleQueryService {
      *                          "paginationPageSize": 20,
      *                          "paginationWindowSize": 10,
      *                          "articleIsPublished": boolean,
-     *                          "excludes": ["", ....] // Optional
+     *                          "excludes": ["", ....], // Optional
+     *                          "enableArticleUpdateHint": bool // Optional
      *                          see {@link Pagination} for more details
      * @return for example,      <pre>
      * {
@@ -605,11 +606,16 @@ public class ArticleQueryService {
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
             final boolean articleIsPublished = requestJSONObject.optBoolean(ARTICLE_IS_PUBLISHED, true);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING).addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING).setFilter(
-                    new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
+            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                    addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+            if (requestJSONObject.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
+                query.addSort(ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
+            } else {
+                query.addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+            }
+            query.setFilter(new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
 
             int articleCount = statisticQueryService.getBlogArticleCount();
-
             if (!articleIsPublished) {
                 articleCount -= statisticQueryService.getPublishedBlogArticleCount();
             } else {
@@ -617,31 +623,25 @@ public class ArticleQueryService {
             }
 
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
-
             query.setPageCount(pageCount);
 
             final JSONObject result = articleRepository.get(query);
 
             final JSONObject pagination = new JSONObject();
-
             ret.put(Pagination.PAGINATION, pagination);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
             JSONArray excludes = requestJSONObject.optJSONArray(Keys.EXCLUDES);
-
             excludes = null == excludes ? new JSONArray() : excludes;
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
                 final JSONObject author = getAuthor(article);
                 final String authorName = author.getString(User.USER_NAME);
-
                 article.put(Common.AUTHOR_NAME, authorName);
-
                 article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
                 article.put(ARTICLE_UPDATE_TIME, ((Date) article.get(ARTICLE_UPDATE_DATE)).getTime());
 
