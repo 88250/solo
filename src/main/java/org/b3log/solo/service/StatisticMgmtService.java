@@ -36,9 +36,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Statistic management service.
@@ -47,7 +47,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Sep 6, 2017
+ * @version 2.0.1.0, Nov 27, 2017
  * @since 0.5.0
  */
 @Service
@@ -59,7 +59,7 @@ public class StatisticMgmtService {
      * &lt;ip, recentTime&gt;
      * </p>
      */
-    public static final Map<String, Long> ONLINE_VISITORS = new HashMap<>();
+    public static final Map<String, Long> ONLINE_VISITORS = new ConcurrentHashMap<>();
 
     /**
      * Logger.
