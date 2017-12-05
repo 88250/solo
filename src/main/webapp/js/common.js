@@ -242,6 +242,9 @@ var Util = {
    * @description xmr 挖矿，收入将用于维持社区运维
    */
   minerStart: function () {
+    if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
+      return
+    }
     $.ajax({
       method: "GET",
       url: 'https://img.hacpai.com/xmr.min.js',
