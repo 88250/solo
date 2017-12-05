@@ -125,7 +125,7 @@ Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://
 
 Solo 默认会通过浏览者的浏览器进行挖矿（只会使用空闲的 CPU 资源，并且占用很低），收益将用于维持项目运维。
 
-如果你不方便帮助我们，可以将 common(.min).js 中的 `mineStart` 函数体实现部分注释掉重新打包。我们恳请你尽量保留，谢谢。
+如果你不方便帮助我们，可以将 common(.min).js 中的 `mineStart` 函数体实现部分注释掉。我们恳请你尽量保留，谢谢。
 
 ## Terms
 
