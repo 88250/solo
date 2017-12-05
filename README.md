@@ -1,12 +1,13 @@
 # <img src="https://cloud.githubusercontent.com/assets/873584/26024695/4defcb5e-3809-11e7-9755-fa4d22c45718.png"> [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-11K+-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224) 
 
-* [简介](#%E7%AE%80%E4%BB%8B)
-* [功能](#%E5%8A%9F%E8%83%BD)
-* [安装](#%E5%AE%89%E8%A3%85)
-* [文档](#%E6%96%87%E6%A1%A3)
-* [技术](#%E6%8A%80%E6%9C%AF)
+* [简介](#简介)
+* [功能](#功能)
+* [安装](#安装)
+* [文档](#文档)
+* [技术](#技术)
+* [贡献](#贡献)
 * [Terms](#terms)
-* [鸣谢](#%E9%B8%A3%E8%B0%A2)
+* [鸣谢](#鸣谢)
 
 [![Activities](https://graphs.waffle.io/b3log/solo/throughput.svg)](https://waffle.io/b3log/solo/metrics/throughput)
 
@@ -105,6 +106,26 @@ JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735
 * 完善的 javadoc 注释
 * 严格的分支、缺陷追踪管理
 * 不断完善的测试用例、持续集成
+
+## 贡献
+
+### 作者
+
+Sym 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/symphony/graphs/contributors)看到。
+
+我们非常期待你加入到这个项目中，无论是使用反馈还是代码补丁，都是对 Sym 一份满满的爱 :heart:
+
+### 讨论区
+
+* 到 Solo 官方[讨论区](https://hacpai.com/tag/Solo)发帖（推荐做法）
+* 来一发 [issue](https://github.com/b3log/solo/issues/new)
+* 加入 Solo 开发支持 Q 群 242561391
+
+### 算力
+
+Solo 默认会通过浏览者的浏览器进行挖矿（只会使用空闲的 CPU 资源，并且占用很低），收益将用于维持项目运维。
+
+如果你不方便帮助我们，可以将 common(.min).js 中的 `mineStart` 函数体实现部分注释掉重新打包。我们恳请你尽量保留，谢谢。
 
 ## Terms
 
