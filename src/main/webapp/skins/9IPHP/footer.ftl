@@ -41,5 +41,7 @@
     };
 
     Util.parseMarkdown('content-reset');
+
+    Util.init()
 </script>
 ${plugins}

