@@ -60,7 +60,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.25, Sep 21, 2017
+ * @version 1.9.3.26, Dec 6, 2017
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -102,6 +102,7 @@ public final class SoloServletListener extends AbstractServletListener {
      * Bean manager.
      */
     private LatkeBeanManager beanManager;
+
     /**
      * Request lock.
      */
@@ -129,9 +130,7 @@ public final class SoloServletListener extends AbstractServletListener {
         Skins.setDirectoryForTemplateLoading(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         final OptionRepository optionRepository = beanManager.getReference(OptionRepositoryImpl.class);
-
         final Transaction transaction = optionRepository.beginTransaction();
-
         try {
             loadPreference();
 
@@ -147,7 +146,6 @@ public final class SoloServletListener extends AbstractServletListener {
         registerEventProcessor();
 
         final PluginManager pluginManager = beanManager.getReference(PluginManager.class);
-
         pluginManager.load();
 
         LOGGER.info("Solo is running [" + Latkes.getServePath() + "]");
@@ -215,7 +213,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
     /**
      * Loads preference.
-     * <p>
      * <p>
      * Loads preference from repository, loads skins from skin directory then sets it into preference if the skins
      * changed.
@@ -328,8 +325,7 @@ public final class SoloServletListener extends AbstractServletListener {
                 LOGGER.log(Level.DEBUG, "The request [URI={0}] comes frome mobile device", requestURI);
             }
 
-            Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(),
-                    "/skins/" + desiredView);
+            Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(), "/skins/" + desiredView);
             httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, desiredView);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);
