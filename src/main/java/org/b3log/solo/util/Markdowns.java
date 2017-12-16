@@ -21,6 +21,7 @@ import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter;
 import com.vladsch.flexmark.util.options.DataHolder;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -29,6 +30,8 @@ import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,7 +48,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.5, Nov 9, 2017
+ * @version 2.2.0.6, Dec 16, 2017
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -162,7 +165,19 @@ public final class Markdowns {
                 }
             }
 
-            return html;
+            final Document doc = Jsoup.parse(html);
+            doc.select("a").forEach(a -> {
+                final String src = a.attr("href");
+                if (!StringUtils.startsWithIgnoreCase(src, Latkes.getServePath())) {
+                    a.attr("target", "_blank");
+                }
+            });
+            doc.outputSettings().prettyPrint(false);
+
+            String ret = doc.select("body").html();
+            ret = StringUtils.trim(ret);
+
+            return ret;
         };
 
         Stopwatchs.start("Md to HTML");
