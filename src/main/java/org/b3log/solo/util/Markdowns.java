@@ -19,9 +19,12 @@ import com.vladsch.flexmark.html.HtmlRenderer;
 import com.vladsch.flexmark.profiles.pegdown.Extensions;
 import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter;
 import com.vladsch.flexmark.util.options.DataHolder;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.cache.Cache;
+import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.LatkeBeanManagerImpl;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -30,6 +33,7 @@ import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -48,7 +52,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.6, Dec 16, 2017
+ * @version 2.3.0.6, Dec 16, 2017
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -62,6 +66,11 @@ public final class Markdowns {
      * Language service.
      */
     private static final LangPropsService LANG_PROPS_SERVICE = LatkeBeanManagerImpl.getInstance().getReference(LangPropsServiceImpl.class);
+
+    /**
+     * Markdown cache.
+     */
+    private static final Cache MD_CACHE = CacheFactory.getCache("markdown");
 
     /**
      * Markdown to HTML timeout.
@@ -98,6 +107,8 @@ public final class Markdowns {
     public static boolean MARKED_AVAILABLE;
 
     static {
+        MD_CACHE.setMaxCount(1024 * 10 * 4);
+
         try {
             final URL url = new URL(MARKED_ENGINE_URL);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -144,6 +155,11 @@ public final class Markdowns {
             return "";
         }
 
+        final String cachedHTML = getHTML(markdownText);
+        if (null != cachedHTML) {
+            return cachedHTML;
+        }
+
         final ExecutorService pool = Executors.newSingleThreadExecutor();
         final long[] threadId = new long[1];
 
@@ -176,6 +192,9 @@ public final class Markdowns {
 
             String ret = doc.select("body").html();
             ret = StringUtils.trim(ret);
+
+            // cache it
+            putHTML(markdownText, ret);
 
             return ret;
         };
@@ -224,5 +243,34 @@ public final class Markdowns {
         //conn.disconnect();
 
         return html;
+    }
+
+    /**
+     * Gets HTML for the specified markdown text.
+     *
+     * @param markdownText the specified markdown text
+     * @return HTML
+     */
+    private static String getHTML(final String markdownText) {
+        final String hash = DigestUtils.md5Hex(markdownText);
+        final JSONObject value = MD_CACHE.get(hash);
+        if (null == value) {
+            return null;
+        }
+
+        return value.optString("data");
+    }
+
+    /**
+     * Puts the specified HTML into cache.
+     *
+     * @param markdownText the specified markdown text
+     * @param html         the specified HTML
+     */
+    private static void putHTML(final String markdownText, final String html) {
+        final String hash = DigestUtils.md5Hex(markdownText);
+        final JSONObject value = new JSONObject();
+        value.put("data", html);
+        MD_CACHE.put(hash, value);
     }
 }
