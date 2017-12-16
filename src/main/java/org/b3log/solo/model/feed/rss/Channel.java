@@ -15,8 +15,6 @@
  */
 package org.b3log.solo.model.feed.rss;
 
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -33,7 +31,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
