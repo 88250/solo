@@ -30,7 +30,7 @@ import java.util.List;
  * {@link org.b3log.solo.util.Markdowns} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Jul 19, 2017
+ * @version 1.0.1.4, Dec 16, 2017
  * @since 0.4.5
  */
 public final class MarkdownsTestCase {
@@ -77,6 +77,6 @@ public final class MarkdownsTestCase {
         markdownText = "The first: &#39; <br/> The second: &AElig;";
         html = Markdowns.toHTML(markdownText);
 
-        Assert.assertEquals(html, "<p>The first: ' <br/> The second: Æ</p>\n");
+        Assert.assertEquals(html, "<p>The first: ' <br> The second: Æ</p>");
     }
 }
