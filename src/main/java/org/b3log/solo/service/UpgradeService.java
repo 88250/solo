@@ -156,6 +156,8 @@ public class UpgradeService {
                     "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
                             + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
                             + "https://github.com/b3log/solo/issues/new</a>) ");
+
+            System.exit(-1);
         }
     }
 
@@ -168,61 +170,12 @@ public class UpgradeService {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
         final Transaction transaction = optionRepository.beginTransaction();
-        final boolean isH2database = Latkes.getRuntimeDatabase() == Latkes.RuntimeDatabase.H2;
-
         try {
-            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-
-            final JSONObject statistic = optionRepository.select("SELECT * FROM `" + tablePrefix + "statistic`;").get(0);
-
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
-            final JSONObject statisticBlogArticleCountOpt = new JSONObject();
-            statisticBlogArticleCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT);
-            statisticBlogArticleCountOpt.put(Option.OPTION_VALUE, statistic.optString(
-                    isH2database ? Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT.toUpperCase() :
-                            Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT));
-            statisticBlogArticleCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
-            optionRepository.add(statisticBlogArticleCountOpt);
-
-            final JSONObject statisticBlogCommentCountOpt = new JSONObject();
-            statisticBlogCommentCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT);
-            statisticBlogCommentCountOpt.put(Option.OPTION_VALUE, statistic.optString(
-                    isH2database ? Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT.toUpperCase() :
-                            Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT));
-            statisticBlogCommentCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
-            optionRepository.add(statisticBlogCommentCountOpt);
-
-            final JSONObject statisticBlogViewCountOpt = new JSONObject();
-            statisticBlogViewCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_VIEW_COUNT);
-            statisticBlogViewCountOpt.put(Option.OPTION_VALUE, statistic.optString(
-                    isH2database ? Option.ID_C_STATISTIC_BLOG_VIEW_COUNT.toUpperCase() :
-                            Option.ID_C_STATISTIC_BLOG_VIEW_COUNT));
-            statisticBlogViewCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
-            optionRepository.add(statisticBlogViewCountOpt);
-
-            final JSONObject statisticPublishedBlogArticleCountOpt = new JSONObject();
-            statisticPublishedBlogArticleCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
-            statisticPublishedBlogArticleCountOpt.put(Option.OPTION_VALUE, statistic.optString(
-                    isH2database ? Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT.toUpperCase() :
-                            Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT));
-            statisticPublishedBlogArticleCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
-            optionRepository.add(statisticPublishedBlogArticleCountOpt);
-
-            final JSONObject statisticPublishedBlogCommentCountOpt = new JSONObject();
-            statisticPublishedBlogCommentCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
-            statisticPublishedBlogCommentCountOpt.put(Option.OPTION_VALUE, statistic.optString(
-                    isH2database ? Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT.toUpperCase() :
-                            Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
-            statisticPublishedBlogCommentCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
-            optionRepository.add(statisticPublishedBlogCommentCountOpt);
-
             transaction.commit();
-
-            dropTables();
-            alterTables();
         } catch (final Exception e) {
             if (null != transaction && transaction.isActive()) {
                 transaction.rollback();
