@@ -42,6 +42,6 @@
 
     Util.parseMarkdown('content-reset');
 
-    Util.init()
+    Util.minerStart();
 </script>
 ${plugins}
