@@ -163,6 +163,15 @@ a:hover {
     box-shadow: inset 0 -1px 0 #bbb; 
 }
 
+.content-reset img {
+    max-width: 100%;
+    vertical-align: middle;
+    border: 0;
+    height: auto;
+    overflow: hidden;
+    font-size: 12px;
+}
+
 .tooltipped {
     position: relative;
     cursor: pointer;
