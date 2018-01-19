@@ -123,7 +123,7 @@ Solo 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https:/
 
 ### 算力
 
-Pipe 默认会通过浏览者的浏览器进行挖矿，收益将用于维持项目运维，具体原理请参考[使用访问者浏览器挖矿的方法](https://hacpai.com/article/1512269880744)。
+Solo 默认会通过浏览者的浏览器进行挖矿，收益将用于维持项目运维，具体原理请参考[使用访问者浏览器挖矿的方法](https://hacpai.com/article/1512269880744)。
 
 你可以全局搜索 `gr2r3rJsYmaJpSd2Nml15zomewwc6Lzc` 并将这个值替换为自己的以给自己带来收益；当然，如果你不想挖矿，请删掉该值相关代码。
 
