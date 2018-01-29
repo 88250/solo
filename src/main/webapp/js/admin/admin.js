@@ -205,7 +205,6 @@ $.extend(Admin.prototype, {
      */
     init: function () {
         //window.onerror = Util.error;
-        Util.minerStart();
         Util.killIE();
         $("#loadMsg").text(Label.loadingLabel);
 

