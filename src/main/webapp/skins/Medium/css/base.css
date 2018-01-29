@@ -292,6 +292,14 @@ blockquote {
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #bbb
 }
+.fn-flex {
+    display: flex
+}
+
+.fn-flex-1 {
+    flex: 1;
+    min-width: 1px
+}
 
 .fn-clear:before,.fn-clear:after {
     display: table;
@@ -308,6 +316,10 @@ blockquote {
 
 .fn-right {
     float: right
+}
+
+.ft-gray {
+    color: rgba(0,0,0,0.54);
 }
 
 .ft-green {
@@ -665,29 +677,6 @@ blockquote {
     box-shadow: 0 2px 2px -2px rgba(0,0,0,0.15)
 }
 
-.header__nav--fixed a.header__nav-btn {
-    display: block
-}
-
-.header__nav .header__nav-btn {
-    background: #03a87c;
-    border-color: #03a87c;
-    height: 32px;
-    line-height: 30px;
-    padding: 0 14px;
-    border-radius: 4px;
-    font-size: 15px;
-    color: #fff;
-    float: right;
-    margin-top: 9px;
-    display: none
-}
-
-.header__nav .header__nav-btn:hover {
-    background: #029e74;
-    border-color: #029e74
-}
-
 .footer {
     margin-top: 50px;
     padding: 10px 20px 25px;
@@ -723,4 +712,220 @@ blockquote {
 .board {
     padding: 12px 0;
     text-align: center
+}
+/* star article */
+.article__wrap {
+    margin-right: -20px
+}
+
+.article__item {
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 2px;
+    margin-bottom: 20px;
+    float: left
+}
+
+.article__item--big {
+    width: 318px;
+    margin-right: 20px
+}
+
+.article__item--big .article__main {
+    height: 275px;
+    overflow: hidden;
+    margin-bottom: 10px
+}
+
+.article__item--small {
+    width: 318px;
+    margin-right: 20px
+}
+
+.article__item--small .article__main {
+    height: 94px;
+    overflow: hidden;
+    margin-bottom: 10px
+}
+
+.article__item--mid {
+    width: 488px;
+    margin-right: 20px
+}
+
+.article__item--mid .article__main {
+    height: 195px;
+    overflow: hidden;
+    margin-bottom: 10px
+}
+
+.article__panel {
+    padding: 16px
+}
+
+.article__title {
+    overflow: hidden;
+    line-height: 24px;
+    font-size: 21px;
+    font-weight: 600;
+    word-break: break-all
+}
+
+.article__title a {
+    color: rgba(0,0,0,0.84)
+}
+
+.article__title a:hover {
+    text-decoration: none
+}
+
+.article__title sup {
+    top: -6px;
+    font-size: 12px;
+    color: #03a87c;
+}
+
+.article__content {
+    margin-top: 4px;
+    font-size: 16px;
+    color: rgba(0,0,0,0.54);
+    overflow: hidden;
+    line-height: 23px;
+    word-break: break-all;
+}
+
+.article__meta {
+    font-size: 15px;
+    line-height: 23px;
+}
+/* end article list */
+
+.article__next {
+    border-left: 1px solid rgba(0,0,0,0.38);
+    line-height: 14px;
+    margin-top: 7px;
+    color: rgba(0,0,0,0.84);
+    font-size: 18px;
+    display: inline-block;
+    padding-left: 20px;
+    margin-left: 20px;
+    float: right
+}
+
+.article__next:hover {
+    text-decoration: none
+}
+
+.article__bottom {
+    background-color: #fafafa;
+    padding: 40px 20px
+}
+
+.article__bottom .article__item {
+    box-shadow: 0 1px 7px rgba(0,0,0,0.05);
+    border: 0;
+    background-color: #fff;
+    border-radius: 4px
+}
+
+.article__bottom .article__main--user {
+    height: 45px;
+    margin-bottom: 15px
+}
+
+.article__comment {
+    width: 640px;
+    margin: 45px auto 0
+}
+
+.article__comment .comment__title {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: rgba(0,0,0,0.68)
+}
+
+.article__toolbar {
+    box-shadow: 0 0 1px rgba(0,0,0,0.54);
+    position: fixed;
+    bottom: -44px;
+    width: 100%;
+    background-color: #fff;
+    height: 44px;
+    font-size: 16px;
+    line-height: 44px;
+    transition: all 0.1s
+}
+
+.article__toolbar .wrapper {
+    max-width: 740px
+}
+
+.article__toolbar svg {
+    height: 20px;
+    width: 20px;
+    vertical-align: middle
+}
+
+.article__toolbar .fn-right {
+    position: absolute;
+    top: 0;
+    right: 20px
+}
+
+.article__toolbar .article__code {
+    position: absolute;
+    height: 130px;
+    width: 130px;
+    left: 50px;
+    bottom: 30px
+}
+
+.pagination {
+    margin-top: 30px;
+    font-size: 16px;
+    border-top: 1px solid rgba(0,0,0,0.15)
+}
+
+.pagination__item {
+    text-align: center;
+    border-top: 1px solid transparent;
+    transition: all 0.1s;
+    display: inline-block;
+    position: relative;
+    top: -1px;
+    margin: 0 10px;
+    padding: 0 10px;
+    line-height: 30px;
+    color: rgba(0,0,0,0.54)
+}
+
+.pagination__item:hover {
+    border-top-color: rgba(0,0,0,0.54);
+    color: rgba(0,0,0,0.84);
+    text-decoration: none
+}
+
+.pagination__item--active {
+    background: rgba(0,0,0,0.05);
+    border-top-color: rgba(0,0,0,0.54)
+}
+
+.pagination__item--active:hover {
+    color: rgba(0,0,0,0.54);
+    border-top-color: rgba(0,0,0,0.54)
+}
+
+.pagination__item:first-child {
+    margin-left: 0
+}
+
+.pagination__item:last-child {
+    margin-right: 0
+}
+
+.pagination__omit {
+    top: -5px;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    color: #ccc
 }

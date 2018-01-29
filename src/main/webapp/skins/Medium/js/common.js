@@ -43,68 +43,6 @@ var Skin = {
         }
       });
       $(window).scroll();
-    },
-    _initArticleCommon: function (tocLabel, siteViewLabel) {
-        // TOC
-        if ($('.b3-solo-list li').length > 0 && $(window).width() > 1000) {
-            // add color to sidebar menu
-            $('aside').addClass('has-toc');
-
-            // append toc to sidebar menu
-            var articleTocHTML = '<ul class="fn-clear"><li class="current" data-tab="toc">' + tocLabel
-            + '</li><li data-tab="site">' + siteViewLabel + '</li></ul><section></section>';
-            $('aside').prepend(articleTocHTML);
-            var $sectionF = $('aside section:first').html($('.b3-solo-list')),
-                    $sectionL = $('aside section:last');
-            $sectionF.height($(window).height() - 154).css({ 'overflow': 'auto', 'width':  $('aside').width() + 'px'});
-            $sectionL.hide();
-            // 切换 tab
-            $('aside > ul > li').click(function () {
-                if ($(this).data('tab') === 'toc') {
-                    $sectionL.animate({
-                        "opacity": '0',
-                        "top": '-50px'
-                    }, 300, function () {
-                        $sectionF.show().css('top', '-50px');
-                        $sectionF.animate({
-                            "opacity": '1',
-                            "top": '0'
-                        }, 300).show();
-                    });
-                } else {
-                    $sectionF.animate({
-                        "opacity": '0',
-                        "top": '-50px'
-                    }, 300, function () {
-                        $sectionF.hide().css('top', '-50px');
-                        $sectionL.animate({
-                            "opacity": '1',
-                            "top": '0'
-                        }, 300).show();
-                    }).hide();
-                }
-                $('aside > ul > li').removeClass('current');
-                $(this).addClass('current');
-            });
-
-            $(window).scroll(function () {
-                if ($(window).scrollTop() > 125) {
-                    $('aside section:eq(0)').css({
-                        position: "fixed",
-                        top: "51px",
-                        backgroundColor: "#fff"
-                    })
-                } else {
-                    $('aside section:eq(0)').css({
-                        position: "inherit",
-                        borderLeft: 0
-                    })
-                }
-            });
-        }
-    },
-    initArticle: function (tocLabel, siteViewLabel) {
-        this._initArticleCommon(tocLabel, siteViewLabel);
     }
 };
 Skin.init();

@@ -23,7 +23,7 @@
     <div class="wrapper content">
             <#include "article-list.ftl">
     </div>
-    <#include "bottom.ftl">
+    <#include "bottom2.ftl">
 </div>
 <#include "footer.ftl">
 </body>
