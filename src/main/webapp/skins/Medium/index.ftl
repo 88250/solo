@@ -1,26 +1,30 @@
 <#include "macro-head.ftl">
 <!DOCTYPE html>
 <html>
-    <head>
-        <@head title="${blogTitle}">
-        <#if metaKeywords??>
+<head>
+<@head title="${blogTitle}">
+    <#if metaKeywords??>
         <meta name="keywords" content="${metaKeywords}"/>
-        </#if>
-        <#if metaDescription??>
+    </#if>
+    <#if metaDescription??>
         <meta name="description" content="${metaDescription}"/>
-        </#if>
-        </@head>
-    </head>
-    <body>
-        <#include "header.ftl">
-        <div class="wrapper">
-            <div class="main-wrap">
-                <main>
-                    <#include "article-list.ftl">
-                </main>
-                <#include "side.ftl">
-            </div>
+    </#if>
+</@head>
+</head>
+<body>
+<#include "header.ftl">
+<#include "nav.ftl">
+<div class="main">
+    <#if noticeBoard??>
+        <div class="board">
+        ${noticeBoard}
         </div>
-        <#include "footer.ftl">
-    </body>
+    </#if>
+    <div class="wrapper content">
+            <#include "article-list.ftl">
+    </div>
+    <#include "bottom.ftl">
+</div>
+<#include "footer.ftl">
+</body>
 </html>

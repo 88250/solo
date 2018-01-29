@@ -1,18 +1,31 @@
-<footer class="footer fn-clear">
-    &copy; ${year}
-    ${footerContent}
-    <a href="${servePath}">${blogTitle}</a>  &nbsp;   • &nbsp;
-    <a href="https://hacpai.com/tag/Solo" target="_blank">Solo</a> ${version}  <br/>
-
-    Powered by <a href="http://b3log.org" target="_blank">B3log</a> 开源 &nbsp;
-    <span class="ft-warn">&heartsuit;</span>
-    Theme <a rel="friend" href="https://github.com/b3log/solo-skins" target="_blank">Medium</a> by <a href="https://medium.com/" target="_blank">Medium</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
-</footer>
-<div class="icon-up" onclick="Util.goTop()"></div>
+<div class="wrapper">
+    <footer class="footer">
+        <div class="fn-clear">
+        ${blogSubtitle}
+            <div class="fn-right">
+            ${blogTitle} &copy; ${year} ${footerContent}
+            </div>
+        </div>
+        <div class="fn-clear">
+        ${statistic.statisticPublishedBlogArticleCount} ${articleLabel} &nbsp;
+        ${statistic.statisticPublishedBlogCommentCount} ${commentLabel} &nbsp;
+        ${statistic.statisticBlogViewCount} ${viewLabel} &nbsp;
+        ${onlineVisitorCnt} ${onlineVisitorLabel}
+            <div class="fn-right">
+                Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
+                <a href="https://hacpai.com/tag/Solo" target="_blank">Solo</a> •
+                Theme <a rel="friend" href="https://github.com/b3log/solo-skins" target="_blank">Medium</a>
+            </div>
+        </div>
+    </footer>
+</div>
 
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
-<script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
-<script type="text/javascript" src="${staticServePath}/skins/${skinDirName}/js/common${miniPostfix}.js?${staticResourceVersion}" charset="utf-8"></script>
+<script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="${staticServePath}/skins/${skinDirName}/js/common${miniPostfix}.js?${staticResourceVersion}"
+        charset="utf-8"></script>
 <script type="text/javascript">
     var latkeConfig = {
         "servePath": "${servePath}",
@@ -41,7 +54,5 @@
     };
 
     Util.parseMarkdown('content-reset');
-
-    Util.minerStart();
 </script>
 ${plugins}

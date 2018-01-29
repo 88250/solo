@@ -17,7 +17,7 @@
  * @fileoverview util and every page should be used.
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 0.1.0.0, Feb 17, 2017
+ * @version 0.1.0.0, Jan 29, 2018
  */
 
 /**
@@ -25,52 +25,24 @@
  * @static
  */
 var Skin = {
-    _initCommon: function ($goTop) {
-        $('body').on('click', '.content-reset img', function () {
-            window.open(this.src);
-        });
-
-        var $banner = $('header .banner'),
-        $navbar = $('header .navbar');
-
-        $(window).scroll(function () {
-            if ($(window).scrollTop() > 125) {
-                $goTop.show();
-            } else {
-                $goTop.hide();
-            }
-
-            if ($(window).width() < 701) {
-                return false;
-            }
-
-            if ($(window).scrollTop() > $banner.height()) {
-                $navbar.addClass('pin');
-                $('.main-wrap').parent().css('margin-top', '86px')
-            } else {
-                $navbar.removeClass('pin');
-                $('.main-wrap').parent().css('margin-top', '0')
-            }
-        });
-    },
     init: function () {
-        this._initCommon($('.icon-up'));
+      $('body').on('click', '.content-reset img', function () {
+        window.open(this.src);
+      });
 
-        $('.navbar nav a').each(function () {
-            if (this.href === location.href) {
-                this.className = 'current'
-            }
-        });
-
-        $('.responsive .list a').each(function () {
-            if (this.href === location.href) {
-                $(this).parent().addClass('current');
-            }
-        });
-
-        $('.responsive .icon-list').click(function () {
-            $('.responsive .list').slideToggle();
-        });
+      $(window).scroll(function () {
+        if ($('#headerNav').length === 0) {
+          return
+        }
+        if ($(window).scrollTop() > 64) {
+          $('#headerNav').addClass('header__nav--fixed');
+          $('.main').css('margin-top', '100px');
+        } else {
+          $('#headerNav').removeClass('header__nav--fixed');
+          $('.main').css('margin-top', '50px');
+        }
+      });
+      $(window).scroll();
     },
     _initArticleCommon: function (tocLabel, siteViewLabel) {
         // TOC
