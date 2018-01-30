@@ -318,8 +318,16 @@ blockquote {
     float: right
 }
 
+.ft-12 {
+    font-size: 12px;
+}
+
 .ft-gray {
     color: rgba(0,0,0,0.54);
+}
+
+.ft-fade {
+    color: rgba(0, 0, 0, 0.38);
 }
 
 .ft-green {
@@ -940,6 +948,56 @@ blockquote {
     margin-bottom: 50px;
 }
 
+.article__comment {
+    width: 640px;
+    margin: 45px auto 0
+}
+
+.article__comment .comment__title {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: rgba(0,0,0,0.68)
+}
+
+.article__comment .comment__item {
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 1px 4px;
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    border-radius: 3px;
+    padding: 10px 20px;
+    margin: 0 0 20px;
+}
+
+.article__comment .comment__avatar {
+    position: absolute;
+    height: 57px;
+    width: 57px;
+    display: inline-block;
+    z-index: 10;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 50%;
+}
+
+.article__comment .comment__body {
+    padding-left: 81px;
+}
+
+.article__comment .comment__body svg.ft-gray {
+    height: 12px;
+    width: 12px;
+    vertical-align: text-top;
+    margin-left: 5px;
+}
+
+.article__comment .comment__user,
+.article__comment .comment__user a {
+    color: rgb(3, 168, 124);
+}
+
+.article__comment .comment__user a:hover {
+    color: rgb(1, 143, 105);
+    text-decoration: none;
+}
 
 
 
@@ -969,28 +1027,6 @@ blockquote {
 }
 
 
-.article__bottom .article__item {
-    box-shadow: 0 1px 7px rgba(0,0,0,0.05);
-    border: 0;
-    background-color: #fff;
-    border-radius: 4px
-}
-
-.article__bottom .article__main--user {
-    height: 45px;
-    margin-bottom: 15px
-}
-
-.article__comment {
-    width: 640px;
-    margin: 45px auto 0
-}
-
-.article__comment .comment__title {
-    font-size: 16px;
-    margin-bottom: 15px;
-    color: rgba(0,0,0,0.68)
-}
 
 .article__toolbar {
     box-shadow: 0 0 1px rgba(0,0,0,0.54);
@@ -1001,7 +1037,8 @@ blockquote {
     height: 44px;
     font-size: 16px;
     line-height: 44px;
-    transition: all 0.1s
+    transition: all 0.1s;
+    opacity: 0
 }
 
 .article__toolbar .wrapper {

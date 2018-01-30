@@ -125,7 +125,7 @@
     <a href="${servePath}${nextArticlePermalink}" rel="next"
        class="fn-right tooltipped tooltipped-n"
        aria-label="${nextArticleTitle}">
-    ${nextArticleLabel}
+    nextArticleLabel
     </a>
 </#if>
 </div>

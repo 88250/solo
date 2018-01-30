@@ -68,13 +68,19 @@ var Skin = {
           $('.header').addClass('header--fixed').css({'top': '0'})
           $('.main').css('padding-top', '64px')
           if ($(window).height() <= $('.post').height() && scrollTop < bottomTop - $(window).height()) {
-            $('.article__toolbar').css('bottom', '0')
+            $('.article__toolbar').css({
+              'bottom': 0,
+              'opacity': 1
+            })
           }
         } else if (beforScrollTop - scrollTop < 0) {
           // down
           $('.header').css({'top': '-64px'}).removeClass('header--fixed')
           $('.main').css('padding-top', '0')
-          $('.article__toolbar').css('bottom', '-44px')
+          $('.article__toolbar').css({
+            'bottom': '-44px',
+            'opacity': 0
+          })
         }
 
       } else {
