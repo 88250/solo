@@ -1147,9 +1147,16 @@ blockquote {
     border: 1px solid rgba(0, 0, 0, 0.09);
     border-radius: 3px;
     padding: 10px;
-    margin: 0 0 20px;
+    margin: 0 0 5px;
     width: 100%;
     box-sizing: border-box;
+}
+
+.captcha {
+    height: 35px;
+    margin: -5px 0 0 7px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 3px;
 }
 
 #submitCommentButton,
@@ -1279,4 +1286,72 @@ blockquote {
     display: block;
     border-bottom: 1px solid rgba(0,0,0,0.05);
     padding: 40px 0 35px
+}
+
+
+@media (max-width: 768px) {
+    .header {
+        text-align:left
+    }
+
+    .header__logo,
+    .post__side,.article__next,#articleBottomShare,#articleShare,
+    .article__comment .comment__avatar {
+        display: none
+    }
+
+    .post {
+        margin: 50px 20px 20px
+    }
+
+    .article__toolbar {
+        padding-left: 20px;
+        box-sizing: border-box
+    }
+
+    .article__item {
+        width: 100%;
+        margin-bottom: 20px
+    }
+
+    .article__wrap {
+        margin: 0
+    }
+
+    .article__comment {
+        width: 100%
+    }
+
+    .article__main {
+        height: auto !important
+    }
+
+    .footer .fn-right {
+        float: none
+    }
+
+    .footer__tag {
+        display: block
+    }
+
+    .footer__tag>div {
+        margin: 0 0 50px
+    }
+
+    .footer__tag>div:last-child {
+        margin: 0
+    }
+
+    .pagination__item {
+        margin: 0
+    }
+
+    .emotions span {
+        margin: 0;
+        transform: scale(0.7);
+    }
+
+    .article__comment .comment__body {
+        padding-left: 0;
+    }
 }

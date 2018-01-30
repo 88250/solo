@@ -12,17 +12,17 @@
                 <#if !isLoggedIn>
                 <tr>
                     <td>
-                        <input placeholder="${commentNameLabel}" type="text" class="normalInput" id="commentName"/>
+                        <input placeholder="${commentNameLabel}" type="text" class="comment__textarea" id="commentName"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input placeholder="${commentEmailLabel}" type="email" class="normalInput" id="commentEmail"/>
+                        <input placeholder="${commentEmailLabel}" type="email" class="comment__textarea" id="commentEmail"/>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input placeholder="${commentURLLabel}" type="url" id="commentURL"/>
+                        <input placeholder="${commentURLLabel}" type="url" class="comment__textarea" id="commentURL"/>
                     </td>
                 </tr>
                 </#if>
@@ -54,7 +54,7 @@
                 <#if !isLoggedIn>
                 <tr>
                     <td>
-                        <input style="width:50%" placeholder="${captchaLabel}" type="text" class="normalInput"
+                        <input style="width:50%" placeholder="${captchaLabel}" type="text" class="comment__textarea"
                                id="commentValidate"/>
                         <img class="captcha" id="captcha" alt="validate" src="${servePath}/captcha.do"/>
                     </td>

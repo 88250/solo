@@ -19,15 +19,20 @@
 </#if>
     <div class="wrapper content">
         <article class="post">
-            <div class="content-reset">
+            <section class="content-reset">
             ${page.pageContent}
-            </div>
-        <@comments commentList=pageComments article=page></@comments>
+            </section>
+
         </article>
     </div>
-<#include "bottom.ftl">
 </div>
+<div class="article__bottom">
+<@comments commentList=pageComments article=page></@comments>
+</div>
+<div style="margin: 0 20px">
+<#include "bottom.ftl">
 <#include "footer.ftl">
+</div>
 <@comment_script oId=page.oId></@comment_script>
 </body>
 </html>
