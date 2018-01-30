@@ -701,6 +701,25 @@ blockquote {
     margin-right: 0
 }
 
+.footer__tag li {
+    list-style: none;
+}
+
+.footer__tag li a {
+    color: rgba(0, 0, 0, 0.54);
+    display: block;
+    line-height: 30px;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 25px;
+}
+
+.footer__tag li a:hover {
+    color: rgba(0, 0, 0, 0.68);
+}
+
 .main {
     margin: 50px 20px 0
 }
@@ -799,6 +818,140 @@ blockquote {
 }
 /* end article list */
 
+/* start article */
+.b3-solo-list {
+    display: none;
+}
+
+.post {
+    max-width: 740px;
+    margin: 50px auto 20px;
+    position: relative
+}
+
+.post__main {
+    margin: 20px 0 0 0
+}
+
+.post__title {
+    font-weight: 700;
+    font-size: 42px;
+    margin: 0 -20px 10px;
+    word-break: break-all
+}
+
+.post__title sup {
+    font-size: 16px;
+    top: -20px;
+    color: #03a87c;
+}
+
+.post__tags {
+    padding: 4px 0 22px;
+    border-bottom: 1px solid rgba(0,0,0,0.05)
+}
+
+.post__share {
+    padding: 20px 0;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.post__share svg {
+    height: 20px;
+    width: 20px;
+    vertical-align: bottom
+}
+
+.post__share #articleShare {
+    position: relative
+}
+
+.post__share #articleShare .article__code {
+    position: absolute;
+    height: 130px;
+    width: 130px;
+    left: -2px;
+    top: 22px
+}
+
+.post__share-icon {
+    color: rgba(0, 0, 0, 0.54);
+    cursor: pointer;
+}
+
+.post__share-icon:hover {
+    color: rgba(0, 0, 0, 0.68);
+}
+
+.post__view {
+    color: #03a87c;
+    transition: all 0.1s
+}
+
+.post__view:hover {
+    color: #018f69;
+    text-decoration: none
+}
+
+.post__side {
+    position: fixed;
+    top: 50%;
+    left: 10%;
+    width: 55px;
+    text-align: center;
+    font-size: 16px;
+    margin-top: -125px;
+    transition: opacity .1s;
+    opacity: 0
+}
+
+.post__side svg {
+    height: 25px;
+    width: 25px
+}
+
+.post__side .ft-green svg {
+    height: 55px;
+    width: 55px;
+    vertical-align: bottom;
+    margin-bottom: 10px
+}
+
+.post__side .article__code {
+    position: absolute;
+    height: 130px;
+    width: 130px;
+    left: 45px;
+    top: 90px
+}
+
+#articleSideShare {
+    width: 26px;
+    margin: 0 auto;
+}
+
+.article__bottom {
+    background-color: #fafafa;
+    padding: 40px 20px
+}
+
+.article__bottom .footer__tag {
+    margin-bottom: 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .article__next {
     border-left: 1px solid rgba(0,0,0,0.38);
     line-height: 14px;
@@ -815,10 +968,6 @@ blockquote {
     text-decoration: none
 }
 
-.article__bottom {
-    background-color: #fafafa;
-    padding: 40px 20px
-}
 
 .article__bottom .article__item {
     box-shadow: 0 1px 7px rgba(0,0,0,0.05);
