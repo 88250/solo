@@ -6,12 +6,6 @@
             </svg>
         ${indexLabel}
         </a>
-        <a href="http://localhost:5897/blogs/Vanessa/categories">
-            <svg>
-                <use xlink:href="#icon-folders"></use>
-            </svg>
-            ${categoryLabel}
-        </a>
         <a href="${servePath}/tags.html" rel="section">
             <svg>
                 <use xlink:href="#icon-tag"></use>

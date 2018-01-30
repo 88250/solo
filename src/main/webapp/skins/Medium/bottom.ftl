@@ -8,7 +8,7 @@
             <#list mostUsedCategories as category>
                 <a class="tag pipe-tooltipped pipe-tooltipped--n"
                    aria-label="${category.categoryTagCnt} ${cntLabel}${tagsLabel}"
-                   href="${servePath}/tags/${category.categoryURI}">${category.categoryTitle}</a>
+                   href="${servePath}/category/${category.categoryURI}">${category.categoryTitle}</a>
             </#list>
         </div>
     </div>

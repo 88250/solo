@@ -121,13 +121,47 @@
 </div>
 
 <div class="article__toolbar">
-<#if nextArticlePermalink??>
-    <a href="${servePath}${nextArticlePermalink}" rel="next"
-       class="fn-right tooltipped tooltipped-n"
-       aria-label="${nextArticleTitle}">
-    nextArticleLabel
-    </a>
-</#if>
+    <div class="wrapper">
+        <a class="post__view" href="${servePath}${article.articlePermalink}">
+            ${article.articleViewCount} ${viewLabel}
+        </a>
+        <div class="fn-right">
+            <span class="pipe-tooltipped pipe-tooltipped--n post__share-icon ft-green"
+                  onclick="$('#comment').focus()"
+                  aria-label="${commentLabel}">
+                <svg>
+                    <use xlink:href="#icon-comment"></use>
+                </svg>
+                ${article.articleCommentCount}  &nbsp; &nbsp;
+            </span>
+            <span id="articleBottomShare">
+                <span class="post__share-icon" data-type="wechat">
+                    <svg><use xlink:href="#icon-wechat"></use></svg>
+                </span> &nbsp; &nbsp;
+                <span class="post__share-icon" data-type="weibo">
+                    <svg><use xlink:href="#icon-weibo"></use></svg>
+                </span> &nbsp; &nbsp;
+                <span class="post__share-icon" data-type="twitter">
+                    <svg><use xlink:href="#icon-twitter"></use></svg>
+                </span> &nbsp; &nbsp;
+                <span class="post__share-icon" data-type="google">
+                    <svg><use xlink:href="#icon-google"></use></svg>
+                </span>
+                <span class="article__code"
+                      data-title="${article.articleTitle}"
+                      data-blogtitle="${blogTitle}"
+                      data-url="${servePath}${article.articlePermalink}"
+                      data-avatar="${article.authorThumbnailURL}"></span>
+            </span>
+
+            <#if nextArticlePermalink??>
+                <a href="${servePath}${nextArticlePermalink}" rel="next" class="article__next">
+                    <span class="ft-12 ft-gray">${nextArticleLabel}</span> <br>
+                    ${nextArticleTitle}
+                </a>
+            </#if>
+        </div>
+    </div>
 </div>
 
 <div class="post__side">
