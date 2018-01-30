@@ -47,7 +47,8 @@
             </tr>
             <tr>
                 <td>
-                    <textarea rows="5" cols="96" id="comment"></textarea>
+                    <textarea rows="5" placeholder="${commentContentCannotEmptyLabel}"
+                              class="comment__textarea"  id="comment"></textarea>
                 </td>
             </tr>
                 <#if !isLoggedIn>

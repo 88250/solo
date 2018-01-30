@@ -29,24 +29,26 @@ html {
 
 body {
     margin: 0;
-    font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB","Microsoft Yahei",sans-serif;
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     -webkit-font-smoothing: antialiased
 }
 
 ::-moz-selection {
     text-shadow: none;
-    background: rgba(65,131,196,0.4)
+    background: rgba(65, 131, 196, 0.4)
 }
 
 ::selection {
     text-shadow: none;
-    background: rgba(66,133,244,0.4)
+    background: rgba(66, 133, 244, 0.4)
 }
+
 ul,
 ol {
     margin: 0;
     padding: 0
 }
+
 h1,
 h2,
 h3,
@@ -58,6 +60,7 @@ dd,
 p {
     margin: 0
 }
+
 article,
 aside,
 details,
@@ -70,14 +73,17 @@ nav,
 section {
     display: block
 }
+
 audio,
 canvas,
 video {
     display: inline-block
 }
+
 audio:not([controls]) {
     display: none
 }
+
 a {
     outline: 0;
     text-decoration: none;
@@ -87,6 +93,7 @@ a {
 a:hover {
     text-decoration: underline
 }
+
 sub,
 sup {
     position: relative;
@@ -94,12 +101,15 @@ sup {
     line-height: 0;
     vertical-align: baseline
 }
+
 sup {
     top: -0.5em
 }
+
 sub {
     bottom: -0.25em
 }
+
 img {
     max-width: 100%;
     vertical-align: middle;
@@ -107,6 +117,7 @@ img {
     height: auto;
     -ms-interpolation-mode: bicubic
 }
+
 button,
 input,
 select,
@@ -117,15 +128,18 @@ textarea {
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     outline: none
 }
+
 button,
 input {
     line-height: normal
 }
+
 button::-moz-focus-inner,
 input::-moz-focus-inner {
     padding: 0;
     border: 0
 }
+
 button,
 input[type="button"],
 input[type="reset"],
@@ -133,20 +147,24 @@ input[type="submit"] {
     cursor: pointer;
     -webkit-appearance: button
 }
+
 input[type="search"] {
     -webkit-box-sizing: content-box;
     -moz-box-sizing: content-box;
     box-sizing: content-box;
     -webkit-appearance: textfield
 }
+
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button {
     -webkit-appearance: none
 }
+
 textarea {
     overflow: auto;
     resize: vertical
 }
+
 svg {
     fill: currentColor;
     display: inline-block;
@@ -155,9 +173,11 @@ svg {
     width: 14px;
     height: 14px
 }
+
 blockquote {
     margin: 0
 }
+
 .content-reset {
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     word-wrap: break-word;
@@ -166,18 +186,22 @@ blockquote {
     font-size: 16px;
     word-break: break-all
 }
+
 .content-reset a {
     color: #ff4d3a;
 }
+
 .content-reset ul,
 .content-reset ol {
     padding-left: 2em;
     margin-top: 0;
     margin-bottom: 16px
 }
+
 .content-reset li {
     margin-top: 0.25em
 }
+
 .content-reset h1,
 .content-reset h2,
 .content-reset h3,
@@ -189,28 +213,35 @@ blockquote {
     font-weight: 600;
     line-height: 1.25
 }
+
 .content-reset h1 {
     padding-bottom: 0.3em;
     font-size: 2em;
     border-bottom: 1px solid #eee
 }
+
 .content-reset h2 {
     padding-bottom: 0.3em;
     font-size: 1.5em;
     border-bottom: 1px solid #eee
 }
+
 .content-reset h3 {
     font-size: 1.25em
 }
+
 .content-reset h4 {
     font-size: 1em
 }
+
 .content-reset h5 {
     font-size: 0.875em
 }
+
 .content-reset h6 {
     font-size: 0.85em
 }
+
 .content-reset hr {
     height: 0.25em;
     padding: 0;
@@ -218,22 +249,27 @@ blockquote {
     background-color: #e7e7e7;
     border: 0
 }
+
 .content-reset p {
     margin-top: 0;
     margin-bottom: 16px
 }
+
 .content-reset blockquote {
     padding: 0 1em;
     color: #777;
     border-left: 0.25em solid #ddd;
     margin-bottom: 16px
 }
+
 .content-reset blockquote p {
     margin: 0
 }
+
 .content-reset iframe {
     border: 1px solid #ccc
 }
+
 .content-reset table {
     width: 100%;
     border: 1px solid #dedede;
@@ -241,26 +277,32 @@ blockquote {
     border-collapse: collapse;
     empty-cells: show
 }
+
 .content-reset thead {
     text-align: center
 }
+
 .content-reset td,
 .content-reset th {
     height: 35px;
     border: 1px solid #dedede;
     padding: 0 10px
 }
+
 .content-reset th {
     font-weight: bold;
     text-align: center !important;
     background: rgba(158, 188, 226, 0.2)
 }
+
 .content-reset tbody tr:nth-child(2n) {
     background: rgba(158, 188, 226, 0.12)
 }
+
 .content-reset tr:hover {
     background: #efefef
 }
+
 .content-reset code {
     padding: 0.2em 0.4em;
     margin: 0;
@@ -270,7 +312,8 @@ blockquote {
     color: #d23f31;
     font-family: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace
 }
-.content-reset pre>code {
+
+.content-reset pre > code {
     padding: 0.5em;
     border-radius: 0;
     color: #333;
@@ -279,6 +322,7 @@ blockquote {
     background-size: 20px 20px;
     border-radius: 5px
 }
+
 .content-reset kbd {
     display: inline-block;
     padding: 3px 5px;
@@ -292,6 +336,7 @@ blockquote {
     border-radius: 3px;
     box-shadow: inset 0 -1px 0 #bbb
 }
+
 .fn-flex {
     display: flex
 }
@@ -301,7 +346,7 @@ blockquote {
     min-width: 1px
 }
 
-.fn-clear:before,.fn-clear:after {
+.fn-clear:before, .fn-clear:after {
     display: table;
     content: ""
 }
@@ -323,7 +368,7 @@ blockquote {
 }
 
 .ft-gray {
-    color: rgba(0,0,0,0.54);
+    color: rgba(0, 0, 0, 0.54);
 }
 
 .ft-fade {
@@ -338,6 +383,7 @@ blockquote {
 .ft-green:hover {
     color: #018f69 !important
 }
+
 .pipe-tooltipped {
     position: relative;
     cursor: pointer
@@ -360,7 +406,7 @@ blockquote {
     white-space: pre;
     pointer-events: none;
     content: attr(aria-label);
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     border-radius: 3px;
     line-height: 16px;
     opacity: 0
@@ -372,7 +418,7 @@ blockquote {
     display: none;
     width: 0;
     height: 0;
-    color: rgba(0,0,0,0.8);
+    color: rgba(0, 0, 0, 0.8);
     pointer-events: none;
     content: "";
     border: 5px solid transparent;
@@ -389,7 +435,7 @@ blockquote {
     }
 }
 
-.pipe-tooltipped:hover::before,.pipe-tooltipped:hover::after,.pipe-tooltipped:active::before,.pipe-tooltipped:active::after,.pipe-tooltipped:focus::before,.pipe-tooltipped:focus::after {
+.pipe-tooltipped:hover::before, .pipe-tooltipped:hover::after, .pipe-tooltipped:active::before, .pipe-tooltipped:active::after, .pipe-tooltipped:focus::before, .pipe-tooltipped:focus::after {
     display: inline-block;
     text-decoration: none;
     animation-name: tooltip-appear;
@@ -399,18 +445,18 @@ blockquote {
     animation-delay: 0.4s
 }
 
-.pipe-tooltipped--s::after,.pipe-tooltipped--se::after,.pipe-tooltipped--sw::after {
+.pipe-tooltipped--s::after, .pipe-tooltipped--se::after, .pipe-tooltipped--sw::after {
     top: 100%;
     right: 50%;
     margin-top: 5px
 }
 
-.pipe-tooltipped--s::before,.pipe-tooltipped--se::before,.pipe-tooltipped--sw::before {
+.pipe-tooltipped--s::before, .pipe-tooltipped--se::before, .pipe-tooltipped--sw::before {
     top: auto;
     right: 50%;
     bottom: -5px;
     margin-right: -5px;
-    border-bottom-color: rgba(0,0,0,0.8)
+    border-bottom-color: rgba(0, 0, 0, 0.8)
 }
 
 .pipe-tooltipped--se::after {
@@ -423,18 +469,18 @@ blockquote {
     margin-right: -15px
 }
 
-.pipe-tooltipped--n::after,.pipe-tooltipped--ne::after,.pipe-tooltipped--nw::after {
+.pipe-tooltipped--n::after, .pipe-tooltipped--ne::after, .pipe-tooltipped--nw::after {
     right: 50%;
     bottom: 100%;
     margin-bottom: 5px
 }
 
-.pipe-tooltipped--n::before,.pipe-tooltipped--ne::before,.pipe-tooltipped--nw::before {
+.pipe-tooltipped--n::before, .pipe-tooltipped--ne::before, .pipe-tooltipped--nw::before {
     top: -5px;
     right: 50%;
     bottom: auto;
     margin-right: -5px;
-    border-top-color: rgba(0,0,0,0.8)
+    border-top-color: rgba(0, 0, 0, 0.8)
 }
 
 .pipe-tooltipped--ne::after {
@@ -447,7 +493,7 @@ blockquote {
     margin-right: -15px
 }
 
-.pipe-tooltipped--s::after,.pipe-tooltipped--n::after {
+.pipe-tooltipped--s::after, .pipe-tooltipped--n::after {
     transform: translateX(50%)
 }
 
@@ -463,7 +509,7 @@ blockquote {
     bottom: 50%;
     left: -5px;
     margin-top: -5px;
-    border-left-color: rgba(0,0,0,0.8)
+    border-left-color: rgba(0, 0, 0, 0.8)
 }
 
 .pipe-tooltipped--e::after {
@@ -478,12 +524,12 @@ blockquote {
     right: -5px;
     bottom: 50%;
     margin-top: -5px;
-    border-right-color: rgba(0,0,0,0.8)
+    border-right-color: rgba(0, 0, 0, 0.8)
 }
 
 .tag {
-    background-color: rgba(0,0,0,0.05);
-    color: rgba(0,0,0,0.68);
+    background-color: rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.68);
     padding: 5px 10px;
     line-height: 22px;
     font-weight: 400;
@@ -497,20 +543,20 @@ blockquote {
 
 .tag:hover {
     text-decoration: none;
-    background: rgba(0,0,0,0.1);
-    color: rgba(0,0,0,0.68)
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(0, 0, 0, 0.68)
 }
 
 .tag__level0 {
     line-height: inherit;
     font-size: 12px;
-    color: rgba(0,0,0,0.38)
+    color: rgba(0, 0, 0, 0.38)
 }
 
 .tag__level1 {
     line-height: inherit;
     font-size: 16px;
-    color: rgba(0,0,0,0.54)
+    color: rgba(0, 0, 0, 0.54)
 }
 
 .tag__level2 {
@@ -532,7 +578,7 @@ blockquote {
 }
 
 .module__title {
-    border-bottom: 1px solid rgba(0,0,0,0.15);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
     margin-bottom: 25px;
     line-height: 26px;
     font-size: 22px;
@@ -540,8 +586,8 @@ blockquote {
     height: 46px
 }
 
-.module__title>span {
-    border-bottom: 1px solid rgba(0,0,0,0.54);
+.module__title > span {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.54);
     position: absolute;
     padding-bottom: 20px;
     height: 26px
@@ -560,6 +606,7 @@ blockquote {
     height: 64px;
     text-align: center;
     transition: all 0.1s;
+    z-index: 11;
 }
 
 .header h1 {
@@ -568,12 +615,11 @@ blockquote {
 }
 
 .header--fixed {
-    z-index: 10;
     position: fixed;
     width: 100%;
     top: -64px;
     background-color: #fff;
-    box-shadow: 0 2px 2px -2px rgba(0,0,0,0.15)
+    box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.15)
 }
 
 .header__logo {
@@ -588,7 +634,7 @@ blockquote {
 
 .header__title {
     font-size: 26px;
-    color: rgba(0,0,0,0.84)
+    color: rgba(0, 0, 0, 0.84)
 }
 
 .header__title:hover {
@@ -597,7 +643,7 @@ blockquote {
 
 .header__icon {
     transition: all 0.1s;
-    color: rgba(0,0,0,0.54);
+    color: rgba(0, 0, 0, 0.54);
     text-decoration: none;
     width: 25px;
     margin-left: 10px;
@@ -607,7 +653,7 @@ blockquote {
 
 .header__icon:hover {
     text-decoration: none;
-    color: rgba(0,0,0,0.68)
+    color: rgba(0, 0, 0, 0.68)
 }
 
 .header__icon svg {
@@ -659,7 +705,7 @@ blockquote {
 }
 
 .header__nav a {
-    color: rgba(0,0,0,0.76);
+    color: rgba(0, 0, 0, 0.76);
     font-size: 15px;
     padding: 0 10px;
     line-height: 50px;
@@ -682,30 +728,30 @@ blockquote {
     width: 100%;
     top: 0;
     background-color: #fff;
-    box-shadow: 0 2px 2px -2px rgba(0,0,0,0.15)
+    box-shadow: 0 2px 2px -2px rgba(0, 0, 0, 0.15)
 }
 
 .footer {
     margin-top: 50px;
     padding: 10px 20px 25px;
     font-size: 14px;
-    border-top: 1px solid rgba(0,0,0,0.05);
-    color: rgba(0,0,0,0.38)
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    color: rgba(0, 0, 0, 0.38)
 }
 
 .footer a {
-    color: rgba(0,0,0,0.54)
+    color: rgba(0, 0, 0, 0.54)
 }
 
 .footer__tag {
     margin-top: 50px
 }
 
-.footer__tag>div {
+.footer__tag > div {
     margin-right: 20px
 }
 
-.footer__tag>div:last-child {
+.footer__tag > div:last-child {
     margin-right: 0
 }
 
@@ -740,13 +786,14 @@ blockquote {
     padding: 12px 0;
     text-align: center
 }
+
 /* star article */
 .article__wrap {
     margin-right: -20px
 }
 
 .article__item {
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 2px;
     margin-bottom: 20px;
     float: left
@@ -798,7 +845,7 @@ blockquote {
 }
 
 .article__title a {
-    color: rgba(0,0,0,0.84)
+    color: rgba(0, 0, 0, 0.84)
 }
 
 .article__title a:hover {
@@ -814,7 +861,7 @@ blockquote {
 .article__content {
     margin-top: 4px;
     font-size: 16px;
-    color: rgba(0,0,0,0.54);
+    color: rgba(0, 0, 0, 0.54);
     overflow: hidden;
     line-height: 23px;
     word-break: break-all;
@@ -824,6 +871,7 @@ blockquote {
     font-size: 15px;
     line-height: 23px;
 }
+
 /* end article list */
 
 /* start article */
@@ -856,7 +904,7 @@ blockquote {
 
 .post__tags {
     padding: 4px 0 22px;
-    border-bottom: 1px solid rgba(0,0,0,0.05)
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05)
 }
 
 .post__share {
@@ -950,13 +998,14 @@ blockquote {
 
 .article__comment {
     width: 640px;
-    margin: 45px auto 0
+    margin: 45px auto 0;
+    position: relative;
 }
 
 .article__comment .comment__title {
     font-size: 16px;
     margin-bottom: 15px;
-    color: rgba(0,0,0,0.68)
+    color: rgba(0, 0, 0, 0.68)
 }
 
 .article__comment .comment__item {
@@ -999,11 +1048,124 @@ blockquote {
     text-decoration: none;
 }
 
+.comment-body-ref {
+    position: absolute;
+    width: 559px;
+    box-sizing: border-box;
+    left: 101px;
+}
 
+.comment-body-ref .ft-green {
+    display: none;
+}
 
+.em00, .em01, .em02, .em03, .em04, .em05, .em06, .em07, .em08, .em09, .em10, .em11, .em12, .em13, .em14 {
+    cursor: pointer;
+    background-image: url(../../../images/emotions/emotions.png);
+    background-size: 120px;
+    float: left;
+    height: 24px;
+    margin-right: 10px;
+    width: 24px;
+    transition: all .2s ease-out;
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out
+}
 
+#emotions span:hover {
+    transform: scale(1.2) rotate(360deg);
+    -webkit-transform: scale(1.2) rotate(360deg);
+    -moz-transform: scale(1.2) rotate(360deg)
+}
 
+.em01 {
+    background-position: -24px 0
+}
 
+.em02 {
+    background-position: -48px 0
+}
+
+.em03 {
+    background-position: -72px 0
+}
+
+.em04 {
+    background-position: -96px 0
+}
+
+.em05 {
+    background-position: 0 -24px
+}
+
+.em06 {
+    background-position: -24px -24px
+}
+
+.em07 {
+    background-position: -48px -24px
+}
+
+.em08 {
+    background-position: -72px -24px
+}
+
+.em09 {
+    background-position: -96px -24px
+}
+
+.em10 {
+    background-position: 0 -48px
+}
+
+.em11 {
+    background-position: -24px -48px
+}
+
+.em12 {
+    background-position: -48px -48px
+}
+
+.em13 {
+    background-position: -72px -48px
+}
+
+.em14 {
+    background-position: -96px -48px
+}
+
+#commentForm,
+#replyForm {
+    width: 100%;
+}
+
+.comment__textarea {
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.04) 0px 1px 4px;
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    border-radius: 3px;
+    padding: 10px;
+    margin: 0 0 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#submitCommentButton,
+#submitCommentButtonReply {
+    background-color: #fff;
+    border: 1px solid #03a87c;
+    color: #03a87c;
+    border-radius: 3px;
+    padding: 5px 10px;
+    transition: all 0.1s;
+}
+
+#submitCommentButton:hover,
+#submitCommentButtonReply:hover {
+    background-color: #fff;
+    border-color: #018f69;
+    color: #018f69;
+}
 
 
 
@@ -1011,10 +1173,10 @@ blockquote {
 
 
 .article__next {
-    border-left: 1px solid rgba(0,0,0,0.38);
+    border-left: 1px solid rgba(0, 0, 0, 0.38);
     line-height: 14px;
     margin-top: 7px;
-    color: rgba(0,0,0,0.84);
+    color: rgba(0, 0, 0, 0.84);
     font-size: 18px;
     display: inline-block;
     padding-left: 20px;
@@ -1026,10 +1188,8 @@ blockquote {
     text-decoration: none
 }
 
-
-
 .article__toolbar {
-    box-shadow: 0 0 1px rgba(0,0,0,0.54);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.54);
     position: fixed;
     bottom: -44px;
     width: 100%;
@@ -1068,7 +1228,7 @@ blockquote {
 .pagination {
     margin-top: 30px;
     font-size: 16px;
-    border-top: 1px solid rgba(0,0,0,0.15)
+    border-top: 1px solid rgba(0, 0, 0, 0.15)
 }
 
 .pagination__item {
@@ -1081,23 +1241,23 @@ blockquote {
     margin: 0 10px;
     padding: 0 10px;
     line-height: 30px;
-    color: rgba(0,0,0,0.54)
+    color: rgba(0, 0, 0, 0.54)
 }
 
 .pagination__item:hover {
-    border-top-color: rgba(0,0,0,0.54);
-    color: rgba(0,0,0,0.84);
+    border-top-color: rgba(0, 0, 0, 0.54);
+    color: rgba(0, 0, 0, 0.84);
     text-decoration: none
 }
 
 .pagination__item--active {
-    background: rgba(0,0,0,0.05);
-    border-top-color: rgba(0,0,0,0.54)
+    background: rgba(0, 0, 0, 0.05);
+    border-top-color: rgba(0, 0, 0, 0.54)
 }
 
 .pagination__item--active:hover {
-    color: rgba(0,0,0,0.54);
-    border-top-color: rgba(0,0,0,0.54)
+    color: rgba(0, 0, 0, 0.54);
+    border-top-color: rgba(0, 0, 0, 0.54)
 }
 
 .pagination__item:first-child {
