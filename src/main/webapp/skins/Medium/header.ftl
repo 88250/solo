@@ -54,11 +54,6 @@
 </svg>
 <header class="header">
     <div class="wrapper fn-clear">
-        <a href="https://github.com/b3log/solo" target="_blank" class="fn-left pipe-tooltipped pipe-tooltipped--w"
-           aria-label="GitHub">
-            <img class="header__logo" src="${staticServePath}/skins/${skinDirName}/images/logo.png">
-        </a>
-
         <h1><a href="${servePath}" rel="start" class="header__title">${blogTitle}</a></h1>
 
         <div class="fn-right">
