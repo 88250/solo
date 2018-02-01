@@ -1,317 +1,541 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
-        <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
-        <title>Solo Change Logs</title>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="apple-touch-icon" href="/favicon.png">
-        <style>
-            a {
-                color: #4285f4;
-            }
+<head>
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
+    <title>Solo Change Logs</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="apple-touch-icon" href="/favicon.png">
+    <style>
+        a {
+            color: #4285f4;
+        }
 
-            h2 {
-                margin: 20px 10px 0;
-                font-size: 20px;
-            }
+        h2 {
+            margin: 20px 10px 0;
+            font-size: 20px;
+        }
 
-            ul {
-                margin-top: 0;
-            }
+        ul {
+            margin-top: 0;
+        }
 
-            ul span {
-                font-size: 12px;
-            }
-        </style>
-    </head>
-    <body>
-        <h2>Release 2.5.0 - Dec 20, 2017</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12353">12353 JSON 数据导出</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12360">12360 数学公式和流程图的展示</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12372">12372 Markdown 数据导出</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12356">12356 搜索页面路径参数缺失报错</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12361">12361 RSS / Atom 内容编码调整</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12367">12367 跨版本升级校验</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12369">12369 Markdown 渲染改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12382">12382 文章中站外链接开新页签</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12383">12383 Markdown 缓存提升渲染性能</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12355">12355 搜索结果中存在草稿数据</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12375">12375 异步加载分页问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-        </ul>
-        <h2>Release 2.4.0 - Sep 22, 2017</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12261">12261 支持全文搜索</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12345">12345 自定义导航增加图标配置</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12349">12349 统计数据结构重构</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12352">12352 升级内建的 MD 处理引擎</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 2.3.0 - Aug 31, 2017</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12319">12319 性能优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12325">12325 部分皮肤导航目录调优</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12330">12330 修复 Cookie 安全问题</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12323">12323 构建相关优化</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12336">12336 去除广播插件</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12329">12329 修复重置密码相关安全漏洞</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12344">12344 带下划线的 Emoji 不能渲染</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-        </ul>
-        <h2>Release 2.2.0 - Jul 10, 2017</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12293">12293 支持 Hexo/Jekyll 数据导入</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12317">12317 引入新的 Markdown 引擎（NodeJS marked）</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12299">12299 加密文章表单自适应</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12304">12304 替换 MD 处理引擎</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12307">12307 无效日志缩减</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12308">12308 配置 MetaWeblog API 报错</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-        </ul>
-        <h2>Release 2.1.0 - May 25, 2017</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12284">12284 H2 SQL 文件导出</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12280">12280 社区同步过来的评论加入头像</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12285">12285 移除 HTML 编辑器</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12273">12273 重新整理文档</a>&nbsp;<span style='background: #006b75 !important;color:#FFFFFF !important;padding: 1px 4px;'>doc</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12278">12278 新的 Logo</a>&nbsp;<span style='background: #006b75 !important;color:#FFFFFF !important;padding: 1px 4px;'>doc</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12274">12274 更新分类标签计数错误</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12295">12295 并发请求报错</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-        </ul>
-        <h2>Release 2.0.0 - Apr 14, 2017</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12256">12256 支持文章分类</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12251">12251 部分皮肤的作者文章列表页摘要转义</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12258">12258 NeoEase 图片样式</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12255">12255 皮肤修改</a>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>    <li><a href="https://github.com/b3log/solo/issues/12264">12264 文章页面 SEO 优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-        </ul>
-        <h2>Release 1.9.0 - Feb 21, 2017</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12248">12248 回复提醒邮件模版丢失</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12180">12180 新皮肤 9IPHP</a>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12240">12240 next 皮肤细节改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>    <li><a href="https://github.com/b3log/solo/issues/12246">12246 添加评论优化</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 1.8.0 - Jan 23, 2017</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12210">12210 七牛上传支持改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12219">12219 图片上传改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12229">12229 HTTPS 支持改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-        </ul>
-        <h2>Release 1.7.0 - Nov 9, 2016</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12182">12182 Windows 上 404 页面 404</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12202">12202 使用 CDN 后编辑器图片框加载失败</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12159">12159 新版 Markdown 编辑器</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12160">12160 CDN 字体库加载慢</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12164">12164 同步摘要时移除标签</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12186">12186 移除 B3log 公告插件</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12188">12188 完善单元测试</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 1.6.0 - Sep 8, 2016</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12147">12147 用户管理翻页失败</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12153">12153 语言设置为 English 时首页报错</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12150">12150 新版后台 UI</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-        </ul>
-        <h2>Release 1.5.0 - Aug 10, 2016</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12130">12130 MySQL 数据导出 SQL 文件</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12128">12128 JDBC 驱动反注册</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12140">12140 新皮肤 next</a>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
-        </ul>
-        <h2>Release 1.4.0 - Jun 28, 2016</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12060">12060 前台皮肤切换</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12096">12096 Meta Desc 解析异常</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12100">12100 代码高亮换行问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12114">12114 静态资源加载问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12118">12118 finding 皮肤 bug</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12058">12058 简化配置</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12059">12059 细节体验改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12079">12079 文件上传后缀改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12093">12093 评论 Emoji 支持</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12107">12107 Markdown 支持增强</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-        </ul>
-        <h2>Release 1.3.0 - Dec 19, 2015</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12051">12051 社区文章推荐</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12048">12048 Docker 方式启动</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12052">12052 评论支持 Markdown</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12050">12050 配置文件简化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12053">12053 评论内容编码重构</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12042">12042 彻底移除 preference 表</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 1.2.0 - Dec 2, 2015</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12037">12037 独立模式</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12035">12035 NeoEase 皮肤侧边栏问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12038">12038 新皮肤 yilia</a>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>    <li><a href="https://github.com/b3log/solo/issues/12044">12044 静态资源配置简化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12043">12043 用户注册开关配置</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12039">12039 页脚模版变量</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12036">12036 用户头像外链</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12041">12041 Preference 存储重构</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12040">12040 调整升级机制</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 1.1.0 - Oct 1, 2015</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12031" rel="nofollow" target="_blank">12031 Bruce 皮肤细节</a></li>
-            <li><a href="https://github.com/b3log/solo/issues/12032" rel="nofollow" target="_blank">12032 七牛配置增强</a></li>
-            <li><a href="https://github.com/b3log/solo/issues/12030" rel="nofollow" target="_blank">12030 项目结构调整</a></li>
-            <li><a href="https://github.com/b3log/solo/issues/12033" rel="nofollow" target="_blank">12033 默认订阅输出 RSS</a></li>
-        </ul>
-        <h2>Release 1.0.0 - Sep 16, 2015</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12029">12029 上传七牛</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12026">12026 加密文章列表问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12022">12022 Finding 皮肤语法高亮改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>    <li><a href="https://github.com/b3log/solo/issues/12028">12028 更换 Google 字体库为国内的 360 镜像</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12027">12027 Markdown 编辑器自动折行</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12024">12024 使用百度搜索</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12023">12023 改进 Meta Description 容错性</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-        </ul>
-        <h2>Release 0.6.9 - Jun 28, 2015</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/solo/issues/12019">12019 新皮肤 - Finding</a>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>    <li><a href="https://github.com/b3log/solo/issues/12020">12020 加入开发者、贡献者名单</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12015">12015 Gravatar 默认配置</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12013">12013 搜索引擎优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12012">12012 编辑器类型切换</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12009">12009 可以使用中文逗号分割标签</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/solo/issues/12014">12014 项目重命名</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 0.6.8 - Mar 24, 2015</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/11992">11992 可配置 favicon 获取</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/12000">12000 新皮肤 —— Bruce</a>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>    <li><a href="https://github.com/b3log/b3log-solo/issues/12006">12006 取消 ping Google</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/11999">11999 默认配置参数调整</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/12004">12004 checkstyle、jacobe 插件不自动执行</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 0.6.7 - Oct 16, 2014</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/11984">11984 标签导出</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/11976">11976 目录生成插件</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/11975">11975 community 皮肤问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/11985">11985 更新 google-code-prettify 到最新版</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/11978">11978 捐赠链接修改</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/11983">11983 开发时静态资源锁定问题</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/11982">11982 升级 maven-min-plugin</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 0.6.6 - Apr 26, 2014</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/338">338 Druid 数据库连接池支持</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/326">326 网站浏览次数始终为 0</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/333">333 评论邮件标题乱码</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/334">334 时区问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/340">340 邮箱格式判断问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/341">341 可以删除别人的评论</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/343">343 kill browser 问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/345">345 博主评论问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/11755">11755 以 war 包部署问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/329">329 goTop 和 goBottom 改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/330">330 更新开发时用的 jetty 插件</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/335">335 去除 BAE 版</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 0.6.5 - Nov 1, 2013</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/282">282 找回密码问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/283">283 社区同步评论</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/288">288 IoC 容器冲突</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/294">294 发布文章时允许评论开关问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/296">296 数据恢复接口被过滤器跳过</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/302">302 更新已发布文章问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/295">295 未初始化时启动日志报错</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/299">299 评论信息填充优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/316">316 评论开关页面显示</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/317">317 自动保存文章时间间隔</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/318">318 去缓存</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/320">320 加入登录状态模版变量</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-        </ul>
-        <h2>Release 0.6.1 - Aug 25, 2013</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/200">200 找回密码</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/221">221 最新日志、标签最新日志</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/261">261 自动保存草稿功能</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/241">241 RSS 订阅输出的时间不对</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/249">249 BAE 版发送邮件问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/252">252 更新用户密码问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/253">253 文章列表不显示</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/269">269 获取加密文章安全问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/264">264 新增 metro 风格皮肤</a>&nbsp;<span style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/250">250 Markdown 编辑器预览改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/254">254 移除“偏好设定”中的“博客地址”配置</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/259">259 初始化第二页面只能用鼠标点击</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/260">260 JDBC 性能优化</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/263">263 timeline 皮肤改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/265">265 浏览器兼容性提示改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/268">268 使用 Latke IoC 容器</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/271">271 访客登录跳转</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/275">275 访客登录不允许查看加密的文章</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/276">276 模版变量 gravatar</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/267">267 替换日志组件为 slf4j</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 0.6.0 - Apr 26, 2013</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/199">199 社区文章更新接口</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/203">203 用户注册，实现多用户博客</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/226">226 加入字典存储 option</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/198">198 删除文章出错</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/205">205 禁用缓存后文章浏览计数不变</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/214">214 Zoundry Raven  发布问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/144">144 KindEditor 上传问题</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/193">193 登录后再访问登录页将跳转后台</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/194">194 删除操作提示改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/195">195 去除草稿夹浏览按钮</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/196">196 清除缓存丢失访问统计</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/202">202 自定义 Feed 文章数</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/210">210 升级至 GAE 1.7.7</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 0.5.6 - Feb 19, 2012</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/130">130 登录用户评论时无需输入验证码</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/150">150 支持 H2 数据库</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/171">171 新皮肤 timeline</a>&nbsp;<span style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/133">133 前端代理后在线人数不正常</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/141">141 请求 Latke Remote APIs 时跳过初始化检查</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/142">142 保存为草稿后再发布无法同步</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/148">148 清空数据存储时未删除插件存储</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/149">149 “随机阅读”/“相关阅读”链接错误</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/151">151 OpenShift 上不显示验证码</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/159">159 加密文章问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/160">160 本地版内存溢出</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/164">164 robots.txt 禁止抓取标签问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/169">169 DateFormat 线程安全问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/170">170 登录页面底部链接问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/172">172 GAE 版配额消耗过快问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/177">177 泄漏用户密码安全问题</a>&nbsp;<span style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/129">129 摘要编辑器添加源码功能</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/132">132 Markdown 编辑器显示问题</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/154">154 使用密文存储密码</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/155">155 邮件 SSL 配置</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/162">162 404 页面引入公益活动</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/173">173 评论快捷键提交</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/175">175 社区同步文案</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/176">176 更新文章提示改进</a>&nbsp;<span style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/147">147 工程中加入 eclipse 项目配置</a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/161">161 使用 mvn 插件统一 Java 格式化 </a>&nbsp;<span style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
-        </ul>
-        <h2>Release 0.5.5 - Nov 24, 2012</h2>
-        <ul>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/72">72 非管理员登录后 TopBar 无后台入口</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/73">73 支持 BAE 部署</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/74">74 跨版本升级提示</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/75">75 加入页面类型变量</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/78">78 MetaWeblog API 获取文章日期问题</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/80">80 MetaWeblog API 发布文章摘要问题</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/82">82 登录、初始化问题</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/85">85 配置文件按项目分离</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/86">86 Hello World 文章多语言</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/87">87 加入运行信息公共模版变量</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/88">88 登录页体验改进</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/99">99 404 页面加入登录入口</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/101">101 验证码改造</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/103">103 本地版数据库表前缀支持</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/104">104 升级到 GAE SDK 1.7.2</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/106">106 摘要编辑器改进</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/111">111 与社区同步</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/113">113 无文章首页不返回 404</a></li>
-            <li><a href="https://github.com/b3log/b3log-solo/issues/125">125 Feed 输出加密文章</a></li>
-        </ul>
+        ul span {
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<h2>Release 2.6.0 - Feb 1, 2018</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12396">12396 渲染 Open Graph、Twitter Card</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12387">12387 主题链接及图片修改</a>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12389">12389 新的皮肤 Medium</a>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12395">12395 取消挖矿</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12394">12394 yilia 皮肤问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.5.0 - Dec 20, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12353">12353 JSON 数据导出</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12360">12360 数学公式和流程图的展示</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12372">12372 Markdown 数据导出</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12356">12356 搜索页面路径参数缺失报错</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12361">12361 RSS / Atom 内容编码调整</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12367">12367 跨版本升级校验</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12369">12369 Markdown 渲染改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12382">12382 文章中站外链接开新页签</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12383">12383 Markdown 缓存提升渲染性能</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12355">12355 搜索结果中存在草稿数据</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12375">12375 异步加载分页问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.4.0 - Sep 22, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12261">12261 支持全文搜索</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12345">12345 自定义导航增加图标配置</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12349">12349 统计数据结构重构</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12352">12352 升级内建的 MD 处理引擎</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 2.3.0 - Aug 31, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12319">12319 性能优化</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12325">12325 部分皮肤导航目录调优</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12330">12330 修复 Cookie 安全问题</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12323">12323 构建相关优化</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12336">12336 去除广播插件</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12329">12329 修复重置密码相关安全漏洞</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12344">12344 带下划线的 Emoji 不能渲染</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.2.0 - Jul 10, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12293">12293 支持 Hexo/Jekyll 数据导入</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12317">12317 引入新的 Markdown 引擎（NodeJS marked）</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12299">12299 加密文章表单自适应</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12304">12304 替换 MD 处理引擎</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12307">12307 无效日志缩减</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12308">12308 配置 MetaWeblog API 报错</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.1.0 - May 25, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12284">12284 H2 SQL 文件导出</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12280">12280 社区同步过来的评论加入头像</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12285">12285 移除 HTML 编辑器</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12273">12273 重新整理文档</a>&nbsp;<span
+            style='background: #006b75 !important;color:#FFFFFF !important;padding: 1px 4px;'>doc</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12278">12278 新的 Logo</a>&nbsp;<span
+            style='background: #006b75 !important;color:#FFFFFF !important;padding: 1px 4px;'>doc</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12274">12274 更新分类标签计数错误</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12295">12295 并发请求报错</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+</ul>
+<h2>Release 2.0.0 - Apr 14, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12256">12256 支持文章分类</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12251">12251 部分皮肤的作者文章列表页摘要转义</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12258">12258 NeoEase 图片样式</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12255">12255 皮肤修改</a>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12264">12264 文章页面 SEO 优化</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.9.0 - Feb 21, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12248">12248 回复提醒邮件模版丢失</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12180">12180 新皮肤 9IPHP</a>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12240">12240 next 皮肤细节改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12246">12246 添加评论优化</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 1.8.0 - Jan 23, 2017</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12210">12210 七牛上传支持改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12219">12219 图片上传改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12229">12229 HTTPS 支持改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.7.0 - Nov 9, 2016</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12182">12182 Windows 上 404 页面 404</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12202">12202 使用 CDN 后编辑器图片框加载失败</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12159">12159 新版 Markdown 编辑器</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12160">12160 CDN 字体库加载慢</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12164">12164 同步摘要时移除标签</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12186">12186 移除 B3log 公告插件</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12188">12188 完善单元测试</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 1.6.0 - Sep 8, 2016</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12147">12147 用户管理翻页失败</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12153">12153 语言设置为 English 时首页报错</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12150">12150 新版后台 UI</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.5.0 - Aug 10, 2016</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12130">12130 MySQL 数据导出 SQL 文件</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12128">12128 JDBC 驱动反注册</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12140">12140 新皮肤 next</a>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+</ul>
+<h2>Release 1.4.0 - Jun 28, 2016</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12060">12060 前台皮肤切换</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12096">12096 Meta Desc 解析异常</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12100">12100 代码高亮换行问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12114">12114 静态资源加载问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12118">12118 finding 皮肤 bug</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12058">12058 简化配置</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12059">12059 细节体验改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12079">12079 文件上传后缀改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12093">12093 评论 Emoji 支持</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12107">12107 Markdown 支持增强</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 1.3.0 - Dec 19, 2015</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12051">12051 社区文章推荐</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12048">12048 Docker 方式启动</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12052">12052 评论支持 Markdown</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12050">12050 配置文件简化</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12053">12053 评论内容编码重构</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12042">12042 彻底移除 preference 表</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 1.2.0 - Dec 2, 2015</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12037">12037 独立模式</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12035">12035 NeoEase 皮肤侧边栏问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12038">12038 新皮肤 yilia</a>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12044">12044 静态资源配置简化</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12043">12043 用户注册开关配置</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12039">12039 页脚模版变量</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12036">12036 用户头像外链</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12041">12041 Preference 存储重构</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12040">12040 调整升级机制</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 1.1.0 - Oct 1, 2015</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12031" rel="nofollow" target="_blank">12031 Bruce 皮肤细节</a></li>
+    <li><a href="https://github.com/b3log/solo/issues/12032" rel="nofollow" target="_blank">12032 七牛配置增强</a></li>
+    <li><a href="https://github.com/b3log/solo/issues/12030" rel="nofollow" target="_blank">12030 项目结构调整</a></li>
+    <li><a href="https://github.com/b3log/solo/issues/12033" rel="nofollow" target="_blank">12033 默认订阅输出 RSS</a></li>
+</ul>
+<h2>Release 1.0.0 - Sep 16, 2015</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12029">12029 上传七牛</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12026">12026 加密文章列表问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12022">12022 Finding 皮肤语法高亮改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12028">12028 更换 Google 字体库为国内的 360 镜像</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12027">12027 Markdown 编辑器自动折行</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12024">12024 使用百度搜索</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12023">12023 改进 Meta Description 容错性</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 0.6.9 - Jun 28, 2015</h2>
+<ul>
+    <li><a href="https://github.com/b3log/solo/issues/12019">12019 新皮肤 - Finding</a>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12020">12020 加入开发者、贡献者名单</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12015">12015 Gravatar 默认配置</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12013">12013 搜索引擎优化</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12012">12012 编辑器类型切换</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12009">12009 可以使用中文逗号分割标签</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/solo/issues/12014">12014 项目重命名</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 0.6.8 - Mar 24, 2015</h2>
+<ul>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/11992">11992 可配置 favicon 获取</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/12000">12000 新皮肤 —— Bruce</a>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/12006">12006 取消 ping Google</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/11999">11999 默认配置参数调整</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/12004">12004 checkstyle、jacobe 插件不自动执行</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 0.6.7 - Oct 16, 2014</h2>
+<ul>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/11984">11984 标签导出</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/11976">11976 目录生成插件</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/11975">11975 community 皮肤问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/11985">11985 更新 google-code-prettify 到最新版</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/11978">11978 捐赠链接修改</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/11983">11983 开发时静态资源锁定问题</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/11982">11982 升级 maven-min-plugin</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 0.6.6 - Apr 26, 2014</h2>
+<ul>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/338">338 Druid 数据库连接池支持</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/326">326 网站浏览次数始终为 0</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/333">333 评论邮件标题乱码</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/334">334 时区问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/340">340 邮箱格式判断问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/341">341 可以删除别人的评论</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/343">343 kill browser 问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/345">345 博主评论问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/11755">11755 以 war 包部署问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/329">329 goTop 和 goBottom 改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/330">330 更新开发时用的 jetty 插件</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/335">335 去除 BAE 版</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 0.6.5 - Nov 1, 2013</h2>
+<ul>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/282">282 找回密码问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/283">283 社区同步评论</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/288">288 IoC 容器冲突</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/294">294 发布文章时允许评论开关问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/296">296 数据恢复接口被过滤器跳过</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/302">302 更新已发布文章问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/295">295 未初始化时启动日志报错</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/299">299 评论信息填充优化</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/316">316 评论开关页面显示</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/317">317 自动保存文章时间间隔</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/318">318 去缓存</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/320">320 加入登录状态模版变量</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+</ul>
+<h2>Release 0.6.1 - Aug 25, 2013</h2>
+<ul>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/200">200 找回密码</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/221">221 最新日志、标签最新日志</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/261">261 自动保存草稿功能</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/241">241 RSS 订阅输出的时间不对</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/249">249 BAE 版发送邮件问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/252">252 更新用户密码问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/253">253 文章列表不显示</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/269">269 获取加密文章安全问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/264">264 新增 metro 风格皮肤</a>&nbsp;<span
+            style='background: #eb6420 !important;color:#FFFFFF !important;padding: 1px 4px;'>skin</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/250">250 Markdown 编辑器预览改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/254">254 移除“偏好设定”中的“博客地址”配置</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/259">259 初始化第二页面只能用鼠标点击</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/260">260 JDBC 性能优化</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/263">263 timeline 皮肤改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/265">265 浏览器兼容性提示改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/268">268 使用 Latke IoC 容器</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/271">271 访客登录跳转</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/275">275 访客登录不允许查看加密的文章</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/276">276 模版变量 gravatar</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/267">267 替换日志组件为 slf4j</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 0.6.0 - Apr 26, 2013</h2>
+<ul>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/199">199 社区文章更新接口</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/203">203 用户注册，实现多用户博客</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/226">226 加入字典存储 option</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/198">198 删除文章出错</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/205">205 禁用缓存后文章浏览计数不变</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/214">214 Zoundry Raven 发布问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/144">144 KindEditor 上传问题</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/193">193 登录后再访问登录页将跳转后台</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/194">194 删除操作提示改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/195">195 去除草稿夹浏览按钮</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/196">196 清除缓存丢失访问统计</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/202">202 自定义 Feed 文章数</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/210">210 升级至 GAE 1.7.7</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 0.5.6 - Feb 19, 2012</h2>
+<ul>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/130">130 登录用户评论时无需输入验证码</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/150">150 支持 H2 数据库</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/171">171 新皮肤 timeline</a>&nbsp;<span
+            style='background: #02e10c !important;color:#FFFFFF !important;padding: 1px 4px;'>feature</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/133">133 前端代理后在线人数不正常</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/141">141 请求 Latke Remote APIs 时跳过初始化检查</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/142">142 保存为草稿后再发布无法同步</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/148">148 清空数据存储时未删除插件存储</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/149">149 “随机阅读”/“相关阅读”链接错误</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/151">151 OpenShift 上不显示验证码</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/159">159 加密文章问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/160">160 本地版内存溢出</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/164">164 robots.txt 禁止抓取标签问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/169">169 DateFormat 线程安全问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/170">170 登录页面底部链接问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/172">172 GAE 版配额消耗过快问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/177">177 泄漏用户密码安全问题</a>&nbsp;<span
+            style='background: #fc2929 !important;color:#FFFFFF !important;padding: 1px 4px;'>bug</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/129">129 摘要编辑器添加源码功能</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/132">132 Markdown 编辑器显示问题</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/154">154 使用密文存储密码</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/155">155 邮件 SSL 配置</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/162">162 404 页面引入公益活动</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/173">173 评论快捷键提交</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/175">175 社区同步文案</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/176">176 更新文章提示改进</a>&nbsp;<span
+            style='background: #84b6eb !important;color:#FFFFFF !important;padding: 1px 4px;'>enhancement</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/147">147 工程中加入 eclipse 项目配置</a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/161">161 使用 mvn 插件统一 Java 格式化 </a>&nbsp;<span
+            style='background: #e102d8 !important;color:#FFFFFF !important;padding: 1px 4px;'>development</span></li>
+</ul>
+<h2>Release 0.5.5 - Nov 24, 2012</h2>
+<ul>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/72">72 非管理员登录后 TopBar 无后台入口</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/73">73 支持 BAE 部署</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/74">74 跨版本升级提示</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/75">75 加入页面类型变量</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/78">78 MetaWeblog API 获取文章日期问题</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/80">80 MetaWeblog API 发布文章摘要问题</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/82">82 登录、初始化问题</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/85">85 配置文件按项目分离</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/86">86 Hello World 文章多语言</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/87">87 加入运行信息公共模版变量</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/88">88 登录页体验改进</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/99">99 404 页面加入登录入口</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/101">101 验证码改造</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/103">103 本地版数据库表前缀支持</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/104">104 升级到 GAE SDK 1.7.2</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/106">106 摘要编辑器改进</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/111">111 与社区同步</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/113">113 无文章首页不返回 404</a></li>
+    <li><a href="https://github.com/b3log/b3log-solo/issues/125">125 Feed 输出加密文章</a></li>
+</ul>
 
 <h2>Release 0.5.0 - Aug 25, 2012</h2>
 <ul>
