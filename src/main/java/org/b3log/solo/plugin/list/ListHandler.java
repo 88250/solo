@@ -20,6 +20,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
@@ -35,7 +36,7 @@ import org.jsoup.select.Elements;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.annpeter.cn">Ann Peter</a>
- * @version 1.0.1.0, May 4, 2016
+ * @version 1.0.2.0, Feb 6, 2018
  * @since 0.6.7
  */
 public class ListHandler extends AbstractEventListener<JSONObject> {
@@ -55,6 +56,13 @@ public class ListHandler extends AbstractEventListener<JSONObject> {
         final JSONObject data = event.getData();
         final JSONObject article = data.optJSONObject(Article.ARTICLE);
         String content = article.optString(Article.ARTICLE_CONTENT);
+        if (StringUtils.containsIgnoreCase(content, "plugins/list/style.css")) {
+            LOGGER.log(Level.WARN, "ToC hit twice, please report this \"ghosty\" issue to developer team: https://github.com/b3log/solo/issues/new");
+
+            return;
+        }
+
+
         final Document doc = Jsoup.parse(content, StringUtils.EMPTY, Parser.htmlParser());
         doc.outputSettings().prettyPrint(false);
 
