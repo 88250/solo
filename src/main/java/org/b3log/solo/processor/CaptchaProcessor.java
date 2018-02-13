@@ -70,6 +70,11 @@ public class CaptchaProcessor {
     private static final int CAPTCHA_LENGTH = 4;
 
     /**
+     * Flag of captcha is enabled.
+     */
+    public static boolean CAPTCHA_ON = true;
+
+    /**
      * Gets captcha.
      *
      * @param context the specified context
@@ -124,6 +129,10 @@ public class CaptchaProcessor {
      * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
     public static boolean invalidCaptcha(final String captcha) {
+        if (!CAPTCHA_ON) {
+            return false;
+        }
+
         if (Strings.isEmptyOrNull(captcha) || captcha.length() != CAPTCHA_LENGTH) {
             return true;
         }

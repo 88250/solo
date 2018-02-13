@@ -41,7 +41,6 @@ import org.json.JSONObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -140,15 +139,6 @@ public class CommentProcessor {
             return;
         }
 
-        final HttpSession session = httpServletRequest.getSession(false);
-
-        if (null == session) {
-            jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
-
-            return;
-        }
-
         if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
             if (CaptchaProcessor.invalidCaptcha(captcha)) {
@@ -244,14 +234,6 @@ public class CommentProcessor {
 
         if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
             LOGGER.log(Level.WARN, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
-            return;
-        }
-
-        final HttpSession session = httpServletRequest.getSession(false);
-        if (null == session) {
-            jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
-
             return;
         }
 

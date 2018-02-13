@@ -15,14 +15,6 @@
  */
 package org.b3log.solo.processor;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
@@ -35,15 +27,25 @@ import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.PageMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
-import static org.mockito.Mockito.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * {@link CommentProcessorTestCase} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Nov 5, 2016
+ * @version 1.0.0.2, Feb 13, 2018
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -81,9 +83,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         when(request.getRequestURI()).thenReturn("/add-page-comment.do");
         when(request.getMethod()).thenReturn("POST");
 
-        final HttpSession session = mock(HttpSession.class);
-        when(session.getAttribute(CaptchaProcessor.CAPTCHA)).thenReturn("captcha123456");
-        when(request.getSession(false)).thenReturn(session);
+        CaptchaProcessor.CAPTCHA_ON = false;
 
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put("captcha", "captcha123456");
@@ -123,9 +123,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         when(request.getRequestURI()).thenReturn("/add-article-comment.do");
         when(request.getMethod()).thenReturn("POST");
 
-        final HttpSession session = mock(HttpSession.class);
-        when(session.getAttribute(CaptchaProcessor.CAPTCHA)).thenReturn("captcha123456");
-        when(request.getSession(false)).thenReturn(session);
+        CaptchaProcessor.CAPTCHA_ON = false;
 
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put("captcha", "captcha123456");
