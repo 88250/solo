@@ -15,11 +15,8 @@
  */
 package org.b3log.solo.processor;
 
-
 import org.apache.commons.io.IOUtils;
 import org.b3log.latke.image.Image;
-import org.b3log.latke.image.ImageService;
-import org.b3log.latke.image.ImageServiceFactory;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -27,26 +24,26 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.PNGRenderer;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.latke.util.Strings;
+import org.patchca.color.SingleColorFactory;
+import org.patchca.filter.predefined.CurvesRippleFilterFactory;
+import org.patchca.service.Captcha;
+import org.patchca.service.ConfigurableCaptchaService;
+import org.patchca.word.RandomWordFactory;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.*;
-import java.util.Enumeration;
-import java.util.Random;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Captcha processor.
- * <p>
- * Checkout <a href="http://toy-code.googlecode.com/svn/trunk/CaptchaGenerator"> the sample captcha generator</a> for more details.
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Jul 6, 2017
+ * @version 2.0.0.0, Feb 13, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -58,11 +55,6 @@ public class CaptchaProcessor {
     private static final Logger LOGGER = Logger.getLogger(CaptchaProcessor.class);
 
     /**
-     * Images service.
-     */
-    private static final ImageService IMAGE_SERVICE = ImageServiceFactory.getImageService();
-
-    /**
      * Key of captcha.
      */
     public static final String CAPTCHA = "captcha";
@@ -70,12 +62,12 @@ public class CaptchaProcessor {
     /**
      * Captchas.
      */
-    private Image[] captchas;
+    private static final Set<String> CAPTCHAS = new HashSet<>();
 
     /**
-     * Count of static captchas.
+     * Captcha length.
      */
-    private static final int CAPTCHA_COUNT = 100;
+    private static final int CAPTCHA_LENGTH = 4;
 
     /**
      * Gets captcha.
@@ -85,32 +77,39 @@ public class CaptchaProcessor {
     @RequestProcessing(value = "/captcha.do", method = HTTPRequestMethod.GET)
     public void get(final HTTPRequestContext context) {
         final PNGRenderer renderer = new PNGRenderer();
-
         context.setRenderer(renderer);
 
-        if (null == captchas) {
-            loadCaptchas();
-        }
-
         try {
-            final HttpServletRequest request = context.getRequest();
-            final HttpServletResponse response = context.getResponse();
+            final ConfigurableCaptchaService cs = new ConfigurableCaptchaService();
+            cs.setColorFactory(new SingleColorFactory(new Color(25, 60, 170)));
+            cs.setFilterFactory(new CurvesRippleFilterFactory(cs.getColorFactory()));
+            final RandomWordFactory randomWordFactory = new RandomWordFactory();
+            randomWordFactory.setCharacters("abcdefghijklmnprstuvwxy23456789");
+            randomWordFactory.setMinLength(CAPTCHA_LENGTH);
+            randomWordFactory.setMaxLength(CAPTCHA_LENGTH);
+            cs.setWordFactory(randomWordFactory);
+            final Captcha captcha = cs.getCaptcha();
+            final String challenge = captcha.getChallenge();
+            final BufferedImage bufferedImage = captcha.getImage();
 
-            final Random random = new Random();
-            final int index = random.nextInt(CAPTCHA_COUNT);
-            final Image captchaImg = captchas[index];
-            final String captcha = captchaImg.getName();
-
-            final HttpSession httpSession = request.getSession(false);
-
-            if (null != httpSession) {
-                LOGGER.log(Level.DEBUG, "Captcha[{0}] for session[id={1}]", captcha, httpSession.getId());
-                httpSession.setAttribute(CAPTCHA, captcha);
+            if (CAPTCHAS.size() > 64) {
+                CAPTCHAS.clear();
             }
 
+            CAPTCHAS.add(challenge);
+
+            final HttpServletResponse response = context.getResponse();
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expires", 0);
+
+            final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", baos);
+            final byte[] data = baos.toByteArray();
+            IOUtils.closeQuietly(baos);
+
+            final Image captchaImg = new Image();
+            captchaImg.setData(data);
 
             renderer.setImage(captchaImg);
         } catch (final Exception e) {
@@ -119,53 +118,21 @@ public class CaptchaProcessor {
     }
 
     /**
-     * Loads captcha.
+     * Checks whether the specified captcha is invalid.
+     *
+     * @param captcha the specified captcha
+     * @return {@code true} if it is invalid, returns {@code false} otherwise
      */
-    private synchronized void loadCaptchas() {
-        LOGGER.debug("Loading captchas....");
-
-        try {
-            captchas = new Image[CAPTCHA_COUNT];
-
-            final InputStream inputStream = SoloServletListener.class.getClassLoader().getResourceAsStream("captcha_static.zip");
-            final File file = File.createTempFile("b3log_captcha_static", null);
-            final OutputStream outputStream = new FileOutputStream(file);
-
-            IOUtils.copy(inputStream, outputStream);
-            final ZipFile zipFile = new ZipFile(file);
-
-            IOUtils.closeQuietly(inputStream);
-            IOUtils.closeQuietly(outputStream);
-
-            final Enumeration<? extends ZipEntry> entries = zipFile.entries();
-
-            int i = 0;
-
-            while (entries.hasMoreElements()) {
-                final ZipEntry entry = entries.nextElement();
-
-                final BufferedInputStream bufferedInputStream = new BufferedInputStream(zipFile.getInputStream(entry));
-                final byte[] captchaCharData = new byte[bufferedInputStream.available()];
-
-                bufferedInputStream.read(captchaCharData);
-                bufferedInputStream.close();
-
-                final Image image = IMAGE_SERVICE.makeImage(captchaCharData);
-
-                image.setName(entry.getName().substring(0, entry.getName().lastIndexOf('.')));
-
-                captchas[i] = image;
-
-                i++;
-            }
-
-            zipFile.close();
-        } catch (final Exception e) {
-            LOGGER.error("Can not load captchs!");
-
-            throw new IllegalStateException(e);
+    public static boolean invalidCaptcha(final String captcha) {
+        if (Strings.isEmptyOrNull(captcha) || captcha.length() != CAPTCHA_LENGTH) {
+            return true;
         }
 
-        LOGGER.debug("Loaded captch images");
+        boolean ret = !CaptchaProcessor.CAPTCHAS.contains(captcha);
+        if (!ret) {
+            CaptchaProcessor.CAPTCHAS.remove(captcha);
+        }
+
+        return ret;
     }
 }

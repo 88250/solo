@@ -149,13 +149,9 @@ public class CommentProcessor {
             return;
         }
 
-        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-        session.removeAttribute(CaptchaProcessor.CAPTCHA);
-
         if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-
-            if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
+            if (CaptchaProcessor.invalidCaptcha(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
                 jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
 
@@ -259,12 +255,9 @@ public class CommentProcessor {
             return;
         }
 
-        final String storedCaptcha = (String) session.getAttribute(CaptchaProcessor.CAPTCHA);
-        session.removeAttribute(CaptchaProcessor.CAPTCHA);
-
         if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-            if (null == storedCaptcha || !storedCaptcha.equals(captcha)) {
+            if (CaptchaProcessor.invalidCaptcha(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
                 jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
 
