@@ -42,10 +42,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.model.Option.DefaultPreference;
 import org.b3log.solo.repository.*;
-import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Thumbnails;
-import org.b3log.solo.util.TimeZones;
+import org.b3log.solo.util.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +58,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.15, Sep 21, 2017
+ * @version 1.5.2.16, Feb 14, 2018
  * @since 0.4.0
  */
 @Service
@@ -285,7 +282,8 @@ public class InitService {
         final JSONObject article = new JSONObject();
 
         article.put(Article.ARTICLE_TITLE, langPropsService.get("helloWorld.title"));
-        final String content = langPropsService.get("helloWorld.content");
+        final String content = "![](" + Images.randImage() + "?imageView2/1/w/960/h/520/interlace/1/q/100) \n" +
+                langPropsService.get("helloWorld.content");
 
         article.put(Article.ARTICLE_ABSTRACT, content);
         article.put(Article.ARTICLE_CONTENT, content);
