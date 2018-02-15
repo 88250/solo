@@ -45,6 +45,7 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Article console request processing.
@@ -93,10 +94,10 @@ public class ArticleConsole {
      * {
      *     "sc": true,
      *     "data": [
-     *         "https://img.hacpai.com/bing/20171226.jpg",
-     *         "https://img.hacpai.com/bing/20171105.jpg",
-     *         "https://img.hacpai.com/bing/20180105.jpg",
-     *         "https://img.hacpai.com/bing/20171114.jpg"
+     *         "https://img.hacpai.com/bing/20171226.jpg?imageView2/1/w/960/h/520/interlace/1/q/100",
+     *         "https://img.hacpai.com/bing/20171105.jpg?imageView2/1/w/960/h/520/interlace/1/q/100",
+     *         "https://img.hacpai.com/bing/20180105.jpg?imageView2/1/w/960/h/520/interlace/1/q/100",
+     *         "https://img.hacpai.com/bing/20171114.jpg?imageView2/1/w/960/h/520/interlace/1/q/100"
      *     ]
      * }
      * </pre>
@@ -121,7 +122,6 @@ public class ArticleConsole {
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
 
-
         String strN = request.getParameter("n");
         if (!Strings.isNumeric(strN)) {
             strN = "6";
@@ -129,7 +129,7 @@ public class ArticleConsole {
 
         final int n = Integer.valueOf(strN);
         final List<String> urls = Images.randomImages(n);
-        result.put("data", urls);
+        result.put("data", urls.stream().map(url -> url += "?imageView2/1/w/960/h/520/interlace/1/q/100").collect(Collectors.toList()));
     }
 
     /**
