@@ -36,6 +36,7 @@ import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Emotions;
+import org.b3log.solo.util.Images;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONArray;
@@ -43,12 +44,13 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Oct 3, 2017
+ * @version 1.1.0.0, Feb 15, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -84,6 +86,53 @@ public class ArticleConsole {
     private LangPropsService langPropsService;
 
     /**
+     * Gets article thumbs.
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": true,
+     *     "data": [
+     *         "https://img.hacpai.com/bing/20171226.jpg",
+     *         "https://img.hacpai.com/bing/20171105.jpg",
+     *         "https://img.hacpai.com/bing/20180105.jpg",
+     *         "https://img.hacpai.com/bing/20171114.jpg"
+     *     ]
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param request  the specified http servlet request
+     * @param response the specified http servlet response
+     * @param context  the specified http request context
+     * @throws Exception exception
+     */
+    @RequestProcessing(value = "/console/thumbs", method = HTTPRequestMethod.GET)
+    public void getArticleThumbs(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+            throws Exception {
+        if (!userQueryService.isLoggedIn(request, response)) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+
+        final JSONRenderer renderer = new JSONRenderer();
+        context.setRenderer(renderer);
+        final JSONObject result = new JSONObject();
+        renderer.setJSONObject(result);
+        result.put(Keys.STATUS_CODE, true);
+
+
+        String strN = request.getParameter("n");
+        if (!Strings.isNumeric(strN)) {
+            strN = "6";
+        }
+
+        final int n = Integer.valueOf(strN);
+        final List<String> urls = Images.randomImages(n);
+        result.put("data", urls);
+    }
+
+    /**
      * Markdowns.
      * <p>
      * Renders the response with a json object, for example,
@@ -91,7 +140,7 @@ public class ArticleConsole {
      * {
      *     "html": ""
      * }
-     * </pre>!
+     * </pre>
      * </p>
      *
      * @param request  the specified http servlet request, for example,
