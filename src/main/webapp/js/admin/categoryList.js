@@ -90,7 +90,7 @@ admin.categoryList = {
                     height: 160,
                     buttonText: Label.selectLabel,
                     data: tags
-                }).width($("#categoryTags").parent().width() - 68);
+                }).width($("#categoryTags").parent().width() - 94);
 
                 $("#loadMsg").text("");
             }
