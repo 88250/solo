@@ -4,10 +4,14 @@
         <input id="title" type="text"/>
     </div>
     <div>
-        <label>${content1Label}</label>
-        <div class="right">
-            <label for="articleCommentable">${useTumbnailLabel}</label>
-            <input type="checkbox" id="articleCommentable" />
+            <label>${content1Label}</label>
+            <div class="right">
+                <label for="articleThumbnail">${useTumbnailLabel}</label>
+                <input type="checkbox" id="articleThumbnail" onclick="$('.article__thumbnail').slideToggle()" />
+            </div>
+        <div class="article__thumbnail">
+            <div class="thumbnail__img" style="background-image: url('https://img.hacpai.com/bing/20171126.jpg?imageView2/1/w/768/h/180/interlace/1/q/100');"></div>
+            <button>${chageLabel}</button>
         </div>
         <div>
             <textarea id="articleContent" name="articleContent"

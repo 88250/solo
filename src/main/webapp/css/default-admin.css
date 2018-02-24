@@ -929,6 +929,27 @@ table.form th {
     width: 170px;
 }
 
+.article__thumbnail {
+    position: relative;
+    display: none;
+}
+
+.article__thumbnail .thumbnail__img {
+    background-color: rgba(0,0,0,.02);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    height: 180px;
+    width: 720px;
+    margin: 10px auto 20px;
+}
+
+.article__thumbnail button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
 button#submitArticle {
     background-color: #fa8564;
     border-color: #fa8564;

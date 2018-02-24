@@ -17,8 +17,9 @@
  * base style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.3.3, May 21, 2017
+ * @version 1.0.4.3, Feb 24, 2018
 */
+
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dd, dl, ol {
     margin: 0;
     padding: 0;
@@ -187,8 +188,9 @@ button:hover,.button:hover {
 }
 
 .form input[type='checkbox'] {
-    border: 0px;
-    vertical-align: middle;
+    border: 0;
+    vertical-align: sub;
+    height: 20px;
 }
 
 .form input.normalInput {
