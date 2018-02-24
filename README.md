@@ -59,23 +59,9 @@ Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将�
 
 前台界面
 
-* 9IPHP [下载](https://github.com/b3log/solo-skins/tree/master/9IPHP) [预览](http://88250.b3log.org/?skin=9IPHP)
-* Andrea [下载](https://github.com/b3log/solo-skins/tree/master/Andrea) [预览](http://88250.b3log.org/?skin=Andrea)
-* Bruce [下载](https://github.com/b3log/solo-skins/tree/master/Bruce) [预览](http://88250.b3log.org/?skin=Bruce)
-* classic [下载](https://github.com/b3log/solo-skins/tree/master/classic) [预览](http://88250.b3log.org/?skin=classic)
-* Community [下载](https://github.com/b3log/solo-skins/tree/master/Community) [预览](http://88250.b3log.org/?skin=Community)
-* ease [下载](https://github.com/b3log/solo-skins/tree/master/ease) [预览](http://88250.b3log.org/?skin=ease)
-* favourite [下载](https://github.com/b3log/solo-skins/tree/master/favourite) [预览](http://88250.b3log.org/?skin=favourite)
-* Finding [下载](https://github.com/b3log/solo-skins/tree/master/Finding) [预览](http://88250.b3log.org/?skin=Finding)
-* i-nove [下载](https://github.com/b3log/solo-skins/tree/master/i-nove) [预览](http://88250.b3log.org/?skin=i-nove)
-* metro-hot [下载](https://github.com/b3log/solo-skins/tree/master/metro-hot) [预览](http://88250.b3log.org/?skin=metro-hot)
-* mobile [下载](https://github.com/b3log/solo-skins/tree/master/mobile) [预览](http://88250.b3log.org/?skin=mobile)
-* NeoEase [下载](https://github.com/b3log/solo-skins/tree/master/NeoEase) [预览](http://88250.b3log.org/?skin=NeoEase)
-* next [下载](https://github.com/b3log/solo-skins/tree/master/next) [预览](http://88250.b3log.org/?skin=next)
-* owmx-3.0 [下载](https://github.com/b3log/solo-skins/tree/master/owmx-3.0) [预览](http://88250.b3log.org/?skin=owmx-3.0)
-* timeline [下载](https://github.com/b3log/solo-skins/tree/master/timeline) [预览](http://88250.b3log.org/?skin=timeline)
-* tree-house [下载](https://github.com/b3log/solo-skins/tree/master/tree-house) [预览](http://88250.b3log.org/?skin=tree-house)
-* yilia [下载](https://github.com/b3log/solo-skins/tree/master/yilia) [预览](http://88250.b3log.org/?skin=yilia)
+* [预览及下载](https://hacpai.com/article/1493814851007#toc_h2_11)
+
+
 
 ## 安装
 
