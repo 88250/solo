@@ -1127,6 +1127,11 @@ button#submitArticle:hover {
     margin-top: 6px;
     padding: 3px;
     width: 22px;
+    color: #1fb5ad;
+}
+
+.dialog-header-bg .icon-close:hover {
+    color: #1ca59e;
 }
 
 .dialog-main {

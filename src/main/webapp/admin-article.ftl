@@ -5,6 +5,10 @@
     </div>
     <div>
         <label>${content1Label}</label>
+        <div class="right">
+            <label for="articleCommentable">${useTumbnailLabel}</label>
+            <input type="checkbox" id="articleCommentable" />
+        </div>
         <div>
             <textarea id="articleContent" name="articleContent"
                   style="height: 500px;width:100%;"></textarea>

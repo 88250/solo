@@ -196,7 +196,8 @@ button:hover,.button:hover {
 }
 
 .form input[type='checkbox']:focus {
-    border: 0px;
+    border: 0;
+    box-shadow: 0 0 0;
 }
 
 .form input:focus, .form textarea:focus {
