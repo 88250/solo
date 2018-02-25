@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.4.0.0, Sep 21, 2017
+* @version 2.5.0.0, Feb 25, 2018
 */
 
 /* start resset */
@@ -930,8 +930,9 @@ table.form th {
 }
 
 .article__thumbnail {
-    position: relative;
+    margin: 10px auto 20px;
     display: none;
+    width: 800px;
 }
 
 .article__thumbnail .thumbnail__img {
@@ -941,13 +942,12 @@ table.form th {
     background-position: 50%;
     height: 180px;
     width: 720px;
-    margin: 10px auto 20px;
+    float: left;
 }
 
 .article__thumbnail button {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    float: left;
+    margin: 148px 0 0 20px;
 }
 
 button#submitArticle {
