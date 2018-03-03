@@ -1,4 +1,4 @@
-# <img src="https://cloud.githubusercontent.com/assets/873584/26024695/4defcb5e-3809-11e7-9755-fa4d22c45718.png"> [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-11K+-blue.svg?style=flat)](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224) 
+# <img src="https://cloud.githubusercontent.com/assets/873584/26024695/4defcb5e-3809-11e7-9755-fa4d22c45718.png"> [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![Apache License](http://img.shields.io/badge/license-apache2-orange.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](http://img.shields.io/badge/download-14K+-blue.svg?style=flat)](https://pan.baidu.com/s/1dzk7SU) 
 
 * [简介](#简介)
 * [功能](#功能)
@@ -8,8 +8,6 @@
 * [贡献](#贡献)
 * [Terms](#terms)
 * [鸣谢](#鸣谢)
-
-[![Activities](https://graphs.waffle.io/b3log/solo/throughput.svg)](https://waffle.io/b3log/solo/metrics/throughput)
 
 ## 简介
 
@@ -65,7 +63,7 @@ Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将�
 
 ## 安装
 
-JDK 环境准备好之后[下载](http://pan.baidu.com/share/link?shareid=541735&uk=3255126224)最新的 Solo 包解压，进入解压目录执行：
+JDK 环境准备好之后[下载](https://pan.baidu.com/s/1dzk7SU)最新的 Solo 包解压，进入解压目录执行：
 
 * Windows: `java -cp WEB-INF/lib/*;WEB-INF/classes org.b3log.solo.Starter`
 * Unix-like: `java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter`
