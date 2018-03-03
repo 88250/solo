@@ -133,21 +133,23 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request, for example,
-     *                 {
-     *                 "link": {
-     *                 "oId": "",
-     *                 "linkTitle": "",
-     *                 "linkAddress": "",
-     *                 "linkDescription": ""
-     *                 }
-     *                 }, see {@link org.b3log.solo.model.Link} for more details
-     * @param context  the specified http request context
-     * @param response the specified http servlet response
+     * @param request           the specified http servlet request
+     * @param context           the specified http request context
+     * @param response          the specified http servlet response
+     * @param requestJSONObject the specified request json object, for example,
+     *                          {
+     *                          "link": {
+     *                          "oId": "",
+     *                          "linkTitle": "",
+     *                          "linkAddress": "",
+     *                          "linkDescription": ""
+     *                          }
+     *                          }, see {@link org.b3log.solo.model.Link} for more details
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.PUT)
-    public void updateLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+    public void updateLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+                           final JSONObject requestJSONObject)
             throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -160,8 +162,6 @@ public class LinkConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-
             linkMgmtService.updateLink(requestJSONObject);
 
             ret.put(Keys.STATUS_CODE, true);

@@ -147,14 +147,14 @@ public class PreferenceConsole {
     /**
      * Updates reply template.
      *
-     * @param request           the specified http servlet request, for example,
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object, for example,
      *                          "replyNotificationTemplate": {
      *                          "subject": "",
      *                          "body": ""
      *                          }
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.PUT)
@@ -340,7 +340,10 @@ public class PreferenceConsole {
     /**
      * Updates the preference by the specified request.
      *
-     * @param request           the specified http servlet request, for example,
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified reuqest json object, for example,
      *                          "preference": {
      *                          "mostViewArticleDisplayCount": int,
      *                          "recentCommentDisplayCount": int,
@@ -374,9 +377,6 @@ public class PreferenceConsole {
      *                          "feedOutputMode: "",
      *                          "feedOutputCnt": int
      *                          }
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified reuqest json object
      * @throws Exception exception
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.PUT)
@@ -472,14 +472,14 @@ public class PreferenceConsole {
     /**
      * Updates the Qiniu preference by the specified request.
      *
-     * @param request           the specified http servlet request, for example,
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object, for example,
      *                          "qiniuAccessKey": "",
      *                          "qiniuSecretKey": "",
      *                          "qiniuDomain": "",
      *                          "qiniuBucket": ""
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object
      * @throws Exception exception
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HTTPRequestMethod.PUT)

@@ -26,7 +26,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -37,14 +36,11 @@ import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Article receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.4.0, Nov 20, 2017
+ * @version 1.0.4.1, Mar 3, 2018
  * @since 0.5.5
  */
 @RequestProcessor
@@ -92,28 +88,26 @@ public class ArticleReceiver {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request, for example,
-     *                 "article": {
-     *                 "oId": "",
-     *                 "articleTitle": "",
-     *                 "articleContent": "",
-     *                 "articleTags": "tag1,tag2,tag3",
-     *                 "userB3Key": "",
-     *                 "articleEditorType": ""
-     *                 }
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified http servlet request, for example,
+     *                          "article": {
+     *                          "oId": "",
+     *                          "articleTitle": "",
+     *                          "articleContent": "",
+     *                          "articleTags": "tag1,tag2,tag3",
+     *                          "userB3Key": "",
+     *                          "articleEditorType": ""
+     *                          }
      * @throws Exception exception
      */
     @RequestProcessing(value = "/apis/symphony/article", method = HTTPRequestMethod.POST)
-    public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+    public void addArticle(final HTTPRequestContext context, final JSONObject requestJSONObject)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
             final String userB3Key = article.optString("userB3Key");
             final JSONObject preference = preferenceQueryService.getPreference();
@@ -167,32 +161,27 @@ public class ArticleReceiver {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request, for example,
-     *                 "article": {
-     *                 "oId": "", // Symphony Article#clientArticleId
-     *                 "articleTitle": "",
-     *                 "articleContent": "",
-     *                 "articleTags": "tag1,tag2,tag3",
-     *                 "userB3Key": "",
-     *                 "articleEditorType": ""
-     *                 }
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified http servlet request, for example,
+     *                          "article": {
+     *                          "oId": "", // Symphony Article#clientArticleId
+     *                          "articleTitle": "",
+     *                          "articleContent": "",
+     *                          "articleTags": "tag1,tag2,tag3",
+     *                          "userB3Key": "",
+     *                          "articleEditorType": ""
+     *                          }
      * @throws Exception exception
      */
     @RequestProcessing(value = "/apis/symphony/article", method = HTTPRequestMethod.PUT)
-    public void updateArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+    public void updateArticle(final HTTPRequestContext context, final JSONObject requestJSONObject)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
-
         renderer.setJSONObject(ret);
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
             final String userB3Key = article.optString("userB3Key");
             final JSONObject preference = preferenceQueryService.getPreference();

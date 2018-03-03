@@ -91,7 +91,10 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request, for example,
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified reuqest json object, for example,
      *                          {
      *                          "page": {
      *                          "oId": "",
@@ -106,9 +109,6 @@ public class PageConsole {
      *                          "pageIcon": ""
      *                          }
      *                          }, see {@link org.b3log.solo.model.Page} for more details
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified reuqest json object
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.PUT)
@@ -204,7 +204,9 @@ public class PageConsole {
      * </p>
      *
      * @param context           the specified http request context
-     * @param request           the specified http servlet request, for example,
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param requestJSONObject the specified request json object, for example,
      *                          {
      *                          "page": {
      *                          "pageTitle": "",
@@ -216,8 +218,6 @@ public class PageConsole {
      *                          "pageIcon": ""
      *                          }
      *                          }, see {@link org.b3log.solo.model.Page} for more details
-     * @param response          the specified http servlet response
-     * @param requestJSONObject the specified request json object
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.POST)
@@ -265,14 +265,14 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request, for example,
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object, for example,
      *                          {
      *                          "oId": "",
      *                          "direction": "" // "up"/"down"
      *                          }
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/order/", method = HTTPRequestMethod.PUT)
