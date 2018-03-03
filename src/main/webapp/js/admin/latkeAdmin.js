@@ -1048,7 +1048,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.6.7, Oct 19, 2017
+ * @version 1.5.0.0, Feb 25, 2018
  */
 admin.article = {
     currentEditorType: '',
@@ -1235,6 +1235,11 @@ admin.article = {
             var articleContent = admin.editors.articleEditor.getContent(),
                     articleAbstract = admin.editors.abstractEditor.getContent();
 
+            if ($('#articleThumbnail').prop('checked')) {
+                var bgImage = $('.thumbnail__img').css('background-image');
+                articleContent = '![](' + bgImage.substring(5, bgImage.length - 2) + ')\n\n' + articleContent;
+            }
+
             var requestJSONObject = {
                 "article": {
                     "articleTitle": $("#title").val(),
@@ -1308,7 +1313,10 @@ admin.article = {
 
             var articleContent = admin.editors.articleEditor.getContent(),
                     articleAbstract = admin.editors.abstractEditor.getContent();
-
+            if ($('#articleThumbnail').prop('checked')) {
+                var bgImage = $('.thumbnail__img').css('background-image');
+                articleContent = '![](' + bgImage.substring(5, bgImage.length - 2) + ') \n\n' + articleContent;
+            }
             var requestJSONObject = {
                 "article": {
                     "oId": this.status.id,
@@ -1455,6 +1463,10 @@ admin.article = {
 
         $(".editor-preview-active").html("").removeClass('editor-preview-active');
         $("#uploadContent").remove();
+
+        if ($('#articleThumbnail').prop('checked')) {
+          $('#articleThumbnail').click();
+        }
     },
     /**
      * @description 初始化发布文章页面
@@ -1507,8 +1519,8 @@ admin.article = {
             } else {
                 admin.article.add(true);
             }
-        }
-        );
+        });
+
         $("#saveArticle").click(function () {
             if (admin.article.status.id) {
                 admin.article.update(admin.article.status.isArticle);
@@ -1537,6 +1549,24 @@ admin.article = {
         admin.article.autoSaveDraftTimer = setInterval(function () {
             admin.article._autoSaveToDraft();
         }, admin.article.AUTOSAVETIME);
+
+
+        // thumbnail
+        $('#articleThumbnailBtn').click(function () {
+          $.ajax({// Gets all tags
+            url: latkeConfig.servePath + "/console/thumbs?n=1",
+            type: "GET",
+            cache: false,
+            success: function (result, textStatus) {
+              if (!result.sc) {
+                $("#loadMsg").text(result.msg);
+                return;
+              }
+
+              $('#articleThumbnailBtn').prev().css('background-image', 'url(' + result.data[0] + ')');
+            }
+          });
+        }).click();
     },
     /**
      * @description 自动保存草稿件
@@ -3956,7 +3986,7 @@ admin.register["user-list"] = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Apr 10, 2017
+ * @version 1.1.2.0, Feb 24, 2018
  * @since 2.0.0
  */
 
@@ -4028,7 +4058,7 @@ admin.categoryList = {
                     height: 160,
                     buttonText: Label.selectLabel,
                     data: tags
-                }).width($("#categoryTags").parent().width() - 68);
+                }).width($("#categoryTags").parent().width() - 94);
 
                 $("#loadMsg").text("");
             }
