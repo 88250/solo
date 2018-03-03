@@ -27,7 +27,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.model.Skin;
@@ -44,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.10, May 2, 2017
+ * @version 1.2.0.11, May 2, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -148,19 +147,21 @@ public class PreferenceConsole {
     /**
      * Updates reply template.
      *
-     * @param request  the specified http servlet request, for example,
-     *                 "replyNotificationTemplate": {
-     *                 "subject": "",
-     *                 "body": ""
-     *                 }
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param request           the specified http servlet request, for example,
+     *                          "replyNotificationTemplate": {
+     *                          "subject": "",
+     *                          "body": ""
+     *                          }
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.PUT)
     public void updateReplyNotificationTemplate(final HttpServletRequest request,
                                                 final HttpServletResponse response,
-                                                final HTTPRequestContext context) throws Exception {
+                                                final HTTPRequestContext context,
+                                                final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -170,7 +171,6 @@ public class PreferenceConsole {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final JSONObject replyNotificationTemplate = requestJSONObject.getJSONObject("replyNotificationTemplate");
             preferenceMgmtService.updateReplyNotificationTemplate(replyNotificationTemplate);
 
@@ -340,47 +340,48 @@ public class PreferenceConsole {
     /**
      * Updates the preference by the specified request.
      *
-     * @param request  the specified http servlet request, for example,
-     *                 "preference": {
-     *                 "mostViewArticleDisplayCount": int,
-     *                 "recentCommentDisplayCount": int,
-     *                 "mostUsedTagDisplayCount": int,
-     *                 "articleListDisplayCount": int,
-     *                 "articleListPaginationWindowSize": int,
-     *                 "mostCommentArticleDisplayCount": int,
-     *                 "externalRelevantArticlesDisplayCount": int,
-     *                 "relevantArticlesDisplayCount": int,
-     *                 "randomArticlesDisplayCount": int,
-     *                 "blogTitle": "",
-     *                 "blogSubtitle": "",
-     *                 "skinDirName": "",
-     *                 "localeString": "",
-     *                 "timeZoneId": "",
-     *                 "noticeBoard": "",
-     *                 "footerContent": "",
-     *                 "htmlHead": "",
-     *                 "metaKeywords": "",
-     *                 "metaDescription": "",
-     *                 "enableArticleUpdateHint": boolean,
-     *                 "signs": [{
-     *                 "oId": "",
-     *                 "signHTML": ""
-     *                 }, ...],
-     *                 "allowVisitDraftViaPermalink": boolean,
-     *                 "allowRegister": boolean,
-     *                 "articleListStyle": "",
-     *                 "editorType": "",
-     *                 "commentable": boolean,
-     *                 "feedOutputMode: "",
-     *                 "feedOutputCnt": int
-     *                 }
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param request           the specified http servlet request, for example,
+     *                          "preference": {
+     *                          "mostViewArticleDisplayCount": int,
+     *                          "recentCommentDisplayCount": int,
+     *                          "mostUsedTagDisplayCount": int,
+     *                          "articleListDisplayCount": int,
+     *                          "articleListPaginationWindowSize": int,
+     *                          "mostCommentArticleDisplayCount": int,
+     *                          "externalRelevantArticlesDisplayCount": int,
+     *                          "relevantArticlesDisplayCount": int,
+     *                          "randomArticlesDisplayCount": int,
+     *                          "blogTitle": "",
+     *                          "blogSubtitle": "",
+     *                          "skinDirName": "",
+     *                          "localeString": "",
+     *                          "timeZoneId": "",
+     *                          "noticeBoard": "",
+     *                          "footerContent": "",
+     *                          "htmlHead": "",
+     *                          "metaKeywords": "",
+     *                          "metaDescription": "",
+     *                          "enableArticleUpdateHint": boolean,
+     *                          "signs": [{
+     *                          "oId": "",
+     *                          "signHTML": ""
+     *                          }, ...],
+     *                          "allowVisitDraftViaPermalink": boolean,
+     *                          "allowRegister": boolean,
+     *                          "articleListStyle": "",
+     *                          "editorType": "",
+     *                          "commentable": boolean,
+     *                          "feedOutputMode: "",
+     *                          "feedOutputCnt": int
+     *                          }
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified reuqest json object
      * @throws Exception exception
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.PUT)
-    public void updatePreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void updatePreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+                                 final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -390,7 +391,6 @@ public class PreferenceConsole {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final JSONObject preference = requestJSONObject.getJSONObject(Option.CATEGORY_C_PREFERENCE);
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
@@ -472,18 +472,19 @@ public class PreferenceConsole {
     /**
      * Updates the Qiniu preference by the specified request.
      *
-     * @param request  the specified http servlet request, for example,
-     *                 "qiniuAccessKey": "",
-     *                 "qiniuSecretKey": "",
-     *                 "qiniuDomain": "",
-     *                 "qiniuBucket": ""
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param request           the specified http servlet request, for example,
+     *                          "qiniuAccessKey": "",
+     *                          "qiniuSecretKey": "",
+     *                          "qiniuDomain": "",
+     *                          "qiniuBucket": ""
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object
      * @throws Exception exception
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HTTPRequestMethod.PUT)
     public void updateQiniu(final HttpServletRequest request, final HttpServletResponse response,
-                            final HTTPRequestContext context) throws Exception {
+                            final HTTPRequestContext context, final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -494,8 +495,6 @@ public class PreferenceConsole {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-
             final String accessKey = requestJSONObject.optString(Option.ID_C_QINIU_ACCESS_KEY).trim();
             final String secretKey = requestJSONObject.optString(Option.ID_C_QINIU_SECRET_KEY).trim();
             String domain = requestJSONObject.optString(Option.ID_C_QINIU_DOMAIN).trim();
