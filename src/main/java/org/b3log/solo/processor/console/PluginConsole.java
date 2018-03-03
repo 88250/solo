@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.processor.console;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -41,13 +40,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-
 /**
  * Plugin console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
- * @version 1.1.0.0, Jan 17, 2013
+ * @version 1.1.0.1, Mar 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -89,19 +87,14 @@ public class PluginConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified requeset json object
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/plugin/status/", method = HTTPRequestMethod.PUT)
-    public void setPluginStatus(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-
+    public void setPluginStatus(final HTTPRequestContext context, final JSONObject requestJSONObject) throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
 
         final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
         final String status = requestJSONObject.getString(Plugin.PLUGIN_STATUS);
@@ -175,22 +168,16 @@ public class PluginConsole {
     /**
      * get the info of the specified pluginoId,just fot the plugin-setting.
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
-     * @param renderer the specified {@link ConsoleRenderer}
-     * @throws Exception exception
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object
+     * @param renderer          the specified {@link ConsoleRenderer}
      */
     @RequestProcessing(value = "/console/plugin/toSetting", method = HTTPRequestMethod.POST)
-    public void toSetting(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                          final ConsoleRenderer renderer) throws Exception {
-
+    public void toSetting(final HTTPRequestContext context, final JSONObject requestJSONObject, final ConsoleRenderer renderer) {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
-
             final String setting = pluginQueryService.getPluginSetting(pluginId);
 
             renderer.setTemplateName("admin-plugin-setting.ftl");
@@ -200,41 +187,32 @@ public class PluginConsole {
 
             dataModel.put(Plugin.PLUGIN_SETTING, setting);
             dataModel.put(Keys.OBJECT_ID, pluginId);
-
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
             final JSONRenderer jsonRenderer = new JSONRenderer();
-
             jsonRenderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
-
     }
 
     /**
      * update the setting of the plugin.
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
-     * @param renderer the specified {@link ConsoleRenderer}
-     * @throws Exception exception
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object
+     * @param renderer          the specified {@link ConsoleRenderer}
      */
     @RequestProcessing(value = "/console/plugin/updateSetting", method = HTTPRequestMethod.POST)
-    public void updateSetting(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                              final JSONRenderer renderer) throws Exception {
-
+    public void updateSetting(final HTTPRequestContext context, final JSONObject requestJSONObject, final JSONRenderer renderer) {
         context.setRenderer(renderer);
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-        final String pluginoId = requestJSONObject.getString(Keys.OBJECT_ID);
-        final String settings = requestJSONObject.getString(Plugin.PLUGIN_SETTING);
+        final String pluginoId = requestJSONObject.optString(Keys.OBJECT_ID);
+        final String settings = requestJSONObject.optString(Plugin.PLUGIN_SETTING);
 
         final JSONObject ret = pluginMgmtService.updatePluginSetting(pluginoId, settings);
 
         renderer.setJSONObject(ret);
-
     }
 }
