@@ -45,7 +45,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.0.5, Mar 31, 2017
+ * @version 1.2.0.6, Mar 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -92,35 +92,34 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request, for example,
-     *                 "oId": "",
-     *                 "userName": "",
-     *                 "userEmail": "",
-     *                 "userPassword": "", // Unhashed
-     *                 "userRole": "", // optional
-     *                 "userURL": "", // optional
-     *                 "userAvatar": "" // optional
-     * @param context  the specified http request context
-     * @param response the specified http servlet response
+     * @param request           the specified http servlet request
+     * @param context           the specified http request context
+     * @param response          the specified http servlet response
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "oId": "",
+     *                          "userName": "",
+     *                          "userEmail": "",
+     *                          "userPassword": "", // Unhashed
+     *                          "userRole": "", // optional
+     *                          "userURL": "", // optional
+     *                          "userAvatar": "" // optional
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.PUT)
-    public void updateUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+    public void updateUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+                           final JSONObject requestJSONObject)
             throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
             return;
         }
 
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-
             userMgmtService.updateUser(requestJSONObject);
 
             ret.put(Keys.STATUS_CODE, true);
@@ -150,36 +149,28 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request, for example,
-     *                 "userName": "",
-     *                 "userEmail": "",
-     *                 "userPassword": "",
-     *                 "userURL": "", // optional, uses 'servePath' instead if not specified
-     *                 "userRole": "", // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not specified
-     *                 "userAvatar": "" // optional
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
-     * @throws Exception exception
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "userName": "",
+     *                          "userEmail": "",
+     *                          "userPassword": "",
+     *                          "userURL": "", // optional, uses 'servePath' instead if not specified
+     *                          "userRole": "", // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not specified
+     *                          "userAvatar": "" // optional
      */
     @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.POST)
-    public void addUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-
+    public void addUser(final HttpServletRequest request, final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-
             if (userQueryService.isAdminLoggedIn(request)) { // if the administrator register a new user, treats the new user as a normal user
                 // (defaultRole) who could post article
                 requestJSONObject.put(User.USER_ROLE, Role.DEFAULT_ROLE);
             } else {
                 final JSONObject preference = preferenceQueryService.getPreference();
-
                 if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
                     ret.put(Keys.STATUS_CODE, false);
                     ret.put(Keys.MSG, langPropsService.get("notAllowRegisterLabel"));

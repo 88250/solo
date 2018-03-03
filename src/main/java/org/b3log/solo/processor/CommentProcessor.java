@@ -27,7 +27,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.*;
 import org.b3log.solo.service.CommentMgmtService;
@@ -38,10 +37,8 @@ import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,7 +48,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.3.3.0, Aug 31, 2017
+ * @version 1.3.3.1, Mar 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -108,23 +105,21 @@ public class CommentProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context, including a request json object, for example,
-     *                "captcha": "",
-     *                "oId": pageId,
-     *                "commentName": "",
-     *                "commentEmail": "",
-     *                "commentURL": "",
-     *                "commentContent": "", // HTML
-     *                "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
-     * @throws ServletException servlet exception
-     * @throws IOException      io exception
+     * @param context           the specified context
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "captcha": "",
+     *                          "oId": pageId,
+     *                          "commentName": "",
+     *                          "commentEmail": "",
+     *                          "commentURL": "",
+     *                          "commentContent": "", // HTML
+     *                          "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      */
     @RequestProcessing(value = "/add-page-comment.do", method = HTTPRequestMethod.POST)
-    public void addPageComment(final HTTPRequestContext context) throws ServletException, IOException {
+    public void addPageComment(final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
         fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
@@ -206,23 +201,21 @@ public class CommentProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context, including a request json object, for example,
-     *                "captcha": "",
-     *                "oId": articleId,
-     *                "commentName": "",
-     *                "commentEmail": "",
-     *                "commentURL": "",
-     *                "commentContent": "",
-     *                "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
-     * @throws ServletException servlet exception
-     * @throws IOException      io exception
+     * @param context           the specified context, including a request json object
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "captcha": "",
+     *                          "oId": articleId,
+     *                          "commentName": "",
+     *                          "commentEmail": "",
+     *                          "commentURL": "",
+     *                          "commentContent": "",
+     *                          "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      */
     @RequestProcessing(value = "/add-article-comment.do", method = HTTPRequestMethod.POST)
-    public void addArticleComment(final HTTPRequestContext context) throws ServletException, IOException {
+    public void addArticleComment(final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
 
-        final JSONObject requestJSONObject = Requests.parseRequestJSONObject(httpServletRequest, httpServletResponse);
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
         fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);

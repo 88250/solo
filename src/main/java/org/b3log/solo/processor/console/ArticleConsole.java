@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Feb 15, 2018
+ * @version 1.1.0.1, Mar 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -553,29 +553,30 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request, for example,
-     *                 {
-     *                 "article": {
-     *                 "oId": "",
-     *                 "articleTitle": "",
-     *                 "articleAbstract": "",
-     *                 "articleContent": "",
-     *                 "articleTags": "tag1,tag2,tag3",
-     *                 "articlePermalink": "", // optional
-     *                 "articleIsPublished": boolean,
-     *                 "articleSignId": "" // optional
-     *                 "articleCommentable": boolean,
-     *                 "articleViewPwd": "",
-     *                 "postToCommunity": boolean
-     *                 }
-     *                 }
-     * @param response the specified http servlet response
+     * @param context           the specified http request context
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param requestJSONObject the specified request json object, for example,
+     *                          {
+     *                          "article": {
+     *                          "oId": "",
+     *                          "articleTitle": "",
+     *                          "articleAbstract": "",
+     *                          "articleContent": "",
+     *                          "articleTags": "tag1,tag2,tag3",
+     *                          "articlePermalink": "", // optional
+     *                          "articleIsPublished": boolean,
+     *                          "articleSignId": "" // optional
+     *                          "articleCommentable": boolean,
+     *                          "articleViewPwd": "",
+     *                          "postToCommunity": boolean
+     *                          }
+     *                          }
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.PUT)
-    public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                              final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -586,7 +587,6 @@ public class ArticleConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
             final String articleId = article.getString(Keys.OBJECT_ID);
             renderer.setJSONObject(ret);
@@ -624,28 +624,29 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request, for example,
-     *                 {
-     *                 "article": {
-     *                 "articleTitle": "",
-     *                 "articleAbstract": "",
-     *                 "articleContent": "",
-     *                 "articleTags": "tag1,tag2,tag3",
-     *                 "articlePermalink": "", // optional
-     *                 "articleIsPublished": boolean,
-     *                 "postToCommunity": boolean,
-     *                 "articleSignId": "" // optional
-     *                 "articleCommentable": boolean,
-     *                 "articleViewPwd": ""
-     *                 }
-     *                 }
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object, for example,
+     *                          {
+     *                          "article": {
+     *                          "articleTitle": "",
+     *                          "articleAbstract": "",
+     *                          "articleContent": "",
+     *                          "articleTags": "tag1,tag2,tag3",
+     *                          "articlePermalink": "", // optional
+     *                          "articleIsPublished": boolean,
+     *                          "postToCommunity": boolean,
+     *                          "articleSignId": "" // optional
+     *                          "articleCommentable": boolean,
+     *                          "articleViewPwd": ""
+     *                          }
+     *                          }
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.POST)
-    public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+                           final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return;
@@ -656,7 +657,6 @@ public class ArticleConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
             requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(User.USER_EMAIL));
 

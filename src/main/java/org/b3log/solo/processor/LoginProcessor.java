@@ -37,7 +37,6 @@ import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.MD5;
-import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -65,7 +64,7 @@ import java.util.Map;
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.1.10, Sep 21, 2017
+ * @version 1.1.1.11, Mar 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -176,10 +175,11 @@ public class LoginProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
+     * @param context           the specified context
+     * @param requestJSONObject the specified request json object
      */
     @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
-    public void login(final HTTPRequestContext context) {
+    public void login(final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final HttpServletRequest request = context.getRequest();
 
         final JSONRenderer renderer = new JSONRenderer();
@@ -193,7 +193,6 @@ public class LoginProcessor {
 
             jsonObject.put(Keys.MSG, loginFailLabel);
 
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
             final String userPwd = requestJSONObject.getString(User.USER_PASSWORD);
 
@@ -285,12 +284,11 @@ public class LoginProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
+     * @param context           the specified context
+     * @param requestJSONObject the specified request json object
      */
     @RequestProcessing(value = "/forgot", method = HTTPRequestMethod.POST)
-    public void forgot(final HTTPRequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-
+    public void forgot(final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -300,7 +298,6 @@ public class LoginProcessor {
             jsonObject.put("succeed", false);
             jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
 
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 
             if (Strings.isEmptyOrNull(userEmail)) {
@@ -336,11 +333,11 @@ public class LoginProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified context
+     * @param context           the specified context
+     * @param requestJSONObject the specified request json object
      */
     @RequestProcessing(value = "/reset", method = HTTPRequestMethod.POST)
-    public void reset(final HTTPRequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+    public void reset(final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
 
         context.setRenderer(renderer);
@@ -349,9 +346,6 @@ public class LoginProcessor {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final JSONObject requestJSONObject;
-
-            requestJSONObject = Requests.parseRequestJSONObject(request, context.getResponse());
             final String token = requestJSONObject.getString("token");
             final String newPwd = requestJSONObject.getString("newPwd");
             final JSONObject passwordResetOption = optionQueryService.getOptionById(token);

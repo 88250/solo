@@ -50,7 +50,7 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Apr 22, 2017
+ * @version 1.1.1.2, Mar 3, 2018
  * @since 2.0.0
  */
 @RequestProcessor
@@ -103,16 +103,17 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request, for example,
-     *                 "oId": "",
-     *                 "direction": "" // "up"/"down"
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "oId": "",
+     *                          "direction": "" // "up"/"down"
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/category/order/", method = HTTPRequestMethod.PUT)
-    public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+                            final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -124,7 +125,6 @@ public class CategoryConsole {
 
         final JSONObject ret = new JSONObject();
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final String categoryId = requestJSONObject.getString(Keys.OBJECT_ID);
             final String direction = requestJSONObject.getString(Common.DIRECTION);
 
@@ -263,19 +263,20 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request,
-     *                 "oId": "",
-     *                 "categoryTitle": "",
-     *                 "categoryURI": "", // optional
-     *                 "categoryDescription": "", // optional
-     *                 "categoryTags": "tag1, tag2" // optional
-     * @param context  the specified http request context
-     * @param response the specified http servlet response
+     * @param request           the specified http servlet request
+     * @param context           the specified http request context
+     * @param response          the specified http servlet response
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "oId": "",
+     *                          "categoryTitle": "",
+     *                          "categoryURI": "", // optional
+     *                          "categoryDescription": "", // optional
+     *                          "categoryTags": "tag1, tag2" // optional
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/category/", method = HTTPRequestMethod.PUT)
-    public void updateCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void updateCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+                               final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -289,8 +290,6 @@ public class CategoryConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-
             String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
             tagsStr = tagsStr.replaceAll("，", ",").replaceAll("、", ",");
             final String[] tagTitles = tagsStr.split(",");
@@ -394,17 +393,19 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request,
-     *                 "categoryTitle": "",
-     *                 "categoryURI": "", // optional
-     *                 "categoryDescription": "", // optional
-     *                 "categoryTags": "tag1, tag2" // optional
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param context           the specified http request context
+     * @param requestJSONObject the specified request json object, for example,
+     *                          "categoryTitle": "",
+     *                          "categoryURI": "", // optional
+     *                          "categoryDescription": "", // optional
+     *                          "categoryTags": "tag1, tag2" // optional
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/category/", method = HTTPRequestMethod.POST)
-    public void addCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
+    public void addCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
+                            final JSONObject requestJSONObject)
             throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -419,8 +420,6 @@ public class CategoryConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-
             String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
             tagsStr = tagsStr.replaceAll("，", ",").replaceAll("、", ",");
             final String[] tagTitles = tagsStr.split(",");

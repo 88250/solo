@@ -30,7 +30,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -53,7 +52,7 @@ import java.util.Map;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.11, May 25, 2017
+ * @version 1.2.0.12, Mar 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -121,20 +120,20 @@ public class InitProcessor {
     /**
      * Initializes Solo.
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request, for example,      <pre>
-     *                 {
-     *                     "userName": "",
-     *                     "userEmail": "",
-     *                     "userPassword": ""
-     *                 }
-     *                 </pre>
-     * @param response the specified http servlet response
+     * @param context           the specified http request context
+     * @param request           the specified http servlet request
+     * @param response          the specified http servlet response
+     * @param requestJSONObject the specified request json object, for example,
+     *                          {
+     *                          "userName": "",
+     *                          "userEmail": "",
+     *                          "userPassword": ""
+     *                          }
      * @throws Exception exception
      */
     @RequestProcessing(value = "/init", method = HTTPRequestMethod.POST)
     public void initSolo(final HTTPRequestContext context, final HttpServletRequest request,
-                         final HttpServletResponse response) throws Exception {
+                         final HttpServletResponse response, final JSONObject requestJSONObject) throws Exception {
         if (initService.isInited()) {
             response.sendRedirect("/");
 
@@ -143,13 +142,10 @@ public class InitProcessor {
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = QueryResults.defaultResult();
         renderer.setJSONObject(ret);
 
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
-
             final String userName = requestJSONObject.optString(User.USER_NAME);
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL);
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
