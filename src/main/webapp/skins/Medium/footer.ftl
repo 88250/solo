@@ -13,7 +13,7 @@
         ${onlineVisitorCnt} ${onlineVisitorLabel}
             <div class="fn-right">
                 Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> •
-                <a href="https://hacpai.com/tag/Solo" target="_blank">Solo</a> •
+                <a href="http://solo.b3log.org" target="_blank">Solo</a> •
                 Theme <a rel="friend" href="https://github.com/b3log/solo-skins" target="_blank">Medium</a>
             </div>
         </div>
