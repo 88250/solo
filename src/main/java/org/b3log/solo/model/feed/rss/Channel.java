@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model.feed.rss;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -42,7 +43,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Oct 21, 2017
+ * @version 1.1.1.0, Mar 10, 2018
  * @see Item
  * @see Category
  * @since 0.3.1
@@ -349,17 +350,17 @@ public final class Channel {
         stringBuilder.append(START);
 
         stringBuilder.append(START_TITLE_ELEMENT);
-        stringBuilder.append(title);
+        stringBuilder.append(StringEscapeUtils.escapeXml(title));
         stringBuilder.append(END_TITLE_ELEMENT);
 
         stringBuilder.append(START_LINK_ELEMENT);
-        stringBuilder.append(link);
+        stringBuilder.append(StringEscapeUtils.escapeXml(link));
         stringBuilder.append(END_LINK_ELEMENT);
 
         stringBuilder.append(ATOM_LINK_ELEMENT.replace(ATOM_LINK_VARIABLE, atomLink));
 
         stringBuilder.append(START_DESCRIPTION_ELEMENT);
-        stringBuilder.append(description);
+        stringBuilder.append(StringEscapeUtils.escapeXml(description));
         stringBuilder.append(END_DESCRIPTION_ELEMENT);
 
         stringBuilder.append(START_GENERATOR_ELEMENT);

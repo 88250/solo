@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model.feed.atom;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -43,12 +44,13 @@ import java.util.TimeZone;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Oct 21, 2017
+ * @version 1.1.1.0, Mar 10, 2018
  * @see Entry
  * @see Category
  * @since 0.3.1
  */
 public final class Feed {
+
     /**
      * Time zone id.
      */
@@ -334,11 +336,11 @@ public final class Feed {
         stringBuilder.append(END_ID_ELEMENT);
 
         stringBuilder.append(START_TITLE_ELEMENT);
-        stringBuilder.append(title);
+        stringBuilder.append(StringEscapeUtils.escapeXml(title));
         stringBuilder.append(END_TITLE_ELEMENT);
 
         stringBuilder.append(START_SUBTITLE_ELEMENT);
-        stringBuilder.append(subtitle);
+        stringBuilder.append(StringEscapeUtils.escapeXml(subtitle));
         stringBuilder.append(END_SUBTITLE_ELEMENT);
 
         stringBuilder.append(START_UPDATED_ELEMENT);

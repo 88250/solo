@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.model.feed.rss;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 
 import java.util.Date;
@@ -26,7 +27,7 @@ import java.util.Set;
  * Item.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, May 10, 2013
+ * @version 1.1.1.0, Mar 10, 2018
  * @since 0.3.1
  */
 public final class Item {
@@ -248,7 +249,7 @@ public final class Item {
         final StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("<item>").append(START_TITLE_ELEMENT);
-        stringBuilder.append(title);
+        stringBuilder.append(StringEscapeUtils.escapeXml(title));
         stringBuilder.append(END_TITLE_ELEMENT);
 
         stringBuilder.append(START_LINK_ELEMENT);
@@ -256,7 +257,7 @@ public final class Item {
         stringBuilder.append(END_LINK_ELEMENT);
 
         stringBuilder.append(START_DESCRIPTION_ELEMENT);
-        stringBuilder.append(description);
+        stringBuilder.append(StringEscapeUtils.escapeXml(description));
         stringBuilder.append(END_DESCRIPTION_ELEMENT);
 
         stringBuilder.append(START_AUTHOR_ELEMENT);
