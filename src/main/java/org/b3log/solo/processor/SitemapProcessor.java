@@ -98,7 +98,7 @@ public class SitemapProcessor {
 
     /**
      * Returns the sitemap.
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/sitemap.xml", method = HTTPRequestMethod.GET)
@@ -133,18 +133,17 @@ public class SitemapProcessor {
 
     /**
      * Adds articles into the specified sitemap.
-     * 
+     *
      * @param sitemap the specified sitemap
      * @throws Exception exception
      */
     private void addArticles(final Sitemap sitemap) throws Exception {
-        // XXX: query all articles?
-        final Query query = new Query().setCurrentPageNum(1).setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).addSort(
-            Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
-
-        // XXX: maybe out of memory 
+        final Query query = new Query().setCurrentPageNum(1).
+                setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
+                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING).
+                addProjection(Article.ARTICLE_PERMALINK, String.class).
+                addProjection(Article.ARTICLE_UPDATE_DATE, Date.class);
         final JSONObject articleResult = articleRepository.get(query);
-
         final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
 
         for (int i = 0; i < articles.length(); i++) {
@@ -152,12 +151,9 @@ public class SitemapProcessor {
             final String permalink = article.getString(Article.ARTICLE_PERMALINK);
 
             final URL url = new URL();
-
             url.setLoc(Latkes.getServePath() + permalink);
-
             final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
             final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updateDate);
-
             url.setLastMod(lastMod);
 
             sitemap.addURL(url);
@@ -166,9 +162,9 @@ public class SitemapProcessor {
 
     /**
      * Adds navigations into the specified sitemap.
-     * 
+     *
      * @param sitemap the specified sitemap
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     private void addNavigations(final Sitemap sitemap) throws Exception {
         final JSONObject result = pageRepository.get(new Query());
@@ -194,7 +190,7 @@ public class SitemapProcessor {
 
     /**
      * Adds tags (tag-articles) and tags wall (/tags.html) into the specified sitemap.
-     * 
+     *
      * @param sitemap the specified sitemap
      * @throws Exception exception
      */
@@ -222,7 +218,7 @@ public class SitemapProcessor {
 
     /**
      * Adds archives (archive-articles) into the specified sitemap.
-     * 
+     *
      * @param sitemap the specified sitemap
      * @throws Exception exception
      */
