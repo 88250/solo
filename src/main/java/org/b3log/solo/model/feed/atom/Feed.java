@@ -332,7 +332,7 @@ public final class Feed {
         stringBuilder.append(START_FEED_ELEMENT);
 
         stringBuilder.append(START_ID_ELEMENT);
-        stringBuilder.append(id);
+        stringBuilder.append(StringEscapeUtils.escapeXml(id));
         stringBuilder.append(END_ID_ELEMENT);
 
         stringBuilder.append(START_TITLE_ELEMENT);
@@ -354,7 +354,7 @@ public final class Feed {
         stringBuilder.append(END_NAME_ELEMENT);
         stringBuilder.append(END_AUTHOR_ELEMENT);
 
-        stringBuilder.append(LINK_ELEMENT.replace(LINK_VARIABLE, link));
+        stringBuilder.append(LINK_ELEMENT.replace(LINK_VARIABLE, StringEscapeUtils.escapeXml(link)));
 
         for (final Entry entry : entries) {
             stringBuilder.append(entry.toString());

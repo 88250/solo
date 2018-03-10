@@ -253,7 +253,7 @@ public final class Item {
         stringBuilder.append(END_TITLE_ELEMENT);
 
         stringBuilder.append(START_LINK_ELEMENT);
-        stringBuilder.append(link);
+        stringBuilder.append(StringEscapeUtils.escapeXml(link));
         stringBuilder.append(END_LINK_ELEMENT);
 
         stringBuilder.append(START_DESCRIPTION_ELEMENT);
@@ -265,7 +265,7 @@ public final class Item {
         stringBuilder.append(END_AUTHOR_ELEMENT);
 
         stringBuilder.append(START_GUID_ELEMENT);
-        stringBuilder.append(guid);
+        stringBuilder.append(StringEscapeUtils.escapeXml(guid));
         stringBuilder.append(END_GUID_ELEMENT);
 
         for (final Category category : categories) {

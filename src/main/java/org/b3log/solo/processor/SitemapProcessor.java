@@ -15,7 +15,7 @@
  */
 package org.b3log.solo.processor;
 
-
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -50,12 +50,11 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.Date;
 
-
 /**
  * Site map (sitemap) processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, May 17, 2013
+ * @version 1.0.1.0, Mar 10, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -151,7 +150,7 @@ public class SitemapProcessor {
             final String permalink = article.getString(Article.ARTICLE_PERMALINK);
 
             final URL url = new URL();
-            url.setLoc(Latkes.getServePath() + permalink);
+            url.setLoc(StringEscapeUtils.escapeXml(Latkes.getServePath() + permalink));
             final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
             final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updateDate);
             url.setLastMod(lastMod);

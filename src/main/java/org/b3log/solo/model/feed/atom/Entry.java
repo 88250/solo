@@ -324,10 +324,10 @@ public final class Entry {
             stringBuilder.append(category.toString());
         }
 
-        stringBuilder.append(LINK_ELEMENT.replace(LINK_VARIABLE, link));
+        stringBuilder.append(LINK_ELEMENT.replace(LINK_VARIABLE, StringEscapeUtils.escapeXml(link)));
 
         stringBuilder.append(START_ID_ELEMENT);
-        stringBuilder.append(id);
+        stringBuilder.append(StringEscapeUtils.escapeXml(id));
         stringBuilder.append(END_ID_ELEMENT);
 
         stringBuilder.append(START_UPDATED_ELEMENT);
