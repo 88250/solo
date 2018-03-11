@@ -1065,7 +1065,7 @@ admin.article = {
     // 自动保存间隔
     AUTOSAVETIME: 1000 * 60,
     /**
-     * 初始化上传组建
+     * 初始化上传组件
      */
     initUploadFile: function (id) {
         var filename = "";

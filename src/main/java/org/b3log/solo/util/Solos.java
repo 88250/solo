@@ -15,6 +15,8 @@
  */
 package org.b3log.solo.util;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -64,7 +66,11 @@ public final class Solos {
         B3LOG_SYMPHONY_SERVE_PATH = solo.getString("symphony.servePath");
         FAVICON_API = solo.getString("faviconAPI");
         GRAVATAR = solo.getString("gravatar");
-        UPLOAD_DIR_PATH = solo.getString("uploadDir");
+        String dir = solo.getString("uploadDir");
+        if (StringUtils.isNotBlank(dir) && !StringUtils.endsWith(dir, "/")) {
+            dir += "/";
+        }
+        UPLOAD_DIR_PATH = dir;
     }
 
     /**
