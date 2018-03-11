@@ -25,7 +25,7 @@ import java.util.Locale;
  * {@link org.b3log.solo.util.Thumbnails} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 29, 2013
+ * @version 1.0.0.1, Mar 11, 2018
  * @since 0.6.1
  */
 public final class ThumbnailsTestCase {
@@ -42,6 +42,6 @@ public final class ThumbnailsTestCase {
 
         final String gravatarURL = Thumbnails.getGravatarURL("test@b3log.org", "128");
 
-        Assert.assertEquals(gravatarURL, Thumbnails.GRAVATAR + "bd7e4673cf7fa4b4777353008c86e093?s=128");
+        Assert.assertEquals(gravatarURL, Solos.GRAVATAR + "bd7e4673cf7fa4b4777353008c86e093?s=128");
     }
 }

@@ -51,7 +51,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
-import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -60,43 +59,20 @@ import java.util.concurrent.locks.ReentrantLock;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.29, Mar 6, 2018
+ * @version 1.9.3.30, Mar 11, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
-
-    /**
-     * Solo version.
-     */
-    public static final String VERSION = "2.7.0";
-
-    /**
-     * B3log Rhythm address.
-     */
-    public static final String B3LOG_RHYTHM_SERVE_PATH;
-
-    /**
-     * B3log Symphony address.
-     */
-    public static final String B3LOG_SYMPHONY_SERVE_PATH;
-
-    /**
-     * Favicon API.
-     */
-    public static final String FAVICON_API;
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(SoloServletListener.class);
 
-    static {
-        final ResourceBundle b3log = ResourceBundle.getBundle("b3log");
-
-        B3LOG_RHYTHM_SERVE_PATH = b3log.getString("rhythm.servePath");
-        B3LOG_SYMPHONY_SERVE_PATH = b3log.getString("symphony.servePath");
-        FAVICON_API = b3log.getString("faviconAPI");
-    }
+    /**
+     * Solo version.
+     */
+    public static final String VERSION = "2.7.0";
 
     /**
      * Bean manager.

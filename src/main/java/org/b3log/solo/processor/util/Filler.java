@@ -43,6 +43,7 @@ import org.b3log.solo.repository.*;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
+import org.b3log.solo.util.Solos;
 import org.b3log.solo.util.Thumbnails;
 import org.b3log.solo.util.comparator.Comparators;
 import org.json.JSONArray;
@@ -62,7 +63,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.16.0, Mar 8, 2017
+ * @version 1.6.16.1, Mar 11, 2018
  * @since 0.3.1
  */
 @Service
@@ -690,7 +691,7 @@ public class Filler {
 
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Common.IS_LOGGED_IN, null != userQueryService.getCurrentUser(request));
-            dataModel.put(Common.FAVICON_API, SoloServletListener.FAVICON_API);
+            dataModel.put(Common.FAVICON_API, Solos.FAVICON_API);
 
             final String noticeBoard = preference.getString(Option.ID_C_NOTICE_BOARD);
 

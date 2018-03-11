@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.event.symphony;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
@@ -35,17 +34,17 @@ import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-
 /**
  * This listener is responsible for sending comment to B3log Symphony.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Sep 6, 2017
+ * @version 1.0.1.1, Mar 11, 2018
  * @since 0.5.5
  */
 public final class CommentSender extends AbstractEventListener<JSONObject> {
@@ -67,7 +66,7 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
 
     static {
         try {
-            ADD_COMMENT_URL = new URL(SoloServletListener.B3LOG_SYMPHONY_SERVE_PATH + "/solo/comment");
+            ADD_COMMENT_URL = new URL(Solos.B3LOG_SYMPHONY_SERVE_PATH + "/solo/comment");
         } catch (final MalformedURLException e) {
             LOGGER.log(Level.ERROR, "Creates remote service address[symphony add comment] error!");
             throw new IllegalStateException(e);

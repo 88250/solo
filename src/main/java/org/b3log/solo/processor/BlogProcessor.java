@@ -36,6 +36,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.*;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -50,7 +51,7 @@ import java.util.Set;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.0, Nov 15, 2017
+ * @version 1.3.1.1, Mar 11, 2018
  * @since 0.4.6
  */
 @RequestProcessor
@@ -172,7 +173,7 @@ public class BlogProcessor {
         }
 
         final HTTPRequest httpRequest = new HTTPRequest();
-        httpRequest.setURL(new URL(SoloServletListener.B3LOG_SYMPHONY_SERVE_PATH + "/apis/user"));
+        httpRequest.setURL(new URL(Solos.B3LOG_SYMPHONY_SERVE_PATH + "/apis/user"));
         httpRequest.setRequestMethod(HTTPRequestMethod.POST);
         final JSONObject requestJSONObject = new JSONObject();
 

@@ -35,6 +35,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import java.net.MalformedURLException;
@@ -48,7 +49,7 @@ import java.util.Date;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Oct 24, 2017
+ * @version 1.0.1.2, Mar 11, 2018
  * @since 0.6.0
  */
 public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
@@ -65,7 +66,7 @@ public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
     static {
         try {
-            UPDATE_ARTICLE_URL = new URL(SoloServletListener.B3LOG_RHYTHM_SERVE_PATH + "/article");
+            UPDATE_ARTICLE_URL = new URL(Solos.B3LOG_RHYTHM_SERVE_PATH + "/article");
         } catch (final MalformedURLException e) {
             LOGGER.log(Level.ERROR, "Creates remote service address[rhythm update article] error!");
             throw new IllegalStateException(e);

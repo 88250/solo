@@ -58,7 +58,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.17, Feb 27, 2018
+ * @version 1.5.2.18, Mar 11, 2018
  * @since 0.4.0
  */
 @Service
@@ -319,7 +319,7 @@ public class InitService {
         comment.put(Comment.COMMENT_CONTENT, langPropsService.get("helloWorld.comment.content"));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-        comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.GRAVATAR + "59a5e8209c780307dbe9c9ba728073f5??s=60&r=G");
+        comment.put(Comment.COMMENT_THUMBNAIL_URL, Solos.GRAVATAR + "59a5e8209c780307dbe9c9ba728073f5??s=60&r=G");
         comment.put(Comment.COMMENT_DATE, date);
         comment.put(Comment.COMMENT_ON_ID, articleId);
         comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
