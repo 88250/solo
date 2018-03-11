@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.processor;
 
+import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import jodd.io.FileUtil;
@@ -32,6 +33,9 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.RequestProcessing;
+import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.MD5;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
@@ -39,33 +43,25 @@ import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.*;
 
 /**
- * File upload to local.
+ * File upload.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Mar 11, 2018
  * @since 2.8.0
  */
-@WebServlet(urlPatterns = {"/upload", "/upload/*"}, loadOnStartup = 2)
-public class FileUploadServlet extends HttpServlet {
-
-    /**
-     * Serial version UID.
-     */
-    private static final long serialVersionUID = 1L;
+@RequestProcessor
+public class FileUploadProcessor {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(FileUploadServlet.class);
+    private static final Logger LOGGER = Logger.getLogger(FileUploadProcessor.class);
 
     /**
      * Qiniu enabled.
@@ -89,8 +85,8 @@ public class FileUploadServlet extends HttpServlet {
         }
     }
 
-    @Override
-    public void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+    @RequestProcessing(value = "/upload/*", method = HTTPRequestMethod.GET)
+    public void get(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         if (QN_ENABLED) {
             return;
         }
@@ -134,8 +130,8 @@ public class FileUploadServlet extends HttpServlet {
         IOUtils.closeQuietly(output);
     }
 
-    @Override
-    public void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+    @RequestProcessing(value = "/upload", method = HTTPRequestMethod.POST)
+    public void upload(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         final int maxSize = 1024 * 1024 * 100;
         final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
         parser.parseRequestStream(req.getInputStream(), "UTF-8");
@@ -163,6 +159,7 @@ public class FileUploadServlet extends HttpServlet {
 
                 auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY), qiniu.optString(Option.ID_C_QINIU_SECRET_KEY));
                 uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET), null, 3600 * 6, null);
+                uploadManager = new UploadManager(new Configuration());
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Qiniu settings failed, please visit https://hacpai.com/article/1442418791213 for more details", e);
 
