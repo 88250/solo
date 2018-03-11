@@ -140,7 +140,7 @@ public class FileUploadProcessor {
     /**
      * Uploads file.
      *
-     * @param req  the sepcified reuqest
+     * @param req  the specified reuqest
      * @param resp the specified response
      * @throws IOException io exception
      */
