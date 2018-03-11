@@ -17,15 +17,16 @@
 
 -->
 <!--
-    Description: Solo web deployment descriptor.
-    Version: 1.0.5.1, Sep 27, 2013
+    Description: Solo web deployment descriptor for testing.
+    Version: 1.0.5.2, Mar 11, 2018
     Author: Liang Ding
 -->
-<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <listener>
         <listener-class>org.b3log.solo.SoloServletListener</listener-class>
     </listener>
-    
+
     <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>org.b3log.latke.servlet.filter.EncodingFilter</filter-class>
@@ -42,7 +43,7 @@
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
+
     <filter>
         <filter-name>AuthFilter</filter-name>
         <filter-class>org.b3log.solo.filter.AuthFilter</filter-class>
@@ -62,7 +63,6 @@
         <url-pattern>/admin-user-list.do</url-pattern>
         <url-pattern>/admin-plugin-list.do</url-pattern>
         <url-pattern>/admin-about.do</url-pattern>
-        <url-pattern>/rm-all-data.do</url-pattern>
         <url-pattern>/fix/*</url-pattern>
     </filter-mapping>
     <filter>
@@ -81,13 +81,13 @@
         <filter-name>InitCheckFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-    
+
     <session-config>
         <session-timeout>
             5
         </session-timeout>
     </session-config>
-    
+
     <servlet>
         <servlet-name>DispatcherServlet</servlet-name>
         <servlet-class>org.b3log.latke.servlet.DispatcherServlet</servlet-class>
@@ -97,7 +97,7 @@
         <servlet-name>DispatcherServlet</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
-    
+
     <!-- Error Pages -->
     <error-page>
         <error-code>404</error-code>

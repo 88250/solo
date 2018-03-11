@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.service;
 
-
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -29,12 +28,11 @@ import org.b3log.solo.repository.PageRepository;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * Permalink query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Mar 4, 2014
+ * @version 1.0.0.3, Mar 11, 2018
  * @since 0.6.1
  */
 @Service
@@ -60,20 +58,19 @@ public class PermalinkQueryService {
     /**
      * Reserved permalinks.
      */
-    public static final String[] RESERVED_LINKS = new String[] {
-        "/", "/article", "/tags.html", "/tags", "/page", "/blog-articles-feed.do", "/tag-articles-feed.do", "/blog-articles-rss.do",
-        "/tag-articles-rss.do", "/get-random-articles.do", "/article-random-double-gen.do", "/captcha.do", "/kill-browser",
-        "/add-article-comment.do", "/add-article-from-symphony-comment.do", "/add-page-comment.do", "/get-article-content", "/sitemap.xml",
-        "/login", "/logout", "/forgot", "/get-article-content", "/admin-index.do", "/admin-article.do", "/admin-article-list.do",
-        "/admin-link-list.do", "/admin-preference.do", "/admin-file-list.do", "/admin-page-list.do", "/admin-others.do",
-        "/admin-draft-list.do", "/admin-user-list.do", "/admin-plugin-list.do", "/admin-main.do", "/admin-about.do", "/admin-label",
-        "/admin-about.do", "/rm-all-data.do", "/init", "/register.html"
+    public static final String[] RESERVED_LINKS = new String[]{
+            "/", "/article", "/tags.html", "/tags", "/page", "/blog-articles-feed.do", "/tag-articles-feed.do", "/blog-articles-rss.do",
+            "/tag-articles-rss.do", "/get-random-articles.do", "/article-random-double-gen.do", "/captcha.do", "/kill-browser",
+            "/add-article-comment.do", "/add-article-from-symphony-comment.do", "/add-page-comment.do", "/get-article-content", "/sitemap.xml",
+            "/login", "/logout", "/forgot", "/get-article-content", "/admin-index.do", "/admin-article.do", "/admin-article-list.do",
+            "/admin-link-list.do", "/admin-preference.do", "/admin-file-list.do", "/admin-page-list.do", "/admin-others.do",
+            "/admin-draft-list.do", "/admin-user-list.do", "/admin-plugin-list.do", "/admin-main.do", "/admin-about.do", "/admin-label",
+            "/admin-about.do", "/init", "/register.html"
     };
 
     /**
-     * Checks whether the specified article permalink matches the system generated format 
-     * pattern ("/articles/yyyy/MM/dd/${articleId}.html").
-     * 
+     * Checks whether the specified article permalink matches the system generated format pattern ("/articles/yyyy/MM/dd/${articleId}.html").
+     *
      * @param permalink the specified permalink
      * @return {@code true} if matches, returns {@code false} otherwise
      */
@@ -86,7 +83,7 @@ public class PermalinkQueryService {
 
     /**
      * Checks whether the specified page permalink matches the system generated format pattern ("/pages/${pageId}.html").
-     * 
+     *
      * @param permalink the specified permalink
      * @return {@code true} if matches, returns {@code false} otherwise
      */
@@ -98,11 +95,11 @@ public class PermalinkQueryService {
     }
 
     /**
-     * Checks whether the specified permalink is a {@link #invalidArticlePermalinkFormat(java.lang.String) invalid article 
+     * Checks whether the specified permalink is a {@link #invalidArticlePermalinkFormat(java.lang.String) invalid article
      * permalink format} and {@link #invalidPagePermalinkFormat(java.lang.String) invalid page permalink format}.
-     * 
+     *
      * @param permalink the specified permalink
-     * @return {@code true} if invalid, returns {@code false} otherwise 
+     * @return {@code true} if invalid, returns {@code false} otherwise
      */
     public static boolean invalidPermalinkFormat(final String permalink) {
         return invalidArticlePermalinkFormat(permalink) && invalidPagePermalinkFormat(permalink);
@@ -110,7 +107,7 @@ public class PermalinkQueryService {
 
     /**
      * Checks whether the specified article permalink is invalid on format.
-     * 
+     *
      * @param permalink the specified article permalink
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
@@ -128,7 +125,7 @@ public class PermalinkQueryService {
 
     /**
      * Checks whether the specified page permalink is invalid on format.
-     * 
+     *
      * @param permalink the specified page permalink
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
@@ -146,7 +143,7 @@ public class PermalinkQueryService {
 
     /**
      * Checks whether the specified user-defined permalink is invalid on format.
-     * 
+     *
      * @param permalink the specified user-defined permalink
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
@@ -181,12 +178,11 @@ public class PermalinkQueryService {
 
     /**
      * Determines whether the specified request URI is a reserved link.
-     * 
      * <p>
      * A URI starts with one of {@link PermalinkQueryService#RESERVED_LINKS reserved links}
      * will be treated as reserved link.
      * </p>
-     * 
+     *
      * @param requestURI the specified request URI
      * @return {@code true} if it is a reserved link, returns {@code false} otherwise
      */
@@ -212,7 +208,7 @@ public class PermalinkQueryService {
     public boolean exist(final String permalink) {
         try {
             return isReservedLink(permalink) || null != articleRepository.getByPermalink(permalink)
-                || null != pageRepository.getByPermalink(permalink) || permalink.endsWith(".ftl");
+                    || null != pageRepository.getByPermalink(permalink) || permalink.endsWith(".ftl");
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Determines whether the permalink[" + permalink + "] exists failed, returns true", e);
 
@@ -222,7 +218,7 @@ public class PermalinkQueryService {
 
     /**
      * Sets the article repository with the specified article repository.
-     * 
+     *
      * @param articleRepository the specified article repository
      */
     public void setArticleRepository(final ArticleRepository articleRepository) {
@@ -231,7 +227,7 @@ public class PermalinkQueryService {
 
     /**
      * Set the page repository with the specified page repository.
-     * 
+     *
      * @param pageRepository the specified page repository
      */
     public void setPageRepository(final PageRepository pageRepository) {

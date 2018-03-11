@@ -18,7 +18,7 @@
 -->
 <!--
     Description: Solo web deployment descriptor.
-    Version: 1.0.5.2, Oct 21, 2017
+    Version: 1.0.5.3, Mar 11, 2018
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -63,7 +63,6 @@
         <url-pattern>/admin-user-list.do</url-pattern>
         <url-pattern>/admin-plugin-list.do</url-pattern>
         <url-pattern>/admin-about.do</url-pattern>
-        <url-pattern>/rm-all-data.do</url-pattern>
         <url-pattern>/fix/*</url-pattern>
     </filter-mapping>
     <filter>
