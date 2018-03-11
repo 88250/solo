@@ -147,7 +147,7 @@ public final class Starter {
         }
         Latkes.setScanPath("org.b3log.solo"); // For Latke IoC
 
-        logger.info("Standalone mode, see [https://github.com/b3log/solo/issues/12037] for more details.");
+        logger.info("Standalone mode, see https://github.com/b3log/solo/issues/12037 for more details.");
         Latkes.initRuntimeEnv();
 
         String webappDirLocation = "src/main/webapp/"; // POM structure in dev env
