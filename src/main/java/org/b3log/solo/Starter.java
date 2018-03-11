@@ -32,12 +32,12 @@ import java.net.URI;
 /**
  * Solo with embedded Jetty, <a href="https://github.com/b3log/solo/issues/12037">standalone mode</a>.
  * <ul>
- * <li>Windows: java -cp WEB-INF/lib/*;WEB-INF/classes org.b3log.solo.Starter</li>
- * <li>Unix-like: java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter</li>
+ * <li>Windows: java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter</li>
+ * <li>Unix-like: java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.10, Nov 9, 2017
+ * @version 1.1.0.11, Mar 11, 2018
  * @since 1.2.0
  */
 public final class Starter {
@@ -106,8 +106,8 @@ public final class Starter {
         CommandLine commandLine;
 
         final boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
-        final String cmdSyntax = isWindows ? "java -cp WEB-INF/lib/*;WEB-INF/classes org.b3log.solo.Starter"
-                : "java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter";
+        final String cmdSyntax = isWindows ? "java -cp \"WEB-INF/lib/*;WEB-INF/classes\" org.b3log.solo.Starter"
+                : "java -cp \"WEB-INF/lib/*:WEB-INF/classes\" org.b3log.solo.Starter";
         final String header = "\nSolo is a blogging system written in Java, feel free to create your or your team own blog.\nSolo 是一个用 Java 实现的博客系统，为你或你的团队创建个博客吧。\n\n";
         final String footer = "\nReport bugs or request features please visit our project website: https://github.com/b3log/solo\n\n";
         try {

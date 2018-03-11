@@ -65,8 +65,8 @@ Solo 沉淀至今的**每一个功能你应该都会用到**。我们不会将�
 
 JDK 环境准备好之后[下载](https://pan.baidu.com/s/1dzk7SU)最新的 Solo 包解压，进入解压目录执行：
 
-* Windows: `java -cp WEB-INF/lib/*;WEB-INF/classes org.b3log.solo.Starter`
-* Unix-like: `java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter`
+* Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter`
+* Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
 
 **更多细节请参考 [Solo 用户指南](https://hacpai.com/article/1492881378588)。另外，如果你想用 Solo 但又不想自己维护服务器，可以购买我们搭建好的 Solo 直接[使用](http://b3log.org/services/#solo)。**
 
