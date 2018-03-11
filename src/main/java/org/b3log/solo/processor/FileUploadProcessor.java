@@ -85,6 +85,13 @@ public class FileUploadProcessor {
         }
     }
 
+    /**
+     * Gets file by the specified URL.
+     *
+     * @param req  the specified request
+     * @param resp the specified response
+     * @throws IOException io exception
+     */
     @RequestProcessing(value = "/upload/*", method = HTTPRequestMethod.GET)
     public void getFile(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         if (QN_ENABLED) {
@@ -130,6 +137,13 @@ public class FileUploadProcessor {
         IOUtils.closeQuietly(output);
     }
 
+    /**
+     * Uploads file.
+     *
+     * @param req  the sepcified reuqest
+     * @param resp the specified response
+     * @throws IOException io exception
+     */
     @RequestProcessing(value = "/upload", method = HTTPRequestMethod.POST)
     public void uploadFile(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         final int maxSize = 1024 * 1024 * 100;
