@@ -49,7 +49,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * File upload.
+ * File upload processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Mar 11, 2018
@@ -86,7 +86,7 @@ public class FileUploadProcessor {
     }
 
     @RequestProcessing(value = "/upload/*", method = HTTPRequestMethod.GET)
-    public void get(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
+    public void getFile(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         if (QN_ENABLED) {
             return;
         }
@@ -131,7 +131,7 @@ public class FileUploadProcessor {
     }
 
     @RequestProcessing(value = "/upload", method = HTTPRequestMethod.POST)
-    public void upload(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
+    public void uploadFile(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
         final int maxSize = 1024 * 1024 * 100;
         final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
         parser.parseRequestStream(req.getInputStream(), "UTF-8");
@@ -139,7 +139,7 @@ public class FileUploadProcessor {
         final Map<String, String> succMap = new HashMap<>();
         final FileUpload[] files = parser.getFiles("file[]");
         final String[] names = parser.getParameterValues("name[]");
-        String fileName = "";
+        String fileName;
 
         Auth auth;
         UploadManager uploadManager = null;
