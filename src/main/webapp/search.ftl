@@ -89,7 +89,7 @@ No Result, Return to <a href="${servePath}">Index</a> or <a href="https://hacpai
 
 <div class="footerWrapper">
     <div class="footer">
-        Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • Solo ${version}
+        Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> • Solo ${version}
     </div>
 </div>
 </body>

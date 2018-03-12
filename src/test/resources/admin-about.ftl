@@ -35,7 +35,7 @@
     </div>
     <div class="module-body padding12">
         <div class="about-logo">
-            <a href="http://b3log.org" target="_blank">
+            <a href="https://b3log.org" target="_blank">
                 <img src="${staticServePath}/images/logo.png" alt="Solo" title="Solo" />
             </a>
         </div>
@@ -47,7 +47,7 @@
     </div>
     <div class="module-body padding12 about-developer">
         <div class="about-logo">
-            <!--            <a href="http://b3log.org" target="_blank">
+            <!--            <a href="https://b3log.org" target="_blank">
                             <img src="${staticServePath}/images/developers.jpg" alt="Solo" title="Solo" />
                         </a>-->
             <div style="width: 156px; height: 56px;"></div>

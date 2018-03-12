@@ -3,7 +3,7 @@
 <@commonPage "${welcomeToSoloLabel}!">
 <h2>
     <span>${welcomeToSoloLabel}</span>
-    <a target="_blank" href="http://b3log.org">
+    <a target="_blank" href="https://b3log.org">
         <span class="solo">&nbsp;Solo</span>
     </a>
 </h2>

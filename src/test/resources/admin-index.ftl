@@ -15,7 +15,7 @@
         <div class="tip tip-msg"><span id="tipMsg"></span></div>
         <div id="allPanel">
             <div id="top">
-                <a href="http://b3log.org" target="_blank" class="hover">
+                <a href="https://b3log.org" target="_blank" class="hover">
                     Solo
                 </a>
                
@@ -127,7 +127,7 @@
             </div>
             <div class="clear"></div>
             <div class="footer">
-                Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
+                Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> • <a href="https://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
             </div>
         </div>
         <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>

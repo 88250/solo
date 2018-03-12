@@ -19,7 +19,7 @@
             <div class="wrap">
                 <div class="content" style="top:-6px">
                     <div class="logo">
-                        <a href="http://b3log.org" target="_blank">
+                        <a href="https://b3log.org" target="_blank">
                             <img border="0" width="153" height="56" alt="B3log" title="B3log" src="${staticServePath}/images/logo.jpg"/>
                         </a>
                     </div>
@@ -29,7 +29,7 @@
                          &nbsp; &nbsp;&nbsp; <button onclick="closeIframe();">${closeLabel}</button> &nbsp; &nbsp; 
                         <button onclick="closeIframeForever();">${closeForeverLabel}</button>
                         <img src='${staticServePath}/images/kill-browser.png' title='Kill IE6' alt='Kill IE6'/>
-                        <a href="http://b3log.org" target="_blank">
+                        <a href="https://b3log.org" target="_blank">
                             <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
                         </a>
                     </div>

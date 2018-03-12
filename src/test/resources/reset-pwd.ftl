@@ -21,7 +21,7 @@
     <div class="wrap">
         <div class="content">
             <div class="logo">
-                <a href="http://b3log.org" target="_blank">
+                <a href="https://b3log.org" target="_blank">
                     <img border="0" width="153" height="56" alt="B3log" title="B3log"
                          src="${staticServePath}/images/logo.jpg"/>
                 </a>
@@ -51,7 +51,7 @@
                 </div>
             </#if>
 
-                <a href="http://b3log.org" target="_blank">
+                <a href="https://b3log.org" target="_blank">
                     <img border="0" class="icon" alt="B3log" title="B3log" src="${staticServePath}/favicon.png"/>
                 </a>
             </div>
@@ -61,7 +61,7 @@
     <div class="footerWrapper">
         <div class="footer">
             &copy; ${year} - <a href="${servePath}">${blogTitle}</a><br/>
-            Powered by <a href="http://b3log.org" target="_blank">B3log 开源</a> • <a href="http://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
+            Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> • <a href="https://b3log.org/services/#solo" target="_blank">Solo</a> ${version}
         </div>
     </div>
 </div>

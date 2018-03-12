@@ -68,7 +68,7 @@ JDK 环境准备好之后[下载](https://pan.baidu.com/s/1dzk7SU)最新的 Solo
 * Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter`
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
 
-**更多细节请参考 [Solo 用户指南](https://hacpai.com/article/1492881378588)。另外，如果你想用 Solo 但又不想自己维护服务器，可以购买我们搭建好的 Solo 直接[使用](http://b3log.org/services/#solo)。**
+**更多细节请参考 [Solo 用户指南](https://hacpai.com/article/1492881378588)。另外，如果你想用 Solo 但又不想自己维护服务器，可以购买我们搭建好的 Solo 直接[使用](https://b3log.org/services/#solo)。**
 
 ## 文档
 
@@ -108,7 +108,7 @@ Solo 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https:/
 ## Terms
 
 * This software is open sourced under the Apache License 2.0
-* You can not get rid of the "Powered by [B3log 开源](http://b3log.org)" from any page, even which you made
+* You can not get rid of the "Powered by [B3log 开源](https://b3log.org)" from any page, even which you made
 * If you want to use this software for commercial purpose, please mail to support@liuyun.io for a commercial license request
 * Copyright &copy; b3log.org, all rights reserved
 
