@@ -36,9 +36,9 @@
 
     <developers>
         <developer>
-            <id>DL88250@gmail.com</id>
+            <id>d@b3log.org</id>
             <name>Liang Ding</name>
-            <email>DL88250@gmail.com</email>
+            <email>d@b3log.org</email>
             <url>http://88250.b3log.org</url>
             <roles>
                 <role>Lead</role>
@@ -50,9 +50,9 @@
         </developer>
 
         <developer>
-            <id>LLY219@gmail.com</id>
+            <id>v@b3log.org</id>
             <name>Liyuan Li</name>
-            <email>LLY219@gmail.com</email>
+            <email>v@b3log.org</email>
             <url>http://vanessa.b3log.org</url>
             <roles>
                 <role>Committer</role>

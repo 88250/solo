@@ -197,7 +197,7 @@ public class RepairProcessor {
 
             final Message msg = new MailService.Message();
             msg.setFrom(preference.getString(Option.ID_C_ADMIN_EMAIL));
-            msg.addRecipient("DL88250@gmail.com");
+            msg.addRecipient("d@b3log.org");
             msg.setSubject("Restore signs");
             msg.setHtmlBody(originalSigns + "<p>Admin email: " + preference.getString(Option.ID_C_ADMIN_EMAIL) + "</p>");
 

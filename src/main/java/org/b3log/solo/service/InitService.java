@@ -314,7 +314,7 @@ public class InitService {
 
         comment.put(Keys.OBJECT_ID, articleId);
         comment.put(Comment.COMMENT_NAME, "Daniel");
-        comment.put(Comment.COMMENT_EMAIL, "dl88250@gmail.com");
+        comment.put(Comment.COMMENT_EMAIL, "d@b3log.org");
         comment.put(Comment.COMMENT_URL, "https://hacpai.com/member/88250");
         comment.put(Comment.COMMENT_CONTENT, langPropsService.get("helloWorld.comment.content"));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
