@@ -35,52 +35,6 @@ admin.article = {
     // 自动保存间隔
     AUTOSAVETIME: 1000 * 60,
     /**
-     * 初始化上传组件
-     */
-    initUploadFile: function (id) {
-        var filename = "";
-        $('#' + id).fileupload({
-            multipart: true,
-            url: "https://up.qbox.me",
-            add: function (e, data) {
-                filename = data.files[0].name;
-
-                data.submit();
-
-                $('#' + id + ' span').text('uploading...');
-            },
-            formData: function (form) {
-                var data = form.serializeArray();
-                var ext = filename.substring(filename.lastIndexOf(".") + 1);
-
-                data.push({name: 'key', value: getUUID() + "." + ext});
-                data.push({name: 'token', value: qiniu.qiniuUploadToken});
-
-                return data;
-            },
-            done: function (e, data) {
-                $('#' + id + ' span').text('');
-                var qiniuKey = data.result.key;
-                if (!qiniuKey) {
-                    alert("Upload error, please check Qiniu configurations");
-
-                    return;
-                }
-
-                $('#' + id).after('<div>![' + data.files[0].name + '](http://'
-                        + qiniu.qiniuDomain + qiniuKey + ')</div>');
-            },
-            fail: function (e, data) {
-                $('#' + id + ' span').text("Upload error, please check Qiniu configurations [" + data.errorThrown + "]");
-            }
-        }).on('fileuploadprocessalways', function (e, data) {
-            var currentFile = data.files[data.index];
-            if (data.files.error && currentFile.error) {
-                alert(currentFile.error);
-            }
-        });
-    },
-    /**
      * @description 获取文章并把值塞入发布文章页面 
      * @param {String} id 文章 id
      * @param {Boolean} isArticle 文章或者草稿
@@ -498,8 +452,6 @@ admin.article = {
                 admin.article.add(false);
             }
         });
-
-        this.initUploadFile('articleUpload');
 
         // editor
         admin.editors.articleEditor = new SoloEditor({

@@ -19,12 +19,6 @@
         </div>
     </div>
     <div>
-        <label>${uploadFileLabel}</label>
-        <form id="articleUpload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" multiple=""/><span></span>
-        </form>
-    </div>
-    <div>
         <label>${tags1WithTips1Label}</label>
         <input id="tag" type="text"/>
     </div>

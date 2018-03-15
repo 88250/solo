@@ -925,10 +925,6 @@ table.form th {
 /* end comments */
 
 /* start article */
-#articleUpload input {
-    width: 170px;
-}
-
 .article__thumbnail {
     margin: 10px auto 20px;
     display: none;
