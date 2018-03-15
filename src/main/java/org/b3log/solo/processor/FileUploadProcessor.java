@@ -33,6 +33,7 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -52,7 +53,7 @@ import java.util.*;
  * File upload processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 11, 2018
+ * @version 1.0.0.1, Mar 15, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -140,12 +141,13 @@ public class FileUploadProcessor {
     /**
      * Uploads file.
      *
-     * @param req  the specified reuqest
-     * @param resp the specified response
+     * @param req the specified reuqest
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/upload", method = HTTPRequestMethod.POST)
-    public void uploadFile(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
+    public void uploadFile(final HTTPRequestContext context, final HttpServletRequest req) throws IOException {
+        context.renderJSON();
+
         final int maxSize = 1024 * 1024 * 100;
         final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
         parser.parseRequestStream(req.getInputStream(), "UTF-8");
@@ -166,7 +168,9 @@ public class FileUploadProcessor {
                 final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
                 qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
                 if (null == qiniu) {
-                    LOGGER.log(Level.ERROR, "Qiniu settings failed, please visit https://hacpai.com/article/1442418791213 for more details");
+                    final String msg = "Qiniu settings failed, please visit https://hacpai.com/article/1442418791213 for more details";
+                    LOGGER.log(Level.ERROR, msg);
+                    context.renderMsg(msg);
 
                     return;
                 }
@@ -175,7 +179,9 @@ public class FileUploadProcessor {
                 uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET), null, 3600 * 6, null);
                 uploadManager = new UploadManager(new Configuration());
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Qiniu settings failed, please visit https://hacpai.com/article/1442418791213 for more details", e);
+                final String msg = "Qiniu settings failed, please visit https://hacpai.com/article/1442418791213 for more details";
+                LOGGER.log(Level.ERROR, msg);
+                context.renderMsg(msg);
 
                 return;
             }
@@ -216,23 +222,15 @@ public class FileUploadProcessor {
                     succMap.put(originalName, Latkes.getServePath() + "/upload/" + fileName);
                 }
             } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Uploads file failed", e);
+                LOGGER.log(Level.WARN, "Uploads file failed", e);
 
                 errFiles.add(originalName);
             }
         }
 
-        final JSONObject result = new JSONObject();
         final JSONObject data = new JSONObject();
         data.put("errFiles", errFiles);
         data.put("succMap", succMap);
-        result.put("data", data);
-        result.put("code", 0);
-        result.put("msg", "");
-        resp.setContentType("application/json");
-        final PrintWriter writer = resp.getWriter();
-        writer.append(result.toString());
-        writer.flush();
-        writer.close();
+        context.renderJSONValue("data", data).renderTrueResult();
     }
 }
