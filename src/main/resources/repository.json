@@ -1,6 +1,6 @@
 {
-    "description": "Description of repository structures, for generation (DDL: http://en.wikipedia.org/wiki/Data_Definition_Language) of the relational database table and persistence validation.",
-    "version": "3.1.0.0, Sep 21, 2017",
+    "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
+    "version": "3.2.0.0, Mar 16, 2018",
     "authors": [
         "Liang Ding"
     ],
@@ -8,52 +8,63 @@
     "repositories": [
         {
             "name": "category",
+            "description": "分类表",
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 19
                 },
                 {
                     "name": "categoryTitle",
+                    "description": "分类标题",
                     "type": "String",
                     "length": 64
                 },
                 {
                     "name": "categoryURI",
+                    "description": "分类访问路径",
                     "type": "String",
                     "length": 32
                 },
                 {
                     "name": "categoryDescription",
+                    "description": "分类描述",
                     "type": "String",
                     "length": 512
                 },
                 {
                     "name": "categoryOrder",
+                    "description": "分类展现的排序",
                     "type": "int"
                 },
                 {
                     "name": "categoryTagCnt",
+                    "description": "分类下聚合的标签计数",
                     "type": "int"
                 }
             ]
         },
         {
             "name": "category_tag",
+            "description": "分类-标签关联表",
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 19
                 },
                 {
                     "name": "category_oId",
+                    "description": "分类 id",
                     "type": "String",
                     "length": 19
                 },
                 {
                     "name": "tag_oId",
+                    "description": "标签 id",
                     "type": "String",
                     "length": 19
                 }
@@ -61,41 +72,50 @@
         },
         {
             "name": "archiveDate",
+            "description": "存档日期表",
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "archiveDateArticleCount",
+                    "description": "存档日期文章计数，即某个月的文章总数",
                     "type": "int"
                 },
                 {
                     "name": "archiveDatePublishedArticleCount",
+                    "description": "存档日期已发布的文章计数，即某个月的已发布文章总数",
                     "type": "int"
                 },
                 {
                     "name": "archiveTime",
+                    "description": "存档日期时间，该月份第一天的时间戳",
                     "type": "long"
                 }
             ]
         },
         {
             "name": "archiveDate_article",
+            "description": "存档日期-文章关联表",
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "archiveDate_oId",
+                    "description": "存档日期 id",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "article_oId",
+                    "description": "文章 id",
                     "type": "String",
                     "length": 255
                 }
@@ -103,64 +123,77 @@
         },
         {
             "name": "comment",
+            "description": "评论表",
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "commentContent",
+                    "description": "评论内容",
                     "type": "String",
                     "length": 2000
                 },
                 {
                     "name": "commentDate",
+                    "description": "评论日期",
                     "type": "Date"
                 },
                 {
                     "name": "commentEmail",
+                    "description": "评论人邮箱",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "commentName",
+                    "description": "评论人名称",
                     "type": "String",
                     "length": 50
                 },
                 {
                     "name": "commentOnId",
+                    "description": "评论的文章/页面的 id",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "commentOnType",
+                    "description": "评论的是文章还是页面，文章：article 页面：page",
                     "type": "String",
                     "length": 20
                 },
                 {
                     "name": "commentSharpURL",
+                    "description": "评论访问路径，带 # 锚点",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "commentThumbnailURL",
+                    "description": "评论人头像图片地址",
                     "type": "String",
                     "length": 512
                 },
                 {
                     "name": "commentURL",
+                    "description": "评论人地址",
                     "type": "String",
                     "length": "255"
                 },
                 {
                     "name": "commentOriginalCommentId",
+                    "description": "评论回复时原始的评论 id，即父评论 id",
                     "type": "String",
                     "length": 255,
                     "nullable": true
                 },
                 {
                     "name": "commentOriginalCommentName",
+                    "description": "评论回复时原始的评论人名称，即父评论人名称",
                     "type": "String",
                     "length": 50,
                     "nullable": true
@@ -169,28 +202,34 @@
         },
         {
             "name": "link",
+            "description": "链接表",
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "linkAddress",
+                    "description": "链接地址",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "linkDescription",
+                    "description": "链接描述",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "linkOrder",
+                    "description": "链接展现的排序",
                     "type": "int"
                 },
                 {
                     "name": "linkTitle",
+                    "description": "链接标题",
                     "type": "String",
                     "length": 255
                 }
@@ -198,58 +237,69 @@
         },
         {
             "name": "page",
+            "description": "自定义页面表",
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "pageCommentCount",
+                    "description": "页面评论计数",
                     "type": "int"
                 },
                 {
                     "name": "pageContent",
+                    "description": "页面内容",
                     "type": "String",
                     "length": 1048576
                 },
                 {
                     "name": "pageOrder",
+                    "description": "页面展现排序",
                     "type": "int"
                 },
                 {
                     "name": "pagePermalink",
+                    "description": "页面访问路径",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "pageTitle",
+                    "description": "页面标题",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "pageCommentable",
+                    "description": "页面是否可评论",
                     "type": "boolean"
                 },
                 {
                     "name": "pageType",
+                    "description": "页面类型，自定义导航：link，普通页面：page",
                     "type": "String",
                     "length": 10
                 },
                 {
                     "name": "pageOpenTarget",
+                    "description": "页面打开方式",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "pageEditorType",
-                    "description": "Editor Type (TinyMCE, CodeMirror-Markdown, etc)",
+                    "description": "页面编辑器类型，目前仅支持 CodeMirror-Markdown",
                     "type": "String",
                     "length": 20,
                     "nullable": true
                 },
                 {
                     "name": "pageIcon",
+                    "description": "页面展示用小图标",
                     "type": "String",
                     "length": 255
                 }
@@ -257,34 +307,41 @@
         },
         {
             "name": "plugin",
+            "description": "插件表",
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "author",
+                    "description": "插件作者",
                     "type": "String",
                     "length": 2000
                 },
                 {
                     "name": "name",
+                    "description": "插件名称",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "status",
+                    "description": "插件状态，启用：ENABLED，禁用：DISABLED",
                     "type": "String",
                     "length": 10
                 },
                 {
                     "name": "version",
+                    "description": "插件版本",
                     "type": "String",
                     "length": 10
                 },
                 {
                     "name": "setting",
+                    "description": "插件配置，JSON 字符串",
                     "type": "String",
                     "length": 2000,
                     "nullable": true
@@ -293,9 +350,11 @@
         },
         {
             "name": "tag",
+            "description": "标签表",
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 255
                 },
@@ -319,6 +378,7 @@
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 255
                 },
@@ -339,6 +399,7 @@
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 255
                 },
@@ -387,6 +448,7 @@
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 255
                 },
@@ -480,6 +542,7 @@
             "keys": [
                 {
                     "name": "oId",
+                    "description": "主键",
                     "type": "String",
                     "length": 64
                 },
