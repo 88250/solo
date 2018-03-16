@@ -99,7 +99,7 @@
         },
         {
             "name": "archiveDate_article",
-            "description": "存档日期-文章关联表",
+            "description": "存档-文章关联表",
             "keys": [
                 {
                     "name": "oId",
@@ -139,7 +139,7 @@
                 },
                 {
                     "name": "commentDate",
-                    "description": "评论日期",
+                    "description": "评论时间",
                     "type": "Date"
                 },
                 {
@@ -174,13 +174,13 @@
                 },
                 {
                     "name": "commentThumbnailURL",
-                    "description": "评论人头像图片地址",
+                    "description": "评论人头像图片链接地址",
                     "type": "String",
                     "length": 512
                 },
                 {
                     "name": "commentURL",
-                    "description": "评论人地址",
+                    "description": "评论人链接地址",
                     "type": "String",
                     "length": "255"
                 },
@@ -275,7 +275,7 @@
                 },
                 {
                     "name": "pageCommentable",
-                    "description": "页面是否可评论",
+                    "description": "页面是否可以评论",
                     "type": "boolean"
                 },
                 {
@@ -360,14 +360,17 @@
                 },
                 {
                     "name": "tagPublishedRefCount",
+                    "description": "标签关联的已发布文章计数",
                     "type": "int"
                 },
                 {
                     "name": "tagReferenceCount",
+                    "description": "标签关联的文章计数",
                     "type": "int"
                 },
                 {
                     "name": "tagTitle",
+                    "description": "标签标题",
                     "type": "String",
                     "length": 255
                 }
@@ -375,6 +378,7 @@
         },
         {
             "name": "tag_article",
+            "description": "标签-文章关联表",
             "keys": [
                 {
                     "name": "oId",
@@ -384,11 +388,13 @@
                 },
                 {
                     "name": "article_oId",
+                    "description": "文章 id",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "tag_oId",
+                    "description": "标签 id",
                     "type": "String",
                     "length": 255
                 }
@@ -396,6 +402,7 @@
         },
         {
             "name": "user",
+            "description": "用户表",
             "keys": [
                 {
                     "name": "oId",
@@ -405,39 +412,47 @@
                 },
                 {
                     "name": "userEmail",
+                    "description": "用户邮箱",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "userName",
+                    "description": "用户名",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "userURL",
+                    "description": "用户链接地址",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "userPassword",
+                    "description": "用户密码，MD5",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "userRole",
+                    "description": "用户角色，管理员：adminRole，普通用户：defaultRole，访客用户：visitorRole",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "userArticleCount",
+                    "description": "用户文章计数",
                     "type": "int"
                 },
                 {
                     "name": "userPublishedArticleCount",
+                    "description": "用户已发布文章计数",
                     "type": "int"
                 },
                 {
                     "name": "userAvatar",
+                    "description": "用户头像图片链接地址",
                     "type": "String",
                     "length": 255
                 }
@@ -445,6 +460,7 @@
         },
         {
             "name": "article",
+            "description": "文章表",
             "keys": [
                 {
                     "name": "oId",
@@ -454,83 +470,100 @@
                 },
                 {
                     "name": "articleTitle",
+                    "description": "文章标题",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "articleAbstract",
+                    "description": "文章摘要",
                     "type": "String",
                     "length": 2000
                 },
                 {
                     "name": "articleTags",
+                    "description": "文章标签，英文逗号分隔",
                     "type": "String",
                     "length": 2000
                 },
                 {
                     "name": "articleAuthorEmail",
+                    "description": "文章作者邮箱",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "articleCommentCount",
+                    "description": "文章评论计数",
                     "type": "int"
                 },
                 {
                     "name": "articleViewCount",
+                    "description": "文章浏览计数",
                     "type": "int"
                 },
                 {
                     "name": "articleContent",
+                    "description": "文章正文内容",
                     "type": "String",
                     "length": 1048576
                 },
                 {
                     "name": "articlePermalink",
+                    "description": "文章访问路径",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "articleHadBeenPublished",
+                    "description": "文章是否已经发布过",
                     "type": "boolean"
                 },
                 {
                     "name": "articleIsPublished",
+                    "description": "文章是否处于已发布状态",
                     "type": "boolean"
                 },
                 {
                     "name": "articlePutTop",
+                    "description": "文章是否置顶",
                     "type": "boolean"
                 },
                 {
                     "name": "articleCreateDate",
+                    "description": "文章创建时间",
                     "type": "Date"
                 },
                 {
                     "name": "articleUpdateDate",
+                    "description": "文章更新时间",
                     "type": "Date"
                 },
                 {
                     "name": "articleRandomDouble",
+                    "description": "文章随机数，用于快速查询随机文章列表",
                     "type": "double"
                 },
                 {
                     "name": "articleSignId",
+                    "description": "文章关联的签名档 id",
                     "type": "String",
                     "length": 255
                 },
                 {
                     "name": "articleCommentable",
+                    "description": "文章是否可以评论",
                     "type": "boolean"
                 },
                 {
                     "name": "articleViewPwd",
+                    "description": "文章浏览密码，留空为不设置访问密码",
                     "type": "String",
                     "legnth": 255
                 },
                 {
                     "name": "articleEditorType",
-                    "description": "Editor Type (TinyMCE, CodeMirror-Markdown, etc)",
+                    "description": "文章编辑器类型，目前仅支持 CodeMirror-Markdown",
                     "type": "String",
                     "length": 20,
                     "nullable": true
@@ -539,6 +572,7 @@
         },
         {
             "name": "option",
+            "description": "配置项",
             "keys": [
                 {
                     "name": "oId",
@@ -548,11 +582,13 @@
                 },
                 {
                     "name": "optionValue",
+                    "description": "配置项值",
                     "type": "String",
                     "length": 10240
                 },
                 {
                     "name": "optionCategory",
+                    "description": "配置项分类",
                     "type": "String",
                     "legnth": 20
                 }
