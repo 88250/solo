@@ -55,7 +55,7 @@ import java.util.Date;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.13, Mar 3, 2018
+ * @version 1.1.1.14, Mar 19, 2018
  * @since 0.5.5
  */
 @RequestProcessor
@@ -114,7 +114,7 @@ public class CommentReceiver {
     private StatisticMgmtService statisticMgmtService;
 
     /**
-     * Adds an article with the specified request.
+     * Adds a comment with the specified request.
      * <p>
      * <p>
      * Renders the response with a json object, for example,
