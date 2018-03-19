@@ -116,7 +116,6 @@ public class CommentReceiver {
     /**
      * Adds a comment with the specified request.
      * <p>
-     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
