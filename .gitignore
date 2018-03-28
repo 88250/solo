@@ -4,7 +4,7 @@
 !.gitignore
 !pom.xml
 !CHANGE_LOGS.html
-!README.md
+!README*.md
 !TERMS.md
 !LICENSE
 !nbactions.xml
