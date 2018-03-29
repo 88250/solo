@@ -82,31 +82,31 @@ After the JDK environment is ready, [download](https://pan.baidu.com/s/1dzk7SU) 
 
 ## Stack
 
-* 后端框架：为了尽量降低服务器的内存占用，顺带尝试[一些技术构想](https://hacpai.com/article/1403847528022)，我们开发了 [Latke](https://github.com/b3log/latke) 框架，并在此基础上构建了 [Solo](https://github.com/b3log/solo)、[Sym](https://github.com/b3log/symphony)、[小薇](https://github.com/b3log/xiaov)等产品。这些产品反过来也会对框架提出需求，这是一个相互促进，共同演化的良性发展过程
-* 前端框架：Solo 的前端部分为了降低复杂度， 只依赖于 jQuery、编辑器、代码高亮等组件。管理后台的 SPA 框架、皮肤响应式 UI 都是我们自己实现的
+* Backend framework: In order to reduce the memory footprint of the server as much as possible and try some technical [ideas](https://hacpai.com/article/1403847528022) along the way, we have developed the [Latke](https://github.com/b3log/latke) framework and built on this basis [Solo](https://github.com/b3log/solo), [Sym](https://github.com/b3log/symphony), [XiaoV](https://github.com/b3log/xiaov) and other products. These products will in turn put demands on the framework. This is a mutually beneficial and co-evolutionary benign development process
+* Frontend framework: In order to reduce the complexity, Solo's front-end part only depends on components such as jQuery, editor, and code highlighting. The SPA framework and skin responsive UI of the management background are all realized by us.
 
-**没有最好的轮子，只有最适合的轮子。** BTW，如果你想研究如何制造 Web 轮子，Solo 是一个不错的入口。
+**There is no best wheel, only the most suitable wheel.** BTW, if you want to study how to make web wheels, Solo is a good entry.
 
-另外，为了保证 Solo 的质量，我们也做了很多努力，包括：
+In addition, in order to ensure the quality of Solo, we have also made a lot of efforts, including:
 
-* 统一规范的编码风格
-* 完善的 javadoc 注释
-* 严格的分支、缺陷追踪管理
-* 不断完善的测试用例、持续集成
+* Uniform code style
+* Complete javadoc comments
+* Strict branch and defect tracking management
+* Continuously improved test cases, continuous integration
 
 ## Contributions
 
 ### Authors
 
-Solo 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/solo/graphs/contributors)看到。
+Solo's main authors are [Daniel](https://github.com/88250) and [Vanessa](https://github.com/Vanessa219). All contributors can be seen [here](https://github.com/b3log/solo/graphs/contributors).
 
-我们非常期待你加入到这个项目中，无论是使用反馈还是代码补丁，都是对 Solo 一份满满的爱 :heart:
+We are very much looking forward to your joining the project. Whether it is using feedback or code patches, it is a complete love for Solo :heart:
 
 ### Discussion
 
-* 到 Solo 官方[讨论区](https://hacpai.com/tag/Solo)发帖（推荐做法）
-* 来一发 [issue](https://github.com/b3log/solo/issues/new)
-* 加入 Solo 开发支持 Q 群 242561391
+* Post to Solo's official [forum](https://hacpai.com/tag/Solo)
+* New [issues](https://github.com/b3log/solo/issues/new)
+* Join Solo Development Support Q Group 242561391
 
 ## Terms
 
@@ -117,28 +117,28 @@ Solo 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https:/
 
 ## Credits
 
-Solo 的诞生离不开以下开源项目：
+The birth of Solo was inseparable from the following open source projects:
 
-* [jQuery](https://github.com/jquery/jquery)：使用最广泛的 JavaScript 工具库
-* [CodeMirror](https://github.com/codemirror/CodeMirror)：Markdown 编辑器内核
-* [SyntaxHighlighter](https://github.com/syntaxhighlighter/syntaxhighlighter)：一个代码高亮库
-* [Highlight.js](https://github.com/isagalaev/highlight.js)：又一个代码高亮库
-* [emojify.js](https://github.com/Ranks/emojify.js)：前端 Emoji 处理库
-* [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
-* [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
-* [marked](https://github.com/chjj/marked)：NodeJS Markdown 处理库
-* [Apache Commons](http://commons.apache.org)：Java 工具库集
-* [emoji-java](https://github.com/vdurmont/emoji-java)：Java Emoji 处理库
-* [FreeMarker](http://freemarker.org)：好用的 Java 模版引擎
-* [H2](https://github.com/h2database/h2database)：Java SQL 数据库
-* [Jetty](https://github.com/eclipse/jetty.project)：轻量级的 Java Web 容器
-* [Latke](https://github.com/b3log/latke)：简洁高效的 Java Web 框架 
-* [IntelliJ IDEA](https://www.jetbrains.com/idea)：全宇宙暂时排名第二的 IDE
+* [jQuery](https://github.com/jquery/jquery): The most widely used JavaScript tool library
+* [CodeMirror](https://github.com/codemirror/CodeMirror): Markdown editor kernel
+* [SyntaxHighlighter](https://github.com/syntaxhighlighter/syntaxhighlighter): A code highlighting library
+* [Highlight.js](https://github.com/isagalaev/highlight.js): Another code highlighted library
+* [emojify.js](https://github.com/Ranks/emojify.js): Frontend emoji processing library
+* [jsoup](https://github.com/jhy/jsoup): Java HTML parser
+* [flexmark](https://github.com/vsch/flexmark-java): Java markdown processor
+* [marked](https://github.com/chjj/marked): NodeJS markdown processor
+* [Apache Commons](http://commons.apache.org): Java tool library
+* [emoji-java](https://github.com/vdurmont/emoji-java): Java emoji library
+* [FreeMarker](http://freemarker.org): Java template engine
+* [H2](https://github.com/h2database/h2database): Java SQL database
+* [Jetty](https://github.com/eclipse/jetty.project): Lightweight Java Web container
+* [Latke](https://github.com/b3log/latke): Simple and efficient Java Web framework
+* [IntelliJ IDEA](https://www.jetbrains.com/idea): wonderful IDE
 
 ----
 
 <p align = "center">
-<strong>专业、简约、稳定、极速的 Java 博客</strong>
+<strong>Professional, simple, stable, fast Java blog</strong>
 <br><br>
 <img src="https://cloud.githubusercontent.com/assets/873584/26024667/c031e40a-3808-11e7-9176-f2c9af01bd64.png">
 </p>
