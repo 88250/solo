@@ -25,7 +25,7 @@ The first version of Solo was released in 2010 and has been very mature so far. 
 You should use every function Solo has deposited so far. We will not add features that only "20%" users use. Only in this way can we keep the blog system pure and light enough to bring a simple user experience.
 
 * Markdown / Emoji
-* [Polymeric classification](https://github.com/b3log/solo/issues/12256) / 标签
+* [Polymeric classification](https://github.com/b3log/solo/issues/12256) / Tags
 * Custom navigation (pages, links)
 * Drafts
 * Comment/Reply Email Notification
