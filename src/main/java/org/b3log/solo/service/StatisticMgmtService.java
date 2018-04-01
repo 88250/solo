@@ -42,12 +42,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Statistic management service.
- * <p>
- * <b>Note</b>: The {@link #onlineVisitorCount online visitor counting} is NOT cluster-safe.
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.0, Nov 27, 2017
+ * @version 2.0.1.1, Apr 1, 2018
  * @since 0.5.0
  */
 @Service
@@ -408,6 +405,10 @@ public class StatisticMgmtService {
      * @param request the specified request
      */
     public void onlineVisitorCount(final HttpServletRequest request) {
+        if (Requests.searchEngineBotRequest(request)) {
+            return;
+        }
+
         final String remoteAddr = Requests.getRemoteAddr(request);
 
         LOGGER.log(Level.DEBUG, "Current request [IP={0}]", remoteAddr);
