@@ -1,11 +1,24 @@
 FROM maven:3
-MAINTAINER Liang Ding <d@b3log.org>
+LABEL maintainer="Tomaer Ma<i@tomaer.com>"
 
-ADD . /solo
-WORKDIR /solo
-RUN mvn install
-WORKDIR /solo/target/solo
+WORKDIR /opt/b3log/solo
+ADD . /tmp
+
+RUN cd /tmp && mvn install && mv target/solo/* /opt/b3log/solo/ \
+    && mkdir -p /opt/b3log/backup/ && mkdir -p /opt/b3log/tmp/ \
+    && rm -rf /opt/b3log/solo/WEB-INF/classes/local.properties /opt/b3log/solo/WEB-INF/classes/mail.properties /opt/b3log/solo/WEB-INF/classes/latke.properties \
+    && rm -rf /tmp/* && rm -rf ~/.m2
+
+ADD ./src/main/resources/docker/entrypoint.sh $WORKDIR
+ADD ./src/main/resources/docker/local.properties.h2 /opt/b3log/tmp
+ADD ./src/main/resources/docker/local.properties.mysql /opt/b3log/tmp
+ADD ./src/main/resources/docker/mail.properties /opt/b3log/tmp
+ADD ./src/main/resources/docker/latke.properties /opt/b3log/tmp
+
+RUN chmod 777 /opt/b3log/solo/entrypoint.sh
+
+VOLUME ["/opt/b3log/backup/"]
 
 EXPOSE 8080
 
-CMD ["/bin/sh", "-c", "java -cp WEB-INF/lib/*:WEB-INF/classes org.b3log.solo.Starter"]
+ENTRYPOINT [ "/opt/b3log/solo/entrypoint.sh" ]
