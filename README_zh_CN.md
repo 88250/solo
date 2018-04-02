@@ -72,7 +72,7 @@ JDK 环境准备好之后[下载](https://pan.baidu.com/s/1dzk7SU)最新的 Solo
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
 
 用`Docker`运行 ?  
-`docker run --name solo -e SERVER_NAME=b3log.org -p 8080:8080 -v /path/backup:/opt/b3log/backup/ -d 88250/solo`
+`docker run --privileged --name solo --restart=unless-stopped -e SERVER_NAME=b3log.org -p 8080:8080 -v /path/backup:/opt/b3log/backup/ -d 88250/solo`
 
 | 环境变量 | 描述 | 可选值 | 默认值 |
 | :------------- | :------------- | :------------- | :------------- |

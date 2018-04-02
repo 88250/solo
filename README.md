@@ -72,7 +72,7 @@ After the JDK environment is ready, [download](https://pan.baidu.com/s/1dzk7SU) 
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
 
 Run with docker?  
-`docker run --name solo -e SERVER_NAME=b3log.org -p 8080:8080 -v /path/backup:/opt/b3log/backup/ -d 88250/solo:2.7.0`
+`docker run --privileged --name solo --restart=unless-stopped -e SERVER_NAME=b3log.org -p 8080:8080 -v /path/backup:/opt/b3log/backup/ -d 88250/solo`
 
 | Environment | Description | Optional Value | Default Value |
 | :------------- | :------------- | :------------- | :------------- |
