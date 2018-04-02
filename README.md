@@ -70,6 +70,7 @@ After the JDK environment is ready, [download](https://pan.baidu.com/s/1dzk7SU) 
 
 * Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter`
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
+* Docker: `docker run --name solo -e SERVER_NAME=b3log.org -p 8080:8080 -v /path/backup:/opt/b3log/backup/ -d 88250/solo:2.7.0`
 
 **See the [Solo User Guide](https://hacpai.com/article/1492881378588) for more details. In addition, if you want to use Solo but do not want to maintain the server yourself, you can purchase our built Solo and [use it directly](https://b3log.org/services/#solo).**
 
