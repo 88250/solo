@@ -71,10 +71,11 @@ After the JDK environment is ready, [download](https://pan.baidu.com/s/1dzk7SU) 
 * Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter`
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
 
-Run with docker? `docker run --name solo -e SERVER_NAME=b3log.org -p 8080:8080 -v /path/backup:/opt/b3log/backup/ -d 88250/solo:2.7.0`
+Run with docker?  
+`docker run --name solo -e SERVER_NAME=b3log.org -p 8080:8080 -v /path/backup:/opt/b3log/backup/ -d 88250/solo:2.7.0`
 
 | Environment | Description | Optional Value | Default Value |
-| ------------- | ------------- | ------------- | ------------- |
+| :------------- | :------------- | :------------- | :------------- |
 | DATABASE_TYPE | Database Type, H2 or MySQL | h2, mysql | h2 |
 | DATABASE_HOST | Database Server host or ip,Only for MySQL |  | localhost |
 | DATABASE_PORT | Database Port,Only for MySQL |   | 3306 |
