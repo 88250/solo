@@ -71,25 +71,6 @@ JDK 环境准备好之后[下载](https://pan.baidu.com/s/1dzk7SU)最新的 Solo
 * Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter`
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
 
-用`Docker`运行 ?  
-`docker run --privileged --name solo --restart=unless-stopped -e SERVER_NAME=b3log.org -p 8080:8080 -v /path/backup:/opt/b3log/backup/ -d 88250/solo`
-
-| 环境变量 | 描述 | 可选值 | 默认值 |
-| :------------- | :------------- | :------------- | :------------- |
-| DATABASE_TYPE | 数据库类型, H2 或 MySQL | h2, mysql | h2 |
-| DATABASE_HOST | 数据库地址或IP,针对MySQL |  | localhost |
-| DATABASE_PORT | 数据库端口,针对MySQL |   | 3306 |
-| DATABASE_NAME | 数据库名称,针对MySQL |   | solo |
-| DATABASE_USERNAME | 数据库用户名,针对MySQL |   | root |
-| DATABASE_PASSWORD | 数据库密码,针对MySQL |   |   |
-| SERVER_SCHMEA | Server schema | https,http | http |
-| SERVER_NAME | 服务器名称或域名 |   | localhost |
-| EMAIL_ADDRESS | 电子邮件地址 |   |   |
-| EMAIL_PASSWORD | 电子邮件密码 |   |   |
-| SMTP_HOST | SMTP 服务器地址 |   | smtp.gmail.com |
-| SMTP_PROT | SMTP 服务器端口 |   | 587 |
-| SMTP_SOCKETFACTORY_PORT | SMTP Socket Factory Port |   | 465 |
-
 **更多细节请参考 [Solo 用户指南](https://hacpai.com/article/1492881378588)。另外，如果你想用 Solo 但又不想自己维护服务器，可以购买我们搭建好的 Solo 直接[使用](https://b3log.org/services/#solo)。**
 
 ## 文档
