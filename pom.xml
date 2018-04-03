@@ -246,6 +246,7 @@
                 <excludes>
                     <exclude>etc/</exclude>
                     <exclude>lib/</exclude>
+                    <exclude>docker/</exclude>
                 </excludes>
             </resource>
         </resources>
