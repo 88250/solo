@@ -71,28 +71,9 @@ After the JDK environment is ready, [download](https://pan.baidu.com/s/1dzk7SU) 
 * Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter`
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
 
-Run with docker?  
+Run with docker?
+
 `docker volume create solo_datas && docker run --privileged --name solo --restart=unless-stopped -p 8080:8080 -v solo_datas:/opt/b3log/backup/ -d 88250/solo`
-
-Recommend using mysql, if you used h2, database will auto save in docker volume, you can backup plugins & skins same as docker volume, Restore through backup after upgrade  
-`docker exec -it solo cp -r /opt/b3log/solo/plugins /opt/b3log/backup/ && docker exec -it solo cp -r /opt/b3log/solo/skins /opt/b3log/backup/`
-
-| Environment | Description | Optional Value | Default Value |
-| :------------- | :------------- | :------------- | :------------- |
-| DATABASE_TYPE | Database Type, H2 or MySQL | h2, mysql | h2 |
-| DATABASE_HOST | Database Server host or ip,Only for MySQL |  | localhost |
-| DATABASE_PORT | Database Port,Only for MySQL |   | 3306 |
-| DATABASE_NAME | Database Name,Only for MySQL |   | solo |
-| DATABASE_USERNAME | Database Username,Only for MySQL |   | root |
-| DATABASE_PASSWORD | Database Password,Only for MySQL |   |   |
-| SERVER_SCHMEA | Server schema | https,http | http |
-| SERVER_NAME | Server Name or Domain Name |   | localhost |
-| EMAIL_ADDRESS | Email Address |   |   |
-| EMAIL_PASSWORD | Email Password |   |   |
-| SMTP_HOST | SMTP Server Host |   | smtp.gmail.com |
-| SMTP_PROT | SMTP Server Port |   | 587 |
-| SMTP_SOCKETFACTORY_PORT | SMTP Socket Factory Port |   | 465 |
-
 
 **See the [Solo User Guide](https://hacpai.com/article/1492881378588) for more details. In addition, if you want to use Solo but do not want to maintain the server yourself, you can purchase our built Solo and [use it directly](https://b3log.org/services/#solo).**
 
