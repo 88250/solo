@@ -37,7 +37,7 @@ import java.net.URI;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.11, Mar 11, 2018
+ * @version 1.1.0.12, Apr 5, 2018
  * @since 1.2.0
  */
 public final class Starter {
@@ -145,10 +145,8 @@ public final class Starter {
         if (null != runtimeMode) {
             Latkes.setRuntimeMode(Latkes.RuntimeMode.valueOf(runtimeMode));
         }
-        Latkes.setScanPath("org.b3log.solo"); // For Latke IoC
 
         logger.info("Standalone mode, see https://github.com/b3log/solo/issues/12037 for more details.");
-        Latkes.initRuntimeEnv();
 
         String webappDirLocation = "src/main/webapp/"; // POM structure in dev env
         final File file = new File(webappDirLocation);
