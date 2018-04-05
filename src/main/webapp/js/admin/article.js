@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.0, Feb 25, 2018
+ * @version 1.5.0.1, Apr 5, 2018
  */
 admin.article = {
     currentEditorType: '',
@@ -430,7 +430,7 @@ admin.article = {
                     height: 160,
                     buttonText: Label.selectLabel,
                     data: tags
-                }).innerWidth($("#tag").parent().width() - 68);
+                });
 
                 $("#loadMsg").text("");
             }

@@ -40,6 +40,7 @@
         "tagsLabel": "${tagsLabel}",
         "authorLabel": "${authorLabel}",
         "createDateLabel": "${createDateLabel}",
+        "dateLabel": "${dateLabel}",
         "previousPageLabel": "${previousPageLabel}",
         "pageLabel": "${pageLabel}",
         "nextPagePabel": "${nextPagePabel}",

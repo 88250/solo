@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.0, Feb 24, 2018
+ * @version 1.1.2.1, Apr 5, 2018
  * @since 2.0.0
  */
 
@@ -90,7 +90,7 @@ admin.categoryList = {
                     height: 160,
                     buttonText: Label.selectLabel,
                     data: tags
-                }).width($("#categoryTags").parent().width() - 94);
+                });
 
                 $("#loadMsg").text("");
             }

@@ -8,7 +8,7 @@
                 <img width="128" src="${staticServePath}/images/logo.png" alt="Solo" title="Solo" />
             </a>
         </div>
-        <div class="left content-reset" style="width: 73%">
+        <div class="left content-reset" style="margin-left: 20px;">
             <div id="aboutLatest" class="about-margin left">
                 ${checkingVersionLabel}
             </div>

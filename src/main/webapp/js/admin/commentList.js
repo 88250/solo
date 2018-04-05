@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Feb 23, 2013
+ * @version 1.0.1.6, Apr 5, 2018
  */
 
 /* comment-list 相关操作 */
@@ -43,7 +43,7 @@ admin.commentList = {
             width: 230,
             style: "padding-left: 12px;"
         }, {
-            text: Label.createDateLabel,
+            text: Label.dateLabel,
             index: "date",
             width: 90,
             style: "padding-left: 12px;"

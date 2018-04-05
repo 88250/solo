@@ -141,7 +141,7 @@
                 </td>
             </tr>
             <tr>
-                <th width="234px">
+                <th>
                     <label for="localeString">${localeString1Label}</label>
                 </th>
                 <td>
@@ -152,7 +152,7 @@
                 </td>
             </tr>
             <tr>
-                <th width="234px">
+                <th>
                     <label for="timeZoneId">${timeZoneId1Label}</label>
                 </th>
                 <td>
