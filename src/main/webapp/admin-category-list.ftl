@@ -37,10 +37,10 @@
             </td>
         </tr>
         <tr>
-            <th>
+            <th
                 <label for="categoryTags">${tags1Label}</label>
             </th>
-            <td>
+            <td class="fn__flex">
                 <input id="categoryTags" type="text"/>
             </td>
         </tr>

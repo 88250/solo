@@ -17,7 +17,7 @@
  * base style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.4.3, Feb 24, 2018
+ * @version 1.1.0.0, Apr 5, 2018
 */
 
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dd, dl, ol {
@@ -143,6 +143,15 @@ button:hover,.button:hover {
 
 .fn-clear:after {
     clear: both;
+}
+
+.fn__flex {
+    display: flex;
+}
+
+.fn__flex1 {
+    flex: 1;
+    min-width: 1px;
 }
 
 .none {

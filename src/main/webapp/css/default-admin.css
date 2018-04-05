@@ -17,7 +17,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.5.0.0, Feb 25, 2018
+* @version 2.5.0.0, Apr 5, 2018
 */
 
 /* start resset */
@@ -25,7 +25,6 @@ body, input, textarea {
     font-family: "Helvetica Neue","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB","Microsoft Yahei",sans-serif;;
 }
 html, body {
-    min-width: 1024px;
     color: #767676;
     background: #f1f2f7;
     font-size: 13px;
@@ -1027,7 +1026,7 @@ button#submitArticle:hover {
 /* start about */
 .about-logo {
     float: left;
-    margin: 62px 36px 62px 24px;
+    margin: 20px 0 0 20px;
 }
 
 .about-margin {
@@ -1053,7 +1052,7 @@ button#submitArticle:hover {
  * @version 1.0.0.7, Oct 29, 2011
 */
 .completed-input {
-    margin: 2px 12px 0 0;
+    margin: 0 12px 0 0;
 }
 .completed-panel {
     background-color: #fff;

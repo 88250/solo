@@ -23,11 +23,6 @@
                     <td>
                         <input id="replayEmailTemplateTitle" type="text" />
                     </td>
-                    <td rowspan="2" valign="top" width="260px">
-                        <div class="marginLeft12">
-                           ${replayEmailExplanationLabel}
-                        </div>
-                    </td>
                 </tr>
                 <tr>
                     <th valign="top">
@@ -44,6 +39,9 @@
                 </tr>
             </tbody>
         </table>
+        <div class="content-reset">
+        ${replayEmailExplanationLabel}
+        </div>
     </div>
     <div id="tabOthersPanel_other" class="none">
         <button class="margin12" onclick="admin.others.removeUnusedTags();">${removeUnusedTagsLabel}</button>

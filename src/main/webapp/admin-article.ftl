@@ -20,7 +20,9 @@
     </div>
     <div>
         <label>${tags1WithTips1Label}</label>
-        <input id="tag" type="text"/>
+        <div class="fn__flex">
+            <input id="tag" type="text"/>
+        </div>
     </div>
     <div class="comment-content">
         <label>${abstract1Label}</label>
@@ -28,27 +30,26 @@
             <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
         </div>
     </div>
-    <div>
-        <div class="left">
-            <label for="permalink">${permalink1Label}</label>
-            <input id="permalink" type="text" style="width: 416px;" />
+    <div class="fn__flex">
+        <div class="fn__flex fn__flex1" style="align-items: center">
+            <label for="permalink" style="margin-bottom: 0">${permalink1Label}</label>
+            <input id="permalink" class="fn__flex1" type="text" style="margin: 0 12px 0 6px;" />
         </div>
         <div class="right">
             <label for="viewPwd">${articleViewPwd1Label}</label>
             <input id="viewPwd" type="text" style="width: 156px" />
         </div>
-        <div class="clear"></div>
     </div>
     <div>
         <span class="signs">
             <label>${sign1Label}</label>
-            <button style="margin-left: 0px;" id="articleSign1" class="selected">${signLabel} 1</button>
-            <button id="articleSign2">${signLabel} 2</button>
-            <button id="articleSign3">${signLabel} 3</button>
+            <button style="margin-left: 0px;" id="articleSign1" class="selected">${signLabel}1</button>
+            <button id="articleSign2">${signLabel}2</button>
+            <button id="articleSign3">${signLabel}3</button>
             <button id="articleSign0">${noSignLabel}</button>
         </span>
         <div class="right">
-            <label for="articleCommentable">${allowComment1Label}</label>
+            <label for="articleCommentable" style="margin: 13px 0 0 0">${allowComment1Label}</label>
             <input type="checkbox" id="articleCommentable" checked="checked" />
             <span id="postToCommunityPanel" class="none">
                 <label for="postToCommunity">
