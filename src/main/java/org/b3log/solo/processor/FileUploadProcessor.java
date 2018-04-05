@@ -53,7 +53,7 @@ import java.util.*;
  * File upload processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Mar 15, 2018
+ * @version 1.0.0.2, Apr 5, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -131,11 +131,10 @@ public class FileUploadProcessor {
             return;
         }
 
-        final OutputStream output = resp.getOutputStream();
-        IOUtils.write(data, output);
-        output.flush();
-
-        IOUtils.closeQuietly(output);
+        try (final OutputStream output = resp.getOutputStream()) {
+            IOUtils.write(data, output);
+            output.flush();
+        }
     }
 
     /**
@@ -215,10 +214,10 @@ public class FileUploadProcessor {
                     uploadManager.put(file.getFileInputStream(), fileName, uploadToken, null, contentType);
                     succMap.put(originalName, qiniu.optString(Option.ID_C_QINIU_DOMAIN) + "/" + fileName);
                 } else {
-                    final OutputStream output = new FileOutputStream(Solos.UPLOAD_DIR_PATH + fileName);
-                    IOUtils.copy(file.getFileInputStream(), output);
-                    IOUtils.closeQuietly(file.getFileInputStream());
-                    IOUtils.closeQuietly(output);
+                    try (final OutputStream output = new FileOutputStream(Solos.UPLOAD_DIR_PATH + fileName);
+                         final InputStream input = file.getFileInputStream()) {
+                        IOUtils.copy(input, output);
+                    }
                     succMap.put(originalName, Latkes.getServePath() + "/upload/" + fileName);
                 }
             } catch (final Exception e) {

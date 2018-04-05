@@ -72,7 +72,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.1, Nov 20, 2017
+ * @version 1.7.0.2, Apr 5, 2018
  * @since 0.4.1
  */
 @RequestProcessor
@@ -399,16 +399,15 @@ public class AdminConsole {
 
         try {
             final byte[] data = sql.getBytes("UTF-8");
-
-            final OutputStream output = new FileOutputStream(localFile);
-            IOUtils.write(data, output);
-            IOUtils.closeQuietly(output);
+            try (final OutputStream output = new FileOutputStream(localFile)) {
+                IOUtils.write(data, output);
+            }
 
             final File zipFile = ZipUtil.zip(localFile);
-
-            final FileInputStream inputStream = new FileInputStream(zipFile);
-            final byte[] zipData = IOUtils.toByteArray(inputStream);
-            IOUtils.closeQuietly(inputStream);
+            byte[] zipData;
+            try (final FileInputStream inputStream = new FileInputStream(zipFile)) {
+                zipData = IOUtils.toByteArray(inputStream);
+            }
 
             response.setContentType("application/zip");
             final String fileName = "solo-sql-" + date + ".zip";
@@ -455,24 +454,19 @@ public class AdminConsole {
             final JSONObject json = exportService.getJSONs();
             final byte[] data = json.toString(4).getBytes("UTF-8");
 
-            final OutputStream output = new FileOutputStream(localFile);
-            IOUtils.write(data, output);
-            IOUtils.closeQuietly(output);
+            try (final OutputStream output = new FileOutputStream(localFile)) {
+                IOUtils.write(data, output);
+            }
 
-            final File zipFile = ZipUtil.zip(localFile);
-
-            final FileInputStream inputStream = new FileInputStream(zipFile);
-            final byte[] zipData = IOUtils.toByteArray(inputStream);
-            IOUtils.closeQuietly(inputStream);
-
-            response.setContentType("application/zip");
-            final String fileName = "solo-json-" + date + ".zip";
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-
-            final ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(zipData);
-            outputStream.flush();
-            outputStream.close();
+            try (final FileInputStream inputStream = new FileInputStream(ZipUtil.zip(localFile));
+                 final ServletOutputStream outputStream = response.getOutputStream()) {
+                final byte[] zipData = IOUtils.toByteArray(inputStream);
+                response.setContentType("application/zip");
+                final String fileName = "solo-json-" + date + ".zip";
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+                outputStream.write(zipData);
+                outputStream.flush();
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
             context.renderJSON().renderMsg("Export failed, please check log");
@@ -530,19 +524,18 @@ public class AdminConsole {
             exportHexoMd(drafts, draftDir.getPath());
 
             final File zipFile = ZipUtil.zip(localFile);
+            byte[] zipData;
+            try (final FileInputStream inputStream = new FileInputStream(zipFile)) {
+                zipData = IOUtils.toByteArray(inputStream);
+                response.setContentType("application/zip");
+                final String fileName = "solo-hexo-" + date + ".zip";
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+            }
 
-            final FileInputStream inputStream = new FileInputStream(zipFile);
-            final byte[] zipData = IOUtils.toByteArray(inputStream);
-            IOUtils.closeQuietly(inputStream);
-
-            response.setContentType("application/zip");
-            final String fileName = "solo-hexo-" + date + ".zip";
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-
-            final ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(zipData);
-            outputStream.flush();
-            outputStream.close();
+            try (final ServletOutputStream outputStream = response.getOutputStream()) {
+                outputStream.write(zipData);
+                outputStream.flush();
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
             context.renderJSON().renderMsg("Export failed, please check log");

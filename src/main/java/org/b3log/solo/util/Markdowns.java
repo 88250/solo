@@ -52,7 +52,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.0.7, Jan 13, 2018
+ * @version 2.3.0.8, Apr 5, 2018
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -114,13 +114,14 @@ public final class Markdowns {
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
 
-            final OutputStream outputStream = conn.getOutputStream();
-            IOUtils.write("Solo 大法好", outputStream, "UTF-8");
-            IOUtils.closeQuietly(outputStream);
+            try (final OutputStream outputStream = conn.getOutputStream()) {
+                IOUtils.write("Solo 大法好", outputStream, "UTF-8");
+            }
 
-            final InputStream inputStream = conn.getInputStream();
-            final String html = IOUtils.toString(inputStream, "UTF-8");
-            IOUtils.closeQuietly(inputStream);
+            String html;
+            try (final InputStream inputStream = conn.getInputStream()) {
+                html = IOUtils.toString(inputStream, "UTF-8");
+            }
 
             conn.disconnect();
 
@@ -232,17 +233,15 @@ public final class Markdowns {
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
 
-        final OutputStream outputStream = conn.getOutputStream();
-        IOUtils.write(markdownText, outputStream, "UTF-8");
-        IOUtils.closeQuietly(outputStream);
-
-        final InputStream inputStream = conn.getInputStream();
-        final String html = IOUtils.toString(inputStream, "UTF-8");
-        IOUtils.closeQuietly(inputStream);
+        String ret;
+        try (final OutputStream outputStream = conn.getOutputStream(); final InputStream inputStream = conn.getInputStream()) {
+            IOUtils.write(markdownText, outputStream, "UTF-8");
+            ret = IOUtils.toString(inputStream, "UTF-8");
+        }
 
         //conn.disconnect();
 
-        return html;
+        return ret;
     }
 
     /**
