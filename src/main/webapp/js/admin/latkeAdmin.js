@@ -17,7 +17,7 @@
  * @description index for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.3.2, Mar 31, 2017
+ * @version 1.2.0.0, Apr 5, 2018
  */
 var Admin = function () {
     this.register = {};
@@ -35,6 +35,15 @@ $.extend(Admin.prototype, {
      */
     logout: function () {
         window.location.href = latkeConfig.servePath + "/logout?goto=" + latkeConfig.servePath;
+    },
+    toggleMenu: function () {
+      if ($('#tabs').css('left') === '-240px') {
+          $('#tabs').css('left', 0);
+          $('.tabs__bg').show();
+      } else {
+          $('#tabs').css('left', '-240px');
+          $('.tabs__bg').hide();
+      }
     },
     /**
      * @description 清除提示
@@ -680,55 +689,78 @@ Util.initUploadFile = function (obj) {
     pasteZone: obj.pasteZone,
     dropZone: obj.pasteZone,
     url: latkeConfig.servePath + "/upload",
-    paramName: "file",
+    paramName: "file[]",
     add: function (e, data) {
       data.submit();
     },
     submit: function (e, data) {
       if (obj.editor.replaceRange) {
+        data.files.forEach(function (item) {
+          if (item.type.indexOf('image') > -1) {
+            obj.uploadingLabel += '![' + item.name.replace(/\W/g, '')  + '](Uploading...)';
+          } else {
+            obj.uploadingLabel += '[' + item.name.replace(/\W/g, '')  + '](Uploading...)';
+          }
+        });
         var cursor = obj.editor.getCursor();
         obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
-      } else {
-        $('#' + obj.id + ' input').prop('disabled', false);
       }
     },
     done: function (e, data) {
-      var qiniuKey = data.result.key;
-      if (!qiniuKey) {
-        alert("上传错误，请检查七牛配置或本地上传配置");
+      var cursor = obj.editor.getCursor();
+      if (!data.result.sc) {
+        var msg = '';
+        data.files.forEach(function (item) {
+          if (item.type.indexOf('image') > -1) {
+            msg += '![' + item.name.replace(/\W/g, '') + '](' + data.result.msg + ')';
+          } else {
+            msg += '[' + item.name.replace(/\W/g, '') + '](' + data.result.msg + ')';
+          }
+        });
 
+        obj.editor.replaceRange(msg,
+          CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
         return;
       }
 
-      if (obj.editor.replaceRange) {
-        var cursor = obj.editor.getCursor();
-
-        if (isImg) {
-          obj.editor.replaceRange('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
-            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
-        } else {
-          obj.editor.replaceRange('[' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n',
-            CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
-        }
-      } else {
-        obj.editor.$it.val('![' + filename + '](' + obj.qiniuDomain + '/' + qiniuKey + ') \n\n');
-        $('#' + obj.id + ' input').prop('disabled', false);
-      }
+      var resultMsg = '';
+      Object.keys(data.result.data.succMap).forEach(function (key) {
+        var isImage = false;
+        data.files.forEach(function (item) {
+          if (item.name.replace(/\W/g, '') === key) {
+            isImage = item.type.indexOf('image') > -1
+          }
+        });
+        resultMsg += (isImage ? '![' : '[') +
+          key.replace(/\W/g, '') + '](' + data.result.data.succMap[key] + ') \n\n';
+      });
+      data.result.data.errFiles.forEach(function (name) {
+        var isImage = false;
+        data.files.forEach(function (item) {
+          if (item.name.replace(/\W/g, '') === key) {
+            isImage = item.type.indexOf('image') > -1
+          }
+        });
+        resultMsg += (isImage ? '![' : '[') +
+          '[' +  name.replace(/\W/g, '')+ '](Error)';
+      });
+      obj.editor.replaceRange(resultMsg,
+        CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
     },
     fail: function (e, data) {
-      alert("Upload error: " + data.errorThrown);
       if (obj.editor.replaceRange) {
+        var msg = '';
+        data.files.forEach(function (item) {
+          if (item.type.indexOf('image') > -1) {
+            msg += '![' + item.name.replace(/\W/g, '') + '](' + data.errorThrown + ')';
+          } else {
+            msg += '[' + item.name.replace(/\W/g, '') + '](' + data.errorThrown + ')';
+          }
+        });
         var cursor = obj.editor.getCursor();
-        obj.editor.replaceRange('',
+        obj.editor.replaceRange('[' + item.name.replace(/\W/g, '') + '](' + data.errorThrown + ')',
           CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
-      } else {
-        $('#' + obj.id + ' input').prop('disabled', false);
       }
-    }
-  }).on('fileuploadprocessalways', function (e, data) {
-    var currentFile = data.files[data.index];
-    if (data.files.error && currentFile.error) {
-      alert(currentFile.error);
     }
   });
 }
@@ -821,7 +853,7 @@ admin.editors.CodeMirror = {
       "pasteZone": $('#' + conf.id).next().next(),
       "qiniuUploadToken": qiniu.qiniuUploadToken,
       "editor": commentEditor.codemirror,
-      "uploadingLabel": 'uploading...',
+      "uploadingLabel": '',
       "qiniuDomain": '//' + qiniu.qiniuDomain
     });
 
@@ -1012,7 +1044,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.0, Feb 25, 2018
+ * @version 1.5.0.1, Apr 5, 2018
  */
 admin.article = {
     currentEditorType: '',
@@ -1424,7 +1456,7 @@ admin.article = {
                     height: 160,
                     buttonText: Label.selectLabel,
                     data: tags
-                }).innerWidth($("#tag").parent().width() - 68);
+                });
 
                 $("#loadMsg").text("");
             }
@@ -1810,7 +1842,7 @@ admin.comment = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.5, Aug 23, 2016
+ * @version 1.0.2.6, Apr 5, 2018
  */
 
 /* article-list 相关操作 */
@@ -1842,7 +1874,7 @@ admin.articleList = {
             index: "articleViewCount",
             style: "padding-left: 12px;"
         }, {
-            text: Label.createDateLabel,
+            text: Label.dateLabel,
             index: "date",
             width: 90,
             style: "padding-left: 12px;"
@@ -1959,7 +1991,7 @@ admin.register["article-list"] =  {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Feb 23, 2013
+ * @version 1.0.1.5, Apr 5, 2018
  */
 
 /* draft-list 相关操作 */
@@ -1991,7 +2023,7 @@ admin.draftList = {
             index: "articleViewCount",
             style: "padding-left: 12px;"
         }, {
-            text: Label.createDateLabel,
+            text: Label.dateLabel,
             index: "date",
             width: 90,
             style: "padding-left: 12px;"
@@ -2072,7 +2104,7 @@ admin.register["draft-list"] =  {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.6, Sep 21, 2017
+ * @version 1.2.3.7, Apr 5, 2018
  */
 
 /* page-list 相关操作 */
@@ -2104,7 +2136,7 @@ admin.pageList = {
                 style: "padding-left: 12px;",
                 text: Label.permalinkLabel,
                 index: "pagePermalink",
-                minWidth: 300
+                minWidth: 100
             }, {
                 style: "padding-left: 12px;",
                 text: Label.openMethodLabel,
@@ -2715,7 +2747,7 @@ admin.register.others = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Apr 9, 2017
+ * @version 1.1.1.5, Apr 5, 2018
  */
 
 /* link-list 相关操作 */
@@ -2757,7 +2789,7 @@ admin.linkList = {
         
         $("#updateLink").dialog({
             width: 700,
-            height: 210,
+            height: 290,
             "modal": true,
             "hideFooter": true
         });
@@ -3365,7 +3397,7 @@ admin.register["preference"] = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, May 28, 2013
+ * @version 1.0.1.5, Apr 5, 2018
  */
 
 /* plugin-list 相关操作 */
@@ -3389,7 +3421,7 @@ admin.pluginList = {
                 style: "padding-left: 12px;",
                 text: Label.statusLabel,
                 index: "status",
-                minWidth: 180
+                minWidth: 80
             }, {
                 style: "padding-left: 12px;",
                 text: Label.authorLabel,
@@ -3541,7 +3573,7 @@ admin.register["plugin-list"] = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.7, Oct 17, 2015
+ * @version 1.1.1.8, Apr 5, 2018
  */
 
 /* user-list 相关操作 */
@@ -3582,7 +3614,7 @@ admin.userList = {
 
         $("#userUpdate").dialog({
             width: 700,
-            height: 300,
+            height: 360,
             "modal": true,
             "hideFooter": true
         });
@@ -3902,7 +3934,7 @@ admin.register["user-list"] = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.0, Feb 24, 2018
+ * @version 1.1.2.1, Apr 5, 2018
  * @since 2.0.0
  */
 
@@ -3944,7 +3976,7 @@ admin.categoryList = {
 
         $("#categoryUpdate").dialog({
             width: 700,
-            height: 260,
+            height: 358,
             "modal": true,
             "hideFooter": true
         });
@@ -3974,7 +4006,7 @@ admin.categoryList = {
                     height: 160,
                     buttonText: Label.selectLabel,
                     data: tags
-                }).width($("#categoryTags").parent().width() - 94);
+                });
 
                 $("#loadMsg").text("");
             }
@@ -4269,7 +4301,7 @@ admin.register["category-list"] = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Feb 23, 2013
+ * @version 1.0.1.6, Apr 5, 2018
  */
 
 /* comment-list 相关操作 */
@@ -4286,17 +4318,16 @@ admin.commentList = {
         this.tablePagination.buildTable([{
             text: Label.commentContentLabel,
             index: "content",
-            minWidth: 300,
+            minWidth: 174,
             style: "padding-left: 12px;"
         }, {
             text: Label.authorLabel,
             index: "title",
-            width: 230,
             style: "padding-left: 12px;"
         }, {
-            text: Label.createDateLabel,
+            text: Label.dateLabel,
             index: "date",
-            width: 90,
+            width: 60,
             style: "padding-left: 12px;"
         }]);
         this.tablePagination.initPagination();
