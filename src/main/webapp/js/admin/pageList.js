@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.6, Sep 21, 2017
+ * @version 1.2.3.7, Apr 5, 2018
  */
 
 /* page-list 相关操作 */
@@ -50,7 +50,7 @@ admin.pageList = {
                 style: "padding-left: 12px;",
                 text: Label.permalinkLabel,
                 index: "pagePermalink",
-                minWidth: 300
+                minWidth: 100
             }, {
                 style: "padding-left: 12px;",
                 text: Label.openMethodLabel,

@@ -26,7 +26,7 @@
             <option value="_parent">${targetParentLabel}</option>
             <option value="_top">${targetTopLabel}</option>
         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-        <label>${type1Label}</label>
+        <label class="page-list__label">${type1Label}</label>
         <button data-type="link" class="selected fn-type">${pageLinkLabel}</button>
         <button data-type="page" class="fn-type">${pageLabel}</button>
     </div>

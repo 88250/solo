@@ -3,102 +3,32 @@
     <div id="categoryPagination" class="margin12 right"></div>
 </div>
 <div class="clear"></div>
-<table class="form" width="100%" cellpadding="0px" cellspacing="9px">
-    <thead>
-        <tr>
-            <th style="text-align: left" colspan="2">
-                ${addCategoryLabel}
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th width="48px">
-                <label for="categoryName">${linkTitle1Label}</label>
-            </th>
-            <td>
-                <input id="categoryName" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <label for="categoryURI">URI：</label>
-            </th>
-            <td>
-                <input id="categoryURI" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <label for="categoryDesc">${linkDescription1Label}</label>
-            </th>
-            <td>
-                <input id="categoryDesc" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th
-                <label for="categoryTags">${tags1Label}</label>
-            </th>
-            <td class="fn__flex">
-                <input id="categoryTags" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
-                <button onclick="admin.categoryList.add();">${saveLabel}</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<div id="categoryUpdate" class="none">
-    <table class="form" width="100%" cellpadding="0px" cellspacing="9px">
-        <thead>
-            <tr>
-                <th style="text-align: left" colspan="2">
-                    ${updateCategoryLabel}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th width="48px">
-                    <label for="categoryNameUpdate">${linkTitle1Label}</label>
-                </th>
-                <td>
-                    <input id="categoryNameUpdate" type="text"/>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="categoryURIUpdate">URI：</label>
-                </th>
-                <td>
-                    <input id="categoryURIUpdate" type="text"/>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="categoryDescUpdate">${linkDescription1Label}</label>
-                </th>
-                <td>
-                    <input id="categoryDescUpdate" type="text"/>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    <label for="categoryTagsUpdate">${tags1Label}</label>
-                </th>
-                <td>
-                    <input id="categoryTagsUpdate" type="text"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="right">
-                    <button onclick="admin.categoryList.update();">${updateLabel}</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="form form__no-table">
+${addCategoryLabel}
+    <label for="categoryName">${linkTitle1Label}</label>
+    <input id="categoryName" type="text"/>
+    <label for="categoryURI">URI：</label>
+    <input id="categoryURI" type="text"/>
+    <label for="categoryDesc">${linkDescription1Label}</label>
+    <input id="categoryDesc" type="text"/>
+    <label for="categoryTags">${tags1Label}</label>
+    <span class="tag__select">
+        <input id="categoryTags" type="text"/>
+    </span><br>
+    <button onclick="admin.categoryList.add();" class="right">${saveLabel}</button>
+    <div class="clear"></div>
+</div>
+<div id="categoryUpdate" class="none form__no-table form">
+${updateCategoryLabel}
+    <label for="categoryNameUpdate">${linkTitle1Label}</label>
+    <input id="categoryNameUpdate" type="text"/>
+    <label for="categoryURIUpdate">URI：</label>
+    <input id="categoryURIUpdate" type="text"/>
+    <label for="categoryDescUpdate">${linkDescription1Label}</label>
+    <input id="categoryDescUpdate" type="text"/>
+    <label for="categoryTagsUpdate">${tags1Label}</label>
+    <input id="categoryTagsUpdate" type="text"/> <br><br>
+    <button onclick="admin.categoryList.update();" class="right">${updateLabel}</button>
+    <div class="clear"></div>
 </div>
 ${plugins}

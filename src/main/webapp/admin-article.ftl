@@ -4,12 +4,16 @@
         <input id="title" type="text"/>
     </div>
     <div>
-            <label>${content1Label}</label>
-            <div class="right">
-                <label for="articleThumbnail">${useTumbnailLabel}</label>
-                <input type="checkbox" id="articleThumbnail" onclick="$('.article__thumbnail').slideToggle()" />
-            </div>
-        <div class="article__thumbnail fn-clear">
+        <label>${content1Label}</label>
+        <div class="right">
+            <label for="articleThumbnail" style="margin-bottom: 0">
+                ${useTumbnailLabel}
+                <input type="checkbox" style="vertical-align: middle;"
+                       id="articleThumbnail" onclick="$('.article__thumbnail').slideToggle()" />
+            </label>
+        </div>
+        <div class="clear"></div>
+        <div class="article__thumbnail">
             <div class="thumbnail__img"></div>
             <button id="articleThumbnailBtn">${chageLabel}</button>
         </div>
@@ -20,7 +24,7 @@
     </div>
     <div>
         <label>${tags1WithTips1Label}</label>
-        <div class="fn__flex">
+        <div class="tag__select">
             <input id="tag" type="text"/>
         </div>
     </div>
@@ -32,10 +36,10 @@
     </div>
     <div class="fn__flex">
         <div class="fn__flex fn__flex1" style="align-items: center">
-            <label for="permalink" style="margin-bottom: 0">${permalink1Label}</label>
+            <label for="permalink" class="permalink__label" style="margin-bottom: 0">${permalink1Label}</label>
             <input id="permalink" class="fn__flex1" type="text" style="margin: 0 12px 0 6px;" />
         </div>
-        <div class="right">
+        <div class="right viewpwd__panel">
             <label for="viewPwd">${articleViewPwd1Label}</label>
             <input id="viewPwd" type="text" style="width: 156px" />
         </div>
@@ -48,7 +52,7 @@
             <button id="articleSign3">${signLabel}3</button>
             <button id="articleSign0">${noSignLabel}</button>
         </span>
-        <div class="right">
+        <div class="right article-commentable__panel">
             <label for="articleCommentable" style="margin: 13px 0 0 0">${allowComment1Label}</label>
             <input type="checkbox" id="articleCommentable" checked="checked" />
             <span id="postToCommunityPanel" class="none">

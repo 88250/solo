@@ -24,7 +24,8 @@
                 <a href="${servePath}" target="_blank" class="hover">
                     Solo
                 </a>
-               
+                <span class="icon-unordered-list top__menu none"
+                      onclick="admin.toggleMenu()"></span>
                 <span class="right"> 
                     <a href="${servePath}" title='${indexLabel}'>
                         <div class="avatar" style="background-image: url(${gravatar})"></div>
@@ -126,6 +127,7 @@
                     </li>
                 </ul>
             </div>
+            <div class="tabs__bg" onclick="admin.toggleMenu()"></div>
             <div id="tabsPanel">
                 <div id="tabsPanel_main" class="none"></div>
                 <div id="tabsPanel_article" class="none"></div>

@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Feb 23, 2013
+ * @version 1.0.1.5, Apr 5, 2018
  */
 
 /* draft-list 相关操作 */
@@ -50,7 +50,7 @@ admin.draftList = {
             index: "articleViewCount",
             style: "padding-left: 12px;"
         }, {
-            text: Label.createDateLabel,
+            text: Label.dateLabel,
             index: "date",
             width: 90,
             style: "padding-left: 12px;"

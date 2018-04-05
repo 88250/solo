@@ -18,7 +18,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Apr 9, 2017
+ * @version 1.1.1.5, Apr 5, 2018
  */
 
 /* link-list 相关操作 */
@@ -60,7 +60,7 @@ admin.linkList = {
         
         $("#updateLink").dialog({
             width: 700,
-            height: 210,
+            height: 290,
             "modal": true,
             "hideFooter": true
         });

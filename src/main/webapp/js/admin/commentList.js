@@ -35,17 +35,16 @@ admin.commentList = {
         this.tablePagination.buildTable([{
             text: Label.commentContentLabel,
             index: "content",
-            minWidth: 300,
+            minWidth: 174,
             style: "padding-left: 12px;"
         }, {
             text: Label.authorLabel,
             index: "title",
-            width: 230,
             style: "padding-left: 12px;"
         }, {
             text: Label.dateLabel,
             index: "date",
-            width: 90,
+            width: 60,
             style: "padding-left: 12px;"
         }]);
         this.tablePagination.initPagination();

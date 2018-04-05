@@ -17,7 +17,7 @@
  * @description index for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.3.2, Mar 31, 2017
+ * @version 1.2.0.0, Apr 5, 2018
  */
 var Admin = function () {
     this.register = {};
@@ -35,6 +35,15 @@ $.extend(Admin.prototype, {
      */
     logout: function () {
         window.location.href = latkeConfig.servePath + "/logout?goto=" + latkeConfig.servePath;
+    },
+    toggleMenu: function () {
+      if ($('#tabs').css('left') === '-240px') {
+          $('#tabs').css('left', 0);
+          $('.tabs__bg').show();
+      } else {
+          $('#tabs').css('left', '-240px');
+          $('.tabs__bg').hide();
+      }
     },
     /**
      * @description 清除提示

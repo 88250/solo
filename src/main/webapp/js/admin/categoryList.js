@@ -60,7 +60,7 @@ admin.categoryList = {
 
         $("#categoryUpdate").dialog({
             width: 700,
-            height: 260,
+            height: 358,
             "modal": true,
             "hideFooter": true
         });
