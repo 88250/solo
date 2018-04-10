@@ -53,7 +53,7 @@
                 <use xlink:href="#icon-enter"></use>
             </svg> ${loginLabel}
         </a>
-        <a rel="alternate" href="${servePath}/blog-articles-rss.do" rel="section">
+        <a rel="alternate" href="${servePath}/register" rel="section">
             <svg>
                 <use xlink:href="#icon-register"></use>
             </svg>
