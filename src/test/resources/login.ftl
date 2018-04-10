@@ -34,7 +34,7 @@
                             </label>
                             <input id="userEmail" tabindex="1" />
                             <label for="userPassword">
-                                ${userPasswordLabel} <a href="/forgot">(${forgotLabel})</a>
+                                ${userPasswordLabel} <a href="${servePath}/forgot">(${forgotLabel})</a>
                             </label>
                             <input type="password" id="userPassword" tabindex="2" />
                             <button onclick='login();'>${loginLabel}</button>
