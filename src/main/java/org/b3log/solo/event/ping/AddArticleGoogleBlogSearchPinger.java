@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.event.ping;
 
-
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
@@ -36,20 +35,17 @@ import org.json.JSONObject;
 import java.net.URL;
 import java.net.URLEncoder;
 
-
 /**
- * This listener is responsible for pinging <a href="http://blogsearch.google.com">
- * Google Blog Search Service</a> asynchronously while adding an article.
+ * This listener is responsible for pinging <a href="http://blogsearch.google.com">Google Blog Search Service</a>
+ * asynchronously while adding an article.
  *
- * <p>
- *   <li>
- *     <a href="http://www.google.com/help/blogsearch/pinging_API.html">
- *     About Google Blog Search Pinging Service API</a>
- *   </li>
- * </p>
+ * <li>
+ * <a href="http://www.google.com/help/blogsearch/pinging_API.html">
+ * About Google Blog Search Pinging Service API</a>
+ * </li>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Nov 20, 2015
+ * @version 1.0.0.5, Apr 15, 2018
  * @see UpdateArticleGoogleBlogSearchPinger
  * @since 0.3.1
  */
@@ -92,25 +88,26 @@ public final class AddArticleGoogleBlogSearchPinger extends AbstractEventListene
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
 
             if (Latkes.getServePath().contains("localhost")) {
-                LOGGER.log(Level.TRACE,
-                    "Solo runs on local server, so should not ping " + "Google Blog Search Service for the article[title={0}]",
+                LOGGER.log(Level.TRACE, "Solo runs on local server, so should not ping " +
+                                "Google Blog Search Service for the article[title={0}]",
                         article.getString(Article.ARTICLE_TITLE));
                 return;
             }
 
             final String articlePermalink = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
-            final String spec = "http://blogsearch.google.com/ping?name=" + URLEncoder.encode(blogTitle, "UTF-8") + "&url="
-                + URLEncoder.encode(Latkes.getServePath(), "UTF-8") + "&changesURL=" + URLEncoder.encode(articlePermalink, "UTF-8");
+            final String spec = "http://blogsearch.google.com/ping?name=" + URLEncoder.encode(blogTitle, "UTF-8") +
+                    "&url=" + URLEncoder.encode(Latkes.getServePath(), "UTF-8") +
+                    "&changesURL=" + URLEncoder.encode(articlePermalink, "UTF-8");
 
-            LOGGER.log(Level.DEBUG, "Request Google Blog Search Service API[{0}] while adding an " + "article[title=" + articleTitle + "]",
-                spec);
+            LOGGER.log(Level.DEBUG, "Request Google Blog Search Service API[{0}] while adding an "
+                    + "article[title=" + articleTitle + "]", spec);
             final HTTPRequest request = new HTTPRequest();
-
             request.setURL(new URL(spec));
 
             URL_FETCH_SERVICE.fetchAsync(request);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Ping Google Blog Search Service fail while adding an article[title=" + articleTitle + "]", e);
+            LOGGER.log(Level.ERROR, "Ping Google Blog Search Service fail while adding an article[title="
+                    + articleTitle + "]", e);
         }
     }
 }

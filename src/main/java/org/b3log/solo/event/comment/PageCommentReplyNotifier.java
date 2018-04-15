@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.4, Jul 20, 2017
+ * @version 1.0.2.5, Apr 15, 2018
  * @since 0.3.1
  */
 public final class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> {
@@ -78,7 +78,6 @@ public final class PageCommentReplyNotifier extends AbstractEventListener<JSONOb
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
-
         final CommentRepository commentRepository = beanManager.getReference(CommentRepositoryImpl.class);
 
         try {

@@ -43,7 +43,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.wanglay.com">Lei Wang</a>
- * @version 1.2.2.8, Jul 20, 2017
+ * @version 1.2.2.9, Apr 15, 2018
  * @since 0.3.1
  */
 public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObject> {
@@ -64,11 +64,9 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
         final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
         final JSONObject article = eventData.optJSONObject(Article.ARTICLE);
 
-        LOGGER.log(Level.DEBUG,
-                "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 event.getType(), eventData, ArticleCommentReplyNotifier.class.getName());
         final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
-
         if (Strings.isEmptyOrNull(originalCommentId)) {
             LOGGER.log(Level.DEBUG, "This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
 
@@ -87,7 +85,6 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
-
         final CommentRepository commentRepository = beanManager.getReference(CommentRepositoryImpl.class);
 
         try {

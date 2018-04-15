@@ -21,7 +21,6 @@ import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -41,7 +40,7 @@ import java.util.Date;
  * Generates some dummy articles for development testing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Jul 9, 2017
+ * @version 1.0.0.6, Apr 15, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -67,13 +66,12 @@ public class ArticleGenerator {
     /**
      * Generates some dummy articles with the specified context.
      *
-     * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/dev/articles/gen/*", method = HTTPRequestMethod.GET)
-    public void genArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    public void genArticles(final HttpServletRequest request, final HttpServletResponse response)
             throws IOException {
         if (Latkes.RuntimeMode.DEVELOPMENT != Latkes.getRuntimeMode()) {
             LOGGER.log(Level.WARN, "Article generation just for development mode, " + "current runtime mode is [{0}]",
