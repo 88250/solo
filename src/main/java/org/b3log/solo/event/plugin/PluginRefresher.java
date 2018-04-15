@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.event.plugin;
 
-
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
@@ -32,10 +31,9 @@ import org.b3log.solo.service.PluginMgmtService;
 
 import java.util.List;
 
-
 /**
  * This listener is responsible for refreshing plugin after every loaded.
- * 
+ *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Nov 28, 2011
  * @since 0.3.1
@@ -56,12 +54,10 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final PluginRepository pluginRepository = beanManager.getReference(PluginRepositoryImpl.class);
-        
+
         final Transaction transaction = pluginRepository.beginTransaction();
-        
         try {
             final PluginMgmtService pluginMgmtService = beanManager.getReference(PluginMgmtService.class);
-            
             pluginMgmtService.refresh(plugins);
             transaction.commit();
         } catch (final Exception e) {
@@ -76,7 +72,7 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
 
     /**
      * Gets the event type {@linkplain PluginManager#PLUGIN_LOADED_EVENT}.
-     * 
+     *
      * @return event type
      */
     @Override
