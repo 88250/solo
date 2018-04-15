@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.filter;
 
-
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -44,16 +43,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
 /**
  * Article/Page permalink filter.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.7, Jan 8, 2013
+ * @see org.b3log.solo.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.HTTPRequestContext,
+ * javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+ * @see org.b3log.solo.processor.PageProcessor#showPage(org.b3log.latke.servlet.HTTPRequestContext)
  * @since 0.3.1
- * @see org.b3log.solo.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.HTTPRequestContext, 
- * javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse) 
- * @see org.b3log.solo.processor.PageProcessor#showPage(org.b3log.latke.servlet.HTTPRequestContext) 
  */
 public final class PermalinkFilter implements Filter {
 
@@ -63,20 +61,21 @@ public final class PermalinkFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(PermalinkFilter.class);
 
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {}
+    public void init(final FilterConfig filterConfig) throws ServletException {
+    }
 
     /**
      * Tries to dispatch request to article processor.
      *
-     * @param request the specified request
+     * @param request  the specified request
      * @param response the specified response
-     * @param chain filter chain
-     * @throws IOException io exception
+     * @param chain    filter chain
+     * @throws IOException      io exception
      * @throws ServletException servlet exception
      */
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
-        throws IOException, ServletException {
+            throws IOException, ServletException {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
@@ -103,10 +102,9 @@ public final class PermalinkFilter implements Filter {
             final ArticleRepository articleRepository = beanManager.getReference(ArticleRepositoryImpl.class);
 
             article = articleRepository.getByPermalink(permalink);
-            
             if (null == article) {
                 final PageRepository pageRepository = beanManager.getReference(PageRepositoryImpl.class);
-         
+
                 page = pageRepository.getByPermalink(permalink);
             }
 
@@ -129,7 +127,7 @@ public final class PermalinkFilter implements Filter {
         if (null != article && articleQueryService.needViewPwd(httpServletRequest, article)) {
             try {
                 httpServletResponse.sendRedirect(
-                    Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
+                        Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
                 return;
             } catch (final Exception e) {
                 httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -141,20 +139,20 @@ public final class PermalinkFilter implements Filter {
     }
 
     /**
-     * Dispatches the specified request to the specified article or page 
+     * Dispatches the specified request to the specified article or page
      * processor with the specified response.
-     * 
-     * @param request the specified request
+     *
+     * @param request  the specified request
      * @param response the specified response
-     * @param article the specified article
-     * @param page the specified page
+     * @param article  the specified article
+     * @param page     the specified page
      * @throws ServletException servlet exception
-     * @throws IOException io exception
-     * @see HTTPRequestDispatcher#dispatch(org.b3log.latke.servlet.HTTPRequestContext) 
+     * @throws IOException      io exception
+     * @see DispatcherServlet#result(HTTPRequestContext)
      */
     private void dispatchToArticleOrPageProcessor(final ServletRequest request, final ServletResponse response,
-        final JSONObject article, final JSONObject page)
-        throws ServletException, IOException {
+                                                  final JSONObject article, final JSONObject page)
+            throws ServletException, IOException {
         final HTTPRequestContext context = new HTTPRequestContext();
 
         context.setRequest((HttpServletRequest) request);
@@ -171,7 +169,6 @@ public final class PermalinkFilter implements Filter {
         request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HTTPRequestMethod.GET.name());
 
         final HttpControl httpControl = new HttpControl(DispatcherServlet.SYS_HANDLER.iterator(), context);
-
         try {
             httpControl.nextHandler();
         } catch (final Exception e) {
@@ -182,5 +179,6 @@ public final class PermalinkFilter implements Filter {
     }
 
     @Override
-    public void destroy() {}
+    public void destroy() {
+    }
 }

@@ -78,8 +78,8 @@ public class ListHandler extends AbstractEventListener<JSONObject> {
 
             element.before("<span id='" + id + "'></span>");
 
-            listBuilder.append("<li class='b3-solo-list-").append(tagName).append("'><a href='#").append(id).append("'>").append(text).
-                    append("</a></li>");
+            listBuilder.append("<li class='b3-solo-list-").append(tagName).append("'><a href='#").append(id).append("'>").
+                    append(text).append("</a></li>");
         }
         listBuilder.append("</ul>");
 

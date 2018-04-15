@@ -59,10 +59,10 @@ public final class InitCheckFilter implements Filter {
     /**
      * If Solo has not been initialized, so redirects to /init.
      *
-     * @param request the specified request
+     * @param request  the specified request
      * @param response the specified response
-     * @param chain filter chain
-     * @throws IOException io exception
+     * @param chain    filter chain
+     * @throws IOException      io exception
      * @throws ServletException servlet exception
      */
     @Override
