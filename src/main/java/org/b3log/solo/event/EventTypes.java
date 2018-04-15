@@ -15,7 +15,6 @@
  */
 package org.b3log.solo.event;
 
-
 /**
  * Event types.
  *
@@ -39,7 +38,7 @@ public final class EventTypes {
      * Indicates a remove article event.
      */
     public static final String REMOVE_ARTICLE = "Remove Article";
-    
+
     /**
      * Indicates a before render article event.
      */
@@ -68,5 +67,6 @@ public final class EventTypes {
     /**
      * Private default constructor.
      */
-    private EventTypes() {}
+    private EventTypes() {
+    }
 }
