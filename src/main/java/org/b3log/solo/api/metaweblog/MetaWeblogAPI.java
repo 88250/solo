@@ -46,7 +46,6 @@ import org.jsoup.Jsoup;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -67,7 +66,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.15, Jul 19, 2017
+ * @version 1.0.0.16, Apr 15, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -192,18 +191,15 @@ public class MetaWeblogAPI {
     /**
      * MetaWeblog requests processing.
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param request the specified http servlet request
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/apis/metaweblog", method = HTTPRequestMethod.POST)
-    public void metaWeblog(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void metaWeblog(final HttpServletRequest request, final HTTPRequestContext context) {
         final TextXMLRenderer renderer = new TextXMLRenderer();
-
         context.setRenderer(renderer);
 
-        String responseContent = null;
-
+        String responseContent;
         try {
             final ServletInputStream inputStream = request.getInputStream();
             final String xml = IOUtils.toString(inputStream, "UTF-8");
@@ -222,13 +218,11 @@ public class MetaWeblogAPI {
 
             final String userEmail = params.getJSONObject(INDEX_USER_EMAIL).getJSONObject("value").getString("string");
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
-
             if (null == user) {
                 throw new Exception("No user[email=" + userEmail + "]");
             }
 
             final String userPwd = params.getJSONObject(INDEX_USER_PWD).getJSONObject("value").getString("string");
-
             if (!user.getString(User.USER_PASSWORD).equals(MD5.hash(userPwd))) {
                 throw new Exception("Wrong password");
             }
@@ -239,46 +233,36 @@ public class MetaWeblogAPI {
                 responseContent = getCategories();
             } else if (METHOD_GET_RECENT_POSTS.equals(methodName)) {
                 final int numOfPosts = params.getJSONObject(INDEX_NUM_OF_POSTS).getJSONObject("value").getInt("int");
-
                 responseContent = getRecentPosts(numOfPosts);
             } else if (METHOD_NEW_POST.equals(methodName)) {
                 final JSONObject article = parsetPost(methodCall);
-
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
                 addArticle(article);
 
                 final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><string>").append(article.getString(Keys.OBJECT_ID)).append(
                         "</string></value></param></params></methodResponse>");
-
                 responseContent = stringBuilder.toString();
             } else if (METHOD_GET_POST.equals(methodName)) {
                 final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").getString("string");
-
                 responseContent = getPost(postId);
             } else if (METHOD_EDIT_POST.equals(methodName)) {
                 final JSONObject article = parsetPost(methodCall);
                 final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").getString("string");
-
                 article.put(Keys.OBJECT_ID, postId);
-
                 article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
                 final JSONObject updateArticleRequest = new JSONObject();
-
                 updateArticleRequest.put(Article.ARTICLE, article);
                 articleMgmtService.updateArticle(updateArticleRequest);
 
                 final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><string>").append(postId).append(
                         "</string></value></param></params></methodResponse>");
-
                 responseContent = stringBuilder.toString();
             } else if (METHOD_DELETE_POST.equals(methodName)) {
                 final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").getString("string");
-
                 articleMgmtService.removeArticle(postId);
 
                 final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><boolean>").append(true).append(
                         "</boolean></value></param></params></methodResponse>");
-
                 responseContent = stringBuilder.toString();
             } else {
                 throw new UnsupportedOperationException("Unsupported method[name=" + methodName + "]");
@@ -320,7 +304,6 @@ public class MetaWeblogAPI {
      */
     private void addArticle(final JSONObject article) throws Exception {
         final Transaction transaction = articleRepository.beginTransaction();
-
         try {
             articleMgmtService.addArticleInternal(article);
             transaction.commit();
@@ -346,11 +329,9 @@ public class MetaWeblogAPI {
         final JSONArray params = methodCall.getJSONObject("params").getJSONArray("param");
         final JSONObject post = params.getJSONObject(INDEX_POST).getJSONObject("value").getJSONObject("struct");
         final JSONArray members = post.getJSONArray("member");
-
         for (int i = 0; i < members.length(); i++) {
             final JSONObject member = members.getJSONObject(i);
             final String name = member.getString("name");
-
             if ("dateCreated".equals(name)) {
                 final String dateString = member.getJSONObject("value").getString("dateTime.iso8601");
                 Date date;
@@ -368,20 +349,16 @@ public class MetaWeblogAPI {
                 ret.put(Article.ARTICLE_TITLE, member.getJSONObject("value").getString("string"));
             } else if ("description".equals(name)) {
                 final String content = member.getJSONObject("value").getString("string");
-
                 ret.put(Article.ARTICLE_CONTENT, content);
                 ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(Jsoup.parse(content).text()));
             } else if ("categories".equals(name)) {
                 final StringBuilder tagBuilder = new StringBuilder();
-
                 final JSONObject data = member.getJSONObject("value").getJSONObject("array").getJSONObject("data");
-
                 if (0 == data.length()) {
                     throw new Exception("At least one Tag");
                 }
 
                 final Object value = data.get("value");
-
                 if (value instanceof JSONArray) {
                     final JSONArray tags = (JSONArray) value;
 
@@ -396,7 +373,6 @@ public class MetaWeblogAPI {
                     }
                 } else {
                     final JSONObject tag = (JSONObject) value;
-
                     tagBuilder.append(tag.getString("string"));
                 }
 
@@ -405,7 +381,6 @@ public class MetaWeblogAPI {
         }
 
         final boolean publish = 1 == params.getJSONObject(INDEX_PUBLISH).getJSONObject("value").getInt("boolean");
-
         ret.put(Article.ARTICLE_IS_PUBLISHED, publish);
         ret.put(Article.ARTICLE_COMMENTABLE, true);
         ret.put(Article.ARTICLE_VIEW_PWD, "");
@@ -439,7 +414,6 @@ public class MetaWeblogAPI {
     private String getCategories() throws Exception {
         final StringBuilder stringBuilder = new StringBuilder(
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data>");
-
         final String categories = buildCategories();
         stringBuilder.append(categories);
         stringBuilder.append("</data></array></value></param></params></methodResponse>");
@@ -458,7 +432,6 @@ public class MetaWeblogAPI {
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse><params><param><value><array><data><value><struct>");
         final JSONObject preference = preferenceQueryService.getPreference();
         final String blogInfo = buildBlogInfo(preference);
-
         stringBuilder.append(blogInfo);
         stringBuilder.append("</struct></value></data></array></value></param></params></methodResponse>");
 
@@ -476,13 +449,11 @@ public class MetaWeblogAPI {
         final StringBuilder stringBuilder = new StringBuilder();
 
         final JSONObject result = articleQueryService.getArticle(postId);
-
         if (null == result) {
             throw new Exception("Not found article[id=" + postId + "]");
         }
 
         final JSONObject article = result.getJSONObject(Article.ARTICLE);
-
         final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
         final String articleTitle = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
 
@@ -497,7 +468,6 @@ public class MetaWeblogAPI {
 
         for (int i = 0; i < tags.length(); i++) {
             final String tagTitle = tags.getJSONObject(i).getString(Tag.TAG_TITLE);
-
             stringBuilder.append("<value>").append(tagTitle).append("</value>");
         }
         stringBuilder.append("</data></array></value></member></struct>");
@@ -513,11 +483,8 @@ public class MetaWeblogAPI {
      * @throws Exception exception
      */
     private String buildRecentPosts(final int fetchSize) throws Exception {
-
         final StringBuilder stringBuilder = new StringBuilder();
-
         final List<JSONObject> recentArticles = articleQueryService.getRecentArticles(fetchSize);
-
         for (final JSONObject article : recentArticles) {
             final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
             final String articleTitle = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
@@ -537,7 +504,6 @@ public class MetaWeblogAPI {
 
             for (int i = 0; i < tagTitleArray.length; i++) {
                 final String tagTitle = tagTitleArray[i];
-
                 stringBuilder.append("<value>").append(tagTitle).append("</value>");
             }
             stringBuilder.append("</data></array></value></member>");
@@ -555,9 +521,7 @@ public class MetaWeblogAPI {
      */
     private String buildCategories() throws Exception {
         final StringBuilder stringBuilder = new StringBuilder();
-
         final List<JSONObject> tags = tagQueryService.getTags();
-
         for (final JSONObject tag : tags) {
             final String tagTitle = StringEscapeUtils.escapeXml(tag.getString(Tag.TAG_TITLE));
             final String tagId = tag.getString(Keys.OBJECT_ID);
@@ -586,7 +550,6 @@ public class MetaWeblogAPI {
     private String buildBlogInfo(final JSONObject preference) throws JSONException {
         final String blogId = preference.getString(Option.ID_C_ADMIN_EMAIL);
         final String blogTitle = StringEscapeUtils.escapeXml(preference.getString(Option.ID_C_BLOG_TITLE));
-
         final StringBuilder stringBuilder = new StringBuilder("<member><name>blogid</name><value>").append(blogId).append(
                 "</value></member>");
         stringBuilder.append("<member><name>url</name><value>").append(Latkes.getServePath()).append("</value></member>");
