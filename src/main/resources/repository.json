@@ -1,6 +1,6 @@
 {
     "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-    "version": "3.2.0.0, Mar 16, 2018",
+    "version": "3.2.1.0, Apr 18, 2018",
     "authors": [
         "Liang Ding"
     ],
@@ -78,7 +78,7 @@
                     "name": "oId",
                     "description": "主键",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "archiveDateArticleCount",
@@ -105,19 +105,19 @@
                     "name": "oId",
                     "description": "主键",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "archiveDate_oId",
                     "description": "存档日期 id",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "article_oId",
                     "description": "文章 id",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 }
             ]
         },
@@ -129,7 +129,7 @@
                     "name": "oId",
                     "description": "主键",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "commentContent",
@@ -158,7 +158,7 @@
                     "name": "commentOnId",
                     "description": "评论的文章/页面的 id",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "commentOnType",
@@ -188,7 +188,7 @@
                     "name": "commentOriginalCommentId",
                     "description": "评论回复时原始的评论 id，即父评论 id",
                     "type": "String",
-                    "length": 255,
+                    "length": 19,
                     "nullable": true
                 },
                 {
@@ -208,7 +208,7 @@
                     "name": "oId",
                     "description": "主键",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "linkAddress",
@@ -243,7 +243,7 @@
                     "name": "oId",
                     "description": "主键",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "pageCommentCount",
@@ -313,7 +313,7 @@
                     "name": "oId",
                     "description": "主键",
                     "type": "String",
-                    "length": 255
+                    "length": 128
                 },
                 {
                     "name": "author",
@@ -356,7 +356,7 @@
                     "name": "oId",
                     "description": "主键",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "tagPublishedRefCount",
@@ -384,19 +384,19 @@
                     "name": "oId",
                     "description": "主键",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "article_oId",
                     "description": "文章 id",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "tag_oId",
                     "description": "标签 id",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 }
             ]
         },
@@ -408,7 +408,7 @@
                     "name": "oId",
                     "description": "主键",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "userEmail",
@@ -466,7 +466,7 @@
                     "name": "oId",
                     "description": "主键",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "articleTitle",
@@ -548,7 +548,7 @@
                     "name": "articleSignId",
                     "description": "文章关联的签名档 id",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "articleCommentable",
