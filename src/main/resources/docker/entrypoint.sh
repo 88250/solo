@@ -6,7 +6,7 @@ DATEBASE_TYPE=${DATEBASE_TYPE:-h2}
 
 if [ ! -f "/opt/b3log/solo/WEB-INF/classes/local.properties" ]; then
     if [ "$DATABASE_TYPE" == "mysql" ]; then
-        cat /otp/b3log/tmp/local.properties.mysql | sed \
+        cat /opt/b3log/tmp/local.properties.mysql | sed \
          -e "s|{{DATABASE_HOST}}|${DATABASE_HOST}|g" \
          -e "s|{{DATABASE_PORT}}|${DATABASE_PORT:-3306}|g" \
          -e "s|{{DATABASE_NAME}}|${DATABASE_NAME:-solo}|g" \
