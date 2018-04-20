@@ -52,7 +52,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.0.8, Apr 5, 2018
+ * @version 2.3.1.0, Apr 20, 2018
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -233,9 +233,12 @@ public final class Markdowns {
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
 
-        String ret;
-        try (final OutputStream outputStream = conn.getOutputStream(); final InputStream inputStream = conn.getInputStream()) {
+        try (final OutputStream outputStream = conn.getOutputStream()) {
             IOUtils.write(markdownText, outputStream, "UTF-8");
+        }
+
+        String ret;
+        try (final InputStream inputStream = conn.getInputStream()) {
             ret = IOUtils.toString(inputStream, "UTF-8");
         }
 
