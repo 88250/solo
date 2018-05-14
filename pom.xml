@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.6, Apr 17, 2018
+    Version: 3.18.3.7, May 14, 2018
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -89,6 +89,7 @@
         <emoji-java.version>3.2.0</emoji-java.version>
         <jodd.version>3.9.1</jodd.version>
         <snakeyaml.version>1.18</snakeyaml.version>
+        <freemarker.version>2.3.28</freemarker.version>
 
         <!-- Maven Plugin -->
         <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
@@ -235,6 +236,12 @@
             <version>0.5.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/lib/net/pusuo/patchca-0.5.0.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
         </dependency>
 
     </dependencies>

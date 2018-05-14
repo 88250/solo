@@ -31,7 +31,7 @@ import java.io.IOException;
  * rendering.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Jul 16, 2017
+ * @version 1.0.1.4, May 14, 2018
  * @since 0.4.1
  */
 public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
@@ -47,7 +47,7 @@ public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
     private static final Logger LOGGER = Logger.getLogger(ConsoleRenderer.class);
 
     static {
-        TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_0);
+        TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_28);
         TEMPLATE_CFG.setDefaultEncoding("UTF-8");
 
         final ServletContext servletContext = SoloServletListener.getServletContext();
