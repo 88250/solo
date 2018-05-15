@@ -110,7 +110,6 @@ We are very much looking forward to your joining the project. Whether it is usin
 
 * Post to Solo's official [forum](https://hacpai.com/tag/Solo)
 * New [issues](https://github.com/b3log/solo/issues/new)
-* Join Solo Development Support Q Group 242561391
 
 ## Terms
 
