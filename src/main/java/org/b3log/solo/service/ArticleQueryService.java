@@ -15,6 +15,7 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -52,7 +53,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.0, Nov 24, 2017
+ * @version 1.3.2.1, May 17, 2018
  * @since 0.3.5
  */
 @Service
@@ -570,6 +571,7 @@ public class ArticleQueryService {
      *                          "paginationPageSize": 20,
      *                          "paginationWindowSize": 10,
      *                          "articleIsPublished": boolean,
+     *                          "keyword": "", // Optional search keyword
      *                          "excludes": ["", ....], // Optional
      *                          "enableArticleUpdateHint": bool // Optional
      *                          see {@link Pagination} for more details
@@ -613,13 +615,28 @@ public class ArticleQueryService {
             } else {
                 query.addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
             }
-            query.setFilter(new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
 
             int articleCount = statisticQueryService.getBlogArticleCount();
-            if (!articleIsPublished) {
-                articleCount -= statisticQueryService.getPublishedBlogArticleCount();
+
+            final String keyword = requestJSONObject.optString(Common.KEYWORD);
+            if (StringUtils.isBlank(keyword)) {
+                query.setFilter(new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
+
+                if (!articleIsPublished) {
+                    articleCount -= statisticQueryService.getPublishedBlogArticleCount();
+                } else {
+                    articleCount = statisticQueryService.getPublishedBlogArticleCount();
+                }
             } else {
-                articleCount = statisticQueryService.getPublishedBlogArticleCount();
+                query.setFilter(CompositeFilterOperator.and(
+                        new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished),
+                        CompositeFilterOperator.or(
+                                new PropertyFilter(ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
+                                new PropertyFilter(ARTICLE_TAGS_REF, FilterOperator.LIKE, "%" + keyword + "%")
+                        )
+                ));
+
+                articleCount = pageSize;
             }
 
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);

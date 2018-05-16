@@ -32,6 +32,7 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.UserQueryService;
@@ -51,7 +52,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Mar 3, 2018
+ * @version 1.1.0.2, May 17, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -301,7 +302,6 @@ public class ArticleConsole {
             requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, published);
 
             final JSONArray excludes = new JSONArray();
-
             excludes.put(Article.ARTICLE_CONTENT);
             excludes.put(Article.ARTICLE_UPDATE_DATE);
             excludes.put(Article.ARTICLE_CREATE_DATE);
@@ -311,8 +311,12 @@ public class ArticleConsole {
             excludes.put(Article.ARTICLE_RANDOM_DOUBLE);
             requestJSONObject.put(Keys.EXCLUDES, excludes);
 
-            final JSONObject result = articleQueryService.getArticles(requestJSONObject);
+            final String keyword = StringUtils.trim(request.getParameter("k"));
+            if (StringUtils.isNotBlank(keyword)) {
+                requestJSONObject.put(Common.KEYWORD, keyword);
+            }
 
+            final JSONObject result = articleQueryService.getArticles(requestJSONObject);
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
         } catch (final Exception e) {
