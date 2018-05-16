@@ -58,6 +58,11 @@ admin.articleList = {
         this.tablePagination.initPagination();
         this.tablePagination.initCommentsDialog();
         this.getList(page);
+
+        const that = this
+        $('#articleListBtn').click(function () {
+          that.getList(page);
+        });
     },
 
     /* 
@@ -68,7 +73,7 @@ admin.articleList = {
         var that = this;
         $("#loadMsg").text(Label.loadingLabel);
         $.ajax({
-            url: latkeConfig.servePath + "/console/articles/status/published/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+            url: latkeConfig.servePath + "/console/articles/status/published/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE + '?k=' + $('#articleListInput').val(),
             type: "GET",
             cache: false,
             success: function(result, textStatus){

@@ -1008,7 +1008,7 @@ table.form th {
 }
 
 .module-panel .module-body li:hover {
-    background-color: #F5F5F5;
+    background-color: #fafafa;
 }
 
 .module-panel .module-body li a:hover {
@@ -1196,7 +1196,7 @@ button#submitArticle:hover {
 }
 
 .completed-panel a.selected {
-    background-color: #f5f5f5;
+    background-color: #fafafa;
     color: #fa8564;
 }
 
@@ -1365,8 +1365,8 @@ button#submitArticle:hover {
 }
 
 .table-heiglight td, .table-lineHover td {
-    background-color: #F5F5F5;
-    border-right-color: #F5F5F5;
+    background-color: #fafafa;
+    border-right-color: #fafafa;
 }
 
 .table-expendRow td {
@@ -1441,6 +1441,13 @@ button#submitArticle:hover {
 
 .page-list__label {
     width: 100%;
+}
+
+.search-btn {
+    position: absolute;
+    top: 28px;
+    right: 27px;
+    border-radius: 0 4px 4px 0;
 }
 
 @media (max-width: 768px) {
