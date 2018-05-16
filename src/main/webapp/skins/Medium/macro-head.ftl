@@ -12,5 +12,6 @@
 <link type="text/css" rel="stylesheet" href="${staticServePath}/skins/${skinDirName}/css/base${miniPostfix}.css?${staticResourceVersion}" charset="utf-8" />
 <link href="${servePath}/blog-articles-rss.do" title="RSS" type="application/rss+xml" rel="alternate" />
 <link rel="icon" type="image/png" href="${servePath}/favicon.png" />
+<link rel="manifest" href="${servePath}/manifest.json">
 ${htmlHead}
 </#macro>

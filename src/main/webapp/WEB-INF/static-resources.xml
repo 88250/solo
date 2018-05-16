@@ -27,6 +27,7 @@
     <include path="/favicon.ico"/>
     <include path="/favicon.png"/>
     <include path="/robots.txt"/>
+    <include path="/manifest.json"/>
 
     <include path="/js/**.js"/>
     <include path="/js/**/*.js"/>
