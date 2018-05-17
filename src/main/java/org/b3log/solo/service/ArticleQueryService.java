@@ -53,7 +53,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.1, May 17, 2018
+ * @version 1.3.2.2, May 17, 2018
  * @since 0.3.5
  */
 @Service
@@ -616,17 +616,9 @@ public class ArticleQueryService {
                 query.addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
             }
 
-            int articleCount = statisticQueryService.getBlogArticleCount();
-
             final String keyword = requestJSONObject.optString(Common.KEYWORD);
             if (StringUtils.isBlank(keyword)) {
                 query.setFilter(new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
-
-                if (!articleIsPublished) {
-                    articleCount -= statisticQueryService.getPublishedBlogArticleCount();
-                } else {
-                    articleCount = statisticQueryService.getPublishedBlogArticleCount();
-                }
             } else {
                 query.setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished),
@@ -635,15 +627,11 @@ public class ArticleQueryService {
                                 new PropertyFilter(ARTICLE_TAGS_REF, FilterOperator.LIKE, "%" + keyword + "%")
                         )
                 ));
-
-                articleCount = pageSize;
             }
-
-            final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
-            query.setPageCount(pageCount);
 
             final JSONObject result = articleRepository.get(query);
 
+            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             final JSONObject pagination = new JSONObject();
             ret.put(Pagination.PAGINATION, pagination);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
