@@ -27,7 +27,7 @@ import java.util.Set;
  * Item.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Mar 10, 2018
+ * @version 1.1.2.0, May 18, 2018
  * @since 0.3.1
  */
 public final class Item {
@@ -269,7 +269,7 @@ public final class Item {
         stringBuilder.append(END_GUID_ELEMENT);
 
         for (final Category category : categories) {
-            stringBuilder.append(category.toString());
+            stringBuilder.append(StringEscapeUtils.escapeXml(category.toString()));
         }
 
         stringBuilder.append(START_PUB_DATE_ELEMENT);

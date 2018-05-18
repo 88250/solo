@@ -119,7 +119,6 @@ public class SitemapProcessor {
             String content = sitemap.toString();
             content = XMLs.format(content);
             LOGGER.log(Level.INFO, "Generated sitemap");
-            LOGGER.info(content);
             renderer.setContent(content);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article feed error", e);
