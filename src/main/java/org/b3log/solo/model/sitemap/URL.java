@@ -15,15 +15,14 @@
  */
 package org.b3log.solo.model.sitemap;
 
-
+import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.util.Strings;
-
 
 /**
  * Sitemap URL.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 22, 2011
+ * @version 1.1.1.0, May 18, 2018
  * @since 0.3.1
  */
 public final class URL {
@@ -70,7 +69,7 @@ public final class URL {
 
     /**
      * Gets the last modified.
-     * 
+     *
      * @return last modified
      */
     public String getLastMod() {
@@ -79,7 +78,7 @@ public final class URL {
 
     /**
      * Sets the last modified with the specified last modified.
-     * 
+     *
      * @param lastMod the specified modified
      */
     public void setLastMod(final String lastMod) {
@@ -88,7 +87,7 @@ public final class URL {
 
     /**
      * Gets the loc.
-     * 
+     *
      * @return loc
      */
     public String getLoc() {
@@ -97,7 +96,7 @@ public final class URL {
 
     /**
      * Sets the loc with the specified loc.
-     * 
+     *
      * @param loc the specified loc
      */
     public void setLoc(final String loc) {
@@ -111,7 +110,7 @@ public final class URL {
         stringBuilder.append(START_URL_ELEMENT);
 
         stringBuilder.append(START_LOC_ELEMENT);
-        stringBuilder.append(loc);
+        stringBuilder.append(StringEscapeUtils.escapeXml(loc));
         stringBuilder.append(END_LOC_ELEMENT);
 
         if (!Strings.isEmptyOrNull(lastMod)) {

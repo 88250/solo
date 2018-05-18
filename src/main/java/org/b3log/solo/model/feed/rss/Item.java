@@ -261,7 +261,7 @@ public final class Item {
         stringBuilder.append(END_DESCRIPTION_ELEMENT);
 
         stringBuilder.append(START_AUTHOR_ELEMENT);
-        stringBuilder.append(author);
+        stringBuilder.append(StringEscapeUtils.escapeXml(author));
         stringBuilder.append(END_AUTHOR_ELEMENT);
 
         stringBuilder.append(START_GUID_ELEMENT);

@@ -42,6 +42,7 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.util.XMLs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,7 +55,7 @@ import java.util.Date;
  * Site map (sitemap) processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Mar 10, 2018
+ * @version 1.0.2.0, Mar 18, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -115,9 +116,10 @@ public class SitemapProcessor {
             addArchives(sitemap);
 
             LOGGER.log(Level.INFO, "Generating sitemap....");
-            final String content = sitemap.toString();
-
+            String content = sitemap.toString();
+            content = XMLs.format(content);
             LOGGER.log(Level.INFO, "Generated sitemap");
+            LOGGER.info(content);
             renderer.setContent(content);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article feed error", e);

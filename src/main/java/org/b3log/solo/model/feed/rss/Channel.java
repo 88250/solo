@@ -17,21 +17,10 @@ package org.b3log.solo.model.feed.rss;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.solo.processor.FeedProcessor;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
+import org.b3log.solo.util.XMLs;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -181,32 +170,6 @@ public final class Channel {
      * Items.
      */
     private List<Item> items = new ArrayList<>();
-
-    /**
-     * Returns pretty print of the specified xml string.
-     *
-     * @param xml the specified xml string
-     * @return the pretty print of the specified xml string
-     * @throws Exception exception
-     */
-    private static String format(final String xml) {
-        try {
-            final DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            final Document doc = db.parse(new InputSource(new StringReader(xml)));
-            final Transformer transformer = TransformerFactory.newInstance().newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-            final StreamResult result = new StreamResult(new StringWriter());
-            final DOMSource source = new DOMSource(doc);
-            transformer.transform(source, result);
-
-            return result.getWriter().toString();
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "format pretty XML failed", e);
-
-            return xml;
-        }
-    }
 
     /**
      * Gets the atom link.
@@ -364,7 +327,7 @@ public final class Channel {
         stringBuilder.append(END_DESCRIPTION_ELEMENT);
 
         stringBuilder.append(START_GENERATOR_ELEMENT);
-        stringBuilder.append(generator);
+        stringBuilder.append(StringEscapeUtils.escapeXml(generator));
         stringBuilder.append(END_GENERATOR_ELEMENT);
 
         stringBuilder.append(START_LAST_BUILD_DATE_ELEMENT);
@@ -372,7 +335,7 @@ public final class Channel {
         stringBuilder.append(END_LAST_BUILD_DATE_ELEMENT);
 
         stringBuilder.append(START_LANGUAGE_ELEMENT);
-        stringBuilder.append(language);
+        stringBuilder.append(StringEscapeUtils.escapeXml(language));
         stringBuilder.append(END_LANGUAGE_ELEMENT);
 
         for (final Item item : items) {
@@ -381,6 +344,6 @@ public final class Channel {
 
         stringBuilder.append(END);
 
-        return format(stringBuilder.toString());
+        return XMLs.format(stringBuilder.toString());
     }
 }
