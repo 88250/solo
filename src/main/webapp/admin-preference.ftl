@@ -118,8 +118,10 @@
         <table class="form" width="100%" cellpadding="0" cellspacing="0">
             <tbody>
             <tr>
-                <td align="right">
-                    <button onclick="admin.preference.update()">${updateLabel}</button>
+                <td>
+                    <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
+                    <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
+                    <button style="float: right" onclick="admin.preference.update()">${updateLabel}</button>
                 </td>
             </tr>
             <tr>
@@ -128,8 +130,10 @@
                 </td>
             </tr>
             <tr>
-                <td align="right">
-                    <button onclick="admin.preference.update()">${updateLabel}</button>
+                <td>
+                    <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
+                    <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
+                    <button style="float: right" onclick="admin.preference.update()">${updateLabel}</button>
                 </td>
             </tr>
             </tbody>
