@@ -100,7 +100,7 @@ JDK 环境准备好之后[下载](https://pan.baidu.com/s/1dzk7SU)最新的 Solo
 
 ## 社区
 
-大家可以通过以下两种方式进行项目讨论，帮助项目发展：
+大家可以通过以下方式进行项目讨论，帮助项目发展：
 
 * Solo [讨论区](https://hacpai.com/tag/Solo)
 * [报告问题](https://github.com/b3log/solo/issues/new)
