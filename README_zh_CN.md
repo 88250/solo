@@ -10,7 +10,7 @@
 * [安装](#安装)
 * [文档](#文档)
 * [技术](#技术)
-* [贡献](#贡献)
+* [社区](#社区)
 * [Terms](#terms)
 * [鸣谢](#鸣谢)
 
@@ -98,18 +98,14 @@ JDK 环境准备好之后[下载](https://pan.baidu.com/s/1dzk7SU)最新的 Solo
 * 严格的分支、缺陷追踪管理
 * 不断完善的测试用例、持续集成
 
-## 贡献
+## 社区
 
-### 作者
+大家可以通过以下两种方式进行项目讨论，帮助项目发展：
 
-Solo 的主要作者是 [Daniel](https://github.com/88250) 与 [Vanessa](https://github.com/Vanessa219)，所有贡献者可以在[这里](https://github.com/b3log/solo/graphs/contributors)看到。
+* Solo [讨论区](https://hacpai.com/tag/Solo)
+* [报告问题](https://github.com/b3log/solo/issues/new)
 
-我们非常期待你加入到这个项目中，无论是使用反馈还是代码补丁，都是对 Solo 一份满满的爱 :heart:
-
-### 讨论区
-
-* 到 Solo 官方[讨论区](https://hacpai.com/tag/Solo)发帖（推荐做法）
-* 来一发 [issue](https://github.com/b3log/solo/issues/new)
+我们非常期待你加入到项目中，无论是使用反馈还是代码补丁，都是对 Solo 一份满满的爱 :heart:
 
 ## Terms
 
@@ -141,7 +137,7 @@ Solo 的诞生离不开以下开源项目：
 ----
 
 <p align = "center">
-<strong>专业、简约、稳定、极速的 Java 博客</strong>
+<strong>漂亮、简约、稳定、极速的 Java 博客系统</strong>
 <br><br>
 <img src="https://cloud.githubusercontent.com/assets/873584/26024667/c031e40a-3808-11e7-9176-f2c9af01bd64.png">
 </p>

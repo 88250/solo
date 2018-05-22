@@ -10,7 +10,7 @@
 * [Installation](#installation)
 * [Documents](#documents)
 * [Stack](#stack)
-* [Contributions](#contributions)
+* [Community](#community)
 * [Terms](#terms)
 * [Credits](#credits)
 
@@ -106,7 +106,7 @@ Solo's main authors are [Daniel](https://github.com/88250) and [Vanessa](https:/
 
 We are very much looking forward to your joining the project. Whether it is using feedback or code patches, it is a complete love for Solo :heart:
 
-### Discussion
+### Community
 
 * Post to Solo's official [forum](https://hacpai.com/tag/Solo)
 * New [issues](https://github.com/b3log/solo/issues/new)
@@ -141,7 +141,7 @@ The birth of Solo was inseparable from the following open source projects:
 ----
 
 <p align = "center">
-<strong>Professional, simple, stable, fast Java blog</strong>
+<strong>Beautiful, simple, stable, fast Java blog</strong>
 <br><br>
 <img src="https://cloud.githubusercontent.com/assets/873584/26024667/c031e40a-3808-11e7-9176-f2c9af01bd64.png">
 </p>
