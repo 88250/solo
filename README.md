@@ -98,18 +98,14 @@ In addition, in order to ensure the quality of Solo, we have also made a lot of 
 * Strict branch and defect tracking management
 * Continuously improved test cases, continuous integration
 
-## Contributions
+## Community
 
-### Authors
+Everyone can discuss the project through the following two ways to help the project develop:
 
-Solo's main authors are [Daniel](https://github.com/88250) and [Vanessa](https://github.com/Vanessa219). All contributors can be seen [here](https://github.com/b3log/solo/graphs/contributors).
+* Solo [Board](https://hacpai.com/tag/Solo)
+* [Report Issue](https://github.com/b3log/solo/issues/new)
 
-We are very much looking forward to your joining the project. Whether it is using feedback or code patches, it is a complete love for Solo :heart:
-
-### Community
-
-* Post to Solo's official [forum](https://hacpai.com/tag/Solo)
-* New [issues](https://github.com/b3log/solo/issues/new)
+We are very much looking forward to your joining the project. Whether it is feedback or code patches, it is a complete love for Solo :heart:
 
 ## Terms
 
