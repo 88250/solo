@@ -1,4 +1,4 @@
-Solo - A beautiful, simple, stable, fast Java blogging system!
+Solo - A beautiful, simple, stable, fast Java blogging system.
 Copyright (c) ${year}, ${devTeam}
 
 This program is free software: you can redistribute it and/or modify
