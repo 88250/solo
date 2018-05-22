@@ -137,7 +137,7 @@ The birth of Solo was inseparable from the following open source projects:
 ----
 
 <p align = "center">
-<strong>Beautiful, simple, stable, fast Java blog</strong>
+<strong>Beautiful, simple, stable, fast Java blogging system</strong>
 <br><br>
 <img src="https://cloud.githubusercontent.com/assets/873584/26024667/c031e40a-3808-11e7-9176-f2c9af01bd64.png">
 </p>
