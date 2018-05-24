@@ -6,8 +6,6 @@
 !CHANGE_LOGS.html
 !README*.md
 !LICENSE
-!nbactions.xml
-!nb-configuration.xml
 !.travis.yml
 !Dockerfile
 !gulpfile.js
