@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+
+    Solo - A beautiful, simple, stable, fast Java blogging system.
+    Copyright (c) 2010-2018, b3log.org & hacpai.com
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+-->
+<!--
+    Description: OpenSearch definition.
+    Version: 1.0.0.0, May 26, 2018
+    Author: Liyuan Li
+-->
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+    <ShortName>Solo</ShortName>
+    <Description>一款漂亮、简约、稳定、极速的 Java 博客系统</Description>
+    <InputEncoding>UTF-8</InputEncoding>
+    <Image width="32" height="32" type="image/x-icon">https://static.b3log.org/images/brand/solo-32.png</Image>
+    <Url type="text/html" method="get" template="http://demo.b3log.org/search?keyword={searchTerms}"></Url>
+</OpenSearchDescription>
