@@ -38,7 +38,7 @@ import org.testng.annotations.Test;
  * {@link TagProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Feb 18, 2017
+ * @version 1.0.1.1, May 29, 2018
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -90,6 +90,6 @@ public class TagProcessorTestCase extends AbstractTestCase {
         dispatcherServlet.service(request, response);
 
         final String content = stringWriter.toString();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Solo - Solo 示例</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>Solo - Admin 的个人博客</title>"));
     }
 }

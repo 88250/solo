@@ -60,7 +60,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.18, Mar 11, 2018
+ * @version 1.5.2.19, May 29, 2018
  * @since 0.4.0
  */
 @Service
@@ -680,7 +680,7 @@ public class InitService {
         final JSONObject blogTitleOpt = new JSONObject();
         blogTitleOpt.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
         blogTitleOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        blogTitleOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_BLOG_TITLE);
+        blogTitleOpt.put(Option.OPTION_VALUE, requestJSONObject.optString(User.USER_NAME) + " 的个人博客");
         optionRepository.add(blogTitleOpt);
 
         final JSONObject blogSubtitleOpt = new JSONObject();

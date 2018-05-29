@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.5, Jan 31, 2018
+ * @version 1.3.0.6, May 29, 2018
  * @since 0.6.0
  */
 public final class Option {
@@ -373,14 +373,9 @@ public final class Option {
         public static final int DEFAULT_MOST_COMMENT_ARTICLE_DISPLAY_COUNT = 5;
 
         /**
-         * Default blog title.
-         */
-        public static final String DEFAULT_BLOG_TITLE = "Solo 示例";
-
-        /**
          * Default blog subtitle.
          */
-        public static final String DEFAULT_BLOG_SUBTITLE = "Java 开源博客";
+        public static final String DEFAULT_BLOG_SUBTITLE = "记录精彩的程序人生";
 
         /**
          * Default skin directory name.
@@ -412,12 +407,12 @@ public final class Option {
         /**
          * Default meta keywords..
          */
-        public static final String DEFAULT_META_KEYWORDS = "Solo,Java 博客,开源";
+        public static final String DEFAULT_META_KEYWORDS = "Solo,Java,博客,开源";
 
         /**
          * Default meta description..
          */
-        public static final String DEFAULT_META_DESCRIPTION = "An open source blog with Java. Java 开源博客";
+        public static final String DEFAULT_META_DESCRIPTION = "A beautiful, simple, stable, fast Java blogging system. 一款漂亮、简约、稳定、极速的 Java 博客系统。";
 
         /**
          * Default HTML head to append.

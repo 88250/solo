@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link PreferenceQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Nov 23, 2015
+ * @version 1.0.0.4, May 29, 2018
  */
 @Test(suiteName = "service")
 public class PreferenceQueryServiceTestCase extends AbstractTestCase {
@@ -63,7 +63,7 @@ public class PreferenceQueryServiceTestCase extends AbstractTestCase {
         final PreferenceQueryService preferenceQueryService = getPreferenceQueryService();
         final JSONObject preference = preferenceQueryService.getPreference();
 
-        Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), Option.DefaultPreference.DEFAULT_BLOG_TITLE);
+        Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), "Admin 的个人博客");
     }
 
     /**

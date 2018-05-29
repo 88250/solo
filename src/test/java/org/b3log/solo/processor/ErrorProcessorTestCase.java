@@ -17,11 +17,6 @@
  */
 package org.b3log.solo.processor;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
@@ -30,15 +25,23 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
-import static org.mockito.Mockito.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * {@link ErrorProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Feb 18, 2017
+ * @version 1.0.1.1, May 29, 2018
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -90,6 +93,6 @@ public class ErrorProcessorTestCase extends AbstractTestCase {
         dispatcherServlet.service(request, response);
 
         final String content = stringWriter.toString();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Solo 示例 - 403 Forbidden!</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 403 Forbidden!</title>"));
     }
 }

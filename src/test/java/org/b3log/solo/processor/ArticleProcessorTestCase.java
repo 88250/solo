@@ -47,7 +47,7 @@ import static org.mockito.Mockito.when;
  * {@link ArticleProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Jan 31, 2018
+ * @version 1.0.1.2, May 29, 2018
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -314,7 +314,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         dispatcherServlet.service(request, response);
 
         final String content = stringWriter.toString();
-        Assert.assertTrue(StringUtils.contains(content, "Solo 示例</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "Admin 的个人博客</title>"));
     }
 
     /**
