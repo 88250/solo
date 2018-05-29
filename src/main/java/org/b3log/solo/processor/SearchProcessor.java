@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -28,10 +29,12 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.TextXMLRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.ArticleQueryService;
@@ -42,6 +45,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +55,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.0.1.0, Oct 11, 2017
+ * @version 1.1.0.0, May 29, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -91,6 +95,30 @@ public class SearchProcessor {
      */
     @Inject
     private Filler filler;
+
+    /**
+     * Shows opensearch.xml.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = "/opensearch.xml", method = HTTPRequestMethod.GET)
+    public void showOpensearchXML(final HTTPRequestContext context) {
+        final TextXMLRenderer renderer = new TextXMLRenderer();
+        context.setRenderer(renderer);
+
+        try {
+            final InputStream resourceAsStream = SearchProcessor.class.getResourceAsStream("/opensearch.xml");
+            String content = IOUtils.toString(resourceAsStream, "UTF-8");
+            final JSONObject preference = preferenceQueryService.getPreference();
+            content = StringUtils.replace(content, "${blogTitle}", Jsoup.clean(preference.optString(Option.ID_C_BLOG_TITLE), Whitelist.none()));
+            content = StringUtils.replace(content, "${blogSubtitle}", Jsoup.clean(preference.optString(Option.ID_C_BLOG_SUBTITLE), Whitelist.none()));
+            content = StringUtils.replace(content, "${servePath}", Latkes.getServePath());
+
+            renderer.setContent(content);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Shows opensearch.xml failed", e);
+        }
+    }
 
     /**
      * Searches articles.

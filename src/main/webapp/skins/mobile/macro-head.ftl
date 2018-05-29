@@ -30,6 +30,7 @@
 <meta http-equiv="Window-target" content="_top" />
 <link type="text/css" rel="stylesheet" href="${staticServePath}/skins/${skinDirName}/themes/default/style.css?${staticResourceVersion}" charset="utf-8" />
 <link rel="manifest" href="${servePath}/manifest.json">
+<link rel="search" type="application/opensearchdescription+xml" title="${title}" href="/opensearch.xml">
 <style type="text/css">
 #headerbar, #wptouch-login, #wptouch-search {
 	background: #000000 url(/skins/${skinDirName}/themes/core/core-images/head-fade-bk.png);

@@ -24,9 +24,9 @@
     Author: Liyuan Li
 -->
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
-    <ShortName>Solo</ShortName>
-    <Description>一款漂亮、简约、稳定、极速的 Java 博客系统</Description>
+    <ShortName>${blogTitle}</ShortName>
+    <Description>${blogSubtitle}</Description>
     <InputEncoding>UTF-8</InputEncoding>
     <Image width="32" height="32" type="image/x-icon">https://static.b3log.org/images/brand/solo-32.png</Image>
-    <Url type="text/html" method="get" template="http://demo.b3log.org/search?keyword={searchTerms}"></Url>
+    <Url type="text/html" method="get" template="${servePath}/search?keyword={searchTerms}"></Url>
 </OpenSearchDescription>
