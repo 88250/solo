@@ -38,8 +38,9 @@ if [ ! -f "/opt/b3log/solo/WEB-INF/classes/local.properties" ]; then
     cat /opt/b3log/tmp/latke.properties | sed \
      -e "s|{{SERVER_SCHMEA}}|${SERVER_SCHMEA:-http}|g" \
      -e "s|{{SERVER_NAME}}|${SERVER_NAME:-localhost}|g" \
+     -e "s|{{SERVER_PORT}}|${SERVER_PORT:-8080}|g" \
     > /opt/b3log/solo/WEB-INF/classes/latke.properties
-	
+
     cat /opt/b3log/tmp/mail.properties | sed \
      -e "s|{{EMAIL_ADDRESS}}|${EMAIL_ADDRESS}|g" \
      -e "s|{{EMAIL_PASSWORD}}|${EMAIL_PASSWORD}|g" \
