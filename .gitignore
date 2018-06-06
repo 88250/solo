@@ -10,6 +10,7 @@
 !Dockerfile
 !gulpfile.js
 !package.json
+!docker-compose.yml
 
 src/main/webapp/skins/*
 !src/main/webapp/skins/mobile

@@ -1,0 +1,22 @@
+version: '3.1'
+
+services:
+
+  web:
+    image: 88250/solo
+    restart: unless-stopped
+    ports:
+      - 8080:8080
+    environment:
+      SERVER_SCHMEA: https
+      SERVER_NAME: <your host>
+      SERVER_PORT: 80
+      EMAIL_ADDRESS: <your address>
+      EMAIL_PASSWORD: <your smtp password>
+      SMTP_HOST: <your smtp host>
+      SMTP_PROT: <your smtp port>
+    volumes:
+     - database:/opt/b3log/backup
+
+volumes:
+  database:
