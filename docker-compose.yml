@@ -4,17 +4,10 @@ services:
 
   web:
     image: luodaoyi/solo
-    restart: always
+    restart: unless-stopped
     ports:
       - 8080:8080
-    depends_on:
-       - db
     environment:
-      DATABASE_TYPE: mysql
-      DATABASE_HOST: db
-      DATABASE_NAME: solo
-      DATABASE_USERNAME: solo
-      DATABASE_PASSWORD: solo
       SERVER_SCHMEA: https
       SERVER_NAME: <your host>
       SERVER_PORT: 80
@@ -22,18 +15,8 @@ services:
       EMAIL_PASSWORD: <your smtp password>
       SMTP_HOST: <your smtp host>
       SMTP_PROT: <your smtp port>
-
-
-  db:
-    image: mysql:5.7
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: somesolo
-      MYSQL_DATABASE: solo
-      MYSQL_USER: solo
-      MYSQL_PASSWORD: solo
     volumes:
-     - mysql-data:/var/lib/mysql
+     - database:/opt/b3log/backup
 
 volumes:
-  mysql-data:
+  database:
