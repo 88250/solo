@@ -24,11 +24,6 @@
       "isLoggedIn": "true"
     };
     
-    var qiniu = {
-        "qiniuUploadToken": "${qiniuUploadToken}",
-        "qiniuDomain": "${qiniuDomain}"
-    };
-    
     var Label = {
         "skinDirName": "${skinDirName}",
         "editorType": "${editorType}",

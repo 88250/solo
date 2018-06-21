@@ -251,10 +251,8 @@ admin.editors.CodeMirror = {
     Util.initUploadFile({
       "id": conf.id + 'fileUpload',
       "pasteZone": $('#' + conf.id).next().next(),
-      "qiniuUploadToken": qiniu.qiniuUploadToken,
       "editor": commentEditor.codemirror,
-      "uploadingLabel": '',
-      "qiniuDomain": '//' + qiniu.qiniuDomain
+      "uploadingLabel": ''
     });
 
     this[conf.id] = commentEditor.codemirror;
