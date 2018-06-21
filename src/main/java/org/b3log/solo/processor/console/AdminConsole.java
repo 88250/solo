@@ -74,7 +74,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.2, Apr 5, 2018
+ * @version 1.7.0.3, Jun 21, 2018
  * @since 0.4.1
  */
 @RequestProcessor
@@ -171,28 +171,6 @@ public class AdminConsole {
         }
 
         try {
-            final JSONObject qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
-
-            dataModel.put(Option.ID_C_QINIU_DOMAIN, "");
-            dataModel.put("qiniuUploadToken", "");
-
-            if (null != qiniu && StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY))
-                    && StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_SECRET_KEY))
-                    && StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_BUCKET))
-                    && StringUtils.isNotBlank(qiniu.optString(Option.ID_C_QINIU_DOMAIN))) {
-                try {
-                    final Auth auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY),
-                            qiniu.optString(Option.ID_C_QINIU_SECRET_KEY));
-
-                    final String uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET),
-                            null, 3600 * 6, null);
-                    dataModel.put("qiniuUploadToken", uploadToken);
-                    dataModel.put(Option.ID_C_QINIU_DOMAIN, qiniu.optString(Option.ID_C_QINIU_DOMAIN));
-                } catch (final Exception e) {
-                    LOGGER.log(Level.ERROR, "Qiniu settings error", e);
-                }
-            }
-
             final JSONObject preference = preferenceQueryService.getPreference();
 
             dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
