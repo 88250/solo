@@ -27,11 +27,11 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.processor.renderer.SkinRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -51,7 +51,7 @@ import java.util.Map;
  * Page processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, Nov 8, 2016
+ * @version 1.1.0.7, Jun 22, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -99,10 +99,8 @@ public class PageProcessor {
      */
     @RequestProcessing(value = "/page", method = HTTPRequestMethod.GET)
     public void showPage(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
-
         renderer.setTemplateName("page.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
