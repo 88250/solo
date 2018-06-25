@@ -30,10 +30,10 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.processor.renderer.SkinRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
@@ -58,7 +58,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Nov 20, 2015
+ * @version 1.0.0.6, Jun 22, 2018
  * @since 0.4.5
  */
 @RequestProcessor
@@ -96,21 +96,21 @@ public class UserTemplateProcessor {
     /**
      * Shows the user template page.
      *
-     * @param context the specified context
-     * @param request the specified HTTP servlet request
+     * @param context  the specified context
+     * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      * @throws IOException io exception
      */
     @RequestProcessing(value = "/*.html", method = HTTPRequestMethod.GET)
     public void showPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-        throws IOException {
+            throws IOException {
         final String requestURI = request.getRequestURI();
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
 
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
         LOGGER.log(Level.DEBUG, "Shows page[requestURI={0}, templateName={1}]", requestURI, templateName);
 
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
 
         context.setRenderer(renderer);
         renderer.setTemplateName(templateName);

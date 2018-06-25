@@ -55,7 +55,7 @@ import java.util.*;
  * File upload processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Apr 5, 2018
+ * @version 1.0.1.0, Jun 22, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -153,7 +153,7 @@ public class FileUploadProcessor {
         final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
         parser.parseRequestStream(req.getInputStream(), "UTF-8");
         final List<String> errFiles = new ArrayList();
-        final Map<String, String> succMap = new HashMap<>();
+        final Map<String, String> succMap = new LinkedHashMap<>();
         final FileUpload[] files = parser.getFiles("file[]");
         final String[] names = parser.getParameterValues("name[]");
         String fileName;
@@ -190,7 +190,8 @@ public class FileUploadProcessor {
 
         for (int i = 0; i < files.length; i++) {
             final FileUpload file = files[i];
-            final String originalName = fileName = file.getHeader().getFileName();
+            String originalName = fileName = file.getHeader().getFileName();
+            originalName = originalName.replaceAll("\\W", "");
             try {
                 String suffix = StringUtils.substringAfterLast(fileName, ".");
                 final String contentType = file.getHeader().getContentType();

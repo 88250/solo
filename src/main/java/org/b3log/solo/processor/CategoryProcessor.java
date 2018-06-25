@@ -30,13 +30,13 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.processor.renderer.SkinRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
@@ -55,7 +55,7 @@ import java.util.Map;
  * Category processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Apr 21, 2017
+ * @version 1.0.1.3, Jun 22, 2018
  * @since 2.0.0
  */
 @RequestProcessor
@@ -149,10 +149,8 @@ public class CategoryProcessor {
      */
     @RequestProcessing(value = "/category/**", method = HTTPRequestMethod.GET)
     public void showCategoryArticles(final HTTPRequestContext context) throws IOException {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
-
         renderer.setTemplateName("category-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -161,7 +159,6 @@ public class CategoryProcessor {
 
         try {
             String requestURI = request.getRequestURI();
-
             if (!requestURI.endsWith("/")) {
                 requestURI += "/";
             }

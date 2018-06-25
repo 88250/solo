@@ -32,6 +32,8 @@
 </head>
 <body>
 <#include "header.ftl">
+<div id="pjax">
+<#if pjax><!---- pjax {#pjax} start ----></#if>
 <#include "nav.ftl">
 <div class="main">
     <#if noticeBoard??>
@@ -43,6 +45,8 @@
             <#include "article-list.ftl">
     </div>
     <#include "bottom2.ftl">
+</div>
+<#if pjax><!---- pjax {#pjax} end ----></#if>
 </div>
 <#include "footer.ftl">
 </body>

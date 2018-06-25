@@ -51,6 +51,8 @@
 </head>
 <body>
 <#include "header.ftl">
+<div id="pjaxArticle">
+    <#if pjax><!---- pjax {#pjaxArticle} start ----></#if>
 <div class="main post__main">
 <#if noticeBoard??>
     <div class="board">
@@ -82,7 +84,9 @@
                 </div>
             </#if>
             </section>
-            <footer class="post__tags">
+            <footer data-oid="${article.oId}"
+                    class="post__tags"
+                    data-tag="<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>">
             <#list article.articleTags?split(",") as articleTag>
                 <a class="tag" rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
                 ${articleTag}</a>
@@ -212,7 +216,10 @@
               data-avatar="${article.authorThumbnailURL}"></span>
     </div>
 </div>
-<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
+
+        <#if pjax><!---- pjax {#pjaxArticle} end ----></#if>
+</div>
+<script type="text/javascript" src="${staticServePath}/js/lib/compress/pjax.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"
         charset="utf-8"></script>
 <script type="text/javascript"
@@ -251,17 +258,19 @@
     Skin.initArticle();
 </script>
 <@comment_script oId=article.oId>
-    page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
-    <#if 0 != randomArticlesDisplayCount>
-    page.loadRandomArticles("<div class='module__title'><span>${randomArticlesLabel}</span></div>");
-    </#if>
-    <#if 0 != externalRelevantArticlesDisplayCount>
-    page.loadExternalRelevantArticles("<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>"
-    , "<div class='module__title'><span>${externalRelevantArticlesLabel}</span></div>");
-    </#if>
-    <#if 0 != relevantArticlesDisplayCount>
-    page.loadRelevantArticles('${article.oId}', '<div class="module__title"><span>${relevantArticlesLabel}</span></div>');
-    </#if>
+    Skin.initComment = function (articleOId, articleTags) {
+        page.tips.externalRelevantArticlesDisplayCount = "${externalRelevantArticlesDisplayCount}";
+        <#if 0 != randomArticlesDisplayCount>
+        page.loadRandomArticles("<div class='module__title'><span>${randomArticlesLabel}</span></div>");
+        </#if>
+        <#if 0 != externalRelevantArticlesDisplayCount>
+        page.loadExternalRelevantArticles(articleTags, "<div class='module__title'><span>${externalRelevantArticlesLabel}</span></div>");
+        </#if>
+        <#if 0 != relevantArticlesDisplayCount>
+        page.loadRelevantArticles(articleOId, '<div class="module__title"><span>${relevantArticlesLabel}</span></div>');
+        </#if>
+    }
+    Skin.initComment('${article.oId}', "<#list article.articleTags?split(",") as articleTag>${articleTag}<#if articleTag_has_next>,</#if></#list>")
 </@comment_script>
 ${plugins}
 </body>

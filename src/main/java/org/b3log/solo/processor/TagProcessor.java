@@ -30,7 +30,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.FreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
@@ -38,6 +37,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.processor.renderer.SkinRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
@@ -58,7 +58,7 @@ import java.util.Map;
  * Tag processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Nov 20, 2015
+ * @version 1.1.1.5, Jun 22, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -119,7 +119,7 @@ public class TagProcessor {
      */
     @RequestProcessing(value = "/tags/**", method = HTTPRequestMethod.GET)
     public void showTagArticles(final HTTPRequestContext context) throws IOException {
-        final AbstractFreeMarkerRenderer renderer = new FreeMarkerRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
 
         context.setRenderer(renderer);
 
@@ -229,16 +229,16 @@ public class TagProcessor {
     /**
      * Fills pagination.
      *
-     * @param dataModel the specified data model
-     * @param pageCount the specified page count
+     * @param dataModel      the specified data model
+     * @param pageCount      the specified page count
      * @param currentPageNum the specified current page number
-     * @param articles the specified articles
-     * @param pageNums the specified page numbers
+     * @param articles       the specified articles
+     * @param pageNums       the specified page numbers
      */
     private void fillPagination(final Map<String, Object> dataModel,
-            final int pageCount, final int currentPageNum,
-            final List<JSONObject> articles,
-            final List<Integer> pageNums) {
+                                final int pageCount, final int currentPageNum,
+                                final List<JSONObject> articles,
+                                final List<Integer> pageNums) {
         final String previousPageNum = Integer.toString(currentPageNum > 1 ? currentPageNum - 1 : 0);
 
         dataModel.put(Pagination.PAGINATION_PREVIOUS_PAGE_NUM, "0".equals(previousPageNum) ? "" : previousPageNum);
@@ -259,7 +259,7 @@ public class TagProcessor {
      * Gets the request page number from the specified request URI and tag title.
      *
      * @param requestURI the specified request URI
-     * @param tagTitle the specified tag title
+     * @param tagTitle   the specified tag title
      * @return page number, returns {@code -1} if the specified request URI can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI, final String tagTitle) {
