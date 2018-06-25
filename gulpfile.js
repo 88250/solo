@@ -55,4 +55,13 @@ gulp.task('default', function () {
             .pipe(concat('admin-lib.min.js'))
             .pipe(gulp.dest('./src/main/webapp/js/lib/compress/'));
 
+
+  // concat js
+  var jsPjax = ['./src/main/webapp/js/lib/jquery/jquery-3.1.0.min.js',
+    './src/main/webapp/js/lib/jquery/jquery.pjax.js',
+    './src/main/webapp/js/lib/nprogress/nprogress.js'];
+  gulp.src(jsPjax)
+  .pipe(uglify())
+  .pipe(concat('pjax.min.js'))
+  .pipe(gulp.dest('./src/main/webapp/js/lib/compress/'));
 });

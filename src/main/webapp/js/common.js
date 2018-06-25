@@ -28,6 +28,87 @@
  * @static
  */
 var Util = {
+  _isArticlePage: function (href) {
+    var isArticle = true;
+    if (href.indexOf(latkeConfig.servePath + '/tags/') > -1) {
+      isArticle = false;
+    }
+    if (href.indexOf(latkeConfig.servePath + '/tags.html') > -1) {
+      isArticle = false;
+    }
+    if (href.indexOf(latkeConfig.servePath + '/category/') > -1) {
+      isArticle = false;
+    }
+    if (href.indexOf(latkeConfig.servePath + '/archives.html') > -1) {
+      isArticle = false;
+    }
+    if (href.indexOf(latkeConfig.servePath + '/archives/') > -1) {
+      isArticle = false;
+    }
+    if (href.indexOf(latkeConfig.servePath + '/links.html') > -1) {
+      isArticle = false;
+    }
+    if (href === latkeConfig.servePath) {
+      isArticle = false;
+    }
+    if (/^[0-9]*$/.test(href.replace(latkeConfig.servePath + '/', ''))) {
+      isArticle = false;
+    }
+    return isArticle;
+  },
+  /**
+   * pjax
+   */
+  initPjax: function (cb, articelCB) {
+    if ($('#pjax').length === 1) {
+      $.pjax({
+        selector: 'a',
+        container: '#pjax',
+        show: '',
+        cache: false,
+        storage: true,
+        titleSuffix: '',
+        filter: function(href){
+          return Util._isArticlePage(href);
+        },
+        callback: function () {
+          cb()
+        },
+      });
+      NProgress.configure({ showSpinner: false });
+      $('#pjax').bind('pjax.start', function(){
+        NProgress.start();
+      });
+      $('#pjax').bind('pjax.end', function(){
+        NProgress.done();
+      });
+      return;
+    }
+    if ($('#pjaxArticle').length === 1) {
+      $.pjax({
+        selector: 'a',
+        container: '#pjaxArticle',
+        show: '',
+        cache: false,
+        storage: true,
+        titleSuffix: '',
+        filter: function(href){
+          return !Util._isArticlePage(href);
+        },
+        callback: function () {
+          articelCB();
+        },
+      });
+      NProgress.configure({ showSpinner: false });
+      $('#pjaxArticle').bind('pjax.start', function(){
+        NProgress.start();
+      });
+      $('#pjaxArticle').bind('pjax.end', function(){
+        NProgress.done();
+      });
+      return;
+    }
+  },
   /**
    * 按需加载 MathJax 及 flow
    * @returns {undefined}

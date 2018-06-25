@@ -41,7 +41,6 @@
             <section class="content-reset">
             ${page.pageContent}
             </section>
-
         </article>
     </div>
 </div>
