@@ -29,38 +29,38 @@
 <body>
 <#include "header.ftl">
 <div id="pjax">
-<#if pjax><!---- pjax {#pjax} start ----></#if>
-    <#include "nav.ftl">
-    <div class="main">
-    <#if noticeBoard??>
-        <div class="board">
+    <#if pjax><!---- pjax {#pjax} start ----></#if>
+<#include "nav.ftl">
+<div class="main">
+<#if noticeBoard??>
+    <div class="board">
         ${noticeBoard}
-        </div>
-    </#if>
-        <div class="wrapper content">
-            <div class="module__title">
-                <span>
-                    ${links?size}
-                        <span class="ft-green ft-12">${linkLabel}</span>
-                </span>
-            </div>
-        <#if 0 != links?size>
-            <#list links as link>
-                <div class="page__item">
-                    <h3>
-                        <a rel="friend" class="ft-gray" href="${link.linkAddress}" target="_blank">
-                        ${link.linkTitle}
-                            <span class="ft-12 ft-green">${link.linkDescription}</span>
-                        </a>
-                    </h3>
-
-                </div>
-            </#list>
-        </#if>
-        </div>
-    <#include "bottom.ftl">
     </div>
-<#if pjax><!---- pjax {#pjax} end ----></#if>
+</#if>
+    <div class="wrapper content">
+        <div class="module__title">
+            <span>
+                ${links?size}
+                    <span class="ft-green ft-12">${linkLabel}</span>
+            </span>
+        </div>
+    <#if 0 != links?size>
+        <#list links as link>
+            <div class="page__item">
+                <h3>
+                    <a rel="friend" class="ft-gray" href="${link.linkAddress}" target="_blank">
+                        ${link.linkTitle}
+                        <span class="ft-12 ft-green">${link.linkDescription}</span>
+                    </a>
+                </h3>
+
+            </div>
+        </#list>
+    </#if>
+    </div>
+<#include "bottom.ftl">
+</div>
+    <#if pjax><!---- pjax {#pjax} end ----></#if>
 </div>
 <#include "footer.ftl">
 </body>
