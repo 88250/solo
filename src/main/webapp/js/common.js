@@ -57,7 +57,9 @@ var Util = {
     return isArticle;
   },
   /**
-   * pjax
+   * 初始化 Pjax
+   * @param cb 除文章和自定义页面外的其他页面加载回调
+   * @param articelCB 文章页面加载后的回调
    */
   initPjax: function (cb, articelCB) {
     if ($('#pjax').length === 1) {
