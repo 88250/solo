@@ -54,7 +54,7 @@ import java.sql.Statement;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.25, May 17, 2018
+ * @version 1.2.0.26, Jun 27, 2018
  * @since 1.2.0
  */
 @Service
@@ -78,7 +78,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "2.8.0";
+    private static final String FROM_VER = "2.9.0";
 
     /**
      * New version.

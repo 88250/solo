@@ -61,7 +61,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.32, May 17, 2018
+ * @version 1.9.3.33, Jun 27, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -74,7 +74,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Solo version.
      */
-    public static final String VERSION = "2.9.0";
+    public static final String VERSION = "2.9.1";
 
     /**
      * Bean manager.
