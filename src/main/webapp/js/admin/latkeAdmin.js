@@ -693,7 +693,7 @@ Util.processClipBoard = function (clipboardData, cm) {
 };
 
 Util.initUploadFile = function (obj) {
-  var isImg = false;
+  var cursor;
   $('#' + obj.id).fileupload({
     multipart: true,
     pasteZone: obj.pasteZone,
@@ -701,6 +701,7 @@ Util.initUploadFile = function (obj) {
     url: latkeConfig.servePath + "/upload",
     paramName: "file[]",
     add: function (e, data) {
+      obj.uploadingLabel = '';
       data.submit();
     },
     submit: function (e, data) {
@@ -712,12 +713,11 @@ Util.initUploadFile = function (obj) {
             obj.uploadingLabel += '[' + item.name.replace(/\W/g, '')  + '](Uploading...)';
           }
         });
-        var cursor = obj.editor.getCursor();
+        cursor = obj.editor.getCursor();
         obj.editor.replaceRange(obj.uploadingLabel, cursor, cursor);
       }
     },
     done: function (e, data) {
-      var cursor = obj.editor.getCursor();
       if (!data.result.sc) {
         var msg = '';
         data.files.forEach(function (item) {
@@ -729,7 +729,7 @@ Util.initUploadFile = function (obj) {
         });
 
         obj.editor.replaceRange(msg,
-          CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+            cursor, CodeMirror.Pos(cursor.line, cursor.ch + obj.uploadingLabel.length));
         return;
       }
 
@@ -737,25 +737,22 @@ Util.initUploadFile = function (obj) {
       Object.keys(data.result.data.succMap).forEach(function (key) {
         var isImage = false;
         data.files.forEach(function (item) {
-          if (item.name.replace(/\W/g, '') === key) {
-            isImage = item.type.indexOf('image') > -1
-          }
+          isImage = item.type.indexOf('image') > -1
         });
         resultMsg += (isImage ? '![' : '[') +
           key.replace(/\W/g, '') + '](' + data.result.data.succMap[key] + ') \n\n';
       });
+
       data.result.data.errFiles.forEach(function (name) {
         var isImage = false;
         data.files.forEach(function (item) {
-          if (item.name.replace(/\W/g, '') === key) {
             isImage = item.type.indexOf('image') > -1
-          }
         });
         resultMsg += (isImage ? '![' : '[') +
           '[' +  name.replace(/\W/g, '')+ '](Error)';
       });
       obj.editor.replaceRange(resultMsg,
-        CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+          cursor, CodeMirror.Pos(cursor.line, cursor.ch + obj.uploadingLabel.length));
     },
     fail: function (e, data) {
       if (obj.editor.replaceRange) {
@@ -767,9 +764,8 @@ Util.initUploadFile = function (obj) {
             msg += '[' + item.name.replace(/\W/g, '') + '](' + data.errorThrown + ')';
           }
         });
-        var cursor = obj.editor.getCursor();
-        obj.editor.replaceRange('[' + item.name.replace(/\W/g, '') + '](' + data.errorThrown + ')',
-          CodeMirror.Pos(cursor.line, cursor.ch - obj.uploadingLabel.length), cursor);
+        obj.editor.replaceRange(msg,
+            cursor, CodeMirror.Pos(cursor.line, cursor.ch + obj.uploadingLabel.length));
       }
     }
   });
