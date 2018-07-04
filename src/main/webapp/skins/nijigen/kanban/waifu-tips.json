@@ -1,0 +1,236 @@
+{
+    "mouseover": [
+        {
+            "selector": ".container a[href^='http']",
+            "text": ["要看看 <span style=\"color:#0099cc;\">{text}</span> 么？"]
+        },
+        {
+            "selector": ".fui-home",
+            "text": ["点击前往首页，想回到上一页可以使用浏览器的后退功能哦"]
+        },
+        {
+            "selector": "#tor_show",
+            "text": ["翻页比较麻烦吗，点击可以显示这篇文章的目录呢"]
+        },
+        {
+            "selector": "#comment_go,.fui-chat",
+            "text": ["想要去评论些什么吗？"]
+        },
+        {
+            "selector": "#night_mode",
+            "text": ["深夜时要爱护眼睛呀"]
+        },
+        {
+            "selector": "#qrcode",
+            "text": ["手机扫一下就能继续看，很方便呢"]
+        },
+        {
+            "selector": ".comment_reply",
+            "text": ["要吐槽些什么呢"]
+        },
+        {
+            "selector": "#back-to-top",
+            "text": ["回到开始的地方吧"]
+        },
+        {
+            "selector": "#author",
+            "text": ["该怎么称呼你呢"]
+        },
+        {
+            "selector": "#mail",
+            "text": ["留下你的邮箱，不然就是无头像人士了"]
+        },
+        {
+            "selector": "#url",
+            "text": ["你的家在哪里呢，好让我去参观参观"]
+        },
+        {
+            "selector": "#textarea",
+            "text": ["认真填写哦，垃圾评论是禁止事项"]
+        },
+        {
+            "selector": ".OwO-logo",
+            "text": ["要插入一个表情吗"]
+        },
+        {
+            "selector": "#csubmit",
+            "text": ["要提交了吗，首次评论需要审核，请耐心等待~"]
+        },
+        {
+            "selector": ".ImageBox",
+            "text": ["点击图片可以放大呢"]
+        },
+        {
+            "selector": "input[name=s]",
+            "text": ["找不到想看的内容？搜索看看吧"]
+        },
+        {
+            "selector": ".previous",
+            "text": ["去上一页看看吧"]
+        },
+        {
+            "selector": ".next",
+            "text": ["去下一页看看吧"]
+        },
+        {
+            "selector": ".dropdown-toggle",
+            "text": ["这里是菜单"]
+        },
+        {
+            "selector": ".about-avatar",
+            "text": ["忍前辈也很可爱呢", "主人更在意哪一个呢"]
+        },
+        {
+            "selector": ".about-avatar + script + blockquote",
+            "text": ["这是诗人「海子」作的『黑夜的献诗』里的一部分"]
+        },
+        {
+            "selector": "#htmer_time",
+            "text": ["已经过了这么久了呀，日子过得好快呢", "<span style=\"color:#0099cc;\">{text}</span> 是多久来着…<br>1，2，3……有好多好多天呢！"]
+        },
+        {
+            "selector": ".about-avatar ~ ul",
+            "text": ["这里记录着我搬家的历史呢"]
+        },
+        {
+            "selector": ".about-avatar ~ ul + h5 + p",
+            "text": ["普通的自我介绍"]
+        },
+        {
+            "selector": ".about-avatar ~ ul + h5 + p + blockquote",
+            "text": ["发现主人出没地点！", "这里是主人的联系方式"]
+        },
+        {
+            "selector": ".donate-qrcode",
+            "text": ["主人最近在吃土呢，很辛苦的样子。给他一些钱钱吧~"]
+        },
+        {
+            "selector": "c-player a.play-icon",
+            "text": ["想要听点音乐吗"]
+        },
+        {
+            "selector": "c-player div.time",
+            "text": ["在这里可以调整<span style=\"color:#0099cc;\">播放进度</span>呢"]
+        },
+        {
+            "selector": "c-player div.volume",
+            "text": ["在这里可以调整<span style=\"color:#0099cc;\">音量</span>呢"]
+        },
+        {
+            "selector": "c-player div.list-button",
+            "text": ["<span style=\"color:#0099cc;\">播放列表</span>里都有什么呢"]
+        },
+        {
+            "selector": "c-player div.lyric-button",
+            "text": ["有<span style=\"color:#0099cc;\">歌词</span>的话就能跟着一起唱呢"]
+        },
+        {
+            "selector": "#getT",
+            "text": ["这里有一些关于我家主人的秘密哦，要不要看看呢"]
+        },
+        {
+            "selector": "h4:contains(网易云音乐)",
+            "text": ["这里是我家主人的网易云日推，听听看吧~"]
+        },
+        {
+            "selector": "h4:contains(Pixiv)",
+            "text": ["这里是我家主人最近在P站的收藏，有你喜欢的嘛"]
+        },
+        {
+            "selector": "h4:contains(我的追番)",
+            "text": ["这里是我家主人最近在追更的动画，有你也在追的嘛"]
+        },
+        {
+            "selector": ".waifu-tool .fui-home",
+            "text": ["回首页看看吧"]
+        },
+        {
+            "selector": ".waifu-tool .fui-eye",
+            "text": ["深夜时要爱护眼睛呀"]
+        },
+        {
+            "selector": ".waifu-tool .fui-chat",
+            "text": ["猜猜我要说些什么"]
+        },
+        {
+            "selector": ".waifu-tool .fui-user",
+            "text": ["喜欢换装PLAY吗？"]
+        },
+        {
+            "selector": ".waifu-tool .fui-info-circle",
+            "text": ["想要知道更多有关我的事吗？"]
+        },
+        {
+            "selector": ".waifu-tool .fui-cross",
+            "text": ["到了要说再见的时候了吗"]
+        },
+        {
+            "selector": ".waifu-tool .fui-photo",
+            "text": ["你要给我拍照呀，一二三~茄子~~"]
+        },
+        {
+            "selector": ".waifu #live2d",
+            "text": ["干嘛呢你，快把手拿开", "鼠…鼠标放错地方了！"]
+        }
+    ],
+    "click": [
+        {
+            "selector": ".waifu #live2d",
+            "text": ["是…是不小心碰到了吧", "萝莉控是什么呀", "你看到我的小熊了吗", "再摸的话我可要报警了！⌇●﹏●⌇", "110吗，这里有个变态一直在摸我(ó﹏ò｡)"]
+        }
+    ],
+    "seasons": [
+        {
+            "date": "01/01",
+            "text": "<span style=\"color:#0099cc;\">元旦</span>了呢，新的一年又开始了，{year}年打算做些什么呢~"
+        },
+        {
+            "date": "02/14",
+            "text": "又是一年<span style=\"color:#0099cc;\">情人节</span>，{year}年找到对象了嘛~"
+        },
+        {
+            "date": "03/08",
+            "text": "今天是<span style=\"color:#0099cc;\">妇女节</span>！"
+        },
+        {
+            "date": "03/12",
+            "text": "今天是<span style=\"color:#0099cc;\">植树节</span>，要保护环境呀"
+        },
+        {
+            "date": "04/01",
+            "text": "悄悄告诉你一个秘密~<span style=\"color:#34495e;background-color:#34495e;\">今天是愚人节，不要被骗了哦~</span>"
+        },
+        {
+            "date": "05/01",
+            "text": "今天是<span style=\"color:#0099cc;\">五一劳动节</span>，计划好假期去哪里了吗~"
+        },
+        {
+            "date": "06/01",
+            "text": "<span style=\"color:#0099cc;\">儿童节</span>了呢，快活的时光总是短暂，要是永远长不大该多好啊…"
+        },
+        {
+            "date": "09/03",
+            "text": "<span style=\"color:#0099cc;\">中国人民抗日战争胜利纪念日</span>，铭记历史、缅怀先烈、珍爱和平、开创未来。"
+        },
+        {
+            "date": "09/10",
+            "text": "<span style=\"color:#0099cc;\">教师节</span>，在学校要给老师问声好呀~"
+        },
+        {
+            "date": "10/01",
+            "text": "<span style=\"color:#0099cc;\">国庆节</span>，新中国已经成立69年了呢"
+        },
+        {
+            "date": "11/05-11/12",
+            "text": "今年的<span style=\"color:#0099cc;\">双十一</span>是和谁一起过的呢~"
+        },
+        {
+            "date": "12/20-12/28",
+            "text": "这几天是<span style=\"color:#0099cc;\">圣诞节</span>，主人肯定又去剁手买买买了~"
+        },
+        {
+            "date": "12/29-12/31",
+            "text": "要<span style=\"color:#0099cc;\">年终</span>了哦~ 年初许下的愿望都实现了吗？"
+        }
+    ]
+}
