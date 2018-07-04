@@ -1174,7 +1174,7 @@
             + ($(window).height() - $('.editor-toolbar').outerHeight()) + 'px">' + result.html + '</div>');
           hljs.initHighlighting.called = false;
           hljs.initHighlighting();
-          Util.parseMarkdown();
+          Util.parseMarkdown('content-reset');
         }
       });
 
@@ -1370,7 +1370,7 @@
         },
         success: function (result, textStatus) {
           preview.innerHTML = result.html;
-          Util.parseMarkdown();
+          Util.parseMarkdown('content-reset');
           hljs.initHighlighting.called = false;
           hljs.initHighlighting();
         }
