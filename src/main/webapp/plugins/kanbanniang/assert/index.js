@@ -68,7 +68,7 @@ var soloKanbanniang = {
 
     $('#soloKanbanniangChange').click(function() {
       loadlive2d('soloKanbanniang', latkeConfig.staticServePath +
-          '/kbn/model?t=' + (new Date()).getTime(),
+          '/plugins/kanbanniang/assert/model?t=' + (new Date()).getTime(),
           soloKanbanniang.showMessage('我的新衣服好看嘛', 3000, true));
     });
 
@@ -168,6 +168,6 @@ $(document).ready(function() {
 
   soloKanbanniang.init();
 
-  loadlive2d('soloKanbanniang', latkeConfig.staticServePath +
-      '/plugins/kanbanniang/assert/model.json');
+  loadlive2d('soloKanbanniang',  latkeConfig.staticServePath +
+      '/plugins/kanbanniang/assert/model?t=' + (new Date()).getTime());
 });

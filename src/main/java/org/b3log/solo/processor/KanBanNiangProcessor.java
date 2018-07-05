@@ -55,7 +55,7 @@ public class KanBanNiangProcessor {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      */
-    @RequestProcessing(value = "/kbn/model", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/plugins/kanbanniang/assert/model", method = HTTPRequestMethod.GET)
     public void randomModel(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
@@ -91,7 +91,6 @@ public class KanBanNiangProcessor {
             "Furisode Costume.png",
             "Halloween Costume.png",
             "Hanbok Costume.png",
-            "jersey-costume-blue.png",
             "Kids Costume.png",
             "Kids Costume Navy.png",
             "Maid Costume.png",
@@ -100,7 +99,6 @@ public class KanBanNiangProcessor {
             "New2015 Costume Pajamas.png",
             "Nightsky Costume.png",
             "pajamas-costume.png",
-            "pajamas-costume-green.png",
             "Pajamas Costume Pink.png",
             "Qipao Costume Pink.png",
             "Qipao Costume Red.png",
