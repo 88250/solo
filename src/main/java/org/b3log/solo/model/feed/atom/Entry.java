@@ -26,7 +26,7 @@ import java.util.*;
  * Entry.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Mar 10, 2018
+ * @version 1.1.2.0, Jul 5, 2018
  * @since 0.3.1
  */
 public final class Entry {
@@ -315,10 +315,10 @@ public final class Entry {
 
         stringBuilder.append(START_AUTHOR_ELEMENT);
         stringBuilder.append(START_NAME_ELEMENT);
-        stringBuilder.append(author);
+        stringBuilder.append(StringEscapeUtils.escapeXml(author));
         stringBuilder.append(END_NAME_ELEMENT);
         stringBuilder.append(START_URI_ELEMENT);
-        stringBuilder.append(uri);
+        stringBuilder.append(StringEscapeUtils.escapeXml(uri));
         stringBuilder.append(END_URI_ELEMENT);
         stringBuilder.append(END_AUTHOR_ELEMENT);
 
