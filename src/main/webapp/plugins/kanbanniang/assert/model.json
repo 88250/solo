@@ -2,7 +2,7 @@
     "version":"1.0.0",
     "model":"model.moc",
     "textures":[
-        "textures/Star Witch Costume.png"
+        "textures/Animal Costume.png"
     ],
     "layout":{
         "center_x":0.0,
