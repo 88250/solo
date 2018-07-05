@@ -71,6 +71,9 @@ var Util = {
         storage: true,
         titleSuffix: '',
         filter: function(href){
+          if (href.indexOf('data:image') > -1) {
+            return true
+          }
           return Util._isArticlePage(href);
         },
         callback: function () {
@@ -95,6 +98,9 @@ var Util = {
         storage: true,
         titleSuffix: '',
         filter: function(href){
+          if (href.indexOf('data:image') > -1) {
+            return true
+          }
           return !Util._isArticlePage(href);
         },
         callback: function () {
