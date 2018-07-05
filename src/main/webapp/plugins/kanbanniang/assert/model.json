@@ -2,7 +2,7 @@
     "version":"1.0.0",
     "model":"model.moc",
     "textures":[
-        "textures/Animal Costume.png"
+        "textures/${name}"
     ],
     "layout":{
         "center_x":0.0,
