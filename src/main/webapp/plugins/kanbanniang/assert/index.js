@@ -67,9 +67,8 @@ var soloKanbanniang = {
     });
 
     $('#soloKanbanniangChange').click(function() {
-      // TODO
       loadlive2d('soloKanbanniang', latkeConfig.staticServePath +
-          '/plugins/kanbanniang/assert/model.json',
+          '/kbn/model?t=' + (new Date()).getTime(),
           soloKanbanniang.showMessage('我的新衣服好看嘛', 3000, true));
     });
 
@@ -87,14 +86,15 @@ var soloKanbanniang = {
       window.Live2D.captureFrame = true;
     });
   },
-  _initFirstMsg: function () {
+  _initFirstMsg: function() {
     var text;
     var referrer = document.createElement('a');
     if (document.referrer !== '') {
       referrer.href = document.referrer;
     }
 
-    if (referrer.href !== '' && referrer.hostname !== latkeConfig.servePath.split('//')[1].split(':')[0]) {
+    if (referrer.href !== '' && referrer.hostname !==
+        latkeConfig.servePath.split('//')[1].split(':')[0]) {
       var referrer = document.createElement('a');
       referrer.href = document.referrer;
       text = 'Hello! 来自 <span style="color:#4285f4;">' + referrer.hostname +
