@@ -100,6 +100,9 @@
     <include path="/plugins/**/*.html"/>
     <include path="/plugins/**.htm"/>
     <include path="/plugins/**/*.htm"/>
+    <include path="/plugins/**/*.json"/>
+    <include path="/plugins/**/*.moc"/>
+    <include path="/plugins/**/*.mtn"/>
 
     <include path="/CHANGE_LOGS.html"/>
     <include path="/LICENSE.txt"/>

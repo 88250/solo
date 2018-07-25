@@ -34,22 +34,12 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Mar 10, 2018
+ * @version 1.1.1.1, Jul 5, 2018
  * @see Item
  * @see Category
  * @since 0.3.1
  */
 public final class Channel {
-
-    /**
-     * Time zone id.
-     */
-    public static final String TIME_ZONE_ID = "Asia/Shanghai";
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(FeedProcessor.class);
 
     /**
      * Start.

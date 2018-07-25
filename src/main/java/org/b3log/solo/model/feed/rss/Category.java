@@ -17,11 +17,13 @@
  */
 package org.b3log.solo.model.feed.rss;
 
+import org.apache.commons.lang.StringEscapeUtils;
+
 /**
  * Category.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 12, 2011
+ * @version 1.1.1.0, Jul 5, 2018
  * @since 0.3.1
  */
 public final class Category {
@@ -56,6 +58,6 @@ public final class Category {
 
     @Override
     public String toString() {
-        return CATEGORY_ELEMENT.replace("${term}", term);
+        return CATEGORY_ELEMENT.replace("${term}", StringEscapeUtils.escapeXml(term));
     }
 }
