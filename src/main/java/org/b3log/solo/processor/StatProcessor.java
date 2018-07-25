@@ -17,9 +17,6 @@
  */
 package org.b3log.solo.processor;
 
-
-import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -27,39 +24,19 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.solo.service.StatisticMgmtService;
 
-
 /**
  * Statistics processor.
- * 
- * <p>
- * Statistics of Solo: 
- * 
- *   <ul>
- *     <li>{@link #viewCounter(org.b3log.latke.servlet.HTTPRequestContext) Blog/Article view counting}</li>
- *   </ul>
- * <p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.0, Oct 12, 2013
+ * @version 1.0.2.1, Jul 25, 2018
  * @since 0.4.0
  */
 @RequestProcessor
 public class StatProcessor {
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(StatProcessor.class);
-
-    /**
-     * Statistic management service.
-     */
-    @Inject
-    private StatisticMgmtService statisticMgmtService;
-
-    /**
      * Online visitor count refresher.
-     * 
+     *
      * @param context the specified context
      */
     @RequestProcessing(value = "/console/stat/onlineVisitorRefresh", method = HTTPRequestMethod.GET)
