@@ -630,7 +630,7 @@ admin.editors.KindEditor = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.0, Mar 15, 2018
+ * @version 1.5.1.0, Jul 8, 2018
  */
 
 Util.processClipBoard = function (text, cm) {
@@ -877,6 +877,7 @@ admin.editors.CodeMirror = {
         },
         success: function (result, textStatus) {
           $('#' + conf.id).parent().find('.CodeMirror-preview').html(result.html);
+          Util.parseMarkdown('content-reset');
           hljs.initHighlighting.called = false;
           hljs.initHighlighting();
         }
