@@ -26,7 +26,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 11, 2018
+ * @version 1.1.0.0, Jul 31, 2018
  * @since 2.8.0
  */
 public final class Solos {
@@ -56,6 +56,11 @@ public final class Solos {
      */
     public static final String UPLOAD_DIR_PATH;
 
+    /**
+     * Mobile skin.
+     */
+    public static final String MOBILE_SKIN;
+
     static {
         ResourceBundle solo;
         try {
@@ -73,6 +78,14 @@ public final class Solos {
             dir += "/";
         }
         UPLOAD_DIR_PATH = dir;
+
+        String mobileSkin = "mobile";
+        try {
+            mobileSkin = solo.getString("mobile.skin");
+        } catch (final Exception e) {
+            // ignored
+        }
+        MOBILE_SKIN = mobileSkin;
     }
 
     /**

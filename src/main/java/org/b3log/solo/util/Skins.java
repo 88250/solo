@@ -41,13 +41,12 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.5.8, May 7, 2017
+ * @version 1.1.5.9, Jul 31, 2018
  * @since 0.3.1
  */
 public final class Skins {
@@ -140,7 +139,7 @@ public final class Skins {
         Templates.MAIN_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         Templates.MAIN_CFG.setLogTemplateExceptions(false);
 
-        Templates.MOBILE_CFG.setServletContextForTemplateLoading(servletContext, "/skins/mobile");
+        Templates.MOBILE_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + Solos.MOBILE_SKIN);
         Templates.MOBILE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         Templates.MOBILE_CFG.setLogTemplateExceptions(false);
     }

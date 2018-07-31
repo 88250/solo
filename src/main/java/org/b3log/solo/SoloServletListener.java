@@ -45,6 +45,7 @@ import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.impl.OptionRepositoryImpl;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.ServletContextEvent;
@@ -61,7 +62,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.34, Jul 26, 2018
+ * @version 1.9.3.35, Jul 31, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -299,8 +300,8 @@ public final class SoloServletListener extends AbstractServletListener {
             if (desiredView == null && !Requests.mobileRequest(httpServletRequest) || desiredView != null && desiredView.equals("normal")) {
                 desiredView = preference.getString(Skin.SKIN_DIR_NAME);
             } else {
-                desiredView = "mobile";
-                LOGGER.log(Level.DEBUG, "The request [URI={0}] comes frome mobile device", requestURI);
+                desiredView = Solos.MOBILE_SKIN;
+                LOGGER.log(Level.DEBUG, "The request [URI={0}] via mobile device", requestURI);
             }
 
             Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(), "/skins/" + desiredView);
