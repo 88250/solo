@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor;
 
+import jodd.http.HttpRequest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -29,9 +30,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
@@ -44,7 +42,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -53,7 +50,7 @@ import java.util.Set;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.2, Aug 2, 2018
+ * @version 1.3.1.3, Aug 2, 2018
  * @since 0.4.6
  */
 @RequestProcessor
@@ -99,11 +96,6 @@ public class BlogProcessor {
      */
     @Inject
     private OptionQueryService optionQueryService;
-
-    /**
-     * URL fetch service.
-     */
-    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
      * Gets blog information.
@@ -165,7 +157,7 @@ public class BlogProcessor {
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
 
-        if (Latkes.getServePath().contains("localhost")) {
+        if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServePath())) {
             return;
         }
 
@@ -174,11 +166,7 @@ public class BlogProcessor {
             return; // not init yet
         }
 
-        final HTTPRequest httpRequest = new HTTPRequest();
-        httpRequest.setURL(new URL(Solos.B3LOG_SYMPHONY_SERVE_PATH + "/apis/user"));
-        httpRequest.setRequestMethod(HTTPRequestMethod.POST);
         final JSONObject requestJSONObject = new JSONObject();
-
         final JSONObject admin = userQueryService.getAdmin();
         requestJSONObject.put(User.USER_NAME, admin.getString(User.USER_NAME));
         requestJSONObject.put(User.USER_EMAIL, admin.getString(User.USER_EMAIL));
@@ -186,9 +174,7 @@ public class BlogProcessor {
         requestJSONObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
         requestJSONObject.put("clientHost", Latkes.getServePath());
 
-        httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-
-        urlFetchService.fetchAsync(httpRequest);
+        HttpRequest.post(Solos.B3LOG_SYMPHONY_SERVE_PATH + "/apis/user").bodyText(requestJSONObject.toString()).contentTypeJson().sendAsync();
     }
 
     /**

@@ -31,8 +31,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
@@ -57,7 +55,7 @@ import java.util.Date;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.14, Mar 19, 2018
+ * @version 1.1.1.15, Aug 2, 2018
  * @since 0.5.5
  */
 @RequestProcessor
@@ -97,11 +95,6 @@ public class CommentReceiver {
      */
     @Inject
     private ArticleRepository articleRepository;
-
-    /**
-     * URL fetch service.
-     */
-    private static URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
      * Event manager.

@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import jodd.http.HttpRequest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -35,9 +36,6 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
@@ -50,7 +48,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.ServletContext;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -60,7 +57,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.20, Aug 2, 2018
+ * @version 1.5.2.21, Aug 2, 2018
  * @since 0.4.0
  */
 @Service
@@ -158,7 +155,6 @@ public class InitService {
      *
      * @return {@code true} if it had been initialized, {@code false} otherwise
      */
-    // XXX: to find a better way (isInited)?
     public boolean isInited() {
         try {
             final JSONObject admin = userRepository.getAdmin();
@@ -263,11 +259,7 @@ public class InitService {
         }
 
         try {
-            final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
-
-            final HTTPRequest req = new HTTPRequest();
-            req.setURL(new URL(Latkes.getServePath() + "/blog/symphony/user"));
-            urlFetchService.fetchAsync(req);
+            HttpRequest.get(Latkes.getServePath() + "/blog/symphony/user").sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.TRACE, "Sync account failed");
         }

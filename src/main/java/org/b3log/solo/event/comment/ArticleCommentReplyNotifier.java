@@ -21,7 +21,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
@@ -45,7 +44,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.wanglay.com">Lei Wang</a>
- * @version 1.2.2.9, Apr 15, 2018
+ * @version 1.2.2.10, Aug 2, 2018
  * @since 0.3.1
  */
 public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObject> {
@@ -61,7 +60,7 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
     private MailService mailService = MailServiceFactory.getMailService();
 
     @Override
-    public void action(final Event<JSONObject> event) throws EventException {
+    public void action(final Event<JSONObject> event) {
         final JSONObject eventData = event.getData();
         final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
         final JSONObject article = eventData.optJSONObject(Article.ARTICLE);
@@ -75,7 +74,7 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
             return;
         }
 
-        if (Latkes.getServePath().contains("localhost")) {
+        if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServePath())) {
             LOGGER.log(Level.INFO, "Solo runs on local server, so should not send mail");
 
             return;
@@ -104,7 +103,7 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                throw new EventException("Not found preference");
+                throw new Exception("Not found preference");
             }
 
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
@@ -156,8 +155,6 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
             mailService.send(message);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            throw new EventException("Reply notifier error!");
         }
     }
 

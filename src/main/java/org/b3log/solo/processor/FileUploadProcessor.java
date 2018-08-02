@@ -21,11 +21,10 @@ import com.qiniu.storage.Configuration;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import jodd.io.FileUtil;
-import jodd.upload.FileUpload;
-import jodd.upload.MultipartStreamParser;
-import jodd.upload.impl.MemoryFileUploadFactory;
-import jodd.util.MimeTypes;
-import jodd.util.URLDecoder;
+import jodd.io.upload.FileUpload;
+import jodd.io.upload.MultipartStreamParser;
+import jodd.io.upload.impl.MemoryFileUploadFactory;
+import jodd.net.MimeTypes;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -40,6 +39,7 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.util.URLs;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.OptionQueryService;
@@ -55,7 +55,7 @@ import java.util.*;
  * File upload processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Aug 2, 2018
+ * @version 1.0.1.2, Aug 2, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -107,7 +107,7 @@ public class FileUploadProcessor {
         key = StringUtils.substringBeforeLast(key, "?"); // Erase Qiniu template
 
         String path = Solos.UPLOAD_DIR_PATH + key;
-        path = URLDecoder.decode(path, "UTF-8");
+        path = URLs.decode(path);
 
         if (!FileUtil.isExistingFile(new File(path))) {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);

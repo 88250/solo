@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import jodd.http.HttpRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
@@ -33,10 +34,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.HTTPResponse;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
@@ -60,7 +57,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.0, Aug 31, 2017
+ * @version 1.3.3.1, Aug 2, 2018
  * @since 0.3.5
  */
 @Service
@@ -107,11 +104,6 @@ public class CommentMgmtService {
      */
     @Inject
     private static EventManager eventManager;
-
-    /**
-     * URL fetch service.
-     */
-    private static URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
 
     /**
      * Article management service.
@@ -197,7 +189,7 @@ public class CommentMgmtService {
             return;
         }
 
-        if (Latkes.getServePath().contains("localhost")) {
+        if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServePath())) {
             LOGGER.log(Level.INFO, "Solo runs on local server, so should not send mail");
 
             return;
@@ -793,15 +785,9 @@ public class CommentMgmtService {
         final URL gravatarURL = new URL(thumbnailURL);
 
         int statusCode = HttpServletResponse.SC_OK;
-
         try {
-            final HTTPRequest request = new HTTPRequest();
-
-            request.setURL(gravatarURL);
-            final HTTPResponse response = urlFetchService.fetch(request);
-
-            statusCode = response.getResponseCode();
-        } catch (final IOException e) {
+            statusCode = HttpRequest.get(thumbnailURL).send().statusCode();
+        } catch (final Exception e) {
             LOGGER.log(Level.DEBUG, "Can not fetch thumbnail from Gravatar [commentEmail={0}]", commentEmail);
         } finally {
             if (HttpServletResponse.SC_OK != statusCode) {

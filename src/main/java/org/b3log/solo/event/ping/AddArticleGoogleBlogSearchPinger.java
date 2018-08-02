@@ -17,24 +17,21 @@
  */
 package org.b3log.solo.event.ping;
 
+import jodd.http.HttpRequest;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
-import java.net.URL;
 import java.net.URLEncoder;
 
 /**
@@ -47,7 +44,7 @@ import java.net.URLEncoder;
  * </li>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Apr 15, 2018
+ * @version 1.0.0.6, Aug 2, 2018
  * @see UpdateArticleGoogleBlogSearchPinger
  * @since 0.3.1
  */
@@ -57,11 +54,6 @@ public final class AddArticleGoogleBlogSearchPinger extends AbstractEventListene
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(AddArticleGoogleBlogSearchPinger.class);
-
-    /**
-     * URL fetch service.
-     */
-    private static final URLFetchService URL_FETCH_SERVICE = URLFetchServiceFactory.getURLFetchService();
 
     /**
      * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
@@ -74,7 +66,7 @@ public final class AddArticleGoogleBlogSearchPinger extends AbstractEventListene
     }
 
     @Override
-    public void action(final Event<JSONObject> event) throws EventException {
+    public void action(final Event<JSONObject> event) {
         final JSONObject eventData = event.getData();
 
         String articleTitle = null;
@@ -89,7 +81,7 @@ public final class AddArticleGoogleBlogSearchPinger extends AbstractEventListene
             final JSONObject preference = preferenceQueryService.getPreference();
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
 
-            if (Latkes.getServePath().contains("localhost")) {
+            if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServePath())) {
                 LOGGER.log(Level.TRACE, "Solo runs on local server, so should not ping " +
                                 "Google Blog Search Service for the article[title={0}]",
                         article.getString(Article.ARTICLE_TITLE));
@@ -103,10 +95,7 @@ public final class AddArticleGoogleBlogSearchPinger extends AbstractEventListene
 
             LOGGER.log(Level.DEBUG, "Request Google Blog Search Service API[{0}] while adding an "
                     + "article[title=" + articleTitle + "]", spec);
-            final HTTPRequest request = new HTTPRequest();
-            request.setURL(new URL(spec));
-
-            URL_FETCH_SERVICE.fetchAsync(request);
+            HttpRequest.get(spec).sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Ping Google Blog Search Service fail while adding an article[title="
                     + articleTitle + "]", e);

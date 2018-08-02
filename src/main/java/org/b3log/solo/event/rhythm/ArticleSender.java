@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.event.rhythm;
 
+import jodd.http.HttpRequest;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
@@ -26,10 +27,6 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.urlfetch.HTTPRequest;
-import org.b3log.latke.urlfetch.URLFetchService;
-import org.b3log.latke.urlfetch.URLFetchServiceFactory;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
@@ -40,8 +37,6 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -52,7 +47,7 @@ import java.util.Date;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.0.2.12, Mar 11, 2018
+ * @version 1.0.2.13, Aug 2, 2018
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -65,24 +60,10 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
     /**
      * URL of adding article to Rhythm.
      */
-    private static final URL ADD_ARTICLE_URL;
-
-    static {
-        try {
-            ADD_ARTICLE_URL = new URL(Solos.B3LOG_RHYTHM_SERVE_PATH + "/article");
-        } catch (final MalformedURLException e) {
-            LOGGER.log(Level.ERROR, "Creates remote service address[rhythm add article] error!");
-            throw new IllegalStateException(e);
-        }
-    }
-
-    /**
-     * URL fetch service.
-     */
-    private final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+    private static final String ADD_ARTICLE_URL = Solos.B3LOG_RHYTHM_SERVE_PATH + "/article";
 
     @Override
-    public void action(final Event<JSONObject> event) throws EventException {
+    public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
 
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
@@ -107,16 +88,12 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
-            if (Latkes.getServePath().contains("localhost")) {
+            if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServePath())) {
                 LOGGER.log(Level.TRACE, "Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
                         originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE));
                 return;
             }
 
-            final HTTPRequest httpRequest = new HTTPRequest();
-
-            httpRequest.setURL(ADD_ARTICLE_URL);
-            httpRequest.setRequestMethod(HTTPRequestMethod.POST);
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject();
 
@@ -141,9 +118,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", "LOCAL");
 
-            httpRequest.setPayload(requestJSONObject.toString().getBytes("UTF-8"));
-
-            urlFetchService.fetchAsync(httpRequest);
+            HttpRequest.post(ADD_ARTICLE_URL).bodyText(requestJSONObject.toString()).contentTypeJson().sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends an article to Rhythm error: {0}", e.getMessage());
         }
