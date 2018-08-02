@@ -19,9 +19,7 @@ package org.b3log.solo.model.feed.rss;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
-import org.b3log.latke.logging.Logger;
-import org.b3log.solo.processor.FeedProcessor;
-import org.b3log.solo.util.XMLs;
+import org.b3log.latke.util.XMLs;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +32,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Jul 5, 2018
+ * @version 1.1.1.2, Aug 2, 2018
  * @see Item
  * @see Category
  * @since 0.3.1

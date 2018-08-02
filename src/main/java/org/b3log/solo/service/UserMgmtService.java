@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -33,7 +34,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Crypts;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.UserExt;
@@ -51,7 +51,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.0.11, Aug 14, 2017
+ * @version 1.1.0.12, Aug 2, 2018
  * @since 0.4.0
  */
 @Service
@@ -183,7 +183,7 @@ public class UserMgmtService {
 
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
             final boolean maybeHashed = HASHED_PASSWORD_LENGTH == userPassword.length();
-            final String newHashedPassword = MD5.hash(userPassword);
+            final String newHashedPassword = DigestUtils.md5Hex(userPassword);
             final String oldHashedPassword = oldUser.optString(User.USER_PASSWORD);
 
             if (!"demo.b3log.org".equals(Latkes.getServerHost())) { // Skips the Solo Online Demo (http://demo.b3log.org)
@@ -300,7 +300,7 @@ public class UserMgmtService {
             user.put(User.USER_NAME, userName);
 
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-            user.put(User.USER_PASSWORD, MD5.hash(userPassword));
+            user.put(User.USER_PASSWORD, DigestUtils.md5Hex(userPassword));
 
             String userURL = requestJSONObject.optString(User.USER_URL);
             if (Strings.isEmptyOrNull(userURL)) {

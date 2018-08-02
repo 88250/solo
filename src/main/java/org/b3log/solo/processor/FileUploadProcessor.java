@@ -26,6 +26,7 @@ import jodd.upload.MultipartStreamParser;
 import jodd.upload.impl.MemoryFileUploadFactory;
 import jodd.util.MimeTypes;
 import jodd.util.URLDecoder;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -39,7 +40,6 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.util.MD5;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.OptionQueryService;
@@ -55,7 +55,7 @@ import java.util.*;
  * File upload processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Jun 22, 2018
+ * @version 1.0.1.1, Aug 2, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -118,7 +118,7 @@ public class FileUploadProcessor {
         final byte[] data = IOUtils.toByteArray(new FileInputStream(path));
 
         final String ifNoneMatch = req.getHeader("If-None-Match");
-        final String etag = "\"" + MD5.hash(new String(data)) + "\"";
+        final String etag = "\"" + DigestUtils.md5Hex(new String(data)) + "\"";
 
         resp.addHeader("Cache-Control", "public, max-age=31536000");
         resp.addHeader("ETag", etag);

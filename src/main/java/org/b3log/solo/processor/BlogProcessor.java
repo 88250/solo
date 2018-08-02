@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -31,7 +32,6 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.urlfetch.HTTPRequest;
 import org.b3log.latke.urlfetch.URLFetchService;
 import org.b3log.latke.urlfetch.URLFetchServiceFactory;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
@@ -53,7 +53,7 @@ import java.util.Set;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.1, Mar 11, 2018
+ * @version 1.3.1.2, Aug 2, 2018
  * @since 0.4.6
  */
 @RequestProcessor
@@ -221,7 +221,7 @@ public class BlogProcessor {
         }
 
         final JSONObject admin = userQueryService.getAdmin();
-        if (!MD5.hash(pwd).equals(admin.getString(User.USER_PASSWORD))) {
+        if (!DigestUtils.md5Hex(pwd).equals(admin.getString(User.USER_PASSWORD))) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;

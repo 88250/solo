@@ -20,8 +20,8 @@ package org.b3log.solo.model.feed.atom;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.util.XMLs;
 import org.b3log.solo.processor.FeedProcessor;
-import org.b3log.solo.util.XMLs;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +35,7 @@ import java.util.TimeZone;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Mar 10, 2018
+ * @version 1.1.1.1, Aug 2, 2018
  * @see Entry
  * @see Category
  * @since 0.3.1

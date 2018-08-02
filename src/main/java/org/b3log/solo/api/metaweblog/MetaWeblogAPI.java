@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.api.metaweblog;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -34,7 +35,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextXMLRenderer;
-import org.b3log.latke.util.MD5;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
@@ -68,7 +68,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.16, Apr 15, 2018
+ * @version 1.0.0.17, Aug 2, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -225,7 +225,7 @@ public class MetaWeblogAPI {
             }
 
             final String userPwd = params.getJSONObject(INDEX_USER_PWD).getJSONObject("value").getString("string");
-            if (!user.getString(User.USER_PASSWORD).equals(MD5.hash(userPwd))) {
+            if (!user.getString(User.USER_PASSWORD).equals(DigestUtils.md5Hex(userPwd))) {
                 throw new Exception("Wrong password");
             }
 

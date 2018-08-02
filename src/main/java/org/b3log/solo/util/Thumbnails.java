@@ -17,7 +17,7 @@
  */
 package org.b3log.solo.util;
 
-import org.b3log.latke.util.MD5;
+import org.apache.commons.codec.digest.DigestUtils;
 
 /**
  * Thumbnail utilities.
@@ -26,7 +26,7 @@ import org.b3log.latke.util.MD5;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Mar 11, 2018
+ * @version 1.1.0.2, Aug 2, 2018
  * @since 0.6.1
  */
 public final class Thumbnails {
@@ -39,7 +39,7 @@ public final class Thumbnails {
      * @return the Gravatar URL
      */
     public static String getGravatarURL(final String email, final String size) {
-        return Solos.GRAVATAR + MD5.hash(email) + "?s=" + size;
+        return Solos.GRAVATAR + DigestUtils.md5Hex(email) + "?s=" + size;
     }
 
     /**

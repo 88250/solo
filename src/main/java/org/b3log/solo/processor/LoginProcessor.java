@@ -17,6 +17,8 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -38,7 +40,6 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.user.UserService;
 import org.b3log.latke.user.UserServiceFactory;
-import org.b3log.latke.util.MD5;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -49,7 +50,6 @@ import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Mails;
-import org.b3log.solo.util.Randoms;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,7 +66,7 @@ import java.util.Map;
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.1.11, Mar 3, 2018
+ * @version 1.1.1.12, Aug 2, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -208,7 +208,7 @@ public class LoginProcessor {
                 return;
             }
 
-            if (MD5.hash(userPwd).equals(user.getString(User.USER_PASSWORD))) {
+            if (DigestUtils.md5Hex(userPwd).equals(user.getString(User.USER_PASSWORD))) {
                 Sessions.login(request, context.getResponse(), user);
 
                 LOGGER.log(Level.INFO, "Logged in[email={0}]", userEmail);
@@ -245,7 +245,6 @@ public class LoginProcessor {
         Sessions.logout(httpServletRequest, context.getResponse());
 
         String destinationURL = httpServletRequest.getParameter(Common.GOTO);
-
         if (Strings.isEmptyOrNull(destinationURL) || !isInternalLinks(destinationURL)) {
             destinationURL = "/";
         }
@@ -264,7 +263,6 @@ public class LoginProcessor {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
-
         if (Strings.isEmptyOrNull(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         } else if (!isInternalLinks(destinationURL)) {
@@ -397,15 +395,13 @@ public class LoginProcessor {
     private void sendResetUrl(final String userEmail, final JSONObject jsonObject) throws JSONException,
             ServiceException, IOException, RepositoryException {
         final JSONObject preference = preferenceQueryService.getPreference();
-        final String token = new Randoms().nextStringWithMD5();
+        final String token = RandomStringUtils.randomAlphanumeric(8);
         final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
         final String mailSubject = langPropsService.get("resetPwdMailSubject");
-        final String mailBody = langPropsService.get("resetPwdMailBody") + " " + Latkes.getServePath()
-                + "/forgot?token=" + token;
+        final String mailBody = langPropsService.get("resetPwdMailBody") + " " + Latkes.getServePath() + "/forgot?token=" + token;
         final MailService.Message message = new MailService.Message();
 
         final JSONObject option = new JSONObject();
-
         option.put(Keys.OBJECT_ID, token);
         option.put(Option.OPTION_CATEGORY, "passwordReset");
         option.put(Option.OPTION_VALUE, userEmail);

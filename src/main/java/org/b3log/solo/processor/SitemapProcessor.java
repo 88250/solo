@@ -33,6 +33,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextXMLRenderer;
+import org.b3log.latke.util.XMLs;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
@@ -44,7 +45,6 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.XMLs;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -57,7 +57,7 @@ import java.util.Date;
  * Site map (sitemap) processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.0, Mar 18, 2018
+ * @version 1.0.2.1, Aug 2, 2018
  * @since 0.3.1
  */
 @RequestProcessor

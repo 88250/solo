@@ -18,11 +18,11 @@
 package org.b3log.solo.service;
 
 import junit.framework.Assert;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.util.MD5;
 import org.b3log.solo.AbstractTestCase;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.0.0.4, Aug 14, 2017
+ * @version 1.0.0.5, Aug 2, 2018
  */
 @Test(suiteName = "service")
 public class UserMgmtServiceTestCase extends AbstractTestCase {
@@ -91,7 +91,7 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
         userMgmtService.updateUser(requestJSONObject);
 
         Assert.assertEquals(getUserQueryService().getUser(id).getJSONObject(
-                User.USER).getString(User.USER_PASSWORD), MD5.hash("pass2"));
+                User.USER).getString(User.USER_PASSWORD), DigestUtils.md5Hex("pass2"));
     }
 
     /**
