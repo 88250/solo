@@ -26,13 +26,12 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,11 +55,6 @@ public class ErrorProcessor {
     private static final Logger LOGGER = Logger.getLogger(ArticleProcessor.class);
 
     /**
-     * User service.
-     */
-    private static UserService userService = UserServiceFactory.getUserService();
-
-    /**
      * Filler.
      */
     @Inject
@@ -71,6 +65,12 @@ public class ErrorProcessor {
      */
     @Inject
     private PreferenceQueryService preferenceQueryService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Language service.
@@ -111,7 +111,7 @@ public class ErrorProcessor {
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
 
-            dataModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
+            dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

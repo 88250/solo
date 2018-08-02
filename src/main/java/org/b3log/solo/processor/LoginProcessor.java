@@ -38,8 +38,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -82,11 +80,6 @@ public class LoginProcessor {
      */
     @Inject
     private UserQueryService userQueryService;
-
-    /**
-     * User service.
-     */
-    private UserService userService = UserServiceFactory.getUserService();
 
     /**
      * Mail service.
@@ -156,7 +149,7 @@ public class LoginProcessor {
 
         userMgmtService.tryLogInWithCookie(request, response);
 
-        if (null != userService.getCurrentUser(request)) { // User has already logged in
+        if (null != userQueryService.getCurrentUser(request)) { // User has already logged in
             response.sendRedirect(destinationURL);
 
             return;

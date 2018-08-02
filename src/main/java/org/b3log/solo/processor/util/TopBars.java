@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor.util;
 
-
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.b3log.latke.Keys;
@@ -29,8 +28,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.user.UserService;
-import org.b3log.latke.user.UserServiceFactory;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
@@ -48,13 +45,12 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  * Top bar utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.0.1.5, Apr 10, 2013
+ * @version 1.0.1.6, Aug 2, 2018
  * @since 0.3.5
  */
 @Service
@@ -64,11 +60,6 @@ public class TopBars {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(TopBars.class);
-
-    /**
-     * User service.
-     */
-    private static UserService userService = UserServiceFactory.getUserService();
 
     /**
      * User query service.
@@ -96,14 +87,14 @@ public class TopBars {
 
     /**
      * Generates top bar HTML.
-     * 
-     * @param request the specified request
+     *
+     * @param request  the specified request
      * @param response the specified response
      * @return top bar HTML
-     * @throws ServiceException service exception 
+     * @throws ServiceException service exception
      */
     public String getTopBarHTML(final HttpServletRequest request, final HttpServletResponse response)
-        throws ServiceException {
+            throws ServiceException {
         Stopwatchs.start("Gens Top Bar HTML");
 
         try {
@@ -125,7 +116,7 @@ public class TopBars {
             topBarModel.put(Common.ONLINE_VISITOR_CNT, StatisticQueryService.getOnlineVisitorCount());
 
             if (null == currentUser) {
-                topBarModel.put(Common.LOGIN_URL, userService.createLoginURL(Common.ADMIN_INDEX_URI));
+                topBarModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
                 topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
                 topBarModel.put("registerLabel", langPropsService.get("registerLabel"));
 
@@ -135,7 +126,7 @@ public class TopBars {
             }
 
             topBarModel.put(Common.IS_LOGGED_IN, true);
-            topBarModel.put(Common.LOGOUT_URL, userService.createLogoutURL("/"));
+            topBarModel.put(Common.LOGOUT_URL, userQueryService.getLogoutURL());
             topBarModel.put(Common.IS_ADMIN, Role.ADMIN_ROLE.equals(currentUser.getString(User.USER_ROLE)));
             topBarModel.put(Common.IS_VISITOR, Role.VISITOR_ROLE.equals(currentUser.getString(User.USER_ROLE)));
 
