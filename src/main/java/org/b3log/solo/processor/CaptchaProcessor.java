@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor;
 
-import org.b3log.latke.image.Image;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -44,7 +43,7 @@ import java.util.Set;
  * Captcha processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.1, Apr 5, 2018
+ * @version 2.0.0.2, Aug 2, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -111,10 +110,7 @@ public class CaptchaProcessor {
 
             try (final ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
                 ImageIO.write(bufferedImage, "png", baos);
-                final byte[] data = baos.toByteArray();
-                final Image captchaImg = new Image();
-                captchaImg.setData(data);
-                renderer.setImage(captchaImg);
+                renderer.setImage(baos.toByteArray());
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
