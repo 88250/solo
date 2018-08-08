@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor.console;
 
-import com.qiniu.util.Auth;
 import jodd.io.ZipUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -74,7 +73,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.3, Jun 21, 2018
+ * @version 1.7.0.4, Aug 8, 2018
  * @since 0.4.1
  */
 @RequestProcessor
@@ -366,6 +365,7 @@ public class AdminConsole {
         }
 
         if (StringUtils.isBlank(sql)) {
+            LOGGER.log(Level.ERROR, "Export failed, executing export script returns empty");
             context.renderJSON().renderMsg("Export failed, please check log");
 
             return;
