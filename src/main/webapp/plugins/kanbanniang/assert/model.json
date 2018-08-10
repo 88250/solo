@@ -2,7 +2,7 @@
     "version":"1.0.0",
     "model":"model.moc",
     "textures":[
-        "textures/${name}"
+        "https://static-solo.b3log.org/plugins/kanbanniang/assert/textures/${name}"
     ],
     "layout":{
         "center_x":0.0,

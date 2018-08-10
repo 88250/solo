@@ -16,8 +16,7 @@ var soloKanbanniang = {
   _initTips: function() {
     $.ajax({
       cache: true,
-      url: latkeConfig.staticServePath +
-      '/plugins/kanbanniang/assert/tips.json',
+      url: 'https://static-solo.b3log.org/plugins/kanbanniang/assert/tips.json',
       dataType: 'json',
       success: function(result) {
         $.each(result.mouseover, function(index, tips) {
