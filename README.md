@@ -4,6 +4,19 @@
 
 [Solo](https://github.com/b3log/solo) 是**一个命令**就能搭建好的 Java 开源博客系统，并内置了 18+ 套精心制作的皮肤。除此之外，Solo 还有着非常活跃的[社区](https://hacpai.com)，文章分享到社区后可以让很多人看到，产生丰富的交流互动。
 
+## 案例
+
+* [D 的个人博客](https://88250.b3log.org)
+* [Jiahao.Zhang's Blog](https://blog.hduzplus.xyz)
+* [子兮子兮](https://zixizixi.cn)
+* [铅笔的个人博客](https://pencilso.cn)
+* [洗澡狂魔的技术阵地](https://blog.washmoretech.com)
+* [刘美胜奇](http://www.liumapp.com)
+* [水星的随笔](https://note.abeffect.com)
+* [1992 社区](https://1992.cool)
+* [何遇](http://littleq.cn)
+* [Relyn](http://relyn.cn)
+
 ## 功能 
 
 * Markdown / Emoji
