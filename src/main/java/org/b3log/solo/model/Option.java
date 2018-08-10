@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.6, May 29, 2018
+ * @version 1.3.0.7, Aug 10, 2018
  * @since 0.6.0
  */
 public final class Option {
@@ -412,7 +412,7 @@ public final class Option {
         /**
          * Default meta description..
          */
-        public static final String DEFAULT_META_DESCRIPTION = "A beautiful, simple, stable, fast Java blogging system. 一款漂亮、简约、稳定、极速的 Java 博客系统。";
+        public static final String DEFAULT_META_DESCRIPTION = "A small and beautiful blogging system. 一款小而美的博客系统。";
 
         /**
          * Default HTML head to append.
