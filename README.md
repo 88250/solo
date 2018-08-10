@@ -42,7 +42,7 @@
 
 前台界面
 
-* [预览及下载](https://hacpai.com/article/1493814851007#toc_h2_11)
+* [预览及下载](https://hacpai.com/article/1493814851007#toc_h2_12)
 
 ## 安装
 
