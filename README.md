@@ -55,7 +55,7 @@
 
 `docker volume create solo_datas && docker run --privileged --name solo --restart=unless-stopped -p 8080:8080 -v solo_datas:/opt/b3log/backup/ -d 88250/solo`
 
-**如果你想用 Solo 但又不想自己维护服务器，可以购买我们搭建好的 Solo 直接[使用](https://b3log.org/services/#solo)。**
+**如果你不想自己维护服务器，可以[购买]((https://b3log.org/services/#solo))我们搭建好的 Solo 直接使用。**
 
 ## 文档
 
