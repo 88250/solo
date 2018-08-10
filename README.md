@@ -46,32 +46,30 @@
 
 ## 安装
 
-JDK 环境准备好之后[下载](https://pan.baidu.com/s/1dzk7SU)最新的 Solo 包解压，进入解压目录执行：
+[下载](https://pan.baidu.com/s/1dzk7SU)最新的 Solo 包解压，进入解压目录执行：
 
 * Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter`
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
 
 用 `Docker` 运行？
 
-`docker volume create solo_datas && docker run --privileged --name solo --restart=unless-stopped -p 8080:8080 -v solo_datas:/opt/b3log/backup/ -d 88250/solo`
+```
+docker volume create solo_datas && docker run --privileged --name solo --restart=unless-stopped -p 8080:8080 -v solo_datas:/opt/b3log/backup/ -d 88250/solo
+```
 
 **更多细节请参考 [Solo 用户指南](https://hacpai.com/article/1492881378588)。另外，如果你想用 Solo 但又不想自己维护服务器，可以购买我们搭建好的 Solo 直接[使用](https://b3log.org/services/#solo)。**
 
 ## 文档
 
-* [用户指南](https://hacpai.com/article/1492881378588)：安装、配置、备份以及常见问题
-* [开发指南](https://hacpai.com/article/1493822943172)：开发环境、项目结构、框架说明
-* [皮肤开发](https://hacpai.com/article/1493814851007)：开发步骤、模版变量
-* [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)：插件机制、处理流程
+* [用户指南](https://hacpai.com/article/1492881378588)
+* [开发指南](https://hacpai.com/article/1493822943172)
+* [皮肤开发](https://hacpai.com/article/1493814851007)
+* [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
 
 ## 社区
 
-大家可以通过以下方式进行项目讨论，帮助项目发展：
-
-* Solo [讨论区](https://hacpai.com/tag/Solo)
+* [讨论区](https://hacpai.com/tag/Solo)
 * [报告问题](https://github.com/b3log/solo/issues/new)
-
-我们非常期待你加入到项目中，无论是使用反馈还是代码补丁，都是对 Solo 一份满满的爱 :heart:
 
 ## 授权
 
