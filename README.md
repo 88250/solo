@@ -45,15 +45,15 @@
 
 ## 界面
 
-编辑文章
+### 编辑文章
 
 ![5f7258675e0143c79e15ddffabf02147-article.png](https://img.hacpai.com/file/2017/8/5f7258675e0143c79e15ddffabf02147-article.png) 
 
-选择皮肤
+### 选择皮肤
 
 ![ac9a044c18ec4dd4a9356caf698d7fe8-skin.png](https://img.hacpai.com/file/2017/8/ac9a044c18ec4dd4a9356caf698d7fe8-skin.png) 
 
-前台界面
+### 前台界面
 
 * [预览及下载](https://hacpai.com/article/1493814851007#toc_h2_12)
 
@@ -87,8 +87,6 @@
 Solo 使用 [GNU Affero General Public License, Version 3](https://www.gnu.org/licenses/agpl-3.0.txt) 作为开源协议，请务必遵循该开源协议相关约定。
 
 ## 鸣谢
-
-Solo 的诞生离不开以下开源项目：
 
 * [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
 * [CodeMirror](https://github.com/codemirror/CodeMirror)：前端 Markdown 编辑器内核
