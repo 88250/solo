@@ -1,6 +1,6 @@
 <#--
 
-    Solo - A beautiful, simple, stable, fast Java blogging system.
+    Solo - A small and beautiful blogging system written in Java.
     Copyright (c) 2010-2018, b3log.org & hacpai.com
 
     This program is free software: you can redistribute it and/or modify
@@ -17,8 +17,6 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-
-
 <textarea id="jsoneditor" rows="10" cols="110">
 	${setting}
 </textarea>

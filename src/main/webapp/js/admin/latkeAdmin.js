@@ -1,5 +1,5 @@
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -274,7 +274,7 @@ $.extend(Admin.prototype, {
 });
 
 var admin = new Admin();/*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -375,7 +375,7 @@ admin.editors.articleEditor = {};
 admin.editors.abstractEditor = {};
 admin.editors.pageEditor = {};
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -502,7 +502,7 @@ admin.editors.tinyMCE = {
     }
 };
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -609,7 +609,7 @@ admin.editors.KindEditor = {
     }
 };
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -916,7 +916,7 @@ admin.editors.CodeMirror = {
     $('.editor-toolbar').remove();
   }
 };/*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -1032,7 +1032,7 @@ $.extend(TablePaginate.prototype, {
     }
 });
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -1702,7 +1702,7 @@ function getUUID() {
 }
 ;
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -1834,7 +1834,7 @@ admin.comment = {
     }
 };
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -1990,7 +1990,7 @@ admin.register["article-list"] =  {
     "init": admin.articleList.init,
     "refresh": admin.articleList.getList
 }/*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -2105,7 +2105,7 @@ admin.register["draft-list"] =  {
     "init": admin.draftList.init,
     "refresh": admin.draftList.getList
 };/*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -2563,7 +2563,7 @@ admin.register["page-list"] = {
     "refresh": admin.pageList.getList
 }
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -2752,7 +2752,7 @@ admin.register.others = {
   }
 };
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -3103,7 +3103,7 @@ admin.register["link-list"] =  {
     "init": admin.linkList.init,
     "refresh": admin.linkList.getList
 }/*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -3406,7 +3406,7 @@ admin.register["preference"] = {
     }
 };
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -3584,7 +3584,7 @@ admin.register["plugin-list"] = {
     }
 };
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -3947,7 +3947,7 @@ admin.register["user-list"] = {
     "init": admin.userList.init,
     "refresh": admin.userList.getList
 }/*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -4316,7 +4316,7 @@ admin.register["category-list"] = {
     "init": admin.categoryList.init,
     "refresh": admin.categoryList.getList
 }/*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -4467,7 +4467,7 @@ admin.register["comment-list"] =  {
     "init": admin.commentList.init,
     "refresh": admin.commentList.getList
 }/*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -4603,7 +4603,7 @@ admin.plugin = {
     }
 };
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
@@ -4643,7 +4643,7 @@ admin.register.main =  {
     }
 };
 /*
- * Solo - A beautiful, simple, stable, fast Java blogging system.
+ * Solo - A small and beautiful blogging system written in Java.
  * Copyright (c) 2010-2018, b3log.org & hacpai.com
  *
  * This program is free software: you can redistribute it and/or modify
