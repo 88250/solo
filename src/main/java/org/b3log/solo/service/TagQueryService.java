@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -26,10 +25,8 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.TagRepository;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,7 +37,7 @@ import java.util.List;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Dec 17, 2015
+ * @version 1.1.0.4, Aug 27, 2018
  * @since 0.4.0
  */
 @Service
@@ -71,7 +68,6 @@ public class TagQueryService {
      *     }
      * }
      * </pre>, returns {@code null} if not found
-     *
      * @throws ServiceException service exception
      */
     public JSONObject getTagByTitle(final String tagTitle) throws ServiceException {
@@ -79,13 +75,11 @@ public class TagQueryService {
             final JSONObject ret = new JSONObject();
 
             final JSONObject tag = tagRepository.getByTitle(tagTitle);
-
             if (null == tag) {
                 return null;
             }
 
             ret.put(Tag.TAG, tag);
-
             LOGGER.log(Level.DEBUG, "Got an tag[title={0}]", tagTitle);
 
             return ret;
@@ -120,17 +114,13 @@ public class TagQueryService {
      *     ....
      * ]
      * </pre>, returns an empty list if not found
-     *
      * @throws ServiceException service exception
      */
     public List<JSONObject> getTags() throws ServiceException {
         try {
             final Query query = new Query().setPageCount(1);
 
-            final JSONObject result = tagRepository.get(query);
-            final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
-
-            return CollectionUtils.jsonArrayToList(tagArray);
+            return tagRepository.getList(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tags failed", e);
 
@@ -148,7 +138,6 @@ public class TagQueryService {
      *     ....
      * ]
      * </pre>, returns an empty list if not found
-     *
      * @throws ServiceException service exception
      */
     public List<JSONObject> getTopTags(final int fetchSize) throws ServiceException {
@@ -156,10 +145,7 @@ public class TagQueryService {
             final Query query = new Query().setPageCount(1).setPageSize(fetchSize).
                     addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING);
 
-            final JSONObject result = tagRepository.get(query);
-            final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
-
-            return CollectionUtils.jsonArrayToList(tagArray);
+            return tagRepository.getList(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets top tags failed", e);
 
@@ -177,7 +163,6 @@ public class TagQueryService {
      *     ....
      * ]
      * </pre>, returns an empty list if not found
-     *
      * @throws ServiceException service exception
      */
     public List<JSONObject> getBottomTags(final int fetchSize) throws ServiceException {
@@ -185,10 +170,7 @@ public class TagQueryService {
             final Query query = new Query().setPageCount(1).setPageSize(fetchSize).
                     addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.ASCENDING);
 
-            final JSONObject result = tagRepository.get(query);
-            final JSONArray tagArray = result.optJSONArray(Keys.RESULTS);
-
-            return CollectionUtils.jsonArrayToList(tagArray);
+            return tagRepository.getList(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets bottom tags failed", e);
 
@@ -200,12 +182,11 @@ public class TagQueryService {
      * Removes tags of unpublished articles from the specified tags.
      *
      * @param tags the specified tags
-     * @throws JSONException json exception
+     * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
     public void removeForUnpublishedArticles(final List<JSONObject> tags) throws JSONException, RepositoryException {
         final Iterator<JSONObject> iterator = tags.iterator();
-
         while (iterator.hasNext()) {
             final JSONObject tag = iterator.next();
 

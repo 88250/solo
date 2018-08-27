@@ -23,7 +23,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.json.JSONArray;
@@ -37,7 +36,7 @@ import java.util.List;
  * Archive date repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Jun 6, 2017
+ * @version 1.0.0.10, Aug 27, 2018
  * @since 0.3.1
  */
 @Repository
@@ -96,12 +95,9 @@ public class ArchiveDateRepositoryImpl extends AbstractRepository implements Arc
 
     @Override
     public List<JSONObject> getArchiveDates() throws RepositoryException {
-        final org.b3log.latke.repository.Query query = new Query().addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).setPageCount(
-                1);
-        final JSONObject result = get(query);
-
-        final JSONArray archiveDates = result.optJSONArray(Keys.RESULTS);
-        final List<JSONObject> ret = CollectionUtils.jsonArrayToList(archiveDates);
+        final org.b3log.latke.repository.Query query = new Query().
+                addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).setPageCount(1);
+        final List<JSONObject> ret = getList(query);
 
         removeForUnpublishedArticles(ret);
 
@@ -113,9 +109,8 @@ public class ArchiveDateRepositoryImpl extends AbstractRepository implements Arc
      * dates.
      *
      * @param archiveDates the specified archive dates
-     * @throws RepositoryException repository exception
      */
-    private void removeForUnpublishedArticles(final List<JSONObject> archiveDates) throws RepositoryException {
+    private void removeForUnpublishedArticles(final List<JSONObject> archiveDates) {
         final Iterator<JSONObject> iterator = archiveDates.iterator();
 
         while (iterator.hasNext()) {

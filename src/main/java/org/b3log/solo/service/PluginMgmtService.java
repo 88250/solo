@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -32,21 +31,18 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.repository.PluginRepository;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Plugin management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2011
+ * @version 1.0.0.1, Aug 27, 2018
  * @since 0.4.0
  */
 @Service
@@ -68,13 +64,13 @@ public class PluginMgmtService {
      */
     @Inject
     private LangPropsService langPropsService;
-    
+
     /**
      * Initialization service.
      */
     @Inject
     private InitService initService;
-    
+
     /**
      * Plugin manager.
      */
@@ -83,19 +79,16 @@ public class PluginMgmtService {
 
     /**
      * Updates datastore plugin descriptions with the specified plugins.
-     * 
+     *
      * @param plugins the specified plugins
-     * @throws Exception exception 
+     * @throws Exception exception
      */
     public void refresh(final List<AbstractPlugin> plugins) throws Exception {
         if (!initService.isInited()) {
             return;
         }
-        
-        final JSONObject result = pluginRepository.get(new Query());
-        final JSONArray pluginArray = result.getJSONArray(Keys.RESULTS);
-        final List<JSONObject> persistedPlugins = CollectionUtils.jsonArrayToList(pluginArray);
 
+        final List<JSONObject> persistedPlugins = pluginRepository.getList(new Query());
         try {
             // Reads plugin status from datastore and clear plugin datastore
             for (final JSONObject oldPluginDesc : persistedPlugins) {
@@ -135,9 +128,9 @@ public class PluginMgmtService {
 
     /**
      * Gets a plugin in the specified plugins with the specified id.
-     * 
+     *
      * @param plugins the specified plugins
-     * @param id the specified id, must NOT be {@code null}
+     * @param id      the specified id, must NOT be {@code null}
      * @return a plugin, returns {@code null} if not found
      */
     private AbstractPlugin get(final List<AbstractPlugin> plugins, final String id) {
@@ -156,14 +149,14 @@ public class PluginMgmtService {
 
     /**
      * Sets a plugin's status with the specified plugin id, status.
-     * 
+     *
      * @param pluginId the specified plugin id
-     * @param status the specified status, see {@link PluginStatus}
+     * @param status   the specified status, see {@link PluginStatus}
      * @return for example,
      * <pre>
      * {
      *     "sc": boolean,
-     *     "msg": "" 
+     *     "msg": ""
      * }
      * </pre>
      */
@@ -180,11 +173,10 @@ public class PluginMgmtService {
 
                 try {
                     plugin.setStatus(PluginStatus.valueOf(status));
-
                     pluginRepository.update(pluginId, plugin.toJSONObject());
 
                     transaction.commit();
-                    
+
                     plugin.changeStatus();
 
                     ret.put(Keys.STATUS_CODE, true);
@@ -214,26 +206,22 @@ public class PluginMgmtService {
 
     /**
      * updatePluginSetting.
-     * 
+     *
      * @param pluginId the specified pluginoId
-     * @param setting the specified setting
+     * @param setting  the specified setting
      * @return the ret json
      */
     public JSONObject updatePluginSetting(final String pluginId, final String setting) {
-
-        final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-
-        final List<AbstractPlugin> plugins = pluginManager.getPlugins();
-
         final JSONObject ret = new JSONObject();
 
+        final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
+        final List<AbstractPlugin> plugins = pluginManager.getPlugins();
         for (final AbstractPlugin plugin : plugins) {
             if (plugin.getId().equals(pluginId)) {
                 final Transaction transaction = pluginRepository.beginTransaction();
 
                 try {
                     final JSONObject pluginJson = plugin.toJSONObject();
-
                     pluginJson.put(Plugin.PLUGIN_SETTING, setting);
                     pluginRepository.update(pluginId, pluginJson);
 
@@ -265,7 +253,7 @@ public class PluginMgmtService {
 
     /**
      * Sets the plugin repository with the specified plugin repository.
-     * 
+     *
      * @param pluginRepository the specified plugin repository
      */
     public void setPluginRepository(final PluginRepository pluginRepository) {
@@ -274,7 +262,7 @@ public class PluginMgmtService {
 
     /**
      * Sets the language service with the specified language service.
-     * 
+     *
      * @param langPropsService the specified language service
      */
     public void setLangPropsService(final LangPropsService langPropsService) {

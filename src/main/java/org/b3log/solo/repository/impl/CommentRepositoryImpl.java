@@ -17,31 +17,27 @@
  */
 package org.b3log.solo.repository.impl;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.cache.CommentCache;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Iterator;
 import java.util.List;
 
-
 /**
  * Comment repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Jul 16, 2017
+ * @version 1.0.0.10, Aug 27, 2018
  * @since 0.3.1
  */
 @Repository
@@ -126,24 +122,16 @@ public class CommentRepositoryImpl extends AbstractRepository implements Comment
                 setFilter(new PropertyFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId)).
                 setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        return CollectionUtils.jsonArrayToList(array);
+        return getList(query);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<JSONObject> getRecentComments(final int num) throws RepositoryException {
         final Query query = new Query().
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setCurrentPageNum(1).setPageSize(num).setPageCount(1);
 
-        List<JSONObject> ret;
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        ret = CollectionUtils.jsonArrayToList(array);
+        final List<JSONObject> ret = getList(query);
 
         // Removes unpublished article related comments
         removeForUnpublishedArticles(ret);

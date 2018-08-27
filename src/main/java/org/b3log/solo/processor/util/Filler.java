@@ -46,7 +46,6 @@ import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Solos;
 import org.b3log.solo.util.Thumbnails;
 import org.b3log.solo.util.comparator.Comparators;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -63,7 +62,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.16.2, Aug 2, 2018
+ * @version 1.6.16.3, Aug 27, 2018
  * @since 0.3.1
  */
 @Service
@@ -228,9 +227,7 @@ public class Filler {
 
             query.index(Article.ARTICLE_PERMALINK);
 
-            final JSONObject result = articleRepository.get(query);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-
             if (0 != pageNums.size()) {
                 dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
                 dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
@@ -239,7 +236,7 @@ public class Filler {
             dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-            final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Keys.RESULTS));
+            final List<JSONObject> articles = articleRepository.getList(query);
 
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
 
@@ -276,17 +273,13 @@ public class Filler {
     public void fillLinks(final Map<String, Object> dataModel) throws ServiceException {
         Stopwatchs.start("Fill Links");
         try {
-            final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+            final Map<String, SortDirection> sorts = new HashMap<>();
 
             sorts.put(Link.LINK_ORDER, SortDirection.ASCENDING);
             final Query query = new Query().addSort(Link.LINK_ORDER, SortDirection.ASCENDING).setPageCount(1);
-            final JSONObject linkResult = linkRepository.get(query);
-            final List<JSONObject> links = org.b3log.latke.util.CollectionUtils.jsonArrayToList(linkResult.getJSONArray(Keys.RESULTS));
+            final List<JSONObject> links = linkRepository.getList(query);
 
             dataModel.put(Link.LINKS, links);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, "Fills links failed", e);
-            throw new ServiceException(e);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Fills links failed", e);
             throw new ServiceException(e);
@@ -693,9 +686,7 @@ public class Filler {
             dataModel.put(Option.ID_C_NOTICE_BOARD, noticeBoard);
 
             final Query query = new Query().setPageCount(1);
-            final JSONObject result = userRepository.get(query);
-            final JSONArray users = result.getJSONArray(Keys.RESULTS);
-            final List<JSONObject> userList = CollectionUtils.jsonArrayToList(users);
+            final List<JSONObject> userList = userRepository.getList(query);
             dataModel.put(User.USERS, userList);
 
             final JSONObject admin = userRepository.getAdmin();

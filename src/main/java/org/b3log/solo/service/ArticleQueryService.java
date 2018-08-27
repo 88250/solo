@@ -55,7 +55,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.2, May 17, 2018
+ * @version 1.3.2.3, Aug 27, 2018
  * @since 0.3.5
  */
 @Service
@@ -388,10 +388,9 @@ public class ArticleQueryService {
      * @param signId     the specified article id
      * @param preference the specified preference
      * @return article sign, returns the default sign (which oId is "1") if not found
-     * @throws RepositoryException repository exception
-     * @throws JSONException       json exception
+     * @throws JSONException json exception
      */
-    public JSONObject getSign(final String signId, final JSONObject preference) throws JSONException, RepositoryException {
+    public JSONObject getSign(final String signId, final JSONObject preference) throws JSONException {
         final JSONArray signs = new JSONArray(preference.getString(Option.ID_C_SIGNS));
 
         JSONObject defaultSign = null;
@@ -446,18 +445,15 @@ public class ArticleQueryService {
      *
      * @return articles all unpublished articles
      * @throws RepositoryException repository exception
-     * @throws JSONException       json exception
      */
-    public List<JSONObject> getUnpublishedArticles() throws RepositoryException, JSONException {
-        final Map<String, SortDirection> sorts = new HashMap<String, SortDirection>();
+    public List<JSONObject> getUnpublishedArticles() throws RepositoryException {
+        final Map<String, SortDirection> sorts = new HashMap<>();
 
         sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
         final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
-        final JSONObject result = articleRepository.get(query);
-        final JSONArray articles = result.getJSONArray(Keys.RESULTS);
 
-        return CollectionUtils.jsonArrayToList(articles);
+        return articleRepository.getList(query);
     }
 
     /**
@@ -465,9 +461,8 @@ public class ArticleQueryService {
      *
      * @param fetchSize the specified fetch size
      * @return a list of json object, its size less or equal to the specified fetch size
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getRecentArticles(final int fetchSize) throws ServiceException {
+    public List<JSONObject> getRecentArticles(final int fetchSize) {
         try {
             return articleRepository.getRecentArticles(fetchSize);
         } catch (final RepositoryException e) {

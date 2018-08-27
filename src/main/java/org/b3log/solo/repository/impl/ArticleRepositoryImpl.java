@@ -23,7 +23,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.cache.ArticleCache;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArticleRepository;
@@ -39,7 +38,7 @@ import java.util.List;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.12, Aug 30, 2017
+ * @version 1.1.3.13, Aug 27, 2018
  * @since 0.3.1
  */
 @Repository
@@ -143,10 +142,7 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
                 addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).
                 setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        return CollectionUtils.jsonArrayToList(array);
+        return getList(query);
     }
 
     @Override
@@ -157,10 +153,7 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
                 setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
                 setCurrentPageNum(1).setPageSize(num).setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        return CollectionUtils.jsonArrayToList(array);
+        return getList(query);
     }
 
     @Override
@@ -171,10 +164,7 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
                 setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
                 setCurrentPageNum(1).setPageSize(num).setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        return CollectionUtils.jsonArrayToList(array);
+        return getList(query);
     }
 
     @Override
@@ -276,13 +266,10 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
                         new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
                 setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
 
-        final JSONObject result1 = get(query);
-        final JSONArray array1 = result1.optJSONArray(Keys.RESULTS);
-
-        final List<JSONObject> list1 = CollectionUtils.jsonArrayToList(array1);
+        final List<JSONObject> list1 = getList(query);
         ret.addAll(list1);
 
-        final int reminingSize = fetchSize - array1.length();
+        final int reminingSize = fetchSize - list1.size();
         if (0 != reminingSize) { // Query for remains
             query = new Query();
             query.setFilter(
@@ -292,10 +279,7 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
                             new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
                     setCurrentPageNum(1).setPageSize(reminingSize).setPageCount(1);
 
-            final JSONObject result2 = get(query);
-            final JSONArray array2 = result2.optJSONArray(Keys.RESULTS);
-
-            final List<JSONObject> list2 = CollectionUtils.jsonArrayToList(array2);
+            final List<JSONObject> list2 = getList(query);
 
             ret.addAll(list2);
         }

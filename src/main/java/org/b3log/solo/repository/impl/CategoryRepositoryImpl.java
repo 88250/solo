@@ -20,7 +20,6 @@ package org.b3log.solo.repository.impl;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.CategoryRepository;
@@ -118,10 +117,7 @@ public class CategoryRepositoryImpl extends AbstractRepository implements Catego
         final Query query = new Query().addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).
                 setCurrentPageNum(1).setPageSize(num).setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-
-        final List<JSONObject> ret = CollectionUtils.jsonArrayToList(array);
+        final List<JSONObject> ret = getList(query);
         sortJSONCategoryList(ret);
 
         return ret;

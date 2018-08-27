@@ -59,7 +59,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.14, Mar 11, 2018
+ * @version 1.2.0.15, Aug 27, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -223,10 +223,7 @@ public class RepairProcessor {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject result = tagRepository.get(new Query());
-            final JSONArray tagArray = result.getJSONArray(Keys.RESULTS);
-            final List<JSONObject> tags = CollectionUtils.jsonArrayToList(tagArray);
-
+            final List<JSONObject> tags = tagRepository.getList(new Query());
             for (final JSONObject tag : tags) {
                 final String tagId = tag.getString(Keys.OBJECT_ID);
                 final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, Integer.MAX_VALUE);
