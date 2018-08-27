@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -54,7 +55,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.10, Oct 3, 2017
+ * @version 1.2.2.11, Aug 27, 2018
  * @since 0.3.5
  */
 @Service
@@ -287,8 +288,12 @@ public class ArticleMgmtService {
 
         try {
             final JSONObject article = requestJSONObject.getJSONObject(ARTICLE);
-            final String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
-            article.put(Article.ARTICLE_TAGS_REF, tagsString.replaceAll("，", ",").replaceAll("、", ","));
+            String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
+            tagsString = Tag.formatTags(tagsString);
+            if (StringUtils.isBlank(tagsString)) {
+                throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
+            }
+            article.put(Article.ARTICLE_TAGS_REF, tagsString);
 
             final String articleId = article.getString(Keys.OBJECT_ID);
             // Set permalink
@@ -471,7 +476,10 @@ public class ArticleMgmtService {
         try {
             // Step 1: Add tags
             String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
-            tagsString = tagsString.replaceAll("，", ",").replaceAll("、", ",");
+            tagsString = Tag.formatTags(tagsString);
+            if (StringUtils.isBlank(tagsString)) {
+                throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
+            }
             article.put(Article.ARTICLE_TAGS_REF, tagsString);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);

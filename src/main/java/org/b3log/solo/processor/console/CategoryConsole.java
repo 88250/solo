@@ -52,7 +52,7 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.2, Mar 3, 2018
+ * @version 1.1.1.3, Aug 27, 2018
  * @since 2.0.0
  */
 @RequestProcessor
@@ -293,7 +293,10 @@ public class CategoryConsole {
 
         try {
             String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
-            tagsStr = tagsStr.replaceAll("，", ",").replaceAll("、", ",");
+            tagsStr = Tag.formatTags(tagsStr);
+            if (StringUtils.isBlank(tagsStr)) {
+                throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
+            }
             final String[] tagTitles = tagsStr.split(",");
 
             String addArticleWithTagFirstLabel = langPropsService.get("addArticleWithTagFirstLabel");
@@ -423,7 +426,10 @@ public class CategoryConsole {
 
         try {
             String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
-            tagsStr = tagsStr.replaceAll("，", ",").replaceAll("、", ",");
+            tagsStr = Tag.formatTags(tagsStr);
+            if (StringUtils.isBlank(tagsStr)) {
+                throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
+            }
             final String[] tagTitles = tagsStr.split(",");
 
             String addArticleWithTagFirstLabel = langPropsService.get("addArticleWithTagFirstLabel");
