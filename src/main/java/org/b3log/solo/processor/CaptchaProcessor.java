@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -25,8 +26,10 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.PNGRenderer;
 import org.b3log.latke.util.Strings;
-import org.patchca.color.SingleColorFactory;
+import org.patchca.color.GradientColorFactory;
+import org.patchca.color.RandomColorFactory;
 import org.patchca.filter.predefined.CurvesRippleFilterFactory;
+import org.patchca.font.RandomFontFactory;
 import org.patchca.service.Captcha;
 import org.patchca.service.ConfigurableCaptchaService;
 import org.patchca.word.RandomWordFactory;
@@ -36,14 +39,16 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
  * Captcha processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.2, Aug 2, 2018
+ * @version 2.0.0.3, Aug 30, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -75,6 +80,11 @@ public class CaptchaProcessor {
     public static boolean CAPTCHA_ON = true;
 
     /**
+     * Captcha chars.
+     */
+    private static final String CHARS = "acdefhijklmnprstuvwxy234578";
+
+    /**
      * Gets captcha.
      *
      * @param context the specified context
@@ -86,13 +96,18 @@ public class CaptchaProcessor {
 
         try {
             final ConfigurableCaptchaService cs = new ConfigurableCaptchaService();
-            cs.setColorFactory(new SingleColorFactory(new Color(25, 60, 170)));
+            if (0.5 < Math.random()) {
+                cs.setColorFactory(new GradientColorFactory());
+            } else {
+                cs.setColorFactory(new RandomColorFactory());
+            }
             cs.setFilterFactory(new CurvesRippleFilterFactory(cs.getColorFactory()));
             final RandomWordFactory randomWordFactory = new RandomWordFactory();
-            randomWordFactory.setCharacters("abcdefghijklmnprstuvwxy23456789");
+            randomWordFactory.setCharacters(CHARS);
             randomWordFactory.setMinLength(CAPTCHA_LENGTH);
             randomWordFactory.setMaxLength(CAPTCHA_LENGTH);
             cs.setWordFactory(randomWordFactory);
+            cs.setFontFactory(new RandomFontFactory(getAvaialbeFonts()));
             final Captcha captcha = cs.getCaptcha();
             final String challenge = captcha.getChallenge();
             final BufferedImage bufferedImage = captcha.getImage();
@@ -135,6 +150,24 @@ public class CaptchaProcessor {
         boolean ret = !CaptchaProcessor.CAPTCHAS.contains(captcha);
         if (!ret) {
             CaptchaProcessor.CAPTCHAS.remove(captcha);
+        }
+
+        return ret;
+    }
+
+    private static java.util.List<String> getAvaialbeFonts() {
+        final List<String> ret = new ArrayList<>();
+
+        final GraphicsEnvironment e = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        final Font[] fonts = e.getAllFonts();
+        for (final Font f : fonts) {
+            if (Strings.contains(f.getFontName(), new String[]{"Verdana", "DejaVu Sans Mono", "Tahoma"})) {
+                ret.add(f.getFontName());
+            }
+        }
+
+        if (ret.isEmpty() && 0 < fonts.length) {
+            ret.add(fonts[RandomUtils.nextInt(fonts.length)].getFontName());
         }
 
         return ret;
