@@ -31,7 +31,7 @@ var uglify = require('gulp-uglify');
 var cleanCSS = require('gulp-clean-css');
 var sass = require('gulp-sass');
 
-gulp.task('default', function () {
+gulp.task('build', function () {
     // min css
     gulp.src('./src/main/webapp/js/lib/CodeMirrorEditor/codemirror.css')
             .pipe(cleanCSS())
@@ -68,13 +68,14 @@ gulp.task('default', function () {
 });
 
 
-
 gulp.task('sass', function () {
   return gulp.src('./src/main/webapp/skins/*/css/*.scss')
   .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-  .pipe(gulp.dest('./src/main/webapp/skins/*/css'));
+  .pipe(gulp.dest('./src/main/webapp/skins'));
 });
 
 gulp.task('watch', function () {
   gulp.watch('./src/main/webapp/skins/*/css/*.scss', ['sass']);
 });
+
+gulp.task('default', ['sass', 'build']);

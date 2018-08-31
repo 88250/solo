@@ -1,0 +1,90 @@
+/*
+ * Symphony - A modern community (forum/BBS/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-2018, b3log.org & hacpai.com
+ *
+ * 本文件属于 Sym 商业版的一部分，请仔细阅读项目根文件夹的 LICENSE 并严格遵守相关约定
+ */
+/**
+ * Function and font text style
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</ta>
+ * @version 0.2.0.0, Arp 29, 2018
+ */
+
+.fn {
+  &__flex {
+    display: flex;
+    &-center {
+      align-self: center;
+    }
+    &-inline {
+      display: inline-flex;
+      align-items: center;
+    }
+    &-1 {
+      flex: 1;
+      min-width: 1px;
+    }
+
+    &-column {
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &__pointer {
+    cursor: pointer;
+  }
+
+  &__clear:before,
+  &__clear:after {
+    display: table;
+    content: "";
+  }
+
+  &__clear:after {
+    clear: both;
+  }
+
+  &__left {
+    float: left;
+  }
+
+  &__right {
+    float: right;
+  }
+
+  &__none {
+    display: none;
+  }
+
+  &__hidden {
+    visibility: hidden;
+  }
+
+  &__ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-wrap: normal;
+  }
+}
+
+.ft {
+  &__13 {
+    font-size: 13px;
+  }
+
+  &__smaller {
+    font-size: 12px;
+  }
+
+  &__center {
+    text-align: center;
+  }
+
+  &__nowrap {
+    white-space: nowrap;
+  }
+}

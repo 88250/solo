@@ -17,6 +17,12 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
+<div class="bg"></div>
+<div class="bg bg--1"></div>
+<div class="bg bg--2"></div>
+<div class="bg bg--3"></div>
+<div class="bg bg--4"></div>
+<div class="bg bg--5"></div>
 <header class="header">
     <div class="header__wrap">
         <a href="${servePath}" rel="start" class="header__logo">
