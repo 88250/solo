@@ -20,7 +20,7 @@
  * @file frontend tool.
  * 
  * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 1.4.2.0, Jan 21, 20167
+ * @version 1.5.0.0, Aug 31, 2018
  */
 
 'use strict';
@@ -29,6 +29,7 @@ var gulp = require("gulp");
 var concat = require('gulp-concat');
 var uglify = require('gulp-uglify');
 var cleanCSS = require('gulp-clean-css');
+var sass = require('gulp-sass');
 
 gulp.task('default', function () {
     // min css
@@ -64,4 +65,16 @@ gulp.task('default', function () {
   .pipe(uglify())
   .pipe(concat('pjax.min.js'))
   .pipe(gulp.dest('./src/main/webapp/js/lib/compress/'));
+});
+
+
+
+gulp.task('sass', function () {
+  return gulp.src('./src/main/webapp/skins/*/css/*.scss')
+  .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+  .pipe(gulp.dest('./src/main/webapp/skins/*/css'));
+});
+
+gulp.task('watch', function () {
+  gulp.watch('./src/main/webapp/skins/*/css/*.scss', ['sass']);
 });
