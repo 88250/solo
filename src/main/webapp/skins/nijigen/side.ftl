@@ -18,102 +18,121 @@
 
 -->
 <aside class="side">
-    <section>
-        <#if noticeBoard??>
-            <div class="ad content-reset">
-                ${noticeBoard}
-            </div>
-        </#if>
-    ${blogSubtitle}
+    <#if noticeBoard??>
+    <section class="content-reset module">
+        <main class="module__content">
+            ${noticeBoard}
+        </main>
+    </section>
+    </#if>
 
-        <form class="form" action="${servePath}/search">
-            <input placeholder="${searchLabel}" id="search" type="text" name="keyword"/>
-            <button type="submit"><i class="icon-search"></i></button>
-        </form>
-        <#if 0 != mostUsedCategories?size>
-            <div class="module">
-                <header><h2>${categoryLabel}</h2></header>
-                <main>
-                    <#list mostUsedCategories as category>
-                        <a href="${servePath}/category/${category.categoryURI}"
-                           aria-label="${category.categoryTagCnt} ${cntLabel}${tagsLabel}"
-                           class="tag tooltipped tooltipped-n">
-                                ${category.categoryTitle}</a>
-                    </#list>
-                </main>
-            </div>
-        </#if>
+    <section class="module">
+        <header class="module__header">
+            <form class="form" action="${servePath}/search">
+                <input placeholder="${searchLabel}" class="form__input" type="text" name="keyword"/>
+                <button class="side__btn" type="submit"><i class="icon__search"></i></button>
+            </form>
+        </header>
+    </section>
 
-        <#if 0 != mostUsedTags?size>
-            <div class="module">
-                <header><h2>${tagsLabel}</h2></header>
-                <main>
-                    <#list mostUsedTags as tag>
-                        <a rel="tag"
-                           href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}"
-                           class="tag tooltipped tooltipped-n"
-                           aria-label="${tag.tagPublishedRefCount} ${countLabel}${articleLabel}">
-                                ${tag.tagTitle}</a>
-                    </#list>
-                </main>
-            </div>
-        </#if>
+    <div class="module meta">
+        <header class="module__header ft__center">
+        ${adminUser.userName}
+        </header>
+        <main class="module__content ft__center">
+            <img class="side__avatar" src="${adminUser.userAvatar}" alt="${adminUser.userName}"/>
+        ${blogSubtitle}
+        </main>
+    </div>
 
-        <div class="module meta">
-            <header>
-                <h2>${adminUser.userName}</h2>
+    <#if 0 != mostUsedCategories?size>
+        <div class="module">
+            <header class="module__header">
+                ${categoryLabel}
             </header>
-            <main class="fn-clear">
-                <img src="${adminUser.userAvatar}" aria-label="${adminUser.userName}"/>
-                <div class="fn-right">
-                    <a href="${servePath}/archives.html">
-                        ${statistic.statisticPublishedBlogArticleCount}
-                        <span class="ft-gray">${articleLabel}</span></a><br/>
-                    <a href="${servePath}/dynamic.html">
-                        ${statistic.statisticPublishedBlogCommentCount}
-                        <span class="ft-gray">${commentLabel}</span></a><br/>
-                    ${statistic.statisticBlogViewCount} <span class="ft-gray">${viewLabel}</span><br/>
-                    ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span>
-                </div>
+            <main class="module__content fn__clear module__content--three">
+                <#list mostUsedCategories as category>
+                    <a href="${servePath}/category/${category.categoryURI}"
+                       aria-label="${category.categoryTagCnt} ${cntLabel}${tagsLabel}"
+                       class="tag tooltipped tooltipped__n">
+                        ${category.categoryTitle}</a>
+                </#list>
             </main>
         </div>
+    </#if>
 
-        <#if 0 != mostCommentArticles?size>
-            <div class="module">
-                <header><h2>${mostCommentArticlesLabel}</h2></header>
-                <main class="list">
-                    <ul>
-                        <#list mostCommentArticles as article>
-                            <li>
-                                <a rel="nofollow" aria-label="${article.articleCommentCount} ${commentLabel}"
-                                   class="tooltipped tooltipped-e"
-                                   href="${servePath}${article.articlePermalink}">
-                                    ${article.articleTitle}
-                                </a>
-                            </li>
-                        </#list>
-                    </ul>
-                </main>
-            </div>
-        </#if>
+    <#if 0 != mostUsedTags?size>
+        <div class="module">
+            <header class="module__header">${tagsLabel}</header>
+            <main class="module__content--three module__content fn__clear">
+                <#list mostUsedTags as tag>
+                    <a rel="tag"
+                       href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}"
+                       class="tag tooltipped tooltipped__n"
+                       aria-label="${tag.tagPublishedRefCount} ${countLabel}${articleLabel}">
+                        ${tag.tagTitle}</a>
+                </#list>
+            </main>
+        </div>
+    </#if>
 
-        <#if 0 != mostViewCountArticles?size>
-            <div class="module">
-                <header><h2>${mostViewCountArticlesLabel}</h2></header>
-                <main class="list">
-                    <ul>
-                        <#list mostViewCountArticles as article>
-                            <li>
-                                <a rel="nofollow" aria-label="${article.articleCommentCount} ${commentLabel}"
-                                   class="tooltipped tooltipped-e"
-                                   href="${servePath}${article.articlePermalink}">
-                                    ${article.articleTitle}
-                                </a>
-                            </li>
-                        </#list>
-                    </ul>
-                </main>
+    <#if 0 != mostCommentArticles?size>
+        <div class="module">
+            <header class="module__header">${mostCommentArticlesLabel}</header>
+            <main class="module__list">
+                <ul>
+                    <#list mostCommentArticles as article>
+                        <li>
+                            <a rel="nofollow"
+                               href="${servePath}${article.articlePermalink}">
+                                ${article.articleTitle}
+                            </a>
+                        </li>
+                    </#list>
+                </ul>
+            </main>
+        </div>
+    </#if>
+
+    <#if 0 != mostViewCountArticles?size>
+        <div class="module">
+            <header class="module__header">${mostViewCountArticlesLabel}</header>
+            <main class="module__list">
+                <ul>
+                    <#list mostViewCountArticles as article>
+                        <li>
+                            <a rel="nofollow"
+                               href="${servePath}${article.articlePermalink}">
+                                ${article.articleTitle}
+                            </a>
+                        </li>
+                    </#list>
+                </ul>
+            </main>
+        </div>
+    </#if>
+
+    <div class="module">
+        <div class="module__header">
+            <div class="fn__flex">
+                <a href="${servePath}/archives.html" class="fn__flex-1 ft__center">
+                ${statistic.statisticPublishedBlogArticleCount}
+                ${articleLabel}
+                </a>
+                <a href="${servePath}/dynamic.html" class="fn__flex-1 ft__center">
+                ${statistic.statisticPublishedBlogCommentCount}
+                ${commentLabel}
+                </a>
             </div>
-        </#if>
-    </section>
+            <br/>
+            <div class="fn__flex">
+                <div class="fn__flex-1 ft__center">
+                ${statistic.statisticBlogViewCount} <span class="ft-gray">${viewLabel}</span>
+                </div>
+                <div class="fn__flex-1 ft__center">
+                ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </aside>

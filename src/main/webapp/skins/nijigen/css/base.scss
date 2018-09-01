@@ -21,12 +21,16 @@
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 0.1.0.0, Aug 31, 2018
 */
-
 @import "../../../scss/reset";
 @import "../../../scss/reset-content";
 @import "../../../scss/function";
 @import "../../../scss/tooltipped";
 @import "icon";
+
+$purple: #7266BA !default;
+$purple-dark: #6658b8 !default;
+$red: #b94a48 !default;
+$black: #3d4450 !default;
 
 // reset
 body {
@@ -34,7 +38,81 @@ body {
 }
 
 a {
+  transition: all .3s;
   cursor: url(../images/pointer.cur), url(../images/pointer.cur), auto
+}
+
+// module
+.module {
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 30px;
+  box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.2);
+  transition: all .3s;
+
+  &:hover {
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.8);
+  }
+
+  &__content {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 15px;
+    color: $black;
+    &:hover {
+      background-color: #fff;
+    }
+
+    &--three {
+      padding-bottom: 0;
+    }
+  }
+
+  &__header {
+    background-color: rgba(10, 10, 0, 0.7);
+    padding: 15px;
+    color: #fff;
+
+    a {
+      color: #fff;
+    }
+
+    &:hover {
+      background-color: rgba(10, 10, 0, 0.9);
+    }
+  }
+
+  &__list {
+    li {
+      border-bottom: 1px solid #ddd;
+      background-color: rgba(255, 255, 255, 0.8);
+      line-height: 20px;
+      a {
+        padding: 15px 15px;
+        display: block;
+        color: $black;
+
+        &:hover {
+          text-decoration: none;
+          color: $red;
+          background-color: #fff;
+        }
+      }
+    }
+  }
+}
+
+// form
+.form {
+  position: relative;
+  &__input {
+    border: 1px solid $purple;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 15px;
+    border-radius: 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }
 }
 
 // bg
@@ -102,10 +180,16 @@ a {
 
 // header
 .header {
-  background-color: rgba(114, 102, 186, 0.8);
+  background-color: rgba(10, 10, 0, 0.7);
   height: 50px;
   line-height: 50px;
   color: #fff;
+  transition: all .3s;
+  box-shadow: 0 0 8px black;
+
+  &:hover {
+    background-color: rgba(10, 10, 0, 0.9);
+  }
 
   a {
     color: #fff;
@@ -113,13 +197,13 @@ a {
     display: inline-block;
     &:hover {
       text-decoration: none;
-      background-color: rgba(102, 88, 184, 0.8);
+      background-color: rgba($purple-dark, 0.8);
     }
   }
 
   &__logo {
     position: absolute;
-    left: 20px;
+    left: 30px;
   }
 
   &__nav {
@@ -128,9 +212,265 @@ a {
 
   &__login {
     position: absolute;
-    right: 20px;
+    right: 30px;
     top: 0;
   }
 }
 
-.side
+// framework
+.main {
+  max-width: 1170px;
+  padding: 30px;
+  margin: auto;
+  display: flex;
+}
+
+// side
+.side {
+  width: 280px;
+  min-width: 280px;
+  margin-left: 30px;
+
+  &__btn {
+    background-color: transparent;
+    border: 0;
+    top: 5px;
+    position: absolute;
+    right: 10px;
+  }
+
+  &__avatar {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+    display: block;
+    margin: 0 auto;
+    margin-bottom: 15px;
+    transition: transform .3s;
+    margin-top: 10px;
+
+    &:hover {
+      transform: rotate(360deg) scale(1.2);
+      border: 5px solid rgba($purple, 0.36);
+      margin-top: 0;
+    }
+  }
+}
+
+// tag
+.tag {
+  float: left;
+  color: #fff;
+  padding: 2px 5px;
+  border: 1px solid transparent;
+  height: 20px;
+  white-space: nowrap;
+  word-wrap: normal;
+  background-color: rgba(10, 10, 0, 0.7);
+  border-radius: 3px 3px 3px 3px;
+  line-height: 21px;
+  margin: 0 15px 15px 0;
+
+  a {
+    color: #fff;
+  }
+
+  &:hover {
+    background-color: $red;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    text-decoration: none;
+  }
+}
+
+// footer
+.footer {
+  text-align: center;
+  color: #fff;
+  padding: 15px;
+  margin-bottom: 30px;
+  a {
+    color: $black;
+  }
+}
+
+// article list
+.article-list {
+  .item {
+    border-radius: 5px;
+    margin-bottom: 30px;
+    box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    position: relative;
+    transition: all .3s;
+
+    &:hover {
+      background-color: #fff;
+      box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.8);
+    }
+
+    .tag {
+      float: none;
+      display: inline-block;
+    }
+
+    &__title {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 500;
+      a {
+        color: rgba(10, 10, 0, 0.7);
+        padding: 0 15px;
+        border-radius: 5px;
+        display: inline-block;
+        margin-bottom: 15px;
+        line-height: 36px;
+
+        &:hover {
+          color: #fff;
+          text-decoration: none;
+          background-color: $purple-dark;
+        }
+      }
+
+      & > sup {
+        color: $red;
+      }
+    }
+
+    &__date {
+      position: absolute;
+      background-color: $purple;
+      color: #fff;
+      height: 70px;
+      width: 70px;
+      font-size: 12px;
+      top: -20px;
+      border-radius: 35px;
+      left: -20px;
+      text-align: center;
+      padding-top: 9px;
+      box-sizing: border-box;
+    }
+
+    &__day {
+      font-size: 30px;
+      display: block;
+    }
+  }
+}
+
+// pagination
+.pagination {
+  &__item {
+    color: #fff;
+    border-radius: 3px;
+    padding: 0 10px;
+    line-height: 24px;
+    display: inline-block;
+    margin-left: 10px;
+    background-color: rgba($purple, 0.58);
+
+    &--text {
+      background-color: rgba(255, 255, 255, 0.8);
+      color: $purple;
+    }
+
+    &--current {
+      background-color: $purple-dark;
+    }
+  }
+
+  a.pagination__item:hover {
+    text-decoration: none;
+    background-color: $purple-dark;
+  }
+}
+
+@media (max-width: 768px) {
+  .header__nav {
+    display: none;
+  }
+
+  .main {
+    display: block;
+    margin: 15px;
+    padding: 0;
+  }
+
+  .side {
+    margin: 0;
+    width: auto;
+  }
+
+  .article-list .item__date {
+    display: none;
+  }
+
+  .article-list .item,
+  .module {
+    margin-bottom: 15px;
+  }
+
+  .footer {
+    margin: 0 15px 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    color: $black;
+    line-height: 20px;
+
+    a {
+      text-decoration: underline;
+    }
+
+    .fn__none--m {
+      display: none;
+    }
+
+    .fn__none {
+      display: block;
+    }
+  }
+
+  .article-list .item__date--m {
+    text-align: center;
+    margin-bottom: 10px;
+    color: $black;
+  }
+
+  .tag {
+    margin: 0 5px 10px 0;
+    font-size: 12px;
+  }
+
+  .header__logo {
+    left: 0;
+  }
+
+  .header__login {
+    display: none;
+  }
+
+  .header__m {
+    display: block;
+    position: absolute;
+    width: 100%;
+    z-index: 1;
+
+    .icon__list {
+      position: absolute;
+      top: -35px;
+      right: 15px;
+      font-size: 20px;
+      color: #fff;
+    }
+
+    .module__list {
+      display: none;
+
+      li {
+        background-color: #fff;
+      }
+    }
+  }
+}

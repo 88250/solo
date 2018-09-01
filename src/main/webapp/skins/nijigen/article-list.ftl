@@ -17,79 +17,76 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<div>
+<div class="article-list">
     <#list articles as article>
-    <article class="post">
-        <header>
-            <h1>
-                <a rel="bookmark" href="${servePath}${article.articlePermalink}">
-                    ${article.articleTitle}
-                </a>
-                <#if article.articlePutTop>
-                <sup>
-                    ${topArticleLabel}
-                </sup>
-                </#if>
-                <#if article.hasUpdated>
-                <sup>
-                    ${updatedLabel}
-                </sup>
-                </#if>
-            </h1>
+    <article class="item">
+        <time class="tooltipped tooltipped__n item__date"
+              aria-label="${article.articleCreateDate?string("yyyy")}年">
+            ${article.articleCreateDate?string("m")}月
+            <span class="item__day">${article.articleCreateDate?string("dd")}</span>
+        </time>
 
-            <div class="meta">
-                <span class="tooltipped tooltipped-n" aria-label="${createDateLabel}">
-                    <i class="icon-date"></i>
-                    <time>
-                        ${article.articleCreateDate?string("yyyy-MM-dd")}
-                    </time>
-                </span>
-                &nbsp; | &nbsp;
-                <span class="tooltipped tooltipped-n" aria-label="${commentCountLabel}">
-                    <i class="icon-comments"></i>
-                    <a href="${servePath}${article.articlePermalink}#comments">
-                        ${article.articleCommentCount} ${commentLabel}</a>
-                </span>
-                &nbsp; | &nbsp;
-                <span class="tooltipped tooltipped-n" aria-label="${viewCountLabel}">
-                    <i class="icon-views"></i>
-                    ${article.articleViewCount} ${viewLabel}
-                </span>
-            </div>
-        </header>
+        <h2 class="item__title">
+            <a rel="bookmark" href="${servePath}${article.articlePermalink}">
+                ${article.articleTitle}
+            </a>
+            <#if article.articlePutTop>
+            <sup>
+                ${topArticleLabel}
+            </sup>
+            </#if>
+            <#if article.hasUpdated>
+            <sup>
+                ${updatedLabel}
+            </sup>
+            </#if>
+        </h2>
+        <div class="item__date--m">
+            <i class="icon__date"></i>
+            ${article.articleCreateDate?string("yyy-MM-DD")}
+        </div>
+
+
+        <div class="ft__center">
+            <#list article.articleTags?split(",") as articleTag>
+            <a rel="tag" class="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
+                #${articleTag}</a>
+            </#list>
+            <a class="tag" href="${servePath}${article.articlePermalink}#comments">
+                <i class="icon__comments"></i> ${article.articleCommentCount} ${commentLabel}
+            </a>
+            <span class="tag">
+                <i class="icon__views"></i>
+                ${article.articleViewCount} ${viewLabel}
+            </span>
+        </div>
+
         <div class="content-reset">
             ${article.articleAbstract}
         </div>
-        <footer class="fn-clear tags">
-            <#list article.articleTags?split(",") as articleTag>
-                <a class="tag" rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">
-                    ${articleTag}</a>
-            </#list>
-            <a href="${servePath}${article.articlePermalink}#more" rel="contents" class="fn-right">
-                ${readLabel} &raquo;
-            </a>
-        </footer>
     </article>
     </#list>
 
 
     <#if 0 != paginationPageCount>
-        <div class="fn-clear">
-            <nav class="pagination fn-right">
+        <div class="fn__clear">
+            <nav class="pagination fn__right">
                 <#if 1 != paginationPageNums?first>
-                <a href="${servePath}${path}/${paginationPreviousPageNum}" class="page-number">&laquo;</a>
-                    <a class="page-number" href="${servePath}${path}/1">1</a> <span class="page-number">...</span>
+                    <a href="${servePath}${path}/${paginationPreviousPageNum}" class="pagination__item">&laquo;</a>
+                    <a class="pagination__item" href="${servePath}${path}/1">1</a>
+                    <span class="pagination__item pagination__item--text">...</span>
                 </#if>
                 <#list paginationPageNums as paginationPageNum>
-                <#if paginationPageNum == paginationCurrentPageNum>
-                <span class="page-number current">${paginationPageNum}</span>
-                <#else>
-                <a class="page-number" href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
-                </#if>
+                    <#if paginationPageNum == paginationCurrentPageNum>
+                    <span class="pagination__item pagination__item--current">${paginationPageNum}</span>
+                    <#else>
+                    <a class="pagination__item" href="${servePath}${path}/${paginationPageNum}">${paginationPageNum}</a>
+                    </#if>
                 </#list>
-                <#if paginationPageNums?last != paginationPageCount> <span class="page-number">...</span>
-                <a href="${servePath}${path}/${paginationPageCount}" class="page-number">${paginationPageCount}</a>
-                <a href="${servePath}${path}/${paginationNextPageNum}" class="page-number">&raquo;</a>
+                <#if paginationPageNums?last != paginationPageCount>
+                    <span class="pagination__item pagination__item--text">...</span>
+                    <a href="${servePath}${path}/${paginationPageCount}" class="pagination__item">${paginationPageCount}</a>
+                    <a href="${servePath}${path}/${paginationNextPageNum}" class="pagination__item">&raquo;</a>
                 </#if>
             </nav>
         </div>

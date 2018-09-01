@@ -71,9 +71,10 @@
         </div>
     </div>
 </header>
-<div class="responsive fn-none">
-    <i class="icon__list"></i>
-    <ul class="list">
+<div class="header__m fn__none">
+    <i class="icon__list" onclick="$(this).next().slideToggle()"></i>
+    <main class="module__list">
+        <ul>
         <#if isLoggedIn>
             <li>
                 <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
@@ -97,12 +98,6 @@
                     </a>
                 </li>
         </#if>
-        <li>
-            <a href="${servePath}">
-                <i class="icon__home"></i>
-            ${indexLabel}
-            </a>
-        </li>
         <#list pageNavigations as page>
             <li>
                 <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
@@ -110,30 +105,31 @@
                 </a>
             </li>
         </#list>
-        <li>
-            <a href="${servePath}/dynamic.html" rel="section">
-                <i class="icon__refresh"></i> ${dynamicLabel}
-            </a>
-        </li>
-        <li>
-            <a href="${servePath}/tags.html" rel="section">
-                <i class="icon__tags"></i> ${allTagsLabel}
-            </a>
-        </li>
-        <li>
-            <a href="${servePath}/archives.html">
-                <i class="icon__inbox"></i> ${archiveLabel}
-            </a>
-        </li>
-        <li>
-            <a rel="archive" href="${servePath}/links.html">
-                <i class="icon__link"></i> ${linkLabel}
-            </a>
-        </li>
-        <li>
-            <a rel="alternate" href="${servePath}/blog-articles-rss.do" rel="section">
-                <i class="icon__rss"></i> RSS
-            </a>
-        </li>
-    </ul>
+            <li>
+                <a href="${servePath}/dynamic.html" rel="section">
+                    <i class="icon__refresh"></i> ${dynamicLabel}
+                </a>
+            </li>
+            <li>
+                <a href="${servePath}/tags.html" rel="section">
+                    <i class="icon__tags"></i> ${allTagsLabel}
+                </a>
+            </li>
+            <li>
+                <a href="${servePath}/archives.html">
+                    <i class="icon__inbox"></i> ${archiveLabel}
+                </a>
+            </li>
+            <li>
+                <a rel="archive" href="${servePath}/links.html">
+                    <i class="icon__link"></i> ${linkLabel}
+                </a>
+            </li>
+            <li>
+                <a rel="alternate" href="${servePath}/blog-articles-rss.do" rel="section">
+                    <i class="icon__rss"></i> RSS
+                </a>
+            </li>
+        </ul>
+    </main>
 </div>

@@ -17,15 +17,17 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<footer class="footer fn-clear">
+<footer class="footer">
     &copy; ${year}
     ${footerContent}
-    <a href="${servePath}">${blogTitle}</a>  &nbsp;   • &nbsp;
+    <a href="${servePath}">${blogTitle}</a>  <span class="fn__none--m">&nbsp; • &nbsp;</span>
+    <div class="fn__none"></div>
     <a href="https://solo.b3log.org" target="_blank">Solo</a> ${version}  <br/>
 
-    Powered by <a href="https://b3log.org" target="_blank">B3log</a> 开源 &nbsp;
-    <span class="ft-warn">&heartsuit;</span>
-    Theme <a rel="friend" href="https://github.com/b3log/solo-skins" target="_blank">9IPHP</a> by <a href="https://github.com/9IPHP/9IPHP" target="_blank">9IPHP</a> & <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
+    Powered by <a href="https://b3log.org" target="_blank">B3log</a> 开源
+    <div class="fn__none"></div>
+    &nbsp; &heartsuit;  &nbsp;
+    Theme <a rel="friend" href="https://github.com/b3log/solo-skins" target="_blank">nijigen</a> by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
 </footer>
 <div class="icon-up" onclick="Util.goTop()"></div>
 
