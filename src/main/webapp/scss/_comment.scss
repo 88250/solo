@@ -1,0 +1,87 @@
+/*
+ * Symphony - A modern community (forum/BBS/SNS/blog) platform written in Java.
+ * Copyright (C) 2012-2018, b3log.org & hacpai.com
+ *
+ * 本文件属于 Sym 商业版的一部分，请仔细阅读项目根文件夹的 LICENSE 并严格遵守相关约定
+ */
+/**
+ * comment
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</ta>
+ * @version 0.1.0.0, Sep 1, 2018
+ */
+
+.em00,.em01,.em02,.em03,.em04,.em05,.em06,.em07,.em08,.em09,.em10,.em11,.em12,.em13,.em14 {
+  cursor: pointer;
+  background-image: url(../../../images/emotions/emotions.png);
+  background-size: 120px;
+  float: left;
+  height: 24px;
+  margin-right: 5px;
+  width: 24px;
+  transition: all .2s ease-out;
+  -webkit-transition: all .2s ease-out;
+  -moz-transition: all .2s ease-out
+}
+
+#emotions span:hover {
+  transform: scale(1.2) rotate(360deg);
+  -webkit-transform: scale(1.2) rotate(360deg);
+  -moz-transform: scale(1.2) rotate(360deg)
+}
+
+.em01 {
+  background-position: -24px 0
+}
+
+.em02 {
+  background-position: -48px 0
+}
+
+.em03 {
+  background-position: -72px 0
+}
+
+.em04 {
+  background-position: -96px 0
+}
+
+.em05 {
+  background-position: 0 -24px
+}
+
+.em06 {
+  background-position: -24px -24px
+}
+
+.em07 {
+  background-position: -48px -24px
+}
+
+.em08 {
+  background-position: -72px -24px
+}
+
+.em09 {
+  background-position: -96px -24px
+}
+
+.em10 {
+  background-position: 0 -48px
+}
+
+.em11 {
+  background-position: -24px -48px
+}
+
+.em12 {
+  background-position: -48px -48px
+}
+
+.em13 {
+  background-position: -72px -48px
+}
+
+.em14 {
+  background-position: -96px -48px
+}
