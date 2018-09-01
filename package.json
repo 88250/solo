@@ -14,7 +14,7 @@
   "private": true,
   "scripts": {
     "dev": "gulp watch",
-    "build": "gulp clean && gulp"
+    "build": "gulp clean && gulp clean && gulp"
   },
   "author": "Daniel <dl882509@gmail.com> (http://88250.b3log.org) & Vanessa <v@b3log.org> (http://vanessa.b3log.org)",
   "maintainers": [
