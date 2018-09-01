@@ -79,8 +79,8 @@
 
 ## 社区
 
-* [讨论区](https://hacpai.com/tag/Solo)
-* [报告问题](https://github.com/b3log/solo/issues/new)
+* [讨论区](https://hacpai.com/tag/solo)
+* [报告问题](https://github.com/b3log/solo/issues/new/choose)
 
 ## 授权
 
