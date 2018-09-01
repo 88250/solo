@@ -67,7 +67,7 @@ public final class EventTypes {
     public static final String REMOVE_COMMENT = "Remove Comment";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private EventTypes() {
     }

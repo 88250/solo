@@ -41,7 +41,7 @@ public final class Comparators {
     public static final TagRefCntComparator TAG_REF_CNT_COMPARATOR = new TagRefCntComparator();
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Comparators() {
     }

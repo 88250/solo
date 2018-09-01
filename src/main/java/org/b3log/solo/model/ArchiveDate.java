@@ -62,7 +62,7 @@ public final class ArchiveDate {
     public static final String ARCHIVE_DATE_MONTH = "archiveDateMonth";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private ArchiveDate() {}
 }

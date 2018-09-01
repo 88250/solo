@@ -42,7 +42,7 @@ public final class Sign {
     public static final String SIGN_HTML = "signHTML";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Sign() {}
 }

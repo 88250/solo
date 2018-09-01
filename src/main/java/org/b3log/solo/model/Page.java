@@ -117,7 +117,7 @@ public final class Page {
     public static final String PAGE_ICON = "pageIcon";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Page() {
     }

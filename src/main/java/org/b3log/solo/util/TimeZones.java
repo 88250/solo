@@ -42,7 +42,7 @@ public final class TimeZones {
     }
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private TimeZones() {
     }

@@ -68,7 +68,7 @@ public final class Category {
     public static final String CATEGORY_T_TAGS = "categoryTags";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Category() {
     }

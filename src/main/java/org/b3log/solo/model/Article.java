@@ -153,7 +153,7 @@ public final class Article {
     private static final int ARTICLE_ABSTRACT_LENGTH = 500;
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Article() {
     }

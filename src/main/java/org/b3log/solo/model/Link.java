@@ -58,7 +58,7 @@ public final class Link {
     public static final String LINK_ORDER = "linkOrder";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Link() {}
 }

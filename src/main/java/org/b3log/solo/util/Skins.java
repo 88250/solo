@@ -62,7 +62,7 @@ public final class Skins {
     private static final Map<String, Map<String, String>> LANG_MAP = new HashMap<>();
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Skins() {
     }

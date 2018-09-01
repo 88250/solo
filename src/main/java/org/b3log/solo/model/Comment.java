@@ -98,7 +98,7 @@ public final class Comment {
     public static final String COMMENT_ON_ID = "commentOnId";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Comment() {}
 }

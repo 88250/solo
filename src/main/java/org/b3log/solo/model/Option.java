@@ -528,7 +528,7 @@ public final class Option {
         }
 
         /**
-         * Private default constructor.
+         * Private constructor.
          */
         private DefaultPreference() {
         }

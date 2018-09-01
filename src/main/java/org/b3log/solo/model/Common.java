@@ -343,7 +343,7 @@ public final class Common {
     public static final String GRAVATAR = "gravatar";
 
     /**
-     * Private default constructor.
+     * Private constructor.
      */
     private Common() {
     }
