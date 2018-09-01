@@ -2,6 +2,7 @@
 # ignore all but these:
 !src/
 !.gitignore
+!.gitmodules
 !pom.xml
 !CHANGE_LOGS.html
 !README*.md
