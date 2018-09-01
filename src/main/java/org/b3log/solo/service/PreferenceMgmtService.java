@@ -51,7 +51,7 @@ import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.13, Jul 22, 2017
+ * @version 1.3.2.14, Sep 1, 2018
  * @since 0.4.0
  */
 @Service
@@ -108,9 +108,8 @@ public class PreferenceMgmtService {
         for (final String dirName : skinDirNames) {
             final JSONObject skin = new JSONObject();
             final String name = Latkes.getSkinName(dirName);
-
             if (null == name) {
-                LOGGER.log(Level.WARN, "The directory[{0}] does not contain any skin, ignored it", dirName);
+                LOGGER.log(Level.WARN, "The directory [{0}] does not contain any skin, ignored it", dirName);
 
                 continue;
             }
@@ -127,14 +126,12 @@ public class PreferenceMgmtService {
         LOGGER.log(Level.DEBUG, "Current skin[name={0}]", skinName);
 
         if (!skinDirNames.contains(currentSkinDirName)) {
-            LOGGER.log(Level.WARN, "Configred skin[dirName={0}] can not find, try to use " + "default skin[dirName="
+            LOGGER.log(Level.WARN, "Configured skin [dirName={0}] can not find, try to use " + "default skin [dirName="
                     + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead.", currentSkinDirName);
             if (!skinDirNames.contains(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME)) {
-                LOGGER.log(Level.ERROR, "Can not find skin[dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "]");
-
-                throw new IllegalStateException(
-                        "Can not find default skin[dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME
-                                + "], please redeploy your Solo and make sure contains this default skin!");
+                LOGGER.log(Level.ERROR, "Can not find default skin [dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME
+                        + "], please redeploy your Solo and make sure contains the default skin. If you are using git, try to re-pull with 'git pull --recurse-submodules'");
+                System.exit(-1);
             }
 
             preference.put(SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);

@@ -46,7 +46,7 @@ import java.util.*;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.5.9, Jul 31, 2018
+ * @version 1.1.5.10, Sep 1, 2018
  * @since 0.3.1
  */
 public final class Skins {
@@ -164,8 +164,7 @@ public final class Skins {
 
         for (final String path : resourcePaths) {
             final String dirName = path.substring("/skins".length() + 1, path.length() - 1);
-
-            if (dirName.startsWith(".")) {
+            if (dirName.contains(".")) {
                 continue;
             }
 
