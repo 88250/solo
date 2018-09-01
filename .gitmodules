@@ -1,0 +1,3 @@
+[submodule "src/main/webapp/skins"]
+	path = src/main/webapp/skins
+	url = https://github.com/b3log/solo-skins
