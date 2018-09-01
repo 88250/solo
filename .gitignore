@@ -12,7 +12,7 @@
 !package.json
 !docker-compose.yml
 
-src/main/webapp/skins/*
+!src/main/webapp/skins/*
 !src/main/webapp/skins/mobile
 !src/main/webapp/skins/nijigen
 
