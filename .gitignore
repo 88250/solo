@@ -1,19 +1,12 @@
-/*
-# ignore all but these:
-!src/
-!.gitignore
-!.gitmodules
-!pom.xml
-!CHANGE_LOGS.html
-!README*.md
-!LICENSE
-!.travis.yml
-!Dockerfile
-!gulpfile.js
-!package.json
-!docker-compose.yml
-
 src/main/webapp/markdowns/*
 !src/main/webapp/markdowns/README.md
 
-.DS_Store
+target/
+node_modules/
+**/.DS_store
+.idea/
+solo.iml
+*.log
+/.settings/
+/.classpath
+/.project
