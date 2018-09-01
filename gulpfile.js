@@ -18,64 +18,90 @@
 
 /**
  * @file frontend tool.
- * 
+ *
  * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 1.5.0.0, Aug 31, 2018
+ * @version 1.6.0.0, Sep 1, 2018
  */
 
-'use strict';
+'use strict'
 
-var gulp = require("gulp");
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var cleanCSS = require('gulp-clean-css');
-var sass = require('gulp-sass');
-
-gulp.task('build', function () {
-    // min css
-    gulp.src('./src/main/webapp/js/lib/CodeMirrorEditor/codemirror.css')
-            .pipe(cleanCSS())
-            .pipe(concat('codemirror.min.css'))
-            .pipe(gulp.dest('./src/main/webapp/js/lib/CodeMirrorEditor/'));
-    
-    // concat js
-    var jsJqueryUpload = ['./src/main/webapp/js/lib/jquery/jquery.min.js',
-        './src/main/webapp/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js',
-        './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js',
-        './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js',
-        './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
-        // codemirror
-        './src/main/webapp/js/lib/CodeMirrorEditor/codemirror.js',
-        './src/main/webapp/js/lib/CodeMirrorEditor/placeholder.js',
-        './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
-        './src/main/webapp/js/lib/CodeMirrorEditor/editor.js',
-        './src/main/webapp/js/lib/to-markdown.js',
-        './src/main/webapp/js/lib/highlight.js-9.6.0/highlight.pack.js'];
-    gulp.src(jsJqueryUpload)
-            .pipe(uglify())
-            .pipe(concat('admin-lib.min.js'))
-            .pipe(gulp.dest('./src/main/webapp/js/lib/compress/'));
-
-
-  // concat js
-  var jsPjax = ['./src/main/webapp/js/lib/jquery/jquery-3.1.0.min.js',
-    './src/main/webapp/js/lib/jquery/jquery.pjax.js',
-    './src/main/webapp/js/lib/nprogress/nprogress.js'];
-  gulp.src(jsPjax)
-  .pipe(uglify())
-  .pipe(concat('pjax.min.js'))
-  .pipe(gulp.dest('./src/main/webapp/js/lib/compress/'));
-});
-
-
-gulp.task('sass', function () {
-  return gulp.src('./src/main/webapp/skins/*/css/*.scss')
-  .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-  .pipe(gulp.dest('./src/main/webapp/skins'));
-});
+const gulp = require('gulp')
+const concat = require('gulp-concat')
+const uglify = require('gulp-uglify')
+const cleanCSS = require('gulp-clean-css')
+const clean = require('gulp-clean')
+const sass = require('gulp-sass')
+const rename = require('gulp-rename')
+const minifycss = require('gulp-minify-css')
+const gulpSequence = require('gulp-sequence');
 
 gulp.task('watch', function () {
-  gulp.watch('./src/main/webapp/skins/*/css/*.scss', ['sass']);
+  gulp.watch('./src/main/webapp/skins/*/css/*.scss', ['sass'])
+})
+
+gulp.task('sass', function () {
+  return gulp.src('./src/main/webapp/skins/*/css/*.scss').
+    pipe(sass().on('error', sass.logError)).
+    pipe(gulp.dest('./src/main/webapp/skins/'))
+})
+
+gulp.task('compress', function () {
+  // min css
+  gulp.src('./src/main/webapp/js/lib/CodeMirrorEditor/codemirror.css').
+    pipe(cleanCSS()).
+    pipe(concat('codemirror.min.css')).
+    pipe(gulp.dest('./src/main/webapp/js/lib/CodeMirrorEditor/'))
+
+  // concat js
+  const jsJqueryUpload = [
+    './src/main/webapp/js/lib/jquery/jquery.min.js',
+    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js',
+    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js',
+    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js',
+    './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
+    // codemirror
+    './src/main/webapp/js/lib/CodeMirrorEditor/codemirror.js',
+    './src/main/webapp/js/lib/CodeMirrorEditor/placeholder.js',
+    './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
+    './src/main/webapp/js/lib/CodeMirrorEditor/editor.js',
+    './src/main/webapp/js/lib/to-markdown.js',
+    './src/main/webapp/js/lib/highlight.js-9.6.0/highlight.pack.js']
+  gulp.src(jsJqueryUpload).
+    pipe(uglify()).
+    pipe(concat('admin-lib.min.js')).
+    pipe(gulp.dest('./src/main/webapp/js/lib/compress/'))
+
+  // concat js
+  const jsPjax = [
+    './src/main/webapp/js/lib/jquery/jquery-3.1.0.min.js',
+    './src/main/webapp/js/lib/jquery/jquery.pjax.js',
+    './src/main/webapp/js/lib/nprogress/nprogress.js']
+  gulp.src(jsPjax).
+    pipe(uglify()).
+    pipe(concat('pjax.min.js')).
+    pipe(gulp.dest('./src/main/webapp/js/lib/compress/'))
+})
+
+gulp.task('build', function () {
+  // minify css
+  gulp.src('./src/main/webapp/skins/*/css/*.css').
+    pipe(rename({suffix: '.min'})).
+    pipe(minifycss()).
+    pipe(gulp.dest('./src/main/webapp/skins/'))
+
+  // minify js
+  gulp.src('./src/main/webapp/skins/*/js/*.js').
+    pipe(rename({suffix: '.min'})).
+    pipe(uglify({preserveComments: 'license'})).
+    pipe(gulp.dest('./src/main/webapp/skins/'))
+})
+
+gulp.task ('clean', function () {
+  // clean css
+  gulp.src('./src/main/webapp/skins/*/css/*.min.css').pipe(clean({force: true}));
+  // clean js
+  gulp.src('./src/main/webapp/skins/*/js/*.min.js').pipe(clean({force: true}));
 });
 
-gulp.task('default', ['sass', 'build']);
+
+gulp.task('default',  gulpSequence('sass', 'build', 'compress'))
