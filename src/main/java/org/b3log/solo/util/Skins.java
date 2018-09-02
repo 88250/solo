@@ -18,6 +18,7 @@
 package org.b3log.solo.util;
 
 import freemarker.template.TemplateExceptionHandler;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
@@ -30,7 +31,6 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Skin;
@@ -192,7 +192,7 @@ public final class Skins {
             return "default";
         }
 
-        if (!Strings.isEmptyOrNull(specifiedSkin)) {
+        if (StringUtils.isNotBlank(specifiedSkin)) {
             final Set<String> skinDirNames = Skins.getSkinDirNames();
             if (skinDirNames.contains(specifiedSkin)) {
                 return specifiedSkin;

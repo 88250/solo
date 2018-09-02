@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.event.comment;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
@@ -68,7 +69,7 @@ public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSO
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
                 event.getType(), eventData, ArticleCommentReplyNotifier.class.getName());
         final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
-        if (Strings.isEmptyOrNull(originalCommentId)) {
+        if (StringUtils.isBlank(originalCommentId)) {
             LOGGER.log(Level.DEBUG, "This comment[id={0}] is not a reply", comment.optString(Keys.OBJECT_ID));
 
             return;

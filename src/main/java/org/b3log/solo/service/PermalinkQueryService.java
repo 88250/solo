@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -114,7 +115,7 @@ public class PermalinkQueryService {
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
     public static boolean invalidArticlePermalinkFormat(final String permalink) {
-        if (Strings.isEmptyOrNull(permalink)) {
+        if (StringUtils.isBlank(permalink)) {
             return true;
         }
 
@@ -132,7 +133,7 @@ public class PermalinkQueryService {
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
     public static boolean invalidPagePermalinkFormat(final String permalink) {
-        if (Strings.isEmptyOrNull(permalink)) {
+        if (StringUtils.isBlank(permalink)) {
             return true;
         }
 
@@ -150,7 +151,7 @@ public class PermalinkQueryService {
      * @return {@code true} if invalid, returns {@code false} otherwise
      */
     private static boolean invalidUserDefinedPermalinkFormat(final String permalink) {
-        if (Strings.isEmptyOrNull(permalink)) {
+        if (StringUtils.isBlank(permalink)) {
             return true;
         }
 

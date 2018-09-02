@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -31,7 +32,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AtomRenderer;
 import org.b3log.latke.servlet.renderer.RssRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
@@ -219,7 +219,7 @@ public class FeedProcessor {
         final HttpServletResponse response = context.getResponse();
 
         final String tagId = request.getParameter(Keys.OBJECT_ID);
-        if (Strings.isEmptyOrNull(tagId)) {
+        if (StringUtils.isBlank(tagId)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
@@ -270,7 +270,7 @@ public class FeedProcessor {
                 final JSONObject article = articleRepository.get(articleId);
 
                 if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED) // Skips the unpublished article
-                        && Strings.isEmptyOrNull(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips article with password
+                        && StringUtils.isBlank(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips article with password
                     articles.add(article);
                 }
             }
@@ -451,7 +451,7 @@ public class FeedProcessor {
         context.setRenderer(renderer);
 
         final String tagId = request.getParameter(Keys.OBJECT_ID);
-        if (Strings.isEmptyOrNull(tagId)) {
+        if (StringUtils.isBlank(tagId)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
@@ -507,7 +507,7 @@ public class FeedProcessor {
                 final JSONObject article = articleRepository.get(articleId);
 
                 if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED) // Skips the unpublished article
-                        && Strings.isEmptyOrNull(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips article with password
+                        && StringUtils.isBlank(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips article with password
                     articles.add(article);
                 }
             }

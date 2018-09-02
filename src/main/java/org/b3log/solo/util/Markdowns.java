@@ -34,7 +34,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.util.Callstacks;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -154,7 +153,7 @@ public final class Markdowns {
      * 'markdownErrorLabel' if exception
      */
     public static String toHTML(final String markdownText) {
-        if (Strings.isEmptyOrNull(markdownText)) {
+        if (StringUtils.isBlank(markdownText)) {
             return "";
         }
 

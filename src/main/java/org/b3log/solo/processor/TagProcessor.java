@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -32,7 +33,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -263,7 +263,7 @@ public class TagProcessor {
      * @return page number, returns {@code -1} if the specified request URI can not convert to an number
      */
     private static int getCurrentPageNum(final String requestURI, final String tagTitle) {
-        if (Strings.isEmptyOrNull(tagTitle)) {
+        if (StringUtils.isBlank(tagTitle)) {
             return -1;
         }
 

@@ -207,7 +207,7 @@ public class CommentMgmtService {
         final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
         boolean isArticle = true;
         String title = articleOrPage.optString(Article.ARTICLE_TITLE);
-        if (Strings.isEmptyOrNull(title)) {
+        if (StringUtils.isBlank(title)) {
             title = articleOrPage.getString(Page.PAGE_TITLE);
             isArticle = false;
         }
@@ -433,7 +433,7 @@ public class CommentMgmtService {
             ret.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && page.getBoolean(Page.PAGE_COMMENTABLE));
             ret.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
 
-            if (!Strings.isEmptyOrNull(originalCommentId)) {
+            if (StringUtils.isNotBlank(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
                 if (null != originalComment) {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);
@@ -576,7 +576,7 @@ public class CommentMgmtService {
             ret.put(Comment.COMMENT_CONTENT, cmtContent);
             ret.put(Comment.COMMENT_URL, commentURL);
 
-            if (!Strings.isEmptyOrNull(originalCommentId)) {
+            if (StringUtils.isNotBlank(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
                 if (null != originalComment) {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);
@@ -773,7 +773,7 @@ public class CommentMgmtService {
         final JSONObject user = userRepository.getByEmail(commentEmail);
         if (null != user) {
             final String avatar = user.optString(UserExt.USER_AVATAR);
-            if (!Strings.isEmptyOrNull(avatar)) {
+            if (StringUtils.isNotBlank(avatar)) {
                 comment.put(Comment.COMMENT_THUMBNAIL_URL, avatar);
 
                 return;

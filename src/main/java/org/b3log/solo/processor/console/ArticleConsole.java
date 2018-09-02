@@ -165,7 +165,7 @@ public class ArticleConsole {
         result.put(Keys.STATUS_CODE, true);
 
         final String markdownText = request.getParameter("markdownText");
-        if (Strings.isEmptyOrNull(markdownText)) {
+        if (StringUtils.isBlank(markdownText)) {
             result.put("html", "");
 
             return;

@@ -34,7 +34,6 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
@@ -468,7 +467,7 @@ public class ArticleMgmtService {
     public String addArticleInternal(final JSONObject article) throws ServiceException {
         String ret = article.optString(Keys.OBJECT_ID);
 
-        if (Strings.isEmptyOrNull(ret)) {
+        if (StringUtils.isBlank(ret)) {
             ret = Ids.genTimeMillisId();
             article.put(Keys.OBJECT_ID, ret);
         }
@@ -771,10 +770,10 @@ public class ArticleMgmtService {
 
             comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
 
-            if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
+            if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             }
-            if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
+            if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             }
 
@@ -1117,7 +1116,7 @@ public class ArticleMgmtService {
 
         String ret = article.optString(Article.ARTICLE_PERMALINK);
 
-        if (Strings.isEmptyOrNull(ret)) {
+        if (StringUtils.isBlank(ret)) {
             ret = "/articles/" + DateFormatUtils.format(date, "yyyy/MM/dd") + "/" + article.optString(Keys.OBJECT_ID) + ".html";
         }
 
@@ -1153,7 +1152,7 @@ public class ArticleMgmtService {
         final String oldPermalink = oldArticle.getString(ARTICLE_PERMALINK);
 
         if (!oldPermalink.equals(ret)) {
-            if (Strings.isEmptyOrNull(ret)) {
+            if (StringUtils.isBlank(ret)) {
                 ret = "/articles/" + DateFormatUtils.format(createDate, "yyyy/MM/dd") + "/" + articleId + ".html";
             }
 

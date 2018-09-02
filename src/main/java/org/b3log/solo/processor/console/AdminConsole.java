@@ -162,7 +162,7 @@ public class AdminConsole {
         final String email = currentUser.optString(User.USER_EMAIL);
 
         final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
-        if (!Strings.isEmptyOrNull(userAvatar)) {
+        if (StringUtils.isNotBlank(userAvatar)) {
             dataModel.put(Common.GRAVATAR, userAvatar);
         } else {
             final String gravatar = Thumbnails.getGravatarURL(email, "128");
@@ -536,8 +536,8 @@ public class AdminConsole {
 
             data.setViewName(hostTemplateName);
             data.setDataModel(dataModel);
-            eventManager.fireEventSynchronously(new Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));
-            if (Strings.isEmptyOrNull((String) dataModel.get(Plugin.PLUGINS))) {
+            eventManager.fireEventSynchronously(new Event<>(Keys.FREEMARKER_ACTION, data));
+            if (StringUtils.isBlank((String) dataModel.get(Plugin.PLUGINS))) {
                 // There is no plugin for this template, fill ${plugins} with blank.
                 dataModel.put(Plugin.PLUGINS, "");
             }

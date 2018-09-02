@@ -19,6 +19,7 @@ package org.b3log.solo.processor;
 
 import jodd.http.HttpRequest;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -200,7 +201,7 @@ public class BlogProcessor {
     public void getArticlesTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
         final String pwd = request.getParameter("pwd");
-        if (Strings.isEmptyOrNull(pwd)) {
+        if (StringUtils.isBlank(pwd)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -253,7 +254,7 @@ public class BlogProcessor {
 
             for (final String tag : tags) {
                 final String trim = tag.trim();
-                if (!Strings.isEmptyOrNull(trim)) {
+                if (StringUtils.isNotBlank(trim)) {
                     tagArray.put(tag);
                 }
             }

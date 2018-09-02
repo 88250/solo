@@ -19,6 +19,7 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -39,7 +40,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Sessions;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -139,7 +139,7 @@ public class LoginProcessor {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
-        if (Strings.isEmptyOrNull(destinationURL)) {
+        if (StringUtils.isBlank(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         } else if (!isInternalLinks(destinationURL)) {
             destinationURL = "/";
@@ -191,7 +191,7 @@ public class LoginProcessor {
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
             final String userPwd = requestJSONObject.getString(User.USER_PASSWORD);
 
-            if (Strings.isEmptyOrNull(userEmail) || Strings.isEmptyOrNull(userPwd)) {
+            if (StringUtils.isBlank(userEmail) || StringUtils.isBlank(userPwd)) {
                 return;
             }
 
@@ -238,7 +238,7 @@ public class LoginProcessor {
         Sessions.logout(httpServletRequest, context.getResponse());
 
         String destinationURL = httpServletRequest.getParameter(Common.GOTO);
-        if (Strings.isEmptyOrNull(destinationURL) || !isInternalLinks(destinationURL)) {
+        if (StringUtils.isBlank(destinationURL) || !isInternalLinks(destinationURL)) {
             destinationURL = "/";
         }
 
@@ -256,7 +256,7 @@ public class LoginProcessor {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
-        if (Strings.isEmptyOrNull(destinationURL)) {
+        if (StringUtils.isBlank(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         } else if (!isInternalLinks(destinationURL)) {
             destinationURL = "/";
@@ -293,7 +293,7 @@ public class LoginProcessor {
 
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 
-            if (Strings.isEmptyOrNull(userEmail)) {
+            if (StringUtils.isBlank(userEmail)) {
                 LOGGER.log(Level.WARN, "Why user's email is empty");
                 return;
             }

@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -143,7 +144,7 @@ public class CaptchaProcessor {
             return false;
         }
 
-        if (Strings.isEmptyOrNull(captcha) || captcha.length() != CAPTCHA_LENGTH) {
+        if (StringUtils.isBlank(captcha) || captcha.length() != CAPTCHA_LENGTH) {
             return true;
         }
 

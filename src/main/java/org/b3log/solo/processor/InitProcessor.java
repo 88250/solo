@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -152,7 +153,7 @@ public class InitProcessor {
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL);
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
 
-            if (Strings.isEmptyOrNull(userName) || Strings.isEmptyOrNull(userEmail) || Strings.isEmptyOrNull(userPassword)
+            if (StringUtils.isBlank(userName) || StringUtils.isBlank(userEmail) || StringUtils.isBlank(userPassword)
                     || !Strings.isEmail(userEmail)) {
                 ret.put(Keys.MSG, "Init failed, please check your input");
 

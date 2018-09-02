@@ -18,6 +18,7 @@
 package org.b3log.solo.event.rhythm;
 
 import jodd.http.HttpRequest;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
@@ -84,7 +85,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 throw new EventException("Not found preference");
             }
 
-            if (!Strings.isEmptyOrNull(originalArticle.optString(Article.ARTICLE_VIEW_PWD))) {
+            if (StringUtils.isNotBlank(originalArticle.optString(Article.ARTICLE_VIEW_PWD))) {
                 return;
             }
 

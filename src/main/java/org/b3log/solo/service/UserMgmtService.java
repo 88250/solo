@@ -102,7 +102,7 @@ public class UserMgmtService {
                 final JSONObject cookieJSONObject = new JSONObject(value);
 
                 final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
-                if (Strings.isEmptyOrNull(userId)) {
+                if (StringUtils.isBlank(userId)) {
                     break;
                 }
 
@@ -193,12 +193,12 @@ public class UserMgmtService {
             }
 
             final String userRole = requestJSONObject.optString(User.USER_ROLE);
-            if (!Strings.isEmptyOrNull(userRole)) {
+            if (StringUtils.isNotBlank(userRole)) {
                 oldUser.put(User.USER_ROLE, userRole);
             }
 
             final String userURL = requestJSONObject.optString(User.USER_URL);
-            if (!Strings.isEmptyOrNull(userURL)) {
+            if (StringUtils.isNotBlank(userURL)) {
                 oldUser.put(User.USER_URL, userURL);
             }
 
@@ -303,7 +303,7 @@ public class UserMgmtService {
             user.put(User.USER_PASSWORD, DigestUtils.md5Hex(userPassword));
 
             String userURL = requestJSONObject.optString(User.USER_URL);
-            if (Strings.isEmptyOrNull(userURL)) {
+            if (StringUtils.isBlank(userURL)) {
                 userURL = Latkes.getServePath();
             }
 
@@ -320,7 +320,7 @@ public class UserMgmtService {
             user.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
 
             String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
-            if (Strings.isEmptyOrNull(userAvatar)) {
+            if (StringUtils.isBlank(userAvatar)) {
                 userAvatar = Thumbnails.getGravatarURL(userEmail, "128");
             }
             user.put(UserExt.USER_AVATAR, userAvatar);

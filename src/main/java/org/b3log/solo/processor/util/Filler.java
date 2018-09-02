@@ -18,6 +18,7 @@
 package org.b3log.solo.processor.util;
 
 import freemarker.template.Template;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -35,7 +36,10 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.*;
+import org.b3log.latke.util.Dates;
+import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
@@ -548,7 +552,7 @@ public class Filler {
 
                 final String email = comment.optString(Comment.COMMENT_EMAIL);
                 final String thumbnailURL = comment.optString(Comment.COMMENT_THUMBNAIL_URL);
-                if (Strings.isEmptyOrNull(thumbnailURL)) {
+                if (StringUtils.isBlank(thumbnailURL)) {
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.getGravatarURL(email, "128"));
                 }
             }
@@ -602,7 +606,7 @@ public class Filler {
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
             if (null != currentUser) {
                 final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
-                if (!Strings.isEmptyOrNull(userAvatar)) {
+                if (StringUtils.isNotBlank(userAvatar)) {
                     dataModel.put(Common.GRAVATAR, userAvatar);
                 } else {
                     final String email = currentUser.optString(User.USER_EMAIL);
@@ -620,7 +624,7 @@ public class Filler {
                 data.setViewName("footer.ftl");
                 data.setDataModel(dataModel);
                 eventManager.fireEventSynchronously(new Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));
-                if (Strings.isEmptyOrNull((String) dataModel.get(Plugin.PLUGINS))) {
+                if (StringUtils.isBlank((String) dataModel.get(Plugin.PLUGINS))) {
                     // There is no plugin for this template, fill ${plugins} with blank.
                     dataModel.put(Plugin.PLUGINS, "");
                 }
@@ -665,13 +669,13 @@ public class Filler {
             dataModel.put(Option.ID_C_HTML_HEAD, preference.getString(Option.ID_C_HTML_HEAD));
 
             String metaKeywords = preference.getString(Option.ID_C_META_KEYWORDS);
-            if (Strings.isEmptyOrNull(metaKeywords)) {
+            if (StringUtils.isBlank(metaKeywords)) {
                 metaKeywords = "";
             }
             dataModel.put(Option.ID_C_META_KEYWORDS, metaKeywords);
 
             String metaDescription = preference.getString(Option.ID_C_META_DESCRIPTION);
-            if (Strings.isEmptyOrNull(metaDescription)) {
+            if (StringUtils.isBlank(metaDescription)) {
                 metaDescription = "";
             }
             dataModel.put(Option.ID_C_META_DESCRIPTION, metaDescription);
@@ -922,7 +926,7 @@ public class Filler {
             article.put(Common.AUTHOR_ID, authorId);
 
             final String userAvatar = author.optString(UserExt.USER_AVATAR);
-            if (!Strings.isEmptyOrNull(userAvatar)) {
+            if (StringUtils.isNotBlank(userAvatar)) {
                 article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
             } else {
                 final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");
@@ -982,7 +986,7 @@ public class Filler {
             article.put(Common.AUTHOR_ID, authorId);
 
             final String userAvatar = author.optString(UserExt.USER_AVATAR);
-            if (!Strings.isEmptyOrNull(userAvatar)) {
+            if (StringUtils.isNotBlank(userAvatar)) {
                 article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
             } else {
                 final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");

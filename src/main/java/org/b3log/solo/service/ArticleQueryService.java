@@ -32,7 +32,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.util.Emotions;
@@ -262,7 +261,7 @@ public class ArticleQueryService {
      * @throws Exception exception
      */
     public boolean canAccessArticle(final String articleId, final HttpServletRequest request) throws Exception {
-        if (Strings.isEmptyOrNull(articleId)) {
+        if (StringUtils.isBlank(articleId)) {
             return false;
         }
 
@@ -292,7 +291,7 @@ public class ArticleQueryService {
     public boolean needViewPwd(final HttpServletRequest request, final JSONObject article) {
         final String articleViewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
 
-        if (Strings.isEmptyOrNull(articleViewPwd)) {
+        if (StringUtils.isBlank(articleViewPwd)) {
             return false;
         }
 
@@ -1030,7 +1029,7 @@ public class ArticleQueryService {
      * @throws ServiceException service exception
      */
     public String getArticleContent(final HttpServletRequest request, final String articleId) throws ServiceException {
-        if (Strings.isEmptyOrNull(articleId)) {
+        if (StringUtils.isBlank(articleId)) {
             return null;
         }
 
@@ -1094,7 +1093,7 @@ public class ArticleQueryService {
 
             String abstractContent = article.optString(ARTICLE_ABSTRACT);
 
-            if (!Strings.isEmptyOrNull(abstractContent)) {
+            if (StringUtils.isNotBlank(abstractContent)) {
                 Stopwatchs.start("Abstract");
                 abstractContent = Emotions.convert(abstractContent);
                 abstractContent = Markdowns.toHTML(abstractContent);

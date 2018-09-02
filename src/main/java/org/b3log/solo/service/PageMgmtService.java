@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -27,7 +28,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
@@ -134,7 +134,7 @@ public class PageMgmtService {
             final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
 
             if (!oldPermalink.equals(permalink)) {
-                if (Strings.isEmptyOrNull(permalink)) {
+                if (StringUtils.isBlank(permalink)) {
                     permalink = "/pages/" + pageId + ".html";
                 }
 
@@ -247,7 +247,7 @@ public class PageMgmtService {
             page.put(Page.PAGE_ORDER, maxOrder + 1);
 
             String permalink = page.optString(Page.PAGE_PERMALINK);
-            if (Strings.isEmptyOrNull(permalink)) {
+            if (StringUtils.isBlank(permalink)) {
                 permalink = "/pages/" + Ids.genTimeMillisId() + ".html";
             }
 
@@ -397,10 +397,10 @@ public class PageMgmtService {
 
             comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
 
-            if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
+            if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             }
-            if (Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
+            if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             }
 

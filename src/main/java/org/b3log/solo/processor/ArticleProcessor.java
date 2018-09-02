@@ -296,7 +296,7 @@ public class ArticleProcessor {
     public void showArticlePwdForm(final HTTPRequestContext context,
                                    final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String articleId = request.getParameter("articleId");
-        if (Strings.isEmptyOrNull(articleId)) {
+        if (StringUtils.isBlank(articleId)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
@@ -318,7 +318,7 @@ public class ArticleProcessor {
         dataModel.put("articleAbstract", article.optString(Article.ARTICLE_ABSTRACT));
         final String msg = request.getParameter(Keys.MSG);
 
-        if (!Strings.isEmptyOrNull(msg)) {
+        if (StringUtils.isNotBlank(msg)) {
             dataModel.put(Keys.MSG, langPropsService.get("passwordNotMatchLabel"));
         }
 
@@ -442,7 +442,7 @@ public class ArticleProcessor {
         final String requestURI = request.getRequestURI();
 
         final String articleId = StringUtils.substringBetween(requestURI, "/article/id/", "/relevant/articles");
-        if (Strings.isEmptyOrNull(articleId)) {
+        if (StringUtils.isBlank(articleId)) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
@@ -474,7 +474,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/get-article-content", method = HTTPRequestMethod.GET)
     public void getArticleContent(final HTTPRequestContext context, final HttpServletRequest request) {
         final String articleId = request.getParameter("id");
-        if (Strings.isEmptyOrNull(articleId)) {
+        if (StringUtils.isBlank(articleId)) {
             return;
         }
 
@@ -999,7 +999,7 @@ public class ArticleProcessor {
             article.put(Common.AUTHOR_ID, authorId);
             article.put(Common.AUTHOR_ROLE, author.getString(User.USER_ROLE));
             final String userAvatar = author.optString(UserExt.USER_AVATAR);
-            if (!Strings.isEmptyOrNull(userAvatar)) {
+            if (StringUtils.isNotBlank(userAvatar)) {
                 article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
             } else {
                 final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");
@@ -1119,7 +1119,7 @@ public class ArticleProcessor {
         dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
 
         final String userAvatar = author.optString(UserExt.USER_AVATAR);
-        if (!Strings.isEmptyOrNull(userAvatar)) {
+        if (StringUtils.isNotBlank(userAvatar)) {
             dataModel.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
         } else {
             final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");

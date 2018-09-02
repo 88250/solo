@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.api.symphony;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
@@ -31,7 +32,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -152,7 +152,7 @@ public class CommentReceiver {
             final String keyOfSolo = preference.optString(Option.ID_C_KEY_OF_SOLO);
             final String key = symphonyCmt.optString("userB3Key");
 
-            if (Strings.isEmptyOrNull(keyOfSolo) || !keyOfSolo.equals(key)) {
+            if (StringUtils.isBlank(keyOfSolo) || !keyOfSolo.equals(key)) {
                 ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
                 ret.put(Keys.MSG, "Wrong key");
 
@@ -204,7 +204,7 @@ public class CommentReceiver {
 
             comment.put(Comment.COMMENT_DATE, date);
             ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
-            if (!Strings.isEmptyOrNull(originalCommentId)) {
+            if (StringUtils.isNotBlank(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
                 if (null != originalComment) {
                     comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);

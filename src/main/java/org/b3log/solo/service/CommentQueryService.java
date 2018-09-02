@@ -29,7 +29,6 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
@@ -98,7 +97,7 @@ public class CommentQueryService {
      * @throws Exception exception
      */
     public boolean canAccessComment(final String commentId, final HttpServletRequest request) throws Exception {
-        if (Strings.isEmptyOrNull(commentId)) {
+        if (StringUtils.isBlank(commentId)) {
             return false;
         }
 
@@ -246,11 +245,11 @@ public class CommentQueryService {
                 final String email = comment.optString(Comment.COMMENT_EMAIL);
 
                 final String thumbnailURL = comment.optString(Comment.COMMENT_THUMBNAIL_URL);
-                if (Strings.isEmptyOrNull(thumbnailURL)) {
+                if (StringUtils.isBlank(thumbnailURL)) {
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.getGravatarURL(email, "128"));
                 }
 
-                if (!Strings.isEmptyOrNull(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
+                if (StringUtils.isNotBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                     // This comment is a reply
                     comment.put(Common.IS_REPLY, true);
                 }

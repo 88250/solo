@@ -18,12 +18,12 @@
 package org.b3log.solo.service;
 
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
 import org.json.JSONObject;
@@ -58,7 +58,7 @@ public class OptionMgmtService {
         try {
             String id = option.optString(Keys.OBJECT_ID);
 
-            if (Strings.isEmptyOrNull(id)) {
+            if (StringUtils.isBlank(id)) {
                 id = optionRepository.add(option);
             } else {
                 final JSONObject old = optionRepository.get(id);
