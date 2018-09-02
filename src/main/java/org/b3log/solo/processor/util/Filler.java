@@ -66,7 +66,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.16.4, Sep 1, 2018
+ * @version 1.6.16.5, Sep 2, 2018
  * @since 0.3.1
  */
 @Service
@@ -549,6 +549,7 @@ public class Filler {
                 comment.put(Comment.COMMENT_URL, comment.getString(Comment.COMMENT_URL));
                 comment.put(Common.IS_REPLY, false);
                 comment.remove(Comment.COMMENT_EMAIL); // Erases email for security reason
+                comment.put("commentDate2", comment.opt(Comment.COMMENT_DATE));
 
                 final String email = comment.optString(Comment.COMMENT_EMAIL);
                 final String thumbnailURL = comment.optString(Comment.COMMENT_THUMBNAIL_URL);
