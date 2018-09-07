@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor;
 
-
 import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -45,7 +44,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-
 /**
  * User template processor.
  *
@@ -53,12 +51,8 @@ import java.util.Map;
  * User can add a template (for example "links.ftl") then visits the page ("links.html").
  * </p>
  *
- * <p>
- * See <a href="https://code.google.com/p/b3log-solo/issues/detail?id=409">issue 409</a> for more details.
- * </p>
- *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Jun 22, 2018
+ * @version 1.0.0.7, Sep 7, 2018
  * @since 0.4.5
  */
 @RequestProcessor

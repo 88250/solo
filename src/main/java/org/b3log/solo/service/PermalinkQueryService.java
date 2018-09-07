@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
  * Permalink query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Mar 11, 2018
+ * @version 1.0.0.4, Sep 7, 2018
  * @since 0.6.1
  */
 @Service
@@ -160,7 +160,7 @@ public class PermalinkQueryService {
         }
 
         if (Strings.isNumeric(permalink.substring(1))) {
-            // See issue 120 (http://code.google.com/p/b3log-solo/issues/detail?id=120#c4) for more details
+            // Conflict with pagination
             return true;
         }
 
