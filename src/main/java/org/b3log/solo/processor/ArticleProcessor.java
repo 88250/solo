@@ -67,7 +67,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.4.2, Jun 22, 2018
+ * @version 1.4.4.3, Sep 7, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -914,29 +914,6 @@ public class ArticleProcessor {
                 LOGGER.error(ex.getMessage());
             }
         }
-    }
-
-    /**
-     * Updates article random double value.
-     *
-     * @param request the specified request
-     */
-    @RequestProcessing(value = "/article-random-double-gen.do", method = HTTPRequestMethod.GET)
-    public void updateArticlesRandomValue(final HttpServletRequest request) {// Commented for issue 308, see http://code.google.com/p/b3log-solo/issues/detail?id=308#c4 and
-        // cron.xml for more details.
-        // int updateCnt = DEFAULT_UPDATE_CNT;
-        // try {
-        // updateCnt =
-        // Integer.valueOf(request.getParameter("cnt"));
-        // } catch (final NumberFormatException e) {
-        // LOGGER.log(Level.WARN, e.getMessage(), e);
-        // }
-        //
-        // try {
-        // articleMgmtService.updateArticlesRandomValue(updateCnt);
-        // } catch (final ServiceException e) {
-        // LOGGER.log(Level.ERROR, "Updates articles random values failed", e);
-        // }
     }
 
     /**
