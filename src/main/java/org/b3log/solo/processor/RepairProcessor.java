@@ -26,15 +26,12 @@ import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.Repositories;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
@@ -50,7 +47,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * Provides patches on some special issues.
@@ -59,7 +55,7 @@ import java.util.Set;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.15, Aug 27, 2018
+ * @version 1.2.0.16, Sep 7, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -122,56 +118,6 @@ public class RepairProcessor {
      */
     @Inject
     private StatisticMgmtService statisticMgmtService;
-
-    /**
-     * Removes unused properties of each article.
-     *
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/fix/normalization/articles/properties", method = HTTPRequestMethod.POST)
-    public void removeUnusedArticleProperties(final HTTPRequestContext context) {
-        LOGGER.log(Level.INFO, "Processes remove unused article properties");
-
-        final TextHTMLRenderer renderer = new TextHTMLRenderer();
-        context.setRenderer(renderer);
-
-        Transaction transaction = null;
-        try {
-            final JSONArray articles = articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
-            if (articles.length() <= 0) {
-                renderer.setContent("No unused article properties");
-                return;
-            }
-
-            transaction = articleRepository.beginTransaction();
-
-            final Set<String> keyNames = Repositories.getKeyNames(Article.ARTICLE);
-            for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.getJSONObject(i);
-
-                final JSONArray names = article.names();
-                final Set<String> nameSet = CollectionUtils.jsonArrayToSet(names);
-                if (nameSet.removeAll(keyNames)) {
-                    for (final String unusedName : nameSet) {
-                        article.remove(unusedName);
-                    }
-
-                    articleRepository.update(article.getString(Keys.OBJECT_ID), article);
-                    LOGGER.log(Level.INFO, "Found an article[id={0}] exists unused properties[{1}]",
-                            article.getString(Keys.OBJECT_ID), nameSet);
-                }
-            }
-
-            transaction.commit();
-        } catch (final Exception e) {
-            if (null != transaction && transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-            renderer.setContent("Removes unused article properties failed, error msg[" + e.getMessage() + "]");
-        }
-    }
 
     /**
      * Restores the signs of preference to default.
