@@ -72,6 +72,7 @@
 
 ## 文档
 
+* [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
 * [用户指南](https://hacpai.com/article/1492881378588)
 * [开发指南](https://hacpai.com/article/1493822943172)
 * [皮肤开发](https://hacpai.com/article/1493814851007)
