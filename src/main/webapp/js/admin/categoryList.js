@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.1, Apr 5, 2018
+ * @version 1.1.3.0, Sep 10, 2018
  * @since 2.0.0
  */
 
@@ -152,7 +152,7 @@ admin.categoryList = {
                     categoryData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.categoryList.get('" +
                             categories[i].oId + "')\">" + Label.updateLabel + "</a>\
                             <a href='javascript:void(0)' onclick=\"admin.categoryList.del('" + categories[i].oId + "', '" +
-                            categories[i].categoryTitle + "')\">" + Label.removeLabel + "</a> ";
+                            encodeURIComponent(categories[i].categoryTitle) + "')\">" + Label.removeLabel + "</a> ";
 
                 }
                 that.tablePagination.updateTablePagination(categoryData, pageNum, result.pagination);
@@ -278,7 +278,7 @@ admin.categoryList = {
      * @categoryName 分类名称
      */
     del: function(id, categoryName) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.categoryLabel + '"' + categoryName + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.categoryLabel + '"' + Util.htmlDecode(categoryName) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");

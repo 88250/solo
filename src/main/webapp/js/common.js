@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.0, Jul 8, 2018
+ * @version 1.4.0.0, Sep 10, 2018
  */
 
 /**
@@ -28,6 +28,11 @@
  * @static
  */
 var Util = {
+  htmlDecode: function (code) {
+    var div = document.createElement('div')
+    div.innerHTML = decodeURIComponent(code)
+    return div.innerText
+  },
   _isArticlePage: function (href) {
     var isArticle = true;
     if (href.indexOf(latkeConfig.servePath + '/tags/') > -1) {

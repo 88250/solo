@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.1, Apr 5, 2018
+ * @version 1.5.1.0, Sep 10, 2018
  */
 admin.article = {
     currentEditorType: '',
@@ -118,7 +118,7 @@ admin.article = {
      * @param {String} title 文章标题
      */
     del: function (id, fromId, title) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + title + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + Util.htmlDecode(title) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");

@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.8, Apr 5, 2018
+ * @version 1.1.2.0, Sep 10, 2018
  */
 
 /* user-list 相关操作 */
@@ -109,7 +109,7 @@ admin.userList = {
                     } else {
                         userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" +
                                 users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a> " +
+                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + encodeURIComponent(users[i].userName) + "')\">" + Label.removeLabel + "</a> " +
                                 "<a href='javascript:void(0)' onclick=\"admin.userList.changeRole('" + users[i].oId + "')\">" + Label.changeRoleLabel + "</a>";
                         if ("defaultRole" === users[i].userRole) {
                             userData[i].isAdmin = Label.commonUserLabel;
@@ -260,7 +260,7 @@ admin.userList = {
      * @userName 用户名称
      */
     del: function(id, userName) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.userLabel + '"' + userName + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.userLabel + '"' + Util.htmlDecode(userName) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
