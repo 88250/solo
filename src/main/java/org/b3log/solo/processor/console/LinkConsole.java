@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor.console;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -30,10 +31,12 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Link;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
  * Link console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Mar 3, 2018
+ * @version 1.0.1.0, Sep 10, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -341,19 +344,22 @@ public class LinkConsole {
         try {
             final String requestURI = request.getRequestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/links/").length());
-
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
-
             final JSONObject result = linkQueryService.getLinks(requestJSONObject);
-
             result.put(Keys.STATUS_CODE, true);
-
             renderer.setJSONObject(result);
+
+            final JSONArray links = result.optJSONArray(Link.LINKS);
+            for (int i = 0; i < links.length(); i++) {
+                final JSONObject link = links.optJSONObject(i);
+                String title = link.optString(Link.LINK_TITLE);
+                title = StringEscapeUtils.escapeXml(title);
+                link.put(Link.LINK_TITLE, title);
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = QueryResults.defaultResult();
-
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
