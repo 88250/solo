@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.7, Apr 5, 2018
+ * @version 1.2.4.0, Sep 10, 2018
  */
 
 /* page-list 相关操作 */
@@ -168,7 +168,7 @@ admin.pageList = {
                     pageData[i].comments = pages[i].pageCommentCount;
                     pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.get('" + pages[i].oId + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "', '" + pages[i].pageTitle + "')\">" + Label.removeLabel + "</a>\
+                                <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "', '" + encodeURIComponent(pages[i].pageTitle) + "')\">" + Label.removeLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + pages[i].oId + "', 'page')\">" + Label.commentLabel + "</a></span>";
                 }
 
@@ -229,7 +229,7 @@ admin.pageList = {
      * @title 自定义页面标题
      */
     del: function (id, title) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.navLabel + '"' + title + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.navLabel + '"' + Util.htmlDecode(title) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
