@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor.console;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -54,7 +55,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, May 17, 2018
+ * @version 1.1.1.0, Sep 10, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -321,6 +322,14 @@ public class ArticleConsole {
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
+
+            final JSONArray articles = result.optJSONArray(Article.ARTICLES);
+            for (int i = 0; i < articles.length(); i++) {
+                final JSONObject article = articles.optJSONObject(i);
+                String title = article.optString(Article.ARTICLE_TITLE);
+                title = StringEscapeUtils.escapeXml(title);
+                article.put(Article.ARTICLE_TITLE, title);
+            }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
