@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor.console;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -37,6 +38,7 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.QueryResults;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +49,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.0.6, Mar 3, 2018
+ * @version 1.2.1.0, Sep 10, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -289,12 +291,18 @@ public class UserConsole {
         try {
             final String requestURI = request.getRequestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/users/").length());
-
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
-
             final JSONObject result = userQueryService.getUsers(requestJSONObject);
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
+
+            final JSONArray users = result.optJSONArray(User.USERS);
+            for (int i = 0; i < users.length(); i++) {
+                final JSONObject user = users.optJSONObject(i);
+                String userName = user.optString(User.USER_NAME);
+                userName = StringEscapeUtils.escapeXml(userName);
+                user.put(User.USER_NAME, userName);
+            }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
