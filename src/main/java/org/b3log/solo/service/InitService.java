@@ -207,7 +207,7 @@ public class InitService {
 
         final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
         for (final CreateTableResult createTableResult : createTableResults) {
-            LOGGER.log(Level.DEBUG, "Create table result[tableName={0}, isSuccess={1}]",
+            LOGGER.log(Level.DEBUG, "Create table result [tableName={0}, isSuccess={1}]",
                     createTableResult.getName(), createTableResult.isSuccess());
         }
 
@@ -232,12 +232,12 @@ public class InitService {
             } catch (final Exception e) {
                 if (0 == retries) {
                     LOGGER.log(Level.ERROR, "Initialize Solo error", e);
-                    throw new ServiceException("Initailize Solo error: " + e.getMessage());
+                    throw new ServiceException("Initialize Solo error: " + e.getMessage());
                 }
 
                 // Allow retry to occur
                 --retries;
-                LOGGER.log(Level.WARN, "Retrying to init Solo[retries={0}]", retries);
+                LOGGER.log(Level.WARN, "Retrying to init Solo [retries={0}]", retries);
             } finally {
                 if (transaction.isActive()) {
                     transaction.rollback();
