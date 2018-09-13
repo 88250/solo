@@ -1053,7 +1053,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.1, Apr 5, 2018
+ * @version 1.5.1.0, Sep 10, 2018
  */
 admin.article = {
     currentEditorType: '',
@@ -1151,7 +1151,7 @@ admin.article = {
      * @param {String} title 文章标题
      */
     del: function (id, fromId, title) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + title + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.articleLabel + '"' + Util.htmlDecode(title) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
@@ -1934,7 +1934,7 @@ admin.articleList = {
                     var topClass = articles[i].articlePutTop ? Label.cancelPutTopLabel : Label.putTopLabel;
                     articleData[i].expendRow = "<a target='_blank' href='" + latkeConfig.servePath + articles[i].articlePermalink + "'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', true)\">" + Label.updateLabel + "</a>  \
-                                <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'article', '" + articles[i].articleTitle + "')\">" + Label.removeLabel + "</a>  \
+                                <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'article', '" + encodeURIComponent(articles[i].articleTitle) + "')\">" + Label.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.articleList.popTop(this, '" + articles[i].oId + "')\">" + topClass + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + articles[i].oId + "', 'article')\">" + Label.commentLabel + "</a>";
                 }
@@ -2011,7 +2011,7 @@ admin.register["article-list"] =  {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Apr 5, 2018
+ * @version 1.0.2.0, Sep 10, 2018
  */
 
 /* draft-list 相关操作 */
@@ -2085,7 +2085,7 @@ admin.draftList = {
                     articles[i].articlePermalink + "' target='_blank'>" + 
                     articles[i].articleTitle + "</a><span class='table-tag'>" + articles[i].articleTags + "</span>";
                     articleData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', false);\">" + Label.updateLabel + "</a>  \
-                                <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'draft', '" + articles[i].articleTitle + "')\">" + Label.removeLabel + "</a>  \
+                                <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'draft', '" + encodeURIComponent(articles[i].articleTitle) + "')\">" + Label.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + articles[i].oId + "', 'draft')\">" + Label.commentLabel + "</a>";
                 }
                     
@@ -2126,7 +2126,7 @@ admin.register["draft-list"] =  {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.3.7, Apr 5, 2018
+ * @version 1.2.4.0, Sep 10, 2018
  */
 
 /* page-list 相关操作 */
@@ -2274,7 +2274,7 @@ admin.pageList = {
                     pageData[i].comments = pages[i].pageCommentCount;
                     pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.get('" + pages[i].oId + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "', '" + pages[i].pageTitle + "')\">" + Label.removeLabel + "</a>\
+                                <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "', '" + encodeURIComponent(pages[i].pageTitle) + "')\">" + Label.removeLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + pages[i].oId + "', 'page')\">" + Label.commentLabel + "</a></span>";
                 }
 
@@ -2335,7 +2335,7 @@ admin.pageList = {
      * @title 自定义页面标题
      */
     del: function (id, title) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.navLabel + '"' + title + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.navLabel + '"' + Util.htmlDecode(title) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
@@ -2773,7 +2773,7 @@ admin.register.others = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.5, Apr 5, 2018
+ * @version 1.1.2.0, Sep 10, 2018
  */
 
 /* link-list 相关操作 */
@@ -2877,7 +2877,7 @@ admin.linkList = {
                     linkData[i].linkDescription = links[i].linkDescription;
                     linkData[i].expendRow = "<span><a href='" + links[i].linkAddress + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.get('" + links[i].oId + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.linkList.del('" + links[i].oId + "', '" + links[i].linkTitle + "')\">" + Label.removeLabel + "</a></span>";
+                                <a href='javascript:void(0)' onclick=\"admin.linkList.del('" + links[i].oId + "', '" + encodeURIComponent(links[i].linkTitle) + "')\">" + Label.removeLabel + "</a></span>";
                 }
 
                 that.tablePagination.updateTablePagination(linkData, pageNum, result.pagination);
@@ -3007,7 +3007,7 @@ admin.linkList = {
      * @title 链接标题
      */
     del: function (id, title) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.permalinkLabel + '"' + title + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.permalinkLabel + '"' + Util.htmlDecode(title) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
@@ -3605,7 +3605,7 @@ admin.register["plugin-list"] = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.8, Apr 5, 2018
+ * @version 1.1.2.0, Sep 10, 2018
  */
 
 /* user-list 相关操作 */
@@ -3694,7 +3694,7 @@ admin.userList = {
                     } else {
                         userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" +
                                 users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + users[i].userName + "')\">" + Label.removeLabel + "</a> " +
+                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + encodeURIComponent(users[i].userName) + "')\">" + Label.removeLabel + "</a> " +
                                 "<a href='javascript:void(0)' onclick=\"admin.userList.changeRole('" + users[i].oId + "')\">" + Label.changeRoleLabel + "</a>";
                         if ("defaultRole" === users[i].userRole) {
                             userData[i].isAdmin = Label.commonUserLabel;
@@ -3845,7 +3845,7 @@ admin.userList = {
      * @userName 用户名称
      */
     del: function(id, userName) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.userLabel + '"' + userName + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.userLabel + '"' + Util.htmlDecode(userName) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
@@ -3968,7 +3968,7 @@ admin.register["user-list"] = {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.1, Apr 5, 2018
+ * @version 1.1.3.0, Sep 10, 2018
  * @since 2.0.0
  */
 
@@ -4100,7 +4100,7 @@ admin.categoryList = {
                     categoryData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.categoryList.get('" +
                             categories[i].oId + "')\">" + Label.updateLabel + "</a>\
                             <a href='javascript:void(0)' onclick=\"admin.categoryList.del('" + categories[i].oId + "', '" +
-                            categories[i].categoryTitle + "')\">" + Label.removeLabel + "</a> ";
+                            encodeURIComponent(categories[i].categoryTitle) + "')\">" + Label.removeLabel + "</a> ";
 
                 }
                 that.tablePagination.updateTablePagination(categoryData, pageNum, result.pagination);
@@ -4226,7 +4226,7 @@ admin.categoryList = {
      * @categoryName 分类名称
      */
     del: function(id, categoryName) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.categoryLabel + '"' + categoryName + '"?');
+        var isDelete = confirm(Label.confirmRemoveLabel + Label.categoryLabel + '"' + Util.htmlDecode(categoryName) + '"?');
         if (isDelete) {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
