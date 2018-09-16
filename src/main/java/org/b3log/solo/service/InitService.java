@@ -321,8 +321,6 @@ public class InitService {
         comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
         commentRepository.add(comment);
-
-        LOGGER.info("Hello World!");
     }
 
     /**
