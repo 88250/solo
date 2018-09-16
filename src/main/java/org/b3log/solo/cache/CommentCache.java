@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * Comment cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 16, 2017
+ * @version 1.1.0.0, Sep 16, 2018
  * @since 2.3.0
  */
 @Named
@@ -73,5 +73,12 @@ public class CommentCache {
      */
     public void removeComment(final String id) {
         cache.remove(id);
+    }
+
+    /**
+     * Clears all cached comments.
+     */
+    public void clear() {
+        cache.removeAll();
     }
 }

@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Aug 30, 2017
+ * @version 1.2.0.0, Sep 16, 2018
  * @since 2.3.0
  */
 @Named
@@ -94,5 +94,13 @@ public class ArticleCache {
      */
     public void removeArticle(final String id) {
         idCache.remove(id);
+    }
+
+    /**
+     * Clears all cached articles.
+     */
+    public void clear() {
+        idCache.removeAll();
+        permalinkCache.removeAll();
     }
 }

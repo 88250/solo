@@ -27,11 +27,14 @@ import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.cache.ArticleCache;
+import org.b3log.solo.cache.CommentCache;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
@@ -131,6 +134,18 @@ public class UpgradeService {
     private LangPropsService langPropsService;
 
     /**
+     * Article cache.
+     */
+    @Inject
+    private ArticleCache articleCache;
+
+    /**
+     * Comment cache.
+     */
+    @Inject
+    private CommentCache commentCache;
+
+    /**
      * Upgrades if need.
      */
     public void upgrade() {
@@ -178,7 +193,11 @@ public class UpgradeService {
             alterTables();
             upgradeArticles();
             upgradeComments();
+            JdbcRepository.dispose(); // avoid to metadata lock
             dropColumns();
+
+            articleCache.clear();
+            commentCache.clear();
 
             final Transaction transaction = optionRepository.beginTransaction();
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
@@ -218,9 +237,9 @@ public class UpgradeService {
         final Statement statement = connection.createStatement();
 
         final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-        statement.execute("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCreateDate`");
-        statement.execute("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleUpdateDate`");
-        statement.execute("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentDate`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCreateDate`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleUpdateDate`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentDate`");
         statement.close();
         connection.commit();
         connection.close();
