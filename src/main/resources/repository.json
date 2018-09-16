@@ -532,12 +532,12 @@
                 {
                     "name": "articleCreated",
                     "description": "文章创建时间戳",
-                    "type": "Date"
+                    "type": "long"
                 },
                 {
                     "name": "articleUpdated",
                     "description": "文章更新时间戳",
-                    "type": "Date"
+                    "type": "long"
                 },
                 {
                     "name": "articleRandomDouble",
