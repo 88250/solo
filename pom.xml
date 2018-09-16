@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.19, Sep 13, 2018
+    Version: 3.18.3.20, Sep 16, 2018
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -102,7 +102,7 @@
         <!-- Unit Test -->
         <testng.version>6.1.1</testng.version>
         <!-- JDBC Drivers -->
-        <mysql-connector-java.version>5.1.42</mysql-connector-java.version>
+        <mysql-connector-java.version>8.0.12</mysql-connector-java.version>
     </properties>
 
     <dependencies>
