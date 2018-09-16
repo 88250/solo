@@ -57,7 +57,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.1, Aug 2, 2018
+ * @version 1.3.3.2, Sep 16, 2018
  * @since 0.3.5
  */
 @Service
@@ -426,8 +426,8 @@ public class CommentMgmtService {
             final JSONObject preference = preferenceQueryService.getPreference();
             final Date date = new Date();
 
-            comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
+            comment.put(Comment.COMMENT_CREATED, date.getTime());
+            ret.put(Comment.COMMENT_T_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
             ret.put("commentDate2", date);
 
             ret.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && page.getBoolean(Page.PAGE_COMMENTABLE));
@@ -562,8 +562,8 @@ public class CommentMgmtService {
             final JSONObject preference = preferenceQueryService.getPreference();
             final Date date = new Date();
 
-            comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
+            comment.put(Comment.COMMENT_CREATED, date.getTime());
+            ret.put(Comment.COMMENT_T_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
             ret.put("commentDate2", date);
 
             ret.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));

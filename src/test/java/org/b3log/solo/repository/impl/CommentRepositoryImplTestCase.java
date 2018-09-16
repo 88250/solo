@@ -17,8 +17,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.Date;
-import java.util.List;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Comment;
@@ -27,18 +25,21 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.Date;
+import java.util.List;
+
 /**
  * {@link ArticleRepositoryImpl} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 7, 2012
+ * @version 1.0.0.2, Sep 16, 2018
  */
 @Test(suiteName = "repository")
 public class CommentRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Adds successfully.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -48,7 +49,7 @@ public class CommentRepositoryImplTestCase extends AbstractTestCase {
         final JSONObject comment = new JSONObject();
 
         comment.put(Comment.COMMENT_CONTENT, "comment1 content");
-        comment.put(Comment.COMMENT_DATE, new Date());
+        comment.put(Comment.COMMENT_CREATED, new Date().getTime());
         comment.put(Comment.COMMENT_EMAIL, "test@gmail.com");
         comment.put(Comment.COMMENT_NAME, "comment1 name");
         comment.put(Comment.COMMENT_ON_ID, "comment1 on id");
@@ -63,16 +64,12 @@ public class CommentRepositoryImplTestCase extends AbstractTestCase {
         commentRepository.add(comment);
         transaction.commit();
 
-        final List<JSONObject> comments =
-                commentRepository.getComments("comment1 on id", 1,
-                                              Integer.MAX_VALUE);
+        final List<JSONObject> comments = commentRepository.getComments("comment1 on id", 1, Integer.MAX_VALUE);
         Assert.assertNotNull(comments);
         Assert.assertEquals(comments.size(), 1);
 
-        Assert.assertEquals(
-                commentRepository.getComments("not found", 1, Integer.MAX_VALUE).
-                size(), 0);
-        
+        Assert.assertEquals(commentRepository.getComments("not found", 1, Integer.MAX_VALUE).size(), 0);
+
         Assert.assertEquals(commentRepository.getRecentComments(3).size(), 1);
     }
 }

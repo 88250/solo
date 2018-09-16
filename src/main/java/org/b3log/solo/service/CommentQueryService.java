@@ -53,7 +53,7 @@ import java.util.List;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.0, Aug 31, 2017
+ * @version 1.3.2.1, Sep 16, 2018
  * @since 0.3.5
  */
 @Service
@@ -163,8 +163,8 @@ public class CommentQueryService {
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(Comment.COMMENT_DATE,
-                    SortDirection.DESCENDING);
+            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                    addSort(Comment.COMMENT_CREATED, SortDirection.DESCENDING);
             final JSONObject result = commentRepository.get(query);
             final JSONArray comments = result.getJSONArray(Keys.RESULTS);
 
@@ -196,8 +196,8 @@ public class CommentQueryService {
                 commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
                 comment.put(Comment.COMMENT_CONTENT, commentContent);
 
-                comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
-                comment.remove(Comment.COMMENT_DATE);
+                comment.put(Comment.COMMENT_TIME, comment.optLong(Comment.COMMENT_CREATED));
+                comment.remove(Comment.COMMENT_CREATED);
             }
 
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
@@ -232,8 +232,8 @@ public class CommentQueryService {
             final List<JSONObject> comments = commentRepository.getComments(onId, 1, Integer.MAX_VALUE);
 
             for (final JSONObject comment : comments) {
-                comment.put(Comment.COMMENT_TIME, ((Date) comment.get(Comment.COMMENT_DATE)).getTime());
-                comment.put("commentDate2", comment.get(Comment.COMMENT_DATE)); // 1.9.0 向后兼容
+                comment.put(Comment.COMMENT_TIME, comment.optLong(Comment.COMMENT_CREATED));
+                comment.put("commentDate2", new Date(comment.optLong(Comment.COMMENT_CREATED))); // 1.9.0 向后兼容
                 comment.put(Comment.COMMENT_NAME, comment.getString(Comment.COMMENT_NAME));
                 String url = comment.getString(Comment.COMMENT_URL);
                 if (StringUtils.contains(url, "<")) { // legacy issue https://github.com/b3log/solo/issues/12091

@@ -22,7 +22,7 @@ package org.b3log.solo.model;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Jan 18, 2013
+ * @version 1.1.0.0, Sep 16, 2018
  * @since 0.3.1
  */
 public final class Comment {
@@ -63,9 +63,14 @@ public final class Comment {
     public static final String COMMENT_SHARP_URL = "commentSharpURL";
 
     /**
+     * Key of comment created at.
+     */
+    public static final String COMMENT_CREATED = "commentCreated";
+
+    /**
      * Key of comment date.
      */
-    public static final String COMMENT_DATE = "commentDate";
+    public static final String COMMENT_T_DATE = "commentDate";
 
     /**
      * Key of comment time.
@@ -100,5 +105,6 @@ public final class Comment {
     /**
      * Private constructor.
      */
-    private Comment() {}
+    private Comment() {
+    }
 }

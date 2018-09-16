@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
  * {@link CommentMgmtService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 11, 2012
+ * @version 1.0.0.3, Sep 16, 2018
  */
 @Test(suiteName = "service")
 public class CommentMgmtServiceTestCase extends AbstractTestCase {
@@ -91,7 +91,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         final JSONObject addResult = commentMgmtService.addArticleComment(requestJSONObject);
         Assert.assertNotNull(addResult);
         Assert.assertNotNull(addResult.getString(Keys.OBJECT_ID));
-        Assert.assertNotNull(addResult.getString(Comment.COMMENT_DATE));
+        Assert.assertNotNull(addResult.getString(Comment.COMMENT_T_DATE));
         Assert.assertNotNull(addResult.getString(Comment.COMMENT_THUMBNAIL_URL));
         Assert.assertNotNull(addResult.getString(Comment.COMMENT_SHARP_URL));
 
@@ -140,7 +140,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         final JSONObject addResult = commentMgmtService.addPageComment(requestJSONObject);
         Assert.assertNotNull(addResult);
         Assert.assertNotNull(addResult.getString(Keys.OBJECT_ID));
-        Assert.assertNotNull(addResult.getString(Comment.COMMENT_DATE));
+        Assert.assertNotNull(addResult.getString(Comment.COMMENT_T_DATE));
         Assert.assertNotNull(addResult.getString(Comment.COMMENT_THUMBNAIL_URL));
         Assert.assertNotNull(addResult.getString(Comment.COMMENT_SHARP_URL));
 

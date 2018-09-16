@@ -55,7 +55,7 @@ import java.util.Date;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.15, Aug 2, 2018
+ * @version 1.1.1.16, Sep 16, 2018
  * @since 0.5.5
  */
 @RequestProcessor
@@ -202,8 +202,8 @@ public class CommentReceiver {
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             final Date date = new Date();
 
-            comment.put(Comment.COMMENT_DATE, date);
-            ret.put(Comment.COMMENT_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
+            comment.put(Comment.COMMENT_CREATED, date.getTime());
+            ret.put(Comment.COMMENT_T_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
             if (StringUtils.isNotBlank(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
                 if (null != originalComment) {

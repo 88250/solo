@@ -57,7 +57,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.21, Aug 2, 2018
+ * @version 1.5.2.22, Sep 16, 2018
  * @since 0.4.0
  */
 @Service
@@ -305,7 +305,6 @@ public class InitService {
         final String articleId = addHelloWorldArticle(article);
 
         final JSONObject comment = new JSONObject();
-
         comment.put(Keys.OBJECT_ID, articleId);
         comment.put(Comment.COMMENT_NAME, "Daniel");
         comment.put(Comment.COMMENT_EMAIL, "d@b3log.org");
@@ -314,7 +313,7 @@ public class InitService {
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
         comment.put(Comment.COMMENT_THUMBNAIL_URL, Solos.GRAVATAR + "59a5e8209c780307dbe9c9ba728073f5??s=60&r=G");
-        comment.put(Comment.COMMENT_DATE, date);
+        comment.put(Comment.COMMENT_CREATED, date.getTime());
         comment.put(Comment.COMMENT_ON_ID, articleId);
         comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
         final String commentId = Ids.genTimeMillisId();
