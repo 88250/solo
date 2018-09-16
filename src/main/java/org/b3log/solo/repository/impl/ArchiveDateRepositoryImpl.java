@@ -36,7 +36,7 @@ import java.util.List;
  * Archive date repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.10, Aug 27, 2018
+ * @version 1.0.0.11, Sep 16, 2018
  * @since 0.3.1
  */
 @Repository
@@ -51,7 +51,7 @@ public class ArchiveDateRepositoryImpl extends AbstractRepository implements Arc
      * Public constructor.
      */
     public ArchiveDateRepositoryImpl() {
-        super(ArchiveDate.ARCHIVE_DATE);
+        super(ArchiveDate.ARCHIVE_DATE.toLowerCase());
     }
 
     @Override

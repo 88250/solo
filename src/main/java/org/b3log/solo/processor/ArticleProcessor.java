@@ -931,12 +931,12 @@ public class ArticleProcessor {
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
         if (null == article) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
             return;
         }
 
         final String articleId = article.optString(Keys.OBJECT_ID);
-
-        LOGGER.log(Level.DEBUG, "Article[id={0}]", articleId);
+        LOGGER.log(Level.DEBUG, "Article [id={0}]", articleId);
 
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
@@ -944,7 +944,6 @@ public class ArticleProcessor {
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
-
             final boolean allowVisitDraftViaPermalink = preference.getBoolean(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
             if (!article.optBoolean(Article.ARTICLE_IS_PUBLISHED) && !allowVisitDraftViaPermalink) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -952,13 +951,14 @@ public class ArticleProcessor {
                 return;
             }
 
-            LOGGER.log(Level.TRACE, "Article[title={0}]", article.getString(Article.ARTICLE_TITLE));
+            LOGGER.log(Level.TRACE, "Article [title={0}]", article.getString(Article.ARTICLE_TITLE));
 
             articleQueryService.markdown(article);
 
+            article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.optLong(Article.ARTICLE_CREATED)));
+
             // For <meta name="description" content="${article.articleAbstract}"/>
             final String metaDescription = Jsoup.parse(article.optString(Article.ARTICLE_ABSTRACT)).text();
-
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
 
             if (preference.getBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
@@ -1206,7 +1206,6 @@ public class ArticleProcessor {
         Stopwatchs.start("Get Previous Article");
         LOGGER.debug("Getting the previous article....");
         final JSONObject previousArticle = articleQueryService.getPreviousArticle(articleId);
-
         if (null != previousArticle) {
             dataModel.put(Common.PREVIOUS_ARTICLE_PERMALINK, previousArticle.getString(Article.ARTICLE_PERMALINK));
             dataModel.put(Common.PREVIOUS_ARTICLE_TITLE, previousArticle.getString(Article.ARTICLE_TITLE));
@@ -1218,10 +1217,8 @@ public class ArticleProcessor {
         Stopwatchs.start("Get Article CMTs");
         LOGGER.debug("Getting article's comments....");
         final int cmtCount = article.getInt(Article.ARTICLE_COMMENT_COUNT);
-
         if (0 != cmtCount) {
             final List<JSONObject> articleComments = commentQueryService.getComments(articleId);
-
             dataModel.put(Article.ARTICLE_COMMENTS_REF, articleComments);
         } else {
             dataModel.put(Article.ARTICLE_COMMENTS_REF, Collections.emptyList());
@@ -1229,8 +1226,7 @@ public class ArticleProcessor {
         LOGGER.debug("Got article's comments");
         Stopwatchs.end();
 
-        dataModel.put(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT,
-                preference.getInt(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
+        dataModel.put(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
         dataModel.put(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT));
         dataModel.put(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT));
     }

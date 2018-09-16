@@ -71,7 +71,7 @@
             ]
         },
         {
-            "name": "archiveDate",
+            "name": "archivedate",
             "description": "存档日期表",
             "keys": [
                 {
@@ -98,7 +98,7 @@
             ]
         },
         {
-            "name": "archiveDate_article",
+            "name": "archivedate_article",
             "description": "存档-文章关联表",
             "keys": [
                 {

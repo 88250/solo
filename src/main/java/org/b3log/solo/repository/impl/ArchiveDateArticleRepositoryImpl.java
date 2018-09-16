@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Archive date-Article relation repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Nov 9, 2011
+ * @version 1.0.0.7, Sep 16, 2018
  * @since 0.3.1
  */
 @Repository
@@ -42,7 +42,7 @@ public class ArchiveDateArticleRepositoryImpl extends AbstractRepository impleme
      * Public constructor.
      */
     public ArchiveDateArticleRepositoryImpl() {
-        super(ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE);
+        super((ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE).toLowerCase());
     }
 
     @Override
