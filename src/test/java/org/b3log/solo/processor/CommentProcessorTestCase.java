@@ -18,6 +18,7 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.AbstractTestCase;
@@ -177,7 +178,10 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         final JSONObject article = new JSONObject();
         requestJSONObject.put(Article.ARTICLE, article);
 
-        article.put(Article.ARTICLE_AUTHOR_ID, "1");
+        final JSONObject admin = getUserQueryService().getAdmin();
+        final String userId = admin.optString(Keys.OBJECT_ID);
+
+        article.put(Article.ARTICLE_AUTHOR_ID, userId);
         article.put(Article.ARTICLE_TITLE, "article1 title");
         article.put(Article.ARTICLE_ABSTRACT, "article1 abstract");
         article.put(Article.ARTICLE_CONTENT, "article1 content");
