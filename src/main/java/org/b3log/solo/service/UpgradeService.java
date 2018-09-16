@@ -33,6 +33,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.ArticleRepository;
@@ -48,13 +49,15 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.28, Aug 23, 2018
+ * @version 1.2.0.29, Sep 16, 2018
  * @since 1.2.0
  */
 @Service
@@ -78,7 +81,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "2.9.2";
+    private static final String FROM_VER = "2.9.3";
 
     /**
      * New version.
@@ -171,46 +174,58 @@ public class UpgradeService {
     private void perform() throws Exception {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
-        final Transaction transaction = optionRepository.beginTransaction();
         try {
+            alterTables();
+            upgradeArticles();
+            upgradeComments();
+            dropColumns();
+
+            final Transaction transaction = optionRepository.beginTransaction();
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
             transaction.commit();
         } catch (final Exception e) {
-            if (null != transaction && transaction.isActive()) {
-                transaction.rollback();
-            }
-
             LOGGER.log(Level.ERROR, "Upgrade failed!", e);
+
             throw new Exception("Upgrade failed from version [" + FROM_VER + "] to version [" + TO_VER + ']');
         }
 
         LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
     }
 
-    /**
-     * Alters database tables.
-     *
-     * @throws Exception exception
-     */
     private void alterTables() throws Exception {
         final Connection connection = Connections.getConnection();
         final Statement statement = connection.createStatement();
 
         final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` ADD `pageIcon` VARCHAR(255) NOT NULL;");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archiveDate` RENAME TO `" + tablePrefix + "archivedate1`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archivedate1` RENAME TO `" + tablePrefix + "archivedate`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archiveDate_article` RENAME TO `" + tablePrefix + "archivedate_article1`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archivedate_article1` RENAME TO `" + tablePrefix + "archivedate_article`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleAuthorId` VARCHAR(19) NOT NULL;");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleCreated` BIGINT NOT NULL");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleUpdated` BIGINT NOT NULL");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` ADD `commentCreated` BIGINT NOT NULL");
         statement.close();
         connection.commit();
         connection.close();
     }
 
-    /**
-     * Drops database tables.
-     *
-     * @throws Exception exception
-     */
+    private void dropColumns() throws Exception {
+        final Connection connection = Connections.getConnection();
+        final Statement statement = connection.createStatement();
+
+        final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+        // statement.execute("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCreateDate`");
+        // statement.execute("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleUpdateDate`");
+        statement.execute("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentDate`");
+        statement.close();
+        connection.commit();
+        connection.close();
+    }
+
     private void dropTables() throws Exception {
         final Connection connection = Connections.getConnection();
         final Statement statement = connection.createStatement();
@@ -222,44 +237,6 @@ public class UpgradeService {
         connection.close();
     }
 
-    /**
-     * Upgrade database tables.
-     *
-     * @throws Exception exception
-     */
-    private void upgradeTables() throws Exception {
-        final Connection connection = Connections.getConnection();
-        final Statement statement = connection.createStatement();
-
-        final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-        statement.execute("CREATE TABLE `" + tablePrefix + "category` (\n" +
-                "  `oId` varchar(19) NOT NULL,\n" +
-                "  `categoryTitle` varchar(64) NOT NULL,\n" +
-                "  `categoryURI` varchar(32) NOT NULL,\n" +
-                "  `categoryDescription` text NOT NULL,\n" +
-                "  `categoryOrder` int(11) NOT NULL,\n" +
-                "  `categoryTagCnt` int(11) NOT NULL,\n" +
-                "  PRIMARY KEY (`oId`)\n" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-        statement.execute("CREATE TABLE `" + tablePrefix + "category_tag` (\n" +
-                "  `oId` varchar(19) NOT NULL,\n" +
-                "  `category_oId` varchar(19) NOT NULL,\n" +
-                "  `tag_oId` varchar(19) NOT NULL,\n" +
-                "  PRIMARY KEY (`oId`)\n" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8;");
-        statement.close();
-        connection.commit();
-        connection.close();
-    }
-
-    /**
-     * Upgrades users.
-     * <p>
-     * Password hashing.
-     * </p>
-     *
-     * @throws Exception exception
-     */
     private void upgradeUsers() throws Exception {
         final JSONArray users = userRepository.get(new Query()).getJSONArray(Keys.RESULTS);
 
@@ -273,33 +250,41 @@ public class UpgradeService {
         }
     }
 
-    /**
-     * Upgrades articles.
-     *
-     * @throws Exception exception
-     */
     private void upgradeArticles() throws Exception {
-        LOGGER.log(Level.INFO, "Adds a property [articleEditorType] to each of articles");
-
-        final JSONArray articles = articleRepository.get(new Query()).getJSONArray(Keys.RESULTS);
-        if (articles.length() <= 0) {
+        final List<JSONObject> articles = articleRepository.getList(new Query().
+                addProjection(Keys.OBJECT_ID, String.class).
+                addProjection(Article.ARTICLE_T_CREATE_DATE, Date.class).
+                addProjection(Article.ARTICLE_T_UPDATE_DATE, Date.class).
+                addProjection(Article.ARTICLE_T_AUTHOR_EMAIL, String.class));
+        if (articles.isEmpty()) {
             LOGGER.log(Level.TRACE, "No articles");
+
             return;
         }
 
         Transaction transaction = null;
         try {
-            for (int i = 0; i < articles.length(); i++) {
+            for (int i = 0; i < articles.size(); i++) {
                 if (0 == i % STEP || !transaction.isActive()) {
                     transaction = userRepository.beginTransaction();
                 }
 
-                final JSONObject article = articles.getJSONObject(i);
-                final String articleId = article.optString(Keys.OBJECT_ID);
-                LOGGER.log(Level.INFO, "Found an article[id={0}]", articleId);
-                article.put(Article.ARTICLE_EDITOR_TYPE, "tinyMCE");
+                final String articleId = articles.get(i).optString(Keys.OBJECT_ID);
+                final JSONObject article = articleRepository.get(articleId);
+                final String authorEmail = article.optString(Article.ARTICLE_T_AUTHOR_EMAIL);
+                JSONObject author = userRepository.getByEmail(authorEmail);
+                if (null == author) {
+                    author = userRepository.getAdmin();
+                }
+                article.put(Article.ARTICLE_AUTHOR_ID, author.optString(Keys.OBJECT_ID));
 
-                articleRepository.update(article.getString(Keys.OBJECT_ID), article);
+                final Date createDate = (Date) article.get(Article.ARTICLE_T_CREATE_DATE);
+                article.put(Article.ARTICLE_CREATED, createDate.getTime());
+
+                final Date updateDate = (Date) article.get(Article.ARTICLE_T_UPDATE_DATE);
+                article.put(Article.ARTICLE_UPDATED, updateDate.getTime());
+
+                articleRepository.update(articleId, article);
 
                 if (0 == i % STEP) {
                     transaction.commit();
@@ -312,6 +297,49 @@ public class UpgradeService {
             }
 
             LOGGER.log(Level.TRACE, "Updated all articles");
+        } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            throw e;
+        }
+    }
+
+    private void upgradeComments() throws Exception {
+        final List<JSONObject> comments = commentRepository.getList(new Query());
+        if (comments.isEmpty()) {
+            LOGGER.log(Level.TRACE, "No comments");
+
+            return;
+        }
+
+        Transaction transaction = null;
+        try {
+            for (int i = 0; i < comments.size(); i++) {
+                if (0 == i % STEP || !transaction.isActive()) {
+                    transaction = userRepository.beginTransaction();
+                }
+
+                final JSONObject comment = comments.get(i);
+                final String commentId = comment.optString(Keys.OBJECT_ID);
+
+                final Date createDate = (Date) comment.get(Comment.COMMENT_T_DATE);
+                comment.put(Comment.COMMENT_CREATED, createDate.getTime());
+
+                commentRepository.update(commentId, comment);
+
+                if (0 == i % STEP) {
+                    transaction.commit();
+                    LOGGER.log(Level.TRACE, "Updated some comments");
+                }
+            }
+
+            if (transaction.isActive()) {
+                transaction.commit();
+            }
+
+            LOGGER.log(Level.TRACE, "Updated all comments");
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
