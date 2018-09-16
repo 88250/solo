@@ -17,19 +17,25 @@
  */
 package org.b3log.solo.util.comparator;
 
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
 
 import java.util.Comparator;
-import java.util.Date;
 
 /**
  * Article comparator by update date.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 16, 2018
+ * @version 1.0.1.0, Sep 17, 2018
  */
 public final class ArticleUpdateDateComparator implements Comparator<JSONObject> {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ArticleUpdateDateComparator.class);
 
     /**
      * Package default constructor.
@@ -40,12 +46,14 @@ public final class ArticleUpdateDateComparator implements Comparator<JSONObject>
     @Override
     public int compare(final JSONObject article1, final JSONObject article2) {
         try {
-            final Date date1 = (Date) article1.get(Article.ARTICLE_UPDATED);
-            final Date date2 = (Date) article2.get(Article.ARTICLE_UPDATED);
+            final long date1 = article1.getLong(Article.ARTICLE_UPDATED);
+            final long date2 = article2.getLong(Article.ARTICLE_UPDATED);
 
-            return date2.compareTo(date1);
+            return (int) (date2 - date1);
         } catch (final Exception e) {
-            throw new IllegalStateException(e);
+            LOGGER.log(Level.ERROR, "Compares update date failed", e);
+
+            return 0;
         }
     }
 }

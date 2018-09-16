@@ -17,6 +17,8 @@
  */
 package org.b3log.solo.util.comparator;
 
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
 
@@ -26,9 +28,14 @@ import java.util.Comparator;
  * Article comparator by create date.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 16, 2018
+ * @version 1.0.1.0, Sep 17, 2018
  */
 public final class ArticleCreateDateComparator implements Comparator<JSONObject> {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ArticleCreateDateComparator.class);
 
     /**
      * Package default constructor.
@@ -44,7 +51,9 @@ public final class ArticleCreateDateComparator implements Comparator<JSONObject>
 
             return (int) (date2 - date1);
         } catch (final Exception e) {
-            throw new IllegalStateException(e);
+            LOGGER.log(Level.ERROR, "Compares create date failed", e);
+
+            return 0;
         }
     }
 }
