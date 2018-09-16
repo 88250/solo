@@ -687,7 +687,7 @@ public class ArticleQueryService {
                 articleIds.add(articleId);
             }
 
-            final List<JSONObject> ret = new ArrayList<JSONObject>();
+            final List<JSONObject> ret = new ArrayList<>();
 
             final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).setPageCount(1).index(
                     Article.ARTICLE_PERMALINK);

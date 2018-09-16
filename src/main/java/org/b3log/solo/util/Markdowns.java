@@ -135,7 +135,7 @@ public final class Markdowns {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [flexmark] for markdown processing. " +
-                    "Please reads FAQ section in user guide (https://hacpai.com/article/1492881378588) for more details.");
+                    "Please read FAQ section in user guide (https://hacpai.com/article/1492881378588) for more details.");
         }
     }
 
