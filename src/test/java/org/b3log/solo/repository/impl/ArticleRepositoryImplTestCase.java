@@ -35,7 +35,7 @@ import java.util.List;
  * {@link ArticleRepositoryImpl} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, May 1, 2012
+ * @version 1.0.0.4, Sep 16, 2018
  */
 @Test(suiteName = "repository")
 public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
@@ -54,7 +54,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_TITLE, "article title1");
         article.put(Article.ARTICLE_ABSTRACT, "article abstract");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@gmail.com");
+        article.put(Article.ARTICLE_AUTHOR_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 0);
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
         article.put(Article.ARTICLE_CONTENT, "article content");
@@ -74,7 +74,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         articleRepository.add(article);
         transaction.commit();
 
-        final JSONArray results = articleRepository.getByAuthorEmail("test@gmail.com", 1, Integer.MAX_VALUE).getJSONArray(Keys.RESULTS);
+        final JSONArray results = articleRepository.getByAuthorId("1", 1, Integer.MAX_VALUE).getJSONArray(Keys.RESULTS);
 
         Assert.assertEquals(results.length(), 1);
     }
@@ -109,7 +109,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_TITLE, "article title2");
         article.put(Article.ARTICLE_ABSTRACT, "article abstract");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@gmail.com");
+        article.put(Article.ARTICLE_AUTHOR_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 1);
         article.put(Article.ARTICLE_VIEW_COUNT, 1);
         article.put(Article.ARTICLE_CONTENT, "article content");
@@ -159,7 +159,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_TITLE, "article title3");
         article.put(Article.ARTICLE_ABSTRACT, "article abstract");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@gmail.com");
+        article.put(Article.ARTICLE_AUTHOR_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 2);
         article.put(Article.ARTICLE_VIEW_COUNT, 2);
         article.put(Article.ARTICLE_CONTENT, "article content");
@@ -207,7 +207,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_TITLE, "article title4");
         article.put(Article.ARTICLE_ABSTRACT, "article abstract");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@gmail.com");
+        article.put(Article.ARTICLE_AUTHOR_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 3);
         article.put(Article.ARTICLE_VIEW_COUNT, 3);
         article.put(Article.ARTICLE_CONTENT, "article content");

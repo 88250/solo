@@ -47,7 +47,7 @@ import static org.mockito.Mockito.when;
  * {@link CommentProcessorTestCase} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Feb 13, 2018
+ * @version 1.0.0.3, Sep 16, 2018
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -177,7 +177,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         final JSONObject article = new JSONObject();
         requestJSONObject.put(Article.ARTICLE, article);
 
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, "test@gmail.com");
+        article.put(Article.ARTICLE_AUTHOR_ID, "1");
         article.put(Article.ARTICLE_TITLE, "article1 title");
         article.put(Article.ARTICLE_ABSTRACT, "article1 abstract");
         article.put(Article.ARTICLE_CONTENT, "article1 content");

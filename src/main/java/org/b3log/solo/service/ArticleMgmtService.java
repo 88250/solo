@@ -212,8 +212,7 @@ public class ArticleMgmtService {
 
             statisticMgmtService.setPublishedBlogCommentCount(blogCmtCnt - articleCmtCnt);
 
-            final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
-
+            final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
             author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) - 1);
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
@@ -354,8 +353,7 @@ public class ArticleMgmtService {
 
                 statisticMgmtService.setPublishedBlogCommentCount(blogCmtCnt + articleCmtCnt);
 
-                final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
-
+                final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
                 author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) + 1);
                 userRepository.update(author.optString(Keys.OBJECT_ID), author);
             }
@@ -420,7 +418,7 @@ public class ArticleMgmtService {
      * @param requestJSONObject the specified request json object, for example,
      *                          {
      *                          "article": {
-     *                          "articleAuthorEmail": "",
+     *                          "articleAuthorId": "",
      *                          "articleTitle": "",
      *                          "articleAbstract": "",
      *                          "articleContent": "",
@@ -520,7 +518,7 @@ public class ArticleMgmtService {
 
             article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
             // Setp 13: Update user article statistic
-            final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
+            final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
             final int userArticleCnt = author.optInt(UserExt.USER_ARTICLE_COUNT);
 
             author.put(UserExt.USER_ARTICLE_COUNT, userArticleCnt + 1);
@@ -583,8 +581,7 @@ public class ArticleMgmtService {
                 statisticMgmtService.decPublishedBlogArticleCount();
             }
 
-            final JSONObject author = userRepository.getByEmail(article.optString(Article.ARTICLE_AUTHOR_EMAIL));
-
+            final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
             author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) - 1);
             author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) - 1);
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
@@ -1096,7 +1093,7 @@ public class ArticleMgmtService {
         article.put(ARTICLE_VIEW_COUNT, oldArticle.getInt(ARTICLE_VIEW_COUNT));
         article.put(ARTICLE_PUT_TOP, oldArticle.getBoolean(ARTICLE_PUT_TOP));
         article.put(ARTICLE_HAD_BEEN_PUBLISHED, oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
-        article.put(ARTICLE_AUTHOR_EMAIL, oldArticle.getString(ARTICLE_AUTHOR_EMAIL));
+        article.put(ARTICLE_AUTHOR_ID, oldArticle.getString(ARTICLE_AUTHOR_ID));
         article.put(ARTICLE_RANDOM_DOUBLE, Math.random());
     }
 

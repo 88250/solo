@@ -28,12 +28,14 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -79,6 +81,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
 
             final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
             final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+            final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -95,6 +98,9 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
+            final JSONObject author = articleQueryService.getAuthor(originalArticle);
+            final String authorEmail = author.optString(User.USER_EMAIL);
+
             final JSONObject requestJSONObject = new JSONObject();
             final JSONObject article = new JSONObject();
 
@@ -102,7 +108,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             article.put(Article.ARTICLE_TITLE, originalArticle.getString(Article.ARTICLE_TITLE));
             article.put(Article.ARTICLE_PERMALINK, originalArticle.getString(Article.ARTICLE_PERMALINK));
             article.put(Article.ARTICLE_TAGS_REF, originalArticle.getString(Article.ARTICLE_TAGS_REF));
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, originalArticle.getString(Article.ARTICLE_AUTHOR_EMAIL));
+            article.put(Article.ARTICLE_T_AUTHOR_EMAIL, authorEmail);
             article.put(Article.ARTICLE_CONTENT, originalArticle.getString(Article.ARTICLE_CONTENT));
             article.put(Article.ARTICLE_T_CREATE_DATE, originalArticle.getLong(Article.ARTICLE_CREATED));
             article.put(Common.POST_TO_COMMUNITY, originalArticle.getBoolean(Common.POST_TO_COMMUNITY));

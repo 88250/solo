@@ -269,9 +269,9 @@ public class ArticleQueryService {
         }
 
         final JSONObject article = articleRepository.get(articleId);
-        final String currentUserEmail = userQueryService.getCurrentUser(request).getString(User.USER_EMAIL);
+        final String currentUserId = userQueryService.getCurrentUser(request).getString(Keys.OBJECT_ID);
 
-        return article.getString(Article.ARTICLE_AUTHOR_EMAIL).equals(currentUserEmail);
+        return article.getString(Article.ARTICLE_AUTHOR_ID).equals(currentUserId);
     }
 
     /**
@@ -343,7 +343,7 @@ public class ArticleQueryService {
     /**
      * Gets the specified article's author.
      * <p>
-     * The specified article has a property {@value Article#ARTICLE_AUTHOR_EMAIL}, this method will use this property to
+     * The specified article has a property {@value Article#ARTICLE_AUTHOR_ID}, this method will use this property to
      * get a user from users.
      * </p>
      * <p>
@@ -357,24 +357,19 @@ public class ArticleQueryService {
      */
     public JSONObject getAuthor(final JSONObject article) throws ServiceException {
         try {
-            final String email = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
-
-            JSONObject ret = userRepository.getByEmail(email);
-
+            final String userId = article.getString(Article.ARTICLE_AUTHOR_ID);
+            JSONObject ret = userRepository.get(userId);
             if (null == ret) {
                 LOGGER.log(Level.WARN, "Gets author of article failed, assumes the administrator is the author of this article[id={0}]",
                         article.getString(Keys.OBJECT_ID));
-                // This author may be deleted by admin, use admin as the author
-                // of this article
+                // This author may be deleted by admin, use admin as the author of this article
                 ret = userRepository.getAdmin();
             }
 
             return ret;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
-            throw new ServiceException(e);
-        } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, "Gets author of article[id={0}] failed", article.optString(Keys.OBJECT_ID));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets author of article [id={0}] failed", article.optString(Keys.OBJECT_ID));
+
             throw new ServiceException(e);
         }
     }
@@ -532,7 +527,7 @@ public class ArticleQueryService {
             article.put(Sign.SIGNS, new JSONArray(preference.getString(Option.ID_C_SIGNS)));
 
             // Remove unused properties
-            article.remove(ARTICLE_AUTHOR_EMAIL);
+            article.remove(ARTICLE_AUTHOR_ID);
             article.remove(ARTICLE_COMMENT_COUNT);
             article.remove(ARTICLE_IS_PUBLISHED);
             article.remove(ARTICLE_PUT_TOP);
@@ -975,18 +970,18 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets <em>published</em> articles by the specified author email, current page number and page size.
+     * Gets <em>published</em> articles by the specified author id, current page number and page size.
      *
-     * @param authorEmail    the specified author email
+     * @param authorId       the specified author id
      * @param currentPageNum the specified current page number
      * @param pageSize       the specified page size
      * @return a list of articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getArticlesByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
+    public List<JSONObject> getArticlesByAuthorId(final String authorId, final int currentPageNum, final int pageSize)
             throws ServiceException {
         try {
-            final JSONObject result = articleRepository.getByAuthorEmail(authorEmail, currentPageNum, pageSize);
+            final JSONObject result = articleRepository.getByAuthorId(authorId, currentPageNum, pageSize);
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
             final List<JSONObject> ret = new ArrayList<>();
 
@@ -1000,10 +995,8 @@ public class ArticleQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR,
-                    "Gets articles by author email failed[authorEmail=" + authorEmail + ", currentPageNum=" + currentPageNum + ", pageSize="
-                            + pageSize + "]",
-                    e);
+            LOGGER.log(Level.ERROR, "Gets articles by author email failed [authorId=" + authorId +
+                    ", currentPageNum=" + currentPageNum + ", pageSize=" + pageSize + "]", e);
 
             throw new ServiceException(e);
         }
@@ -1134,7 +1127,7 @@ public class ArticleQueryService {
      */
     public void removeUnusedProperties(final JSONObject article) {
         article.remove(Keys.OBJECT_ID);
-        article.remove(Article.ARTICLE_AUTHOR_EMAIL);
+        article.remove(Article.ARTICLE_AUTHOR_ID);
         article.remove(Article.ARTICLE_ABSTRACT);
         article.remove(Article.ARTICLE_COMMENT_COUNT);
         article.remove(Article.ARTICLE_CONTENT);

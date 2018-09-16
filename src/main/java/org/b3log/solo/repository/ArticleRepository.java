@@ -33,9 +33,9 @@ import java.util.List;
 public interface ArticleRepository extends Repository {
 
     /**
-     * Gets published articles by the specified author email, current page number and page size.
+     * Gets published articles by the specified author id, current page number and page size.
      *
-     * @param authorEmail    the specified author email
+     * @param authorId    the specified author id
      * @param currentPageNum the specified current page number, MUST greater then {@code 0}
      * @param pageSize       the specified page size(count of a page contains objects), MUST greater then {@code 0}
      * @return for example
@@ -51,7 +51,7 @@ public interface ArticleRepository extends Repository {
      * </pre>
      * @throws RepositoryException repository exception
      */
-    JSONObject getByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize) throws RepositoryException;
+    JSONObject getByAuthorId(final String authorId, final int currentPageNum, final int pageSize) throws RepositoryException;
 
     /**
      * Gets an article by the specified permalink.

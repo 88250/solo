@@ -20,6 +20,7 @@ package org.b3log.solo.service;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -90,7 +91,7 @@ public class ImportService {
                     return;
                 }
 
-                final String adminEmail = admin.optString(User.USER_EMAIL);
+                final String adminId = admin.optString(Keys.OBJECT_ID);
 
                 int succCnt = 0, failCnt = 0;
                 final Set<String> failSet = new TreeSet<>();
@@ -108,7 +109,7 @@ public class ImportService {
                     try {
                         final String fileContent = FileUtils.readFileToString(md, "UTF-8");
                         final JSONObject article = parseArticle(fileName, fileContent);
-                        article.put(Article.ARTICLE_AUTHOR_EMAIL, adminEmail);
+                        article.put(Article.ARTICLE_AUTHOR_ID, adminId);
 
                         final JSONObject request = new JSONObject();
                         request.put(Article.ARTICLE, article);

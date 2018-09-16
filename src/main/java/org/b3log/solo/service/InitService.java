@@ -288,13 +288,12 @@ public class InitService {
         article.put(Article.ARTICLE_COMMENT_COUNT, 1);
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
         final JSONObject admin = userRepository.getAdmin();
-        final String authorEmail = admin.optString(User.USER_EMAIL);
         final long now = System.currentTimeMillis();
         article.put(Article.ARTICLE_CREATED, now);
         article.put(Article.ARTICLE_UPDATED, now);
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-        article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
+        article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
         article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
         article.put(Article.ARTICLE_EDITOR_TYPE, DefaultPreference.DEFAULT_EDITOR_TYPE);

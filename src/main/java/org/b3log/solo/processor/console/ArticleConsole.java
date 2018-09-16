@@ -308,7 +308,7 @@ public class ArticleConsole {
             excludes.put(Article.ARTICLE_CONTENT);
             excludes.put(Article.ARTICLE_UPDATED);
             excludes.put(Article.ARTICLE_CREATED);
-            excludes.put(Article.ARTICLE_AUTHOR_EMAIL);
+            excludes.put(Article.ARTICLE_AUTHOR_ID);
             excludes.put(Article.ARTICLE_HAD_BEEN_PUBLISHED);
             excludes.put(Article.ARTICLE_IS_PUBLISHED);
             excludes.put(Article.ARTICLE_RANDOM_DOUBLE);
@@ -673,7 +673,7 @@ public class ArticleConsole {
 
         try {
             final JSONObject currentUser = userQueryService.getCurrentUser(request);
-            requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_EMAIL, currentUser.getString(User.USER_EMAIL));
+            requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
 
             final String articleId = articleMgmtService.addArticle(requestJSONObject);
             ret.put(Keys.OBJECT_ID, articleId);

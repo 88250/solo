@@ -67,7 +67,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.4.3, Sep 7, 2018
+ * @version 1.4.4.4, Sep 16, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -690,7 +690,7 @@ public class ArticleProcessor {
         final String authorId = getAuthorsArticlesPagedAuthorId(request.getRequestURI());
         final int currentPageNum = getAuthorsArticlesPagedCurrentPageNum(request.getRequestURI());
 
-        Stopwatchs.start("Get Author-Articles Paged[authorId=" + authorId + ", pageNum=" + currentPageNum + ']');
+        Stopwatchs.start("Get Author-Articles Paged [authorId=" + authorId + ", pageNum=" + currentPageNum + ']');
         try {
             jsonObject.put(Keys.STATUS_CODE, true);
 
@@ -705,9 +705,8 @@ public class ArticleProcessor {
             }
 
             final JSONObject author = authorRet.getJSONObject(User.USER);
-            final String authorEmail = author.optString(User.USER_EMAIL);
 
-            final List<JSONObject> articles = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
+            final List<JSONObject> articles = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
             if (!articles.isEmpty()) {
                 filler.setArticlesExProperties(request, articles, author, preference);
             }
@@ -785,7 +784,7 @@ public class ArticleProcessor {
 
             final JSONObject author = result.getJSONObject(User.USER);
             final String authorEmail = author.getString(User.USER_EMAIL);
-            final List<JSONObject> articles = articleQueryService.getArticlesByAuthorEmail(authorEmail, currentPageNum, pageSize);
+            final List<JSONObject> articles = articleQueryService.getArticlesByAuthorId(authorEmail, currentPageNum, pageSize);
             if (articles.isEmpty()) {
                 try {
                     response.sendError(HttpServletResponse.SC_NOT_FOUND);

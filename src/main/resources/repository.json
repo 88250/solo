@@ -487,10 +487,10 @@
                     "length": 2000
                 },
                 {
-                    "name": "articleAuthorEmail",
-                    "description": "文章作者邮箱",
+                    "name": "articleAuthorId",
+                    "description": "文章作者 id",
                     "type": "String",
-                    "length": 255
+                    "length": 19
                 },
                 {
                     "name": "articleCommentCount",

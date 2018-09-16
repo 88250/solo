@@ -18,11 +18,11 @@
 package org.b3log.solo.dev;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -89,7 +89,7 @@ public class ArticleGenerator {
 
         try {
             final JSONObject admin = userQueryService.getAdmin();
-            final String authorEmail = admin.optString(User.USER_EMAIL);
+            final String authorId = admin.optString(Keys.OBJECT_ID);
 
             for (int i = 0; i < num; i++) {
                 final JSONObject article = new JSONObject();
@@ -98,7 +98,7 @@ public class ArticleGenerator {
                 final int deviationTag = 3;
 
                 article.put(Article.ARTICLE_TAGS_REF, "taga,tagb,tag" + i % deviationTag);
-                article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
+                article.put(Article.ARTICLE_AUTHOR_ID, authorId);
                 article.put(Article.ARTICLE_COMMENT_COUNT, 0);
                 article.put(Article.ARTICLE_VIEW_COUNT, 0);
                 article.put(Article.ARTICLE_CONTENT, "article content");

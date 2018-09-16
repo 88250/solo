@@ -556,11 +556,10 @@ public class FeedProcessor {
         final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
         ret.setLink(link);
         ret.setGUID(link);
-        final String authorEmail = article.getString(Article.ARTICLE_AUTHOR_EMAIL);
         if (hasMultipleUsers) {
             authorName = articleQueryService.getAuthor(article).getString(User.USER_NAME);
         }
-        ret.setAuthor(authorEmail + "(" + authorName + ")");
+        ret.setAuthor(authorName);
         final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
         final String[] tagStrings = tagsString.split(",");
         for (final String tagString : tagStrings) {

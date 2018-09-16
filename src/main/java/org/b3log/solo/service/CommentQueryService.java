@@ -23,7 +23,6 @@ import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
@@ -123,9 +122,9 @@ public class CommentQueryService {
             return false;
         }
 
-        final String currentUserEmail = userQueryService.getCurrentUser(request).getString(User.USER_EMAIL);
+        final String currentUserId = userQueryService.getCurrentUser(request).getString(Keys.OBJECT_ID);
 
-        return article.getString(Article.ARTICLE_AUTHOR_EMAIL).equals(currentUserEmail);
+        return article.getString(Article.ARTICLE_AUTHOR_ID).equals(currentUserId);
     }
 
     /**

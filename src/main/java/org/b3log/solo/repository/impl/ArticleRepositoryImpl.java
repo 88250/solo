@@ -99,11 +99,11 @@ public class ArticleRepositoryImpl extends AbstractRepository implements Article
     }
 
     @Override
-    public JSONObject getByAuthorEmail(final String authorEmail, final int currentPageNum, final int pageSize)
+    public JSONObject getByAuthorId(final String authorId, final int currentPageNum, final int pageSize)
             throws RepositoryException {
         final Query query = new Query().
                 setFilter(CompositeFilterOperator.and(
-                        new PropertyFilter(Article.ARTICLE_AUTHOR_EMAIL, FilterOperator.EQUAL, authorEmail),
+                        new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, authorId),
                         new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).
                 setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);

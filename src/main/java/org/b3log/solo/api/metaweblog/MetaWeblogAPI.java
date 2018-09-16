@@ -221,8 +221,9 @@ public class MetaWeblogAPI {
             final String userEmail = params.getJSONObject(INDEX_USER_EMAIL).getJSONObject("value").getString("string");
             final JSONObject user = userQueryService.getUserByEmail(userEmail);
             if (null == user) {
-                throw new Exception("No user[email=" + userEmail + "]");
+                throw new Exception("No user [email=" + userEmail + "]");
             }
+            final String userId = user.optString(Keys.OBJECT_ID);
 
             final String userPwd = params.getJSONObject(INDEX_USER_PWD).getJSONObject("value").getString("string");
             if (!user.getString(User.USER_PASSWORD).equals(DigestUtils.md5Hex(userPwd))) {
@@ -238,7 +239,7 @@ public class MetaWeblogAPI {
                 responseContent = getRecentPosts(numOfPosts);
             } else if (METHOD_NEW_POST.equals(methodName)) {
                 final JSONObject article = parsetPost(methodCall);
-                article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
+                article.put(Article.ARTICLE_AUTHOR_ID, userId);
                 addArticle(article);
 
                 final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><string>").append(article.getString(Keys.OBJECT_ID)).append(
@@ -251,7 +252,7 @@ public class MetaWeblogAPI {
                 final JSONObject article = parsetPost(methodCall);
                 final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").getString("string");
                 article.put(Keys.OBJECT_ID, postId);
-                article.put(Article.ARTICLE_AUTHOR_EMAIL, userEmail);
+                article.put(Article.ARTICLE_AUTHOR_ID, userId);
                 final JSONObject updateArticleRequest = new JSONObject();
                 updateArticleRequest.put(Article.ARTICLE, article);
                 articleMgmtService.updateArticle(updateArticleRequest);

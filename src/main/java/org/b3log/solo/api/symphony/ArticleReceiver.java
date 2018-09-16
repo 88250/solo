@@ -21,7 +21,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
@@ -123,7 +122,7 @@ public class ArticleReceiver {
 
             final JSONObject admin = userQueryService.getAdmin();
 
-            article.put(Article.ARTICLE_AUTHOR_EMAIL, admin.getString(User.USER_EMAIL));
+            article.put(Article.ARTICLE_AUTHOR_ID, admin.getString(Keys.OBJECT_ID));
             final String articleContent = article.optString(Article.ARTICLE_CONTENT);
             article.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(articleContent));
             article.put(Article.ARTICLE_IS_PUBLISHED, true);
