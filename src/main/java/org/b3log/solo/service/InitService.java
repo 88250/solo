@@ -49,7 +49,6 @@ import org.json.JSONObject;
 
 import javax.servlet.ServletContext;
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +56,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.22, Sep 16, 2018
+ * @version 1.5.2.23, Sep 16, 2018
  * @since 0.4.0
  */
 @Service
@@ -288,13 +287,11 @@ public class InitService {
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 1);
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
-        final Date date = new Date();
-
         final JSONObject admin = userRepository.getAdmin();
         final String authorEmail = admin.optString(User.USER_EMAIL);
-
-        article.put(Article.ARTICLE_CREATE_DATE, date);
-        article.put(Article.ARTICLE_UPDATE_DATE, date);
+        final long now = System.currentTimeMillis();
+        article.put(Article.ARTICLE_CREATED, now);
+        article.put(Article.ARTICLE_UPDATED, now);
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_AUTHOR_EMAIL, authorEmail);
@@ -313,7 +310,7 @@ public class InitService {
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
         comment.put(Comment.COMMENT_THUMBNAIL_URL, Solos.GRAVATAR + "59a5e8209c780307dbe9c9ba728073f5??s=60&r=G");
-        comment.put(Comment.COMMENT_CREATED, date.getTime());
+        comment.put(Comment.COMMENT_CREATED, now);
         comment.put(Comment.COMMENT_ON_ID, articleId);
         comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
         final String commentId = Ids.genTimeMillisId();
@@ -386,8 +383,8 @@ public class InitService {
      * @throws RepositoryException repository exception
      */
     public void archiveDate(final JSONObject article) throws RepositoryException {
-        final Date createDate = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
-        final String createDateString = DateFormatUtils.format(createDate, "yyyy/MM");
+        final long created = article.optLong(Article.ARTICLE_CREATED);
+        final String createDateString = DateFormatUtils.format(created, "yyyy/MM");
         final JSONObject archiveDate = new JSONObject();
 
         try {

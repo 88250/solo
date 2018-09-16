@@ -64,7 +64,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.1.0, May 18, 2018
+ * @version 1.1.1.1, Sep 16, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -142,8 +142,9 @@ public class FeedProcessor {
 
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
-            final Query query = new Query().setCurrentPageNum(1).setPageSize(outputCnt).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setPageCount(
-                    1);
+            final Query query = new Query().setCurrentPageNum(1).setPageSize(outputCnt).
+                    setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                    addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).setPageCount(1);
 
             final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
             String authorName = "";
@@ -184,8 +185,8 @@ public class FeedProcessor {
         final String summary = isFullContent ? article.getString(Article.ARTICLE_CONTENT)
                 : article.optString(Article.ARTICLE_ABSTRACT);
         ret.setSummary(summary);
-        final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-        ret.setUpdated(updated);
+        final long updated = article.getLong(Article.ARTICLE_UPDATED);
+        ret.setUpdated(new Date(updated));
         final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
         ret.setLink(link);
         ret.setId(link);
@@ -311,8 +312,8 @@ public class FeedProcessor {
         final String summary = isFullContent ? article.getString(Article.ARTICLE_CONTENT)
                 : article.optString(Article.ARTICLE_ABSTRACT);
         ret.setSummary(summary);
-        final Date updated = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-        ret.setUpdated(updated);
+        final long updated = article.getLong(Article.ARTICLE_UPDATED);
+        ret.setUpdated(new Date(updated));
         final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
         ret.setLink(link);
         ret.setId(link);
@@ -371,8 +372,9 @@ public class FeedProcessor {
 
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
-            final Query query = new Query().setCurrentPageNum(1).setPageSize(outputCnt).setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setPageCount(
-                    1);
+            final Query query = new Query().setPageCount(1).setCurrentPageNum(1).setPageSize(outputCnt).
+                    setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
+                    addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING);
 
             final JSONObject articleResult = articleRepository.get(query);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
@@ -416,8 +418,8 @@ public class FeedProcessor {
                 : article.optString(Article.ARTICLE_ABSTRACT);
         description = Emotions.toAliases(description);
         ret.setDescription(description);
-        final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-        ret.setPubDate(pubDate);
+        final long pubDate = article.getLong(Article.ARTICLE_UPDATED);
+        ret.setPubDate(new Date(pubDate));
         final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
         ret.setLink(link);
         ret.setGUID(link);
@@ -549,8 +551,8 @@ public class FeedProcessor {
                 ? article.getString(Article.ARTICLE_CONTENT)
                 : article.optString(Article.ARTICLE_ABSTRACT);
         ret.setDescription(description);
-        final Date pubDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-        ret.setPubDate(pubDate);
+        final long pubDate = article.getLong(Article.ARTICLE_UPDATED);
+        ret.setPubDate(new Date(pubDate));
         final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
         ret.setLink(link);
         ret.setGUID(link);

@@ -530,13 +530,13 @@
                     "type": "boolean"
                 },
                 {
-                    "name": "articleCreateDate",
-                    "description": "文章创建时间",
+                    "name": "articleCreated",
+                    "description": "文章创建时间戳",
                     "type": "Date"
                 },
                 {
-                    "name": "articleUpdateDate",
-                    "description": "文章更新时间",
+                    "name": "articleUpdated",
+                    "description": "文章更新时间戳",
                     "type": "Date"
                 },
                 {

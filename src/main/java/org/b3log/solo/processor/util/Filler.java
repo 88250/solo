@@ -66,7 +66,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.16.6, Sep 16, 2018
+ * @version 1.6.16.7, Sep 16, 2018
  * @since 0.3.1
  */
 @Service
@@ -217,15 +217,15 @@ public class Filler {
             } else // See https://github.com/b3log/solo/issues/179 for more details
                 if (Templates.hasExpression(template, "<#list articles1 as article>")) {
                     isArticles1 = true;
-                    query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+                    query.addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING);
 
                     LOGGER.trace("Query ${articles1} in index.ftl");
                 } else { // <#list articles as article>
                     query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
                     if (preference.getBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
-                        query.addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
+                        query.addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING);
                     } else {
-                        query.addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+                        query.addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING);
                     }
                 }
 

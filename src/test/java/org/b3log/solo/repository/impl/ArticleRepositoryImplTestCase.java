@@ -17,8 +17,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-import java.util.Date;
-import java.util.List;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
@@ -29,6 +27,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * {@link ArticleRepositoryImpl} test case.
@@ -41,7 +42,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Adds successfully.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
@@ -61,8 +62,8 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Article.ARTICLE_PUT_TOP, false);
-        article.put(Article.ARTICLE_CREATE_DATE, new Date());
-        article.put(Article.ARTICLE_UPDATE_DATE, new Date());
+        article.put(Article.ARTICLE_CREATED, new Date().getTime());
+        article.put(Article.ARTICLE_UPDATED, new Date().getTime());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
@@ -80,7 +81,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get by permalink.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "add")
@@ -96,7 +97,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get by permalink.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = {"add"})
@@ -116,8 +117,8 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Article.ARTICLE_PUT_TOP, false);
-        article.put(Article.ARTICLE_CREATE_DATE, new Date());
-        article.put(Article.ARTICLE_UPDATE_DATE, new Date());
+        article.put(Article.ARTICLE_CREATED, new Date().getTime());
+        article.put(Article.ARTICLE_UPDATED, new Date().getTime());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
@@ -146,7 +147,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get Most Comment Articles.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = {"add", "previousAndNext"})
@@ -166,8 +167,8 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
         article.put(Article.ARTICLE_IS_PUBLISHED, true);
         article.put(Article.ARTICLE_PUT_TOP, false);
-        article.put(Article.ARTICLE_CREATE_DATE, new Date());
-        article.put(Article.ARTICLE_UPDATE_DATE, new Date());
+        article.put(Article.ARTICLE_CREATED, new Date().getTime());
+        article.put(Article.ARTICLE_UPDATED, new Date().getTime());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
@@ -191,13 +192,13 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
     }
 
     /**
-     * Get Most View Count Articles 
-     * 
+     * Get Most View Count Articles
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = {"add",
-                              "previousAndNext",
-                              "getMostCommentArticles"})
+            "previousAndNext",
+            "getMostCommentArticles"})
     public void getMostViewCountArticles() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
@@ -214,8 +215,8 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
         article.put(Article.ARTICLE_IS_PUBLISHED, false); // Unpublished
         article.put(Article.ARTICLE_PUT_TOP, false);
-        article.put(Article.ARTICLE_CREATE_DATE, new Date());
-        article.put(Article.ARTICLE_UPDATE_DATE, new Date());
+        article.put(Article.ARTICLE_CREATED, new Date().getTime());
+        article.put(Article.ARTICLE_UPDATED, new Date().getTime());
         article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
@@ -241,13 +242,13 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get Randomly.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = {"add",
-                              "previousAndNext",
-                              "getMostCommentArticles",
-                              "getMostViewCountArticles"})
+            "previousAndNext",
+            "getMostCommentArticles",
+            "getMostViewCountArticles"})
     public void getRandomly() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
@@ -257,13 +258,13 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Get Recent Articles.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = {"add",
-                              "previousAndNext",
-                              "getMostCommentArticles",
-                              "getMostViewCountArticles"})
+            "previousAndNext",
+            "getMostCommentArticles",
+            "getMostViewCountArticles"})
     public void getRecentArticles() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
@@ -280,7 +281,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Is Published.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = {"add", "getMostViewCountArticles"})

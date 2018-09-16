@@ -51,7 +51,7 @@ import java.util.Set;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.3, Aug 2, 2018
+ * @version 1.3.1.4, Sep 16, 2018
  * @since 0.4.6
  */
 @RequestProcessor
@@ -223,8 +223,8 @@ public class BlogProcessor {
         final JSONArray excludes = new JSONArray();
 
         excludes.put(Article.ARTICLE_CONTENT);
-        excludes.put(Article.ARTICLE_UPDATE_DATE);
-        excludes.put(Article.ARTICLE_CREATE_DATE);
+        excludes.put(Article.ARTICLE_UPDATED);
+        excludes.put(Article.ARTICLE_CREATED);
         excludes.put(Article.ARTICLE_AUTHOR_EMAIL);
         excludes.put(Article.ARTICLE_HAD_BEEN_PUBLISHED);
         excludes.put(Article.ARTICLE_IS_PUBLISHED);

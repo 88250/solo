@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Nov 11, 2017
+ * @version 1.1.0.1, Sep 16, 2018
  * @since 2.5.0
  */
 @Service
@@ -162,9 +162,9 @@ public class ExportService {
             final Map<String, Object> front = new LinkedHashMap<>();
             final String title = article.optString(Article.ARTICLE_TITLE);
             front.put("title", title);
-            final String date = DateFormatUtils.format((Date) article.opt(Article.ARTICLE_CREATE_DATE), "yyyy-MM-dd HH:mm:ss");
+            final String date = DateFormatUtils.format(article.optLong(Article.ARTICLE_CREATED), "yyyy-MM-dd HH:mm:ss");
             front.put("date", date);
-            front.put("updated", DateFormatUtils.format((Date) article.opt(Article.ARTICLE_UPDATE_DATE), "yyyy-MM-dd HH:mm:ss"));
+            front.put("updated", DateFormatUtils.format(article.optLong(Article.ARTICLE_UPDATED), "yyyy-MM-dd HH:mm:ss"));
             final List<String> tags = Arrays.stream(article.optString(Article.ARTICLE_TAGS_REF).split(",")).filter(StringUtils::isNotBlank).map(String::trim).collect(Collectors.toList());
             if (tags.isEmpty()) {
                 tags.add("Solo");

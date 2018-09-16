@@ -40,7 +40,7 @@ import java.util.*;
  * Import service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Nov 11, 2017
+ * @version 1.0.1.2, Sep 16, 2018
  * @since 2.2.0
  */
 @Service
@@ -191,7 +191,7 @@ public class ImportService {
         ret.put(Article.ARTICLE_ABSTRACT, abs);
 
         final Date date = parseDate(elems);
-        ret.put(Article.ARTICLE_CREATE_DATE, date);
+        ret.put(Article.ARTICLE_CREATED, date.getTime());
 
         final String permalink = (String) elems.get("permalink");
         if (StringUtils.isNotBlank(permalink)) {

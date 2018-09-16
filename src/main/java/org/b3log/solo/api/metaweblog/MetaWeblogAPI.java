@@ -68,7 +68,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.17, Aug 2, 2018
+ * @version 1.0.0.18, Sep 16, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -346,7 +346,7 @@ public class MetaWeblogAPI {
                                     + "pattern[yyyy-MM-dd'T'HH:mm:ss, yyyyMMdd'T'HH:mm:ss'Z']");
                     date = DateUtils.parseDate(dateString, new String[]{"yyyyMMdd'T'HH:mm:ss", "yyyyMMdd'T'HH:mm:ss'Z'"});
                 }
-                ret.put(Article.ARTICLE_CREATE_DATE, date);
+                ret.put(Article.ARTICLE_CREATED, date.getTime());
             } else if ("title".equals(name)) {
                 ret.put(Article.ARTICLE_TITLE, member.getJSONObject("value").getString("string"));
             } else if ("description".equals(name)) {
@@ -456,7 +456,7 @@ public class MetaWeblogAPI {
         }
 
         final JSONObject article = result.getJSONObject(Article.ARTICLE);
-        final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
+        final long createDate = article.getLong(Article.ARTICLE_CREATED);
         final String articleTitle = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
 
         stringBuilder.append("<struct>");
@@ -488,7 +488,7 @@ public class MetaWeblogAPI {
         final StringBuilder stringBuilder = new StringBuilder();
         final List<JSONObject> recentArticles = articleQueryService.getRecentArticles(fetchSize);
         for (final JSONObject article : recentArticles) {
-            final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
+            final long createDate = article.getLong(Article.ARTICLE_CREATED);
             final String articleTitle = StringEscapeUtils.escapeXml(article.getString(Article.ARTICLE_TITLE));
 
             stringBuilder.append("<value><struct>");

@@ -37,12 +37,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
-
 /**
  * Generates some dummy articles for development testing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Apr 15, 2018
+ * @version 1.0.0.7, Sep 16, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -112,8 +111,8 @@ public class ArticleGenerator {
                 final int deviationDay = -(Integer.valueOf(String.valueOf(i).substring(0, 1)) % deviationBase);
 
                 final Date date = DateUtils.addMonths(new Date(), deviationDay);
-                article.put(Article.ARTICLE_CREATE_DATE, date);
-                article.put(Article.ARTICLE_UPDATE_DATE, date);
+                article.put(Article.ARTICLE_CREATED, date.getTime());
+                article.put(Article.ARTICLE_UPDATED, date.getTime());
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
                 article.put(Article.ARTICLE_COMMENTABLE, true);
                 article.put(Article.ARTICLE_VIEW_PWD, "");

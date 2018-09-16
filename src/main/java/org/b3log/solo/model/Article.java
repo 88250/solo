@@ -25,7 +25,7 @@ import org.jsoup.safety.Whitelist;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Jun 25, 2017
+ * @version 1.2.0.0, Sep 16, 2018
  * @since 0.3.1
  */
 public final class Article {
@@ -56,9 +56,14 @@ public final class Article {
     public static final String ARTICLE_CONTENT = "articleContent";
 
     /**
+     * Key of created at.
+     */
+    public static final String ARTICLE_CREATED = "articleCreated";
+
+    /**
      * Key of create date.
      */
-    public static final String ARTICLE_CREATE_DATE = "articleCreateDate";
+    public static final String ARTICLE_T_CREATE_DATE = "articleCreateDate";
 
     /**
      * Key of create time.
@@ -66,9 +71,14 @@ public final class Article {
     public static final String ARTICLE_CREATE_TIME = "articleCreateTime";
 
     /**
+     * Key of updated at.
+     */
+    public static final String ARTICLE_UPDATED = "articleUpdated";
+
+    /**
      * Key of update date.
      */
-    public static final String ARTICLE_UPDATE_DATE = "articleUpdateDate";
+    public static final String ARTICLE_T_UPDATE_DATE = "articleUpdateDate";
 
     /**
      * Key of update time.

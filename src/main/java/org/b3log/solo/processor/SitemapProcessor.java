@@ -57,7 +57,7 @@ import java.util.Date;
  * Site map (sitemap) processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.1, Aug 2, 2018
+ * @version 1.0.2.2, Sep 16, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -142,9 +142,9 @@ public class SitemapProcessor {
     private void addArticles(final Sitemap sitemap) throws Exception {
         final Query query = new Query().setCurrentPageNum(1).
                 setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
-                addSort(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING).
+                addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).
                 addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_UPDATE_DATE, Date.class);
+                addProjection(Article.ARTICLE_UPDATED, Long.class);
         final JSONObject articleResult = articleRepository.get(query);
         final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
 
@@ -154,8 +154,8 @@ public class SitemapProcessor {
 
             final URL url = new URL();
             url.setLoc(StringEscapeUtils.escapeXml(Latkes.getServePath() + permalink));
-            final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-            final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updateDate);
+            final long updated = article.getLong(Article.ARTICLE_UPDATED);
+            final String lastMod = DateFormatUtils.ISO_DATETIME_TIME_ZONE_FORMAT.format(updated);
             url.setLastMod(lastMod);
 
             sitemap.addURL(url);

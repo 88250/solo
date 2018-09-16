@@ -27,7 +27,7 @@ import java.util.Date;
  * Article comparator by update date.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Dec 30, 2010
+ * @version 1.0.0.2, Sep 16, 2018
  */
 public final class ArticleUpdateDateComparator implements Comparator<JSONObject> {
 
@@ -40,8 +40,8 @@ public final class ArticleUpdateDateComparator implements Comparator<JSONObject>
     @Override
     public int compare(final JSONObject article1, final JSONObject article2) {
         try {
-            final Date date1 = (Date) article1.get(Article.ARTICLE_UPDATE_DATE);
-            final Date date2 = (Date) article2.get(Article.ARTICLE_UPDATE_DATE);
+            final Date date1 = (Date) article1.get(Article.ARTICLE_UPDATED);
+            final Date date2 = (Date) article2.get(Article.ARTICLE_UPDATED);
 
             return date2.compareTo(date1);
         } catch (final Exception e) {

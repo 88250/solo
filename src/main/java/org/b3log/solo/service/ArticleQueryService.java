@@ -54,7 +54,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.3, Aug 27, 2018
+ * @version 1.3.2.4, Sep 16, 2018
  * @since 0.3.5
  */
 @Service
@@ -144,12 +144,11 @@ public class ArticleQueryService {
 
         try {
             final Query query = new Query().setFilter(
-                    CompositeFilterOperator.and(
-                            new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true),
+                    CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true),
                             CompositeFilterOperator.or(
                                     new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
-                                    new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%"))
-                    )).addSort(Article.ARTICLE_UPDATE_DATE, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+                                    new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%")))).
+                    addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize);
 
             final JSONObject result = articleRepository.get(query);
 
@@ -238,7 +237,7 @@ public class ArticleQueryService {
                     continue;
                 }
 
-                article.put(ARTICLE_CREATE_TIME, ((Date) article.opt(ARTICLE_CREATE_DATE)).getTime());
+                article.put(ARTICLE_CREATE_TIME, article.optLong(ARTICLE_CREATED));
 
                 articles.add(article);
             }
@@ -328,14 +327,13 @@ public class ArticleQueryService {
     public long getRecentArticleTime() throws ServiceException {
         try {
             final List<JSONObject> recentArticles = articleRepository.getRecentArticles(1);
-
             if (recentArticles.isEmpty()) {
                 return 0;
             }
 
             final JSONObject recentArticle = recentArticles.get(0);
 
-            return ((Date) recentArticle.get(Article.ARTICLE_UPDATE_DATE)).getTime();
+            return recentArticle.getLong(Article.ARTICLE_UPDATED);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             throw new ServiceException("Gets recent article time failed");
@@ -422,10 +420,10 @@ public class ArticleQueryService {
      * @throws JSONException json exception
      */
     public boolean hasUpdated(final JSONObject article) throws JSONException {
-        final Date updateDate = (Date) article.get(Article.ARTICLE_UPDATE_DATE);
-        final Date createDate = (Date) article.get(Article.ARTICLE_CREATE_DATE);
+        final long updateDate = article.getLong(Article.ARTICLE_UPDATED);
+        final long createDate = article.getLong(Article.ARTICLE_CREATED);
 
-        return !createDate.equals(updateDate);
+        return createDate != updateDate;
     }
 
     /**
@@ -447,8 +445,7 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getUnpublishedArticles() throws RepositoryException {
         final Map<String, SortDirection> sorts = new HashMap<>();
-
-        sorts.put(Article.ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+        sorts.put(Article.ARTICLE_CREATED, SortDirection.DESCENDING);
         sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
         final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
 
@@ -539,7 +536,7 @@ public class ArticleQueryService {
             article.remove(ARTICLE_COMMENT_COUNT);
             article.remove(ARTICLE_IS_PUBLISHED);
             article.remove(ARTICLE_PUT_TOP);
-            article.remove(ARTICLE_UPDATE_DATE);
+            article.remove(ARTICLE_UPDATED);
             article.remove(ARTICLE_VIEW_COUNT);
             article.remove(ARTICLE_RANDOM_DOUBLE);
 
@@ -607,9 +604,9 @@ public class ArticleQueryService {
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
                     addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING);
             if (requestJSONObject.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
-                query.addSort(ARTICLE_UPDATE_DATE, SortDirection.DESCENDING);
+                query.addSort(ARTICLE_UPDATED, SortDirection.DESCENDING);
             } else {
-                query.addSort(ARTICLE_CREATE_DATE, SortDirection.DESCENDING);
+                query.addSort(ARTICLE_CREATED, SortDirection.DESCENDING);
             }
 
             final String keyword = requestJSONObject.optString(Common.KEYWORD);
@@ -643,8 +640,8 @@ public class ArticleQueryService {
                 final JSONObject author = getAuthor(article);
                 final String authorName = author.getString(User.USER_NAME);
                 article.put(Common.AUTHOR_NAME, authorName);
-                article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
-                article.put(ARTICLE_UPDATE_TIME, ((Date) article.get(ARTICLE_UPDATE_DATE)).getTime());
+                article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
+                article.put(ARTICLE_UPDATE_TIME, article.getLong(ARTICLE_UPDATED));
 
                 // Remove unused properties
                 for (int j = 0; j < excludes.length(); j++) {
@@ -706,7 +703,7 @@ public class ArticleQueryService {
                     continue;
                 }
 
-                article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
+                article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
 
                 ret.add(article);
             }
@@ -731,15 +728,12 @@ public class ArticleQueryService {
             throws ServiceException {
         try {
             JSONObject result = archiveDateArticleRepository.getByArchiveDateId(archiveDateId, currentPageNum, pageSize);
-
             final JSONArray relations = result.getJSONArray(Keys.RESULTS);
-
             if (0 == relations.length()) {
                 return Collections.emptyList();
             }
 
-            final Set<String> articleIds = new HashSet<String>();
-
+            final Set<String> articleIds = new HashSet<>();
             for (int i = 0; i < relations.length(); i++) {
                 final JSONObject relation = relations.getJSONObject(i);
                 final String articleId = relation.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
@@ -747,14 +741,12 @@ public class ArticleQueryService {
                 articleIds.add(articleId);
             }
 
-            final List<JSONObject> ret = new ArrayList<JSONObject>();
+            final List<JSONObject> ret = new ArrayList<>();
 
             final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).setPageCount(1).index(
                     Article.ARTICLE_PERMALINK);
-
             result = articleRepository.get(query);
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
-
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
 
@@ -763,7 +755,7 @@ public class ArticleQueryService {
                     continue;
                 }
 
-                article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
+                article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
 
                 ret.add(article);
             }
@@ -996,12 +988,12 @@ public class ArticleQueryService {
         try {
             final JSONObject result = articleRepository.getByAuthorEmail(authorEmail, currentPageNum, pageSize);
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
-            final List<JSONObject> ret = new ArrayList<JSONObject>();
+            final List<JSONObject> ret = new ArrayList<>();
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
 
-                article.put(ARTICLE_CREATE_TIME, ((Date) article.get(ARTICLE_CREATE_DATE)).getTime());
+                article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
 
                 ret.add(article);
             }
@@ -1146,9 +1138,9 @@ public class ArticleQueryService {
         article.remove(Article.ARTICLE_ABSTRACT);
         article.remove(Article.ARTICLE_COMMENT_COUNT);
         article.remove(Article.ARTICLE_CONTENT);
-        article.remove(Article.ARTICLE_CREATE_DATE);
+        article.remove(Article.ARTICLE_CREATED);
         article.remove(Article.ARTICLE_TAGS_REF);
-        article.remove(Article.ARTICLE_UPDATE_DATE);
+        article.remove(Article.ARTICLE_UPDATED);
         article.remove(Article.ARTICLE_VIEW_COUNT);
         article.remove(Article.ARTICLE_RANDOM_DOUBLE);
         article.remove(Article.ARTICLE_IS_PUBLISHED);

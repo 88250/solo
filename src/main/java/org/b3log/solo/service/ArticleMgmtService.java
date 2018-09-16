@@ -45,7 +45,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import static org.b3log.solo.model.Article.*;
@@ -54,7 +53,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.11, Aug 27, 2018
+ * @version 1.2.2.12, Sep 16, 2018
  * @since 0.3.5
  */
 @Service
@@ -297,7 +296,7 @@ public class ArticleMgmtService {
             final String articleId = article.getString(Keys.OBJECT_ID);
             // Set permalink
             final JSONObject oldArticle = articleRepository.get(articleId);
-            final String permalink = getPermalinkForUpdateArticle(oldArticle, article, (Date) oldArticle.get(ARTICLE_CREATE_DATE));
+            final String permalink = getPermalinkForUpdateArticle(oldArticle, article, oldArticle.optLong(ARTICLE_CREATED));
             article.put(ARTICLE_PERMALINK, permalink);
 
             processTagsForArticleUpdate(oldArticle, article);
@@ -310,9 +309,9 @@ public class ArticleMgmtService {
             // Fill auto properties
             fillAutoProperties(oldArticle, article);
             // Set date
-            article.put(ARTICLE_UPDATE_DATE, oldArticle.get(ARTICLE_UPDATE_DATE));
+            article.put(ARTICLE_UPDATED, oldArticle.getLong(ARTICLE_UPDATED));
             final JSONObject preference = preferenceQueryService.getPreference();
-            final Date date = new Date();
+            final long now = System.currentTimeMillis();
 
             // The article to update has no sign
             if (!article.has(Article.ARTICLE_SIGN_ID)) {
@@ -322,20 +321,20 @@ public class ArticleMgmtService {
             if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
                 if (articleQueryService.hadBeenPublished(oldArticle)) {
                     // Edit update date only for published article
-                    article.put(ARTICLE_UPDATE_DATE, date);
+                    article.put(ARTICLE_UPDATED, now);
                 } else { // This article is a draft and this is the first time to publish it
-                    article.put(ARTICLE_CREATE_DATE, date);
-                    article.put(ARTICLE_UPDATE_DATE, date);
+                    article.put(ARTICLE_CREATED, now);
+                    article.put(ARTICLE_UPDATED, now);
                     article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
                 }
             } else { // Save as draft
                 if (articleQueryService.hadBeenPublished(oldArticle)) {
                     // Save update date only for published article
-                    article.put(ARTICLE_UPDATE_DATE, date);
+                    article.put(ARTICLE_UPDATED, now);
                 } else {
                     // Reset create/update date to indicate this is an new draft
-                    article.put(ARTICLE_CREATE_DATE, date);
-                    article.put(ARTICLE_UPDATE_DATE, date);
+                    article.put(ARTICLE_CREATED, now);
+                    article.put(ARTICLE_UPDATED, now);
                 }
             }
 
@@ -487,12 +486,10 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_VIEW_COUNT, 0);
             // Step 3: Set create/updat date
             final JSONObject preference = preferenceQueryService.getPreference();
-            final Date date = new Date();
-
-            if (!article.has(Article.ARTICLE_CREATE_DATE)) {
-                article.put(Article.ARTICLE_CREATE_DATE, date);
+            if (!article.has(Article.ARTICLE_CREATED)) {
+                article.put(Article.ARTICLE_CREATED, System.currentTimeMillis());
             }
-            article.put(Article.ARTICLE_UPDATE_DATE, article.opt(Article.ARTICLE_CREATE_DATE));
+            article.put(Article.ARTICLE_UPDATED, article.optLong(Article.ARTICLE_CREATED));
             // Step 4: Set put top to false
             article.put(Article.ARTICLE_PUT_TOP, false);
             // Step 5: Add tag-article relations
@@ -1042,8 +1039,8 @@ public class ArticleMgmtService {
      * @throws RepositoryException repository exception
      */
     private void archiveDate(final JSONObject article) throws RepositoryException {
-        final Date createDate = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
-        final String createDateString = DateFormatUtils.format(createDate, "yyyy/MM");
+        final long created = article.optLong(Article.ARTICLE_CREATED);
+        final String createDateString = DateFormatUtils.format(created, "yyyy/MM");
         JSONObject archiveDate = archiveDateRepository.getByArchiveDate(createDateString);
 
         if (null == archiveDate) {
@@ -1093,9 +1090,8 @@ public class ArticleMgmtService {
      * @throws JSONException json exception
      */
     private void fillAutoProperties(final JSONObject oldArticle, final JSONObject article) throws JSONException {
-        final Date createDate = (Date) oldArticle.get(ARTICLE_CREATE_DATE);
-
-        article.put(ARTICLE_CREATE_DATE, createDate);
+        final long created = oldArticle.getLong(ARTICLE_CREATED);
+        article.put(ARTICLE_CREATED, created);
         article.put(ARTICLE_COMMENT_COUNT, oldArticle.getInt(ARTICLE_COMMENT_COUNT));
         article.put(ARTICLE_VIEW_COUNT, oldArticle.getInt(ARTICLE_VIEW_COUNT));
         article.put(ARTICLE_PUT_TOP, oldArticle.getBoolean(ARTICLE_PUT_TOP));
@@ -1112,10 +1108,8 @@ public class ArticleMgmtService {
      * @throws ServiceException if invalid permalink occurs
      */
     private String getPermalinkForAddArticle(final JSONObject article) throws ServiceException {
-        final Date date = (Date) article.opt(Article.ARTICLE_CREATE_DATE);
-
+        final long date = article.optLong(Article.ARTICLE_CREATED);
         String ret = article.optString(Article.ARTICLE_PERMALINK);
-
         if (StringUtils.isBlank(ret)) {
             ret = "/articles/" + DateFormatUtils.format(date, "yyyy/MM/dd") + "/" + article.optString(Keys.OBJECT_ID) + ".html";
         }
@@ -1136,16 +1130,16 @@ public class ArticleMgmtService {
     }
 
     /**
-     * Gets article permalink for updating article with the specified old article, article, create date.
+     * Gets article permalink for updating article with the specified old article, article, created at.
      *
      * @param oldArticle the specified old article
      * @param article    the specified article
-     * @param createDate the specified create date
+     * @param created    the specified created
      * @return permalink
      * @throws ServiceException if invalid permalink occurs
      * @throws JSONException    json exception
      */
-    private String getPermalinkForUpdateArticle(final JSONObject oldArticle, final JSONObject article, final Date createDate)
+    private String getPermalinkForUpdateArticle(final JSONObject oldArticle, final JSONObject article, final long created)
             throws ServiceException, JSONException {
         final String articleId = article.getString(Keys.OBJECT_ID);
         String ret = article.optString(ARTICLE_PERMALINK).trim();
@@ -1153,7 +1147,7 @@ public class ArticleMgmtService {
 
         if (!oldPermalink.equals(ret)) {
             if (StringUtils.isBlank(ret)) {
-                ret = "/articles/" + DateFormatUtils.format(createDate, "yyyy/MM/dd") + "/" + articleId + ".html";
+                ret = "/articles/" + DateFormatUtils.format(created, "yyyy/MM/dd") + "/" + articleId + ".html";
             }
 
             if (!ret.startsWith("/")) {

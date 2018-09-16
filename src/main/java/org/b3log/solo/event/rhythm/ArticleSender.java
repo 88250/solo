@@ -48,7 +48,7 @@ import java.util.Date;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.0.2.13, Aug 2, 2018
+ * @version 1.0.2.14, Sep 16, 2018
  * @since 0.3.1
  */
 public final class ArticleSender extends AbstractEventListener<JSONObject> {
@@ -104,7 +104,7 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             article.put(Article.ARTICLE_TAGS_REF, originalArticle.getString(Article.ARTICLE_TAGS_REF));
             article.put(Article.ARTICLE_AUTHOR_EMAIL, originalArticle.getString(Article.ARTICLE_AUTHOR_EMAIL));
             article.put(Article.ARTICLE_CONTENT, originalArticle.getString(Article.ARTICLE_CONTENT));
-            article.put(Article.ARTICLE_CREATE_DATE, ((Date) originalArticle.get(Article.ARTICLE_CREATE_DATE)).getTime());
+            article.put(Article.ARTICLE_T_CREATE_DATE, originalArticle.getLong(Article.ARTICLE_CREATED));
             article.put(Common.POST_TO_COMMUNITY, originalArticle.getBoolean(Common.POST_TO_COMMUNITY));
 
             // Removes this property avoid to persist
