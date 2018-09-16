@@ -1,598 +1,598 @@
 {
-    "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-    "version": "3.2.1.1, Sep 16, 2018",
-    "authors": [
-        "Liang Ding"
-    ],
-    "since": "0.4.0",
-    "repositories": [
+  "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
+  "version": "3.2.1.1, Sep 16, 2018",
+  "authors": [
+    "Liang Ding"
+  ],
+  "since": "0.4.0",
+  "repositories": [
+    {
+      "name": "category",
+      "description": "分类表",
+      "keys": [
         {
-            "name": "category",
-            "description": "分类表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "categoryTitle",
-                    "description": "分类标题",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "categoryURI",
-                    "description": "分类访问路径",
-                    "type": "String",
-                    "length": 32
-                },
-                {
-                    "name": "categoryDescription",
-                    "description": "分类描述",
-                    "type": "String",
-                    "length": 512
-                },
-                {
-                    "name": "categoryOrder",
-                    "description": "分类展现的排序",
-                    "type": "int"
-                },
-                {
-                    "name": "categoryTagCnt",
-                    "description": "分类下聚合的标签计数",
-                    "type": "int"
-                }
-            ]
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
         },
         {
-            "name": "category_tag",
-            "description": "分类-标签关联表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "category_oId",
-                    "description": "分类 id",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "tag_oId",
-                    "description": "标签 id",
-                    "type": "String",
-                    "length": 19
-                }
-            ]
+          "name": "categoryTitle",
+          "description": "分类标题",
+          "type": "String",
+          "length": 64
         },
         {
-            "name": "archivedate",
-            "description": "存档日期表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "archiveDateArticleCount",
-                    "description": "存档日期文章计数，即某个月的文章总数",
-                    "type": "int"
-                },
-                {
-                    "name": "archiveDatePublishedArticleCount",
-                    "description": "存档日期已发布的文章计数，即某个月的已发布文章总数",
-                    "type": "int"
-                },
-                {
-                    "name": "archiveTime",
-                    "description": "存档日期时间，该月份第一天的时间戳",
-                    "type": "long"
-                }
-            ]
+          "name": "categoryURI",
+          "description": "分类访问路径",
+          "type": "String",
+          "length": 32
         },
         {
-            "name": "archivedate_article",
-            "description": "存档-文章关联表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "archiveDate_oId",
-                    "description": "存档日期 id",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "article_oId",
-                    "description": "文章 id",
-                    "type": "String",
-                    "length": 19
-                }
-            ]
+          "name": "categoryDescription",
+          "description": "分类描述",
+          "type": "String",
+          "length": 512
         },
         {
-            "name": "comment",
-            "description": "评论表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "commentContent",
-                    "description": "评论内容",
-                    "type": "String",
-                    "length": 2000
-                },
-                {
-                    "name": "commentCreated",
-                    "description": "评论时间戳",
-                    "type": "long"
-                },
-                {
-                    "name": "commentEmail",
-                    "description": "评论人邮箱",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "commentName",
-                    "description": "评论人名称",
-                    "type": "String",
-                    "length": 50
-                },
-                {
-                    "name": "commentOnId",
-                    "description": "评论的文章/页面的 id",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "commentOnType",
-                    "description": "评论的是文章还是页面，文章：article 页面：page",
-                    "type": "String",
-                    "length": 20
-                },
-                {
-                    "name": "commentSharpURL",
-                    "description": "评论访问路径，带 # 锚点",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "commentThumbnailURL",
-                    "description": "评论人头像图片链接地址",
-                    "type": "String",
-                    "length": 512
-                },
-                {
-                    "name": "commentURL",
-                    "description": "评论人链接地址",
-                    "type": "String",
-                    "length": "255"
-                },
-                {
-                    "name": "commentOriginalCommentId",
-                    "description": "评论回复时原始的评论 id，即父评论 id",
-                    "type": "String",
-                    "length": 19,
-                    "nullable": true
-                },
-                {
-                    "name": "commentOriginalCommentName",
-                    "description": "评论回复时原始的评论人名称，即父评论人名称",
-                    "type": "String",
-                    "length": 50,
-                    "nullable": true
-                }
-            ]
+          "name": "categoryOrder",
+          "description": "分类展现的排序",
+          "type": "int"
         },
         {
-            "name": "link",
-            "description": "链接表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "linkAddress",
-                    "description": "链接地址",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "linkDescription",
-                    "description": "链接描述",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "linkOrder",
-                    "description": "链接展现的排序",
-                    "type": "int"
-                },
-                {
-                    "name": "linkTitle",
-                    "description": "链接标题",
-                    "type": "String",
-                    "length": 255
-                }
-            ]
-        },
-        {
-            "name": "page",
-            "description": "自定义页面表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "pageCommentCount",
-                    "description": "页面评论计数",
-                    "type": "int"
-                },
-                {
-                    "name": "pageContent",
-                    "description": "页面内容",
-                    "type": "String",
-                    "length": 1048576
-                },
-                {
-                    "name": "pageOrder",
-                    "description": "页面展现排序",
-                    "type": "int"
-                },
-                {
-                    "name": "pagePermalink",
-                    "description": "页面访问路径",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "pageTitle",
-                    "description": "页面标题",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "pageCommentable",
-                    "description": "页面是否可以评论",
-                    "type": "boolean"
-                },
-                {
-                    "name": "pageType",
-                    "description": "页面类型，自定义导航：link，普通页面：page",
-                    "type": "String",
-                    "length": 10
-                },
-                {
-                    "name": "pageOpenTarget",
-                    "description": "页面打开方式",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "pageEditorType",
-                    "description": "页面编辑器类型，目前仅支持 CodeMirror-Markdown",
-                    "type": "String",
-                    "length": 20,
-                    "nullable": true
-                },
-                {
-                    "name": "pageIcon",
-                    "description": "页面展示用小图标",
-                    "type": "String",
-                    "length": 255
-                }
-            ]
-        },
-        {
-            "name": "plugin",
-            "description": "插件表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 128
-                },
-                {
-                    "name": "author",
-                    "description": "插件作者",
-                    "type": "String",
-                    "length": 2000
-                },
-                {
-                    "name": "name",
-                    "description": "插件名称",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "status",
-                    "description": "插件状态，启用：ENABLED，禁用：DISABLED",
-                    "type": "String",
-                    "length": 10
-                },
-                {
-                    "name": "version",
-                    "description": "插件版本",
-                    "type": "String",
-                    "length": 10
-                },
-                {
-                    "name": "setting",
-                    "description": "插件配置，JSON 字符串",
-                    "type": "String",
-                    "length": 2000,
-                    "nullable": true
-                }
-            ]
-        },
-        {
-            "name": "tag",
-            "description": "标签表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "tagPublishedRefCount",
-                    "description": "标签关联的已发布文章计数",
-                    "type": "int"
-                },
-                {
-                    "name": "tagReferenceCount",
-                    "description": "标签关联的文章计数",
-                    "type": "int"
-                },
-                {
-                    "name": "tagTitle",
-                    "description": "标签标题",
-                    "type": "String",
-                    "length": 255
-                }
-            ]
-        },
-        {
-            "name": "tag_article",
-            "description": "标签-文章关联表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "article_oId",
-                    "description": "文章 id",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "tag_oId",
-                    "description": "标签 id",
-                    "type": "String",
-                    "length": 19
-                }
-            ]
-        },
-        {
-            "name": "user",
-            "description": "用户表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "userEmail",
-                    "description": "用户邮箱",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "userName",
-                    "description": "用户名",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "userURL",
-                    "description": "用户链接地址",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "userPassword",
-                    "description": "用户密码，MD5",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "userRole",
-                    "description": "用户角色，管理员：adminRole，普通用户：defaultRole，访客用户：visitorRole",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "userArticleCount",
-                    "description": "用户文章计数",
-                    "type": "int"
-                },
-                {
-                    "name": "userPublishedArticleCount",
-                    "description": "用户已发布文章计数",
-                    "type": "int"
-                },
-                {
-                    "name": "userAvatar",
-                    "description": "用户头像图片链接地址",
-                    "type": "String",
-                    "length": 255
-                }
-            ]
-        },
-        {
-            "name": "article",
-            "description": "文章表",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "articleTitle",
-                    "description": "文章标题",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "articleAbstract",
-                    "description": "文章摘要",
-                    "type": "String",
-                    "length": 2000
-                },
-                {
-                    "name": "articleTags",
-                    "description": "文章标签，英文逗号分隔",
-                    "type": "String",
-                    "length": 2000
-                },
-                {
-                    "name": "articleAuthorId",
-                    "description": "文章作者 id",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "articleCommentCount",
-                    "description": "文章评论计数",
-                    "type": "int"
-                },
-                {
-                    "name": "articleViewCount",
-                    "description": "文章浏览计数",
-                    "type": "int"
-                },
-                {
-                    "name": "articleContent",
-                    "description": "文章正文内容",
-                    "type": "String",
-                    "length": 1048576
-                },
-                {
-                    "name": "articlePermalink",
-                    "description": "文章访问路径",
-                    "type": "String",
-                    "length": 255
-                },
-                {
-                    "name": "articleHadBeenPublished",
-                    "description": "文章是否已经发布过",
-                    "type": "boolean"
-                },
-                {
-                    "name": "articleIsPublished",
-                    "description": "文章是否处于已发布状态",
-                    "type": "boolean"
-                },
-                {
-                    "name": "articlePutTop",
-                    "description": "文章是否置顶",
-                    "type": "boolean"
-                },
-                {
-                    "name": "articleCreated",
-                    "description": "文章创建时间戳",
-                    "type": "long"
-                },
-                {
-                    "name": "articleUpdated",
-                    "description": "文章更新时间戳",
-                    "type": "long"
-                },
-                {
-                    "name": "articleRandomDouble",
-                    "description": "文章随机数，用于快速查询随机文章列表",
-                    "type": "double"
-                },
-                {
-                    "name": "articleSignId",
-                    "description": "文章关联的签名档 id",
-                    "type": "String",
-                    "length": 19
-                },
-                {
-                    "name": "articleCommentable",
-                    "description": "文章是否可以评论",
-                    "type": "boolean"
-                },
-                {
-                    "name": "articleViewPwd",
-                    "description": "文章浏览密码，留空为不设置访问密码",
-                    "type": "String",
-                    "legnth": 255
-                },
-                {
-                    "name": "articleEditorType",
-                    "description": "文章编辑器类型，目前仅支持 CodeMirror-Markdown",
-                    "type": "String",
-                    "length": 20,
-                    "nullable": true
-                }
-            ]
-        },
-        {
-            "name": "option",
-            "description": "配置项",
-            "keys": [
-                {
-                    "name": "oId",
-                    "description": "主键",
-                    "type": "String",
-                    "length": 64
-                },
-                {
-                    "name": "optionValue",
-                    "description": "配置项值",
-                    "type": "String",
-                    "length": 10240
-                },
-                {
-                    "name": "optionCategory",
-                    "description": "配置项分类",
-                    "type": "String",
-                    "legnth": 20
-                }
-            ]
+          "name": "categoryTagCnt",
+          "description": "分类下聚合的标签计数",
+          "type": "int"
         }
-    ]
+      ]
+    },
+    {
+      "name": "category_tag",
+      "description": "分类-标签关联表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "category_oId",
+          "description": "分类 id",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "tag_oId",
+          "description": "标签 id",
+          "type": "String",
+          "length": 19
+        }
+      ]
+    },
+    {
+      "name": "archivedate",
+      "description": "存档日期表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "archiveDateArticleCount",
+          "description": "存档日期文章计数，即某个月的文章总数",
+          "type": "int"
+        },
+        {
+          "name": "archiveDatePublishedArticleCount",
+          "description": "存档日期已发布的文章计数，即某个月的已发布文章总数",
+          "type": "int"
+        },
+        {
+          "name": "archiveTime",
+          "description": "存档日期时间，该月份第一天的时间戳",
+          "type": "long"
+        }
+      ]
+    },
+    {
+      "name": "archivedate_article",
+      "description": "存档-文章关联表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "archiveDate_oId",
+          "description": "存档日期 id",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "article_oId",
+          "description": "文章 id",
+          "type": "String",
+          "length": 19
+        }
+      ]
+    },
+    {
+      "name": "comment",
+      "description": "评论表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "commentContent",
+          "description": "评论内容",
+          "type": "String",
+          "length": 2000
+        },
+        {
+          "name": "commentCreated",
+          "description": "评论时间戳",
+          "type": "long"
+        },
+        {
+          "name": "commentEmail",
+          "description": "评论人邮箱",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "commentName",
+          "description": "评论人名称",
+          "type": "String",
+          "length": 50
+        },
+        {
+          "name": "commentOnId",
+          "description": "评论的文章/页面的 id",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "commentOnType",
+          "description": "评论的是文章还是页面，文章：article 页面：page",
+          "type": "String",
+          "length": 20
+        },
+        {
+          "name": "commentSharpURL",
+          "description": "评论访问路径，带 # 锚点",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "commentThumbnailURL",
+          "description": "评论人头像图片链接地址",
+          "type": "String",
+          "length": 512
+        },
+        {
+          "name": "commentURL",
+          "description": "评论人链接地址",
+          "type": "String",
+          "length": "255"
+        },
+        {
+          "name": "commentOriginalCommentId",
+          "description": "评论回复时原始的评论 id，即父评论 id",
+          "type": "String",
+          "length": 19,
+          "nullable": true
+        },
+        {
+          "name": "commentOriginalCommentName",
+          "description": "评论回复时原始的评论人名称，即父评论人名称",
+          "type": "String",
+          "length": 50,
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "link",
+      "description": "链接表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "linkAddress",
+          "description": "链接地址",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "linkDescription",
+          "description": "链接描述",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "linkOrder",
+          "description": "链接展现的排序",
+          "type": "int"
+        },
+        {
+          "name": "linkTitle",
+          "description": "链接标题",
+          "type": "String",
+          "length": 255
+        }
+      ]
+    },
+    {
+      "name": "page",
+      "description": "自定义页面表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "pageCommentCount",
+          "description": "页面评论计数",
+          "type": "int"
+        },
+        {
+          "name": "pageContent",
+          "description": "页面内容",
+          "type": "String",
+          "length": 1048576
+        },
+        {
+          "name": "pageOrder",
+          "description": "页面展现排序",
+          "type": "int"
+        },
+        {
+          "name": "pagePermalink",
+          "description": "页面访问路径",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "pageTitle",
+          "description": "页面标题",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "pageCommentable",
+          "description": "页面是否可以评论",
+          "type": "boolean"
+        },
+        {
+          "name": "pageType",
+          "description": "页面类型，自定义导航：link，普通页面：page",
+          "type": "String",
+          "length": 10
+        },
+        {
+          "name": "pageOpenTarget",
+          "description": "页面打开方式",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "pageEditorType",
+          "description": "页面编辑器类型，目前仅支持 CodeMirror-Markdown",
+          "type": "String",
+          "length": 20,
+          "nullable": true
+        },
+        {
+          "name": "pageIcon",
+          "description": "页面展示用小图标",
+          "type": "String",
+          "length": 255
+        }
+      ]
+    },
+    {
+      "name": "plugin",
+      "description": "插件表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 128
+        },
+        {
+          "name": "author",
+          "description": "插件作者",
+          "type": "String",
+          "length": 2000
+        },
+        {
+          "name": "name",
+          "description": "插件名称",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "status",
+          "description": "插件状态，启用：ENABLED，禁用：DISABLED",
+          "type": "String",
+          "length": 10
+        },
+        {
+          "name": "version",
+          "description": "插件版本",
+          "type": "String",
+          "length": 10
+        },
+        {
+          "name": "setting",
+          "description": "插件配置，JSON 字符串",
+          "type": "String",
+          "length": 2000,
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "tag",
+      "description": "标签表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "tagPublishedRefCount",
+          "description": "标签关联的已发布文章计数",
+          "type": "int"
+        },
+        {
+          "name": "tagReferenceCount",
+          "description": "标签关联的文章计数",
+          "type": "int"
+        },
+        {
+          "name": "tagTitle",
+          "description": "标签标题",
+          "type": "String",
+          "length": 255
+        }
+      ]
+    },
+    {
+      "name": "tag_article",
+      "description": "标签-文章关联表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "article_oId",
+          "description": "文章 id",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "tag_oId",
+          "description": "标签 id",
+          "type": "String",
+          "length": 19
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "description": "用户表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "userEmail",
+          "description": "用户邮箱",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "userName",
+          "description": "用户名",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "userURL",
+          "description": "用户链接地址",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "userPassword",
+          "description": "用户密码，MD5",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "userRole",
+          "description": "用户角色，管理员：adminRole，普通用户：defaultRole，访客用户：visitorRole",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "userArticleCount",
+          "description": "用户文章计数",
+          "type": "int"
+        },
+        {
+          "name": "userPublishedArticleCount",
+          "description": "用户已发布文章计数",
+          "type": "int"
+        },
+        {
+          "name": "userAvatar",
+          "description": "用户头像图片链接地址",
+          "type": "String",
+          "length": 255
+        }
+      ]
+    },
+    {
+      "name": "article",
+      "description": "文章表",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "articleTitle",
+          "description": "文章标题",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "articleAbstract",
+          "description": "文章摘要",
+          "type": "String",
+          "length": 2000
+        },
+        {
+          "name": "articleTags",
+          "description": "文章标签，英文逗号分隔",
+          "type": "String",
+          "length": 2000
+        },
+        {
+          "name": "articleAuthorId",
+          "description": "文章作者 id",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "articleCommentCount",
+          "description": "文章评论计数",
+          "type": "int"
+        },
+        {
+          "name": "articleViewCount",
+          "description": "文章浏览计数",
+          "type": "int"
+        },
+        {
+          "name": "articleContent",
+          "description": "文章正文内容",
+          "type": "String",
+          "length": 1048576
+        },
+        {
+          "name": "articlePermalink",
+          "description": "文章访问路径",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "articleHadBeenPublished",
+          "description": "文章是否已经发布过",
+          "type": "boolean"
+        },
+        {
+          "name": "articleIsPublished",
+          "description": "文章是否处于已发布状态",
+          "type": "boolean"
+        },
+        {
+          "name": "articlePutTop",
+          "description": "文章是否置顶",
+          "type": "boolean"
+        },
+        {
+          "name": "articleCreated",
+          "description": "文章创建时间戳",
+          "type": "long"
+        },
+        {
+          "name": "articleUpdated",
+          "description": "文章更新时间戳",
+          "type": "long"
+        },
+        {
+          "name": "articleRandomDouble",
+          "description": "文章随机数，用于快速查询随机文章列表",
+          "type": "double"
+        },
+        {
+          "name": "articleSignId",
+          "description": "文章关联的签名档 id",
+          "type": "String",
+          "length": 19
+        },
+        {
+          "name": "articleCommentable",
+          "description": "文章是否可以评论",
+          "type": "boolean"
+        },
+        {
+          "name": "articleViewPwd",
+          "description": "文章浏览密码，留空为不设置访问密码",
+          "type": "String",
+          "legnth": 255
+        },
+        {
+          "name": "articleEditorType",
+          "description": "文章编辑器类型，目前仅支持 CodeMirror-Markdown",
+          "type": "String",
+          "length": 20,
+          "nullable": true
+        }
+      ]
+    },
+    {
+      "name": "option",
+      "description": "配置项",
+      "keys": [
+        {
+          "name": "oId",
+          "description": "主键",
+          "type": "String",
+          "length": 64
+        },
+        {
+          "name": "optionValue",
+          "description": "配置项值",
+          "type": "String",
+          "length": 10240
+        },
+        {
+          "name": "optionCategory",
+          "description": "配置项分类",
+          "type": "String",
+          "legnth": 20
+        }
+      ]
+    }
+  ]
 }
