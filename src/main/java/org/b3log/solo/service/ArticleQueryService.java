@@ -231,13 +231,13 @@ public class ArticleQueryService {
             final JSONArray articleArray = articleRepository.get(query).optJSONArray(Keys.RESULTS);
             for (int i = 0; i < articleArray.length(); i++) {
                 final JSONObject article = articleArray.optJSONObject(i);
-
                 if (!article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     // Skips the unpublished article
                     continue;
                 }
 
                 article.put(ARTICLE_CREATE_TIME, article.optLong(ARTICLE_CREATED));
+                article.put(ARTICLE_T_CREATE_DATE, new Date(article.optLong(ARTICLE_CREATED)));
 
                 articles.add(article);
             }
@@ -697,13 +697,13 @@ public class ArticleQueryService {
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-
                 if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     // Skips the unpublished article
                     continue;
                 }
 
                 article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
+                article.put(ARTICLE_T_CREATE_DATE, new Date(article.getLong(ARTICLE_CREATED)));
 
                 ret.add(article);
             }
@@ -749,13 +749,13 @@ public class ArticleQueryService {
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-
                 if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                     // Skips the unpublished article
                     continue;
                 }
 
                 article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
+                article.put(ARTICLE_T_CREATE_DATE, new Date(article.getLong(ARTICLE_CREATED)));
 
                 ret.add(article);
             }
@@ -992,8 +992,8 @@ public class ArticleQueryService {
 
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-
                 article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
+                article.put(ARTICLE_T_CREATE_DATE, new Date(article.optLong(ARTICLE_CREATED)));
 
                 ret.add(article);
             }

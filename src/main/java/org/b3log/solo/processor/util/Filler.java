@@ -920,11 +920,10 @@ public class Filler {
             throws ServiceException {
         try {
             final String authorName = author.getString(User.USER_NAME);
-
             article.put(Common.AUTHOR_NAME, authorName);
             final String authorId = author.getString(Keys.OBJECT_ID);
-
             article.put(Common.AUTHOR_ID, authorId);
+            article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.optLong(Article.ARTICLE_CREATED)));
 
             final String userAvatar = author.optString(UserExt.USER_AVATAR);
             if (StringUtils.isNotBlank(userAvatar)) {
@@ -980,11 +979,10 @@ public class Filler {
         try {
             final JSONObject author = articleQueryService.getAuthor(article);
             final String authorName = author.getString(User.USER_NAME);
-
             article.put(Common.AUTHOR_NAME, authorName);
             final String authorId = author.getString(Keys.OBJECT_ID);
-
             article.put(Common.AUTHOR_ID, authorId);
+            article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.optLong(Article.ARTICLE_CREATED)));
 
             final String userAvatar = author.optString(UserExt.USER_AVATAR);
             if (StringUtils.isNotBlank(userAvatar)) {
