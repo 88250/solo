@@ -192,10 +192,12 @@ public class UpgradeService {
 
         try {
             alterTables();
+            JdbcRepository.dispose(); // avoid to metadata lock
             upgradeArticles();
             upgradeComments();
             JdbcRepository.dispose(); // avoid to metadata lock
             dropColumns();
+            JdbcRepository.dispose(); // avoid to metadata lock
 
             articleCache.clear();
             commentCache.clear();
