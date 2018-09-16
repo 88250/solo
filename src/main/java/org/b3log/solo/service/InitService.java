@@ -200,8 +200,8 @@ public class InitService {
         if (Latkes.RuntimeDatabase.H2 == Latkes.getRuntimeDatabase()) {
             String dataDir = Latkes.getLocalProperty("jdbc.URL");
             dataDir = dataDir.replace("~", System.getProperty("user.home"));
-            LOGGER.log(Level.INFO, "YOUR DATA will be stored in directory [" + dataDir + "], "
-                    + "please pay more attention to it~");
+            LOGGER.log(Level.INFO, "Your DATA will be stored in directory [" + dataDir + "], "
+                    + "please pay more attention on it!");
         }
 
         final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();

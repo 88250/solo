@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -223,10 +224,10 @@ public class UpgradeService {
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archivedate1` RENAME TO `" + tablePrefix + "archivedate`");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archiveDate_article` RENAME TO `" + tablePrefix + "archivedate_article1`");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archivedate_article1` RENAME TO `" + tablePrefix + "archivedate_article`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleAuthorId` VARCHAR(19) NOT NULL");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleCreated` BIGINT NOT NULL");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleUpdated` BIGINT NOT NULL");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` ADD `commentCreated` BIGINT NOT NULL");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleAuthorId` VARCHAR(19) DEFAULT '' NOT NULL");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleCreated` BIGINT DEFAULT 0 NOT NULL");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleUpdated` BIGINT DEFAULT 0 NOT NULL");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` ADD `commentCreated` BIGINT DEFAULT 0 NOT NULL");
         statement.close();
         connection.commit();
         connection.close();
@@ -237,6 +238,7 @@ public class UpgradeService {
         final Statement statement = connection.createStatement();
 
         final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleAuthorEmail`");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCreateDate`");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleUpdateDate`");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentDate`");
@@ -290,17 +292,26 @@ public class UpgradeService {
 
                 final String articleId = articles.get(i).optString(Keys.OBJECT_ID);
                 final JSONObject article = articleRepository.get(articleId);
-                final String authorEmail = article.optString(Article.ARTICLE_T_AUTHOR_EMAIL);
+                String authorEmail = article.optString(Article.ARTICLE_T_AUTHOR_EMAIL);
+                if (StringUtils.isBlank(authorEmail)) { // H2
+                    authorEmail = article.optString(Article.ARTICLE_T_AUTHOR_EMAIL.toUpperCase());
+                }
                 JSONObject author = userRepository.getByEmail(authorEmail);
                 if (null == author) {
                     author = userRepository.getAdmin();
                 }
                 article.put(Article.ARTICLE_AUTHOR_ID, author.optString(Keys.OBJECT_ID));
 
-                final Date createDate = (Date) article.get(Article.ARTICLE_T_CREATE_DATE);
+                Date createDate = (Date) article.opt(Article.ARTICLE_T_CREATE_DATE);
+                if (null == createDate) { // H2
+                    createDate = (Date) article.opt(Article.ARTICLE_T_CREATE_DATE.toUpperCase());
+                }
                 article.put(Article.ARTICLE_CREATED, createDate.getTime());
 
-                final Date updateDate = (Date) article.get(Article.ARTICLE_T_UPDATE_DATE);
+                Date updateDate = (Date) article.opt(Article.ARTICLE_T_UPDATE_DATE);
+                if (null == updateDate) { // H2
+                    updateDate = (Date) article.opt(Article.ARTICLE_T_UPDATE_DATE.toUpperCase());
+                }
                 article.put(Article.ARTICLE_UPDATED, updateDate.getTime());
 
                 articleRepository.update(articleId, article);
@@ -343,7 +354,10 @@ public class UpgradeService {
                 final JSONObject comment = comments.get(i);
                 final String commentId = comment.optString(Keys.OBJECT_ID);
 
-                final Date createDate = (Date) comment.get(Comment.COMMENT_T_DATE);
+                Date createDate = (Date) comment.opt(Comment.COMMENT_T_DATE);
+                if (null == createDate) { // H2
+                    createDate = (Date) comment.opt(Comment.COMMENT_T_DATE.toUpperCase());
+                }
                 comment.put(Comment.COMMENT_CREATED, createDate.getTime());
 
                 commentRepository.update(commentId, comment);
