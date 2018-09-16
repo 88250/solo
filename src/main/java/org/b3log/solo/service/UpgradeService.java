@@ -204,7 +204,7 @@ public class UpgradeService {
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archivedate1` RENAME TO `" + tablePrefix + "archivedate`");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archiveDate_article` RENAME TO `" + tablePrefix + "archivedate_article1`");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archivedate_article1` RENAME TO `" + tablePrefix + "archivedate_article`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleAuthorId` VARCHAR(19) NOT NULL;");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleAuthorId` VARCHAR(19) NOT NULL");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleCreated` BIGINT NOT NULL");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleUpdated` BIGINT NOT NULL");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` ADD `commentCreated` BIGINT NOT NULL");
@@ -218,8 +218,8 @@ public class UpgradeService {
         final Statement statement = connection.createStatement();
 
         final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-        // statement.execute("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCreateDate`");
-        // statement.execute("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleUpdateDate`");
+        statement.execute("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCreateDate`");
+        statement.execute("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleUpdateDate`");
         statement.execute("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentDate`");
         statement.close();
         connection.commit();
@@ -231,7 +231,7 @@ public class UpgradeService {
         final Statement statement = connection.createStatement();
 
         final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-        statement.execute("DROP TABLE `" + tablePrefix + "statistic`;");
+        statement.execute("DROP TABLE `" + tablePrefix + "statistic`");
         statement.close();
         connection.commit();
         connection.close();
@@ -288,7 +288,7 @@ public class UpgradeService {
 
                 if (0 == i % STEP) {
                     transaction.commit();
-                    LOGGER.log(Level.TRACE, "Updated some articles");
+                    LOGGER.log(Level.INFO, "Updated some articles [" + i + "]");
                 }
             }
 
@@ -296,7 +296,7 @@ public class UpgradeService {
                 transaction.commit();
             }
 
-            LOGGER.log(Level.TRACE, "Updated all articles");
+            LOGGER.log(Level.INFO, "Updated all articles");
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -331,7 +331,7 @@ public class UpgradeService {
 
                 if (0 == i % STEP) {
                     transaction.commit();
-                    LOGGER.log(Level.TRACE, "Updated some comments");
+                    LOGGER.log(Level.INFO, "Updated some comments [" + i + "]");
                 }
             }
 
@@ -339,7 +339,7 @@ public class UpgradeService {
                 transaction.commit();
             }
 
-            LOGGER.log(Level.TRACE, "Updated all comments");
+            LOGGER.log(Level.INFO, "Updated all comments");
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
