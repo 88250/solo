@@ -175,7 +175,8 @@ public class BlogProcessor {
         requestJSONObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
         requestJSONObject.put("clientHost", Latkes.getServePath());
 
-        HttpRequest.post(Solos.B3LOG_SYMPHONY_SERVE_PATH + "/apis/user").bodyText(requestJSONObject.toString()).contentTypeJson().sendAsync();
+        HttpRequest.post(Solos.B3LOG_SYMPHONY_SERVE_PATH + "/apis/user").bodyText(requestJSONObject.toString())
+                .header("User-Agent", Solos.USER_AGENT).contentTypeJson().sendAsync();
     }
 
     /**

@@ -258,7 +258,7 @@ public class InitService {
         }
 
         try {
-            HttpRequest.get(Latkes.getServePath() + "/blog/symphony/user").sendAsync();
+            HttpRequest.get(Latkes.getServePath() + "/blog/symphony/user").header("User-Agent", Solos.USER_AGENT).sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.TRACE, "Sync account failed");
         }

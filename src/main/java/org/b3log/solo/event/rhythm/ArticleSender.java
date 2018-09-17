@@ -125,7 +125,8 @@ public final class ArticleSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", "LOCAL");
 
-            HttpRequest.post(ADD_ARTICLE_URL).bodyText(requestJSONObject.toString()).contentTypeJson().sendAsync();
+            HttpRequest.post(ADD_ARTICLE_URL).bodyText(requestJSONObject.toString()).
+                    contentTypeJson().header("User-Agent", Solos.USER_AGENT).sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends an article to Rhythm error: {0}", e.getMessage());
         }

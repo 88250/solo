@@ -18,6 +18,7 @@
 package org.b3log.solo.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.solo.SoloServletListener;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -26,7 +27,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jul 31, 2018
+ * @version 1.2.0.0, Sep 17, 2018
  * @since 2.8.0
  */
 public final class Solos {
@@ -60,6 +61,11 @@ public final class Solos {
      * Mobile skin.
      */
     public static final String MOBILE_SKIN;
+
+    /**
+     * Solo User-Agent.
+     */
+    public static final String USER_AGENT = "Solo/" + SoloServletListener.VERSION + "; +https://github.com/b3log/solo";
 
     static {
         ResourceBundle solo;

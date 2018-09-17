@@ -96,7 +96,8 @@ public final class CommentSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
             requestJSONObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
 
-            HttpRequest.post(ADD_COMMENT_URL).bodyText(requestJSONObject.toString()).contentTypeJson().sendAsync();
+            HttpRequest.post(ADD_COMMENT_URL).bodyText(requestJSONObject.toString()).
+                    header("User-Agent", Solos.USER_AGENT).contentTypeJson().sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends a comment to Symphony error: {0}", e.getMessage());
         }

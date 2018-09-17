@@ -786,7 +786,7 @@ public class CommentMgmtService {
 
         int statusCode = HttpServletResponse.SC_OK;
         try {
-            statusCode = HttpRequest.get(thumbnailURL).send().statusCode();
+            statusCode = HttpRequest.get(thumbnailURL).header("User-Agent", Solos.USER_AGENT).send().statusCode();
         } catch (final Exception e) {
             LOGGER.log(Level.DEBUG, "Can not fetch thumbnail from Gravatar [commentEmail={0}]", commentEmail);
         } finally {
