@@ -549,6 +549,7 @@ public class Filler {
                 comment.put(Comment.COMMENT_URL, comment.getString(Comment.COMMENT_URL));
                 comment.put(Common.IS_REPLY, false);
                 comment.remove(Comment.COMMENT_EMAIL); // Erases email for security reason
+                comment.put(Comment.COMMENT_T_DATE, new Date(comment.optLong(Comment.COMMENT_CREATED)));
                 comment.put("commentDate2", new Date(comment.optLong(Comment.COMMENT_CREATED)));
 
                 final String email = comment.optString(Comment.COMMENT_EMAIL);
