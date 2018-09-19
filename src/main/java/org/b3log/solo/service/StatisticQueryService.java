@@ -18,10 +18,8 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.solo.cache.StatisticCache;
 import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 
@@ -29,28 +27,17 @@ import org.json.JSONObject;
  * Statistic query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Sep 6, 2017
+ * @version 2.0.0.1, Sep 19, 2018
  * @since 0.5.0
  */
 @Service
 public class StatisticQueryService {
 
     /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(StatisticQueryService.class);
-
-    /**
      * Option query service.
      */
     @Inject
     private OptionQueryService optionQueryService;
-
-    /**
-     * Statistic cache.
-     */
-    @Inject
-    private StatisticCache statisticCache;
 
     /**
      * Gets the online visitor count.
@@ -128,13 +115,7 @@ public class StatisticQueryService {
      * @throws ServiceException if repository exception
      */
     public JSONObject getStatistic() throws ServiceException {
-        JSONObject ret = statisticCache.getStatistic();
-        if (null == ret) {
-            ret = optionQueryService.getOptions(Option.CATEGORY_C_STATISTIC);
-            statisticCache.putStatistic(ret);
-        }
-
-        return ret;
+        return optionQueryService.getOptions(Option.CATEGORY_C_STATISTIC);
     }
 
     /**

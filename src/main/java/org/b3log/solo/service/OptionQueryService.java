@@ -17,24 +17,18 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.repository.FilterOperator;
-import org.b3log.latke.repository.PropertyFilter;
-import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Option query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 22, 2017
+ * @version 1.0.0.2, Sep 19, 2018
  * @since 0.6.0
  */
 @Service
@@ -78,25 +72,8 @@ public class OptionQueryService {
      * @throws ServiceException service exception
      */
     public JSONObject getOptions(final String category) throws ServiceException {
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, category));
-
         try {
-            final JSONObject result = optionRepository.get(query);
-            final JSONArray options = result.getJSONArray(Keys.RESULTS);
-            if (0 == options.length()) {
-                return null;
-            }
-
-            final JSONObject ret = new JSONObject();
-
-            for (int i = 0; i < options.length(); i++) {
-                final JSONObject option = options.getJSONObject(i);
-
-                ret.put(option.getString(Keys.OBJECT_ID), option.opt(Option.OPTION_VALUE));
-            }
-
-            return ret;
+            return optionRepository.getOptions(category);
         } catch (final Exception e) {
             throw new ServiceException(e);
         }

@@ -17,15 +17,34 @@
  */
 package org.b3log.solo.repository;
 
-
 import org.b3log.latke.repository.Repository;
-
+import org.b3log.latke.repository.RepositoryException;
+import org.json.JSONObject;
 
 /**
  * Option repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 24, 2013
+ * @version 1.1.0.0, Sep 19, 2018
  * @since 0.6.0
  */
-public interface OptionRepository extends Repository {}
+public interface OptionRepository extends Repository {
+
+    /**
+     * Gets options with the specified category.
+     * <p>
+     * All options with the specified category will be merged into one json object as the return value.
+     * </p>
+     *
+     * @param category the specified category
+     * @return all options with the specified category, for example,
+     * <pre>
+     * {
+     *     "${optionId}": "${optionValue}",
+     *     ....
+     * }
+     * </pre>, returns {@code null} if not found
+     * @throws RepositoryException repository exception
+     */
+    JSONObject getOptions(final String category) throws RepositoryException;
+}

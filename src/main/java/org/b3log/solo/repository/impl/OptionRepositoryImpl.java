@@ -19,19 +19,20 @@ package org.b3log.solo.repository.impl;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.cache.OptionCache;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Option repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 16, 2017
+ * @version 1.0.0.2, Sep 19, 2018
  * @since 0.6.0
  */
 @Repository
@@ -52,9 +53,16 @@ public class OptionRepositoryImpl extends AbstractRepository implements OptionRe
 
     @Override
     public void remove(final String id) throws RepositoryException {
-        super.remove(id);
+        final JSONObject option = get(id);
+        if (null == option) {
+            return;
+        }
 
+        super.remove(id);
         optionCache.removeOption(id);
+
+        final String category = option.optString(Option.OPTION_CATEGORY);
+        optionCache.removeCategory(category);
     }
 
     @Override
@@ -80,5 +88,27 @@ public class OptionRepositoryImpl extends AbstractRepository implements OptionRe
 
         option.put(Keys.OBJECT_ID, id);
         optionCache.putOption(option);
+    }
+
+    @Override
+    public JSONObject getOptions(final String category) throws RepositoryException {
+        final JSONObject cached = optionCache.getCategory(category);
+        if (null != cached) {
+            return cached;
+        }
+
+        final JSONObject ret = new JSONObject();
+        try {
+            final List<JSONObject> options = getList(new Query().setFilter(new PropertyFilter(Option.OPTION_CATEGORY, FilterOperator.EQUAL, category)));
+            if (0 == options.size()) {
+                return null;
+            }
+            options.stream().forEach(option -> ret.put(option.optString(Keys.OBJECT_ID), option.opt(Option.OPTION_VALUE)));
+            optionCache.putCategory(category, ret);
+
+            return ret;
+        } catch (final Exception e) {
+            throw new RepositoryException(e);
+        }
     }
 }
