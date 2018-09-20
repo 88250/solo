@@ -211,11 +211,7 @@ public class CategoryProcessor {
         } catch (final ServiceException | JSONException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

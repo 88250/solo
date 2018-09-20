@@ -25,7 +25,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -41,7 +40,6 @@ import org.b3log.solo.processor.renderer.SkinRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -139,6 +137,7 @@ public class TagProcessor {
 
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
 
@@ -149,6 +148,7 @@ public class TagProcessor {
 
             if (null == result) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
 
@@ -165,12 +165,9 @@ public class TagProcessor {
             final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
 
             if (articles.isEmpty()) {
-                try {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                    return;
-                } catch (final IOException ex) {
-                    LOGGER.error(ex.getMessage());
-                }
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
             }
 
             filler.setArticlesExProperties(request, articles, preference);
@@ -192,22 +189,10 @@ public class TagProcessor {
             filler.fillCommon(request, response, dataModel, preference);
 
             statisticMgmtService.incBlogViewCount(request, response);
-        } catch (final ServiceException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
-        } catch (final JSONException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

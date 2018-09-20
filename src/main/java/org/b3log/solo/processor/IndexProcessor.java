@@ -102,9 +102,11 @@ public class IndexProcessor {
      * @param context  the specified context
      * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
+     * @throws Exception exception
      */
     @RequestProcessing(value = {"/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
-    public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("index.ftl");
@@ -164,11 +166,7 @@ public class IndexProcessor {
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
@@ -178,21 +176,20 @@ public class IndexProcessor {
      * @param context  the specified context
      * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
-    public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
         final AbstractFreeMarkerRenderer renderer = new KillBrowserRenderer();
-
         context.setRenderer(renderer);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
-
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
-
             filler.fillCommon(request, response, dataModel, preference);
             Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
@@ -200,11 +197,7 @@ public class IndexProcessor {
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
@@ -214,34 +207,26 @@ public class IndexProcessor {
      * @param context  the specified context
      * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
-    public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+            throws Exception {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-
         context.setRenderer(renderer);
-
         renderer.setTemplateName("register.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
-
             dataModel.putAll(langs);
-
             final JSONObject preference = preferenceQueryService.getPreference();
-
             filler.fillCommon(request, response, dataModel, preference);
             filler.fillMinified(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

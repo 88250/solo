@@ -43,7 +43,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -96,9 +95,10 @@ public class PageProcessor {
      * Shows page with the specified context.
      *
      * @param context the specified context
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/page", method = HTTPRequestMethod.GET)
-    public void showPage(final HTTPRequestContext context) {
+    public void showPage(final HTTPRequestContext context) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
         renderer.setTemplateName("page.ftl");
@@ -109,7 +109,6 @@ public class PageProcessor {
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
-
             if (null == preference) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -119,7 +118,6 @@ public class PageProcessor {
 
             // See PermalinkFilter#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
-
             if (null == page) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
                 return;
@@ -131,7 +129,6 @@ public class PageProcessor {
             page.put(Common.PERMALINK, page.getString(Page.PAGE_PERMALINK));
             dataModel.put(Page.PAGE, page);
             final List<JSONObject> comments = commentQueryService.getComments(pageId);
-
             dataModel.put(Page.PAGE_COMMENTS_REF, comments);
 
             // Markdown
@@ -147,16 +144,11 @@ public class PageProcessor {
             }
 
             filler.fillCommon(request, response, dataModel, preference);
-
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }
