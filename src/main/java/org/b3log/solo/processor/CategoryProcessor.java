@@ -45,7 +45,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
@@ -145,10 +144,10 @@ public class CategoryProcessor {
      * Shows articles related with a category with the specified context.
      *
      * @param context the specified context
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/category/**", method = HTTPRequestMethod.GET)
-    public void showCategoryArticles(final HTTPRequestContext context) throws IOException {
+    public void showCategoryArticles(final HTTPRequestContext context) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
         renderer.setTemplateName("category-articles.ftl");

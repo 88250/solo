@@ -41,7 +41,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -93,11 +92,11 @@ public class UserTemplateProcessor {
      * @param context  the specified context
      * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/*.html", method = HTTPRequestMethod.GET)
     public void showPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws Exception {
         final String requestURI = request.getRequestURI();
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
 
@@ -109,16 +108,11 @@ public class UserTemplateProcessor {
         renderer.setTemplateName(templateName);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), templateName);
         if (null == template) {
-            try {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
-                return;
-            } catch (final IOException ex) {
-                LOGGER.error(ex.getMessage());
-            }
+            return;
         }
 
         try {

@@ -36,7 +36,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -84,14 +83,13 @@ public class ErrorProcessor {
      * @param context  the specified context
      * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/error/*.html", method = HTTPRequestMethod.GET)
     public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws Exception {
         final String requestURI = request.getRequestURI();
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
-
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
         LOGGER.log(Level.DEBUG, "Shows error page[requestURI={0}, templateName={1}]", requestURI, templateName);
 

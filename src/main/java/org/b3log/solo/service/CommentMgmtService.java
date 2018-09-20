@@ -49,7 +49,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 
@@ -166,13 +165,12 @@ public class CommentMgmtService {
      * @param comment         the specified comment
      * @param originalComment original comment, if not exists, set it as {@code null}
      * @param preference      the specified preference
-     * @throws IOException   io exception
-     * @throws JSONException json exception
+     * @throws Exception exception
      */
     public void sendNotificationMail(final JSONObject articleOrPage,
                                      final JSONObject comment,
                                      final JSONObject originalComment,
-                                     final JSONObject preference) throws IOException, JSONException {
+                                     final JSONObject preference) throws Exception {
         if (!Mails.isConfigured()) {
             return;
         }

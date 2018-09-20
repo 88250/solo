@@ -93,10 +93,10 @@ public class FileUploadProcessor {
      *
      * @param req  the specified request
      * @param resp the specified response
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/upload/*", method = HTTPRequestMethod.GET)
-    public void getFile(final HttpServletRequest req, final HttpServletResponse resp) throws IOException {
+    public void getFile(final HttpServletRequest req, final HttpServletResponse resp) throws Exception {
         if (QN_ENABLED) {
             return;
         }
@@ -143,10 +143,10 @@ public class FileUploadProcessor {
      * Uploads file.
      *
      * @param req the specified reuqest
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/upload", method = HTTPRequestMethod.POST)
-    public void uploadFile(final HTTPRequestContext context, final HttpServletRequest req) throws IOException {
+    public void uploadFile(final HTTPRequestContext context, final HttpServletRequest req) throws Exception {
         context.renderJSON();
 
         final int maxSize = 1024 * 1024 * 100;

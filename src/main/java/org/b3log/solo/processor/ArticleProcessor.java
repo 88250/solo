@@ -55,7 +55,6 @@ import org.jsoup.Jsoup;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
@@ -565,11 +564,11 @@ public class ArticleProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/authors/**", method = HTTPRequestMethod.GET)
     public void showAuthorArticles(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("author-articles.ftl");
@@ -613,12 +612,9 @@ public class ArticleProcessor {
             final String authorEmail = author.getString(User.USER_EMAIL);
             final List<JSONObject> articles = articleQueryService.getArticlesByAuthorId(authorEmail, currentPageNum, pageSize);
             if (articles.isEmpty()) {
-                try {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                    return;
-                } catch (final IOException ex) {
-                    LOGGER.error(ex.getMessage());
-                }
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
             }
 
             filler.setArticlesExProperties(request, articles, preference);
@@ -646,12 +642,12 @@ public class ArticleProcessor {
      * @param context  the specified context
      * @param request  the specified request
      * @param response the specified response
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/archives/**", method = HTTPRequestMethod.GET)
     public void showArchiveArticles(final HTTPRequestContext context,
                                     final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("archive-articles.ftl");
@@ -690,12 +686,9 @@ public class ArticleProcessor {
 
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
             if (articles.isEmpty()) {
-                try {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                    return;
-                } catch (final IOException ex) {
-                    LOGGER.error(ex.getMessage());
-                }
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
             }
 
             filler.setArticlesExProperties(request, articles, preference);
@@ -718,11 +711,11 @@ public class ArticleProcessor {
      * @param context  the specified context
      * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
     public void showArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws IOException {
+            throws Exception {
         // See PermalinkFilter#dispatchToArticleOrPageProcessor()
         final JSONObject article = (JSONObject) request.getAttribute(Article.ARTICLE);
         if (null == article) {
@@ -802,6 +795,7 @@ public class ArticleProcessor {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
+
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }

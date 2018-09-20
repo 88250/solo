@@ -31,7 +31,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.cache.ArticleCache;
@@ -47,10 +46,8 @@ import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Mails;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Date;
@@ -387,11 +384,9 @@ public class UpgradeService {
     /**
      * Send an email to the user who upgrades Solo with a discontinuous version.
      *
-     * @throws ServiceException ServiceException
-     * @throws JSONException    JSONException
-     * @throws IOException      IOException
+     * @throws Exception exception
      */
-    private void notifyUserByEmail() throws ServiceException, JSONException, IOException {
+    private void notifyUserByEmail() throws Exception {
         if (!Mails.isConfigured()) {
             return;
         }

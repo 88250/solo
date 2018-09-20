@@ -196,7 +196,7 @@ public class BlogProcessor {
      * @param context  the specified context
      * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
-     * @throws Exception io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/blog/articles-tags", method = HTTPRequestMethod.GET)
     public void getArticlesTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
@@ -272,13 +272,11 @@ public class BlogProcessor {
      * </pre>
      * </p>
      *
-     * @param context  the specified context
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @throws Exception io exception
+     * @param context the specified context
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/blog/interest-tags", method = HTTPRequestMethod.GET)
-    public void getInterestTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    public void getInterestTags(final HTTPRequestContext context)
             throws Exception {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);

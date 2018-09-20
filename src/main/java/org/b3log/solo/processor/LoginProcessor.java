@@ -230,10 +230,10 @@ public class LoginProcessor {
      * Logout.
      *
      * @param context the specified context
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/logout", method = HTTPRequestMethod.GET)
-    public void logout(final HTTPRequestContext context) throws IOException {
+    public void logout(final HTTPRequestContext context) throws Exception {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
         Sessions.logout(httpServletRequest, context.getResponse());

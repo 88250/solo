@@ -44,7 +44,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
@@ -111,30 +110,25 @@ public class TagProcessor {
      * Shows articles related with a tag with the specified context.
      *
      * @param context the specified context
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/tags/**", method = HTTPRequestMethod.GET)
-    public void showTagArticles(final HTTPRequestContext context) throws IOException {
+    public void showTagArticles(final HTTPRequestContext context) throws Exception {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
-
         context.setRenderer(renderer);
-
         renderer.setTemplateName("tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
         try {
             String requestURI = request.getRequestURI();
-
             if (!requestURI.endsWith("/")) {
                 requestURI += "/";
             }
 
             String tagTitle = getTagTitle(requestURI);
             final int currentPageNum = getCurrentPageNum(requestURI, tagTitle);
-
             if (-1 == currentPageNum) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -145,7 +139,6 @@ public class TagProcessor {
 
             tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
-
             if (null == result) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -156,14 +149,11 @@ public class TagProcessor {
             final String tagId = tag.getString(Keys.OBJECT_ID);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
-
             final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
-
             if (articles.isEmpty()) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -174,20 +164,15 @@ public class TagProcessor {
 
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
-
             LOGGER.log(Level.TRACE, "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
                     currentPageNum, pageSize, pageCount, windowSize);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-
             LOGGER.log(Level.TRACE, "tag-articles[pageNums={0}]", pageNums);
-
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
             dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle, "UTF-8"));
             dataModel.put(Keys.OBJECT_ID, tagId);
             dataModel.put(Tag.TAG, tag);
-
             filler.fillCommon(request, response, dataModel, preference);
-
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

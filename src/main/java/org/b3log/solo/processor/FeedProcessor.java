@@ -55,7 +55,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -117,22 +116,19 @@ public class FeedProcessor {
      * Blog articles Atom output.
      *
      * @param context the specified context
+     * @throws Exception exception
      */
     @RequestProcessing(value = {"/blog-articles-feed.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void blogArticlesAtom(final HTTPRequestContext context) {
+    public void blogArticlesAtom(final HTTPRequestContext context) throws Exception {
         final AtomRenderer renderer = new AtomRenderer();
-
         context.setRenderer(renderer);
 
         final Feed feed = new Feed();
-
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
-
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
             final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE);
             final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
-
             feed.setTitle(blogTitle);
             feed.setSubtitle(blogSubtitle);
             feed.setUpdated(new Date());
@@ -141,17 +137,14 @@ public class FeedProcessor {
             feed.setId(Latkes.getServePath() + "/");
 
             final List<Filter> filters = new ArrayList<>();
-
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
             final Query query = new Query().setCurrentPageNum(1).setPageSize(outputCnt).
                     setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                     addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).setPageCount(1);
-
             final JSONObject articleResult = articleRepository.get(query);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
             final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
-
             for (int i = 0; i < articles.length(); i++) {
                 final Entry entry = getEntry(articles, isFullContent, i);
                 feed.addEntry(entry);
@@ -161,11 +154,7 @@ public class FeedProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article feed error", e);
 
-            try {
-                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
     }
 
@@ -200,10 +189,10 @@ public class FeedProcessor {
      * Tag articles Atom output.
      *
      * @param context the specified context
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = {"/tag-articles-feed.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void tagArticlesAtom(final HTTPRequestContext context) throws IOException {
+    public void tagArticlesAtom(final HTTPRequestContext context) throws Exception {
         final AtomRenderer renderer = new AtomRenderer();
         context.setRenderer(renderer);
 
@@ -278,11 +267,7 @@ public class FeedProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get tag article feed error", e);
 
-            try {
-                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
     }
 
@@ -317,9 +302,10 @@ public class FeedProcessor {
      * Blog articles RSS output.
      *
      * @param context the specified context
+     * @throws Exception exception
      */
     @RequestProcessing(value = {"/blog-articles-rss.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void blogArticlesRSS(final HTTPRequestContext context) {
+    public void blogArticlesRSS(final HTTPRequestContext context) throws Exception {
         final HttpServletResponse response = context.getResponse();
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);
@@ -371,11 +357,7 @@ public class FeedProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article rss error", e);
 
-            try {
-                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
     }
 
@@ -413,10 +395,10 @@ public class FeedProcessor {
      * Tag articles RSS output.
      *
      * @param context the specified context
-     * @throws IOException io exception
+     * @throws Exception exception
      */
     @RequestProcessing(value = {"/tag-articles-rss.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void tagArticlesRSS(final HTTPRequestContext context) throws IOException {
+    public void tagArticlesRSS(final HTTPRequestContext context) throws Exception {
         final HttpServletResponse response = context.getResponse();
         final HttpServletRequest request = context.getRequest();
 
@@ -496,11 +478,7 @@ public class FeedProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get tag article rss error", e);
 
-            try {
-                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
     }
 

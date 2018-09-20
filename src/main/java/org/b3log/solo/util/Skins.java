@@ -38,7 +38,6 @@ import org.b3log.solo.model.Skin;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -118,8 +117,9 @@ public final class Skins {
             final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
 
             dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
-        } catch (final IOException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fills skin langs failed", e);
+
             throw new ServiceException(e);
         } finally {
             Stopwatchs.end();

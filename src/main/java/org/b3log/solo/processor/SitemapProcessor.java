@@ -49,15 +49,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.Date;
 
 /**
- * Site map (sitemap) processor.
+ * Sitemap processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.2, Sep 16, 2018
+ * @version 1.0.2.3, Sep 20, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -102,9 +100,10 @@ public class SitemapProcessor {
      * Returns the sitemap.
      *
      * @param context the specified context
+     * @throws Exception exception
      */
     @RequestProcessing(value = "/sitemap.xml", method = HTTPRequestMethod.GET)
-    public void sitemap(final HTTPRequestContext context) {
+    public void sitemap(final HTTPRequestContext context) throws Exception {
         final TextXMLRenderer renderer = new TextXMLRenderer();
 
         context.setRenderer(renderer);
@@ -125,11 +124,7 @@ public class SitemapProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article feed error", e);
 
-            try {
-                context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            } catch (final IOException ex) {
-                throw new RuntimeException(ex);
-            }
+            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
     }
 
