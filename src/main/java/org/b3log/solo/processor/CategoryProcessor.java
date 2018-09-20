@@ -205,9 +205,7 @@ public class CategoryProcessor {
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
             dataModel.put(Common.PATH, "/category/" + URLEncoder.encode(categoryURI, "UTF-8"));
 
-            filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
+            filler.fillCommon(request, response, dataModel, preference);
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException | JSONException e) {

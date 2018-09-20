@@ -140,9 +140,7 @@ public class IndexProcessor {
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             filler.fillIndexArticles(request, dataModel, currentPageNum, preference);
-            filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
+            filler.fillCommon(request, response, dataModel, preference);
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final int previousPageNum = currentPageNum > 1 ? currentPageNum - 1 : 0;
@@ -195,8 +193,7 @@ public class IndexProcessor {
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
+            filler.fillCommon(request, response, dataModel, preference);
             Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
@@ -235,7 +232,7 @@ public class IndexProcessor {
 
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            filler.fillBlogFooter(request, dataModel, preference);
+            filler.fillCommon(request, response, dataModel, preference);
             filler.fillMinified(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

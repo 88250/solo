@@ -773,9 +773,7 @@ public class ArticleProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
 
             prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author);
-            filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
-            filler.fillSide(request, dataModel, preference);
+            filler.fillCommon(request, response, dataModel, preference);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             statisticMgmtService.incBlogViewCount(request, response);
@@ -853,9 +851,7 @@ public class ArticleProcessor {
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount, archiveDateString, archiveDate);
-            filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
-            filler.fillSide(request, dataModel, preference);
+            filler.fillCommon(request, response, dataModel, preference);
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
@@ -940,9 +936,7 @@ public class ArticleProcessor {
 
             prepareShowArticle(preference, dataModel, article);
 
-            filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
-            filler.fillSide(request, dataModel, preference);
+            filler.fillCommon(request, response, dataModel, preference);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             if (!StatisticMgmtService.hasBeenServed(request, response)) {

@@ -129,9 +129,8 @@ public class UserTemplateProcessor {
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            filler.fillBlogHeader(request, response, dataModel, preference);
+            filler.fillCommon(request, response, dataModel, preference);
             filler.fillUserTemplate(request, template, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             statisticMgmtService.incBlogViewCount(request, response);

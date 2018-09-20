@@ -146,9 +146,7 @@ public class PageProcessor {
                 Stopwatchs.end();
             }
 
-            filler.fillSide(request, dataModel, preference);
-            filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
+            filler.fillCommon(request, response, dataModel, preference);
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {

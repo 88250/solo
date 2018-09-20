@@ -108,8 +108,7 @@ public class ErrorProcessor {
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            filler.fillBlogHeader(request, response, dataModel, preference);
-            filler.fillBlogFooter(request, dataModel, preference);
+            filler.fillCommon(request, response, dataModel, preference);
 
             dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
         } catch (final Exception e) {

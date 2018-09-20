@@ -561,6 +561,22 @@ public class Filler {
     }
 
     /**
+     * Fills common parts (header, side and footer).
+     *
+     * @param request    the specified HTTP servlet request
+     * @param response   the specified HTTP servlet response
+     * @param dataModel  the specified data model
+     * @param preference the specified preference
+     * @throws ServiceException service exception
+     */
+    public void fillCommon(final HttpServletRequest request, final HttpServletResponse response,
+                            final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
+        fillSide(request, dataModel, preference);
+        fillBlogHeader(request, response, dataModel, preference);
+        fillBlogFooter(request, dataModel, preference);
+    }
+
+    /**
      * Fills footer.ftl.
      *
      * @param request    the specified HTTP servlet request
@@ -568,7 +584,7 @@ public class Filler {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillBlogFooter(final HttpServletRequest request, final Map<String, Object> dataModel, final JSONObject preference)
+    private void fillBlogFooter(final HttpServletRequest request, final Map<String, Object> dataModel, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Footer");
         try {
@@ -640,8 +656,8 @@ public class Filler {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillBlogHeader(final HttpServletRequest request, final HttpServletResponse response,
-                               final Map<String, Object> dataModel, final JSONObject preference)
+    private void fillBlogHeader(final HttpServletRequest request, final HttpServletResponse response,
+                                final Map<String, Object> dataModel, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Header");
         try {
@@ -738,7 +754,7 @@ public class Filler {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillSide(final HttpServletRequest request, final Map<String, Object> dataModel, final JSONObject preference)
+    private void fillSide(final HttpServletRequest request, final Map<String, Object> dataModel, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Side");
         try {
