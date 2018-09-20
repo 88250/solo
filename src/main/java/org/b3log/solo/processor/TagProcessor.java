@@ -41,7 +41,6 @@ import org.b3log.solo.processor.renderer.SkinRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,7 +49,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +56,7 @@ import java.util.Map;
  * Tag processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.5, Jun 22, 2018
+ * @version 1.1.1.6, Sep 20, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -194,8 +192,6 @@ public class TagProcessor {
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
             LOGGER.log(Level.TRACE, "tag-articles[pageNums={0}]", pageNums);
-
-            Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
 
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
             dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle, "UTF-8"));

@@ -49,7 +49,6 @@ import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Thumbnails;
-import org.b3log.solo.util.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -67,7 +66,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.4.4, Sep 16, 2018
+ * @version 1.4.4.5, Sep 20, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -594,8 +593,6 @@ public class ArticleProcessor {
                 filler.setArticlesExProperties(request, articles, author, preference);
             }
 
-            Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
@@ -655,8 +652,6 @@ public class ArticleProcessor {
 
                 filler.setArticlesExProperties(request, articles, author, preference);
             }
-
-            Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
 
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
@@ -885,8 +880,6 @@ public class ArticleProcessor {
 
                 filler.setArticlesExProperties(request, articles, author, preference);
             }
-
-            Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
