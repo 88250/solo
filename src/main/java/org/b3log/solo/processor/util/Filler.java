@@ -49,7 +49,6 @@ import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Solos;
 import org.b3log.solo.util.Thumbnails;
-import org.b3log.solo.util.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -305,7 +304,7 @@ public class Filler {
             final List<JSONObject> tags = tagQueryService.getTags();
 
             tagQueryService.removeForUnpublishedArticles(tags);
-            Collections.sort(tags, Comparators.TAG_REF_CNT_COMPARATOR);
+            Collections.sort(tags, Comparator.comparingInt(t -> -t.optInt(Tag.TAG_REFERENCE_COUNT)));
 
             dataModel.put(Tag.TAGS, tags);
         } catch (final JSONException e) {

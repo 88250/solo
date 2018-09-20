@@ -673,7 +673,7 @@ public class ArticleQueryService {
                 return Collections.emptyList();
             }
 
-            final Set<String> articleIds = new HashSet<String>();
+            final Set<String> articleIds = new HashSet<>();
 
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation = tagArticleRelations.getJSONObject(i);
@@ -843,7 +843,6 @@ public class ArticleQueryService {
                 }
             }
 
-            Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
             removeUnusedProperties(articles);
 
             if (displayCnt > articles.size()) {

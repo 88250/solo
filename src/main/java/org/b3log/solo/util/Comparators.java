@@ -39,16 +39,6 @@ public final class Comparators {
     public static final ArticleCreateDateComparator ARTICLE_CREATE_DATE_COMPARATOR = new ArticleCreateDateComparator();
 
     /**
-     * Article update date comparator.
-     */
-    public static final ArticleUpdateDateComparator ARTICLE_UPDATE_DATE_COMPARATOR = new ArticleUpdateDateComparator();
-
-    /**
-     * Tag reference count comparator.
-     */
-    public static final TagRefCntComparator TAG_REF_CNT_COMPARATOR = new TagRefCntComparator();
-
-    /**
      * Article comparator by create date.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -70,62 +60,6 @@ public final class Comparators {
                 return (int) (date2 - date1);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Compares create date failed", e);
-
-                return 0;
-            }
-        }
-    }
-
-    /**
-     * Article comparator by update date.
-     *
-     * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.1.0, Sep 17, 2018
-     */
-    private static final class ArticleUpdateDateComparator implements Comparator<JSONObject> {
-
-        /**
-         * Logger.
-         */
-        private static final Logger LOGGER = Logger.getLogger(ArticleUpdateDateComparator.class);
-
-        @Override
-        public int compare(final JSONObject article1, final JSONObject article2) {
-            try {
-                final long date1 = article1.getLong(Article.ARTICLE_UPDATED);
-                final long date2 = article2.getLong(Article.ARTICLE_UPDATED);
-
-                return (int) (date2 - date1);
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Compares update date failed", e);
-
-                return 0;
-            }
-        }
-    }
-
-    /**
-     * Tag comparator by reference count descent.
-     *
-     * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.0.0.0, Sep 20, 2018
-     */
-    private static final class TagRefCntComparator implements Comparator<JSONObject> {
-
-        /**
-         * Logger.
-         */
-        private static final Logger LOGGER = Logger.getLogger(TagRefCntComparator.class);
-
-        @Override
-        public int compare(final JSONObject tag1, final JSONObject tag2) {
-            try {
-                final Integer refCnt1 = tag1.getInt(Tag.TAG_REFERENCE_COUNT);
-                final Integer refCnt2 = tag2.getInt(Tag.TAG_REFERENCE_COUNT);
-
-                return refCnt2.compareTo(refCnt1);
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Compares tag reference count failed", e);
 
                 return 0;
             }

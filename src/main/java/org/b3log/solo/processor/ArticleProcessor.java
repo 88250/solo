@@ -796,12 +796,6 @@ public class ArticleProcessor {
 
             filler.setArticlesExProperties(request, articles, author, preference);
 
-            if (preference.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
-                Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
-            } else {
-                Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-            }
-
             final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
@@ -892,7 +886,7 @@ public class ArticleProcessor {
                 filler.setArticlesExProperties(request, articles, author, preference);
             }
 
-            sort(preference, articles);
+            Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
@@ -1015,22 +1009,6 @@ public class ArticleProcessor {
                 LOGGER.error(ex.getMessage());
             }
         }
-    }
-
-    /**
-     * Sorts the specified articles by the specified preference.
-     *
-     * @param preference the specified preference
-     * @param articles   the specified articles
-     * @see Comparators#ARTICLE_UPDATE_DATE_COMPARATOR
-     * @see Comparators#ARTICLE_CREATE_DATE_COMPARATOR
-     */
-    private void sort(final JSONObject preference, final List<JSONObject> articles) {
-        // if (preference.getBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
-        // Collections.sort(articles, Comparators.ARTICLE_UPDATE_DATE_COMPARATOR);
-        // } else {
-        Collections.sort(articles, Comparators.ARTICLE_CREATE_DATE_COMPARATOR);
-        // }
     }
 
     /**
