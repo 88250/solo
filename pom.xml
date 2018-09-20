@@ -92,8 +92,8 @@
         <freemarker.version>2.3.28</freemarker.version>
 
         <!-- Maven Plugin -->
-        <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
-        <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
         <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
