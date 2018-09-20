@@ -36,7 +36,6 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.service.PageMgmtService;
 import org.b3log.solo.service.PageQueryService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.QueryResults;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -47,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
  * Plugin console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Sep 10, 2018
+ * @version 1.0.0.6, Sep 20, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -139,8 +138,7 @@ public class PageConsole {
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
-
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -249,8 +247,7 @@ public class PageConsole {
         } catch (final ServiceException e) { // May be permalink check exception
             LOGGER.log(Level.WARN, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
-
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -306,8 +303,7 @@ public class PageConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
-
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -356,7 +352,7 @@ public class PageConsole {
 
             final JSONObject result = pageQueryService.getPage(pageId);
             if (null == result) {
-                renderer.setJSONObject(QueryResults.defaultResult());
+                renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
 
                 return;
             }
@@ -367,7 +363,7 @@ public class PageConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -443,8 +439,7 @@ public class PageConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
-
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }

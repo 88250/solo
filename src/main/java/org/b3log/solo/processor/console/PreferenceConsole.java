@@ -33,7 +33,6 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.service.*;
-import org.b3log.solo.util.QueryResults;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -45,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.11, May 2, 2018
+ * @version 1.2.0.12, Sep 20, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -140,7 +139,7 @@ public class PreferenceConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -183,7 +182,7 @@ public class PreferenceConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -239,7 +238,7 @@ public class PreferenceConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -314,7 +313,7 @@ public class PreferenceConsole {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                renderer.setJSONObject(QueryResults.defaultResult());
+                renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
 
                 return;
             }
@@ -333,7 +332,7 @@ public class PreferenceConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -412,7 +411,7 @@ public class PreferenceConsole {
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -453,7 +452,7 @@ public class PreferenceConsole {
         try {
             final JSONObject qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
             if (null == qiniu) {
-                renderer.setJSONObject(QueryResults.defaultResult());
+                renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
 
                 return;
             }
@@ -465,7 +464,7 @@ public class PreferenceConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -536,8 +535,7 @@ public class PreferenceConsole {
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
-
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }

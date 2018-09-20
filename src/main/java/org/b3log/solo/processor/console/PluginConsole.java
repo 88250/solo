@@ -35,7 +35,6 @@ import org.b3log.solo.processor.console.common.ProcessAuthAdvice;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
-import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,7 +46,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
- * @version 1.1.0.1, Mar 3, 2018
+ * @version 1.1.0.2, Sep 20, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -160,8 +159,7 @@ public class PluginConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
-
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -192,7 +190,7 @@ public class PluginConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             final JSONRenderer jsonRenderer = new JSONRenderer();
             jsonRenderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));

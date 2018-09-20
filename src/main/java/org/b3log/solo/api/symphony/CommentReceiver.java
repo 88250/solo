@@ -43,7 +43,6 @@ import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Comments;
-import org.b3log.solo.util.QueryResults;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
@@ -55,7 +54,7 @@ import java.util.Date;
  * Comment receiver (from B3log Symphony).
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.16, Sep 16, 2018
+ * @version 1.1.1.17, Sep 20, 2018
  * @since 0.5.5
  */
 @RequestProcessor
@@ -263,8 +262,7 @@ public class CommentReceiver {
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
-
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }

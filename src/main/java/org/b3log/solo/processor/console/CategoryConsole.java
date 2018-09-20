@@ -39,7 +39,6 @@ import org.b3log.solo.service.CategoryMgmtService;
 import org.b3log.solo.service.CategoryQueryService;
 import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.QueryResults;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,7 +53,7 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.0, Sep 10, 2018
+ * @version 1.1.2.1, Sep 20, 2018
  * @since 2.0.0
  */
 @RequestProcessor
@@ -141,8 +140,7 @@ public class CategoryConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
-
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
@@ -187,7 +185,7 @@ public class CategoryConsole {
 
             final JSONObject result = categoryQueryService.getCategory(categoryId);
             if (null == result) {
-                renderer.setJSONObject(QueryResults.defaultResult());
+                renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
 
                 return;
             }
@@ -205,7 +203,7 @@ public class CategoryConsole {
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
@@ -315,7 +313,7 @@ public class CategoryConsole {
                 if (null == tagResult) {
                     addArticleWithTagFirstLabel = addArticleWithTagFirstLabel.replace("{tag}", tagTitle);
 
-                    final JSONObject jsonObject = QueryResults.defaultResult();
+                    final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                     renderer.setJSONObject(jsonObject);
                     jsonObject.put(Keys.MSG, addArticleWithTagFirstLabel);
 
@@ -335,7 +333,7 @@ public class CategoryConsole {
             final String title = requestJSONObject.optString(Category.CATEGORY_TITLE, "Category");
             JSONObject mayExist = categoryQueryService.getByTitle(title);
             if (null != mayExist && !mayExist.optString(Keys.OBJECT_ID).equals(categoryId)) {
-                final JSONObject jsonObject = QueryResults.defaultResult();
+                final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryLabel"));
 
@@ -349,7 +347,7 @@ public class CategoryConsole {
 
             mayExist = categoryQueryService.getByURI(uri);
             if (null != mayExist && !mayExist.optString(Keys.OBJECT_ID).equals(categoryId)) {
-                final JSONObject jsonObject = QueryResults.defaultResult();
+                final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryURILabel"));
 
@@ -381,7 +379,7 @@ public class CategoryConsole {
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -448,7 +446,7 @@ public class CategoryConsole {
                 if (null == tagResult) {
                     addArticleWithTagFirstLabel = addArticleWithTagFirstLabel.replace("{tag}", tagTitle);
 
-                    final JSONObject jsonObject = QueryResults.defaultResult();
+                    final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                     renderer.setJSONObject(jsonObject);
                     jsonObject.put(Keys.MSG, addArticleWithTagFirstLabel);
 
@@ -466,7 +464,7 @@ public class CategoryConsole {
             final String title = requestJSONObject.optString(Category.CATEGORY_TITLE, "Category");
             JSONObject mayExist = categoryQueryService.getByTitle(title);
             if (null != mayExist) {
-                final JSONObject jsonObject = QueryResults.defaultResult();
+                final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryLabel"));
 
@@ -480,7 +478,7 @@ public class CategoryConsole {
 
             mayExist = categoryQueryService.getByURI(uri);
             if (null != mayExist) {
-                final JSONObject jsonObject = QueryResults.defaultResult();
+                final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryURILabel"));
 
@@ -510,7 +508,7 @@ public class CategoryConsole {
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, e.getMessage());
         }
@@ -576,7 +574,7 @@ public class CategoryConsole {
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = QueryResults.defaultResult();
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }

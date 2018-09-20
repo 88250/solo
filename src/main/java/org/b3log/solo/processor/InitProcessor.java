@@ -41,7 +41,6 @@ import org.b3log.solo.model.UserExt;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.InitService;
-import org.b3log.solo.util.QueryResults;
 import org.b3log.solo.util.Thumbnails;
 import org.json.JSONObject;
 
@@ -55,7 +54,7 @@ import java.util.Map;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.12, Mar 3, 2018
+ * @version 1.2.0.13, Sep 20, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -145,7 +144,7 @@ public class InitProcessor {
 
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-        final JSONObject ret = QueryResults.defaultResult();
+        final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         renderer.setJSONObject(ret);
 
         try {
