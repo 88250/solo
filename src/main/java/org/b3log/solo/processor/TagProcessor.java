@@ -41,7 +41,7 @@ import org.b3log.solo.processor.renderer.SkinRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.comparator.Comparators;
+import org.b3log.solo.util.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
 

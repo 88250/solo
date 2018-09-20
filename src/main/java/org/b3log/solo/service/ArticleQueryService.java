@@ -36,7 +36,7 @@ import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
-import org.b3log.solo.util.comparator.Comparators;
+import org.b3log.solo.util.Comparators;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

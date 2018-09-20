@@ -49,7 +49,7 @@ import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Solos;
 import org.b3log.solo.util.Thumbnails;
-import org.b3log.solo.util.comparator.Comparators;
+import org.b3log.solo.util.Comparators;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
