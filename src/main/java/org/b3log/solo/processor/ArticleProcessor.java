@@ -522,15 +522,7 @@ public class ArticleProcessor {
             requestJSONObject.put(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, preference.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT));
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
             final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
-
-            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
-            if (hasMultipleUsers) {
-                filler.setArticlesExProperties(request, articles, preference);
-            } else if (!articles.isEmpty()) {
-                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
-
-                filler.setArticlesExProperties(request, articles, author, preference);
-            }
+            filler.setArticlesExProperties(request, articles, preference);
 
             jsonObject.put(Keys.RESULTS, result);
         } catch (final Exception e) {
@@ -583,15 +575,7 @@ public class ArticleProcessor {
 
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
-
-            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
-            if (hasMultipleUsers) {
-                filler.setArticlesExProperties(request, articles, preference);
-            } else if (!articles.isEmpty()) {
-                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
-
-                filler.setArticlesExProperties(request, articles, author, preference);
-            }
+            filler.setArticlesExProperties(request, articles, preference);
 
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
@@ -643,15 +627,7 @@ public class ArticleProcessor {
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
-
-            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
-            if (hasMultipleUsers) {
-                filler.setArticlesExProperties(request, articles, preference);
-            } else if (!articles.isEmpty()) {
-                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
-
-                filler.setArticlesExProperties(request, articles, author, preference);
-            }
+            filler.setArticlesExProperties(request, articles, preference);
 
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
@@ -702,9 +678,7 @@ public class ArticleProcessor {
             final JSONObject author = authorRet.getJSONObject(User.USER);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
-            if (!articles.isEmpty()) {
-                filler.setArticlesExProperties(request, articles, author, preference);
-            }
+            filler.setArticlesExProperties(request, articles, preference);
 
             final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
@@ -789,7 +763,7 @@ public class ArticleProcessor {
                 }
             }
 
-            filler.setArticlesExProperties(request, articles, author, preference);
+            filler.setArticlesExProperties(request, articles, preference);
 
             final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
@@ -872,14 +846,7 @@ public class ArticleProcessor {
                 }
             }
 
-            final boolean hasMultipleUsers = userQueryService.hasMultipleUsers();
-            if (hasMultipleUsers) {
-                filler.setArticlesExProperties(request, articles, preference);
-            } else if (!articles.isEmpty()) {
-                final JSONObject author = articleQueryService.getAuthor(articles.get(0));
-
-                filler.setArticlesExProperties(request, articles, author, preference);
-            }
+            filler.setArticlesExProperties(request, articles, preference);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
