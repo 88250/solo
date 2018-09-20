@@ -26,6 +26,28 @@
         <meta name="keywords" content="${article.articleTags}" />
         <meta name="description" content="${article.articleAbstract?html}" />
         </@head>
+        <#if previousArticlePermalink??>
+            <link rel="prev" title="${previousArticleTitle}" href="${servePath}${previousArticlePermalink}">
+        </#if>
+        <#if nextArticlePermalink??>
+            <link rel="next" title="${nextArticleTitle}" href="${servePath}${nextArticlePermalink}">
+        </#if>
+            <!-- Open Graph -->
+            <meta property="og:locale" content="zh_CN"/>
+            <meta property="og:type" content="article"/>
+            <meta property="og:title" content="${article.articleTitle}"/>
+            <meta property="og:description" content="${article.articleAbstract?html}"/>
+            <meta property="og:image" content="${article.authorThumbnailURL}"/>
+            <meta property="og:url" content="${servePath}${article.articlePermalink}"/>
+            <meta property="og:site_name" content="Solo"/>
+            <!-- Twitter Card -->
+            <meta name="twitter:card" content="summary"/>
+            <meta name="twitter:description" content="${article.articleAbstract?html}"/>
+            <meta name="twitter:title" content="${article.articleTitle}"/>
+            <meta name="twitter:image" content="${article.authorThumbnailURL}"/>
+            <meta name="twitter:url" content="${servePath}${article.articlePermalink}"/>
+            <meta name="twitter:site" content="@DL88250"/>
+            <meta name="twitter:creator" content="@DL88250"/>
     </head>
     <body class="classic-wptouch-bg">
         <#include "header.ftl">

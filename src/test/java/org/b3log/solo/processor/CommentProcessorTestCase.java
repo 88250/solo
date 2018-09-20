@@ -24,6 +24,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.InitService;
@@ -48,7 +49,7 @@ import static org.mockito.Mockito.when;
  * {@link CommentProcessorTestCase} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Sep 16, 2018
+ * @version 1.0.0.4, Sep 20, 2018
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -85,6 +86,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/add-page-comment.do");
         when(request.getMethod()).thenReturn("POST");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         CaptchaProcessor.CAPTCHA_ON = false;
 
@@ -125,6 +127,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/add-article-comment.do");
         when(request.getMethod()).thenReturn("POST");
+        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         CaptchaProcessor.CAPTCHA_ON = false;
 

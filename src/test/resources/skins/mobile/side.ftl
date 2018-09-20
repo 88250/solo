@@ -40,7 +40,7 @@
                     ${comment.commentName}<#else>
                     <a target="_blank" href="${comment.commentURL}">
                         ${comment.commentName}</a></#if>:
-                    <a rel="nofollow" class='side-comment' title="${comment.commentContent}" href="${servePath}${comment.commentSharpURL}">
+                    <a rel="nofollow" class='side-comment' href="${servePath}${comment.commentSharpURL}">
                         ${comment.commentContent}
                     </a>
                 </li>
@@ -154,3 +154,15 @@
     </ul>
     </#if>
 </div>
+<ul id="head-category">
+    <#if 0 != mostUsedCategories?size>
+        <#list mostUsedCategories as category>
+            <li>
+                <a href="${servePath}/category/${category.categoryURI}"
+                   aria-label="${category.categoryTagCnt} ${tagsLabel}"
+                   class="tag tooltipped tooltipped-n">
+                    ${category.categoryTitle}</a>
+            </li>
+        </#list>
+    </#if>
+</ul>

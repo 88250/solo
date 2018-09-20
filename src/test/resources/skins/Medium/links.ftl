@@ -28,11 +28,13 @@
 </head>
 <body>
 <#include "header.ftl">
+<div id="pjax">
+    <#if pjax><!---- pjax {#pjax} start ----></#if>
 <#include "nav.ftl">
 <div class="main">
 <#if noticeBoard??>
     <div class="board">
-    ${noticeBoard}
+        ${noticeBoard}
     </div>
 </#if>
     <div class="wrapper content">
@@ -47,7 +49,7 @@
             <div class="page__item">
                 <h3>
                     <a rel="friend" class="ft-gray" href="${link.linkAddress}" target="_blank">
-                    ${link.linkTitle}
+                        ${link.linkTitle}
                         <span class="ft-12 ft-green">${link.linkDescription}</span>
                     </a>
                 </h3>
@@ -57,6 +59,8 @@
     </#if>
     </div>
 <#include "bottom.ftl">
+</div>
+    <#if pjax><!---- pjax {#pjax} end ----></#if>
 </div>
 <#include "footer.ftl">
 </body>

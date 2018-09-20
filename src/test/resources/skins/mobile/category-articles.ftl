@@ -20,34 +20,24 @@
 <#include "macro-head.ftl">
 <!DOCTYPE html>
 <html>
-<head>
-<@head title="${blogTitle}">
-    <#if metaKeywords??>
-        <meta name="keywords" content="${metaKeywords}"/>
-    </#if>
-    <#if metaDescription??>
-        <meta name="description" content="${metaDescription}"/>
-    </#if>
-</@head>
-</head>
-<body>
-<#include "header.ftl">
-<div id="pjax">
-<#if pjax><!---- pjax {#pjax} start ----></#if>
-<#include "nav.ftl">
-<div class="main">
-    <#if noticeBoard??>
-        <div class="board">
-        ${noticeBoard}
+    <head>
+        <@head title="${category.categoryTitle} - ${blogTitle}">
+        <meta name="keywords" content="${metaKeywords},${category.categoryTitle}"/>
+        <meta name="description" content="<#list articles as article>${article.articleTitle}<#if article_has_next>,</#if></#list>"/>
+        </@head>
+    </head>
+    <body class="classic-wptouch-bg ">
+        <#include "header.ftl">
+		<div class="content single">
+            <div class="post">
+                <h2 >${categoryLabel}
+                    <a rel="alternate" href="${servePath}/category/${category.categoryURI}">
+                        ${category.categoryTitle}
+                    (${category.categoryTagCnt})</a>
+                </h2>
+        	</div>
         </div>
-    </#if>
-    <div class="wrapper content">
-            <#include "article-list.ftl">
-    </div>
-    <#include "bottom2.ftl">
-</div>
-<#if pjax><!---- pjax {#pjax} end ----></#if>
-</div>
-<#include "footer.ftl">
-</body>
+        <#include "article-list.ftl">
+        <#include "footer.ftl">
+    </body>
 </html>

@@ -54,18 +54,29 @@
             </svg>
             RSS
         </a>
-
     <#if isLoggedIn>
         <a href="${servePath}/admin-index.do#main">
             <svg>
                 <use xlink:href="#icon-setting"></use>
             </svg> ${adminLabel}
         </a>
+        <a href="${logoutURL}">
+            <svg>
+                <use xlink:href="#icon-out"></use>
+            </svg>
+            ${logoutLabel}
+        </a>
     <#else>
         <a href="${loginURL}">
             <svg>
                 <use xlink:href="#icon-enter"></use>
             </svg> ${loginLabel}
+        </a>
+        <a rel="alternate" href="${servePath}/register" rel="section">
+            <svg>
+                <use xlink:href="#icon-register"></use>
+            </svg>
+            ${registerLabel}
         </a>
     </#if>
     </div>
