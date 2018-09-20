@@ -31,6 +31,7 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.URIPatternMode;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
@@ -228,6 +229,18 @@ public class IndexProcessor {
 
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
+    }
+
+    /**
+     * Online visitor count refresher.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = "/console/stat/onlineVisitorRefresh", method = HTTPRequestMethod.GET)
+    public void onlineVisitorCountRefresher(final HTTPRequestContext context) {
+        context.setRenderer(new DoNothingRenderer());
+
+        StatisticMgmtService.removeExpiredOnlineVisitor();
     }
 
     /**
