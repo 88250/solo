@@ -97,18 +97,6 @@ public class IndexProcessor {
     private StatisticMgmtService statisticMgmtService;
 
     /**
-     * Gets the request page number from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
-     */
-    private static int getCurrentPageNum(final String requestURI) {
-        final String pageNumString = StringUtils.substringAfterLast(requestURI, "/");
-
-        return Requests.getCurrentPageNum(pageNumString);
-    }
-
-    /**
      * Shows index with the specified context.
      *
      * @param context  the specified context
@@ -152,7 +140,6 @@ public class IndexProcessor {
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             filler.fillIndexArticles(request, dataModel, currentPageNum, preference);
-
             filler.fillSide(request, dataModel, preference);
             filler.fillBlogHeader(request, response, dataModel, preference);
             filler.fillBlogFooter(request, dataModel, preference);
@@ -262,6 +249,18 @@ public class IndexProcessor {
     }
 
     /**
+     * Gets the request page number from the specified request URI.
+     *
+     * @param requestURI the specified request URI
+     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
+     */
+    private static int getCurrentPageNum(final String requestURI) {
+        final String pageNumString = StringUtils.substringAfterLast(requestURI, "/");
+
+        return Requests.getCurrentPageNum(pageNumString);
+    }
+
+    /**
      * Kill browser (kill-browser.ftl) HTTP response renderer.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
@@ -284,16 +283,11 @@ public class IndexProcessor {
 
             try {
                 final Template template = ConsoleRenderer.TEMPLATE_CFG.getTemplate("kill-browser.ftl");
-
                 final PrintWriter writer = response.getWriter();
-
                 final StringWriter stringWriter = new StringWriter();
-
                 template.setOutputEncoding("UTF-8");
                 template.process(getDataModel(), stringWriter);
-
                 final String pageContent = stringWriter.toString();
-
                 writer.write(pageContent);
                 writer.flush();
                 writer.close();
@@ -301,18 +295,18 @@ public class IndexProcessor {
                 try {
                     response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 } catch (final IOException ex) {
-                    LOGGER.log(Level.ERROR, "Can not sned error 500!", ex);
+                    LOGGER.log(Level.ERROR, "Can not send error 500!", ex);
                 }
             }
         }
 
         @Override
-        protected void afterRender(final HTTPRequestContext context) throws Exception {
+        protected void afterRender(final HTTPRequestContext context) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
         @Override
-        protected void beforeRender(final HTTPRequestContext context) throws Exception {
+        protected void beforeRender(final HTTPRequestContext context) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }
