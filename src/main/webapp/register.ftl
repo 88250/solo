@@ -21,7 +21,15 @@
 
 <@commonPage "${registerSoloUserLabel}!">
 <h2>${registerSoloUserLabel}</h2>
-<div class="form">
+<div id="github">
+    <a class="github__icon" href="${servePath}/oauth/github/redirect">
+        <img src="${staticServePath}/images/github-init.gif"/>
+    </a>
+    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">使用 GitHub 账号注册</button>
+    <br>
+    <span onclick="$('#github').hide();$('.form').show()">使用本地账号</span>
+</div>
+<div class="form none">
     <label for="userEmail">
     ${commentEmail1Label}
     </label>
@@ -42,7 +50,8 @@
     ${userPasswordConfirm1Label}
     </label>
     <input type="password" id="userPasswordConfirm" />
-    <button onclick='getUserInfo();'>${saveLabel}</button>
+    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">使用 GitHub 账号注册</button>
+    <button onclick='getUserInfo();'>${registerSoloUserLabel}</button>
     <span id="tip" ></span>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>

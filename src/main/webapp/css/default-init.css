@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 1.1.0.0, Sep 12, 2017
+* @version 1.2.0.0, Sep 21, 2018
 */
 html,body {
     margin: 0;
@@ -99,6 +99,7 @@ button {
     margin-top: 10px;
 }
 
+button.hover,
 button:hover,
 button:active {
     color:#fff;
@@ -271,6 +272,21 @@ button:active {
     color: #21759B;
     font-weight: bold;
     margin-left: 10px;
+}
+#github {
+    text-align: center;
+}
+#github .github__icon {
+    display: block;
+}
+#github img {
+    height: 222px;
+    margin-top: 10px;
+}
+#github span {
+    cursor: pointer;
+    font-size: 12px;
+    color: #999;
 }
 /* end init */
 
