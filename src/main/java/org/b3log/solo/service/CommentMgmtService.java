@@ -455,8 +455,7 @@ public class CommentMgmtService {
 
             ret.put(Keys.OBJECT_ID, commentId);
             // Save comment sharp URL
-            final String commentSharpURL = Comments.getCommentSharpURLForPage(page, commentId);
-
+            final String commentSharpURL = Comment.getCommentSharpURLForPage(page, commentId);
             ret.put(Comment.COMMENT_NAME, commentName);
             ret.put(Comment.COMMENT_CONTENT, commentContent);
             ret.put(Comment.COMMENT_URL, commentURL);
@@ -598,8 +597,7 @@ public class CommentMgmtService {
 
             comment.put(Keys.OBJECT_ID, commentId);
             ret.put(Keys.OBJECT_ID, commentId);
-            final String commentSharpURL = Comments.getCommentSharpURLForArticle(article, commentId);
-
+            final String commentSharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 

@@ -18,11 +18,14 @@
 package org.b3log.solo.model;
 
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 16, 2018
+ * @version 1.2.0.0, Sep 21, 2018
  * @since 0.3.1
  */
 public final class Comment {
@@ -101,6 +104,30 @@ public final class Comment {
      * Key of comment on id.
      */
     public static final String COMMENT_ON_ID = "commentOnId";
+
+    /**
+     * Gets comment sharp URL with the specified page and comment id.
+     *
+     * @param page      the specified page
+     * @param commentId the specified comment id
+     * @return comment sharp URL
+     * @throws JSONException json exception
+     */
+    public static String getCommentSharpURLForPage(final JSONObject page, final String commentId) throws JSONException {
+        return page.getString(Page.PAGE_PERMALINK) + "#" + commentId;
+    }
+
+    /**
+     * Gets comment sharp URL with the specified article and comment id.
+     *
+     * @param article   the specified article
+     * @param commentId the specified comment id
+     * @return comment sharp URL
+     * @throws JSONException json exception
+     */
+    public static String getCommentSharpURLForArticle(final JSONObject article, final String commentId) throws JSONException {
+        return article.getString(Article.ARTICLE_PERMALINK) + "#" + commentId;
+    }
 
     /**
      * Private constructor.

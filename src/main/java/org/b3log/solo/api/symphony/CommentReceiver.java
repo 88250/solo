@@ -42,7 +42,6 @@ import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
-import org.b3log.solo.util.Comments;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
@@ -226,9 +225,7 @@ public class CommentReceiver {
             // Sets comment on article....
             comment.put(Comment.COMMENT_ON_ID, articleId);
             comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
-
-            final String commentSharpURL = Comments.getCommentSharpURLForArticle(article, commentId);
-
+            final String commentSharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
             commentRepository.add(comment);

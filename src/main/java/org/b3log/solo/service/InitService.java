@@ -313,10 +313,8 @@ public class InitService {
         comment.put(Comment.COMMENT_ON_ID, articleId);
         comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
         final String commentId = Ids.genTimeMillisId();
-
         comment.put(Keys.OBJECT_ID, commentId);
-        final String commentSharpURL = Comments.getCommentSharpURLForArticle(article, commentId);
-
+        final String commentSharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
         comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
         commentRepository.add(comment);

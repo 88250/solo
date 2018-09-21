@@ -33,7 +33,6 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.util.Comments;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -390,13 +389,10 @@ public class PageMgmtService {
         final String pageId = page.getString(Keys.OBJECT_ID);
 
         final List<JSONObject> comments = commentRepository.getComments(pageId, 1, Integer.MAX_VALUE);
-
         for (final JSONObject comment : comments) {
             final String commentId = comment.getString(Keys.OBJECT_ID);
-            final String sharpURL = Comments.getCommentSharpURLForPage(page, commentId);
-
+            final String sharpURL = Comment.getCommentSharpURLForPage(page, commentId);
             comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
-
             if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             }

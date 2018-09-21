@@ -37,7 +37,6 @@ import org.b3log.latke.util.Ids;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
-import org.b3log.solo.util.Comments;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -757,13 +756,10 @@ public class ArticleMgmtService {
         final String articleId = article.getString(Keys.OBJECT_ID);
 
         final List<JSONObject> comments = commentRepository.getComments(articleId, 1, Integer.MAX_VALUE);
-
         for (final JSONObject comment : comments) {
             final String commentId = comment.getString(Keys.OBJECT_ID);
-            final String sharpURL = Comments.getCommentSharpURLForArticle(article, commentId);
-
+            final String sharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
             comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
-
             if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                 comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             }
