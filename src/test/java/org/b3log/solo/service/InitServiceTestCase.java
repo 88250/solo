@@ -48,6 +48,6 @@ public class InitServiceTestCase extends AbstractTestCase {
         initService.init(requestJSONObject);
 
         final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmail("test@b3log.org"));
+        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@b3log.org"));
     }
 }

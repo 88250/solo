@@ -60,7 +60,7 @@ public class CaptchaProcessorTestCase extends AbstractTestCase {
         initService.init(requestJSONObject);
 
         final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmail("test@gmail.com"));
+        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
     }
 
     /**

@@ -27,7 +27,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.model.User;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Option;
@@ -68,7 +67,7 @@ public class PageProcessorTestCase extends AbstractTestCase {
         initService.init(requestJSONObject);
 
         final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmail("test@gmail.com"));
+        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
     }
 
     /**

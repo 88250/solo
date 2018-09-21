@@ -77,7 +77,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
     public void getUserByEmail() throws Exception {
         final UserQueryService userQueryService = getUserQueryService();
 
-        final JSONObject user = userQueryService.getUserByEmail("test1@gmail.com");
+        final JSONObject user = userQueryService.getUserByEmailOrUserName("test1@gmail.com");
         Assert.assertNotNull(user);
     }
 

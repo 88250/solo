@@ -185,23 +185,20 @@ public class LoginProcessor {
 
         try {
             jsonObject.put(Common.IS_LOGGED_IN, false);
-            final String loginFailLabel = langPropsService.get("loginFailLabel");
+            jsonObject.put(Keys.MSG, langPropsService.get("loginFailLabel"));
 
-            jsonObject.put(Keys.MSG, loginFailLabel);
-
-            final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
+            final String userEmail = requestJSONObject.getString(User.USER_EMAIL); // email or username
             final String userPwd = requestJSONObject.getString(User.USER_PASSWORD);
-
             if (StringUtils.isBlank(userEmail) || StringUtils.isBlank(userPwd)) {
                 return;
             }
 
-            final JSONObject user = userQueryService.getUserByEmail(userEmail);
+            final JSONObject user = userQueryService.getUserByEmailOrUserName(userEmail);
             if (null == user) {
-                LOGGER.log(Level.WARN, "Not found user[email={0}]", userEmail);
+                LOGGER.log(Level.WARN, "Not found user [email={0}]", userEmail);
+
                 return;
             }
-
             if (DigestUtils.md5Hex(userPwd).equals(user.getString(User.USER_PASSWORD))) {
                 Sessions.login(request, context.getResponse(), user);
 
@@ -220,7 +217,7 @@ public class LoginProcessor {
                 return;
             }
 
-            LOGGER.log(Level.WARN, "Wrong password[{0}]", userPwd);
+            LOGGER.log(Level.WARN, "Wrong password [{0}] for user [{1}]", userPwd, userEmail);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
         }
@@ -301,7 +298,7 @@ public class LoginProcessor {
 
             LOGGER.log(Level.INFO, "Login[email={0}]", userEmail);
 
-            final JSONObject user = userQueryService.getUserByEmail(userEmail);
+            final JSONObject user = userQueryService.getUserByEmailOrUserName(userEmail);
             if (null == user) {
                 LOGGER.log(Level.WARN, "Not found user[email={0}]", userEmail);
                 jsonObject.put(Keys.MSG, langPropsService.get("userEmailNotFoundMsg"));
@@ -352,7 +349,7 @@ public class LoginProcessor {
                 return;
             }
             final String userEmail = passwordResetOption.getString(Option.OPTION_VALUE);
-            final JSONObject user = userQueryService.getUserByEmail(userEmail);
+            final JSONObject user = userQueryService.getUserByEmailOrUserName(userEmail);
 
             user.put(User.USER_PASSWORD, newPwd);
             userMgmtService.updateUser(user);

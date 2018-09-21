@@ -219,7 +219,7 @@ public class MetaWeblogAPI {
             }
 
             final String userEmail = params.getJSONObject(INDEX_USER_EMAIL).getJSONObject("value").getString("string");
-            final JSONObject user = userQueryService.getUserByEmail(userEmail);
+            final JSONObject user = userQueryService.getUserByEmailOrUserName(userEmail);
             if (null == user) {
                 throw new Exception("No user [email=" + userEmail + "]");
             }
