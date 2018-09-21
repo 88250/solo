@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.7, Aug 10, 2018
+ * @version 1.3.0.8, Sep 21, 2018
  * @since 0.6.0
  */
 public final class Option {
@@ -306,6 +306,11 @@ public final class Option {
      */
     public static final String ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT = "statisticPublishedBlogArticleCount";
 
+    /**
+     * Key of oauth GitHub.
+     */
+    public static final String ID_C_OAUTH_GITHUB = "oauthGitHub";
+
     // Category constants
     /**
      * Broadcast.
@@ -326,6 +331,11 @@ public final class Option {
      * Statistic.
      */
     public static final String CATEGORY_C_STATISTIC = "statistic";
+
+    /**
+     * OAuth.
+     */
+    public static final String CATEGORY_C_OAUTH = "oauth";
 
     /**
      * Private constructor.
