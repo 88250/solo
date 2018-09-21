@@ -192,16 +192,25 @@ public class OAuthGitHubProcessor {
                     return;
                 }
 
-                final JSONObject addUserReq = new JSONObject();
-                addUserReq.put(User.USER_NAME, userName);
-                addUserReq.put(User.USER_EMAIL, userEmail);
-                addUserReq.put(User.USER_PASSWORD, RandomStringUtils.randomAlphanumeric(8));
-                addUserReq.put(UserExt.USER_AVATAR, userAvatar);
-                addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
-                userMgmtService.addUser(addUserReq);
+                JSONObject user = userQueryService.getUserByEmailOrUserName(userName);
+                if (null == user) {
+                    user = userQueryService.getUserByEmailOrUserName(userEmail);
+                }
+                if (null == user) {
+                    final JSONObject addUserReq = new JSONObject();
+                    addUserReq.put(User.USER_NAME, userName);
+                    addUserReq.put(User.USER_EMAIL, userEmail);
+                    addUserReq.put(User.USER_PASSWORD, RandomStringUtils.randomAlphanumeric(8));
+                    addUserReq.put(UserExt.USER_AVATAR, userAvatar);
+                    addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
+                    userMgmtService.addUser(addUserReq);
+                }
             }
 
-            final JSONObject user = userQueryService.getUserByEmailOrUserName(userName);
+            JSONObject user = userQueryService.getUserByEmailOrUserName(userName);
+            if (null == user) {
+                user = userQueryService.getUserByEmailOrUserName(userEmail);
+            }
             final String userId = user.optString(Keys.OBJECT_ID);
             githubAuths.add(openId + splitChar + userId);
             value = new JSONArray(githubAuths).toString();
