@@ -23,6 +23,10 @@
 <h2>
 ${loginLabel}
 </h2>
+推荐通过 GitHub 进行登录
+
+<a href="${servePath}/oauth/github/redirect">GitHub Icon</a>
+
 <div class="form">
     <label for="userEmail">
     ${userLabel}

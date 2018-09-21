@@ -26,6 +26,12 @@
         <span class="solo">&nbsp;Solo</span>
     </a>
 </h2>
+
+
+推荐通过 GitHub 进行登录并初始化
+
+<a href="${servePath}/oauth/github/redirect">GitHub Icon</a>
+
 <div id="init">
     <div id="user" class="form">
         <label for="userEmail">
