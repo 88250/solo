@@ -27,9 +27,9 @@ ${loginLabel}
     <a class="github__icon" href="${servePath}/oauth/github/redirect">
         <img src="${staticServePath}/images/github-init.gif"/>
     </a>
-    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">使用 GitHub 账号登录</button>
+    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">${useGitHubAccountLoginLabel}</button>
     <br>
-    <span onclick="$('#github').hide();$('.form').show()">使用本地账号</span>
+    <span onclick="$('#github').hide();$('.form').show()">${useLocalAccountLabel}</span>
 </div>
 
 <div class="form none">
@@ -41,7 +41,6 @@ ${loginLabel}
     ${userPasswordLabel} <a href="${servePath}/forgot">(${forgotLabel})</a>
     </label>
     <input type="password" id="userPassword" tabindex="2" />
-    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">使用 GitHub 账号登录</button>
     <button onclick='login();'>${loginLabel}</button>
     <span id="tip">${resetMsg}</span>
 </div>

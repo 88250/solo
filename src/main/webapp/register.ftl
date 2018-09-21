@@ -25,9 +25,9 @@
     <a class="github__icon" href="${servePath}/oauth/github/redirect">
         <img src="${staticServePath}/images/github-init.gif"/>
     </a>
-    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">使用 GitHub 账号注册</button>
+    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">${useGitHubAccountLoginLabel}</button>
     <br>
-    <span onclick="$('#github').hide();$('.form').show()">使用本地账号</span>
+    <span onclick="$('#github').hide();$('.form').show()">${useLocalAccountLabel}</span>
 </div>
 <div class="form none">
     <label for="userEmail">
@@ -50,7 +50,6 @@
     ${userPasswordConfirm1Label}
     </label>
     <input type="password" id="userPasswordConfirm" />
-    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">使用 GitHub 账号注册</button>
     <button onclick='getUserInfo();'>${registerSoloUserLabel}</button>
     <span id="tip" ></span>
 </div>

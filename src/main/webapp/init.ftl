@@ -32,9 +32,9 @@
         <a class="github__icon" href="${servePath}/oauth/github/redirect">
             <img src="${staticServePath}/images/github-init.gif"/>
         </a>
-        <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">使用 GitHub 账号初始化</button>
+        <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">${useGitHubAccountLoginLabel}</button>
         <br>
-        <span onclick="$('#github').hide();$('#user').show()">使用本地账号</span>
+        <span onclick="$('#github').hide();$('#user').show()">${useLocalAccountLabel}</span>
     </div>
     <div id="user" class="form none">
         <label for="userEmail">
@@ -53,14 +53,13 @@
             ${userPasswordConfirm1Label}
         </label>
         <input type="password" id="userPasswordConfirm"/>
-        <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">使用 GitHub 账号初始化</button>
         <button onclick='getUserInfo();'>${nextStepLabel}</button>
         <span id="tip"></span>
     </div>
     <div id="sys" class="none">
         ${initIntroLabel}
-        <button onclick='initSys();' id="initButton">${initLabel}</button>
         <button onclick='returnTo();'>${previousStepLabel}</button>
+        <button onclick='initSys();' id="initButton">${initLabel}</button>
         <span id="tipInit"></span>
         <span class="clear"></span>
     </div>
