@@ -44,7 +44,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -255,7 +254,10 @@ public class OAuthGitHubProcessor {
             res.charset("UTF-8");
             final JSONObject userInfo = new JSONObject(res.bodyText());
             final String userName = StringUtils.trim(userInfo.optString("login"));
-            final String email = userInfo.optString("email");
+            String email = userInfo.optString("email");
+            if (StringUtils.isBlank(email)) {
+                email = userName + "@solo.b3log.org";
+            }
             final String openId = userInfo.optString("id");
 
             final JSONObject ret = new JSONObject();
