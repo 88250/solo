@@ -251,16 +251,6 @@ var Util = {
         addKillPanel();
         return;
       }
-
-      // 后台页面 kill 360
-      if (window.external && window.external.twGetRunPath) {
-        var path = external.twGetRunPath();
-        if (path && path.toLowerCase().indexOf("360se") > -1 &&
-          window.location.href.indexOf("admin-index") > -1) {
-          addKillPanel();
-          return;
-        }
-      }
     }
   },
   /**
