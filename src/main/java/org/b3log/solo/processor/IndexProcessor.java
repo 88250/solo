@@ -20,6 +20,7 @@ package org.b3log.solo.processor;
 import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -219,7 +220,7 @@ public class IndexProcessor {
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         try {
-            final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
             filler.fillCommon(request, response, dataModel, preference);
