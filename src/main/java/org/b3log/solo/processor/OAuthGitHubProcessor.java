@@ -28,6 +28,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -175,7 +176,7 @@ public class OAuthGitHubProcessor {
         final JSONArray github = new JSONArray(value);
         final Set<String> githubAuths = CollectionUtils.jsonArrayToSet(github);
         final String splitChar = ":@:";
-        final String oAuthPair = getOAuthPair(githubAuths, openId); // openId:@:userId
+        final String oAuthPair = Option.getOAuthPair(githubAuths, openId); // openId:@:userId
         if (StringUtils.isBlank(oAuthPair)) {
             if (!initService.isInited()) {
                 final JSONObject initReq = new JSONObject();
@@ -204,6 +205,7 @@ public class OAuthGitHubProcessor {
                     addUserReq.put(UserExt.USER_AVATAR, userAvatar);
                     addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
                     userMgmtService.addUser(addUserReq);
+                    JdbcRepository.dispose();
                 }
             }
 
@@ -281,15 +283,5 @@ public class OAuthGitHubProcessor {
 
             return null;
         }
-    }
-
-    private static String getOAuthPair(final Set<String> oauthPairs, final String openId) {
-        for (final String pair : oauthPairs) {
-            if (StringUtils.containsIgnoreCase(pair, openId)) {
-                return pair;
-            }
-        }
-
-        return null;
     }
 }

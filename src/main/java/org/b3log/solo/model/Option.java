@@ -17,11 +17,14 @@
  */
 package org.b3log.solo.model;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.Set;
 
 /**
  * This class defines option model relevant keys.
@@ -336,6 +339,16 @@ public final class Option {
      * OAuth.
      */
     public static final String CATEGORY_C_OAUTH = "oauth";
+
+    public static String getOAuthPair(final Set<String> oauthPairs, final String openIdOrUserId) {
+        for (final String pair : oauthPairs) {
+            if (StringUtils.containsIgnoreCase(pair, openIdOrUserId)) {
+                return pair;
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Private constructor.
