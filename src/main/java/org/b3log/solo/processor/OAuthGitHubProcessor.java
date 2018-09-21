@@ -47,6 +47,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * OAuth GitHub processor.
@@ -75,7 +76,7 @@ public class OAuthGitHubProcessor {
     /**
      * OAuth parameters - state.
      */
-    private static final Map<String, String> STATES = new HashMap<>();
+    private static final Map<String, String> STATES = new ConcurrentHashMap<>();
 
     /**
      * Option query service.
@@ -204,7 +205,8 @@ public class OAuthGitHubProcessor {
             final JSONObject user = userQueryService.getUserByEmailOrUserName(userName);
             final String userId = user.optString(Keys.OBJECT_ID);
             githubAuths.add(openId + splitChar + userId);
-            oauthGitHubOpt.put(Option.OPTION_VALUE, githubAuths);
+            value = new JSONArray(githubAuths).toString();
+            oauthGitHubOpt.put(Option.OPTION_VALUE, value);
             optionMgmtService.addOrUpdateOption(oauthGitHubOpt);
 
             Sessions.login(request, response, user);
@@ -216,13 +218,14 @@ public class OAuthGitHubProcessor {
 
         final String[] openIdUserId = oAuthPair.split(splitChar);
         final String userId = openIdUserId[1];
-        final JSONObject user = userQueryService.getUser(userId);
-        if (null == user) {
+        final JSONObject userResult = userQueryService.getUser(userId);
+        if (null == userResult) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
 
+        final JSONObject user = userResult.optJSONObject(User.USER);
         Sessions.login(request, response, user);
         response.sendRedirect(Latkes.getServePath());
         LOGGER.log(Level.INFO, "Logged in [email={0}, remoteAddr={1}] with GitHub oauth", userEmail, Requests.getRemoteAddr(request));

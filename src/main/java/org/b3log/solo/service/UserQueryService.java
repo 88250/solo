@@ -241,8 +241,7 @@ public class UserQueryService {
     public JSONObject getUser(final String userId) throws ServiceException {
         final JSONObject ret = new JSONObject();
 
-        JSONObject user = null;
-
+        JSONObject user;
         try {
             user = userRepository.get(userId);
         } catch (final RepositoryException e) {
