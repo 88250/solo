@@ -201,17 +201,14 @@ public class LoginProcessor {
             }
             if (DigestUtils.md5Hex(userPwd).equals(user.getString(User.USER_PASSWORD))) {
                 Sessions.login(request, context.getResponse(), user);
-
-                LOGGER.log(Level.INFO, "Logged in [email={0}, RemoteAddr={1}]", userEmail, Requests.getRemoteAddr(request));
+                LOGGER.log(Level.INFO, "Logged in [email={0}, remoteAddr={1}]", userEmail, Requests.getRemoteAddr(request));
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
-
                 if (Role.VISITOR_ROLE.equals(user.optString(User.USER_ROLE))) {
                     jsonObject.put("to", Latkes.getServePath());
                 } else {
                     jsonObject.put("to", Latkes.getServePath() + Common.ADMIN_INDEX_URI);
                 }
-
                 jsonObject.remove(Keys.MSG);
 
                 return;
