@@ -264,7 +264,8 @@ public class OAuthGitHubProcessor {
 
             res.charset("UTF-8");
             final JSONObject userInfo = new JSONObject(res.bodyText());
-            final String userName = StringUtils.trim(userInfo.optString("login"));
+            String userName = StringUtils.trim(userInfo.optString("login"));
+            userName = StringUtils.replace(userName, "-", "");
             String email = userInfo.optString("email");
             if (StringUtils.isBlank(email)) {
                 email = userName + "@solo.b3log.org";
