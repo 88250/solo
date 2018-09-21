@@ -27,7 +27,7 @@ import org.json.JSONObject;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.8, Sep 21, 2018
+ * @version 1.3.0.9, Sep 21, 2018
  * @since 0.6.0
  */
 public final class Option {
@@ -467,7 +467,7 @@ public final class Option {
         /**
          * Default allow register.
          */
-        public static final String DEFAULT_ALLOW_REGISTER = "false";
+        public static final String DEFAULT_ALLOW_REGISTER = "true";
 
         /**
          * Default allow comment article/page.
