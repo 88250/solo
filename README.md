@@ -42,7 +42,8 @@
 * Atom / RSS 订阅
 * Sitemap
 * MetaWeblog API
-* CDN 静态资源分离 
+* CDN 静态资源分离
+* [GitHub 集成](https://github.com/b3log/solo/issues/12514)
 
 ## 界面
 
