@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor.util;
 
-
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import org.b3log.latke.Keys;
@@ -32,7 +31,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Fill tag articles.

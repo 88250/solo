@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -33,7 +32,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-
 
 /**
  * Tag management service.

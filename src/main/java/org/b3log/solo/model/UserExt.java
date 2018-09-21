@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.model;
 
-
 /**
  * This class defines ext of user model relevant keys.
  *

@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.model;
 
-
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.util.Strings;
 

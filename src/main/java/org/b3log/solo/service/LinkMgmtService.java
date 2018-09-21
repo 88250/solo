@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.logging.Level;
@@ -28,7 +27,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.repository.LinkRepository;
 import org.json.JSONObject;
-
 
 /**
  * Link management service.

@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.model;
 
-
 /**
  * This class defines all skin model relevant keys.
  *

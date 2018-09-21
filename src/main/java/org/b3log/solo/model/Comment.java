@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.model;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
