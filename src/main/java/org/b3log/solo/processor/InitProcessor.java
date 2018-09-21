@@ -54,7 +54,7 @@ import java.util.Map;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.13, Sep 20, 2018
+ * @version 1.2.0.14, Sep 21, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -101,20 +101,14 @@ public class InitProcessor {
         }
 
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-
         renderer.setTemplateName("init.ftl");
         context.setRenderer(renderer);
-
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
-
         dataModel.putAll(langs);
-
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-
         Keys.fillRuntime(dataModel);
         filler.fillMinified(dataModel);
     }
@@ -129,7 +123,8 @@ public class InitProcessor {
      *                          {
      *                          "userName": "",
      *                          "userEmail": "",
-     *                          "userPassword": ""
+     *                          "userPassword": "",
+     *                          "userAvatar": "" // optional
      *                          }
      * @throws Exception exception
      */
@@ -151,7 +146,6 @@ public class InitProcessor {
             final String userName = requestJSONObject.optString(User.USER_NAME);
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL);
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-
             if (StringUtils.isBlank(userName) || StringUtils.isBlank(userEmail) || StringUtils.isBlank(userPassword)
                     || !Strings.isEmail(userEmail)) {
                 ret.put(Keys.MSG, "Init failed, please check your input");
@@ -176,7 +170,11 @@ public class InitProcessor {
             admin.put(User.USER_EMAIL, userEmail);
             admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
             admin.put(User.USER_PASSWORD, userPassword);
-            admin.put(UserExt.USER_AVATAR, Thumbnails.getGravatarURL(userEmail, "128"));
+            String avatar = requestJSONObject.optString(UserExt.USER_AVATAR);
+            if (StringUtils.isBlank(avatar)) {
+                avatar = Thumbnails.getGravatarURL(userEmail, "128");
+            }
+            admin.put(UserExt.USER_AVATAR, avatar);
 
             Sessions.login(request, response, admin);
 

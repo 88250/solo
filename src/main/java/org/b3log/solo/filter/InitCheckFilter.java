@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.filter;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.LatkeBeanManager;
@@ -39,7 +40,7 @@ import java.io.IOException;
  * Checks initialization filter.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.2, Sep 13, 2016
+ * @version 1.1.1.3, Sep 21, 2018
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -55,7 +56,7 @@ public final class InitCheckFilter implements Filter {
     private static boolean initReported;
 
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {
+    public void init(final FilterConfig filterConfig) {
     }
 
     /**
@@ -72,8 +73,7 @@ public final class InitCheckFilter implements Filter {
             throws IOException, ServletException {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
-
-        LOGGER.log(Level.TRACE, "Request[URI={0}]", requestURI);
+        LOGGER.log(Level.TRACE, "Request [URI={0}]", requestURI);
 
         // If requests Latke Remote APIs, skips this filter 
         if (requestURI.startsWith(Latkes.getContextPath() + "/latke/remote")) {
@@ -84,15 +84,15 @@ public final class InitCheckFilter implements Filter {
 
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final InitService initService = beanManager.getReference(InitService.class);
-
         if (initService.isInited()) {
             chain.doFilter(request, response);
 
             return;
         }
 
-        if ("POST".equalsIgnoreCase(httpServletRequest.getMethod()) && (Latkes.getContextPath() + "/init").equals(requestURI)) {
-            // Do initailization
+        if ("POST".equalsIgnoreCase(httpServletRequest.getMethod()) && (Latkes.getContextPath() + "/init").equals(requestURI) ||
+                StringUtils.startsWith(requestURI, Latkes.getContextPath() + "/oauth/github")) {
+            // Do initialization
             chain.doFilter(request, response);
 
             return;
@@ -104,21 +104,16 @@ public final class InitCheckFilter implements Filter {
         }
 
         final HTTPRequestContext context = new HTTPRequestContext();
-
         context.setRequest((HttpServletRequest) request);
         context.setResponse((HttpServletResponse) response);
-
         request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/init");
         request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HTTPRequestMethod.GET.name());
-
         final HttpControl httpControl = new HttpControl(DispatcherServlet.SYS_HANDLER.iterator(), context);
-
         try {
             httpControl.nextHandler();
         } catch (final Exception e) {
             context.setRenderer(new HTTP500Renderer(e));
         }
-
         DispatcherServlet.result(context);
     }
 

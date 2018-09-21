@@ -108,6 +108,12 @@ public class OAuthGitHubProcessor {
     private PreferenceQueryService preferenceQueryService;
 
     /**
+     * Initialization service.
+     */
+    @Inject
+    private InitService initService;
+
+    /**
      * Redirects to GitHub auth page.
      *
      * @param response the specified response
@@ -171,27 +177,36 @@ public class OAuthGitHubProcessor {
         final String splitChar = ":@:";
         final String oAuthPair = getOAuthPair(githubAuths, openId); // openId:@:userId
         if (StringUtils.isBlank(oAuthPair)) {
-            final JSONObject preference = preferenceQueryService.getPreference();
-            if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            if (!initService.isInited()) {
+                final JSONObject initReq = new JSONObject();
+                initReq.put(User.USER_NAME, userName);
+                initReq.put(User.USER_EMAIL, userEmail);
+                initReq.put(User.USER_PASSWORD, RandomStringUtils.randomAlphanumeric(8));
+                initReq.put(UserExt.USER_AVATAR, userAvatar);
+                initService.init(initReq);
+            } else {
+                final JSONObject preference = preferenceQueryService.getPreference();
+                if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
 
-                return;
+                    return;
+                }
+
+                final JSONObject addUserReq = new JSONObject();
+                addUserReq.put(User.USER_NAME, userName);
+                addUserReq.put(User.USER_EMAIL, userEmail);
+                addUserReq.put(User.USER_PASSWORD, RandomStringUtils.randomAlphanumeric(8));
+                addUserReq.put(UserExt.USER_AVATAR, userAvatar);
+                addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
+                userMgmtService.addUser(addUserReq);
             }
 
-
-            final JSONObject addUserReq = new JSONObject();
-            addUserReq.put(User.USER_NAME, userName);
-            addUserReq.put(User.USER_EMAIL, userEmail);
-            addUserReq.put(User.USER_PASSWORD, RandomStringUtils.randomAlphanumeric(8));
-            addUserReq.put(UserExt.USER_AVATAR, userAvatar);
-            addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
-            final String userId = userMgmtService.addUser(addUserReq);
-
+            final JSONObject user = userQueryService.getUserByEmailOrUserName(userName);
+            final String userId = user.optString(Keys.OBJECT_ID);
             githubAuths.add(openId + splitChar + userId);
             oauthGitHubOpt.put(Option.OPTION_VALUE, githubAuths);
             optionMgmtService.addOrUpdateOption(oauthGitHubOpt);
 
-            final JSONObject user = userQueryService.getUser(userId);
             Sessions.login(request, response, user);
             response.sendRedirect(Latkes.getServePath());
             LOGGER.log(Level.INFO, "Logged in [email={0}, remoteAddr={1}] with GitHub oauth", userEmail, Requests.getRemoteAddr(request));
