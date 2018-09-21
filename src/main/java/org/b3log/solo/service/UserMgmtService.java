@@ -271,7 +271,7 @@ public class UserMgmtService {
      * @return generated user id
      * @throws ServiceException service exception
      */
-    public String addUser(final JSONObject requestJSONObject) throws ServiceException {
+    public synchronized String addUser(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
@@ -281,8 +281,7 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("mailInvalidLabel"));
             }
 
-            final JSONObject duplicatedUser = userRepository.getByEmail(userEmail);
-
+            JSONObject duplicatedUser = userRepository.getByEmail(userEmail);
             if (null != duplicatedUser) {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -296,6 +295,14 @@ public class UserMgmtService {
             final String userName = requestJSONObject.optString(User.USER_NAME);
             if (UserExt.invalidUserName(userName)) {
                 throw new ServiceException(langPropsService.get("userNameInvalidLabel"));
+            }
+            duplicatedUser = userRepository.getByUserName(userName);
+            if (null != duplicatedUser) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
+
+                throw new ServiceException(langPropsService.get("duplicatedUserNameLabel"));
             }
             user.put(User.USER_NAME, userName);
 
@@ -326,7 +333,6 @@ public class UserMgmtService {
             user.put(UserExt.USER_AVATAR, userAvatar);
 
             userRepository.add(user);
-
             transaction.commit();
 
             return user.optString(Keys.OBJECT_ID);

@@ -17,6 +17,8 @@
  */
 package org.b3log.solo.model;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * This class defines ext of user model relevant keys.
  *
@@ -89,6 +91,6 @@ public final class UserExt {
             return true;
         }
 
-        return name.contains("admin") || name.contains("Admin");
+        return StringUtils.containsIgnoreCase(name, "admin");
     }
 }

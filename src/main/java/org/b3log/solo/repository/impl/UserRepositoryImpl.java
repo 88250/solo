@@ -28,11 +28,13 @@ import org.b3log.solo.repository.UserRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, Aug 27, 2017
+ * @version 1.1.0.10, Sep 21, 2018
  * @since 0.3.1
  */
 @Repository
@@ -88,6 +90,18 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
     }
 
     @Override
+    public JSONObject getByUserName(final String userName) throws RepositoryException {
+        final Query query = new Query().setPageCount(1).
+                setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, userName));
+        final List<JSONObject> users = getList(query);
+        if (users.isEmpty()) {
+            return null;
+        }
+
+        return users.get(0);
+    }
+
+    @Override
     public JSONObject getByEmail(final String email) throws RepositoryException {
         JSONObject ret = userCache.getUserByEmail(email);
         if (null != ret) {
@@ -127,15 +141,5 @@ public class UserRepositoryImpl extends AbstractRepository implements UserReposi
         userCache.putAdmin(ret);
 
         return ret;
-    }
-
-    @Override
-    public boolean isAdminEmail(final String email) throws RepositoryException {
-        final JSONObject user = getByEmail(email);
-        if (null == user) {
-            return false;
-        }
-
-        return Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE));
     }
 }

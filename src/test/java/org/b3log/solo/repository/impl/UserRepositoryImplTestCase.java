@@ -80,9 +80,6 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         userRepository.add(admin);
         transaction.commit();
 
-        Assert.assertTrue(userRepository.isAdminEmail("test@gmail.com"));
-        Assert.assertFalse(userRepository.isAdminEmail("notFound@gmail.com"));
-
         admin = userRepository.getAdmin();
 
         Assert.assertNotNull(admin);

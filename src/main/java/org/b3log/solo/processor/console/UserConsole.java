@@ -180,7 +180,7 @@ public class UserConsole {
                     return;
                 }
 
-                // if a normal user or a visitor register a new user, treates the new user as a visitor 
+                // if a normal user or a visitor register a new user, treats the new user as a visitor
                 // (visitorRole) who couldn't post article
                 requestJSONObject.put(User.USER_ROLE, Role.VISITOR_ROLE);
             }
