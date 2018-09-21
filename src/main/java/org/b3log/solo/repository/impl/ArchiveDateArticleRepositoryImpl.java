@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.repository.impl;
 
-
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
@@ -26,7 +25,6 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 
 /**
  * Archive date-Article relation repository.

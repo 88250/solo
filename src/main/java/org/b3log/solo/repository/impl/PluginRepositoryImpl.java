@@ -17,12 +17,10 @@
  */
 package org.b3log.solo.repository.impl;
 
-
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.repository.AbstractRepository;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.repository.PluginRepository;
-
 
 /**
  * Plugin repository.
