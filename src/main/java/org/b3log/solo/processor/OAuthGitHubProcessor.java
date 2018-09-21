@@ -138,7 +138,7 @@ public class OAuthGitHubProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/oauth/github", method = HTTPRequestMethod.GET)
-    public void showGitHubCallback(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
+    public synchronized void showGitHubCallback(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         final String state = request.getParameter("state");
         String referer = STATES.get(state);
         if (StringUtils.isBlank(referer)) {
