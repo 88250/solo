@@ -354,6 +354,13 @@ public class CategoryConsole {
 
                 return;
             }
+            if (255 <= StringUtils.length(uri)) {
+                final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+                renderer.setJSONObject(jsonObject);
+                jsonObject.put(Keys.MSG, langPropsService.get("categoryURITooLongLabel"));
+
+                return;
+            }
 
             final String desc = requestJSONObject.optString(Category.CATEGORY_DESCRIPTION);
 
@@ -482,6 +489,13 @@ public class CategoryConsole {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
                 renderer.setJSONObject(jsonObject);
                 jsonObject.put(Keys.MSG, langPropsService.get("duplicatedCategoryURILabel"));
+
+                return;
+            }
+            if (255 <= StringUtils.length(uri)) {
+                final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+                renderer.setJSONObject(jsonObject);
+                jsonObject.put(Keys.MSG, langPropsService.get("categoryURITooLongLabel"));
 
                 return;
             }

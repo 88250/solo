@@ -26,7 +26,7 @@
           "name": "categoryURI",
           "description": "分类访问路径",
           "type": "String",
-          "length": 32
+          "length": 255
         },
         {
           "name": "categoryDescription",
