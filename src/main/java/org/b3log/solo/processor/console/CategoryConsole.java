@@ -32,6 +32,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Tag;
@@ -53,7 +54,7 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.1, Sep 20, 2018
+ * @version 1.1.3.0, Sep 21, 2018
  * @since 2.0.0
  */
 @RequestProcessor
@@ -344,7 +345,7 @@ public class CategoryConsole {
             if (StringUtils.isBlank(uri)) {
                 uri = title;
             }
-
+            uri = URLs.encode(uri);
             mayExist = categoryQueryService.getByURI(uri);
             if (null != mayExist && !mayExist.optString(Keys.OBJECT_ID).equals(categoryId)) {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
@@ -475,7 +476,7 @@ public class CategoryConsole {
             if (StringUtils.isBlank(uri)) {
                 uri = title;
             }
-
+            uri = URLs.encode(uri);
             mayExist = categoryQueryService.getByURI(uri);
             if (null != mayExist) {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);

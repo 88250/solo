@@ -54,7 +54,7 @@ import java.util.Map;
  * Category processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Sep 20, 2018
+ * @version 1.0.1.5, Sep 21, 2018
  * @since 2.0.0
  */
 @RequestProcessor
@@ -171,10 +171,7 @@ public class CategoryProcessor {
             }
 
             LOGGER.log(Level.DEBUG, "Category [URI={0}, currentPageNum={1}]", categoryURI, currentPageNum);
-
-            categoryURI = URLDecoder.decode(categoryURI, "UTF-8");
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
-
             if (null == category) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
