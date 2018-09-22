@@ -47,7 +47,7 @@ public final class AuthFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(AuthFilter.class);
 
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {
+    public void init(final FilterConfig filterConfig) {
     }
 
     /**

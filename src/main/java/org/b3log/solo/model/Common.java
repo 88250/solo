@@ -108,21 +108,6 @@ public final class Common {
     public static final String IS_INDEX = "isIndex";
 
     /**
-     * tag-articles.
-     */
-    public static final String TAG_ARTICLES = "tag-articles";
-
-    /**
-     * archive-date-articles.
-     */
-    public static final String ARCHIVED_DATE_ARTICLES = "archive-date-articles";
-
-    /**
-     * author-articles.
-     */
-    public static final String AUTHOR_ARTICLES = "author-articles";
-
-    /**
      * Key of path.
      */
     public static final String PATH = "path";
@@ -196,11 +181,6 @@ public final class Common {
      * Key of admin user.
      */
     public static final String ADMIN_USER = "adminUser";
-
-    /**
-     * Key of enabled multiple user support.
-     */
-    public static final String ENABLED_MULTIPLE_USER_SUPPORT = "enabledMultipleUserSupport";
 
     /**
      * Key of is logged in.
