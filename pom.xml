@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.20, Sep 16, 2018
+    Version: 3.18.3.21, Sep 23, 2018
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -83,7 +83,7 @@
         <jsoup.version>1.9.1</jsoup.version>
         <flexmark.version>0.34.30</flexmark.version>
         <qiniu.version>7.2.11</qiniu.version>
-        <jetty.version>9.2.9.v20150224</jetty.version>
+        <jetty.version>9.4.12.v20180830</jetty.version>
         <commons-cli.version>1.3.1</commons-cli.version>
         <commons-codec.version>1.10</commons-codec.version>
         <emoji-java.version>3.2.0</emoji-java.version>
