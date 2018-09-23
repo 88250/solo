@@ -179,5 +179,7 @@ if (navigator.userAgent.indexOf('MSIE') === -1) {
         });
     });
 } else {
-  $('.solo-kanbanniang').hide()
+    $(document).ready(function () {
+        $('.solo-kanbanniang').remove()
+    })
 }

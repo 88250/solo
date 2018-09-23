@@ -251,7 +251,7 @@ var Util = {
         addKillPanel();
       }
       if (ieVersion) {
-          if ($.browser.version === ieVersion + ".0"){
+          if (parseFloat($.browser.version) <= ieVersion){
               addKillPanel();
           }
       }
