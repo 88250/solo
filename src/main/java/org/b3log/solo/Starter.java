@@ -39,7 +39,7 @@ import java.net.URI;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.13, Sep 16, 2018
+ * @version 1.1.0.14, Sep 23, 2018
  * @since 1.2.0
  */
 public final class Starter {
@@ -155,7 +155,6 @@ public final class Starter {
         }
 
         final int port = Integer.valueOf(portArg);
-
         final Server server = new Server(port);
         final WebAppContext root = new WebAppContext();
         root.setParentLoaderPriority(true); // Use parent class loader
@@ -163,7 +162,6 @@ public final class Starter {
         root.setDescriptor(webappDirLocation + "/WEB-INF/web.xml");
         root.setResourceBase(webappDirLocation);
         server.setHandler(root);
-
         try {
             server.start();
         } catch (final Exception e) {
