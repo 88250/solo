@@ -150,7 +150,7 @@ var soloKanbanniang = {
       soloKanbanniang.showMessage('你都复制了些什么呀，转载要记得加上出处哦', 5000, true);
     });
   },
-  showChat() {
+  showChat: function () {
     $.getJSON(
         'https://api.imjad.cn/hitokoto/?cat=&charset=utf-8&length=55&encode=json',
         function(result) {
@@ -159,14 +159,18 @@ var soloKanbanniang = {
   },
 };
 
-$(document).ready(function() {
-  if (sessionStorage.getItem('soloKanbanniang') === 'close') {
-    $('.solo-kanbanniang').remove();
-    return;
-  }
+if (navigator.userAgent.indexOf('MSIE') === -1) {
+    $(document).ready(function () {
+        if (sessionStorage.getItem('soloKanbanniang') === 'close') {
+            $('.solo-kanbanniang').remove();
+            return;
+        }
 
-  soloKanbanniang.init();
+        soloKanbanniang.init();
 
-  loadlive2d('soloKanbanniang',  latkeConfig.servePath +
-      '/plugins/kanbanniang/assert/model?t=' + (new Date()).getTime());
-});
+        loadlive2d('soloKanbanniang', latkeConfig.servePath +
+            '/plugins/kanbanniang/assert/model?t=' + (new Date()).getTime());
+    });
+} else {
+  $('.solo-kanbanniang').hide()
+}
