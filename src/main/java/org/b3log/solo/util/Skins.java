@@ -39,13 +39,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.5.10, Sep 1, 2018
+ * @version 1.1.6.0, Sep 23, 2018
  * @since 0.3.1
  */
 public final class Skins {
@@ -161,14 +163,15 @@ public final class Skins {
 
         final ServletContext servletContext = SoloServletListener.getServletContext();
         final Set<String> resourcePaths = servletContext.getResourcePaths("/skins");
-
         for (final String path : resourcePaths) {
-            final String dirName = path.substring("/skins".length() + 1, path.length() - 1);
-            if (dirName.contains(".")) {
+            final Path p = Paths.get(path);
+            final Path file = p.getFileName();
+            final String fileName = file.toString();
+            if (fileName.startsWith(".") || fileName.endsWith(".md")) {
                 continue;
             }
 
-            ret.add(dirName);
+            ret.add(fileName);
         }
 
         return ret;
