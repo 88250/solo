@@ -238,22 +238,29 @@ var Util = {
   killIE: function (ieVersion) {
     var addKillPanel = function () {
       if (Cookie.readCookie("showKill") === "") {
-        var left = ($(window).width() - 781) / 2,
-          top1 = ($(window).height() - 680) / 2;
-        $("body").append("<div style='display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110'></div>"
-          + "<iframe style='left:" + left + "px;z-index:120;top: " + top1 + "px; position: fixed; border: 0px none; width: 781px; height: 680px;' src='" + latkeConfig.servePath + "/kill-browser'></iframe>");
+        try {
+          var left = ($(window).width() - 781) / 2,
+              top1 = ($(window).height() - 680) / 2;
+          var killIEHTML = "<div style='display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110'></div>"
+              + "<iframe style='left:" + left + "px;z-index:120;top: " + top1 + "px; position: fixed; border: 0px none; width: 781px; height: 680px;' src='" + latkeConfig.servePath + "/kill-browser'></iframe>";
+          $("body").append(killIEHTML)
+        } catch (e) {
+          var left = 10,
+              top1 = 0;
+          var killIEHTML = "<div style='display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110'></div>"
+              + "<iframe style='left:" + left + "px;z-index:120;top: " + top1 + "px; position: fixed; border: 0px none; width: 781px; height: 680px;' src='" + latkeConfig.servePath + "/kill-browser'></iframe>";
+          document.body.innerHTML = document.body.innerHTML + killIEHTML
+        }
       }
     };
 
-    if ($.browser.msie) {
-      // kill IE6 and IE7
-      if ($.browser.version === "6.0" || $.browser.version === "7.0") {
-        addKillPanel();
+    var ua = navigator.userAgent.split('MSIE')[1]
+    if (ua) {
+      if (!ieVersion) {
+        ieVersion = 7
       }
-      if (ieVersion) {
-          if (parseFloat($.browser.version) <= ieVersion){
-              addKillPanel();
-          }
+      if (parseFloat(ua.split(';')) <= ieVersion){
+        addKillPanel();
       }
     }
   },
