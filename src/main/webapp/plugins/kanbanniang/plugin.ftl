@@ -18,8 +18,7 @@
 
 -->
 <link type="text/css" rel="stylesheet" href="https://static-solo.b3log.org/plugins/kanbanniang/assert/index.css"/>
-<script src="https://static-solo.b3log.org/plugins/kanbanniang/assert/live2d.js"></script>
-<script async src="https://static-solo.b3log.org/plugins/kanbanniang/assert/index.js"></script>
+<script async src="/plugins/kanbanniang/assert/index.js"></script>
 <div class="solo-kanbanniang">
     <div class="solo-kanbanniang__tip"></div>
     <canvas id="soloKanbanniang" width="280" height="250"></canvas>

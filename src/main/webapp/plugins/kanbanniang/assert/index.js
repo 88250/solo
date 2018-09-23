@@ -45,7 +45,7 @@ var soloKanbanniang = {
                 tips.text.replace('{year}', now.getFullYear()), 6000, true);
           }
         });
-      },
+      }
     });
   },
   _initMenu: function() {
@@ -156,7 +156,7 @@ var soloKanbanniang = {
         function(result) {
           soloKanbanniang.showMessage(result.hitokoto, 5000);
         });
-  },
+  }
 };
 
 if (navigator.userAgent.indexOf('MSIE') === -1) {
@@ -166,10 +166,17 @@ if (navigator.userAgent.indexOf('MSIE') === -1) {
             return;
         }
 
-        soloKanbanniang.init();
+        $.ajax({
+            url: 'https://static-solo.b3log.org/plugins/kanbanniang/assert/live2d.js',
+            dataType: "script",
+            cache: true,
+            success: function () {
+                soloKanbanniang.init();
 
-        loadlive2d('soloKanbanniang', latkeConfig.servePath +
-            '/plugins/kanbanniang/assert/model?t=' + (new Date()).getTime());
+                loadlive2d('soloKanbanniang', latkeConfig.servePath +
+                    '/plugins/kanbanniang/assert/model?t=' + (new Date()).getTime());
+            }
+        });
     });
 } else {
   $('.solo-kanbanniang').hide()
