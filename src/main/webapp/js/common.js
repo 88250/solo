@@ -235,7 +235,7 @@ var Util = {
   /**
    * @description IE6/7，跳转到 kill-browser 页面
    */
-  killIE: function () {
+  killIE: function (ieVersion) {
     var addKillPanel = function () {
       if (Cookie.readCookie("showKill") === "") {
         var left = ($(window).width() - 781) / 2,
@@ -249,7 +249,11 @@ var Util = {
       // kill IE6 and IE7
       if ($.browser.version === "6.0" || $.browser.version === "7.0") {
         addKillPanel();
-        return;
+      }
+      if (ieVersion) {
+          if ($.browser.version === ieVersion + ".0"){
+              addKillPanel();
+          }
       }
     }
   },
