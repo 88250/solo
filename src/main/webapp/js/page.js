@@ -421,7 +421,11 @@ $.extend(Page.prototype, {
     try {
       JSON
     } catch (e) {
-      document.write("<script src=\"" + latkeConfig.staticServePath + "/js/lib/json2.js\"><\/script>");
+      $.ajax({
+        url: latkeConfig.staticServePath + "/js/lib/json2.js",
+        dataType: "script",
+        cache: true
+      });
     }
   },
   /*
