@@ -240,8 +240,8 @@ var Util = {
       if (Cookie.readCookie("showKill") === "") {
         var left = ($(window).width() - 781) / 2,
           top1 = ($(window).height() - 680) / 2;
-        $("body").append("<div style='display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:11'></div>"
-          + "<iframe style='left:" + left + "px;z-index:20;top: " + top1 + "px; position: fixed; border: 0px none; width: 781px; height: 680px;' src='" + latkeConfig.servePath + "/kill-browser'></iframe>");
+        $("body").append("<div style='display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110'></div>"
+          + "<iframe style='left:" + left + "px;z-index:120;top: " + top1 + "px; position: fixed; border: 0px none; width: 781px; height: 680px;' src='" + latkeConfig.servePath + "/kill-browser'></iframe>");
       }
     };
 
