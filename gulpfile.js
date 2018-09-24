@@ -19,8 +19,9 @@
 /**
  * @file frontend tool.
  *
- * @author <a href="mailto:liliyuan@fangstar.net">Liyuan Li</a>
- * @version 1.6.0.0, Sep 1, 2018
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.6.1.0, Sep 24, 2018
  */
 
 'use strict'
@@ -67,7 +68,7 @@ gulp.task('compress', function () {
     './src/main/webapp/js/lib/to-markdown.js',
     './src/main/webapp/js/lib/highlight.js-9.6.0/highlight.pack.js']
   gulp.src(jsJqueryUpload).
-    pipe(uglify()).
+    pipe(uglify({output: {ascii_only:true}})). // https://github.com/b3log/solo/issues/12522
     pipe(concat('admin-lib.min.js')).
     pipe(gulp.dest('./src/main/webapp/js/lib/compress/'))
 
