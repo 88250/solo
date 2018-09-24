@@ -62,7 +62,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.37, Sep 16, 2018
+ * @version 1.9.3.38, Sep 24, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -89,6 +89,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
+        Latkes.USER_AGENT = Solos.USER_AGENT;
         Latkes.setScanPath("org.b3log.solo"); // For Latke IoC        
         super.contextInitialized(servletContextEvent);
         Stopwatchs.start("Context Initialized");
