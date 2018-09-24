@@ -17,8 +17,7 @@
     <name>Solo</name>
     <version>2.9.4</version>
     <description>
-        A blogging system written in Java, feel free to create your or your team own blog.
-        一个用 Java 实现的博客系统，为你或你的团队创建个博客吧！
+        一款小而美的 Java 博客系统。
     </description>
     <inceptionYear>2010</inceptionYear>
 
@@ -86,7 +85,7 @@
         <jetty.version>9.4.12.v20180830</jetty.version>
         <commons-cli.version>1.3.1</commons-cli.version>
         <commons-codec.version>1.10</commons-codec.version>
-        <emoji-java.version>3.2.0</emoji-java.version>
+        <emoji-java.version>4.0.0</emoji-java.version>
         <jodd.version>5.0.3</jodd.version>
         <snakeyaml.version>1.18</snakeyaml.version>
         <freemarker.version>2.3.28</freemarker.version>
