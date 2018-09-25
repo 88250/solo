@@ -36,7 +36,7 @@ import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.processor.console.common.ConsoleAuthAdvice;
+import org.b3log.solo.processor.console.ConsoleAuthAdvice;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
