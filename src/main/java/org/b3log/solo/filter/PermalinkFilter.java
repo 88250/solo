@@ -63,7 +63,7 @@ public final class PermalinkFilter implements Filter {
     private static final Logger LOGGER = Logger.getLogger(PermalinkFilter.class);
 
     @Override
-    public void init(final FilterConfig filterConfig) throws ServletException {
+    public void init(final FilterConfig filterConfig) {
     }
 
     /**
@@ -82,14 +82,12 @@ public final class PermalinkFilter implements Filter {
         final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
         final String requestURI = httpServletRequest.getRequestURI();
-
-        LOGGER.log(Level.DEBUG, "Request URI[{0}]", requestURI);
+        LOGGER.log(Level.DEBUG, "Request URI [{0}]", requestURI);
 
         final String contextPath = Latkes.getContextPath();
         final String permalink = StringUtils.substringAfter(requestURI, contextPath);
-
         if (PermalinkQueryService.invalidPermalinkFormat(permalink)) {
-            LOGGER.log(Level.DEBUG, "Skip filter request[URI={0}]", permalink);
+            LOGGER.log(Level.DEBUG, "Skip filter request [URI={0}]", permalink);
             chain.doFilter(request, response);
 
             return;
@@ -102,16 +100,14 @@ public final class PermalinkFilter implements Filter {
 
         try {
             final ArticleRepository articleRepository = beanManager.getReference(ArticleRepositoryImpl.class);
-
             article = articleRepository.getByPermalink(permalink);
             if (null == article) {
                 final PageRepository pageRepository = beanManager.getReference(PageRepositoryImpl.class);
-
                 page = pageRepository.getByPermalink(permalink);
             }
 
             if (null == page && null == article) {
-                LOGGER.log(Level.DEBUG, "Not found article/page with permalink[{0}]", permalink);
+                LOGGER.log(Level.DEBUG, "Not found article/page with permalink [{0}]", permalink);
                 chain.doFilter(request, response);
 
                 return;
@@ -125,14 +121,14 @@ public final class PermalinkFilter implements Filter {
 
         // If requests an article and the article need view passowrd, sends redirect to the password form
         final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
-
         if (null != article && articleQueryService.needViewPwd(httpServletRequest, article)) {
             try {
-                httpServletResponse.sendRedirect(
-                        Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
+                httpServletResponse.sendRedirect(Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
+
                 return;
             } catch (final Exception e) {
                 httpServletResponse.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
         }
@@ -152,8 +148,7 @@ public final class PermalinkFilter implements Filter {
      * @see DispatcherServlet#result(HTTPRequestContext)
      */
     private void dispatchToArticleOrPageProcessor(final ServletRequest request, final ServletResponse response,
-                                                  final JSONObject article, final JSONObject page)
-            throws IOException {
+                                                  final JSONObject article, final JSONObject page) throws IOException {
         final HTTPRequestContext context = new HTTPRequestContext();
         context.setRequest((HttpServletRequest) request);
         context.setResponse((HttpServletResponse) response);

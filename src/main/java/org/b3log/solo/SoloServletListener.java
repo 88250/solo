@@ -153,15 +153,15 @@ public final class SoloServletListener extends AbstractServletListener {
         Requests.log(httpServletRequest, Level.DEBUG, LOGGER);
 
         final String requestURI = httpServletRequest.getRequestURI();
-        Stopwatchs.start("Request Initialized[requestURI=" + requestURI + "]");
+        Stopwatchs.start("Request Initialized [requestURI=" + requestURI + "]");
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
-            LOGGER.log(Level.DEBUG, "Request made from a search engine[User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
+            LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
             // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
 
-            LOGGER.log(Level.DEBUG, "Gets a session[id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", session.getId(),
+            LOGGER.log(Level.DEBUG, "Gets a session [id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", session.getId(),
                     httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), session.isNew());
             // Online visitor count
             final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
