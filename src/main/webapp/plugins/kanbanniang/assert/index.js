@@ -13,6 +13,69 @@ var soloKanbanniang = {
       $('.solo-kanbanniang__tip').fadeTo(200, 0);
     }, timeout);
   },
+  _initMove: function () {
+    if (sessionStorage.soloKanbanniangX) {
+      $('.solo-kanbanniang').css('left', sessionStorage.soloKanbanniangX + 'px')
+    }
+    if (sessionStorage.soloKanbanniangY) {
+      $('.solo-kanbanniang').css('top', sessionStorage.soloKanbanniangY + 'px')
+    }
+    $('.solo-kanbanniang').mousedown(function(event) {
+      var _document = document;
+      if (!event) {
+        event = window.event;
+      }
+      var dialog = this;
+      var x = event.clientX - parseInt(dialog.style.left || 0),
+        y = event.clientY - parseInt(dialog.style.top || 0);
+      _document.ondragstart = "return false;";
+      _document.onselectstart = "return false;";
+      _document.onselect = "document.selection.empty();";
+
+      if (this.setCapture) {
+        this.setCapture();
+      } else if (window.captureEvents) {
+        window.captureEvents(Event.MOUSEMOVE|Event.MOUSEUP);
+      }
+
+      _document.onmousemove = function(event) {
+        if (!event) {
+          event = window.event;
+        }
+        var positionX = event.clientX - x,
+          positionY = event.clientY - y;
+        if (positionX < 0) {
+          positionX = 0;
+        }
+        if (positionX > $(window).width() - $(dialog).width()) {
+          positionX = $(window).width() - $(dialog).width();
+        }
+        if (positionY < 0) {
+          positionY = 0;
+        }
+        if (positionY > $('html').height() - $(dialog).height()) {
+          positionY = $('html').height() - $(dialog).height();
+        }
+        dialog.style.left = positionX + "px";
+        dialog.style.top = positionY + "px";
+        sessionStorage.setItem('soloKanbanniangX', positionX);
+        sessionStorage.setItem('soloKanbanniangY', positionY);
+      };
+
+      _document.onmouseup = function() {
+        if (this.releaseCapture) {
+          this.releaseCapture();
+        } else if(window.captureEvents) {
+          window.captureEvents(Event.MOUSEMOVE|Event.MOUSEUP);
+        }
+        _document.onmousemove = null;
+        _document.onmouseup = null;
+        _document.ondragstart = null;
+        _document.onselectstart = null;
+        _document.onselect = null;
+      }
+    });
+  },
   _initTips: function() {
     $.ajax({
       cache: true,
@@ -137,6 +200,7 @@ var soloKanbanniang = {
     this._initTips();
     this._initMenu();
     this._initFirstMsg();
+    this._initMove();
     window.setInterval(soloKanbanniang.showChat, 30000);
 
     var re = /solo/;
