@@ -119,7 +119,7 @@ public class CategoryConsole {
     public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
                             final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -173,7 +173,7 @@ public class CategoryConsole {
     public void getCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -231,7 +231,7 @@ public class CategoryConsole {
     public void removeCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -281,7 +281,7 @@ public class CategoryConsole {
     public void updateCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
                                final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -421,7 +421,7 @@ public class CategoryConsole {
                             final JSONObject requestJSONObject)
             throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -563,7 +563,7 @@ public class CategoryConsole {
     public void getCategories(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }

@@ -121,7 +121,7 @@ public class PreferenceConsole {
                                              final HttpServletResponse response,
                                              final HTTPRequestContext context) throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -164,7 +164,7 @@ public class PreferenceConsole {
                                                 final HTTPRequestContext context,
                                                 final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -212,7 +212,7 @@ public class PreferenceConsole {
     public void getSigns(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -303,7 +303,7 @@ public class PreferenceConsole {
     public void getPreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -384,7 +384,7 @@ public class PreferenceConsole {
     public void updatePreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
                                  final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -441,7 +441,7 @@ public class PreferenceConsole {
     public void getQiniuPreference(final HttpServletRequest request, final HttpServletResponse response,
                                    final HTTPRequestContext context) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -487,7 +487,7 @@ public class PreferenceConsole {
     public void updateQiniu(final HttpServletRequest request, final HttpServletResponse response,
                             final HTTPRequestContext context, final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }

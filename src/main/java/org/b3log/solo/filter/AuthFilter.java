@@ -74,15 +74,13 @@ public final class AuthFilter implements Filter {
 
             final JSONObject currentUser = userQueryService.getCurrentUser(httpServletRequest);
             if (null == currentUser) {
-                LOGGER.debug("The request has been forbidden");
-                httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
+                httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
                 return;
             }
 
             final String userRole = currentUser.optString(User.USER_ROLE);
             if (Role.VISITOR_ROLE.equals(userRole)) {
-                LOGGER.warn("The request [Visitor] has been forbidden");
                 httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                 return;

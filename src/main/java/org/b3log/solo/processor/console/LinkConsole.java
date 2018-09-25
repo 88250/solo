@@ -101,7 +101,7 @@ public class LinkConsole {
     public void removeLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -156,7 +156,7 @@ public class LinkConsole {
                            final JSONObject requestJSONObject)
             throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -207,7 +207,7 @@ public class LinkConsole {
     public void changeOrder(final HttpServletRequest request, final HttpServletResponse response,
                             final HTTPRequestContext context, final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -266,7 +266,7 @@ public class LinkConsole {
     public void addLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
                         final JSONObject requestJSONObject) throws Exception {
         if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -329,7 +329,7 @@ public class LinkConsole {
                          final HttpServletResponse response,
                          final HTTPRequestContext context) throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -387,7 +387,7 @@ public class LinkConsole {
     public void getLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
         if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
