@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.api.symphony;
+package org.b3log.solo.api;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -50,19 +50,19 @@ import java.net.URL;
 import java.util.Date;
 
 /**
- * Comment receiver (from B3log Symphony).
+ * Comment receiver from B3log Symphony.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.17, Sep 20, 2018
+ * @version 1.1.1.18, Sep 25, 2018
  * @since 0.5.5
  */
 @RequestProcessor
-public class CommentReceiver {
+public class B3CommentReceiver {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentReceiver.class);
+    private static final Logger LOGGER = Logger.getLogger(B3CommentReceiver.class);
 
     /**
      * Comment management service.

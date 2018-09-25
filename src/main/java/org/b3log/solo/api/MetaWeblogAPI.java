@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.api.metaweblog;
+package org.b3log.solo.api;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
@@ -53,7 +53,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * <a href="http://www.xmlrpc.com/metaWeblogApi">MetaWeblog API</a> requests processing.
+ * MetaWeblog API requests processing.
  * <p>
  * Implemented the following APIs:
  * <ul>

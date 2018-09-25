@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.api.symphony;
+package org.b3log.solo.api;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Inject;
@@ -37,19 +37,19 @@ import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
- * Article receiver (from B3log Symphony).
+ * Article receiver from B3log Symphony.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.4.2, Sep 20, 2018
+ * @version 1.0.4.3, Sep 25, 2018
  * @since 0.5.5
  */
 @RequestProcessor
-public class ArticleReceiver {
+public class B3ArticleReceiver {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleReceiver.class);
+    private static final Logger LOGGER = Logger.getLogger(B3ArticleReceiver.class);
 
     /**
      * Preference query service.

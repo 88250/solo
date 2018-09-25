@@ -23,7 +23,7 @@ import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.ioc.config.Discoverer;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
-import org.b3log.solo.api.metaweblog.MetaWeblogAPI;
+import org.b3log.solo.api.MetaWeblogAPI;
 import org.b3log.solo.cache.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.repository.impl.*;

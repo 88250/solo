@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.api.MetaWeblogAPI;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
@@ -42,7 +43,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * {@link org.b3log.solo.api.metaweblog.MetaWeblogAPI} test case.
+ * {@link MetaWeblogAPI} test case.
  *
  * @author yugt
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
