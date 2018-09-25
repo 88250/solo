@@ -18,19 +18,19 @@
 package org.b3log.solo.cache;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
-import org.b3log.solo.model.Page;
 import org.b3log.solo.util.JSONs;
 import org.json.JSONObject;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Page cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 18, 2017
+ * @version 1.0.0.1, Sep 25, 2018
  * @since 2.3.0
  */
 @Named
@@ -40,7 +40,7 @@ public class PageCache {
     /**
      * Page cache.
      */
-    private Cache cache = CacheFactory.getCache(Page.PAGES);
+    private Map<String, JSONObject> cache = new ConcurrentHashMap<>();
 
     /**
      * Gets a page by the specified page id.

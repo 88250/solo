@@ -17,18 +17,19 @@
  */
 package org.b3log.solo.cache;
 
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Statistic cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 6, 2017
+ * @version 1.0.0.1, Sep 25, 2018
  * @since 2.4.0
  */
 @Named
@@ -38,7 +39,7 @@ public class StatisticCache {
     /**
      * Statistic cache.
      */
-    private Cache cache = CacheFactory.getCache(Option.CATEGORY_C_STATISTIC);
+    private Map<String, JSONObject> cache = new ConcurrentHashMap<>();
 
     /**
      * Get the statistic.
@@ -62,6 +63,6 @@ public class StatisticCache {
      * Clears the statistic.
      */
     public void clear() {
-        cache.removeAll();
+        cache.clear();
     }
 }

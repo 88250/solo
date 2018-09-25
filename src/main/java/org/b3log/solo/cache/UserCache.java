@@ -18,8 +18,6 @@
 package org.b3log.solo.cache;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.model.Role;
@@ -27,11 +25,14 @@ import org.b3log.latke.model.User;
 import org.b3log.solo.util.JSONs;
 import org.json.JSONObject;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * User cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Aug 27, 2017
+ * @version 1.1.0.1, Sep 25, 2018
  * @since 2.3.0
  */
 @Named
@@ -41,17 +42,17 @@ public class UserCache {
     /**
      * Id, User.
      */
-    private Cache idCache = CacheFactory.getCache(User.USERS + "ID");
+    private Map<String, JSONObject> idCache = new ConcurrentHashMap<>();
 
     /**
      * Email, User.
      */
-    private Cache emailCache = CacheFactory.getCache(User.USERS + "Email");
+    private Map<String, JSONObject> emailCache = new ConcurrentHashMap<>();
 
     /**
      * Admin user.
      */
-    private Cache adminCache = CacheFactory.getCache("adminUser");
+    private Map<String, JSONObject> adminCache = new ConcurrentHashMap<>();
 
     /**
      * Gets the admin user.
