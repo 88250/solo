@@ -123,7 +123,7 @@ public final class SoloServletListener extends AbstractServletListener {
             }
         }
 
-        registerEventProcessor();
+        registerEventHandlers();
 
         final PluginManager pluginManager = beanManager.getReference(PluginManager.class);
         pluginManager.load();
@@ -228,22 +228,19 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * Register event processors.
+     * Register event handlers.
      */
-    private void registerEventProcessor() {
-        Stopwatchs.start("Register Event Processors");
+    private void registerEventHandlers() {
+        Stopwatchs.start("Register Event Handlers");
 
-        LOGGER.debug("Registering event processors....");
+        LOGGER.debug("Registering event handlers....");
         try {
             final EventManager eventManager = beanManager.getReference(EventManager.class);
 
             // Comment
             eventManager.registerListener(new ArticleCommentReplyNotifier());
             eventManager.registerListener(new PageCommentReplyNotifier());
-
-            // Article
-            // eventManager.registerListener(new AddArticleGoogleBlogSearchPinger());
-            // eventManager.registerListener(new UpdateArticleGoogleBlogSearchPinger());
+            
             // Plugin
             eventManager.registerListener(new PluginRefresher());
             eventManager.registerListener(new ViewLoadEventHandler());
@@ -253,11 +250,11 @@ public final class SoloServletListener extends AbstractServletListener {
             eventManager.registerListener(new ArticleUpdater());
             eventManager.registerListener(new CommentSender());
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Register event processors error", e);
+            LOGGER.log(Level.ERROR, "Register event handlers error", e);
             throw new IllegalStateException(e);
         }
 
-        LOGGER.debug("Registering event processors....");
+        LOGGER.debug("Registered event handlers");
 
         Stopwatchs.end();
     }
