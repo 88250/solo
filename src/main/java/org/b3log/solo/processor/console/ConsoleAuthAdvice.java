@@ -18,11 +18,12 @@
 package org.b3log.solo.processor.console;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.inject.Inject;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -49,11 +50,14 @@ public class ConsoleAuthAdvice extends BeforeRequestProcessAdvice {
      */
     private static final Logger LOGGER = Logger.getLogger(ConsoleAuthAdvice.class);
 
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
-
         final HttpServletRequest request = context.getRequest();
         if (!userQueryService.isLoggedIn(request, context.getResponse())) {
             final JSONObject exception401 = new JSONObject();
@@ -62,5 +66,16 @@ public class ConsoleAuthAdvice extends BeforeRequestProcessAdvice {
 
             throw new RequestProcessAdviceException(exception401);
         }
+
+        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final String userRole = currentUser.optString(User.USER_ROLE);
+        if (Role.VISITOR_ROLE.equals(userRole)) {
+            final JSONObject exception403 = new JSONObject();
+            exception403.put(Keys.MSG, "Forbidden to request [" + request.getRequestURI() + "]");
+            exception403.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+
+            throw new RequestProcessAdviceException(exception403);
+        }
+
     }
 }
