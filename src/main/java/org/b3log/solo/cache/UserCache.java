@@ -42,17 +42,17 @@ public class UserCache {
     /**
      * Id, User.
      */
-    private Map<String, JSONObject> idCache = new ConcurrentHashMap<>();
+    private final Map<String, JSONObject> idCache = new ConcurrentHashMap<>();
 
     /**
      * Email, User.
      */
-    private Map<String, JSONObject> emailCache = new ConcurrentHashMap<>();
+    private final Map<String, JSONObject> emailCache = new ConcurrentHashMap<>();
 
     /**
      * Admin user.
      */
-    private Map<String, JSONObject> adminCache = new ConcurrentHashMap<>();
+    private final Map<String, JSONObject> adminCache = new ConcurrentHashMap<>();
 
     /**
      * Gets the admin user.
@@ -127,5 +127,14 @@ public class UserCache {
 
         final String email = user.optString(User.USER_EMAIL);
         emailCache.remove(email);
+    }
+
+    /**
+     * Clears all cached data.
+     */
+    public void clear() {
+        idCache.clear();
+        emailCache.clear();
+        adminCache.clear();
     }
 }

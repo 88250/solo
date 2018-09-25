@@ -443,7 +443,10 @@ public class LoginProcessor {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
 
-        final String token = request.getParameter("token");
+        String token = request.getParameter("token");
+        if (StringUtils.isBlank(token)) {
+            token = "";
+        }
         final JSONObject tokenObj = optionQueryService.getOptionById(token);
 
         if (tokenObj == null) {

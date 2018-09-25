@@ -41,12 +41,12 @@ public class OptionCache {
     /**
      * Option cache.
      */
-    private static final Map<String, JSONObject> CACHE = new ConcurrentHashMap<>();
+    private final Map<String, JSONObject> cache = new ConcurrentHashMap<>();
 
     /**
      * Category option caches.
      */
-    private static final Map<String, JSONObject> CATEGORY_CACHES = new ConcurrentHashMap<>();
+    private final Map<String, JSONObject> categoryCache = new ConcurrentHashMap<>();
 
     /**
      * Removes a category cache specified by the given category.
@@ -54,7 +54,7 @@ public class OptionCache {
      * @param category the given category
      */
     public void removeCategory(final String category) {
-        CATEGORY_CACHES.remove(category);
+        categoryCache.remove(category);
     }
 
     /**
@@ -64,7 +64,7 @@ public class OptionCache {
      * @return merged options
      */
     public JSONObject getCategory(final String category) {
-        JSONObject ret = CATEGORY_CACHES.get(category);
+        JSONObject ret = categoryCache.get(category);
         if (null == ret) {
             return null;
         }
@@ -79,7 +79,7 @@ public class OptionCache {
      * @param mergedOptions the specified merged options
      */
     public void putCategory(final String category, final JSONObject mergedOptions) {
-        CATEGORY_CACHES.put(category, mergedOptions);
+        categoryCache.put(category, mergedOptions);
     }
 
     /**
@@ -89,7 +89,7 @@ public class OptionCache {
      * @return option, returns {@code null} if not found
      */
     public JSONObject getOption(final String id) {
-        final JSONObject option = CACHE.get(id);
+        final JSONObject option = cache.get(id);
         if (null == option) {
             return null;
         }
@@ -103,7 +103,7 @@ public class OptionCache {
      * @param option the specified option
      */
     public void putOption(final JSONObject option) {
-        CACHE.put(option.optString(Keys.OBJECT_ID), JSONs.clone(option));
+        cache.put(option.optString(Keys.OBJECT_ID), JSONs.clone(option));
 
         final String category = option.optString(Option.OPTION_CATEGORY);
         removeCategory(category);
@@ -123,6 +123,14 @@ public class OptionCache {
         final String category = option.optString(Option.OPTION_CATEGORY);
         removeCategory(category);
 
-        CACHE.remove(id);
+        cache.remove(id);
+    }
+
+    /**
+     * Clears all cached data.
+     */
+    public void clear() {
+        cache.clear();
+        categoryCache.clear();
     }
 }

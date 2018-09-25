@@ -18,15 +18,18 @@
 package org.b3log.solo.util;
 
 import org.apache.commons.io.IOUtils;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.FileInputStream;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * {@link org.b3log.solo.util.Markdowns} test case.
@@ -36,6 +39,12 @@ import java.util.List;
  * @since 0.4.5
  */
 public final class MarkdownsTestCase {
+
+    @BeforeClass
+    public void beforeClass() {
+        Latkes.initRuntimeEnv();
+        Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
+    }
 
     /**
      * Test method for {@linkplain Markdowns#toHTML(java.lang.String)}.

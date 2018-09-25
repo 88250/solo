@@ -40,7 +40,7 @@ public class PageCache {
     /**
      * Page cache.
      */
-    private Map<String, JSONObject> cache = new ConcurrentHashMap<>();
+    private final Map<String, JSONObject> cache = new ConcurrentHashMap<>();
 
     /**
      * Gets a page by the specified page id.
@@ -75,5 +75,12 @@ public class PageCache {
      */
     public void removePage(final String id) {
         cache.remove(id);
+    }
+
+    /**
+     * Clears all cached data.
+     */
+    public void clear() {
+        cache.clear();
     }
 }
