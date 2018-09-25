@@ -33,7 +33,7 @@ var Util = {
     div.innerHTML = decodeURIComponent(code)
     return div.innerText
   },
-  _isArticlePage: function (href) {
+  isArticlePage: function (href) {
     var isArticle = true;
     if (href.indexOf(latkeConfig.servePath + '/tags/') > -1) {
       isArticle = false;
@@ -64,9 +64,8 @@ var Util = {
   /**
    * 初始化 Pjax
    * @param cb 除文章和自定义页面外的其他页面加载回调
-   * @param articelCB 文章页面加载后的回调
    */
-  initPjax: function (cb, articelCB) {
+  initPjax: function (cb) {
     if ($('#pjax').length === 1) {
       $.pjax({
         selector: 'a',
@@ -79,7 +78,7 @@ var Util = {
           if (href.indexOf('data:image') > -1) {
             return true
           }
-          return Util._isArticlePage(href);
+          return false
         },
         callback: function () {
           cb()
@@ -90,33 +89,6 @@ var Util = {
         NProgress.start();
       });
       $('#pjax').bind('pjax.end', function(){
-        NProgress.done();
-      });
-      return;
-    }
-    if ($('#pjaxArticle').length === 1) {
-      $.pjax({
-        selector: 'a',
-        container: '#pjaxArticle',
-        show: '',
-        cache: false,
-        storage: true,
-        titleSuffix: '',
-        filter: function(href){
-          if (href.indexOf('data:image') > -1) {
-            return true
-          }
-          return !Util._isArticlePage(href);
-        },
-        callback: function () {
-          articelCB();
-        }
-      });
-      NProgress.configure({ showSpinner: false });
-      $('#pjaxArticle').bind('pjax.start', function(){
-        NProgress.start();
-      });
-      $('#pjaxArticle').bind('pjax.end', function(){
         NProgress.done();
       });
       return;
