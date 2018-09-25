@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.22, Sep 24, 2018
+    Version: 3.18.3.23, Sep 25, 2018
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -94,7 +94,7 @@
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <maven-resources-plugin.version>3.1.0</maven-resources-plugin.version>
         <maven-surefire-plugin.version>2.22.0</maven-surefire-plugin.version>
-        <maven-license-plugin.version>1.9.0</maven-license-plugin.version>
+        <license-maven-plugin.version>3.0</license-maven-plugin.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
         <maven-min-plugin.version>1.0.4</maven-min-plugin.version>
@@ -316,9 +316,9 @@
             </plugin>
 
             <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <version>${maven-license-plugin.version}</version>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${license-maven-plugin.version}</version>
                 <configuration>
                     <header>src/main/resources/etc/header.txt</header>
                     <quiet>false</quiet>
