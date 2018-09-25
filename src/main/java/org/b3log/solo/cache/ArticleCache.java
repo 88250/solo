@@ -18,19 +18,20 @@
 package org.b3log.solo.cache;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.util.JSONs;
 import org.json.JSONObject;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Sep 16, 2018
+ * @version 1.2.0.1, Sep 25, 2018
  * @since 2.3.0
  */
 @Named
@@ -40,12 +41,12 @@ public class ArticleCache {
     /**
      * Article id cache.
      */
-    private Cache idCache = CacheFactory.getCache(Article.ARTICLES);
+    private Map<String, JSONObject> idCache = new ConcurrentHashMap<>();
 
     /**
      * Article permalink cache.
      */
-    private Cache permalinkCache = CacheFactory.getCache(Article.ARTICLE_PERMALINK);
+    private Map<String, JSONObject> permalinkCache = new ConcurrentHashMap<>();
 
     /**
      * Gets an article by the specified article id.
@@ -100,7 +101,7 @@ public class ArticleCache {
      * Clears all cached articles.
      */
     public void clear() {
-        idCache.removeAll();
-        permalinkCache.removeAll();
+        idCache.clear();
+        permalinkCache.clear();
     }
 }
