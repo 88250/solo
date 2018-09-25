@@ -33,12 +33,12 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
+import org.b3log.solo.event.b3log.ArticleSender;
+import org.b3log.solo.event.b3log.ArticleUpdater;
+import org.b3log.solo.event.b3log.CommentSender;
 import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
 import org.b3log.solo.event.comment.PageCommentReplyNotifier;
 import org.b3log.solo.event.plugin.PluginRefresher;
-import org.b3log.solo.event.rhythm.ArticleSender;
-import org.b3log.solo.event.rhythm.ArticleUpdater;
-import org.b3log.solo.event.symphony.CommentSender;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
@@ -96,11 +96,11 @@ public final class SoloServletListener extends AbstractServletListener {
 
         beanManager = Lifecycle.getBeanManager();
 
-        // Upgrade check (https://github.com/b3log/solo/issues/12040)
+        // Upgrade check https://github.com/b3log/solo/issues/12040
         final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
         upgradeService.upgrade();
 
-        // Import check (https://github.com/b3log/solo/issues/12293)
+        // Import check https://github.com/b3log/solo/issues/12293
         final ImportService importService = beanManager.getReference(ImportService.class);
         importService.importMarkdowns();
 
@@ -232,22 +232,19 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void registerEventHandlers() {
         Stopwatchs.start("Register Event Handlers");
-
         LOGGER.debug("Registering event handlers....");
+
         try {
             final EventManager eventManager = beanManager.getReference(EventManager.class);
-
             // Comment
             final ArticleCommentReplyNotifier articleCommentReplyNotifier = beanManager.getReference(ArticleCommentReplyNotifier.class);
             eventManager.registerListener(articleCommentReplyNotifier);
             final PageCommentReplyNotifier pageCommentReplyNotifier = beanManager.getReference(PageCommentReplyNotifier.class);
             eventManager.registerListener(pageCommentReplyNotifier);
-
             // Plugin
             final PluginRefresher pluginRefresher = beanManager.getReference(PluginRefresher.class);
             eventManager.registerListener(pluginRefresher);
             eventManager.registerListener(new ViewLoadEventHandler());
-
             // B3log Sync
             final ArticleSender articleSender = beanManager.getReference(ArticleSender.class);
             eventManager.registerListener(articleSender);
@@ -261,7 +258,6 @@ public final class SoloServletListener extends AbstractServletListener {
         }
 
         LOGGER.debug("Registered event handlers");
-
         Stopwatchs.end();
     }
 

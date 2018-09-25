@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.event.rhythm;
+package org.b3log.solo.event.b3log;
 
 import jodd.http.HttpRequest;
 import org.apache.commons.lang.StringUtils;

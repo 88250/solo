@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.event.symphony;
+package org.b3log.solo.event.b3log;
 
 import jodd.http.HttpRequest;
 import org.b3log.latke.Keys;
@@ -32,7 +32,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.event.rhythm.ArticleSender;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
