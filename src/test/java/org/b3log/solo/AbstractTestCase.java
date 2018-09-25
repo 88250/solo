@@ -24,9 +24,11 @@ import org.b3log.latke.ioc.config.Discoverer;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.solo.api.metaweblog.MetaWeblogAPI;
+import org.b3log.solo.cache.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.repository.impl.*;
 import org.b3log.solo.service.*;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import java.sql.Connection;
@@ -37,8 +39,7 @@ import java.util.Locale;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.0.10, Sep 6, 2017
- * @see #beforeClass()
+ * @version 2.3.0.11, Sep 25, 2018
  */
 public abstract class AbstractTestCase {
 
@@ -78,8 +79,20 @@ public abstract class AbstractTestCase {
      * <li>Clears all caches</li>
      * </ul>
      */
-    @BeforeClass
+    @AfterClass
     public void afterClass() {
+        final ArticleCache articleCache = beanManager.getReference(ArticleCache.class);
+        articleCache.clear();
+        final CommentCache commentCache = beanManager.getReference(CommentCache.class);
+        commentCache.clear();
+        final OptionCache optionCache = beanManager.getReference(OptionCache.class);
+        optionCache.clear();
+        final PageCache pageCache = beanManager.getReference(PageCache.class);
+        pageCache.clear();
+        final StatisticCache statisticCache = beanManager.getReference(StatisticCache.class);
+        statisticCache.clear();
+        final UserCache userCache = beanManager.getReference(UserCache.class);
+        userCache.clear();
     }
 
     /**

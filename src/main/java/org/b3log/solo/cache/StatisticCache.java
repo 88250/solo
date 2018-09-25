@@ -39,7 +39,7 @@ public class StatisticCache {
     /**
      * Statistic cache.
      */
-    private Map<String, JSONObject> cache = new ConcurrentHashMap<>();
+    private final Map<String, JSONObject> cache = new ConcurrentHashMap<>();
 
     /**
      * Get the statistic.
@@ -60,7 +60,7 @@ public class StatisticCache {
     }
 
     /**
-     * Clears the statistic.
+     * Clears all cached data.
      */
     public void clear() {
         cache.clear();

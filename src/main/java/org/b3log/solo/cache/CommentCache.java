@@ -40,7 +40,7 @@ public class CommentCache {
     /**
      * Comment cache.
      */
-    private Map<String, JSONObject> cache = new ConcurrentHashMap<>();
+    private final Map<String, JSONObject> cache = new ConcurrentHashMap<>();
 
     /**
      * Gets a comment by the specified comment id.
@@ -76,7 +76,7 @@ public class CommentCache {
     }
 
     /**
-     * Clears all cached comments.
+     * Clears all cached data.
      */
     public void clear() {
         cache.clear();

@@ -41,12 +41,12 @@ public class ArticleCache {
     /**
      * Article id cache.
      */
-    private Map<String, JSONObject> idCache = new ConcurrentHashMap<>();
+    private final Map<String, JSONObject> idCache = new ConcurrentHashMap<>();
 
     /**
      * Article permalink cache.
      */
-    private Map<String, JSONObject> permalinkCache = new ConcurrentHashMap<>();
+    private final Map<String, JSONObject> permalinkCache = new ConcurrentHashMap<>();
 
     /**
      * Gets an article by the specified article id.
@@ -98,7 +98,7 @@ public class ArticleCache {
     }
 
     /**
-     * Clears all cached articles.
+     * Clears all cached data.
      */
     public void clear() {
         idCache.clear();
