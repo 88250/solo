@@ -75,10 +75,10 @@ var Util = {
         storage: true,
         titleSuffix: '',
         filter: function(href){
-          if (href.indexOf('data:image') > -1) {
-            return true
+          if (href.indexOf(latkeConfig.servePath) > -1) {
+            return false
           }
-          return false
+          return true
         },
         callback: function () {
           cb()
@@ -91,7 +91,6 @@ var Util = {
       $('#pjax').bind('pjax.end', function(){
         NProgress.done();
       });
-      return;
     }
   },
   /**
