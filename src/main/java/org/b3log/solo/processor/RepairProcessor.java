@@ -29,12 +29,14 @@ import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.processor.console.common.ConsoleAuthAdvice;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
@@ -50,15 +52,13 @@ import java.util.List;
 
 /**
  * Provides patches on some special issues.
- * <p>
- * See AuthFilter filter configurations in web.xml for authentication.
- * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.16, Sep 7, 2018
+ * @version 1.2.0.17, Sep 25, 2018
  * @since 0.3.1
  */
 @RequestProcessor
+@Before(adviceClass = ConsoleAuthAdvice.class)
 public class RepairProcessor {
 
     /**

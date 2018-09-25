@@ -20,7 +20,7 @@
 -->
 <!--
     Description: Solo web deployment descriptor for testing.
-    Version: 1.0.5.2, Mar 11, 2018
+    Version: 1.0.5.3, Sep 25, 2018
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -46,27 +46,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <filter>
-        <filter-name>AuthFilter</filter-name>
-        <filter-class>org.b3log.solo.filter.AuthFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>AuthFilter</filter-name>
-        <url-pattern>/admin-index.do</url-pattern>
-        <url-pattern>/admin-main.do</url-pattern>
-        <url-pattern>/admin-article.do</url-pattern>
-        <url-pattern>/admin-article-list.do</url-pattern>
-        <url-pattern>/admin-comment-list.do</url-pattern>
-        <url-pattern>/admin-link-list.do</url-pattern>
-        <url-pattern>/admin-preference.do</url-pattern>
-        <url-pattern>/admin-page-list.do</url-pattern>
-        <url-pattern>/admin-others.do</url-pattern>
-        <url-pattern>/admin-draft-list.do</url-pattern>
-        <url-pattern>/admin-user-list.do</url-pattern>
-        <url-pattern>/admin-plugin-list.do</url-pattern>
-        <url-pattern>/admin-about.do</url-pattern>
-        <url-pattern>/fix/*</url-pattern>
-    </filter-mapping>
     <filter>
         <filter-name>PermalinkFilter</filter-name>
         <filter-class>org.b3log.solo.filter.PermalinkFilter</filter-class>

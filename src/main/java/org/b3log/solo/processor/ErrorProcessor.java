@@ -42,7 +42,7 @@ import java.util.Map;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Sep 20, 2018
+ * @version 1.0.1.4, Sep 25, 2018
  * @since 0.4.5
  */
 @RequestProcessor
@@ -78,36 +78,40 @@ public class ErrorProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * Shows the user template page.
+     * Handles the error.
      *
      * @param context  the specified context
      * @param request  the specified HTTP servlet request
      * @param response the specified HTTP servlet response
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/error/*.html", method = HTTPRequestMethod.GET)
-    public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
+    @RequestProcessing(value = "/error/{statusCode}", method = HTTPRequestMethod.GET)
+    public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
+                              final String statusCode)
             throws Exception {
-        final String requestURI = request.getRequestURI();
-        String templateName = StringUtils.substringAfterLast(requestURI, "/");
-        templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-        LOGGER.log(Level.DEBUG, "Shows error page[requestURI={0}, templateName={1}]", requestURI, templateName);
+        if (StringUtils.equals("GET", request.getMethod())) {
+            final String requestURI = request.getRequestURI();
+            String templateName = StringUtils.substringAfterLast(requestURI, "/");
+            templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
 
-        final ConsoleRenderer renderer = new ConsoleRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("error/" + templateName);
+            final ConsoleRenderer renderer = new ConsoleRenderer();
+            context.setRenderer(renderer);
+            renderer.setTemplateName("error/" + templateName);
 
-        final Map<String, Object> dataModel = renderer.getDataModel();
-        try {
-            final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
-            dataModel.putAll(langs);
-            final JSONObject preference = preferenceQueryService.getPreference();
-            filler.fillCommon(request, response, dataModel, preference);
-            dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            final Map<String, Object> dataModel = renderer.getDataModel();
+            try {
+                final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+                dataModel.putAll(langs);
+                final JSONObject preference = preferenceQueryService.getPreference();
+                filler.fillCommon(request, response, dataModel, preference);
+                dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            }
+        } else {
+            context.renderJSON().renderMsg(statusCode);
         }
     }
 }
