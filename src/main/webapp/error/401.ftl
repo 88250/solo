@@ -19,10 +19,10 @@
 -->
 <#include "../macro-common-page.ftl">
 
-<@commonPage "500 Internal Server Error!">
-<h2>500 Internal Server Error!</h2>
-<img class="img-error" src="${staticServePath}/images/500.png" title="500" alt="500 Internal Server Error!"/>
+<@commonPage "401 Unauthorized!">
+<h2>401 Unauthorized!</h2>
+<img class="img-error" src="${staticServePath}/images/403.png" alt="401" title="401 Unauthorized!" />
 <div class="a-error">
-    Please <a href="https://github.com/b3log/solo/issues/new">report</a> it or return to <a href="${servePath}">Index</a>.
+    Please <a href="${loginURL}">Login</a> or return to <a href="${servePath}">Index</a>.
 </div>
 </@commonPage>

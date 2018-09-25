@@ -21,9 +21,10 @@ import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
-import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.solo.service.UserQueryService;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,22 +36,27 @@ import java.util.Map;
  *
  * @author <a href="mailto:wmainlove@gmail.com">Love Yao</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Sep 5, 2017
+ * @version 1.0.1.1, Sep 25, 2018
  */
 @Named
 @Singleton
 public class ProcessAuthAdvice extends BeforeRequestProcessAdvice {
 
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ProcessAuthAdvice.class);
+
     @Override
-    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) {
         final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
         final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
 
-        if (!userQueryService.isLoggedIn(context.getRequest(), context.getResponse())) {
+        if (!userQueryService.isAdminLoggedIn(context.getRequest())) {
             try {
                 context.getResponse().sendError(HttpServletResponse.SC_FORBIDDEN);
             } catch (final IOException e) {
-                throw new RuntimeException(e);
+                LOGGER.log(Level.ERROR, "Response sends error failed", e);
             }
         }
     }
