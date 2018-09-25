@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.event.comment;
+package org.b3log.solo.event;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -33,7 +33,6 @@ import org.b3log.latke.mail.MailService;
 import org.b3log.latke.mail.MailService.Message;
 import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;

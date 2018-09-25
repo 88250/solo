@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.event.b3log;
+package org.b3log.solo.event;
 
 import jodd.http.HttpRequest;
 import org.apache.commons.lang.StringUtils;
@@ -33,7 +33,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -43,36 +42,34 @@ import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for sending article to B3log Rhythm.
+ * This listener is responsible for updating article to B3log Rhythm. Sees <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  * <p>
- * The B3log Rhythm article update interface: http://rhythm.b3log.org/article (POST).
+ * The B3log Rhythm article update interface: http://rhythm.b3log.org/article (PUT).
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author ArmstrongCN
- * @version 1.0.2.15, Sep 25, 2018
- * @since 0.3.1
+ * @version 1.0.1.5, Sep 25, 2018
+ * @since 0.6.0
  */
 @Named
 @Singleton
-public class ArticleSender extends AbstractEventListener<JSONObject> {
+public class B3ArticleUpdater extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(ArticleSender.class);
+    private static final Logger LOGGER = Logger.getLogger(B3ArticleUpdater.class);
 
     /**
-     * URL of adding article to Rhythm.
+     * URL of updating article to Rhythm.
      */
-    private static final String ADD_ARTICLE_URL = Solos.B3LOG_RHYTHM_SERVE_PATH + "/article";
+    private static String UPDATE_ARTICLE_URL = Solos.B3LOG_RHYTHM_SERVE_PATH + "/article";
 
-    @Override
     public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
 
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                event.getType(), data, ArticleSender.class.getName());
+                event.getType(), data, B3ArticleUpdater.class.getName());
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
@@ -127,7 +124,7 @@ public class ArticleSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", "LOCAL");
 
-            HttpRequest.post(ADD_ARTICLE_URL).bodyText(requestJSONObject.toString()).
+            HttpRequest.put(UPDATE_ARTICLE_URL).bodyText(requestJSONObject.toString()).
                     contentTypeJson().header("User-Agent", Solos.USER_AGENT).sendAsync();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sends an article to Rhythm error: {0}", e.getMessage());
@@ -137,12 +134,12 @@ public class ArticleSender extends AbstractEventListener<JSONObject> {
     }
 
     /**
-     * Gets the event type {@linkplain EventTypes#ADD_ARTICLE}.
+     * Gets the event type {@linkplain EventTypes#UPDATE_ARTICLE}.
      *
      * @return event type
      */
     @Override
     public String getEventType() {
-        return EventTypes.ADD_ARTICLE;
+        return EventTypes.UPDATE_ARTICLE;
     }
 }

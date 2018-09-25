@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.event.plugin;
+package org.b3log.solo.event;
 
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;

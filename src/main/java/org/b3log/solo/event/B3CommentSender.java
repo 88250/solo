@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.event.b3log;
+package org.b3log.solo.event;
 
 import jodd.http.HttpRequest;
 import org.b3log.latke.Keys;
@@ -31,7 +31,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -39,7 +38,7 @@ import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for sending comment to B3log Symphony.
+ * This listener is responsible for sending comment to B3log Symphony. Sees <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.3, Sep 25, 2018
@@ -47,12 +46,12 @@ import org.json.JSONObject;
  */
 @Named
 @Singleton
-public class CommentSender extends AbstractEventListener<JSONObject> {
+public class B3CommentSender extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(CommentSender.class);
+    private static final Logger LOGGER = Logger.getLogger(B3CommentSender.class);
 
     /**
      * URL of adding comment to Symphony.
@@ -64,7 +63,7 @@ public class CommentSender extends AbstractEventListener<JSONObject> {
         final JSONObject data = event.getData();
 
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
-                event.getType(), data, ArticleSender.class.getName());
+                event.getType(), data, B3ArticleSender.class.getName());
         try {
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
 

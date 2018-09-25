@@ -33,12 +33,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.event.b3log.ArticleSender;
-import org.b3log.solo.event.b3log.ArticleUpdater;
-import org.b3log.solo.event.b3log.CommentSender;
-import org.b3log.solo.event.comment.ArticleCommentReplyNotifier;
-import org.b3log.solo.event.comment.PageCommentReplyNotifier;
-import org.b3log.solo.event.plugin.PluginRefresher;
+import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
@@ -236,21 +231,18 @@ public final class SoloServletListener extends AbstractServletListener {
 
         try {
             final EventManager eventManager = beanManager.getReference(EventManager.class);
-            // Comment
             final ArticleCommentReplyNotifier articleCommentReplyNotifier = beanManager.getReference(ArticleCommentReplyNotifier.class);
             eventManager.registerListener(articleCommentReplyNotifier);
             final PageCommentReplyNotifier pageCommentReplyNotifier = beanManager.getReference(PageCommentReplyNotifier.class);
             eventManager.registerListener(pageCommentReplyNotifier);
-            // Plugin
             final PluginRefresher pluginRefresher = beanManager.getReference(PluginRefresher.class);
             eventManager.registerListener(pluginRefresher);
             eventManager.registerListener(new ViewLoadEventHandler());
-            // B3log Sync
-            final ArticleSender articleSender = beanManager.getReference(ArticleSender.class);
+            final B3ArticleSender articleSender = beanManager.getReference(B3ArticleSender.class);
             eventManager.registerListener(articleSender);
-            final ArticleUpdater articleUpdater = beanManager.getReference(ArticleUpdater.class);
+            final B3ArticleUpdater articleUpdater = beanManager.getReference(B3ArticleUpdater.class);
             eventManager.registerListener(articleUpdater);
-            final CommentSender commentSender = beanManager.getReference(CommentSender.class);
+            final B3CommentSender commentSender = beanManager.getReference(B3CommentSender.class);
             eventManager.registerListener(commentSender);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Register event handlers error", e);
