@@ -65,7 +65,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.16.8, Sep 20, 2018
+ * @version 1.6.16.9, Sep 25, 2018
  * @since 0.3.1
  */
 @Service
@@ -930,6 +930,7 @@ public class Filler {
             final String authorId = author.getString(Keys.OBJECT_ID);
             article.put(Common.AUTHOR_ID, authorId);
             article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.optLong(Article.ARTICLE_CREATED)));
+            article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(Article.ARTICLE_UPDATED)));
 
             final String userAvatar = author.optString(UserExt.USER_AVATAR);
             if (StringUtils.isNotBlank(userAvatar)) {
