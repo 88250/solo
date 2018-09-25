@@ -24,6 +24,8 @@ import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -45,10 +47,12 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.wanglay.com">Lei Wang</a>
- * @version 1.2.2.10, Aug 2, 2018
+ * @version 1.2.2.11, Sep 25, 2018
  * @since 0.3.1
  */
-public final class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObject> {
+@Named
+@Singleton
+public class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.

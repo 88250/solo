@@ -26,6 +26,8 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -47,10 +49,12 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Sep 16, 2018
+ * @version 1.0.1.5, Sep 25, 2018
  * @since 0.6.0
  */
-public final class ArticleUpdater extends AbstractEventListener<JSONObject> {
+@Named
+@Singleton
+public class ArticleUpdater extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.

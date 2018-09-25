@@ -631,7 +631,7 @@ public class Filler {
 
                 data.setViewName("footer.ftl");
                 data.setDataModel(dataModel);
-                eventManager.fireEventSynchronously(new Event<ViewLoadEventData>(Keys.FREEMARKER_ACTION, data));
+                eventManager.fireEventSynchronously(new Event<>(Keys.FREEMARKER_ACTION, data));
                 if (StringUtils.isBlank((String) dataModel.get(Plugin.PLUGINS))) {
                     // There is no plugin for this template, fill ${plugins} with blank.
                     dataModel.put(Plugin.PLUGINS, "");

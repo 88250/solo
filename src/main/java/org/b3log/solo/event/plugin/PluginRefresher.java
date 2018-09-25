@@ -19,9 +19,10 @@ package org.b3log.solo.event.plugin;
 
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.AbstractPlugin;
@@ -37,10 +38,12 @@ import java.util.List;
  * This listener is responsible for refreshing plugin after every loaded.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Nov 28, 2011
+ * @version 1.0.0.2, Sep 25, 2018
  * @since 0.3.1
  */
-public final class PluginRefresher extends AbstractEventListener<List<AbstractPlugin>> {
+@Named
+@Singleton
+public class PluginRefresher extends AbstractEventListener<List<AbstractPlugin>> {
 
     /**
      * Logger.
@@ -48,7 +51,7 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
     private static final Logger LOGGER = Logger.getLogger(PluginRefresher.class);
 
     @Override
-    public void action(final Event<List<AbstractPlugin>> event) throws EventException {
+    public void action(final Event<List<AbstractPlugin>> event) {
         final List<AbstractPlugin> plugins = event.getData();
 
         LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
@@ -67,8 +70,7 @@ public final class PluginRefresher extends AbstractEventListener<List<AbstractPl
                 transaction.rollback();
             }
 
-            LOGGER.log(Level.ERROR, "Processing plugin loaded event error", e);
-            throw new EventException(e);
+            LOGGER.log(Level.ERROR, "Process plugin loaded event error", e);
         }
     }
 

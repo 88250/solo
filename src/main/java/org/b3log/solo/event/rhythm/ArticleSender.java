@@ -26,6 +26,8 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
@@ -40,8 +42,6 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import java.util.Date;
-
 /**
  * This listener is responsible for sending article to B3log Rhythm.
  * <p>
@@ -50,10 +50,12 @@ import java.util.Date;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.0.2.14, Sep 16, 2018
+ * @version 1.0.2.15, Sep 25, 2018
  * @since 0.3.1
  */
-public final class ArticleSender extends AbstractEventListener<JSONObject> {
+@Named
+@Singleton
+public class ArticleSender extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.

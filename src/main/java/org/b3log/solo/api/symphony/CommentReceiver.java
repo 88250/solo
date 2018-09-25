@@ -245,7 +245,7 @@ public class CommentReceiver {
 
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);
-            eventManager.fireEventSynchronously(new Event<JSONObject>(EventTypes.ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY, eventData));
+            eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY, eventData));
 
             transaction.commit();
             ret.put(Keys.STATUS_CODE, true);

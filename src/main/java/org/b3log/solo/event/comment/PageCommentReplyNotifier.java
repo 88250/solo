@@ -25,6 +25,8 @@ import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.LatkeBeanManager;
 import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.inject.Named;
+import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -45,10 +47,12 @@ import org.json.JSONObject;
  * This listener is responsible for processing page comment reply.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.5, Apr 15, 2018
+ * @version 1.0.2.6, Sep 25, 2018
  * @since 0.3.1
  */
-public final class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> {
+@Named
+@Singleton
+public class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> {
 
     /**
      * Logger.
@@ -61,7 +65,7 @@ public final class PageCommentReplyNotifier extends AbstractEventListener<JSONOb
     private MailService mailService = MailServiceFactory.getMailService();
 
     @Override
-    public void action(final Event<JSONObject> event) throws EventException {
+    public void action(final Event<JSONObject> event) {
         final JSONObject eventData = event.getData();
         final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
         final JSONObject page = eventData.optJSONObject(Page.PAGE);
@@ -136,8 +140,6 @@ public final class PageCommentReplyNotifier extends AbstractEventListener<JSONOb
             mailService.send(message);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            throw new EventException("Reply notifier error!");
         }
     }
 
