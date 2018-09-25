@@ -24,6 +24,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -31,7 +32,6 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.TagMgmtService;
 import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,10 +43,11 @@ import java.util.List;
  * Tag console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Oct 24, 2011
+ * @version 1.0.0.1, Sep 25, 2018
  * @since 0.4.0
  */
 @RequestProcessor
+@Before(adviceClass = ConsoleAdminAuthAdvice.class)
 public class TagConsole {
 
     /**
@@ -65,12 +66,6 @@ public class TagConsole {
      */
     @Inject
     private TagMgmtService tagMgmtService;
-
-    /**
-     * User query service.
-     */
-    @Inject
-    private UserQueryService userQueryService;
 
     /**
      * Language service.
@@ -96,17 +91,9 @@ public class TagConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/tags", method = HTTPRequestMethod.GET)
-    public void getTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+    public void getTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -140,17 +127,9 @@ public class TagConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/tag/unused", method = HTTPRequestMethod.GET)
-    public void getUnusedTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+    public void getUnusedTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -193,18 +172,10 @@ public class TagConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/tag/unused",
             method = HTTPRequestMethod.DELETE)
-    public void removeUnusedTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+    public void removeUnusedTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();

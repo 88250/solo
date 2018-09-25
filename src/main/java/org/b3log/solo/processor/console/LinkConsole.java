@@ -26,6 +26,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -34,7 +35,6 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
-import org.b3log.solo.service.UserQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -45,22 +45,17 @@ import javax.servlet.http.HttpServletResponse;
  * Link console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Sep 20, 2018
+ * @version 1.0.1.2, Sep 25, 2018
  * @since 0.4.0
  */
 @RequestProcessor
+@Before(adviceClass = ConsoleAdminAuthAdvice.class)
 public class LinkConsole {
 
     /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(LinkConsole.class);
-
-    /**
-     * User query service.
-     */
-    @Inject
-    private UserQueryService userQueryService;
 
     /**
      * Link query service.
@@ -95,16 +90,9 @@ public class LinkConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.DELETE)
-    public void removeLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+    public void removeLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -149,17 +137,10 @@ public class LinkConsole {
      *                          "linkDescription": ""
      *                          }
      *                          }, see {@link org.b3log.solo.model.Link} for more details
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.PUT)
     public void updateLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                           final JSONObject requestJSONObject)
-            throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+                           final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -201,20 +182,12 @@ public class LinkConsole {
      *                          "oId": "",
      *                          "direction": "" // "up"/"down"
      *                          }
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/link/order/", method = HTTPRequestMethod.PUT)
     public void changeOrder(final HttpServletRequest request, final HttpServletResponse response,
-                            final HTTPRequestContext context, final JSONObject requestJSONObject) throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+                            final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
 
         try {
@@ -225,7 +198,6 @@ public class LinkConsole {
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
-
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -260,16 +232,10 @@ public class LinkConsole {
      *                          "linkDescription": ""
      *                          }
      *                          }
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.POST)
     public void addLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                        final JSONObject requestJSONObject) throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+                        final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -321,19 +287,10 @@ public class LinkConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/links/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
             method = HTTPRequestMethod.GET)
-    public void getLinks(final HttpServletRequest request,
-                         final HttpServletResponse response,
-                         final HTTPRequestContext context) throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+    public void getLinks(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -381,16 +338,9 @@ public class LinkConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.GET)
-    public void getLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+    public void getLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -399,7 +349,6 @@ public class LinkConsole {
             final String linkId = requestURI.substring((Latkes.getContextPath() + "/console/link/").length());
 
             final JSONObject result = linkQueryService.getLink(linkId);
-
             if (null == result) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
 

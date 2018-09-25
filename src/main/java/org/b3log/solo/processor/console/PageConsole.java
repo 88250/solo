@@ -27,6 +27,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -46,10 +47,11 @@ import javax.servlet.http.HttpServletResponse;
  * Plugin console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Sep 20, 2018
+ * @version 1.0.0.7, Sep 25, 2018
  * @since 0.4.0
  */
 @RequestProcessor
+@Before(adviceClass = ConsoleAdminAuthAdvice.class)
 public class PageConsole {
 
     /**
@@ -111,18 +113,10 @@ public class PageConsole {
      *                          "pageIcon": ""
      *                          }
      *                          }, see {@link org.b3log.solo.model.Page} for more details
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.PUT)
     public void updatePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                           final JSONObject requestJSONObject)
-            throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+                           final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -159,17 +153,9 @@ public class PageConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.DELETE)
-    public void removePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+    public void removePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -219,18 +205,10 @@ public class PageConsole {
      *                          "pageIcon": ""
      *                          }
      *                          }, see {@link org.b3log.solo.model.Page} for more details
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.POST)
     public void addPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                        final JSONObject requestJSONObject)
-            throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+                        final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -273,18 +251,10 @@ public class PageConsole {
      *                          "oId": "",
      *                          "direction": "" // "up"/"down"
      *                          }
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/order/", method = HTTPRequestMethod.PUT)
     public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                            final JSONObject requestJSONObject)
-            throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+                            final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -332,17 +302,9 @@ public class PageConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.GET)
-    public void getPage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+    public void getPage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -395,19 +357,11 @@ public class PageConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      * @see Requests#PAGINATION_PATH_PATTERN
      */
     @RequestProcessing(value = "/console/pages/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
             method = HTTPRequestMethod.GET)
-    public void getPages(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
+    public void getPages(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 

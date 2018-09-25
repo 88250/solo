@@ -28,6 +28,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -39,7 +40,6 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.CategoryMgmtService;
 import org.b3log.solo.service.CategoryQueryService;
 import org.b3log.solo.service.TagQueryService;
-import org.b3log.solo.service.UserQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,10 +54,11 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.0, Sep 21, 2018
+ * @version 1.1.3.1, Sep 25, 2018
  * @since 2.0.0
  */
 @RequestProcessor
+@Before(adviceClass = ConsoleAdminAuthAdvice.class)
 public class CategoryConsole {
 
     /**
@@ -76,12 +77,6 @@ public class CategoryConsole {
      */
     @Inject
     private CategoryQueryService categoryQueryService;
-
-    /**
-     * User query service.
-     */
-    @Inject
-    private UserQueryService userQueryService;
 
     /**
      * Tag query service.
@@ -118,12 +113,6 @@ public class CategoryConsole {
     @RequestProcessing(value = "/console/category/order/", method = HTTPRequestMethod.PUT)
     public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
                             final JSONObject requestJSONObject) throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -172,12 +161,6 @@ public class CategoryConsole {
     @RequestProcessing(value = "/console/category/*", method = HTTPRequestMethod.GET)
     public void getCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         try {
@@ -230,14 +213,8 @@ public class CategoryConsole {
     @RequestProcessing(value = "/console/category/*", method = HTTPRequestMethod.DELETE)
     public void removeCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
         try {
@@ -280,15 +257,8 @@ public class CategoryConsole {
     @RequestProcessing(value = "/console/category/", method = HTTPRequestMethod.PUT)
     public void updateCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
                                final JSONObject requestJSONObject) throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
@@ -420,15 +390,8 @@ public class CategoryConsole {
     public void addCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
                             final JSONObject requestJSONObject)
             throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
@@ -562,12 +525,6 @@ public class CategoryConsole {
     @RequestProcessing(value = "/console/categories/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
     public void getCategories(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
             throws Exception {
-        if (!userQueryService.isAdminLoggedIn(request)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 

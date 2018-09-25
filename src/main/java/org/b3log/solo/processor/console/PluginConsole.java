@@ -45,11 +45,11 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/mainlove">Love Yao</a>
- * @version 1.1.0.2, Sep 20, 2018
+ * @version 1.1.0.3, Sep 25, 2018
  * @since 0.4.0
  */
 @RequestProcessor
-@Before(adviceClass = ConsoleAuthAdvice.class)
+@Before(adviceClass = ConsoleAdminAuthAdvice.class)
 public class PluginConsole {
 
     /**
