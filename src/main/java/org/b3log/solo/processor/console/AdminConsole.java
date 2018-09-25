@@ -236,22 +236,17 @@ public class AdminConsole {
     @RequestProcessing(value = "/admin-preference.do", method = HTTPRequestMethod.GET)
     public void showAdminPreferenceFunction(final HttpServletRequest request, final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-
         context.setRenderer(renderer);
-
         final String templateName = "admin-preference.ftl";
-
         renderer.setTemplateName(templateName);
 
         final Locale locale = Latkes.getLocale();
         final Map<String, String> langs = langPropsService.getAll(locale);
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         dataModel.putAll(langs);
         dataModel.put(Option.ID_C_LOCALE_STRING, locale.toString());
 
         JSONObject preference = null;
-
         try {
             preference = preferenceQueryService.getPreference();
         } catch (final ServiceException e) {
@@ -274,7 +269,6 @@ public class AdminConsole {
         }
 
         dataModel.put("timeZoneIdOptions", timeZoneIdOptions.toString());
-
         fireFreeMarkerActionEvent(templateName, dataModel);
     }
 
