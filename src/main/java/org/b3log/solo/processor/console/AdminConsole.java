@@ -38,6 +38,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
@@ -48,6 +49,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.UserExt;
+import org.b3log.solo.processor.console.common.ConsoleAuthAdvice;
 import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.ExportService;
@@ -73,10 +75,11 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.4, Aug 8, 2018
+ * @version 1.7.0.5, Sep 25, 2018
  * @since 0.4.1
  */
 @RequestProcessor
+@Before(adviceClass = ConsoleAuthAdvice.class)
 public class AdminConsole {
 
     /**
@@ -141,26 +144,18 @@ public class AdminConsole {
     @RequestProcessing(value = "/admin-index.do", method = HTTPRequestMethod.GET)
     public void showAdminIndex(final HttpServletRequest request, final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-
         context.setRenderer(renderer);
         final String templateName = "admin-index.ftl";
-
         renderer.setTemplateName(templateName);
-
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         dataModel.putAll(langs);
-
         final JSONObject currentUser = userQueryService.getCurrentUser(request);
         final String userName = currentUser.optString(User.USER_NAME);
         dataModel.put(User.USER_NAME, userName);
-
         final String roleName = currentUser.optString(User.USER_ROLE);
         dataModel.put(User.USER_ROLE, roleName);
-
         final String email = currentUser.optString(User.USER_EMAIL);
-
         final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
         if (StringUtils.isNotBlank(userAvatar)) {
             dataModel.put(Common.GRAVATAR, userAvatar);
@@ -171,7 +166,6 @@ public class AdminConsole {
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
-
             dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
             dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
             dataModel.put(Option.ID_C_BLOG_SUBTITLE, preference.getString(Option.ID_C_BLOG_SUBTITLE));
@@ -183,7 +177,6 @@ public class AdminConsole {
             dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
             dataModel.put(Option.ID_C_EDITOR_TYPE, preference.getString(Option.ID_C_EDITOR_TYPE));
             dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
-
             Keys.fillRuntime(dataModel);
             filler.fillMinified(dataModel);
         } catch (final Exception e) {

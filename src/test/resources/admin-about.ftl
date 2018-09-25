@@ -81,7 +81,7 @@
                     <ul>
                         <li><a target="_blank" href="http://88250.b3log.org">D</a></li>
                         <li><a target="_blank" href="http://vanessa.b3log.org">V</a></li>
-                        <li><a target="_blank" href="mailto:wmainlove@gmail.com">mainlove</a></li>
+                        <li><a target="_blank" href="https://hacpai.com/member/mainlove">mainlove</a></li>
                         <li><a target="_blank" href="http://people.apache.org/%7Edongxu">DX</a></li>
                         <li><a target="_blank" href="http://mizhichashao.com">大叔</a></li>
                         <li><a target="_blank" href="http://www.jiangzezhou.com">javen.jiang</a></li>

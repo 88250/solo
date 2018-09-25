@@ -28,6 +28,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
@@ -35,6 +36,7 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.processor.console.common.ConsoleAuthAdvice;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.UserQueryService;
@@ -53,10 +55,11 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.2, Sep 20, 2018
+ * @version 1.1.1.3, Sep 25, 2018
  * @since 0.4.0
  */
 @RequestProcessor
+@Before(adviceClass = ConsoleAuthAdvice.class)
 public class ArticleConsole {
 
     /**
@@ -108,16 +111,9 @@ public class ArticleConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/thumbs", method = HTTPRequestMethod.GET)
-    public void getArticleThumbs(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+    public void getArticleThumbs(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject result = new JSONObject();
@@ -151,13 +147,10 @@ public class ArticleConsole {
      *                 }
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/markdown/2html", method = HTTPRequestMethod.POST)
-    public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
-
         context.setRenderer(renderer);
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
@@ -167,11 +160,6 @@ public class ArticleConsole {
         if (StringUtils.isBlank(markdownText)) {
             result.put("html", "");
 
-            return;
-        }
-
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
@@ -218,16 +206,9 @@ public class ArticleConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article/*", method = HTTPRequestMethod.GET)
-    public void getArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+    public void getArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -279,17 +260,10 @@ public class ArticleConsole {
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
      * @param context  the specified http request context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/articles/status/*/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
             method = HTTPRequestMethod.GET)
-    public void getArticles(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+    public void getArticles(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -353,16 +327,10 @@ public class ArticleConsole {
      * @param request   the specified http servlet request
      * @param response  the specified http servlet response
      * @param articleId the specified article id
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article/{articleId}", method = HTTPRequestMethod.DELETE)
     public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String articleId) throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+                              final String articleId) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
@@ -405,16 +373,9 @@ public class ArticleConsole {
      * @param context  the specified http request context
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article/unpublish/*", method = HTTPRequestMethod.PUT)
-    public void cancelPublishArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+    public void cancelPublishArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
@@ -459,16 +420,9 @@ public class ArticleConsole {
      * @param context  the specified http request context
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article/canceltop/*", method = HTTPRequestMethod.PUT)
-    public void cancelTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+    public void cancelTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
@@ -514,16 +468,9 @@ public class ArticleConsole {
      * @param context  the specified http request context
      * @param request  the specified http servlet request
      * @param response the specified http servlet response
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/console/article/puttop/*", method = HTTPRequestMethod.PUT)
-    public void putTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
+    public void putTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
@@ -590,11 +537,6 @@ public class ArticleConsole {
     @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.PUT)
     public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
                               final JSONObject requestJSONObject) throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
@@ -660,11 +602,6 @@ public class ArticleConsole {
     @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.POST)
     public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
                            final JSONObject requestJSONObject) throws Exception {
-        if (!userQueryService.isLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
-        }
-
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
