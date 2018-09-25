@@ -81,7 +81,7 @@ var Util = {
           return true
         },
         callback: function () {
-          cb()
+          cb && cb()
         }
       });
       NProgress.configure({ showSpinner: false });
