@@ -47,7 +47,6 @@ import java.util.List;
  * @since 0.4.0
  */
 @RequestProcessor
-@Before(adviceClass = ConsoleAdminAuthAdvice.class)
 public class TagConsole {
 
     /**
@@ -93,6 +92,7 @@ public class TagConsole {
      * @param context  the specified http request context
      */
     @RequestProcessing(value = "/console/tags", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = ConsoleAuthAdvice.class)
     public void getTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
@@ -129,6 +129,7 @@ public class TagConsole {
      * @param context  the specified http request context
      */
     @RequestProcessing(value = "/console/tag/unused", method = HTTPRequestMethod.GET)
+    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
     public void getUnusedTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
@@ -173,8 +174,8 @@ public class TagConsole {
      * @param response the specified http servlet response
      * @param context  the specified http request context
      */
-    @RequestProcessing(value = "/console/tag/unused",
-            method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/console/tag/unused", method = HTTPRequestMethod.DELETE)
+    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
     public void removeUnusedTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
