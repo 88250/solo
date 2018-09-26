@@ -414,7 +414,7 @@ public class ArticleProcessor {
 
         final int currentPageNum = getTagArticlesPagedCurrentPageNum(request.getRequestURI());
 
-        Stopwatchs.start("Get Tag-Articles Paged[tagTitle=" + tagTitle + ", pageNum=" + currentPageNum + ']');
+        Stopwatchs.start("Get Tag-Articles Paged [tagTitle=" + tagTitle + ", pageNum=" + currentPageNum + ']');
         try {
             jsonObject.put(Keys.STATUS_CODE, true);
 

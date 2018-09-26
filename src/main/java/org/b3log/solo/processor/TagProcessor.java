@@ -164,10 +164,10 @@ public class TagProcessor {
 
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
-            LOGGER.log(Level.TRACE, "Paginate tag-articles[currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
+            LOGGER.log(Level.TRACE, "Paginate tag-articles [currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
                     currentPageNum, pageSize, pageCount, windowSize);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-            LOGGER.log(Level.TRACE, "tag-articles[pageNums={0}]", pageNums);
+            LOGGER.log(Level.TRACE, "tag-articles [pageNums={0}]", pageNums);
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
             dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle, "UTF-8"));
             dataModel.put(Keys.OBJECT_ID, tagId);
