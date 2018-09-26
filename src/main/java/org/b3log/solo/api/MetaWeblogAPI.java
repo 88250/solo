@@ -533,10 +533,7 @@ public class MetaWeblogAPI {
             stringBuilder.append("<member><name>description</name>").append("<value>").append(tagTitle).append("</value></member>");
             stringBuilder.append("<member><name>title</name>").append("<value>").append(tagTitle).append("</value></member>");
             stringBuilder.append("<member><name>categoryid</name>").append("<value>").append(tagId).append("</value></member>");
-            stringBuilder.append("<member><name>htmlUrl</name>").append("<value>").append(Latkes.getServePath()).append("/tags/").append(tagTitle).append(
-                    "</value></member>");
-            stringBuilder.append("<member><name>rsslUrl</name>").append("<value>").append(Latkes.getServePath()).append("/tag-articles-rss.do?oId=").append(tagId).append(
-                    "</value></member>");
+            stringBuilder.append("<member><name>htmlUrl</name>").append("<value>").append(Latkes.getServePath()).append("/tags/").append(tagTitle).append("</value></member>");
             stringBuilder.append("</struct></value>");
         }
 
