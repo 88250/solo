@@ -33,7 +33,6 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -144,7 +143,7 @@ public class PreferenceMgmtService {
 
         final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
         if ("zh_CN".equals(localeString)) {
-            TimeZones.setTimeZone("Asia/Shanghai");
+            Latkes.setTimeZone("Asia/Shanghai");
         }
 
         LOGGER.debug("Loaded skins....");
@@ -219,7 +218,7 @@ public class PreferenceMgmtService {
             preference.put(Skin.SKINS, skinArray.toString());
 
             final String timeZoneId = preference.getString(Option.ID_C_TIME_ZONE_ID);
-            TimeZones.setTimeZone(timeZoneId);
+            Latkes.setTimeZone(timeZoneId);
 
             preference.put(Option.ID_C_SIGNS, preference.get(Option.ID_C_SIGNS).toString());
 

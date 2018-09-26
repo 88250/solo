@@ -43,7 +43,10 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.model.Option.DefaultPreference;
 import org.b3log.solo.repository.*;
-import org.b3log.solo.util.*;
+import org.b3log.solo.util.Images;
+import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -801,10 +804,8 @@ public class InitService {
         optionRepository.add(skinsOpt);
 
         final ServletContext servletContext = SoloServletListener.getServletContext();
-
         Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + skinDirName);
-
-        TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
+        Latkes.setTimeZone(INIT_TIME_ZONE_ID);
 
         LOGGER.debug("Initialized preference");
     }

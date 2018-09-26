@@ -140,10 +140,6 @@ public final class Skins {
         Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + skinDirName);
         Templates.MAIN_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         Templates.MAIN_CFG.setLogTemplateExceptions(false);
-
-        Templates.MOBILE_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + Solos.MOBILE_SKIN);
-        Templates.MOBILE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-        Templates.MOBILE_CFG.setLogTemplateExceptions(false);
     }
 
     /**

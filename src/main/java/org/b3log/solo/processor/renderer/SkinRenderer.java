@@ -21,11 +21,14 @@ import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.freemarker.Templates;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
@@ -57,6 +60,17 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
         this.request = request;
     }
 
+    @Override
+    protected Template getTemplate(final String templateDirName, final String templateName) {
+        try {
+            return Templates.MAIN_CFG.getTemplate(templateName);
+        } catch (final IOException e) {
+            LOGGER.log(Level.WARN, "Gets template [name={0}] failed: [{1}]", templateName, e.getMessage());
+
+            return null;
+        }
+    }
+
     /**
      * Processes the specified FreeMarker template with the specified request, data model, pjax hacking.
      *
@@ -66,6 +80,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
      * @return generated HTML
      * @throws Exception exception
      */
+    @Override
     protected String genHTML(final HttpServletRequest request, final Map<String, Object> dataModel, final Template template)
             throws Exception {
         final boolean isPJAX = isPJAX(request);
