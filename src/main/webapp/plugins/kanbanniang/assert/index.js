@@ -117,7 +117,7 @@ var soloKanbanniang = {
     });
 
     $('#soloKanbanniangRSS').click(function() {
-      window.location = latkeConfig.servePath + '/blog-articles-rss.do';
+      window.location = latkeConfig.servePath + '/rss.xml';
     });
 
     $('#soloKanbanniangGithub').click(function() {

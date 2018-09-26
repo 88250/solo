@@ -57,7 +57,7 @@
                 <#list pageNavigations as page>
                 <li><a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a></li>
                 </#list>           
-                <li><a rel="alternate" href="${servePath}/blog-articles-rss.do"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/RSS.png" alt="" />RSS Feed</a></li>
+                <li><a rel="alternate" href="${servePath}/rss.xml"><img src="${staticServePath}/skins/${skinDirName}/images/icon-pool/RSS.png" alt="" />RSS Feed</a></li>
                 <li><a href="${servePath}/search?keyword=">Search</a></li>
             </ul>
             <ul id="head-tags">

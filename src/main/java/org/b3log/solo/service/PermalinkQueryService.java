@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
  * Permalink query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Sep 7, 2018
+ * @version 1.0.0.5, Sep 26, 2018
  * @since 0.6.1
  */
 @Service
@@ -62,8 +62,7 @@ public class PermalinkQueryService {
      * Reserved permalinks.
      */
     public static final String[] RESERVED_LINKS = new String[]{
-            "/", "/article", "/tags.html", "/tags", "/page", "/blog-articles-feed.do", "/tag-articles-feed.do", "/blog-articles-rss.do",
-            "/tag-articles-rss.do", "/get-random-articles.do", "/captcha.do", "/kill-browser",
+            "/", "/article", "/tags.html", "/tags", "/page", "/atom.xml", "/rss.xml", "/get-random-articles.do", "/captcha.do", "/kill-browser",
             "/add-article-comment.do", "/add-article-from-symphony-comment.do", "/add-page-comment.do", "/get-article-content", "/sitemap.xml",
             "/login", "/logout", "/forgot", "/get-article-content", "/admin-index.do", "/admin-article.do", "/admin-article-list.do",
             "/admin-link-list.do", "/admin-preference.do", "/admin-file-list.do", "/admin-page-list.do", "/admin-others.do",

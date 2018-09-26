@@ -48,7 +48,7 @@
             </svg> ${linkLabel}
         </a>
 
-        <a rel="alternate" href="${servePath}/blog-articles-rss.do" rel="section">
+        <a rel="alternate" href="${servePath}/rss.xml" rel="section">
             <svg>
                 <use xlink:href="#icon-feed"></use>
             </svg>

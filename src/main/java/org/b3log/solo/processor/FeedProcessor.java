@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.inject.Inject;
@@ -36,24 +35,19 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Tag;
 import org.b3log.solo.model.feed.atom.Category;
 import org.b3log.solo.model.feed.atom.Entry;
 import org.b3log.solo.model.feed.atom.Feed;
 import org.b3log.solo.model.feed.rss.Channel;
 import org.b3log.solo.model.feed.rss.Item;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.TagArticleRepository;
-import org.b3log.solo.repository.TagRepository;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Emotions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,7 +59,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.1.2, Sep 20, 2018
+ * @version 2.0.0.0, Sep 26, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -95,30 +89,12 @@ public class FeedProcessor {
     private PreferenceQueryService preferenceQueryService;
 
     /**
-     * User query service.
-     */
-    @Inject
-    private UserQueryService userQueryService;
-
-    /**
-     * Tag repository.
-     */
-    @Inject
-    private TagRepository tagRepository;
-
-    /**
-     * Tag-Article repository.
-     */
-    @Inject
-    private TagArticleRepository tagArticleRepository;
-
-    /**
      * Blog articles Atom output.
      *
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/blog-articles-feed.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = "/atom.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void blogArticlesAtom(final HTTPRequestContext context) throws Exception {
         final AtomRenderer renderer = new AtomRenderer();
         context.setRenderer(renderer);
@@ -133,7 +109,7 @@ public class FeedProcessor {
             feed.setSubtitle(blogSubtitle);
             feed.setUpdated(new Date());
             feed.setAuthor(blogTitle);
-            feed.setLink(Latkes.getServePath() + "/blog-articles-feed.do");
+            feed.setLink(Latkes.getServePath() + "/atom.xml");
             feed.setId(Latkes.getServePath() + "/");
 
             final List<Filter> filters = new ArrayList<>();
@@ -186,125 +162,12 @@ public class FeedProcessor {
     }
 
     /**
-     * Tag articles Atom output.
-     *
-     * @param context the specified context
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = {"/tag-articles-feed.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void tagArticlesAtom(final HTTPRequestContext context) throws Exception {
-        final AtomRenderer renderer = new AtomRenderer();
-        context.setRenderer(renderer);
-
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-
-        final String tagId = request.getParameter(Keys.OBJECT_ID);
-        if (StringUtils.isBlank(tagId)) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-            return;
-        }
-
-        final Feed feed = new Feed();
-
-        try {
-            final JSONObject tag = tagRepository.get(tagId);
-            if (null == tag) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            final String tagTitle = tag.getString(Tag.TAG_TITLE);
-
-            final JSONObject preference = preferenceQueryService.getPreference();
-
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
-            final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE) + ", " + tagTitle;
-            final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
-
-            feed.setTitle(blogTitle);
-            feed.setSubtitle(blogSubtitle);
-            feed.setUpdated(new Date());
-            feed.setAuthor(blogTitle);
-            feed.setLink(Latkes.getServePath() + "/tag-articles-feed.do");
-            feed.setId(Latkes.getServePath() + "/");
-
-            final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, outputCnt);
-            final JSONArray tagArticleRelations = tagArticleResult.getJSONArray(Keys.RESULTS);
-
-            if (0 == tagArticleRelations.length()) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            final List<JSONObject> articles = new ArrayList<>();
-
-            for (int i = 0; i < tagArticleRelations.length(); i++) {
-                final JSONObject tagArticleRelation = tagArticleRelations.getJSONObject(i);
-                final String articleId = tagArticleRelation.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
-                final JSONObject article = articleRepository.get(articleId);
-
-                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED) // Skips the unpublished article
-                        && StringUtils.isBlank(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips article with password
-                    articles.add(article);
-                }
-            }
-
-            final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
-
-            for (int i = 0; i < articles.size(); i++) {
-                final Entry entry = getEntryForArticle(articles, isFullContent, i);
-                feed.addEntry(entry);
-            }
-
-            renderer.setContent(feed.toString());
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Get tag article feed error", e);
-
-            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-        }
-    }
-
-    private Entry getEntryForArticle(final List<JSONObject> articles, final boolean isFullContent, int i)
-            throws JSONException, ServiceException {
-        final JSONObject article = articles.get(i);
-        final Entry ret = new Entry();
-        final String title = article.getString(Article.ARTICLE_TITLE);
-        ret.setTitle(title);
-        final String summary = isFullContent ? article.getString(Article.ARTICLE_CONTENT)
-                : article.optString(Article.ARTICLE_ABSTRACT);
-        ret.setSummary(summary);
-        final long updated = article.getLong(Article.ARTICLE_UPDATED);
-        ret.setUpdated(new Date(updated));
-        final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
-        ret.setLink(link);
-        ret.setId(link);
-        final String authorName = articleQueryService.getAuthor(article).getString(User.USER_NAME);
-        ret.setAuthor(authorName);
-        final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
-        final String[] tagStrings = tagsString.split(",");
-        for (final String tagString : tagStrings) {
-            final Category catetory = new Category();
-            ret.addCatetory(catetory);
-            catetory.setTerm(tagString);
-        }
-
-        return ret;
-    }
-
-    /**
      * Blog articles RSS output.
      *
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/blog-articles-rss.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
+    @RequestProcessing(value = "/rss.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
     public void blogArticlesRSS(final HTTPRequestContext context) throws Exception {
         final HttpServletResponse response = context.getResponse();
         final RssRenderer renderer = new RssRenderer();
@@ -326,7 +189,7 @@ public class FeedProcessor {
             channel.setTitle(blogTitle);
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
-            channel.setAtomLink(Latkes.getServePath() + "/blog-articles-rss.do");
+            channel.setAtomLink(Latkes.getServePath() + "/rss.xml");
             channel.setGenerator("Solo, ver " + SoloServletListener.VERSION);
             final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
             final String country = Locales.getCountry(localeString).toLowerCase();
@@ -372,125 +235,6 @@ public class FeedProcessor {
                 ? article.getString(Article.ARTICLE_CONTENT)
                 : article.optString(Article.ARTICLE_ABSTRACT);
         description = Emotions.toAliases(description);
-        ret.setDescription(description);
-        final long pubDate = article.getLong(Article.ARTICLE_UPDATED);
-        ret.setPubDate(new Date(pubDate));
-        final String link = Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK);
-        ret.setLink(link);
-        ret.setGUID(link);
-        final String authorName = articleQueryService.getAuthor(article).getString(User.USER_NAME);
-        ret.setAuthor(authorName);
-        final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
-        final String[] tagStrings = tagsString.split(",");
-        for (final String tagString : tagStrings) {
-            final org.b3log.solo.model.feed.rss.Category catetory = new org.b3log.solo.model.feed.rss.Category();
-            ret.addCatetory(catetory);
-            catetory.setTerm(tagString);
-        }
-
-        return ret;
-    }
-
-    /**
-     * Tag articles RSS output.
-     *
-     * @param context the specified context
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = {"/tag-articles-rss.do"}, method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void tagArticlesRSS(final HTTPRequestContext context) throws Exception {
-        final HttpServletResponse response = context.getResponse();
-        final HttpServletRequest request = context.getRequest();
-
-        final RssRenderer renderer = new RssRenderer();
-        context.setRenderer(renderer);
-
-        final String tagId = request.getParameter(Keys.OBJECT_ID);
-        if (StringUtils.isBlank(tagId)) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-            return;
-        }
-
-        final Channel channel = new Channel();
-
-        try {
-            final JSONObject tag = tagRepository.get(tagId);
-            if (null == tag) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            final String tagTitle = tag.getString(Tag.TAG_TITLE);
-
-            final JSONObject preference = preferenceQueryService.getPreference();
-
-            if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
-            final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE) + ", " + tagTitle;
-            final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
-
-            channel.setTitle(blogTitle);
-            channel.setLastBuildDate(new Date());
-            channel.setLink(Latkes.getServePath());
-            channel.setAtomLink(Latkes.getServePath() + "/tag-articles-rss.do");
-            channel.setGenerator("Solo, ver " + SoloServletListener.VERSION);
-            final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
-            final String country = Locales.getCountry(localeString).toLowerCase();
-            final String language = Locales.getLanguage(localeString).toLowerCase();
-
-            channel.setLanguage(language + '-' + country);
-            channel.setDescription(blogSubtitle);
-
-            final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, outputCnt);
-            final JSONArray tagArticleRelations = tagArticleResult.getJSONArray(Keys.RESULTS);
-
-            if (0 == tagArticleRelations.length()) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            final List<JSONObject> articles = new ArrayList<>();
-
-            for (int i = 0; i < tagArticleRelations.length(); i++) {
-                final JSONObject tagArticleRelation = tagArticleRelations.getJSONObject(i);
-                final String articleId = tagArticleRelation.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
-                final JSONObject article = articleRepository.get(articleId);
-
-                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED) // Skips the unpublished article
-                        && StringUtils.isBlank(article.optString(Article.ARTICLE_VIEW_PWD))) { // Skips article with password
-                    articles.add(article);
-                }
-            }
-
-            final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
-
-            for (int i = 0; i < articles.size(); i++) {
-                final Item item = getItemForArticles(articles, isFullContent, i);
-                channel.addItem(item);
-            }
-
-            renderer.setContent(channel.toString());
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Get tag article rss error", e);
-
-            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-        }
-    }
-
-    private Item getItemForArticles(final List<JSONObject> articles, final boolean isFullContent, int i)
-            throws JSONException, ServiceException {
-        final JSONObject article = articles.get(i);
-        final Item ret = new Item();
-        final String title = article.getString(Article.ARTICLE_TITLE);
-        ret.setTitle(title);
-        final String description = isFullContent
-                ? article.getString(Article.ARTICLE_CONTENT)
-                : article.optString(Article.ARTICLE_ABSTRACT);
         ret.setDescription(description);
         final long pubDate = article.getLong(Article.ARTICLE_UPDATED);
         ret.setPubDate(new Date(pubDate));
