@@ -15,8 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.model.feed.atom;
-
+package org.b3log.solo.model.rss;
 
 import org.apache.commons.lang.StringEscapeUtils;
 
@@ -30,14 +29,9 @@ import org.apache.commons.lang.StringEscapeUtils;
 public final class Category {
 
     /**
-     * Term variable.
-     */
-    private static final String TERM_VARIABLE = "${term}";
-
-    /**
      * Category element.
      */
-    private static final String CATEGORY_ELEMENT = "<category term=\"" + TERM_VARIABLE + "\" />";
+    private static final String CATEGORY_ELEMENT = "<category>${term}</category>";
 
     /**
      * Term.
@@ -64,6 +58,6 @@ public final class Category {
 
     @Override
     public String toString() {
-        return CATEGORY_ELEMENT.replace(TERM_VARIABLE, StringEscapeUtils.escapeXml(term));
+        return CATEGORY_ELEMENT.replace("${term}", StringEscapeUtils.escapeXml(term));
     }
 }

@@ -35,11 +35,11 @@ import org.b3log.latke.util.Locales;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.feed.atom.Category;
-import org.b3log.solo.model.feed.atom.Entry;
-import org.b3log.solo.model.feed.atom.Feed;
-import org.b3log.solo.model.feed.rss.Channel;
-import org.b3log.solo.model.feed.rss.Item;
+import org.b3log.solo.model.atom.Category;
+import org.b3log.solo.model.atom.Entry;
+import org.b3log.solo.model.atom.Feed;
+import org.b3log.solo.model.rss.Channel;
+import org.b3log.solo.model.rss.Item;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -246,7 +246,7 @@ public class FeedProcessor {
         final String tagsString = article.getString(Article.ARTICLE_TAGS_REF);
         final String[] tagStrings = tagsString.split(",");
         for (final String tagString : tagStrings) {
-            final org.b3log.solo.model.feed.rss.Category catetory = new org.b3log.solo.model.feed.rss.Category();
+            final org.b3log.solo.model.rss.Category catetory = new org.b3log.solo.model.rss.Category();
             ret.addCatetory(catetory);
             catetory.setTerm(tagString);
         }
