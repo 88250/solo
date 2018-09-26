@@ -112,6 +112,7 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             article.put(Article.ARTICLE_T_AUTHOR_EMAIL, authorEmail);
             article.put(Article.ARTICLE_CONTENT, originalArticle.getString(Article.ARTICLE_CONTENT));
             article.put(Article.ARTICLE_T_CREATE_DATE, originalArticle.getLong(Article.ARTICLE_CREATED));
+            article.put(Article.ARTICLE_T_CREATE_DATE, originalArticle.getLong(Article.ARTICLE_UPDATED));
             article.put(Common.POST_TO_COMMUNITY, originalArticle.getBoolean(Common.POST_TO_COMMUNITY));
 
             // Removes this property avoid to persist
