@@ -237,6 +237,7 @@ public class ArticleQueryService {
 
                 article.put(ARTICLE_CREATE_TIME, article.optLong(ARTICLE_CREATED));
                 article.put(ARTICLE_T_CREATE_DATE, new Date(article.optLong(ARTICLE_CREATED)));
+                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(ARTICLE_UPDATED)));
 
                 articles.add(article);
             }
@@ -698,6 +699,7 @@ public class ArticleQueryService {
 
                 article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
                 article.put(ARTICLE_T_CREATE_DATE, new Date(article.getLong(ARTICLE_CREATED)));
+                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(ARTICLE_UPDATED)));
 
                 ret.add(article);
             }
@@ -750,6 +752,7 @@ public class ArticleQueryService {
 
                 article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
                 article.put(ARTICLE_T_CREATE_DATE, new Date(article.getLong(ARTICLE_CREATED)));
+                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(ARTICLE_UPDATED)));
 
                 ret.add(article);
             }
@@ -987,6 +990,7 @@ public class ArticleQueryService {
                 final JSONObject article = articles.getJSONObject(i);
                 article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
                 article.put(ARTICLE_T_CREATE_DATE, new Date(article.optLong(ARTICLE_CREATED)));
+                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(ARTICLE_UPDATED)));
 
                 ret.add(article);
             }

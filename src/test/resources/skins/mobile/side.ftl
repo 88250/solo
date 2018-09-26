@@ -94,9 +94,6 @@
             <ul>
                 <#list mostUsedTags as tag>
                 <li>
-                    <a rel="alternate" href="${servePath}/tag-articles-feed.do?oId=${tag.oId}" class="no-underline">
-                        <img alt="${tag.tagTitle}" src="${staticServePath}/images/feed.png"/>
-                    </a>
                     <a rel="tag" title="${tag.tagTitle}(${tag.tagPublishedRefCount})" href="${servePath}/tags/${tag.tagTitle?url('UTF-8')}">
                         ${tag.tagTitle}</a>
                     (${tag.tagPublishedRefCount})
