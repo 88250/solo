@@ -29,7 +29,6 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.*;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -160,7 +159,7 @@ public class CommentProcessor {
             // https://github.com/b3log/solo/issues/12246
             try {
                 final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
-                final Template template = Templates.MAIN_CFG.getTemplate("common-comment.ftl");
+                final Template template = Skins.getSkinTemplate(httpServletRequest, "common-comment.ftl");
                 final JSONObject preference = preferenceQueryService.getPreference();
                 Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
                 Keys.fillServer(dataModel);
@@ -255,7 +254,7 @@ public class CommentProcessor {
             // https://github.com/b3log/solo/issues/12246
             try {
                 final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
-                final Template template = Templates.MAIN_CFG.getTemplate("common-comment.ftl");
+                final Template template = Skins.getSkinTemplate(httpServletRequest, "common-comment.ftl");
                 final JSONObject preference = preferenceQueryService.getPreference();
                 Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
                 Keys.fillServer(dataModel);

@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor;
 
-import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -32,12 +31,10 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.URIPatternMode;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.DoNothingRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
@@ -52,18 +49,14 @@ import org.json.JSONObject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Index processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.4.7, Jun 22, 2018
+ * @version 1.2.4.8, Sep 26, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -134,13 +127,6 @@ public class IndexProcessor {
                 specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
             }
 
-            final Set<String> skinDirNames = Skins.getSkinDirNames();
-            if (skinDirNames.contains(specifiedSkin)) {
-                Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(),
-                        "/skins/" + specifiedSkin);
-                request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
-            }
-
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             filler.fillIndexArticles(request, dataModel, currentPageNum, preference);
@@ -183,11 +169,11 @@ public class IndexProcessor {
     @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
     public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new KillBrowserRenderer();
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
+        renderer.setTemplateName("kill-browser.ftl");
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
@@ -254,56 +240,5 @@ public class IndexProcessor {
         final String pageNumString = StringUtils.substringAfterLast(requestURI, "/");
 
         return Requests.getCurrentPageNum(pageNumString);
-    }
-
-    /**
-     * Kill browser (kill-browser.ftl) HTTP response renderer.
-     *
-     * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 1.0.0.0, Sep 18, 2011
-     * @since 0.3.1
-     */
-    private static final class KillBrowserRenderer extends AbstractFreeMarkerRenderer {
-
-        /**
-         * Logger.
-         */
-        private static final Logger LOGGER = Logger.getLogger(KillBrowserRenderer.class);
-
-        @Override
-        public void render(final HTTPRequestContext context) {
-            final HttpServletResponse response = context.getResponse();
-
-            response.setContentType("text/html");
-            response.setCharacterEncoding("UTF-8");
-
-            try {
-                final Template template = ConsoleRenderer.TEMPLATE_CFG.getTemplate("kill-browser.ftl");
-                final PrintWriter writer = response.getWriter();
-                final StringWriter stringWriter = new StringWriter();
-                template.setOutputEncoding("UTF-8");
-                template.process(getDataModel(), stringWriter);
-                final String pageContent = stringWriter.toString();
-                writer.write(pageContent);
-                writer.flush();
-                writer.close();
-            } catch (final Exception e) {
-                try {
-                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                } catch (final IOException ex) {
-                    LOGGER.log(Level.ERROR, "Can not send error 500!", ex);
-                }
-            }
-        }
-
-        @Override
-        protected void afterRender(final HTTPRequestContext context) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
-        @Override
-        protected void beforeRender(final HTTPRequestContext context) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
     }
 }

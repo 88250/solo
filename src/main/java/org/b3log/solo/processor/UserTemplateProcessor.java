@@ -28,9 +28,8 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.processor.renderer.SkinRenderer;
 import org.b3log.solo.processor.util.Filler;
@@ -108,7 +107,7 @@ public class UserTemplateProcessor {
         renderer.setTemplateName(templateName);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), templateName);
+        final Template template = Skins.getSkinTemplate(request, templateName);
         if (null == template) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
 

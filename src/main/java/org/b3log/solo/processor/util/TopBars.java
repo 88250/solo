@@ -31,10 +31,10 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.processor.renderer.ConsoleRenderer;
 import org.b3log.solo.service.StatisticQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.Skins;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -98,7 +98,7 @@ public class TopBars {
         Stopwatchs.start("Gens Top Bar HTML");
 
         try {
-            final Template topBarTemplate = ConsoleRenderer.TEMPLATE_CFG.getTemplate("top-bar.ftl");
+            final Template topBarTemplate = Skins.getTemplate("top-bar.ftl");
             final StringWriter stringWriter = new StringWriter();
 
             final Map<String, Object> topBarModel = new HashMap<String, Object>();

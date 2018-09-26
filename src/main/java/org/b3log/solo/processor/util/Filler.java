@@ -36,19 +36,12 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Dates;
-import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.freemarker.Templates;
+import org.b3log.latke.util.*;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.service.*;
-import org.b3log.solo.util.Emotions;
-import org.b3log.solo.util.Markdowns;
-import org.b3log.solo.util.Solos;
-import org.b3log.solo.util.Thumbnails;
+import org.b3log.solo.util.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -207,10 +200,8 @@ public class Filler {
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(pageCount).setFilter(
                     new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED));
 
-            final Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "index.ftl");
-
+            final Template template = Skins.getSkinTemplate(request, "index.ftl");
             boolean isArticles1 = false;
-
             if (null == template) {
                 LOGGER.debug("The skin dose not contain [index.ftl] template");
             } else // See https://github.com/b3log/solo/issues/179 for more details
@@ -570,7 +561,7 @@ public class Filler {
      * @throws ServiceException service exception
      */
     public void fillCommon(final HttpServletRequest request, final HttpServletResponse response,
-                            final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
+                           final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         fillSide(request, dataModel, preference);
         fillBlogHeader(request, response, dataModel, preference);
         fillBlogFooter(request, dataModel, preference);
@@ -760,12 +751,12 @@ public class Filler {
         try {
             LOGGER.debug("Filling side....");
 
-            Template template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "side.ftl");
+            Template template = Skins.getSkinTemplate(request, "side.ftl");
 
             if (null == template) {
                 LOGGER.debug("The skin dose not contain [side.ftl] template");
 
-                template = Templates.getTemplate((String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), "index.ftl");
+                template = Skins.getSkinTemplate(request, "index.ftl");
                 if (null == template) {
                     LOGGER.debug("The skin dose not contain [index.ftl] template");
                     return;

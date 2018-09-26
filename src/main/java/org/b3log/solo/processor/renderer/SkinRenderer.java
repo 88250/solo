@@ -21,14 +21,12 @@ import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
-import org.b3log.latke.util.freemarker.Templates;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.solo.util.Skins;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Map;
 
@@ -61,14 +59,8 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     }
 
     @Override
-    protected Template getTemplate(final String templateDirName, final String templateName) {
-        try {
-            return Templates.MAIN_CFG.getTemplate(templateName);
-        } catch (final IOException e) {
-            LOGGER.log(Level.WARN, "Gets template [name={0}] failed: [{1}]", templateName, e.getMessage());
-
-            return null;
-        }
+    protected Template getTemplate() {
+        return Skins.getSkinTemplate(request, getTemplateName());
     }
 
     /**

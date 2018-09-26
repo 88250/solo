@@ -32,7 +32,6 @@ import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
-import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
@@ -57,7 +56,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.39, Sep 25, 2018
+ * @version 1.9.3.40, Sep 26, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -100,9 +99,6 @@ public final class SoloServletListener extends AbstractServletListener {
         importService.importMarkdowns();
 
         JdbcRepository.dispose();
-
-        // Set default skin, loads from preference later
-        Skins.setDirectoryForTemplateLoading(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         final OptionRepository optionRepository = beanManager.getReference(OptionRepositoryImpl.class);
         final Transaction transaction = optionRepository.beginTransaction();
@@ -260,6 +256,7 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
         // https://github.com/b3log/solo/issues/12060
+        httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final Cookie[] cookies = httpServletRequest.getCookies();
         if (null != cookies) {
             for (final Cookie cookie : cookies) {
@@ -268,8 +265,6 @@ public final class SoloServletListener extends AbstractServletListener {
                     final Set<String> skinDirNames = Skins.getSkinDirNames();
 
                     if (skinDirNames.contains(skin)) {
-                        Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(),
-                                "/skins/" + skin);
                         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
 
                         return;
@@ -281,8 +276,7 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
             final JSONObject preference = preferenceQueryService.getPreference();
-
-            if (null == preference) { // Did not initialize yet
+            if (null == preference) { // Not initialize yet
                 return;
             }
 
@@ -296,7 +290,6 @@ public final class SoloServletListener extends AbstractServletListener {
                 LOGGER.log(Level.DEBUG, "The request [URI={0}] via mobile device", requestURI);
             }
 
-            Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(), "/skins/" + desiredView);
             httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, desiredView);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);

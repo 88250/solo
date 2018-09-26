@@ -37,8 +37,8 @@ import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Sessions;
 import org.b3log.solo.SoloServletListener;
@@ -428,7 +428,6 @@ public class LoginProcessor {
     private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL,
                             final HttpServletRequest request) throws JSONException, ServiceException {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-
         renderer.setTemplateName(pageTemplate);
         context.setRenderer(renderer);
 
