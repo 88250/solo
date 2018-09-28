@@ -36,7 +36,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
@@ -64,10 +64,10 @@ public class TagProcessor {
     private static final Logger LOGGER = Logger.getLogger(TagProcessor.class);
 
     /**
-     * Filler.
+     * DataModelService.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Language service.
@@ -159,7 +159,7 @@ public class TagProcessor {
                 return;
             }
 
-            filler.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(request, articles, preference);
 
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
@@ -171,7 +171,7 @@ public class TagProcessor {
             dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle, "UTF-8"));
             dataModel.put(Keys.OBJECT_ID, tagId);
             dataModel.put(Tag.TAG, tag);
-            filler.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(request, response, dataModel, preference);
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

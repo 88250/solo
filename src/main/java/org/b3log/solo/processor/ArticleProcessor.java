@@ -44,7 +44,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.processor.console.ConsoleRenderer;
-import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Thumbnails;
@@ -93,10 +93,10 @@ public class ArticleProcessor {
     private CommentQueryService commentQueryService;
 
     /**
-     * Filler.
+     * DataModelService.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Language service.
@@ -188,7 +188,7 @@ public class ArticleProcessor {
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         Keys.fillRuntime(dataModel);
-        filler.fillMinified(dataModel);
+        dataModelService.fillMinified(dataModel);
     }
 
     /**
@@ -378,7 +378,7 @@ public class ArticleProcessor {
             requestJSONObject.put(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, preference.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT));
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
             final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
-            filler.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(request, articles, preference);
 
             jsonObject.put(Keys.RESULTS, result);
         } catch (final Exception e) {
@@ -431,7 +431,7 @@ public class ArticleProcessor {
 
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
-            filler.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(request, articles, preference);
 
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
@@ -483,7 +483,7 @@ public class ArticleProcessor {
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
-            filler.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(request, articles, preference);
 
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
@@ -534,7 +534,7 @@ public class ArticleProcessor {
             final JSONObject author = authorRet.getJSONObject(User.USER);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
-            filler.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(request, articles, preference);
 
             final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
@@ -616,7 +616,7 @@ public class ArticleProcessor {
                 return;
             }
 
-            filler.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(request, articles, preference);
 
             final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
@@ -624,7 +624,7 @@ public class ArticleProcessor {
 
             final Map<String, Object> dataModel = renderer.getDataModel();
             prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author);
-            filler.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(request, response, dataModel, preference);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             statisticMgmtService.incBlogViewCount(request, response);
@@ -690,12 +690,12 @@ public class ArticleProcessor {
                 return;
             }
 
-            filler.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(request, articles, preference);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
             prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount, archiveDateString, archiveDate);
-            filler.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(request, response, dataModel, preference);
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
@@ -776,7 +776,7 @@ public class ArticleProcessor {
 
             prepareShowArticle(preference, dataModel, article);
 
-            filler.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(request, response, dataModel, preference);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             if (!StatisticMgmtService.hasBeenServed(request, response)) {

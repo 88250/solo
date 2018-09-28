@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.processor.util;
+package org.b3log.solo.service;
 
 import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
@@ -39,8 +39,9 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.*;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
+import org.b3log.solo.processor.util.FillTagArticles;
+import org.b3log.solo.processor.util.TopBars;
 import org.b3log.solo.repository.*;
-import org.b3log.solo.service.*;
 import org.b3log.solo.util.*;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +55,7 @@ import java.util.*;
 import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
 
 /**
- * Filler utilities.
+ * DataModelService utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
@@ -62,12 +63,12 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  * @since 0.3.1
  */
 @Service
-public class Filler {
+public class DataModelService {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(Filler.class);
+    private static final Logger LOGGER = Logger.getLogger(DataModelService.class);
 
     /**
      * {@code true} for published.

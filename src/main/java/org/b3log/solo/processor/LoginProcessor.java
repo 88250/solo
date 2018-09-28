@@ -45,7 +45,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.processor.console.ConsoleRenderer;
-import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Mails;
@@ -100,10 +100,10 @@ public class LoginProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * Filler.
+     * DataModelService.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Preference query service.
@@ -467,7 +467,7 @@ public class LoginProcessor {
         }
 
         Keys.fillRuntime(dataModel);
-        filler.fillMinified(dataModel);
+        dataModelService.fillMinified(dataModel);
     }
 
     /**

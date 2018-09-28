@@ -39,7 +39,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.console.ConsoleRenderer;
-import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
@@ -67,10 +67,10 @@ public class IndexProcessor {
     private static final Logger LOGGER = Logger.getLogger(IndexProcessor.class);
 
     /**
-     * Filler.
+     * DataModelService.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Preference query service.
@@ -128,8 +128,8 @@ public class IndexProcessor {
 
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            filler.fillIndexArticles(request, dataModel, currentPageNum, preference);
-            filler.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillIndexArticles(request, dataModel, currentPageNum, preference);
+            dataModelService.fillCommon(request, response, dataModel, preference);
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final int previousPageNum = currentPageNum > 1 ? currentPageNum - 1 : 0;
@@ -177,10 +177,10 @@ public class IndexProcessor {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
-            filler.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(request, response, dataModel, preference);
             Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
-            filler.fillMinified(dataModel);
+            dataModelService.fillMinified(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -208,8 +208,8 @@ public class IndexProcessor {
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
-            filler.fillCommon(request, response, dataModel, preference);
-            filler.fillMinified(dataModel);
+            dataModelService.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillMinified(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

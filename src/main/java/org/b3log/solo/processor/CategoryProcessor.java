@@ -36,7 +36,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
 import org.json.JSONException;
@@ -64,10 +64,10 @@ public class CategoryProcessor {
     private static final Logger LOGGER = Logger.getLogger(CategoryProcessor.class);
 
     /**
-     * Filler.
+     * DataModelService.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Language service.
@@ -193,13 +193,13 @@ public class CategoryProcessor {
             }
 
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
-            filler.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(request, articles, preference);
 
             final List<Integer> pageNums = (List) result.optJSONObject(Pagination.PAGINATION).opt(Pagination.PAGINATION_PAGE_NUMS);
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
             dataModel.put(Common.PATH, "/category/" + URLEncoder.encode(categoryURI, "UTF-8"));
 
-            filler.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(request, response, dataModel, preference);
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final ServiceException | JSONException e) {

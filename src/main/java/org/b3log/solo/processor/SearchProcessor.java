@@ -36,7 +36,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.processor.console.ConsoleRenderer;
-import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
@@ -91,10 +91,10 @@ public class SearchProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * Filler.
+     * DataModelService.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Shows opensearch.xml.
@@ -155,8 +155,8 @@ public class SearchProcessor {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            filler.fillCommon(request, context.getResponse(), dataModel, preference);
-            filler.setArticlesExProperties(request, articles, preference);
+            dataModelService.fillCommon(request, context.getResponse(), dataModel, preference);
+            dataModelService.setArticlesExProperties(request, articles, preference);
 
             dataModel.put(Article.ARTICLES, articles);
             final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);

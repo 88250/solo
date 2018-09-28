@@ -49,7 +49,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.UserExt;
-import org.b3log.solo.processor.util.Filler;
+import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.ExportService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -116,10 +116,10 @@ public class AdminConsole {
     private ExportService exportService;
 
     /**
-     * Filler.
+     * DataModelService.
      */
     @Inject
-    private Filler filler;
+    private DataModelService dataModelService;
 
     /**
      * Event manager.
@@ -176,7 +176,7 @@ public class AdminConsole {
             dataModel.put(Option.ID_C_EDITOR_TYPE, preference.getString(Option.ID_C_EDITOR_TYPE));
             dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
             Keys.fillRuntime(dataModel);
-            filler.fillMinified(dataModel);
+            dataModelService.fillMinified(dataModel);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Admin index render failed", e);
         }
