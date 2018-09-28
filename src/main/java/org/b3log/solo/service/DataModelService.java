@@ -40,7 +40,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.*;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
-import org.b3log.solo.processor.util.FillTagArticles;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.util.*;
 import org.json.JSONObject;
@@ -152,12 +151,6 @@ public class DataModelService {
      */
     @Inject
     private UserQueryService userQueryService;
-
-    /**
-     * Fill tag article..
-     */
-    @Inject
-    private FillTagArticles fillTagArticles;
 
     /**
      * Event manager.
