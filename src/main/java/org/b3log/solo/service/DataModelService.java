@@ -714,7 +714,6 @@ public class DataModelService {
             LOGGER.debug("Filling side....");
 
             Template template = Skins.getSkinTemplate(request, "side.ftl");
-
             if (null == template) {
                 LOGGER.debug("The skin dose not contain [side.ftl] template");
 
@@ -724,8 +723,6 @@ public class DataModelService {
                     return;
                 }
             }
-
-            dataModel.put("fillTagArticles", fillTagArticles);
 
             if (Templates.hasExpression(template, "<#list recentArticles as article>")) {
                 fillRecentArticles(dataModel, preference);
