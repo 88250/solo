@@ -48,7 +48,7 @@ import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
-import org.b3log.solo.util.Mails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -402,7 +402,7 @@ public class LoginProcessor {
         message.setSubject(mailSubject);
         message.setHtmlBody(mailBody);
 
-        if (Mails.isConfigured()) {
+        if (Solos.isConfigured()) {
             mailService.send(message);
         } else {
             LOGGER.log(Level.INFO, "Do not send mail caused by not configure mail.properties");

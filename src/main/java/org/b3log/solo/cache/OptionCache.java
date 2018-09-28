@@ -21,7 +21,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.util.JSONs;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -69,7 +69,7 @@ public class OptionCache {
             return null;
         }
 
-        return JSONs.clone(ret);
+        return Solos.clone(ret);
     }
 
     /**
@@ -94,7 +94,7 @@ public class OptionCache {
             return null;
         }
 
-        return JSONs.clone(option);
+        return Solos.clone(option);
     }
 
     /**
@@ -103,7 +103,7 @@ public class OptionCache {
      * @param option the specified option
      */
     public void putOption(final JSONObject option) {
-        cache.put(option.optString(Keys.OBJECT_ID), JSONs.clone(option));
+        cache.put(option.optString(Keys.OBJECT_ID), Solos.clone(option));
 
         final String category = option.optString(Option.OPTION_CATEGORY);
         removeCategory(category);

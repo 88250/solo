@@ -47,7 +47,7 @@ import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Thumbnails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 
@@ -768,7 +768,7 @@ public class ArticleProcessor {
             if (StringUtils.isNotBlank(userAvatar)) {
                 article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
             } else {
-                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");
+                final String thumbnailURL = Solos.getGravatarURL(author.optString(User.USER_EMAIL), "128");
                 article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
             }
 
@@ -864,7 +864,7 @@ public class ArticleProcessor {
         if (StringUtils.isNotBlank(userAvatar)) {
             dataModel.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
         } else {
-            final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");
+            final String thumbnailURL = Solos.getGravatarURL(author.optString(User.USER_EMAIL), "128");
             dataModel.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
         }
 

@@ -514,7 +514,7 @@ public class DataModelService {
                 final String email = comment.optString(Comment.COMMENT_EMAIL);
                 final String thumbnailURL = comment.optString(Comment.COMMENT_THUMBNAIL_URL);
                 if (StringUtils.isBlank(thumbnailURL)) {
-                    comment.put(Comment.COMMENT_THUMBNAIL_URL, Thumbnails.getGravatarURL(email, "128"));
+                    comment.put(Comment.COMMENT_THUMBNAIL_URL, Solos.getGravatarURL(email, "128"));
                 }
             }
 
@@ -580,7 +580,7 @@ public class DataModelService {
                     dataModel.put(Common.GRAVATAR, userAvatar);
                 } else {
                     final String email = currentUser.optString(User.USER_EMAIL);
-                    final String gravatar = Thumbnails.getGravatarURL(email, "128");
+                    final String gravatar = Solos.getGravatarURL(email, "128");
                     dataModel.put(Common.GRAVATAR, gravatar);
                 }
 
@@ -878,7 +878,7 @@ public class DataModelService {
             if (StringUtils.isNotBlank(userAvatar)) {
                 article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
             } else {
-                final String thumbnailURL = Thumbnails.getGravatarURL(author.optString(User.USER_EMAIL), "128");
+                final String thumbnailURL = Solos.getGravatarURL(author.optString(User.USER_EMAIL), "128");
                 article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
             }
 

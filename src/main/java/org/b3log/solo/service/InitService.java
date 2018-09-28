@@ -45,7 +45,6 @@ import org.b3log.solo.repository.*;
 import org.b3log.solo.util.Images;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
-import org.b3log.solo.util.Thumbnails;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -479,7 +478,7 @@ public class InitService {
         admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
         String avatar = requestJSONObject.optString(UserExt.USER_AVATAR);
         if (StringUtils.isBlank(avatar)) {
-            avatar = Thumbnails.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128");
+            avatar = Solos.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128");
         }
         admin.put(UserExt.USER_AVATAR, avatar);
 

@@ -38,7 +38,7 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.Mails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 /**
@@ -84,7 +84,7 @@ public class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObjec
             return;
         }
 
-        if (!Mails.isConfigured()) {
+        if (!Solos.isConfigured()) {
             return;
         }
 

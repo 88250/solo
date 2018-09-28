@@ -44,7 +44,7 @@ import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.service.StatisticQueryService;
-import org.b3log.solo.util.Mails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -139,7 +139,7 @@ public class RepairProcessor {
             renderer.setContent("Restores signs succeeded.");
 
             // Sends the sample signs to developer
-            if (!Mails.isConfigured()) {
+            if (!Solos.isConfigured()) {
                 return;
             }
 

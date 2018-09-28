@@ -54,7 +54,7 @@ import org.b3log.solo.service.ExportService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.Thumbnails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.ServletOutputStream;
@@ -158,7 +158,7 @@ public class AdminConsole {
         if (StringUtils.isNotBlank(userAvatar)) {
             dataModel.put(Common.GRAVATAR, userAvatar);
         } else {
-            final String gravatar = Thumbnails.getGravatarURL(email, "128");
+            final String gravatar = Solos.getGravatarURL(email, "128");
             dataModel.put(Common.GRAVATAR, gravatar);
         }
 

@@ -171,7 +171,7 @@ public class CommentMgmtService {
                                      final JSONObject comment,
                                      final JSONObject originalComment,
                                      final JSONObject preference) throws Exception {
-        if (!Mails.isConfigured()) {
+        if (!Solos.isConfigured()) {
             return;
         }
 
@@ -777,7 +777,7 @@ public class CommentMgmtService {
         }
 
         // 2. Gravatar
-        String thumbnailURL = Thumbnails.getGravatarURL(commentEmail.toLowerCase(), "128");
+        String thumbnailURL = Solos.getGravatarURL(commentEmail.toLowerCase(), "128");
         final URL gravatarURL = new URL(thumbnailURL);
 
         int statusCode = HttpServletResponse.SC_OK;

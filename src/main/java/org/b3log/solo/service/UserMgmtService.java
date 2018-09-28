@@ -40,7 +40,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.util.Thumbnails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -344,7 +344,7 @@ public class UserMgmtService {
 
             String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
             if (StringUtils.isBlank(userAvatar)) {
-                userAvatar = Thumbnails.getGravatarURL(userEmail, "128");
+                userAvatar = Solos.getGravatarURL(userEmail, "128");
             }
             user.put(UserExt.USER_AVATAR, userAvatar);
 

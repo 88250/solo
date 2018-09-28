@@ -43,8 +43,7 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.util.Mails;
-import org.b3log.solo.util.Thumbnails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -263,7 +262,7 @@ public class UpgradeService {
         for (int i = 0; i < users.length(); i++) {
             final JSONObject user = users.getJSONObject(i);
             final String email = user.optString(User.USER_EMAIL);
-            user.put(UserExt.USER_AVATAR, Thumbnails.getGravatarURL(email, "128"));
+            user.put(UserExt.USER_AVATAR, Solos.getGravatarURL(email, "128"));
 
             userRepository.update(user.optString(Keys.OBJECT_ID), user);
             LOGGER.log(Level.INFO, "Updated user[email={0}]", email);
@@ -387,7 +386,7 @@ public class UpgradeService {
      * @throws Exception exception
      */
     private void notifyUserByEmail() throws Exception {
-        if (!Mails.isConfigured()) {
+        if (!Solos.isConfigured()) {
             return;
         }
 

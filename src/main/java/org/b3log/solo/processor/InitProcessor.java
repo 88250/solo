@@ -41,7 +41,7 @@ import org.b3log.solo.model.UserExt;
 import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.InitService;
-import org.b3log.solo.util.Thumbnails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -172,7 +172,7 @@ public class InitProcessor {
             admin.put(User.USER_PASSWORD, userPassword);
             String avatar = requestJSONObject.optString(UserExt.USER_AVATAR);
             if (StringUtils.isBlank(avatar)) {
-                avatar = Thumbnails.getGravatarURL(userEmail, "128");
+                avatar = Solos.getGravatarURL(userEmail, "128");
             }
             admin.put(UserExt.USER_AVATAR, avatar);
 

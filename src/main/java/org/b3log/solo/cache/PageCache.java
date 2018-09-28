@@ -20,7 +20,7 @@ package org.b3log.solo.cache;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.inject.Named;
 import org.b3log.latke.ioc.inject.Singleton;
-import org.b3log.solo.util.JSONs;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -54,7 +54,7 @@ public class PageCache {
             return null;
         }
 
-        return JSONs.clone(page);
+        return Solos.clone(page);
     }
 
     /**
@@ -65,7 +65,7 @@ public class PageCache {
     public void putPage(final JSONObject page) {
         final String pageId = page.optString(Keys.OBJECT_ID);
 
-        cache.put(pageId, JSONs.clone(page));
+        cache.put(pageId, Solos.clone(page));
     }
 
     /**
