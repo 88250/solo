@@ -18,6 +18,8 @@
 package org.b3log.solo.util;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.solo.SoloServletListener;
 
 import java.util.MissingResourceException;
@@ -27,10 +29,15 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Sep 17, 2018
+ * @version 1.2.0.1, Sep 28, 2018
  * @since 2.8.0
  */
 public final class Solos {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Solos.class);
 
     /**
      * B3log Rhythm address.
@@ -85,11 +92,11 @@ public final class Solos {
         }
         UPLOAD_DIR_PATH = dir;
 
-        String mobileSkin = "mobile";
+        String mobileSkin = "Medium";
         try {
             mobileSkin = solo.getString("mobile.skin");
         } catch (final Exception e) {
-            // ignored
+            LOGGER.log(Level.WARN, "Loads [mobile.skin] in solo.props failed [" + e.getMessage() + "], using [" + mobileSkin + "] as the default mobile skin");
         }
         MOBILE_SKIN = mobileSkin;
     }
