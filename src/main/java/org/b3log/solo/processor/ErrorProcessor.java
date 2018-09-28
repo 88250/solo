@@ -28,7 +28,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.processor.renderer.ConsoleRenderer;
+import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.processor.util.Filler;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
