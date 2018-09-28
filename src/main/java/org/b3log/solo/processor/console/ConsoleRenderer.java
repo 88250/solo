@@ -15,16 +15,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.processor.renderer;
+package org.b3log.solo.processor.console;
 
 import freemarker.template.Template;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.solo.util.Skins;
-
-import java.io.IOException;
 
 /**
  * <a href="http://freemarker.org">FreeMarker</a> HTTP response renderer for administrator console and initialization rendering.
