@@ -18,9 +18,8 @@
 package org.b3log.solo.cache;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
-import org.b3log.solo.util.JSONs;
+import org.b3log.latke.ioc.Singleton;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -33,7 +32,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 1.1.0.1, Sep 25, 2018
  * @since 2.3.0
  */
-@Named
 @Singleton
 public class CommentCache {
 
@@ -54,7 +52,7 @@ public class CommentCache {
             return null;
         }
 
-        return JSONs.clone(comment);
+        return Solos.clone(comment);
     }
 
     /**
@@ -63,7 +61,7 @@ public class CommentCache {
      * @param comment the specified comment
      */
     public void putComment(final JSONObject comment) {
-        cache.put(comment.optString(Keys.OBJECT_ID), JSONs.clone(comment));
+        cache.put(comment.optString(Keys.OBJECT_ID), Solos.clone(comment));
     }
 
     /**

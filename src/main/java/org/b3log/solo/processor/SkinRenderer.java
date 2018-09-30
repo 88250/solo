@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.processor.renderer;
+package org.b3log.solo.processor;
 
 import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
@@ -23,7 +23,8 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.renderer.freemarker.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.solo.util.Skins;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.StringWriter;
@@ -57,6 +58,11 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
         this.request = request;
     }
 
+    @Override
+    protected Template getTemplate() {
+        return Skins.getSkinTemplate(request, getTemplateName());
+    }
+
     /**
      * Processes the specified FreeMarker template with the specified request, data model, pjax hacking.
      *
@@ -66,6 +72,7 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
      * @return generated HTML
      * @throws Exception exception
      */
+    @Override
     protected String genHTML(final HttpServletRequest request, final Map<String, Object> dataModel, final Template template)
             throws Exception {
         final boolean isPJAX = isPJAX(request);

@@ -18,11 +18,10 @@
 package org.b3log.solo.cache;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.solo.util.JSONs;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -35,7 +34,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 1.1.0.1, Sep 25, 2018
  * @since 2.3.0
  */
-@Named
 @Singleton
 public class UserCache {
 
@@ -84,7 +82,7 @@ public class UserCache {
             return null;
         }
 
-        return JSONs.clone(user);
+        return Solos.clone(user);
     }
 
     /**
@@ -99,7 +97,7 @@ public class UserCache {
             return null;
         }
 
-        return JSONs.clone(user);
+        return Solos.clone(user);
     }
 
     /**
@@ -108,8 +106,8 @@ public class UserCache {
      * @param user the specified user
      */
     public void putUser(final JSONObject user) {
-        idCache.put(user.optString(Keys.OBJECT_ID), JSONs.clone(user));
-        emailCache.put(user.optString(User.USER_EMAIL), JSONs.clone(user));
+        idCache.put(user.optString(Keys.OBJECT_ID), Solos.clone(user));
+        emailCache.put(user.optString(User.USER_EMAIL), Solos.clone(user));
     }
 
     /**

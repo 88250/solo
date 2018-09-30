@@ -18,10 +18,9 @@
 package org.b3log.solo.cache;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.util.JSONs;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import java.util.Map;
@@ -34,7 +33,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 1.2.0.1, Sep 25, 2018
  * @since 2.3.0
  */
-@Named
 @Singleton
 public class ArticleCache {
 
@@ -60,7 +58,7 @@ public class ArticleCache {
             return null;
         }
 
-        return JSONs.clone(article);
+        return Solos.clone(article);
     }
 
     /**
@@ -75,7 +73,7 @@ public class ArticleCache {
             return null;
         }
 
-        return JSONs.clone(article);
+        return Solos.clone(article);
     }
 
     /**
@@ -84,8 +82,8 @@ public class ArticleCache {
      * @param article the specified article
      */
     public void putArticle(final JSONObject article) {
-        idCache.put(article.optString(Keys.OBJECT_ID), JSONs.clone(article));
-        permalinkCache.put(article.optString(Article.ARTICLE_PERMALINK), JSONs.clone(article));
+        idCache.put(article.optString(Keys.OBJECT_ID), Solos.clone(article));
+        permalinkCache.put(article.optString(Article.ARTICLE_PERMALINK), Solos.clone(article));
     }
 
     /**

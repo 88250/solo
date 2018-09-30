@@ -21,9 +21,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
-import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -40,7 +38,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.util.Thumbnails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -96,6 +94,12 @@ public class UserMgmtService {
     private OptionMgmtService optionMgmtService;
 
     /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
      * Tries to login with cookie.
      *
      * @param request  the specified request
@@ -121,9 +125,6 @@ public class UserMgmtService {
                 if (StringUtils.isBlank(userId)) {
                     break;
                 }
-
-                final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-                final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
 
                 final JSONObject userResult = userQueryService.getUser(userId);
                 if (null == userResult) {
@@ -344,7 +345,7 @@ public class UserMgmtService {
 
             String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
             if (StringUtils.isBlank(userAvatar)) {
-                userAvatar = Thumbnails.getGravatarURL(userEmail, "128");
+                userAvatar = Solos.getGravatarURL(userEmail, "128");
             }
             user.put(UserExt.USER_AVATAR, userAvatar);
 

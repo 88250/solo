@@ -24,7 +24,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -171,7 +171,7 @@ public class CommentMgmtService {
                                      final JSONObject comment,
                                      final JSONObject originalComment,
                                      final JSONObject preference) throws Exception {
-        if (!Mails.isConfigured()) {
+        if (!Solos.isConfigured()) {
             return;
         }
 
@@ -777,7 +777,7 @@ public class CommentMgmtService {
         }
 
         // 2. Gravatar
-        String thumbnailURL = Thumbnails.getGravatarURL(commentEmail.toLowerCase(), "128");
+        String thumbnailURL = Solos.getGravatarURL(commentEmail.toLowerCase(), "128");
         final URL gravatarURL = new URL(thumbnailURL);
 
         int statusCode = HttpServletResponse.SC_OK;

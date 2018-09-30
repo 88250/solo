@@ -17,27 +17,28 @@
  */
 package org.b3log.solo.util;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import freemarker.template.TemplateExceptionHandler;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.LangPropsServiceImpl;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,7 +48,7 @@ import java.util.*;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.0, Sep 23, 2018
+ * @version 1.1.6.1, Sep 26, 2018
  * @since 0.3.1
  */
 public final class Skins {
@@ -58,6 +59,20 @@ public final class Skins {
     private static final Logger LOGGER = Logger.getLogger(Skins.class);
 
     /**
+     * FreeMarker configuration.
+     */
+    public static final Configuration TEMPLATE_CFG;
+
+    static {
+        TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_28);
+        TEMPLATE_CFG.setDefaultEncoding("UTF-8");
+        final ServletContext servletContext = SoloServletListener.getServletContext();
+        TEMPLATE_CFG.setServletContextForTemplateLoading(servletContext, "");
+        TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
+        TEMPLATE_CFG.setLogTemplateExceptions(false);
+    }
+
+    /**
      * Properties map.
      */
     private static final Map<String, Map<String, String>> LANG_MAP = new HashMap<>();
@@ -66,6 +81,42 @@ public final class Skins {
      * Private constructor.
      */
     private Skins() {
+    }
+
+    /**
+     * Gets a template with the specified template name.
+     *
+     * @param templateName the specified template name
+     * @return template, returns {@code null} if not found
+     */
+    public static Template getTemplate(final String templateName) {
+        try {
+            return Skins.TEMPLATE_CFG.getTemplate(templateName);
+        } catch (final IOException e) {
+            LOGGER.log(Level.ERROR, "Gets console template [" + templateName + "] failed", e);
+
+            return null;
+        }
+    }
+
+    /**
+     * Gets a skins template with the specified request and template name.
+     *
+     * @param request      the specified request
+     * @param templateName the specified template name
+     * @return template, returns {@code null} if not found
+     */
+    public static Template getSkinTemplate(final HttpServletRequest request, final String templateName) {
+        String templateDirName = (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+        if (StringUtils.isBlank(templateDirName)) {
+            templateDirName = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
+        }
+
+        try {
+            return Skins.TEMPLATE_CFG.getTemplate("skins/" + templateDirName + "/" + templateName);
+        } catch (final IOException e) {
+            return null;
+        }
     }
 
     /**
@@ -84,12 +135,11 @@ public final class Skins {
         try {
             final String langName = currentSkinDirName + "." + localeString;
             Map<String, String> langs = LANG_MAP.get(langName);
-
             if (null == langs) {
                 LANG_MAP.clear(); // Collect unused skin languages
 
                 LOGGER.log(Level.DEBUG, "Loading skin [dirName={0}, locale={1}]", currentSkinDirName, localeString);
-                langs = new HashMap<String, String>();
+                langs = new HashMap<>();
 
                 final String language = Locales.getLanguage(localeString);
                 final String country = Locales.getCountry(localeString);
@@ -99,24 +149,21 @@ public final class Skins {
                         "/skins/" + currentSkinDirName + "/lang/lang_" + language + '_' + country + ".properties");
 
                 final Properties props = new Properties();
-
                 props.load(inputStream);
                 final Set<Object> keys = props.keySet();
-
                 for (final Object key : keys) {
                     langs.put((String) key, props.getProperty((String) key));
                 }
 
                 LANG_MAP.put(langName, langs);
-                LOGGER.log(Level.DEBUG, "Loaded skin[dirName={0}, locale={1}, keyCount={2}]",
-                        currentSkinDirName, localeString, langs.size());
+                LOGGER.log(Level.DEBUG, "Loaded skin[dirName={0}, locale={1}, keyCount={2}]", currentSkinDirName, localeString, langs.size());
             }
 
             dataModel.putAll(langs); // Fills the current skin's language configurations
 
             // Fills the core language configurations
-            final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-            final LangPropsService langPropsService = beanManager.getReference(LangPropsServiceImpl.class);
+            final BeanManager beanManager = BeanManager.getInstance();
+            final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
 
             dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
         } catch (final Exception e) {
@@ -126,24 +173,6 @@ public final class Skins {
         } finally {
             Stopwatchs.end();
         }
-    }
-
-    /**
-     * Sets the directory for template loading with the specified skin directory name, and sets the directory for mobile
-     * request template loading.
-     *
-     * @param skinDirName the specified skin directory name
-     */
-    public static void setDirectoryForTemplateLoading(final String skinDirName) {
-        final ServletContext servletContext = SoloServletListener.getServletContext();
-
-        Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + skinDirName);
-        Templates.MAIN_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-        Templates.MAIN_CFG.setLogTemplateExceptions(false);
-
-        Templates.MOBILE_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + Solos.MOBILE_SKIN);
-        Templates.MOBILE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-        Templates.MOBILE_CFG.setLogTemplateExceptions(false);
     }
 
     /**

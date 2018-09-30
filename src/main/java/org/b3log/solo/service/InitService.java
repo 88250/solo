@@ -24,7 +24,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -38,17 +38,17 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
-import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.model.Option.DefaultPreference;
 import org.b3log.solo.repository.*;
-import org.b3log.solo.util.*;
+import org.b3log.solo.util.Images;
+import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.servlet.ServletContext;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
@@ -478,7 +478,7 @@ public class InitService {
         admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
         String avatar = requestJSONObject.optString(UserExt.USER_AVATAR);
         if (StringUtils.isBlank(avatar)) {
-            avatar = Thumbnails.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128");
+            avatar = Solos.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128");
         }
         admin.put(UserExt.USER_AVATAR, avatar);
 
@@ -799,12 +799,6 @@ public class InitService {
         skinsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         skinsOpt.put(Option.OPTION_VALUE, skinArray.toString());
         optionRepository.add(skinsOpt);
-
-        final ServletContext servletContext = SoloServletListener.getServletContext();
-
-        Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + skinDirName);
-
-        TimeZones.setTimeZone(INIT_TIME_ZONE_ID);
 
         LOGGER.debug("Initialized preference");
     }

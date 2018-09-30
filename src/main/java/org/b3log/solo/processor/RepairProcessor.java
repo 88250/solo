@@ -18,8 +18,8 @@
 package org.b3log.solo.processor;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -44,7 +44,7 @@ import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.service.StatisticQueryService;
-import org.b3log.solo.util.Mails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -75,7 +75,7 @@ public class RepairProcessor {
      * Bean manager.
      */
     @Inject
-    private LatkeBeanManager beanManager;
+    private BeanManager beanManager;
 
     /**
      * Preference query service.
@@ -139,7 +139,7 @@ public class RepairProcessor {
             renderer.setContent("Restores signs succeeded.");
 
             // Sends the sample signs to developer
-            if (!Mails.isConfigured()) {
+            if (!Solos.isConfigured()) {
                 return;
             }
 

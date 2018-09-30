@@ -33,7 +33,7 @@ import java.util.Locale;
 public final class ThumbnailsTestCase {
 
     /**
-     * Test method for {@linkplain Thumbnails#getGravatarURL(java.lang.String, java.lang.String)}.
+     * Test method for {@linkplain Solos#getGravatarURL(String, String)}.
      *
      * @throws Exception exception
      */
@@ -42,7 +42,7 @@ public final class ThumbnailsTestCase {
         Latkes.initRuntimeEnv();
         Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
 
-        final String gravatarURL = Thumbnails.getGravatarURL("test@b3log.org", "128");
+        final String gravatarURL = Solos.getGravatarURL("test@b3log.org", "128");
 
         Assert.assertEquals(gravatarURL, Solos.GRAVATAR + "bd7e4673cf7fa4b4777353008c86e093?s=128");
     }

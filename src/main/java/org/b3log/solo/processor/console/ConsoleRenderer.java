@@ -15,36 +15,38 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.util;
+package org.b3log.solo.processor.console;
 
-import org.apache.commons.codec.digest.DigestUtils;
+import freemarker.template.Template;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.solo.util.Skins;
 
 /**
- * Thumbnail utilities.
- * <p>
- * By using <a href="http://gravatar.com">Gravatar</a> for user thumbnail.
- * </p>
+ * <a href="http://freemarker.org">FreeMarker</a> HTTP response renderer for administrator console and initialization rendering.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Aug 2, 2018
- * @since 0.6.1
+ * @version 1.0.1.5, Sep 26, 2018
+ * @since 0.4.1
  */
-public final class Thumbnails {
+public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
 
     /**
-     * Gets the Gravatar URL for the specified email with the specified size.
-     *
-     * @param email the specified email
-     * @param size  the specified size
-     * @return the Gravatar URL
+     * Logger.
      */
-    public static String getGravatarURL(final String email, final String size) {
-        return Solos.GRAVATAR + DigestUtils.md5Hex(email) + "?s=" + size;
+    private static final Logger LOGGER = Logger.getLogger(ConsoleRenderer.class);
+
+    @Override
+    protected Template getTemplate() {
+        return Skins.getTemplate(getTemplateName());
     }
 
-    /**
-     * Private constructor.
-     */
-    private Thumbnails() {
+    @Override
+    protected void beforeRender(final HTTPRequestContext context) {
+    }
+
+    @Override
+    protected void afterRender(final HTTPRequestContext context) {
     }
 }

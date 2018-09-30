@@ -18,9 +18,8 @@
 package org.b3log.solo.processor.console;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.inject.Inject;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
@@ -41,7 +40,6 @@ import java.util.Map;
  * @version 1.0.1.1, Sep 25, 2018
  * @since 2.9.5
  */
-@Named
 @Singleton
 public class ConsoleAuthAdvice extends BeforeRequestProcessAdvice {
 

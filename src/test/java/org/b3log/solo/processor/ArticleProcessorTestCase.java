@@ -20,7 +20,7 @@ package org.b3log.solo.processor;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -344,7 +344,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         httpRequestContext.setRequest(request);
         httpRequestContext.setResponse(response);
 
-        final ArticleProcessor articleProcessor = Lifecycle.getBeanManager().getReference(ArticleProcessor.class);
+        final ArticleProcessor articleProcessor = BeanManager.getInstance().getReference(ArticleProcessor.class);
         articleProcessor.showArticle(httpRequestContext, request, response);
 
         final Map<String, Object> dataModel = httpRequestContext.getRenderer().getRenderDataModel();

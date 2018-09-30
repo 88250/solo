@@ -17,8 +17,13 @@
  */
 package org.b3log.solo.util;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.SoloServletListener;
+import org.json.JSONObject;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -27,10 +32,20 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Sep 17, 2018
+ * @version 1.3.0.0, Sep 28, 2018
  * @since 2.8.0
  */
 public final class Solos {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Solos.class);
+
+    /**
+     * Mail configuration (mail.properties).
+     */
+    private static final ResourceBundle mailConf = ResourceBundle.getBundle("mail");
 
     /**
      * B3log Rhythm address.
@@ -67,6 +82,7 @@ public final class Solos {
      */
     public static final String USER_AGENT = "Solo/" + SoloServletListener.VERSION + "; +https://github.com/b3log/solo";
 
+
     static {
         ResourceBundle solo;
         try {
@@ -85,13 +101,50 @@ public final class Solos {
         }
         UPLOAD_DIR_PATH = dir;
 
-        String mobileSkin = "mobile";
+        String mobileSkin = "Medium";
         try {
             mobileSkin = solo.getString("mobile.skin");
         } catch (final Exception e) {
-            // ignored
+            LOGGER.log(Level.WARN, "Loads [mobile.skin] in solo.props failed [" + e.getMessage() + "], using [" + mobileSkin + "] as the default mobile skin");
         }
         MOBILE_SKIN = mobileSkin;
+    }
+
+    /**
+     * Whether user configures the mail.properties.
+     *
+     * @return {@code true} if user configured, returns {@code false} otherwise
+     */
+    public static boolean isConfigured() {
+        try {
+            return StringUtils.isNotBlank(mailConf.getString("mail.user")) &&
+                    StringUtils.isNotBlank(mailConf.getString("mail.password")) &&
+                    StringUtils.isNotBlank(mailConf.getString("mail.smtp.host")) &&
+                    StringUtils.isNotBlank(mailConf.getString("mail.smtp.port"));
+        } catch (final Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Gets the Gravatar URL for the specified email with the specified size.
+     *
+     * @param email the specified email
+     * @param size  the specified size
+     * @return the Gravatar URL
+     */
+    public static String getGravatarURL(final String email, final String size) {
+        return GRAVATAR + DigestUtils.md5Hex(email) + "?s=" + size;
+    }
+
+    /**
+     * Clones a JSON object from the specified source object.
+     *
+     * @param src the specified source object
+     * @return cloned object
+     */
+    public static JSONObject clone(final JSONObject src) {
+        return new JSONObject(src, CollectionUtils.jsonArrayToArray(src.names(), String[].class));
     }
 
     /**

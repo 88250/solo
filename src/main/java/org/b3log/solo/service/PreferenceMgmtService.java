@@ -18,7 +18,7 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
@@ -27,30 +27,25 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.freemarker.Templates;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.TimeZones;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.ServletContext;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 
 import static org.b3log.solo.model.Skin.*;
 import static org.b3log.solo.util.Skins.getSkinDirNames;
-import static org.b3log.solo.util.Skins.setDirectoryForTemplateLoading;
 
 /**
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.15, Sep 17, 2018
+ * @version 1.3.2.16, Sep 26, 2018
  * @since 0.4.0
  */
 @Service
@@ -140,13 +135,6 @@ public class PreferenceMgmtService {
             updatePreference(preference);
         }
 
-        setDirectoryForTemplateLoading(preference.getString(SKIN_DIR_NAME));
-
-        final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
-        if ("zh_CN".equals(localeString)) {
-            TimeZones.setTimeZone("Asia/Shanghai");
-        }
-
         LOGGER.debug("Loaded skins....");
 
         Stopwatchs.end();
@@ -217,9 +205,6 @@ public class PreferenceMgmtService {
             }
 
             preference.put(Skin.SKINS, skinArray.toString());
-
-            final String timeZoneId = preference.getString(Option.ID_C_TIME_ZONE_ID);
-            TimeZones.setTimeZone(timeZoneId);
 
             preference.put(Option.ID_C_SIGNS, preference.get(Option.ID_C_SIGNS).toString());
 
@@ -373,10 +358,6 @@ public class PreferenceMgmtService {
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
             transaction.commit();
-
-            final ServletContext servletContext = SoloServletListener.getServletContext();
-
-            Templates.MAIN_CFG.setServletContextForTemplateLoading(servletContext, "/skins/" + skinDirName);
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();

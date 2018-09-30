@@ -20,8 +20,7 @@ package org.b3log.solo;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.PluginManager;
@@ -32,7 +31,6 @@ import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
-import org.b3log.latke.util.freemarker.Templates;
 import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
@@ -50,14 +48,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import java.util.Set;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.39, Sep 25, 2018
+ * @version 1.9.3.41, Sep 27, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -75,12 +71,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Bean manager.
      */
-    private LatkeBeanManager beanManager;
-
-    /**
-     * Request lock.
-     */
-    private Lock requestLock = new ReentrantLock();
+    private BeanManager beanManager;
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
@@ -89,7 +80,7 @@ public final class SoloServletListener extends AbstractServletListener {
         super.contextInitialized(servletContextEvent);
         Stopwatchs.start("Context Initialized");
 
-        beanManager = Lifecycle.getBeanManager();
+        beanManager = BeanManager.getInstance();
 
         // Upgrade check https://github.com/b3log/solo/issues/12040
         final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
@@ -100,9 +91,6 @@ public final class SoloServletListener extends AbstractServletListener {
         importService.importMarkdowns();
 
         JdbcRepository.dispose();
-
-        // Set default skin, loads from preference later
-        Skins.setDirectoryForTemplateLoading(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         final OptionRepository optionRepository = beanManager.getReference(OptionRepositoryImpl.class);
         final Transaction transaction = optionRepository.beginTransaction();
@@ -147,8 +135,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void requestInitialized(final ServletRequestEvent servletRequestEvent) {
-        requestLock.lock();
-
         final HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequestEvent.getServletRequest();
         Requests.log(httpServletRequest, Level.DEBUG, LOGGER);
 
@@ -158,14 +144,12 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
-            // Gets the session of this request
             final HttpSession session = httpServletRequest.getSession();
 
             LOGGER.log(Level.DEBUG, "Gets a session [id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", session.getId(),
                     httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), session.isNew());
             // Online visitor count
             final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
-
             statisticMgmtService.onlineVisitorCount(httpServletRequest);
         }
 
@@ -174,16 +158,12 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void requestDestroyed(final ServletRequestEvent servletRequestEvent) {
-        try {
-            Stopwatchs.end();
+        Stopwatchs.end();
 
-            LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
-            Stopwatchs.release();
+        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+        Stopwatchs.release();
 
-            super.requestDestroyed(servletRequestEvent);
-        } finally {
-            requestLock.unlock();
-        }
+        super.requestDestroyed(servletRequestEvent);
     }
 
     /**
@@ -200,7 +180,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
         JSONObject preference;
-
         try {
             preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -211,7 +190,6 @@ public final class SoloServletListener extends AbstractServletListener {
             }
 
             final PreferenceMgmtService preferenceMgmtService = beanManager.getReference(PreferenceMgmtService.class);
-
             preferenceMgmtService.loadSkins(preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -260,16 +238,14 @@ public final class SoloServletListener extends AbstractServletListener {
      */
     private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
         // https://github.com/b3log/solo/issues/12060
+        httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final Cookie[] cookies = httpServletRequest.getCookies();
         if (null != cookies) {
             for (final Cookie cookie : cookies) {
                 if (Skin.SKIN.equals(cookie.getName())) {
                     final String skin = cookie.getValue();
                     final Set<String> skinDirNames = Skins.getSkinDirNames();
-
                     if (skinDirNames.contains(skin)) {
-                        Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(),
-                                "/skins/" + skin);
                         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
 
                         return;
@@ -281,13 +257,11 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
             final JSONObject preference = preferenceQueryService.getPreference();
-
-            if (null == preference) { // Did not initialize yet
+            if (null == preference) { // Not initialize yet
                 return;
             }
 
             final String requestURI = httpServletRequest.getRequestURI();
-
             String desiredView = Requests.mobileSwitchToggle(httpServletRequest);
             if (desiredView == null && !Requests.mobileRequest(httpServletRequest) || desiredView != null && desiredView.equals("normal")) {
                 desiredView = preference.getString(Skin.SKIN_DIR_NAME);
@@ -296,7 +270,6 @@ public final class SoloServletListener extends AbstractServletListener {
                 LOGGER.log(Level.DEBUG, "The request [URI={0}] via mobile device", requestURI);
             }
 
-            Templates.MAIN_CFG.setServletContextForTemplateLoading(SoloServletListener.getServletContext(), "/skins/" + desiredView);
             httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, desiredView);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);

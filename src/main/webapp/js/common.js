@@ -75,6 +75,9 @@ var Util = {
         storage: true,
         titleSuffix: '',
         filter: function(href){
+          if (href === latkeConfig.servePath + '/rss.xml') {
+            return true
+          }
           if (href.indexOf(latkeConfig.servePath) > -1) {
             return false
           }

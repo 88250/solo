@@ -18,9 +18,8 @@
 package org.b3log.solo;
 
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
-import org.b3log.latke.ioc.config.Discoverer;
+import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Discoverer;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.solo.api.MetaWeblogAPI;
@@ -46,7 +45,7 @@ public abstract class AbstractTestCase {
     /**
      * Bean manager.
      */
-    private LatkeBeanManager beanManager;
+    private BeanManager beanManager;
 
     /**
      * Before class.
@@ -63,8 +62,8 @@ public abstract class AbstractTestCase {
         Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
 
         final Collection<Class<?>> classes = Discoverer.discover("org.b3log.solo");
-        Lifecycle.startApplication(classes);
-        beanManager = Lifecycle.getBeanManager();
+        BeanManager.start(classes);
+        beanManager = BeanManager.getInstance();
 
         final Connection connection = Connections.getConnection();
         connection.createStatement().execute("DROP ALL OBJECTS");

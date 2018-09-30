@@ -23,10 +23,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventException;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -39,7 +37,7 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.util.Mails;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 /**
@@ -49,7 +47,6 @@ import org.json.JSONObject;
  * @version 1.0.2.6, Sep 25, 2018
  * @since 0.3.1
  */
-@Named
 @Singleton
 public class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> {
 
@@ -78,11 +75,11 @@ public class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> 
             return;
         }
 
-        if (!Mails.isConfigured()) {
+        if (!Solos.isConfigured()) {
             return;
         }
 
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final BeanManager beanManager = BeanManager.getInstance();
         final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
         final CommentRepository commentRepository = beanManager.getReference(CommentRepositoryImpl.class);
 
