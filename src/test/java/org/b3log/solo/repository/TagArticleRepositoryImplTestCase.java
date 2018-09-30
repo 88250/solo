@@ -30,7 +30,7 @@ import org.json.JSONObject;
 import org.testng.annotations.Test;
 
 /**
- * {@link TagArticleRepositoryImpl} test case.
+ * {@link TagArticleRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Dec 30, 2011

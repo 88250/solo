@@ -94,12 +94,6 @@ public class UserMgmtService {
     private OptionMgmtService optionMgmtService;
 
     /**
-     * User query service.
-     */
-    @Inject
-    private UserQueryService userQueryService;
-
-    /**
      * Tries to login with cookie.
      *
      * @param request  the specified request
@@ -126,12 +120,7 @@ public class UserMgmtService {
                     break;
                 }
 
-                final JSONObject userResult = userQueryService.getUser(userId);
-                if (null == userResult) {
-                    break;
-                }
-
-                final JSONObject user = userResult.getJSONObject(User.USER);
+                JSONObject user = userRepository.get(userId);
                 if (null == user) {
                     break;
                 }

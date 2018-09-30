@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * {@link ArticleRepositoryImpl} test case.
+ * {@link ArticleRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.4, Sep 16, 2018

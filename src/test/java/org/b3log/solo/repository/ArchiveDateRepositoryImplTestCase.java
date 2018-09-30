@@ -29,7 +29,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 /**
- * {@link ArchiveDateRepositoryImpl} test case.
+ * {@link ArchiveDateRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.2, Jul 20, 2017

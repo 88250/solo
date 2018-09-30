@@ -22,13 +22,12 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * {@link ArchiveDateArticleRepositoryImpl} test case.
+ * {@link ArchiveDateArticleRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Dec 31, 2011

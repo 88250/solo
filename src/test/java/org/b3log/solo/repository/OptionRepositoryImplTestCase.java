@@ -27,7 +27,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * {@link OptionRepositoryImpl} test case.
+ * {@link OptionRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.0, Apr 19, 2013
