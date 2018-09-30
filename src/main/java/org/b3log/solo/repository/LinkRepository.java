@@ -17,18 +17,29 @@
  */
 package org.b3log.solo.repository;
 
-import org.b3log.latke.repository.Repository;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.Keys;
+import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.solo.model.Link;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Link repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Nov 2, 2011
+ * @version 1.0.0.4, Sep 30, 2018
  * @since 0.3.1
  */
-public interface LinkRepository extends Repository {
+@Repository
+public class LinkRepository extends AbstractRepository {
+
+    /**
+     * Public constructor.
+     */
+    public LinkRepository() {
+        super(Link.LINK);
+    }
 
     /**
      * Gets a link by the specified address.
@@ -37,40 +48,97 @@ public interface LinkRepository extends Repository {
      * @return link, returns {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    JSONObject getByAddress(final String address) throws RepositoryException;
+    public JSONObject getByAddress(final String address) throws RepositoryException {
+        final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ADDRESS, FilterOperator.EQUAL, address)).setPageCount(1);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
 
     /**
      * Gets the maximum order.
-     * 
+     *
      * @return order number, returns {@code -1} if not found
      * @throws RepositoryException repository exception
      */
-    int getMaxOrder() throws RepositoryException;
+    public int getMaxOrder() throws RepositoryException {
+        final Query query = new Query().addSort(Link.LINK_ORDER, SortDirection.DESCENDING);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+        if (0 == array.length()) {
+            return -1;
+        }
+
+        return array.optJSONObject(0).optInt(Link.LINK_ORDER);
+    }
 
     /**
      * Gets the upper link of the link specified by the given id.
-     * 
+     *
      * @param id the given id
      * @return upper link, returns {@code null} if not found
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
-    JSONObject getUpper(final String id) throws RepositoryException;
+    public JSONObject getUpper(final String id) throws RepositoryException {
+        final JSONObject link = get(id);
+        if (null == link) {
+            return null;
+        }
+
+        final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.LESS_THAN, link.optInt(Link.LINK_ORDER))).
+                addSort(Link.LINK_ORDER, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(1);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+        if (1 != array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
 
     /**
      * Gets the under link of the link specified by the given id.
-     * 
+     *
      * @param id the given id
      * @return under link, returns {@code null} if not found
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
-    JSONObject getUnder(final String id) throws RepositoryException;
+    public JSONObject getUnder(final String id) throws RepositoryException {
+        final JSONObject link = get(id);
+        if (null == link) {
+            return null;
+        }
+
+        final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.GREATER_THAN, link.optInt(Link.LINK_ORDER))).
+                addSort(Link.LINK_ORDER, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(1);
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+        if (1 != array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
 
     /**
      * Gets a link by the specified order.
      *
      * @param order the specified order
      * @return link, returns {@code null} if not found
-     * @throws RepositoryException repository exception 
+     * @throws RepositoryException repository exception
      */
-    JSONObject getByOrder(final int order) throws RepositoryException;
+    public JSONObject getByOrder(final int order) throws RepositoryException {
+        final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.EQUAL, order));
+        final JSONObject result = get(query);
+        final JSONArray array = result.optJSONArray(Keys.RESULTS);
+        if (0 == array.length()) {
+            return null;
+        }
+
+        return array.optJSONObject(0);
+    }
 }

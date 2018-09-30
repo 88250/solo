@@ -33,8 +33,6 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
-import org.b3log.solo.repository.impl.PageRepositoryImpl;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PermalinkQueryService;
 import org.json.JSONObject;
@@ -98,10 +96,10 @@ public final class PermalinkFilter implements Filter {
         final BeanManager beanManager = BeanManager.getInstance();
 
         try {
-            final ArticleRepository articleRepository = beanManager.getReference(ArticleRepositoryImpl.class);
+            final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
             article = articleRepository.getByPermalink(permalink);
             if (null == article) {
-                final PageRepository pageRepository = beanManager.getReference(PageRepositoryImpl.class);
+                final PageRepository pageRepository = beanManager.getReference(PageRepository.class);
                 page = pageRepository.getByPermalink(permalink);
             }
 

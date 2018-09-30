@@ -17,18 +17,30 @@
  */
 package org.b3log.solo.repository;
 
-import org.b3log.latke.repository.Repository;
-import org.b3log.latke.repository.RepositoryException;
+import org.b3log.latke.Keys;
+import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.solo.model.Category;
+import org.b3log.solo.model.Tag;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
  * Category-Tag relation repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Mar 31, 2017
+ * @version 1.1.0.2, Sep 30, 2018
  * @since 2.0.0
  */
-public interface CategoryTagRepository extends Repository {
+@Repository
+public class CategoryTagRepository extends AbstractRepository {
+
+    /**
+     * Public constructor.
+     */
+    public CategoryTagRepository() {
+        super(Category.CATEGORY + "_" + Tag.TAG);
+    }
 
     /**
      * Gets category-tag relations by the specified category id.
@@ -50,8 +62,12 @@ public interface CategoryTagRepository extends Repository {
      * </pre>
      * @throws RepositoryException repository exception
      */
-    JSONObject getByCategoryId(final String categoryId, final int currentPageNum, final int pageSize)
-            throws RepositoryException;
+    public JSONObject getByCategoryId(final String categoryId, final int currentPageNum, final int pageSize) throws RepositoryException {
+        final Query query = new Query().setFilter(new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId)).
+                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
+
+        return get(query);
+    }
 
     /**
      * Gets category-tag relations by the specified tag id.
@@ -73,8 +89,12 @@ public interface CategoryTagRepository extends Repository {
      * </pre>
      * @throws RepositoryException repository exception
      */
-    JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize)
-            throws RepositoryException;
+    public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize) throws RepositoryException {
+        final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).
+                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
+
+        return get(query);
+    }
 
     /**
      * Removes category-tag relations by the specified category id.
@@ -82,7 +102,14 @@ public interface CategoryTagRepository extends Repository {
      * @param categoryId the specified category id
      * @throws RepositoryException repository exception
      */
-    void removeByCategoryId(final String categoryId) throws RepositoryException;
+    public void removeByCategoryId(final String categoryId) throws RepositoryException {
+        final Query query = new Query().setFilter(new PropertyFilter(Category.CATEGORY + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, categoryId));
+        final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
+        for (int i = 0; i < relations.length(); i++) {
+            final JSONObject rel = relations.optJSONObject(i);
+            remove(rel.optString(Keys.OBJECT_ID));
+        }
+    }
 
     /**
      * Removes category-tag relations by the specified tag id.
@@ -90,5 +117,12 @@ public interface CategoryTagRepository extends Repository {
      * @param tagId the specified tag id
      * @throws RepositoryException repository exception
      */
-    void removeByTagId(final String tagId) throws RepositoryException;
+    public void removeByTagId(final String tagId) throws RepositoryException {
+        final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
+        final JSONArray relations = get(query).optJSONArray(Keys.RESULTS);
+        for (int i = 0; i < relations.length(); i++) {
+            final JSONObject rel = relations.optJSONObject(i);
+            remove(rel.optString(Keys.OBJECT_ID));
+        }
+    }
 }

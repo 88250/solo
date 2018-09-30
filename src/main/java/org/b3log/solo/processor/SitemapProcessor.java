@@ -41,9 +41,9 @@ import org.b3log.solo.model.Tag;
 import org.b3log.solo.model.sitemap.Sitemap;
 import org.b3log.solo.model.sitemap.URL;
 import org.b3log.solo.repository.ArchiveDateRepository;
+import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.b3log.solo.repository.impl.ArticleRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -76,7 +76,7 @@ public class SitemapProcessor {
      * Article repository.
      */
     @Inject
-    private ArticleRepositoryImpl articleRepository;
+    private ArticleRepository articleRepository;
 
     /**
      * Page repository.

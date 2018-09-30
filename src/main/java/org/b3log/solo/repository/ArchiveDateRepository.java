@@ -22,6 +22,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.ArchiveDate;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,6 +38,7 @@ import java.util.List;
  * @version 1.0.0.3, Sep 30, 2018
  * @since 0.3.1
  */
+@Repository
 public class ArchiveDateRepository extends AbstractRepository {
 
     /**

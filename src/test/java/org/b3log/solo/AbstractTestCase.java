@@ -25,7 +25,6 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.solo.api.MetaWeblogAPI;
 import org.b3log.solo.cache.*;
 import org.b3log.solo.repository.*;
-import org.b3log.solo.repository.impl.*;
 import org.b3log.solo.service.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -100,7 +99,7 @@ public abstract class AbstractTestCase {
      * @return category-tag repository
      */
     public CategoryTagRepository getCategoryTagRepository() {
-        return beanManager.getReference(CategoryTagRepositoryImpl.class);
+        return beanManager.getReference(CategoryTagRepository.class);
     }
 
     /**
@@ -109,7 +108,7 @@ public abstract class AbstractTestCase {
      * @return category repository
      */
     public CategoryRepository getCategoryRepository() {
-        return beanManager.getReference(CategoryRepositoryImpl.class);
+        return beanManager.getReference(CategoryRepository.class);
     }
 
     /**
@@ -118,7 +117,7 @@ public abstract class AbstractTestCase {
      * @return user repository
      */
     public UserRepository getUserRepository() {
-        return beanManager.getReference(UserRepositoryImpl.class);
+        return beanManager.getReference(UserRepository.class);
     }
 
     /**
@@ -127,7 +126,7 @@ public abstract class AbstractTestCase {
      * @return link repository
      */
     public LinkRepository getLinkRepository() {
-        return beanManager.getReference(LinkRepositoryImpl.class);
+        return beanManager.getReference(LinkRepository.class);
     }
 
     /**
@@ -145,7 +144,7 @@ public abstract class AbstractTestCase {
      * @return tag repository
      */
     public TagRepository getTagRepository() {
-        return beanManager.getReference(TagRepositoryImpl.class);
+        return beanManager.getReference(TagRepository.class);
     }
 
     /**
@@ -154,7 +153,7 @@ public abstract class AbstractTestCase {
      * @return tag-article repository
      */
     public TagArticleRepository getTagArticleRepository() {
-        return beanManager.getReference(TagArticleRepositoryImpl.class);
+        return beanManager.getReference(TagArticleRepository.class);
     }
 
     /**
@@ -163,7 +162,7 @@ public abstract class AbstractTestCase {
      * @return page repository
      */
     public PageRepository getPageRepository() {
-        return beanManager.getReference(PageRepositoryImpl.class);
+        return beanManager.getReference(PageRepository.class);
     }
 
     /**
@@ -172,7 +171,7 @@ public abstract class AbstractTestCase {
      * @return comment repository
      */
     public CommentRepository getCommentRepository() {
-        return beanManager.getReference(CommentRepositoryImpl.class);
+        return beanManager.getReference(CommentRepository.class);
     }
 
     /**
@@ -199,7 +198,7 @@ public abstract class AbstractTestCase {
      * @return plugin repository
      */
     public PluginRepository getPluginRepository() {
-        return beanManager.getReference(PluginRepositoryImpl.class);
+        return beanManager.getReference(PluginRepository.class);
     }
 
     /**
@@ -208,7 +207,7 @@ public abstract class AbstractTestCase {
      * @return option repository
      */
     public OptionRepository getOptionRepository() {
-        return beanManager.getReference(OptionRepositoryImpl.class);
+        return beanManager.getReference(OptionRepository.class);
     }
 
     /**

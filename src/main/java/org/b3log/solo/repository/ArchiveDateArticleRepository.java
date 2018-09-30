@@ -19,6 +19,7 @@ package org.b3log.solo.repository;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.json.JSONArray;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
  * @version 1.0.0.3, Sep 30, 2018
  * @since 0.3.1
  */
+@Repository
 public class ArchiveDateArticleRepository extends AbstractRepository {
 
     /**

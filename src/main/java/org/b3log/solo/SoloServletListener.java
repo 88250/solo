@@ -35,7 +35,6 @@ import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
-import org.b3log.solo.repository.impl.OptionRepositoryImpl;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
@@ -92,7 +91,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         JdbcRepository.dispose();
 
-        final OptionRepository optionRepository = beanManager.getReference(OptionRepositoryImpl.class);
+        final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
         final Transaction transaction = optionRepository.beginTransaction();
         try {
             loadPreference();

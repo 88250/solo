@@ -22,6 +22,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.cache.ArticleCache;
 import org.b3log.solo.model.Article;
 import org.json.JSONArray;
@@ -38,6 +39,7 @@ import java.util.List;
  * @version 1.1.1.11, Sep 30, 2018
  * @since 0.3.1
  */
+@Repository
 public class ArticleRepository extends AbstractRepository {
 
     /**

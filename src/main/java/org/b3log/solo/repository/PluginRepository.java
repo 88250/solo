@@ -17,13 +17,24 @@
  */
 package org.b3log.solo.repository;
 
-import org.b3log.latke.repository.Repository;
+import org.b3log.latke.model.Plugin;
+import org.b3log.latke.repository.AbstractRepository;
+import org.b3log.latke.repository.annotation.Repository;
 
 /**
  * Plugin repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jan 24, 2013
+ * @version 1.0.0.1, Sep 30, 2018
  * @since 0.3.1
  */
-public interface PluginRepository extends Repository {}
+@Repository
+public class PluginRepository extends AbstractRepository {
+
+    /**
+     * Public constructor.
+     */
+    public PluginRepository() {
+        super(Plugin.PLUGIN);
+    }
+}

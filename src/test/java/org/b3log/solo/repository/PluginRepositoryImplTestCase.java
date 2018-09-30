@@ -15,28 +15,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.repository.impl;
+package org.b3log.solo.repository;
 
-import org.b3log.latke.model.Plugin;
-import org.b3log.latke.repository.AbstractRepository;
-import org.b3log.latke.repository.annotation.Repository;
+import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.repository.PluginRepository;
+import org.testng.annotations.Test;
 
 /**
- * Plugin repository.
+ * {@link PluginRepositoryImpl} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 21, 2011
- * @since 0.3.1
+ * @version 1.0.0.0, Dec 31, 2011
  */
-@Repository
-public class PluginRepositoryImpl extends AbstractRepository implements PluginRepository {
+@Test(suiteName = "repository")
+public class PluginRepositoryImplTestCase extends AbstractTestCase {
 
     /**
-     * Public constructor.
+     * Tests.
+     * 
+     * @throws Exception exception
      */
-    public PluginRepositoryImpl() {
-        super(Plugin.PLUGIN);
+    @Test
+    public void test() throws Exception {
+        final PluginRepository pluginRepository = getPluginRepository();
     }
-
 }

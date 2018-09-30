@@ -35,7 +35,6 @@ import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
-import org.b3log.solo.repository.impl.CommentRepositoryImpl;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -81,7 +80,7 @@ public class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> 
 
         final BeanManager beanManager = BeanManager.getInstance();
         final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
-        final CommentRepository commentRepository = beanManager.getReference(CommentRepositoryImpl.class);
+        final CommentRepository commentRepository = beanManager.getReference(CommentRepository.class);
 
         try {
             final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);

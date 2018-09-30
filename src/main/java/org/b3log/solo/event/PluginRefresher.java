@@ -27,7 +27,6 @@ import org.b3log.latke.plugin.AbstractPlugin;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.repository.PluginRepository;
-import org.b3log.solo.repository.impl.PluginRepositoryImpl;
 import org.b3log.solo.service.PluginMgmtService;
 
 import java.util.List;
@@ -55,7 +54,7 @@ public class PluginRefresher extends AbstractEventListener<List<AbstractPlugin>>
                 event.getType(), plugins, PluginRefresher.class.getName());
 
         final BeanManager beanManager = BeanManager.getInstance();
-        final PluginRepository pluginRepository = beanManager.getReference(PluginRepositoryImpl.class);
+        final PluginRepository pluginRepository = beanManager.getReference(PluginRepository.class);
 
         final Transaction transaction = pluginRepository.beginTransaction();
         try {
