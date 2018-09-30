@@ -17,20 +17,40 @@
  */
 package org.b3log.solo.repository;
 
-import org.b3log.latke.repository.Repository;
-import org.b3log.latke.repository.RepositoryException;
+import org.apache.commons.lang.time.DateUtils;
+import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.*;
+import org.b3log.solo.model.ArchiveDate;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Archive date repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jul 2, 2011
+ * @version 1.0.0.3, Sep 30, 2018
  * @since 0.3.1
  */
-public interface ArchiveDateRepository extends Repository {
+public class ArchiveDateRepository extends AbstractRepository {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ArchiveDateRepository.class);
+
+
+    /**
+     * Public constructor.
+     */
+    public ArchiveDateRepository() {
+        super(ArchiveDate.ARCHIVE_DATE.toLowerCase());
+    }
 
     /**
      * Gets an archive date by the specified archive date string.
@@ -39,7 +59,40 @@ public interface ArchiveDateRepository extends Repository {
      * @return an archive date, {@code null} if not found
      * @throws RepositoryException repository exception
      */
-    JSONObject getByArchiveDate(final String archiveDate) throws RepositoryException;
+    public JSONObject getByArchiveDate(final String archiveDate) throws RepositoryException {
+        long time;
+        try {
+            time = DateUtils.parseDate(archiveDate, new String[]{"yyyy/MM"}).getTime();
+        } catch (final ParseException e) {
+            return null;
+        }
+
+        LOGGER.log(Level.TRACE, "Archive date [{0}] parsed to time [{1}]", archiveDate, time);
+
+        Query query = new Query().setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_TIME, FilterOperator.EQUAL, time)).setPageCount(1);
+        JSONObject result = get(query);
+        JSONArray array = result.optJSONArray(Keys.RESULTS);
+        if (0 == array.length()) {
+            // Try to fix wired timezone issue: https://github.com/b3log/solo/issues/12435
+            try {
+                time = DateUtils.parseDate(archiveDate, new String[]{"yyyy/MM"}).getTime();
+                time += 60 * 1000 * 60 * 8;
+            } catch (final ParseException e) {
+                return null;
+            }
+
+            LOGGER.log(Level.TRACE, "Fix archive date [{0}] parsed to time [{1}]", archiveDate, time);
+
+            query = new Query().setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_TIME, FilterOperator.EQUAL, time)).setPageCount(1);
+            result = get(query);
+            array = result.optJSONArray(Keys.RESULTS);
+            if (0 == array.length()) {
+                return null;
+            }
+        }
+
+        return array.optJSONObject(0);
+    }
 
     /**
      * Gets archive dates.
@@ -48,5 +101,27 @@ public interface ArchiveDateRepository extends Repository {
      * not found
      * @throws RepositoryException repository exception
      */
-    List<JSONObject> getArchiveDates() throws RepositoryException;
+    public List<JSONObject> getArchiveDates() throws RepositoryException {
+        final Query query = new Query().addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).setPageCount(1);
+        final List<JSONObject> ret = getList(query);
+        removeForUnpublishedArticles(ret);
+
+        return ret;
+    }
+
+    /**
+     * Removes archive dates of unpublished articles from the specified archive
+     * dates.
+     *
+     * @param archiveDates the specified archive dates
+     */
+    private void removeForUnpublishedArticles(final List<JSONObject> archiveDates) {
+        final Iterator<JSONObject> iterator = archiveDates.iterator();
+        while (iterator.hasNext()) {
+            final JSONObject archiveDate = iterator.next();
+            if (0 == archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
+                iterator.remove();
+            }
+        }
+    }
 }

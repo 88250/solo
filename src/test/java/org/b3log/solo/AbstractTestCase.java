@@ -136,7 +136,7 @@ public abstract class AbstractTestCase {
      * @return article repository
      */
     public ArticleRepository getArticleRepository() {
-        return beanManager.getReference(ArticleRepositoryImpl.class);
+        return beanManager.getReference(ArticleRepository.class);
     }
 
     /**
@@ -181,7 +181,7 @@ public abstract class AbstractTestCase {
      * @return archive date repository
      */
     public ArchiveDateRepository getArchiveDateRepository() {
-        return beanManager.getReference(ArchiveDateRepositoryImpl.class);
+        return beanManager.getReference(ArchiveDateRepository.class);
     }
 
     /**
@@ -190,7 +190,7 @@ public abstract class AbstractTestCase {
      * @return archive date article repository
      */
     public ArchiveDateArticleRepository getArchiveDateArticleRepository() {
-        return beanManager.getReference(ArchiveDateArticleRepositoryImpl.class);
+        return beanManager.getReference(ArchiveDateArticleRepository.class);
     }
 
     /**
