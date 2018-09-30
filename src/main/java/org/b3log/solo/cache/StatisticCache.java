@@ -17,8 +17,7 @@
  */
 package org.b3log.solo.cache;
 
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 
@@ -32,7 +31,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 1.0.0.1, Sep 25, 2018
  * @since 2.4.0
  */
-@Named
 @Singleton
 public class StatisticCache {
 

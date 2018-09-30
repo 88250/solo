@@ -31,8 +31,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -165,7 +164,7 @@ public class FileUploadProcessor {
         final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM");
         if (QN_ENABLED) {
             try {
-                final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+                final BeanManager beanManager = BeanManager.getInstance();
                 final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
                 qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
                 if (null == qiniu) {

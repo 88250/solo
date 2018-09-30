@@ -18,8 +18,7 @@
 package org.b3log.solo.cache;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -34,7 +33,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * @version 1.2.0.1, Sep 25, 2018
  * @since 2.3.0
  */
-@Named
 @Singleton
 public class ArticleCache {
 

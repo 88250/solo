@@ -18,10 +18,8 @@
 package org.b3log.solo.processor.console;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
@@ -40,7 +38,6 @@ import java.util.Map;
  * @version 1.0.1.1, Sep 25, 2018
  * @since 2.9.5
  */
-@Named
 @Singleton
 public class ConsoleAdminAuthAdvice extends BeforeRequestProcessAdvice {
 
@@ -51,7 +48,7 @@ public class ConsoleAdminAuthAdvice extends BeforeRequestProcessAdvice {
 
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final BeanManager beanManager = BeanManager.getInstance();
         final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
 
         final HttpServletRequest request = context.getRequest();

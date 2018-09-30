@@ -21,9 +21,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
-import org.b3log.latke.ioc.inject.Inject;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -96,6 +94,12 @@ public class UserMgmtService {
     private OptionMgmtService optionMgmtService;
 
     /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
+    /**
      * Tries to login with cookie.
      *
      * @param request  the specified request
@@ -121,9 +125,6 @@ public class UserMgmtService {
                 if (StringUtils.isBlank(userId)) {
                     break;
                 }
-
-                final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
-                final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
 
                 final JSONObject userResult = userQueryService.getUser(userId);
                 if (null == userResult) {

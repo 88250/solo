@@ -20,8 +20,7 @@ package org.b3log.solo;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.PluginManager;
@@ -72,7 +71,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Bean manager.
      */
-    private LatkeBeanManager beanManager;
+    private BeanManager beanManager;
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
@@ -81,7 +80,7 @@ public final class SoloServletListener extends AbstractServletListener {
         super.contextInitialized(servletContextEvent);
         Stopwatchs.start("Context Initialized");
 
-        beanManager = Lifecycle.getBeanManager();
+        beanManager = BeanManager.getInstance();
 
         // Upgrade check https://github.com/b3log/solo/issues/12040
         final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);

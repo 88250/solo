@@ -22,10 +22,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.ioc.LatkeBeanManager;
-import org.b3log.latke.ioc.Lifecycle;
-import org.b3log.latke.ioc.inject.Named;
-import org.b3log.latke.ioc.inject.Singleton;
+import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.mail.MailService;
@@ -49,7 +47,6 @@ import org.json.JSONObject;
  * @version 1.2.2.11, Sep 25, 2018
  * @since 0.3.1
  */
-@Named
 @Singleton
 public class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObject> {
 
@@ -88,7 +85,7 @@ public class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObjec
             return;
         }
 
-        final LatkeBeanManager beanManager = Lifecycle.getBeanManager();
+        final BeanManager beanManager = BeanManager.getInstance();
         final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
         final CommentRepository commentRepository = beanManager.getReference(CommentRepositoryImpl.class);
 

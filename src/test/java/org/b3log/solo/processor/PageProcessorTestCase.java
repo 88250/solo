@@ -17,15 +17,9 @@
  */
 package org.b3log.solo.processor;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Map;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.Lifecycle;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.solo.AbstractTestCase;
@@ -36,9 +30,18 @@ import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.PageMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
-import static org.mockito.Mockito.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.Map;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * {@link PageProcessor} test case.
@@ -97,7 +100,7 @@ public class PageProcessorTestCase extends AbstractTestCase {
         httpRequestContext.setRequest(request);
         httpRequestContext.setResponse(response);
 
-        final PageProcessor pageProcessor = Lifecycle.getBeanManager().getReference(PageProcessor.class);
+        final PageProcessor pageProcessor = BeanManager.getInstance().getReference(PageProcessor.class);
         pageProcessor.showPage(httpRequestContext);
 
         final Map<String, Object> dataModel = httpRequestContext.getRenderer().getRenderDataModel();
