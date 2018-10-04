@@ -18,7 +18,7 @@
 package org.b3log.solo.processor.console;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -35,7 +35,7 @@ import java.util.Map;
  * The common auth check before advice for admin console.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Sep 25, 2018
+ * @version 1.0.1.2, Oct 4, 2018
  * @since 2.9.5
  */
 @Singleton
@@ -46,11 +46,14 @@ public class ConsoleAdminAuthAdvice extends BeforeRequestProcessAdvice {
      */
     private static final Logger LOGGER = Logger.getLogger(ConsoleAdminAuthAdvice.class);
 
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
+
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
-        final BeanManager beanManager = BeanManager.getInstance();
-        final UserQueryService userQueryService = beanManager.getReference(UserQueryService.class);
-
         final HttpServletRequest request = context.getRequest();
         if (!userQueryService.isAdminLoggedIn(request)) {
             final JSONObject exception401 = new JSONObject();
