@@ -101,7 +101,7 @@ public class CommentQueryService {
             return false;
         }
 
-        if (userQueryService.isAdminLoggedIn(request)) {
+        if (Solos.isAdminLoggedIn(request)) {
             return true;
         }
 

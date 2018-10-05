@@ -126,6 +126,34 @@ public final class Solos {
     }
 
     /**
+     * Checks whether the current request is made by a logged in user
+     * (including default user and administrator lists in <i>users</i>).
+     *
+     * @param request  the specified request
+     * @param response the specified response
+     * @return {@code true} if the current request is made by logged in user, returns {@code false} otherwise
+     */
+    public static boolean isLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
+        return null != Solos.getCurrentUser(request, response);
+    }
+
+    /**
+     * Checks whether the current request is made by logged in administrator.
+     *
+     * @param request the specified request
+     * @return {@code true} if the current request is made by logged in
+     * administrator, returns {@code false} otherwise
+     */
+    public static boolean isAdminLoggedIn(final HttpServletRequest request) {
+        final JSONObject user = Sessions.currentUser(request);
+        if (null == user) {
+            return false;
+        }
+
+        return Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE));
+    }
+
+    /**
      * Checks whether need password to view the specified article with the specified request.
      * <p>
      * Checks session, if not represents, checks article property {@link Article#ARTICLE_VIEW_PWD view password}.
@@ -134,8 +162,8 @@ public final class Solos {
      * The blogger itself dose not need view password never.
      * </p>
      *
-     * @param request  the specified request
-     * @param article  the specified article
+     * @param request the specified request
+     * @param article the specified article
      * @return {@code true} if need, returns {@code false} otherwise
      */
     public static boolean needViewPwd(final HttpServletRequest request, final JSONObject article) {

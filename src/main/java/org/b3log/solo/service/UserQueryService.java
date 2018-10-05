@@ -23,22 +23,17 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -67,34 +62,6 @@ public class UserQueryService {
      */
     @Inject
     private UserMgmtService userMgmtService;
-
-    /**
-     * Checks whether the current request is made by a logged in user
-     * (including default user and administrator lists in <i>users</i>).
-     *
-     * @param request  the specified request
-     * @param response the specified response
-     * @return {@code true} if the current request is made by logged in user, returns {@code false} otherwise
-     */
-    public boolean isLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
-        return null != Solos.getCurrentUser(request, response);
-    }
-
-    /**
-     * Checks whether the current request is made by logged in administrator.
-     *
-     * @param request the specified request
-     * @return {@code true} if the current request is made by logged in
-     * administrator, returns {@code false} otherwise
-     */
-    public boolean isAdminLoggedIn(final HttpServletRequest request) {
-        final JSONObject user = Sessions.currentUser(request);
-        if (null == user) {
-            return false;
-        }
-
-        return Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE));
-    }
 
     /**
      * Gets the administrator.
@@ -166,8 +133,7 @@ public class UserQueryService {
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
         final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize);
 
-        JSONObject result = null;
-
+        JSONObject result;
         try {
             result = userRepository.get(query);
         } catch (final RepositoryException e) {
@@ -177,17 +143,12 @@ public class UserQueryService {
         }
 
         final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
         final JSONObject pagination = new JSONObject();
-
         ret.put(Pagination.PAGINATION, pagination);
         final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-
         pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
         final JSONArray users = result.optJSONArray(Keys.RESULTS);
-
         ret.put(User.USERS, users);
 
         return ret;

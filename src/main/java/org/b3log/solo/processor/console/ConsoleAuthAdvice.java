@@ -18,14 +18,12 @@
 package org.b3log.solo.processor.console;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
-import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
@@ -43,17 +41,11 @@ import java.util.Map;
 @Singleton
 public class ConsoleAuthAdvice extends BeforeRequestProcessAdvice {
 
-    /**
-     * User query service.
-     */
-    @Inject
-    private UserQueryService userQueryService;
-
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        if (!userQueryService.isLoggedIn(request, response)) {
+        if (!Solos.isLoggedIn(request, response)) {
             final JSONObject exception401 = new JSONObject();
             exception401.put(Keys.MSG, "Unauthorized to request [" + request.getRequestURI() + "]");
             exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);

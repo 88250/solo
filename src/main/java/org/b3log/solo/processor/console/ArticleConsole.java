@@ -432,7 +432,7 @@ public class ArticleConsole {
 
         renderer.setJSONObject(ret);
 
-        if (!userQueryService.isAdminLoggedIn(request)) {
+        if (!Solos.isAdminLoggedIn(request)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
 
@@ -480,7 +480,7 @@ public class ArticleConsole {
 
         renderer.setJSONObject(ret);
 
-        if (!userQueryService.isAdminLoggedIn(request)) {
+        if (!Solos.isAdminLoggedIn(request)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
 

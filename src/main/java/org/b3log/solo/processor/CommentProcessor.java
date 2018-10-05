@@ -136,7 +136,7 @@ public class CommentProcessor {
             return;
         }
 
-        if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
+        if (!Solos.isLoggedIn(httpServletRequest, httpServletResponse)) {
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
             if (CaptchaProcessor.invalidCaptcha(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
@@ -232,7 +232,7 @@ public class CommentProcessor {
             return;
         }
 
-        if (!userQueryService.isLoggedIn(httpServletRequest, httpServletResponse)) {
+        if (!Solos.isLoggedIn(httpServletRequest, httpServletResponse)) {
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
             if (CaptchaProcessor.invalidCaptcha(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
