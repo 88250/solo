@@ -33,8 +33,8 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PermalinkQueryService;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.*;
@@ -46,7 +46,7 @@ import java.io.IOException;
  * Article/Page permalink filter.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.7, Jan 8, 2013
+ * @version 1.0.1.8, Oct 5, 2018
  * @see org.b3log.solo.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.HTTPRequestContext,
  * javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
  * @see org.b3log.solo.processor.PageProcessor#showPage(org.b3log.latke.servlet.HTTPRequestContext)
@@ -116,9 +116,8 @@ public final class PermalinkFilter implements Filter {
             return;
         }
 
-        // If requests an article and the article need view passowrd, sends redirect to the password form
-        final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
-        if (null != article && articleQueryService.needViewPwd(httpServletRequest, article)) {
+        // If requests an article and the article need view password, sends redirect to the password form
+        if (null != article && Solos.needViewPwd(httpServletRequest, article)) {
             try {
                 httpServletResponse.sendRedirect(Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
 

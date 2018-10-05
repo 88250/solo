@@ -28,6 +28,7 @@ import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Sessions;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
@@ -52,7 +53,7 @@ import java.util.List;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.1, Sep 16, 2018
+ * @version 1.3.2.2, Oct 5, 2018
  * @since 0.3.5
  */
 @Service
@@ -122,7 +123,12 @@ public class CommentQueryService {
             return false;
         }
 
-        final String currentUserId = userQueryService.getCurrentUser(request).getString(Keys.OBJECT_ID);
+        final JSONObject currentUser = Sessions.currentUser(request);
+        if (null == currentUser) {
+            return false;
+        }
+
+        final String currentUserId = currentUser.getString(Keys.OBJECT_ID);
 
         return article.getString(Article.ARTICLE_AUTHOR_ID).equals(currentUserId);
     }

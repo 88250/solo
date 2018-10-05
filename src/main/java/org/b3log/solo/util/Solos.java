@@ -19,12 +19,27 @@ package org.b3log.solo.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.latke.util.Crypts;
+import org.b3log.latke.util.Sessions;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Common;
+import org.b3log.solo.repository.UserRepository;
 import org.json.JSONObject;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -32,7 +47,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Sep 28, 2018
+ * @version 1.4.0.0, Oct 5, 2018
  * @since 2.8.0
  */
 public final class Solos {
@@ -108,6 +123,110 @@ public final class Solos {
             LOGGER.log(Level.WARN, "Loads [mobile.skin] in solo.props failed [" + e.getMessage() + "], using [" + mobileSkin + "] as the default mobile skin");
         }
         MOBILE_SKIN = mobileSkin;
+    }
+
+    /**
+     * Checks whether need password to view the specified article with the specified request.
+     * <p>
+     * Checks session, if not represents, checks article property {@link Article#ARTICLE_VIEW_PWD view password}.
+     * </p>
+     * <p>
+     * The blogger itself dose not need view password never.
+     * </p>
+     *
+     * @param request  the specified request
+     * @param article  the specified article
+     * @return {@code true} if need, returns {@code false} otherwise
+     */
+    public static boolean needViewPwd(final HttpServletRequest request, final JSONObject article) {
+        final String articleViewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
+
+        if (StringUtils.isBlank(articleViewPwd)) {
+            return false;
+        }
+
+        if (null == request) {
+            return true;
+        }
+
+        final HttpSession session = request.getSession(false);
+
+        if (null != session) {
+            Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
+            if (null == viewPwds) {
+                viewPwds = new HashMap<>();
+            }
+
+            if (articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
+                return false;
+            }
+        }
+
+        final JSONObject currentUser = getCurrentUser(request, null);
+
+        return !(null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE)));
+    }
+
+    /**
+     * Gets the current logged-in user.
+     *
+     * @param request  the specified request
+     * @param response the specified response
+     * @return the current logged-in user, returns {@code null} if not found
+     */
+    public static JSONObject getCurrentUser(final HttpServletRequest request, final HttpServletResponse response) {
+        request.getSession(); // create session if need
+        JSONObject ret = Sessions.currentUser(request);
+        if (null != ret) {
+            return ret;
+        }
+
+        final Cookie[] cookies = request.getCookies();
+        if (null == cookies || 0 == cookies.length) {
+            return null;
+        }
+
+        final BeanManager beanManager = BeanManager.getInstance();
+        final UserRepository userRepository = beanManager.getReference(UserRepository.class);
+        try {
+            for (int i = 0; i < cookies.length; i++) {
+                final Cookie cookie = cookies[i];
+                if (!Sessions.COOKIE_NAME.equals(cookie.getName())) {
+                    continue;
+                }
+
+                final String value = Crypts.decryptByAES(cookie.getValue(), Sessions.COOKIE_SECRET);
+                final JSONObject cookieJSONObject = new JSONObject(value);
+
+                final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
+                if (StringUtils.isBlank(userId)) {
+                    break;
+                }
+
+                JSONObject user = userRepository.get(userId);
+                if (null == user) {
+                    break;
+                }
+
+                final String userPassword = user.optString(User.USER_PASSWORD);
+                final String token = cookieJSONObject.optString(Keys.TOKEN);
+                final String hashPassword = StringUtils.substringBeforeLast(token, ":");
+                if (userPassword.equals(hashPassword)) {
+                    Sessions.login(request, response, user);
+
+                    return Sessions.currentUser(request);
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.TRACE, "Parses cookie failed, clears the cookie [name=" + Sessions.COOKIE_NAME + "]");
+
+            final Cookie cookie = new Cookie(Sessions.COOKIE_NAME, null);
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+
+        return null;
     }
 
     /**

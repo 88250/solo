@@ -32,8 +32,6 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.latke.util.Crypts;
-import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
@@ -42,9 +40,6 @@ import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 
 /**
@@ -53,7 +48,7 @@ import java.util.Set;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.0.13, Sep 21, 2018
+ * @version 1.1.0.14, Oct 5, 2018
  * @since 0.4.0
  */
 @Service
@@ -92,59 +87,6 @@ public class UserMgmtService {
      */
     @Inject
     private OptionMgmtService optionMgmtService;
-
-    /**
-     * Tries to login with cookie.
-     *
-     * @param request  the specified request
-     * @param response the specified response
-     */
-    public void tryLogInWithCookie(final HttpServletRequest request, final HttpServletResponse response) {
-        final Cookie[] cookies = request.getCookies();
-        if (null == cookies || 0 == cookies.length) {
-            return;
-        }
-
-        try {
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
-                if (!Sessions.COOKIE_NAME.equals(cookie.getName())) {
-                    continue;
-                }
-
-                final String value = Crypts.decryptByAES(cookie.getValue(), Sessions.COOKIE_SECRET);
-                final JSONObject cookieJSONObject = new JSONObject(value);
-
-                final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
-                if (StringUtils.isBlank(userId)) {
-                    break;
-                }
-
-                JSONObject user = userRepository.get(userId);
-                if (null == user) {
-                    break;
-                }
-
-                final String userPassword = user.optString(User.USER_PASSWORD);
-                final String token = cookieJSONObject.optString(Keys.TOKEN);
-                final String hashPassword = StringUtils.substringBeforeLast(token, ":");
-
-                if (userPassword.equals(hashPassword)) {
-                    Sessions.login(request, response, user);
-
-                    LOGGER.log(Level.DEBUG, "Logged in with cookie [email={0}]", user.optString(User.USER_EMAIL));
-                }
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.TRACE, "Parses cookie failed, clears the cookie [name=" + Sessions.COOKIE_NAME + "]");
-
-            final Cookie cookie = new Cookie(Sessions.COOKIE_NAME, null);
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
-
-            response.addCookie(cookie);
-        }
-    }
 
     /**
      * Updates a user by the specified request json object.

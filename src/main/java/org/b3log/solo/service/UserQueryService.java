@@ -33,6 +33,7 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -44,7 +45,7 @@ import java.util.List;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Sep 21, 2018
+ * @version 1.0.0.7, Oct 5, 2018
  * @since 0.4.0
  */
 @Service
@@ -71,19 +72,12 @@ public class UserQueryService {
      * Checks whether the current request is made by a logged in user
      * (including default user and administrator lists in <i>users</i>).
      *
-     * <p>
-     * Invokes this method will try to login with cookie first.
-     * </p>
-     *
      * @param request  the specified request
      * @param response the specified response
-     * @return {@code true} if the current request is made by logged in user,
-     * returns {@code false} otherwise
+     * @return {@code true} if the current request is made by logged in user, returns {@code false} otherwise
      */
     public boolean isLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
-        userMgmtService.tryLogInWithCookie(request, response);
-
-        return null != Sessions.currentUser(request);
+        return null != Solos.getCurrentUser(request, response);
     }
 
     /**
@@ -100,28 +94,6 @@ public class UserQueryService {
         }
 
         return Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE));
-    }
-
-    /**
-     * Gets the current user.
-     *
-     * @param request the specified request
-     * @return the current user, {@code null} if not found
-     */
-    public JSONObject getCurrentUser(final HttpServletRequest request) {
-        JSONObject currentUser = Sessions.currentUser(request);
-        if (null == currentUser) {
-            return null;
-        }
-
-        final String email = currentUser.optString(User.USER_EMAIL);
-        try {
-            return userRepository.getByEmail(email);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets current user by request failed, returns null", e);
-
-            return null;
-        }
     }
 
     /**

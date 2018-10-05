@@ -36,6 +36,7 @@ import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,7 +50,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.3.3.1, Mar 3, 2018
+ * @version 1.3.3.2, Oct 5, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -282,15 +283,12 @@ public class CommentProcessor {
     /**
      * Fills commenter info if logged in.
      *
-     * @param requestJSONObject   the specified request json object
-     * @param httpServletRequest  the specified HTTP servlet request
-     * @param httpServletResponse the specified HTTP servlet response
+     * @param requestJSONObject the specified request json object
+     * @param request           the specified HTTP servlet request
+     * @param request           the specified HTTP servlet response
      */
-    private void fillCommenter(final JSONObject requestJSONObject,
-                               final HttpServletRequest httpServletRequest, final HttpServletResponse httpServletResponse) {
-        userMgmtService.tryLogInWithCookie(httpServletRequest, httpServletResponse);
-
-        final JSONObject currentUser = userQueryService.getCurrentUser(httpServletRequest);
+    private void fillCommenter(final JSONObject requestJSONObject, final HttpServletRequest request, final HttpServletResponse response) {
+        final JSONObject currentUser = Solos.getCurrentUser(request, response);
         if (null == currentUser) {
             return;
         }

@@ -17,24 +17,25 @@
  */
 package org.b3log.solo;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.servlet.AbstractServletListener;
-import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.*;
 import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
@@ -42,17 +43,14 @@ import org.json.JSONObject;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.*;
 import java.util.Set;
 
 /**
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.41, Sep 27, 2018
+ * @version 1.9.3.42, Oct 5, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -143,11 +141,6 @@ public final class SoloServletListener extends AbstractServletListener {
             LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
-            final HttpSession session = httpServletRequest.getSession();
-
-            LOGGER.log(Level.DEBUG, "Gets a session [id={0}, remoteAddr={1}, User-Agent={2}, isNew={3}]", session.getId(),
-                    httpServletRequest.getRemoteAddr(), httpServletRequest.getHeader("User-Agent"), session.isNew());
-            // Online visitor count
             final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
             statisticMgmtService.onlineVisitorCount(httpServletRequest);
         }

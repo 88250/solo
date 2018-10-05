@@ -61,7 +61,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.16.10, Sep 28, 2018
+ * @version 1.6.16.11, Oct 5, 2018
  * @since 0.3.1
  */
 @Service
@@ -544,18 +544,19 @@ public class DataModelService {
             throws ServiceException {
         fillSide(request, dataModel, preference);
         fillBlogHeader(request, response, dataModel, preference);
-        fillBlogFooter(request, dataModel, preference);
+        fillBlogFooter(request, response, dataModel, preference);
     }
 
     /**
      * Fills footer.ftl.
      *
      * @param request    the specified HTTP servlet request
+     * @param response   the specified HTTP servlet response
      * @param dataModel  data model
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    private void fillBlogFooter(final HttpServletRequest request, final Map<String, Object> dataModel, final JSONObject preference)
+    private void fillBlogFooter(final HttpServletRequest request, final HttpServletResponse response, final Map<String, Object> dataModel, final JSONObject preference)
             throws ServiceException {
         Stopwatchs.start("Fill Footer");
         try {
@@ -576,7 +577,7 @@ public class DataModelService {
             dataModel.put(Keys.Server.SERVER, Latkes.getServer());
             dataModel.put(Common.IS_INDEX, "/".equals(request.getRequestURI()));
             dataModel.put(User.USER_NAME, "");
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            final JSONObject currentUser = Solos.getCurrentUser(request, response);
             if (null != currentUser) {
                 final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
                 if (StringUtils.isNotBlank(userAvatar)) {
@@ -648,7 +649,7 @@ public class DataModelService {
             }
             dataModel.put(Option.ID_C_META_DESCRIPTION, metaDescription);
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-            dataModel.put(Common.IS_LOGGED_IN, null != userQueryService.getCurrentUser(request));
+            dataModel.put(Common.IS_LOGGED_IN, null != Solos.getCurrentUser(request, response));
             dataModel.put(Common.FAVICON_API, Solos.FAVICON_API);
             final String noticeBoard = preference.getString(Option.ID_C_NOTICE_BOARD);
             dataModel.put(Option.ID_C_NOTICE_BOARD, noticeBoard);
@@ -891,7 +892,7 @@ public class DataModelService {
                 article.put(Common.HAS_UPDATED, false);
             }
 
-            if (articleQueryService.needViewPwd(request, article)) {
+            if (Solos.needViewPwd(request, article)) {
                 final String content = langPropsService.get("articleContentPwd");
                 article.put(ARTICLE_CONTENT, content);
             }
@@ -975,9 +976,8 @@ public class DataModelService {
         try {
             final Template topBarTemplate = Skins.getTemplate("top-bar.ftl");
             final StringWriter stringWriter = new StringWriter();
-            final Map<String, Object> topBarModel = new HashMap<String, Object>();
-            userMgmtService.tryLogInWithCookie(request, response);
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            final Map<String, Object> topBarModel = new HashMap<>();
+            final JSONObject currentUser = Solos.getCurrentUser(request, response);
 
             Keys.fillServer(topBarModel);
             topBarModel.put(Common.IS_LOGGED_IN, false);

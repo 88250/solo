@@ -69,7 +69,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.5, Sep 25, 2018
+ * @version 1.7.0.6, Oct 5, 2018
  * @since 0.4.1
  */
 @RequestProcessor
@@ -132,11 +132,12 @@ public class AdminConsole {
     /**
      * Shows administrator index with the specified context.
      *
-     * @param request the specified request
-     * @param context the specified context
+     * @param request  the specified request
+     * @param response the specified response
+     * @param context  the specified context
      */
     @RequestProcessing(value = "/admin-index.do", method = HTTPRequestMethod.GET)
-    public void showAdminIndex(final HttpServletRequest request, final HTTPRequestContext context) {
+    public void showAdminIndex(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
         final String templateName = "admin-index.ftl";
@@ -144,7 +145,7 @@ public class AdminConsole {
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.putAll(langs);
-        final JSONObject currentUser = userQueryService.getCurrentUser(request);
+        final JSONObject currentUser = Solos.getCurrentUser(request, response);
         final String userName = currentUser.optString(User.USER_NAME);
         dataModel.put(User.USER_NAME, userName);
         final String roleName = currentUser.optString(User.USER_ROLE);

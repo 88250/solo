@@ -42,6 +42,7 @@ import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Images;
 import org.b3log.solo.util.Markdowns;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -54,7 +55,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.3, Sep 25, 2018
+ * @version 1.1.1.4, Oct 5, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -335,8 +336,10 @@ public class ArticleConsole {
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
+        final JSONObject currentUser = Solos.getCurrentUser(request, response);
+
         try {
-            if (!articleQueryService.canAccessArticle(articleId, request)) {
+            if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
 
@@ -383,7 +386,8 @@ public class ArticleConsole {
         try {
             final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/unpublish/").length());
 
-            if (!articleQueryService.canAccessArticle(articleId, request)) {
+            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
 
@@ -545,7 +549,8 @@ public class ArticleConsole {
             final String articleId = article.getString(Keys.OBJECT_ID);
             renderer.setJSONObject(ret);
 
-            if (!articleQueryService.canAccessArticle(articleId, request)) {
+            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
                 ret.put(Keys.STATUS_CODE, false);
 
@@ -606,7 +611,7 @@ public class ArticleConsole {
         final JSONObject ret = new JSONObject();
 
         try {
-            final JSONObject currentUser = userQueryService.getCurrentUser(request);
+            final JSONObject currentUser = Solos.getCurrentUser(request, response);
             requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
 
             final String articleId = articleMgmtService.addArticle(requestJSONObject);
