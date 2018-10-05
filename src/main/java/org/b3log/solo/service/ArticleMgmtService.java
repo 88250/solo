@@ -481,7 +481,7 @@ public class ArticleMgmtService {
             // Step 2; Set comment/view count to 0
             article.put(Article.ARTICLE_COMMENT_COUNT, 0);
             article.put(Article.ARTICLE_VIEW_COUNT, 0);
-            // Step 3: Set create/updat date
+            // Step 3: Set create/update date
             final JSONObject preference = preferenceQueryService.getPreference();
             if (!article.has(Article.ARTICLE_CREATED)) {
                 article.put(Article.ARTICLE_CREATED, System.currentTimeMillis());
