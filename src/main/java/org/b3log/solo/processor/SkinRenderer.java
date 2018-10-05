@@ -21,7 +21,6 @@ import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.solo.util.Skins;
@@ -38,11 +37,6 @@ import java.util.Map;
  * @since 2.9.1
  */
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(SkinRenderer.class);
 
     /**
      * HTTP servlet request.

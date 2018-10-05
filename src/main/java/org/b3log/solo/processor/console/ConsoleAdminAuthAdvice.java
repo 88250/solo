@@ -20,7 +20,6 @@ package org.b3log.solo.processor.console;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
@@ -40,11 +39,6 @@ import java.util.Map;
  */
 @Singleton
 public class ConsoleAdminAuthAdvice extends BeforeRequestProcessAdvice {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ConsoleAdminAuthAdvice.class);
 
     /**
      * User query service.

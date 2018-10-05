@@ -18,7 +18,6 @@
 package org.b3log.solo.processor.console;
 
 import freemarker.template.Template;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.solo.util.Skins;
@@ -31,11 +30,6 @@ import org.b3log.solo.util.Skins;
  * @since 0.4.1
  */
 public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ConsoleRenderer.class);
 
     @Override
     protected Template getTemplate() {
