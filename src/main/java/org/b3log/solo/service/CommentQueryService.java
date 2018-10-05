@@ -23,12 +23,13 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Sessions;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Common;
@@ -44,7 +45,6 @@ import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -89,23 +89,26 @@ public class CommentQueryService {
     private PageRepository pageRepository;
 
     /**
-     * Can the current user access a comment specified by the given comment id?
+     * Can the specified user access a comment specified by the given comment id?
      *
      * @param commentId the given comment id
-     * @param request   the specified request
+     * @param user      the specified user
      * @return {@code true} if the current user can access the comment, {@code false} otherwise
      * @throws Exception exception
      */
-    public boolean canAccessComment(final String commentId, final HttpServletRequest request) throws Exception {
+    public boolean canAccessComment(final String commentId, final JSONObject user) throws Exception {
         if (StringUtils.isBlank(commentId)) {
             return false;
         }
 
-        if (Solos.isAdminLoggedIn(request)) {
+        if (null == user) {
+            return false;
+        }
+
+        if (Role.ADMIN_ROLE.equals(user.optString(User.USER_ROLE))) {
             return true;
         }
 
-        // Here, you are not admin
         final JSONObject comment = commentRepository.get(commentId);
         if (null == comment) {
             return false;
@@ -123,12 +126,7 @@ public class CommentQueryService {
             return false;
         }
 
-        final JSONObject currentUser = Sessions.currentUser(request);
-        if (null == currentUser) {
-            return false;
-        }
-
-        final String currentUserId = currentUser.getString(Keys.OBJECT_ID);
+        final String currentUserId = user.getString(Keys.OBJECT_ID);
 
         return article.getString(Article.ARTICLE_AUTHOR_ID).equals(currentUserId);
     }
