@@ -187,7 +187,7 @@ public final class SoloServletListener extends AbstractServletListener {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            throw new IllegalStateException(e);
+            System.exit(-1);
         }
 
         Stopwatchs.end();
@@ -216,8 +216,9 @@ public final class SoloServletListener extends AbstractServletListener {
             final B3CommentSender commentSender = beanManager.getReference(B3CommentSender.class);
             eventManager.registerListener(commentSender);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Register event handlers error", e);
-            throw new IllegalStateException(e);
+            LOGGER.log(Level.ERROR, "Register event handlers failed", e);
+
+            System.exit(-1);
         }
 
         LOGGER.debug("Registered event handlers");

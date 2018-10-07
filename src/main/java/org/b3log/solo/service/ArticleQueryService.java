@@ -53,7 +53,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.5, Oct 5, 2018
+ * @version 1.3.2.6, Oct 7, 2018
  * @since 0.3.5
  */
 @Service
@@ -359,10 +359,7 @@ public class ArticleQueryService {
             }
         }
 
-        LOGGER.log(Level.WARN, "Can not find the sign[id={0}], returns a default sign[id=1]", signId);
-        if (null == defaultSign) {
-            throw new IllegalStateException("Can not find the default sign which id equals to 1");
-        }
+        LOGGER.log(Level.WARN, "Can not find the sign [id={0}], returns a default sign [id=1]", signId);
 
         return defaultSign;
     }

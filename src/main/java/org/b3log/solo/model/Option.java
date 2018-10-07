@@ -19,7 +19,6 @@ package org.b3log.solo.model;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,7 +29,7 @@ import java.util.Set;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.9, Sep 21, 2018
+ * @version 1.3.0.10, Oct 7, 2018
  * @since 0.6.0
  */
 public final class Option {
@@ -526,28 +525,22 @@ public final class Option {
             final JSONArray signs = new JSONArray();
             final int signLength = 4;
 
-            try {
-                for (int i = 0; i < signLength; i++) {
-                    final JSONObject sign = new JSONObject();
-                    sign.put(Keys.OBJECT_ID, i);
-                    signs.put(sign);
-                    sign.put(Sign.SIGN_HTML, "");
-                }
-
-                // Sign(id=0) is the 'empty' sign, used for article user needn't a sign
-                DEFAULT_SIGNS = signs.toString();
-
-                final JSONObject replyNotificationTemplate = new JSONObject();
-                replyNotificationTemplate.put("subject", "${blogTitle}: New reply of your comment");
-                replyNotificationTemplate.put("body",
-                        "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"
-                                + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
-                DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Creates sign error!", e);
-
-                throw new IllegalStateException(e);
+            for (int i = 0; i < signLength; i++) {
+                final JSONObject sign = new JSONObject();
+                sign.put(Keys.OBJECT_ID, i);
+                signs.put(sign);
+                sign.put(Sign.SIGN_HTML, "");
             }
+
+            // Sign(id=0) is the 'empty' sign, used for article user needn't a sign
+            DEFAULT_SIGNS = signs.toString();
+
+            final JSONObject replyNotificationTemplate = new JSONObject();
+            replyNotificationTemplate.put("subject", "${blogTitle}: New reply of your comment");
+            replyNotificationTemplate.put("body",
+                    "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"
+                            + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
+            DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
         }
 
         /**
