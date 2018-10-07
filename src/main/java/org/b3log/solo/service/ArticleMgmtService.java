@@ -182,9 +182,7 @@ public class ArticleMgmtService {
         final JSONObject article = articleRepository.get(articleId);
         final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
-
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt + 1);
-
         articleRepository.update(articleId, newArticle);
     }
 
@@ -240,9 +238,7 @@ public class ArticleMgmtService {
 
         try {
             final JSONObject topArticle = articleRepository.get(articleId);
-
             topArticle.put(ARTICLE_PUT_TOP, top);
-
             articleRepository.update(articleId, topArticle);
 
             transaction.commit();
@@ -349,7 +345,6 @@ public class ArticleMgmtService {
                 statisticMgmtService.incPublishedBlogArticleCount();
                 final int blogCmtCnt = statisticQueryService.getPublishedBlogCommentCount();
                 final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
-
                 statisticMgmtService.setPublishedBlogCommentCount(blogCmtCnt + articleCmtCnt);
 
                 final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
@@ -370,7 +365,6 @@ public class ArticleMgmtService {
             if (publishNewArticle) {
                 // Fire add article event
                 final JSONObject eventData = new JSONObject();
-
                 eventData.put(ARTICLE, article);
                 eventData.put(Keys.RESULTS, ret);
                 try {
@@ -381,7 +375,6 @@ public class ArticleMgmtService {
             } else {
                 // Fire update article event
                 final JSONObject eventData = new JSONObject();
-
                 eventData.put(ARTICLE, article);
                 eventData.put(Keys.RESULTS, ret);
                 try {
@@ -462,7 +455,6 @@ public class ArticleMgmtService {
      */
     public String addArticleInternal(final JSONObject article) throws ServiceException {
         String ret = article.optString(Keys.OBJECT_ID);
-
         if (StringUtils.isBlank(ret)) {
             ret = Ids.genTimeMillisId();
             article.put(Keys.OBJECT_ID, ret);
@@ -1028,14 +1020,12 @@ public class ArticleMgmtService {
         final long created = article.optLong(Article.ARTICLE_CREATED);
         final String createDateString = DateFormatUtils.format(created, "yyyy/MM");
         JSONObject archiveDate = archiveDateRepository.getByArchiveDate(createDateString);
-
         if (null == archiveDate) {
             archiveDate = new JSONObject();
             try {
                 archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate(createDateString, new String[]{"yyyy/MM"}).getTime());
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 0);
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 0);
-
                 archiveDateRepository.add(archiveDate);
             } catch (final ParseException e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -1044,7 +1034,6 @@ public class ArticleMgmtService {
         }
 
         final JSONObject newArchiveDate = new JSONObject(archiveDate, CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
-
         newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT) + 1);
         if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
             newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
@@ -1053,10 +1042,8 @@ public class ArticleMgmtService {
         archiveDateRepository.update(archiveDate.optString(Keys.OBJECT_ID), newArchiveDate);
 
         final JSONObject archiveDateArticleRelation = new JSONObject();
-
         archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, archiveDate.optString(Keys.OBJECT_ID));
         archiveDateArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
-
         archiveDateArticleRepository.add(archiveDateArticleRelation);
     }
 
