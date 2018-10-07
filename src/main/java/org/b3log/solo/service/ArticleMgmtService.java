@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.12, Sep 16, 2018
+ * @version 1.2.2.13, Oct 7, 2018
  * @since 0.3.5
  */
 @Service
@@ -469,7 +469,6 @@ public class ArticleMgmtService {
         }
 
         try {
-            // Step 1: Add tags
             String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
             tagsString = Tag.formatTags(tagsString);
             if (StringUtils.isBlank(tagsString)) {
@@ -478,66 +477,60 @@ public class ArticleMgmtService {
             article.put(Article.ARTICLE_TAGS_REF, tagsString);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);
-            // Step 2; Set comment/view count to 0
+
             article.put(Article.ARTICLE_COMMENT_COUNT, 0);
             article.put(Article.ARTICLE_VIEW_COUNT, 0);
-            // Step 3: Set create/update date
             final JSONObject preference = preferenceQueryService.getPreference();
             if (!article.has(Article.ARTICLE_CREATED)) {
                 article.put(Article.ARTICLE_CREATED, System.currentTimeMillis());
             }
             article.put(Article.ARTICLE_UPDATED, article.optLong(Article.ARTICLE_CREATED));
-            // Step 4: Set put top to false
             article.put(Article.ARTICLE_PUT_TOP, false);
-            // Step 5: Add tag-article relations
+
             addTagArticleRelation(tags, article);
-            // Step 6: Inc blog article count statictis
+
             statisticMgmtService.incBlogArticleCount();
             if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 statisticMgmtService.incPublishedBlogArticleCount();
             }
-            // Step 7: Add archive date-article relations
+
             archiveDate(article);
-            // Step 8: Set permalink
+
             final String permalink = getPermalinkForAddArticle(article);
             article.put(Article.ARTICLE_PERMALINK, permalink);
-            // Step 9: Add article sign id
+
             final String signId = article.optString(Article.ARTICLE_SIGN_ID, "1");
             article.put(Article.ARTICLE_SIGN_ID, signId);
-            // Step 10: Set had been published status
+
             article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
             if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 // Publish it directly
                 article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
             }
-            // Step 11: Set random double
-            article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
-            // Step 12: Set post to community
-            final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
 
+            article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
+
+            final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
             article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
-            // Setp 13: Update user article statistic
+
             final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
             final int userArticleCnt = author.optInt(UserExt.USER_ARTICLE_COUNT);
-
             author.put(UserExt.USER_ARTICLE_COUNT, userArticleCnt + 1);
             if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) + 1);
             }
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
-            // Step 14: Set editor type
+
             if (!article.has(Article.ARTICLE_EDITOR_TYPE)) {
                 article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
             }
-            // Step 15: Add article
+
             articleRepository.add(article);
 
             article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
 
             if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                // Fire add article event
                 final JSONObject eventData = new JSONObject();
-
                 eventData.put(Article.ARTICLE, article);
                 eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
             }
