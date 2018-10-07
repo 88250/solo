@@ -50,7 +50,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.3.3.2, Oct 5, 2018
+ * @version 1.3.3.3, Oct 7, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -114,7 +114,7 @@ public class CommentProcessor {
      *                          "commentName": "",
      *                          "commentEmail": "",
      *                          "commentURL": "",
-     *                          "commentContent": "", // HTML
+     *                          "commentContent": "",
      *                          "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      */
     @RequestProcessing(value = "/add-page-comment.do", method = HTTPRequestMethod.POST)
@@ -198,7 +198,7 @@ public class CommentProcessor {
      *     "commentSharpURL": "",
      *     "commentThumbnailURL": "",
      *     "commentOriginalCommentName": "", // if exists this key, the comment is an reply
-     *     "commentContent": "" // HTML
+     *     "commentContent": ""
      * }
      * </pre>
      * </p>

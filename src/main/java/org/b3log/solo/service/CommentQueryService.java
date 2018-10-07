@@ -53,7 +53,7 @@ import java.util.List;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.2, Oct 5, 2018
+ * @version 1.3.2.3, Oct 7, 2018
  * @since 0.3.5
  */
 @Service
@@ -199,6 +199,10 @@ public class CommentQueryService {
                 commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
                 comment.put(Comment.COMMENT_CONTENT, commentContent);
 
+                String commentName = comment.optString(Comment.COMMENT_NAME);
+                commentName = Jsoup.clean(commentName, Whitelist.none());
+                comment.put(Comment.COMMENT_NAME, commentName);
+
                 comment.put(Comment.COMMENT_TIME, comment.optLong(Comment.COMMENT_CREATED));
                 comment.remove(Comment.COMMENT_CREATED);
             }
@@ -230,10 +234,8 @@ public class CommentQueryService {
      */
     public List<JSONObject> getComments(final String onId) throws ServiceException {
         try {
-            final List<JSONObject> ret = new ArrayList<JSONObject>();
-
+            final List<JSONObject> ret = new ArrayList<>();
             final List<JSONObject> comments = commentRepository.getComments(onId, 1, Integer.MAX_VALUE);
-
             for (final JSONObject comment : comments) {
                 comment.put(Comment.COMMENT_TIME, comment.optLong(Comment.COMMENT_CREATED));
                 comment.put(Comment.COMMENT_T_DATE, new Date(comment.optLong(Comment.COMMENT_CREATED)));
@@ -246,10 +248,9 @@ public class CommentQueryService {
                 comment.put(Comment.COMMENT_URL, url);
                 comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
 
-                final String email = comment.optString(Comment.COMMENT_EMAIL);
-
                 final String thumbnailURL = comment.optString(Comment.COMMENT_THUMBNAIL_URL);
                 if (StringUtils.isBlank(thumbnailURL)) {
+                    final String email = comment.optString(Comment.COMMENT_EMAIL);
                     comment.put(Comment.COMMENT_THUMBNAIL_URL, Solos.getGravatarURL(email, "128"));
                 }
 
@@ -263,6 +264,10 @@ public class CommentQueryService {
                 commentContent = Markdowns.toHTML(commentContent);
                 commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
                 comment.put(Comment.COMMENT_CONTENT, commentContent);
+
+                String commentName = comment.optString(Comment.COMMENT_NAME);
+                commentName = Jsoup.clean(commentName, Whitelist.none());
+                comment.put(Comment.COMMENT_NAME, commentName);
 
                 ret.add(comment);
             }
