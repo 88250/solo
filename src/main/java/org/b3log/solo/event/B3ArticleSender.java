@@ -67,7 +67,7 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
 
-        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event [type={0}, data={1}] in listener [className={2}]",
                 event.getType(), data, B3ArticleSender.class.getName());
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);

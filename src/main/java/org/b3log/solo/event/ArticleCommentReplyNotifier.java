@@ -65,7 +65,7 @@ public class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObjec
         final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
         final JSONObject article = eventData.optJSONObject(Article.ARTICLE);
 
-        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event [type={0}, data={1}] in listener [className={2}]",
                 event.getType(), eventData, ArticleCommentReplyNotifier.class.getName());
         final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
         if (StringUtils.isBlank(originalCommentId)) {

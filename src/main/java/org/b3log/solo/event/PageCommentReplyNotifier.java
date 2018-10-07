@@ -65,7 +65,7 @@ public class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> 
         final JSONObject comment = eventData.optJSONObject(Comment.COMMENT);
         final JSONObject page = eventData.optJSONObject(Page.PAGE);
 
-        LOGGER.log(Level.DEBUG, "Processing an event[type={0}, data={1}] in listener[className={2}]",
+        LOGGER.log(Level.DEBUG, "Processing an event [type={0}, data={1}] in listener [className={2}]",
                 event.getType(), eventData, PageCommentReplyNotifier.class.getName());
         final String originalCommentId = comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
 
