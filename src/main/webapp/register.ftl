@@ -22,10 +22,12 @@
 <@commonPage "${registerSoloUserLabel}!">
 <h2>${registerSoloUserLabel}</h2>
 <div id="github">
-    <a class="github__icon" href="${servePath}/oauth/github/redirect">
+    <div class="github__icon" href="${servePath}/oauth/github/redirect"
+         onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">
         <img src="${staticServePath}/images/github-init.gif"/>
-    </a>
-    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect'">${useGitHubAccountLoginLabel}</button>
+    </div>
+    <button class="hover"
+            onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">${useGitHubAccountLoginLabel}</button>
     <br>
     <span onclick="$('#github').hide();$('.form').show()">${useLocalAccountLabel}</span>
 </div>
