@@ -28,7 +28,6 @@ import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
@@ -57,7 +56,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.29, Sep 16, 2018
+ * @version 1.2.0.30, Oct 10, 2018
  * @since 1.2.0
  */
 @Service
@@ -81,7 +80,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "2.9.3";
+    private static final String FROM_VER = "2.9.4";
 
     /**
      * New version.
@@ -187,17 +186,6 @@ public class UpgradeService {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
         try {
-            alterTables();
-            JdbcRepository.dispose(); // avoid to metadata lock
-            upgradeArticles();
-            upgradeComments();
-            JdbcRepository.dispose(); // avoid to metadata lock
-            dropColumns();
-            JdbcRepository.dispose(); // avoid to metadata lock
-
-            articleCache.clear();
-            commentCache.clear();
-
             final Transaction transaction = optionRepository.beginTransaction();
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
