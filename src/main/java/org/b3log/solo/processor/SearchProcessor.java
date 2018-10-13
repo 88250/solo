@@ -43,6 +43,7 @@ import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import org.owasp.encoder.Encode;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
@@ -55,7 +56,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.1, Sep 20, 2018
+ * @version 1.1.1.0, Oct 13, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -146,7 +147,7 @@ public class SearchProcessor {
         if (StringUtils.isBlank(keyword)) {
             keyword = "";
         }
-        keyword = Jsoup.clean(keyword, Whitelist.none());
+        keyword = Encode.forHtml(keyword);
 
         dataModel.put(Common.KEYWORD, keyword);
         final JSONObject result = articleQueryService.searchKeyword(keyword, pageNum, 15);
