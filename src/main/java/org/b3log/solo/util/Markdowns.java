@@ -51,7 +51,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.1, Sep 25, 2018
+ * @version 2.3.1.2, Oct 14, 2018
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -69,7 +69,7 @@ public final class Markdowns {
     /**
      * Markdown to HTML timeout.
      */
-    private static final int MD_TIMEOUT = 2000;
+    private static final int MD_TIMEOUT = 10000;
 
     /**
      * Built-in MD engine options.
@@ -164,9 +164,19 @@ public final class Markdowns {
             String html = langPropsService.get("contentRenderFailedLabel");
 
             if (MARKED_AVAILABLE) {
-                html = toHtmlByMarked(markdownText);
-                if (!StringUtils.startsWith(html, "<p>")) {
-                    html = "<p>" + html + "</p>";
+                try {
+                    html = toHtmlByMarked(markdownText);
+                    if (!StringUtils.startsWith(html, "<p>")) {
+                        html = "<p>" + html + "</p>";
+                    }
+                } catch (final Exception e) {
+                    LOGGER.log(Level.WARN, "Failed to use [marked] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
+
+                    com.vladsch.flexmark.ast.Node document = PARSER.parse(markdownText);
+                    html = RENDERER.render(document);
+                    if (!StringUtils.startsWith(html, "<p>")) {
+                        html = "<p>" + html + "</p>";
+                    }
                 }
             } else {
                 com.vladsch.flexmark.ast.Node document = PARSER.parse(markdownText);
