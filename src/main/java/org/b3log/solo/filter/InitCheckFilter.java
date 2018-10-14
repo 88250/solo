@@ -73,6 +73,23 @@ public final class InitCheckFilter implements Filter {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
         LOGGER.log(Level.TRACE, "Request [URI={0}]", requestURI);
+		
+		/**
+         * Prohibit link access to robots.txt
+         * 
+         * 禁止正常访问robots.txt
+         *
+         * @author DevHyxo
+         *
+         * */
+        if (requestURI.startsWith(Latkes.getContextPath() + "/robots.txt")){
+            String userAgent = ((HttpServletRequest) request).getHeader("User-Agent");
+            if (!(userAgent.contains("spider") || userAgent.contains("bot") || userAgent.contains("Python-urllib") || userAgent.contains("pycurl"))){
+                HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+                httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
+        }
 
         // If requests Latke Remote APIs, skips this filter 
         if (requestURI.startsWith(Latkes.getContextPath() + "/latke/remote")) {
