@@ -17,6 +17,9 @@
  */
 package org.b3log.solo;
 
+import eu.bitwalker.useragentutils.BrowserType;
+import eu.bitwalker.useragentutils.UserAgent;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
@@ -138,10 +141,9 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final String requestURI = httpServletRequest.getRequestURI();
         Stopwatchs.start("Request Initialized [requestURI=" + requestURI + "]");
-        httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, false);
-        if (Requests.searchEngineBotRequest(httpServletRequest)) {
-            httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
-        } else {
+        final boolean isBot = isBot(httpServletRequest);
+        httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, isBot);
+        if (!isBot) {
             final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
             statisticMgmtService.onlineVisitorCount(httpServletRequest);
         }
@@ -268,5 +270,28 @@ public final class SoloServletListener extends AbstractServletListener {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);
         }
+    }
+
+    private static boolean isBot(final HttpServletRequest request) {
+        final String userAgentStr = request.getHeader("User-Agent");
+        final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
+        BrowserType browserType = userAgent.getBrowser().getBrowserType();
+
+        if (StringUtils.containsIgnoreCase(userAgentStr, "mobile")
+                || StringUtils.containsIgnoreCase(userAgentStr, "MQQBrowser")
+                || StringUtils.containsIgnoreCase(userAgentStr, "iphone")
+                || StringUtils.containsIgnoreCase(userAgentStr, "MicroMessenger")
+                || StringUtils.containsIgnoreCase(userAgentStr, "CFNetwork")
+                || StringUtils.containsIgnoreCase(userAgentStr, "Android")) {
+            browserType = BrowserType.MOBILE_BROWSER;
+        } else if (StringUtils.containsIgnoreCase(userAgentStr, "Iframely")
+                || StringUtils.containsIgnoreCase(userAgentStr, "Google")
+                || StringUtils.containsIgnoreCase(userAgentStr, "BUbiNG")
+                || StringUtils.containsIgnoreCase(userAgentStr, "ltx71")
+                || StringUtils.containsIgnoreCase(userAgentStr, "py")) {
+            browserType = BrowserType.ROBOT;
+        }
+
+        return BrowserType.ROBOT == browserType;
     }
 }
