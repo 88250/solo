@@ -51,7 +51,7 @@ import java.util.Set;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.43, Oct 10, 2018
+ * @version 1.9.3.44, Oct 14, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -138,8 +138,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final String requestURI = httpServletRequest.getRequestURI();
         Stopwatchs.start("Request Initialized [requestURI=" + requestURI + "]");
+        httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, false);
         if (Requests.searchEngineBotRequest(httpServletRequest)) {
-            LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
             httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
         } else {
             final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
