@@ -17,9 +17,12 @@
  */
 package org.b3log.solo.processor.console;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.Crypts;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.processor.MockDispatcherServlet;
@@ -31,9 +34,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.io.StringReader;
@@ -46,7 +49,7 @@ import static org.mockito.Mockito.when;
  * {@link CategoryConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 22, 2017
+ * @version 1.0.0.1, Oct 15, 2018
  * @since 2.1.0
  */
 @Test(suiteName = "processor")
@@ -84,8 +87,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/console/category/");
         when(request.getMethod()).thenReturn("POST");
-        final JSONObject adminUser = getUserQueryService().getAdmin();
-        when(Solos.getCurrentUser(request, response)).thenReturn(adminUser);
+        mockAdminLogin(request);
 
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(Category.CATEGORY_T_TAGS, "Solo");
@@ -119,11 +121,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/console/category/");
         when(request.getMethod()).thenReturn("PUT");
-
-        final JSONObject adminUser = getUserQueryService().getAdmin();
-        final HttpSession httpSession = mock(HttpSession.class);
-        when(httpSession.getAttribute(User.USER)).thenReturn(adminUser);
-        when(request.getSession(false)).thenReturn(httpSession);
+        mockAdminLogin(request);
 
         JSONObject category = getCategoryQueryService().getByTitle("分类1");
 
@@ -155,5 +153,18 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         category = getCategoryQueryService().getByTitle("新的分类1");
         Assert.assertNotNull(category);
         Assert.assertEquals(category.optInt(Category.CATEGORY_TAG_CNT), 1); // https://github.com/b3log/solo/issues/12274
+    }
+
+    private void mockAdminLogin(HttpServletRequest request) throws ServiceException {
+        final JSONObject adminUser = getUserQueryService().getAdmin();
+        final String userId = adminUser.optString(Keys.OBJECT_ID);
+        final JSONObject cookieJSONObject = new JSONObject();
+        cookieJSONObject.put(Keys.OBJECT_ID, userId);
+        cookieJSONObject.put(User.USER_PASSWORD, adminUser.optString(User.USER_PASSWORD));
+        final String random = RandomStringUtils.randomAlphanumeric(16);
+        cookieJSONObject.put(Keys.TOKEN, adminUser.optString(User.USER_PASSWORD) + ":" + random);
+        final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), Solos.COOKIE_SECRET);
+        final Cookie cookie = new Cookie(Solos.COOKIE_NAME, cookieValue);
+        when(request.getCookies()).thenReturn(new Cookie[]{cookie});
     }
 }

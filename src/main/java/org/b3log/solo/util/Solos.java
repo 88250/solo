@@ -22,8 +22,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.cache.Cache;
-import org.b3log.latke.cache.CacheFactory;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -119,11 +117,6 @@ public final class Solos {
      * Cookie HTTP only.
      */
     public static final boolean COOKIE_HTTP_ONLY;
-
-    /**
-     * Session cache.
-     */
-    private static final Cache SESSION_CACHE = CacheFactory.getCache("sessions");
 
     static {
         ResourceBundle solo;
@@ -250,8 +243,6 @@ public final class Solos {
             cookie.setMaxAge(COOKIE_EXPIRY);
             cookie.setHttpOnly(COOKIE_HTTP_ONLY);
             response.addCookie(cookie);
-
-            SESSION_CACHE.put(userId, user);
         } catch (final Exception e) {
             LOGGER.log(Level.WARN, "Can not write cookie", e);
         }
@@ -276,9 +267,6 @@ public final class Solos {
         if (null == currentUser) {
             return;
         }
-
-        final String userId = currentUser.optString(Keys.OBJECT_ID);
-        SESSION_CACHE.remove(userId);
     }
 
     /**

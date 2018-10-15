@@ -32,7 +32,7 @@ import java.util.List;
  * {@link ArticleQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 12, 2017
+ * @version 1.1.0.1, Oct 15, 2018
  */
 @Test(suiteName = "service")
 public class ArticleQueryServiceTestCase extends AbstractTestCase {
@@ -125,7 +125,6 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
         final JSONObject article = articleQueryService.getArticleById(articleId);
 
         Assert.assertNotNull(article);
-        Assert.assertNotNull(article.getString(Article.ARTICLE_VIEW_COUNT), "");
     }
 
     /**

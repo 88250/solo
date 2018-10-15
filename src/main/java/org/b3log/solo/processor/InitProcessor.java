@@ -23,7 +23,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -40,6 +39,7 @@ import org.b3log.solo.model.UserExt;
 import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.InitService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
@@ -53,7 +53,7 @@ import java.util.Map;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.14, Sep 21, 2018
+ * @version 1.2.0.15, Oct 15, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -81,6 +81,12 @@ public class InitProcessor {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Shows initialization page.
@@ -163,18 +169,7 @@ public class InitProcessor {
 
             initService.init(requestJSONObject);
 
-            // If initialized, login the admin
-            final JSONObject admin = new JSONObject();
-            admin.put(User.USER_NAME, userName);
-            admin.put(User.USER_EMAIL, userEmail);
-            admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-            admin.put(User.USER_PASSWORD, userPassword);
-            String avatar = requestJSONObject.optString(UserExt.USER_AVATAR);
-            if (StringUtils.isBlank(avatar)) {
-                avatar = Solos.getGravatarURL(userEmail, "128");
-            }
-            admin.put(UserExt.USER_AVATAR, avatar);
-
+            final JSONObject admin = userQueryService.getAdmin();
             Solos.login(admin, response);
 
             ret.put(Keys.STATUS_CODE, true);
