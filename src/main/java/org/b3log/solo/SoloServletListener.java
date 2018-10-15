@@ -17,6 +17,9 @@
  */
 package org.b3log.solo;
 
+import eu.bitwalker.useragentutils.BrowserType;
+import eu.bitwalker.useragentutils.UserAgent;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
@@ -51,7 +54,7 @@ import java.util.Set;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.43, Oct 10, 2018
+ * @version 1.10.0.0, Oct 15, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -77,6 +80,8 @@ public final class SoloServletListener extends AbstractServletListener {
         Latkes.setScanPath("org.b3log.solo");
         super.contextInitialized(servletContextEvent);
         Stopwatchs.start("Context Initialized");
+
+        validateSkin();
 
         beanManager = BeanManager.getInstance();
 
@@ -138,10 +143,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final String requestURI = httpServletRequest.getRequestURI();
         Stopwatchs.start("Request Initialized [requestURI=" + requestURI + "]");
-        if (Requests.searchEngineBotRequest(httpServletRequest)) {
-            LOGGER.log(Level.DEBUG, "Request made from a search engine [User-Agent={0}]", httpServletRequest.getHeader("User-Agent"));
-            httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, true);
-        } else {
+        fillBotAttrs(httpServletRequest);
+        if (!Solos.isBot(httpServletRequest)) {
             final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
             statisticMgmtService.onlineVisitorCount(httpServletRequest);
         }
@@ -257,7 +260,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
             final String requestURI = httpServletRequest.getRequestURI();
             String desiredView = Requests.mobileSwitchToggle(httpServletRequest);
-            if (desiredView == null && !Requests.mobileRequest(httpServletRequest) || desiredView != null && desiredView.equals("normal")) {
+            if (desiredView == null && !Solos.isMobile(httpServletRequest) || desiredView != null && desiredView.equals("normal")) {
                 desiredView = preference.getString(Skin.SKIN_DIR_NAME);
             } else {
                 desiredView = Solos.MOBILE_SKIN;
@@ -267,6 +270,47 @@ public final class SoloServletListener extends AbstractServletListener {
             httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, desiredView);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Resolves skin failed", e);
+        }
+    }
+
+    private static void fillBotAttrs(final HttpServletRequest request) {
+        final String userAgentStr = request.getHeader("User-Agent");
+        final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
+        BrowserType browserType = userAgent.getBrowser().getBrowserType();
+
+        if (StringUtils.containsIgnoreCase(userAgentStr, "mobile")
+                || StringUtils.containsIgnoreCase(userAgentStr, "MQQBrowser")
+                || StringUtils.containsIgnoreCase(userAgentStr, "iphone")
+                || StringUtils.containsIgnoreCase(userAgentStr, "MicroMessenger")
+                || StringUtils.containsIgnoreCase(userAgentStr, "CFNetwork")
+                || StringUtils.containsIgnoreCase(userAgentStr, "Android")) {
+            browserType = BrowserType.MOBILE_BROWSER;
+        } else if (StringUtils.containsIgnoreCase(userAgentStr, "Iframely")
+                || StringUtils.containsIgnoreCase(userAgentStr, "Google")
+                || StringUtils.containsIgnoreCase(userAgentStr, "BUbiNG")
+                || StringUtils.containsIgnoreCase(userAgentStr, "ltx71")
+                || StringUtils.containsIgnoreCase(userAgentStr, "py")) {
+            browserType = BrowserType.ROBOT;
+        }
+
+        request.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, BrowserType.ROBOT == browserType);
+        request.setAttribute(Keys.HttpRequest.IS_MOBILE_BOT, BrowserType.MOBILE_BROWSER == browserType);
+    }
+
+    /**
+     * Validates the default skin.
+     *
+     * <p>
+     * 改进皮肤加载校验 https://github.com/b3log/solo/issues/12548
+     * </p>
+     */
+    private static void validateSkin() {
+        final String skinDirName = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
+        final String skinName = Latkes.getSkinName(skinDirName);
+        if (StringUtils.isBlank(skinName)) {
+            LOGGER.log(Level.ERROR, "Can't load the default skins, please make sure skin [" + skinDirName + "] is under skins directory and structure correctly");
+
+            System.exit(-1);
         }
     }
 }

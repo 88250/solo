@@ -18,8 +18,10 @@
 package org.b3log.solo.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -27,7 +29,6 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Crypts;
-import org.b3log.latke.util.Sessions;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -47,7 +48,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Oct 5, 2018
+ * @version 1.5.0.0, Oct 15, 2018
  * @since 2.8.0
  */
 public final class Solos {
@@ -97,6 +98,25 @@ public final class Solos {
      */
     public static final String USER_AGENT = "Solo/" + SoloServletListener.VERSION + "; +https://github.com/b3log/solo";
 
+    /**
+     * Cookie expiry in 30 days.
+     */
+    private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 30;
+
+    /**
+     * Cookie name.
+     */
+    public static final String COOKIE_NAME;
+
+    /**
+     * Cookie secret.
+     */
+    public static final String COOKIE_SECRET;
+
+    /**
+     * Cookie HTTP only.
+     */
+    public static final boolean COOKIE_HTTP_ONLY;
 
     static {
         ResourceBundle solo;
@@ -125,6 +145,130 @@ public final class Solos {
         MOBILE_SKIN = mobileSkin;
     }
 
+    static {
+        String cookieNameConf = Latkes.getLatkeProperty("cookieName");
+        if (StringUtils.isBlank(cookieNameConf)) {
+            cookieNameConf = "b3log-latke";
+        }
+        COOKIE_NAME = cookieNameConf;
+
+        String cookieSecret = Latkes.getLatkeProperty("cookieSecret");
+        if (StringUtils.isBlank(cookieSecret)) {
+            cookieSecret = "Beyond";
+        }
+        COOKIE_SECRET = cookieSecret;
+
+        COOKIE_HTTP_ONLY = Boolean.valueOf(Latkes.getLocalProperty("cookieHttpOnly"));
+    }
+
+    /**
+     * Gets the current logged-in user.
+     *
+     * @param request  the specified request
+     * @param response the specified response
+     * @return the current logged-in user, returns {@code null} if not found
+     */
+    public static JSONObject getCurrentUser(final HttpServletRequest request, final HttpServletResponse response) {
+        final Cookie[] cookies = request.getCookies();
+        if (null == cookies || 0 == cookies.length) {
+            return null;
+        }
+
+        final BeanManager beanManager = BeanManager.getInstance();
+        final UserRepository userRepository = beanManager.getReference(UserRepository.class);
+        try {
+            for (int i = 0; i < cookies.length; i++) {
+                final Cookie cookie = cookies[i];
+                if (!COOKIE_NAME.equals(cookie.getName())) {
+                    continue;
+                }
+
+                final String value = Crypts.decryptByAES(cookie.getValue(), COOKIE_SECRET);
+                final JSONObject cookieJSONObject = new JSONObject(value);
+
+                final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
+                if (StringUtils.isBlank(userId)) {
+                    break;
+                }
+
+                JSONObject user = userRepository.get(userId);
+                if (null == user) {
+                    break;
+                }
+
+                final String userPassword = user.optString(User.USER_PASSWORD);
+                final String token = cookieJSONObject.optString(Keys.TOKEN);
+                final String hashPassword = StringUtils.substringBeforeLast(token, ":");
+                if (userPassword.equals(hashPassword)) {
+                    login(user, response);
+
+                    return user;
+                }
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.TRACE, "Parses cookie failed, clears the cookie [name=" + COOKIE_NAME + "]");
+
+            final Cookie cookie = new Cookie(COOKIE_NAME, null);
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+
+        return null;
+    }
+
+    /**
+     * Logins the specified user from the specified request.
+     *
+     * @param response the specified response
+     * @param user     the specified user, for example,
+     *                 {
+     *                 "userEmail": "",
+     *                 "userPassword": ""
+     *                 }
+     */
+    public static void login(final JSONObject user, final HttpServletResponse response) {
+        try {
+            final String userId = user.optString(Keys.OBJECT_ID);
+            final JSONObject cookieJSONObject = new JSONObject();
+            cookieJSONObject.put(Keys.OBJECT_ID, userId);
+            cookieJSONObject.put(User.USER_PASSWORD, user.optString(User.USER_PASSWORD));
+
+            final String random = RandomStringUtils.randomAlphanumeric(16);
+            cookieJSONObject.put(Keys.TOKEN, user.optString(User.USER_PASSWORD) + ":" + random);
+
+            final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), COOKIE_SECRET);
+            final Cookie cookie = new Cookie(COOKIE_NAME, cookieValue);
+            cookie.setPath("/");
+            cookie.setMaxAge(COOKIE_EXPIRY);
+            cookie.setHttpOnly(COOKIE_HTTP_ONLY);
+            response.addCookie(cookie);
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Can not write cookie", e);
+        }
+    }
+
+    /**
+     * Logouts the specified user.
+     *
+     * @param request  the specified request
+     * @param response the specified response
+     * @return {@code true} if succeed, otherwise returns {@code false}
+     */
+    public static void logout(final HttpServletRequest request, final HttpServletResponse response) {
+        if (null != response) {
+            final Cookie cookie = new Cookie(COOKIE_NAME, null);
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
+
+        final JSONObject currentUser = getCurrentUser(request, response);
+        if (null == currentUser) {
+            return;
+        }
+    }
+
     /**
      * Checks whether the current request is made by a logged in user
      * (including default user and administrator lists in <i>users</i>).
@@ -140,12 +284,13 @@ public final class Solos {
     /**
      * Checks whether the current request is made by logged in administrator.
      *
-     * @param request the specified request
+     * @param request  the specified request
+     * @param response the specified response
      * @return {@code true} if the current request is made by logged in
      * administrator, returns {@code false} otherwise
      */
-    public static boolean isAdminLoggedIn(final HttpServletRequest request) {
-        final JSONObject user = Sessions.currentUser(request);
+    public static boolean isAdminLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
+        final JSONObject user = getCurrentUser(request, response);
         if (null == user) {
             return false;
         }
@@ -177,8 +322,7 @@ public final class Solos {
             return true;
         }
 
-        final HttpSession session = request.getSession(false);
-
+        final HttpSession session = request.getSession();
         if (null != session) {
             Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
             if (null == viewPwds) {
@@ -196,68 +340,6 @@ public final class Solos {
     }
 
     /**
-     * Gets the current logged-in user.
-     *
-     * @param request  the specified request
-     * @param response the specified response
-     * @return the current logged-in user, returns {@code null} if not found
-     */
-    public static JSONObject getCurrentUser(final HttpServletRequest request, final HttpServletResponse response) {
-        request.getSession(); // create session if need
-        JSONObject ret = Sessions.currentUser(request);
-        if (null != ret) {
-            return ret;
-        }
-
-        final Cookie[] cookies = request.getCookies();
-        if (null == cookies || 0 == cookies.length) {
-            return null;
-        }
-
-        final BeanManager beanManager = BeanManager.getInstance();
-        final UserRepository userRepository = beanManager.getReference(UserRepository.class);
-        try {
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
-                if (!Sessions.COOKIE_NAME.equals(cookie.getName())) {
-                    continue;
-                }
-
-                final String value = Crypts.decryptByAES(cookie.getValue(), Sessions.COOKIE_SECRET);
-                final JSONObject cookieJSONObject = new JSONObject(value);
-
-                final String userId = cookieJSONObject.optString(Keys.OBJECT_ID);
-                if (StringUtils.isBlank(userId)) {
-                    break;
-                }
-
-                JSONObject user = userRepository.get(userId);
-                if (null == user) {
-                    break;
-                }
-
-                final String userPassword = user.optString(User.USER_PASSWORD);
-                final String token = cookieJSONObject.optString(Keys.TOKEN);
-                final String hashPassword = StringUtils.substringBeforeLast(token, ":");
-                if (userPassword.equals(hashPassword)) {
-                    Sessions.login(request, response, user);
-
-                    return Sessions.currentUser(request);
-                }
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.TRACE, "Parses cookie failed, clears the cookie [name=" + Sessions.COOKIE_NAME + "]");
-
-            final Cookie cookie = new Cookie(Sessions.COOKIE_NAME, null);
-            cookie.setMaxAge(0);
-            cookie.setPath("/");
-            response.addCookie(cookie);
-        }
-
-        return null;
-    }
-
-    /**
      * Whether user configures the mail.properties.
      *
      * @return {@code true} if user configured, returns {@code false} otherwise
@@ -271,6 +353,38 @@ public final class Solos {
         } catch (final Exception e) {
             return false;
         }
+    }
+
+    /**
+     * Checks the specified request is made from a mobile device.
+     *
+     * @param request the specified request
+     * @return {@code true} if it is, returns {@code false} otherwise
+     * @see SoloServletListener#fillBotAttrs(HttpServletRequest)
+     */
+    public static boolean isMobile(final HttpServletRequest request) {
+        final Object val = request.getAttribute(Keys.HttpRequest.IS_MOBILE_BOT);
+        if (!(val instanceof Boolean)) {
+            return false;
+        }
+
+        return (boolean) val;
+    }
+
+    /**
+     * Checks the specified request is made from a bot.
+     *
+     * @param request the specified request
+     * @return {@code true} if it is, returns {@code false} otherwise
+     * @see SoloServletListener#fillBotAttrs(HttpServletRequest)
+     */
+    public static boolean isBot(final HttpServletRequest request) {
+        final Object val = request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
+        if (!(val instanceof Boolean)) {
+            return false;
+        }
+
+        return (boolean) val;
     }
 
     /**

@@ -39,7 +39,8 @@ import java.io.IOException;
  * Checks initialization filter.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.3, Sep 21, 2018
+ * @author <a href="https://github.com/TsLenMo">TsLenMo</a>
+ * @version 1.1.1.4, Oct 14, 2018
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -72,9 +73,18 @@ public final class InitCheckFilter implements Filter {
             throws IOException, ServletException {
         final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         final String requestURI = httpServletRequest.getRequestURI();
+        final boolean isSpiderBot = (boolean) httpServletRequest.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
         LOGGER.log(Level.TRACE, "Request [URI={0}]", requestURI);
 
-        // If requests Latke Remote APIs, skips this filter 
+        // 禁止直接获取 robots.txt https://github.com/b3log/solo/issues/12543
+        if (requestURI.startsWith("/robots.txt") && !isSpiderBot) {
+            final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+            httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
+
+        // If requests Latke Remote APIs, skips this filter
         if (requestURI.startsWith(Latkes.getContextPath() + "/latke/remote")) {
             chain.doFilter(request, response);
 
@@ -89,7 +99,11 @@ public final class InitCheckFilter implements Filter {
             return;
         }
 
-        if ("POST".equalsIgnoreCase(httpServletRequest.getMethod()) && (Latkes.getContextPath() + "/init").equals(requestURI) ||
+        if ("POST".
+
+                equalsIgnoreCase(httpServletRequest.getMethod()) && (Latkes.getContextPath() + "/init").
+
+                equals(requestURI) ||
                 StringUtils.startsWith(requestURI, Latkes.getContextPath() + "/oauth/github")) {
             // Do initialization
             chain.doFilter(request, response);
@@ -110,7 +124,8 @@ public final class InitCheckFilter implements Filter {
         final HttpControl httpControl = new HttpControl(DispatcherServlet.SYS_HANDLER.iterator(), context);
         try {
             httpControl.nextHandler();
-        } catch (final Exception e) {
+        } catch (
+                final Exception e) {
             context.setRenderer(new HTTP500Renderer(e));
         }
         DispatcherServlet.result(context);

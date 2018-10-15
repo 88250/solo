@@ -43,6 +43,7 @@ import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
@@ -144,7 +145,7 @@ public class IndexProcessor {
             statisticMgmtService.incBlogViewCount(request, response);
 
             // https://github.com/b3log/solo/issues/12060
-            if (!preference.optString(Skin.SKIN_DIR_NAME).equals(specifiedSkin) && !Requests.mobileRequest(request)) {
+            if (!preference.optString(Skin.SKIN_DIR_NAME).equals(specifiedSkin) && !Solos.isMobile(request)) {
                 final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
                 cookie.setMaxAge(60 * 60); // 1 hour
                 cookie.setPath("/");

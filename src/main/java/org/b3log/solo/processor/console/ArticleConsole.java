@@ -429,10 +429,9 @@ public class ArticleConsole {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-
         renderer.setJSONObject(ret);
 
-        if (!Solos.isAdminLoggedIn(request)) {
+        if (!Solos.isAdminLoggedIn(request, response)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
 
@@ -441,9 +440,7 @@ public class ArticleConsole {
 
         try {
             final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/canceltop/").length());
-
             articleMgmtService.topArticle(articleId, false);
-
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("cancelTopSuccLabel"));
         } catch (final Exception e) {
@@ -477,10 +474,8 @@ public class ArticleConsole {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-
         renderer.setJSONObject(ret);
-
-        if (!Solos.isAdminLoggedIn(request)) {
+        if (!Solos.isAdminLoggedIn(request, response)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
 
@@ -489,9 +484,7 @@ public class ArticleConsole {
 
         try {
             final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/puttop/").length());
-
             articleMgmtService.topArticle(articleId, true);
-
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("putTopSuccLabel"));
         } catch (final Exception e) {
