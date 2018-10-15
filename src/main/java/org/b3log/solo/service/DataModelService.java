@@ -61,7 +61,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.16.11, Oct 5, 2018
+ * @version 1.6.16.12, Oct 15, 2018
  * @since 0.3.1
  */
 @Service
@@ -981,7 +981,7 @@ public class DataModelService {
 
             Keys.fillServer(topBarModel);
             topBarModel.put(Common.IS_LOGGED_IN, false);
-            topBarModel.put(Common.IS_MOBILE_REQUEST, Requests.mobileRequest(request));
+            topBarModel.put(Common.IS_MOBILE_REQUEST, Solos.isMobile(request));
             topBarModel.put("mobileLabel", langPropsService.get("mobileLabel"));
             topBarModel.put("onlineVisitor1Label", langPropsService.get("onlineVisitor1Label"));
             topBarModel.put(Common.ONLINE_VISITOR_CNT, StatisticQueryService.getOnlineVisitorCount());

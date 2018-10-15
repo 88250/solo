@@ -40,7 +40,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Sessions;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -196,7 +195,7 @@ public class LoginProcessor {
                 return;
             }
             if (DigestUtils.md5Hex(userPwd).equals(user.getString(User.USER_PASSWORD))) {
-                Sessions.login(request, context.getResponse(), user);
+                Solos.login(user, context.getResponse());
                 LOGGER.log(Level.INFO, "Logged in [email={0}, remoteAddr={1}]", userEmail, Requests.getRemoteAddr(request));
 
                 jsonObject.put(Common.IS_LOGGED_IN, true);
@@ -226,7 +225,7 @@ public class LoginProcessor {
     public void logout(final HTTPRequestContext context) throws Exception {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
-        Sessions.logout(httpServletRequest, context.getResponse());
+        Solos.logout(httpServletRequest, context.getResponse());
 
         String destinationURL = httpServletRequest.getParameter(Common.GOTO);
         if (StringUtils.isBlank(destinationURL) || !isInternalLinks(destinationURL)) {
