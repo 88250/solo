@@ -34,7 +34,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Requests;
-import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
@@ -219,7 +218,7 @@ public class OAuthGitHubProcessor {
             oauthGitHubOpt.put(Option.OPTION_VALUE, value);
             optionMgmtService.addOrUpdateOption(oauthGitHubOpt);
 
-            Sessions.login(request, response, user);
+            Solos.login(user, response);
             response.sendRedirect(Latkes.getServePath());
             LOGGER.log(Level.INFO, "Logged in [email={0}, remoteAddr={1}] with GitHub oauth", userEmail, Requests.getRemoteAddr(request));
 
@@ -236,7 +235,7 @@ public class OAuthGitHubProcessor {
         }
 
         final JSONObject user = userResult.optJSONObject(User.USER);
-        Sessions.login(request, response, user);
+        Solos.login(user, response);
         response.sendRedirect(Latkes.getServePath());
         LOGGER.log(Level.INFO, "Logged in [email={0}, remoteAddr={1}] with GitHub oauth", userEmail, Requests.getRemoteAddr(request));
     }

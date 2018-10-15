@@ -29,7 +29,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
@@ -214,7 +213,7 @@ public final class Skins {
      * @return directory name, or {@code "default"} if not found
      */
     public static String getSkinDirName(final HttpServletRequest request) {
-        if (Requests.mobileRequest(request)) {
+        if (Solos.isMobile(request)) {
             return (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME); // resolved in listener
         }
 

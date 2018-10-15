@@ -25,6 +25,7 @@ import org.b3log.solo.model.Category;
 import org.b3log.solo.processor.MockDispatcherServlet;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -79,20 +80,17 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
     @Test(dependsOnMethods = "init")
     public void addCategory() throws Exception {
         final HttpServletRequest request = mock(HttpServletRequest.class);
+        final HttpServletResponse response = mock(HttpServletResponse.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/console/category/");
         when(request.getMethod()).thenReturn("POST");
-
         final JSONObject adminUser = getUserQueryService().getAdmin();
-        final HttpSession httpSession = mock(HttpSession.class);
-        when(httpSession.getAttribute(User.USER)).thenReturn(adminUser);
-        when(request.getSession(false)).thenReturn(httpSession);
+        when(Solos.getCurrentUser(request, response)).thenReturn(adminUser);
 
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(Category.CATEGORY_T_TAGS, "Solo");
         requestJSON.put(Category.CATEGORY_TITLE, "分类1");
         requestJSON.put(Category.CATEGORY_URI, "cate1");
-
 
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         when(request.getReader()).thenReturn(reader);
@@ -102,8 +100,6 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
 
         final StringWriter stringWriter = new StringWriter();
         final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
         when(response.getWriter()).thenReturn(printWriter);
 
         dispatcherServlet.service(request, response);

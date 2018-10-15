@@ -42,7 +42,8 @@ public class ConsoleAdminAuthAdvice extends BeforeRequestProcessAdvice {
     @Override
     public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
-        if (!Solos.isAdminLoggedIn(request)) {
+        final HttpServletResponse response = context.getResponse();
+        if (!Solos.isAdminLoggedIn(request, response)) {
             final JSONObject exception401 = new JSONObject();
             exception401.put(Keys.MSG, "Unauthorized to request [" + request.getRequestURI() + "]");
             exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);

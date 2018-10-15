@@ -156,14 +156,14 @@ public class UserConsole {
      *                          "userAvatar": "" // optional
      */
     @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.POST)
-    public void addUser(final HttpServletRequest request, final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    public void addUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
         try {
-            if (Solos.isAdminLoggedIn(request)) { // if the administrator register a new user, treats the new user as a normal user
+            if (Solos.isAdminLoggedIn(request, response)) { // if the administrator register a new user, treats the new user as a normal user
                 // (defaultRole) who could post article
                 requestJSONObject.put(User.USER_ROLE, Role.DEFAULT_ROLE);
             } else {

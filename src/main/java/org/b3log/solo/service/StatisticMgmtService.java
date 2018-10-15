@@ -30,6 +30,7 @@ import org.b3log.solo.cache.StatisticCache;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.OptionRepository;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -46,7 +47,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Statistic management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.1, Apr 1, 2018
+ * @version 2.0.1.2, Oct 15, 2018
  * @since 0.5.0
  */
 @Service
@@ -212,10 +213,9 @@ public class StatisticMgmtService {
      * @param request  the specified request
      * @param response the specified response
      * @throws ServiceException service exception
-     * @see Requests#searchEngineBotRequest(javax.servlet.http.HttpServletRequest)
      */
     public void incBlogViewCount(final HttpServletRequest request, final HttpServletResponse response) throws ServiceException {
-        if (Requests.searchEngineBotRequest(request)) {
+        if (Solos.isBot(request)) {
             return;
         }
 
@@ -407,14 +407,12 @@ public class StatisticMgmtService {
      * @param request the specified request
      */
     public void onlineVisitorCount(final HttpServletRequest request) {
-        if (Requests.searchEngineBotRequest(request)) {
+        if (Solos.isBot(request)) {
             return;
         }
 
         final String remoteAddr = Requests.getRemoteAddr(request);
-
         LOGGER.log(Level.DEBUG, "Current request [IP={0}]", remoteAddr);
-
         ONLINE_VISITORS.put(remoteAddr, System.currentTimeMillis());
         LOGGER.log(Level.DEBUG, "Current online visitor count [{0}]", ONLINE_VISITORS.size());
     }

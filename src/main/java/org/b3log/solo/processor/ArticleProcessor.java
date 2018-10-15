@@ -208,7 +208,7 @@ public class ArticleProcessor {
             final JSONObject article = articleQueryService.getArticleById(articleId);
 
             if (article.getString(Article.ARTICLE_VIEW_PWD).equals(pwdTyped)) {
-                final HttpSession session = request.getSession(false);
+                final HttpSession session = request.getSession();
                 if (null != session) {
                     Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
                     if (null == viewPwds) {

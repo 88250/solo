@@ -33,7 +33,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Sessions;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
@@ -176,7 +175,7 @@ public class InitProcessor {
             }
             admin.put(UserExt.USER_AVATAR, avatar);
 
-            Sessions.login(request, response, admin);
+            Solos.login(admin, response);
 
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {

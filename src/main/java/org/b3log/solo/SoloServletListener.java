@@ -54,7 +54,7 @@ import java.util.Set;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.44, Oct 14, 2018
+ * @version 1.9.3.45, Oct 15, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -141,9 +141,8 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final String requestURI = httpServletRequest.getRequestURI();
         Stopwatchs.start("Request Initialized [requestURI=" + requestURI + "]");
-        final boolean isBot = isBot(httpServletRequest);
-        httpServletRequest.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, isBot);
-        if (!isBot) {
+        fillBotAttrs(httpServletRequest);
+        if (!Solos.isBot(httpServletRequest)) {
             final StatisticMgmtService statisticMgmtService = beanManager.getReference(StatisticMgmtService.class);
             statisticMgmtService.onlineVisitorCount(httpServletRequest);
         }
@@ -259,7 +258,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
             final String requestURI = httpServletRequest.getRequestURI();
             String desiredView = Requests.mobileSwitchToggle(httpServletRequest);
-            if (desiredView == null && !Requests.mobileRequest(httpServletRequest) || desiredView != null && desiredView.equals("normal")) {
+            if (desiredView == null && !Solos.isMobile(httpServletRequest) || desiredView != null && desiredView.equals("normal")) {
                 desiredView = preference.getString(Skin.SKIN_DIR_NAME);
             } else {
                 desiredView = Solos.MOBILE_SKIN;
@@ -272,7 +271,7 @@ public final class SoloServletListener extends AbstractServletListener {
         }
     }
 
-    private static boolean isBot(final HttpServletRequest request) {
+    private static void fillBotAttrs(final HttpServletRequest request) {
         final String userAgentStr = request.getHeader("User-Agent");
         final UserAgent userAgent = UserAgent.parseUserAgentString(userAgentStr);
         BrowserType browserType = userAgent.getBrowser().getBrowserType();
@@ -292,6 +291,7 @@ public final class SoloServletListener extends AbstractServletListener {
             browserType = BrowserType.ROBOT;
         }
 
-        return BrowserType.ROBOT == browserType;
+        request.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, BrowserType.ROBOT == browserType);
+        request.setAttribute(Keys.HttpRequest.IS_MOBILE_BOT, BrowserType.MOBILE_BROWSER == browserType);
     }
 }
