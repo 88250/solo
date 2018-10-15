@@ -54,7 +54,7 @@ import java.util.Set;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.3.45, Oct 15, 2018
+ * @version 1.10.0.0, Oct 15, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -80,6 +80,8 @@ public final class SoloServletListener extends AbstractServletListener {
         Latkes.setScanPath("org.b3log.solo");
         super.contextInitialized(servletContextEvent);
         Stopwatchs.start("Context Initialized");
+
+        validateSkin();
 
         beanManager = BeanManager.getInstance();
 
@@ -293,5 +295,22 @@ public final class SoloServletListener extends AbstractServletListener {
 
         request.setAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT, BrowserType.ROBOT == browserType);
         request.setAttribute(Keys.HttpRequest.IS_MOBILE_BOT, BrowserType.MOBILE_BROWSER == browserType);
+    }
+
+    /**
+     * Validates the default skin.
+     *
+     * <p>
+     * 改进皮肤加载校验 https://github.com/b3log/solo/issues/12548
+     * </p>
+     */
+    private static void validateSkin() {
+        final String skinDirName = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
+        final String skinName = Latkes.getSkinName(skinDirName);
+        if (StringUtils.isBlank(skinName)) {
+            LOGGER.log(Level.ERROR, "Can't load the default skins, please make sure skin [" + skinDirName + "] is under skins directory and structure correctly");
+
+            System.exit(-1);
+        }
     }
 }
