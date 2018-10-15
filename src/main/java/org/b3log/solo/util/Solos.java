@@ -262,11 +262,6 @@ public final class Solos {
             cookie.setPath("/");
             response.addCookie(cookie);
         }
-
-        final JSONObject currentUser = getCurrentUser(request, response);
-        if (null == currentUser) {
-            return;
-        }
     }
 
     /**
