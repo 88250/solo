@@ -121,7 +121,7 @@ public class OAuthGitHubProcessor {
      */
     @RequestProcessing(value = "/oauth/github/redirect", method = HTTPRequestMethod.GET)
     public void redirectGitHub(final HttpServletResponse response) throws Exception {
-        final String state = Latkes.getServePath();
+        final String state = Latkes.getServePath() + ":::" + RandomStringUtils.randomAlphanumeric(16);
         STATES.put(state, URLs.encode(state));
 
         final String path = "https://github.com/login/oauth/authorize" + "?client_id=" + CLIENT_ID + "&state=" + state
