@@ -32,6 +32,7 @@ import org.b3log.latke.util.Crypts;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONObject;
 
@@ -48,7 +49,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.0, Oct 15, 2018
+ * @version 1.5.0.1, Oct 16, 2018
  * @since 2.8.0
  */
 public final class Solos {
@@ -136,7 +137,7 @@ public final class Solos {
         }
         UPLOAD_DIR_PATH = dir;
 
-        String mobileSkin = "Medium";
+        String mobileSkin = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
         try {
             mobileSkin = solo.getString("mobile.skin");
         } catch (final Exception e) {
