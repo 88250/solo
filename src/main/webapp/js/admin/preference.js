@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.10, Nov 15, 2016
+ * @version 1.2.1.11, Oct 17, 2018
  */
 
 /* preference 相关操作 */
@@ -65,7 +65,7 @@ admin.preference = {
                 $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
                 $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
                 $("#keyOfSolo").val(preference.keyOfSolo);
-                
+
                 "true" === preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
                 "true" === preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
                 "true" === preference.allowRegister ? $("#allowRegister").attr("checked", "checked") : $("#allowRegister").removeAttr("checked");
@@ -107,7 +107,7 @@ admin.preference = {
                 $("#editorType").val(preference.editorType);
                 $("#feedOutputMode").val(preference.feedOutputMode);
                 $("#feedOutputCnt").val(preference.feedOutputCnt);
-                
+
                 $("#loadMsg").text("");
             }
         });
@@ -130,7 +130,7 @@ admin.preference = {
             }
         });
     },
-    /* 
+    /*
      * @description 参数校验
      */
     validate: function () {
@@ -280,11 +280,7 @@ admin.preference = {
             cache: false,
             data: JSON.stringify(requestJSONObject),
             success: function (result, textStatus) {
-                if (result.sc) {
-                    window.location.reload();
-                }
-                
-                $("#tipMsg").text(result.msg);
+                $("#tipMsg").html(result.msg);
                 $("#loadMsg").text("");
             }
         });

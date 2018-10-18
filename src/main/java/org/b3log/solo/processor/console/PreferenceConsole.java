@@ -43,12 +43,13 @@ import org.json.JSONObject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.13, Sep 25, 2018
+ * @version 1.2.0.14, Oct 17, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -446,18 +447,19 @@ public class PreferenceConsole {
                             final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
+        final JSONObject ret = new JSONObject();
+        renderer.setJSONObject(ret);
         try {
             final String accessKey = requestJSONObject.optString(Option.ID_C_QINIU_ACCESS_KEY).trim();
             final String secretKey = requestJSONObject.optString(Option.ID_C_QINIU_SECRET_KEY).trim();
             String domain = requestJSONObject.optString(Option.ID_C_QINIU_DOMAIN).trim();
+            domain = StringUtils.lowerCase(domain);
             final String bucket = requestJSONObject.optString(Option.ID_C_QINIU_BUCKET).trim();
-
-            final JSONObject ret = new JSONObject();
-            renderer.setJSONObject(ret);
-
             if (StringUtils.isNotBlank(domain) && !StringUtils.endsWith(domain, "/")) {
                 domain += "/";
+            }
+            if (StringUtils.isNotBlank(domain) && !StringUtils.startsWithAny(domain, new String[]{"http", "https"})) {
+                domain = "http://" + domain;
             }
 
             final JSONObject accessKeyOpt = new JSONObject();
@@ -484,6 +486,9 @@ public class PreferenceConsole {
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
+            if (isQiniuTestDomain(domain)) {
+                ret.put(Keys.MSG, langPropsService.get("donotUseQiniuTestDoaminLabel"));
+            }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -601,5 +606,16 @@ public class PreferenceConsole {
         } catch (final Exception e) {
             return false;
         }
+    }
+
+    /**
+     * Checks whether the specified domain is a qiniu test domain.
+     *
+     * @param domain the specified domain
+     * @return {@code true} if it is, returns {@code false} otherwise
+     */
+    private boolean isQiniuTestDomain(final String domain) {
+        return Arrays.asList("clouddn.com", "qiniucdn.com", "qiniudn.com", "qnssl.com", "qbox.me").stream().
+                anyMatch(testDomain -> StringUtils.containsIgnoreCase(domain, testDomain));
     }
 }
