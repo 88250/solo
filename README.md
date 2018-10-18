@@ -63,8 +63,8 @@
 
 [下载](https://pan.baidu.com/s/1dzk7SU)最新的 Solo 包解压，进入解压目录执行：
 
-* Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter`
-* Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
+* Windows: `双击 run.bat 即可`
+* Unix-like: `./run.sh`
 
 用 `Docker` 运行？
 
