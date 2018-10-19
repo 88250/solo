@@ -24,7 +24,7 @@
 <div class="clear"></div>
 <div class="form form__no-table">
 ${addUserLabel}
-    <label for="userName">${commentName1Label}</label>
+    <label for="userName">${userName1Label}</label>
     <input id="userName" type="text"/>
     <label for="userEmail">${commentEmail1Label}</label>
     <input id="userEmail" type="text"/>
@@ -38,8 +38,7 @@ ${addUserLabel}
     <div class="clear"></div>
 </div>
 <div id="userUpdate" class="none form form__table">
-${updateUserLabel}
-    <label for="userNameUpdate">${commentName1Label}</label>
+    <label for="userNameUpdate">${userName1Label}</label>
     <input id="userNameUpdate" type="text"/>
     <label for="userEmailUpdate">${commentEmail1Label}</label>
     <input id="userEmailUpdate" type="text"/>
