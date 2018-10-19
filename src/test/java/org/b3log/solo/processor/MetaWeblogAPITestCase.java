@@ -47,7 +47,7 @@ import static org.mockito.Mockito.when;
  *
  * @author yugt
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 19, 2017
+ * @version 1.0.0.2, Oct 19, 2018
  * @since 1.7.0
  */
 @Test(suiteName = "api")
@@ -142,6 +142,18 @@ public class MetaWeblogAPITestCase extends AbstractTestCase {
                 .append("<member>")
                 .append("<name>description</name>")
                 .append("<value><string>description</string></value>")
+                .append("</member>")
+                .append("<member>")
+                .append("<name>categories</name>")
+                .append("<value>")
+                .append("<array>")
+                .append("<data>")
+                .append("<value>")
+                .append("<string>Solo</string>")
+                .append("</value>")
+                .append("</data>")
+                .append("</array>")
+                .append("</value>")
                 .append("</member>")
                 .append("</struct>")
                 .append("</value>")

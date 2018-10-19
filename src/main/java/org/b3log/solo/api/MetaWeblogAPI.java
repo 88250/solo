@@ -68,7 +68,7 @@ import java.util.List;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.18, Sep 16, 2018
+ * @version 1.0.0.19, Oct 19, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -218,14 +218,14 @@ public class MetaWeblogAPI {
                 params.remove(0); // Removes the first argument "appkey"
             }
 
-            final String userEmail = params.getJSONObject(INDEX_USER_EMAIL).getJSONObject("value").getString("string");
+            final String userEmail = params.getJSONObject(INDEX_USER_EMAIL).getJSONObject("value").optString("string");
             final JSONObject user = userQueryService.getUserByEmailOrUserName(userEmail);
             if (null == user) {
                 throw new Exception("No user [email=" + userEmail + "]");
             }
             final String userId = user.optString(Keys.OBJECT_ID);
 
-            final String userPwd = params.getJSONObject(INDEX_USER_PWD).getJSONObject("value").getString("string");
+            final String userPwd = params.getJSONObject(INDEX_USER_PWD).getJSONObject("value").get("string").toString();
             if (!user.getString(User.USER_PASSWORD).equals(DigestUtils.md5Hex(userPwd))) {
                 throw new Exception("Wrong password");
             }
@@ -246,11 +246,11 @@ public class MetaWeblogAPI {
                         "</string></value></param></params></methodResponse>");
                 responseContent = stringBuilder.toString();
             } else if (METHOD_GET_POST.equals(methodName)) {
-                final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").getString("string");
+                final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").optString("string");
                 responseContent = getPost(postId);
             } else if (METHOD_EDIT_POST.equals(methodName)) {
                 final JSONObject article = parsetPost(methodCall);
-                final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").getString("string");
+                final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").optString("string");
                 article.put(Keys.OBJECT_ID, postId);
                 article.put(Article.ARTICLE_AUTHOR_ID, userId);
                 final JSONObject updateArticleRequest = new JSONObject();
@@ -261,7 +261,7 @@ public class MetaWeblogAPI {
                         "</string></value></param></params></methodResponse>");
                 responseContent = stringBuilder.toString();
             } else if (METHOD_DELETE_POST.equals(methodName)) {
-                final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").getString("string");
+                final String postId = params.getJSONObject(INDEX_POST_ID).getJSONObject("value").optString("string");
                 articleMgmtService.removeArticle(postId);
 
                 final StringBuilder stringBuilder = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><methodResponse>").append("<params><param><value><boolean>").append(true).append(
@@ -351,7 +351,7 @@ public class MetaWeblogAPI {
             } else if ("title".equals(name)) {
                 ret.put(Article.ARTICLE_TITLE, member.getJSONObject("value").getString("string"));
             } else if ("description".equals(name)) {
-                final String content = member.getJSONObject("value").getString("string");
+                final String content = member.getJSONObject("value").optString("string");
                 ret.put(Article.ARTICLE_CONTENT, content);
                 ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(Jsoup.parse(content).text()));
             } else if ("categories".equals(name)) {
@@ -366,7 +366,7 @@ public class MetaWeblogAPI {
                     final JSONArray tags = (JSONArray) value;
 
                     for (int j = 0; j < tags.length(); j++) {
-                        final String tagTitle = tags.getJSONObject(j).getString("string");
+                        final String tagTitle = tags.getJSONObject(j).optString("string");
 
                         tagBuilder.append(tagTitle);
 
