@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
  * {@link BlogProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 1, 2016
+ * @version 1.0.0.1, Oct 20, 2018
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -103,33 +103,6 @@ public class BlogProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/blog/articles-tags");
         when(request.getParameter("pwd")).thenReturn("pass");
-        when(request.getMethod()).thenReturn("GET");
-
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
-        Assert.assertTrue(StringUtils.startsWith(content, "{\"data\":"));
-    }
-
-    /**
-     * getInterestTags.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "init")
-    public void getInterestTags() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/blog/interest-tags");
         when(request.getMethod()).thenReturn("GET");
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();

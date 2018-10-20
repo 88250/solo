@@ -34,7 +34,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
@@ -42,15 +41,12 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.4, Sep 16, 2018
+ * @version 1.3.1.5, Oct 20, 2018
  * @since 0.4.6
  */
 @RequestProcessor
@@ -254,41 +250,5 @@ public class BlogProcessor {
                 }
             }
         }
-    }
-
-    /**
-     * Gets interest tags (top 10 and bottom 10).
-     * <p>
-     * <pre>
-     * {
-     *     "data": ["tag1", "tag2", ....]
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified context
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/blog/interest-tags", method = HTTPRequestMethod.GET)
-    public void getInterestTags(final HTTPRequestContext context)
-            throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-
-        final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
-        final Set<String> tagTitles = new HashSet<>();
-
-        final List<JSONObject> topTags = tagQueryService.getTopTags(10);
-        for (final JSONObject topTag : topTags) {
-            tagTitles.add(topTag.optString(Tag.TAG_TITLE));
-        }
-
-        final List<JSONObject> bottomTags = tagQueryService.getBottomTags(10);
-        for (final JSONObject bottomTag : bottomTags) {
-            tagTitles.add(bottomTag.optString(Tag.TAG_TITLE));
-        }
-
-        ret.put("data", tagTitles);
     }
 }
