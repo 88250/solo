@@ -42,7 +42,7 @@ public final class MarkdownsTestCase {
 
     @BeforeClass
     public void beforeClass() {
-        Latkes.initRuntimeEnv();
+        Latkes.init();
         Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
     }
 

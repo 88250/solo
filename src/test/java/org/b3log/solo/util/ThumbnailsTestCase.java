@@ -39,7 +39,7 @@ public final class ThumbnailsTestCase {
      */
     @Test
     public void getGravatarURL() throws Exception {
-        Latkes.initRuntimeEnv();
+        Latkes.init();
         Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
 
         final String gravatarURL = Solos.getGravatarURL("test@b3log.org", "128");

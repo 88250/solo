@@ -57,7 +57,7 @@ public abstract class AbstractTestCase {
      */
     @BeforeClass
     public void beforeClass() throws Exception {
-        Latkes.initRuntimeEnv();
+        Latkes.init();
         Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
 
         final Collection<Class<?>> classes = Discoverer.discover("org.b3log.solo");
