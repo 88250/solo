@@ -62,7 +62,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.4.5, Sep 20, 2018
+ * @version 1.4.5.0, Oct 23, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -607,8 +607,7 @@ public class ArticleProcessor {
             }
 
             final JSONObject author = result.getJSONObject(User.USER);
-            final String authorEmail = author.getString(User.USER_EMAIL);
-            final List<JSONObject> articles = articleQueryService.getArticlesByAuthorId(authorEmail, currentPageNum, pageSize);
+            final List<JSONObject> articles = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
             if (articles.isEmpty()) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
 
