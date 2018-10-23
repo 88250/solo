@@ -43,7 +43,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.wanglay.com">Lei Wang</a>
- * @version 1.2.2.11, Sep 25, 2018
+ * @version 1.2.2.12, Oct 23, 2018
  * @since 0.3.1
  */
 @Singleton
@@ -129,27 +129,27 @@ public class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObjec
                 commenter = commentName;
             }
             final String mailSubject = replyNotificationTemplate.getString(
-                    "subject").replace("${postLink}", articleLink)
-                    .replace("${postTitle}", articleTitle)
-                    .replace("${replier}", commenter)
-                    .replace("${blogTitle}", blogTitle)
-                    .replace("${replyURL}",
-                            Latkes.getServePath() + commentSharpURL)
-                    .replace("${replyContent}", commentContent);
+                    "subject").replace("${postLink}", articleLink).
+                    replace("${postTitle}", articleTitle).
+                    replace("${replier}", commenter).
+                    replace("${blogTitle}", blogTitle).
+                    replace("${replyURL}", Latkes.getServePath() + commentSharpURL).
+                    replace("${replyContent}", commentContent).
+                    replace("${servePath}", Latkes.getServePath());
 
             message.setSubject(mailSubject);
-            final String mailBody = replyNotificationTemplate
-                    .getString("body")
-                    .replace("${postLink}", articleLink)
-                    .replace("${postTitle}", articleTitle)
-                    .replace("${replier}", commenter)
-                    .replace("${blogTitle}", blogTitle)
-                    .replace("${replyURL}",
-                            Latkes.getServePath() + commentSharpURL)
-                    .replace("${replyContent}", commentContent);
+            final String mailBody = replyNotificationTemplate.
+                    getString("body").
+                    replace("${postLink}", articleLink).
+                    replace("${postTitle}", articleTitle).
+                    replace("${replier}", commenter).
+                    replace("${blogTitle}", blogTitle).
+                    replace("${replyURL}", Latkes.getServePath() + commentSharpURL).
+                    replace("${replyContent}", commentContent).
+                    replace("${servePath}", Latkes.getServePath());
 
             message.setHtmlBody(mailBody);
-            LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to [{2}]",
+            LOGGER.log(Level.DEBUG, "Sending a mail [mailSubject={0}, mailBody=[{1}] to [{2}]",
                     mailSubject, mailBody, originalCommentEmail);
 
             mailService.send(message);
