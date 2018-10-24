@@ -37,8 +37,7 @@ ${addCategoryLabel}
     <button onclick="admin.categoryList.add();" class="right">${saveLabel}</button>
     <div class="clear"></div>
 </div>
-<div id="categoryUpdate" class="none form__no-table form">
-${updateCategoryLabel}
+<div id="categoryUpdate" class="none form__no-table form" data-title="${updateCategoryLabel}">
     <label for="categoryNameUpdate">${linkTitle1Label}</label>
     <input id="categoryNameUpdate" type="text"/>
     <label for="categoryURIUpdate">URI：</label>

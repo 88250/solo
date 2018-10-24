@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.1, Oct 19, 2018
+ * @version 1.1.2.2, Oct 24, 2018
  */
 
 /* user-list 相关操作 */
@@ -61,7 +61,7 @@ admin.userList = {
 
         $("#userUpdate").dialog({
             width: 700,
-            height: 360,
+            height: 450,
             "modal": true,
             "hideFooter": true
         });

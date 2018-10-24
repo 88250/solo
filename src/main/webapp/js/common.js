@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Sep 10, 2018
+ * @version 1.4.0.1, Sep 24, 2018
  */
 
 /**
@@ -92,6 +92,7 @@ var Util = {
         NProgress.start();
       });
       $('#pjax').bind('pjax.end', function(){
+        window.scroll(window.scrollX,0)
         NProgress.done();
       });
     }

@@ -19,7 +19,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.5.0.0, Apr 5, 2018
+* @version 2.5.0.1, Oct 24, 2018
 */
 
 /* start resset */
@@ -1250,18 +1250,15 @@ button#submitArticle:hover {
     color: #FFFFFF;
     float: left;
     font-size: 12px;
-    line-height: 27px;
-    margin-left: 3px;
+    margin-left: 12px;
 }
 
 .dialog-header-bg {
-    background: #F1F1F1;
-    border-color: #C0C0C0 #D9D9D9 #D9D9D9;
+    background: #32323a;
     border-radius: 6px 6px 0 0;
-    border-style: solid;
-    border-width: 1px 1px 0;
     cursor: move;
     height: 34px;
+    line-height: 34px;
 }
 
 .dialog-header-bg .icon-close {
