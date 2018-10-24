@@ -37,7 +37,7 @@ ${addUserLabel}
     <button onclick="admin.userList.add();" class="right">${saveLabel}</button>
     <div class="clear"></div>
 </div>
-<div id="userUpdate" class="none form form__table">
+<div id="userUpdate" class="none form form__no-table">
     <label for="userNameUpdate">${userName1Label}</label>
     <input id="userNameUpdate" type="text"/>
     <label for="userEmailUpdate">${commentEmail1Label}</label>
