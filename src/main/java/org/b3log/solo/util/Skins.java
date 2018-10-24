@@ -47,7 +47,7 @@ import java.util.*;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.1, Sep 26, 2018
+ * @version 1.1.6.2, Oct 24, 2018
  * @since 0.3.1
  */
 public final class Skins {
@@ -210,19 +210,15 @@ public final class Skins {
      * more details.
      *
      * @param request the specified request
-     * @return directory name, or {@code "default"} if not found
+     * @return directory name, or {@code null} if not found
      */
     public static String getSkinDirName(final HttpServletRequest request) {
         if (Solos.isMobile(request)) {
-            return (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME); // resolved in listener
+            return Solos.MOBILE_SKIN;
         }
 
         // 1. Get skin from query
         final String specifiedSkin = request.getParameter(Skin.SKIN);
-        if ("default".equals(specifiedSkin)) {
-            return "default";
-        }
-
         if (StringUtils.isNotBlank(specifiedSkin)) {
             final Set<String> skinDirNames = Skins.getSkinDirNames();
             if (skinDirNames.contains(specifiedSkin)) {
@@ -233,6 +229,16 @@ public final class Skins {
         }
 
         // 2. Get skin from cookie
+        return getSkinDirNameFromCookie(request);
+    }
+
+    /**
+     * Gets skin directory name from the specified request's cookie.
+     *
+     * @param request the specified request
+     * @return directory name, or {@code null} if not found
+     */
+    public static String getSkinDirNameFromCookie(final HttpServletRequest request) {
         final Cookie[] cookies = request.getCookies();
         if (null != cookies) {
             for (final Cookie cookie : cookies) {
@@ -247,6 +253,6 @@ public final class Skins {
             }
         }
 
-        return "default";
+        return null;
     }
 }

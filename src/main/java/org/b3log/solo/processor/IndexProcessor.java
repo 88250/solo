@@ -43,7 +43,6 @@ import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
@@ -56,7 +55,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.4.8, Sep 26, 2018
+ * @version 1.2.4.9, Oct 24, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -114,18 +113,15 @@ public class IndexProcessor {
 
             // https://github.com/b3log/solo/issues/12060
             String specifiedSkin = Skins.getSkinDirName(request);
-            if (null != specifiedSkin) {
-                if ("default".equals(specifiedSkin)) {
-                    specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
-
-                    final Cookie cookie = new Cookie(Skin.SKIN, null);
-                    cookie.setMaxAge(60 * 60); // 1 hour
-                    cookie.setPath("/");
-                    response.addCookie(cookie);
-                }
-            } else {
+            if (StringUtils.isBlank(specifiedSkin)) {
                 specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
             }
+            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
+
+            final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
+            cookie.setMaxAge(60 * 60); // 1 hour
+            cookie.setPath("/");
+            response.addCookie(cookie);
 
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
@@ -139,18 +135,9 @@ public class IndexProcessor {
             final Integer pageCount = (Integer) dataModel.get(Pagination.PAGINATION_PAGE_COUNT);
             final int nextPageNum = currentPageNum + 1 > pageCount ? pageCount : currentPageNum + 1;
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, nextPageNum);
-
             dataModel.put(Common.PATH, "");
 
             statisticMgmtService.incBlogViewCount(request, response);
-
-            // https://github.com/b3log/solo/issues/12060
-            if (!preference.optString(Skin.SKIN_DIR_NAME).equals(specifiedSkin) && !Solos.isMobile(request)) {
-                final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
-                cookie.setMaxAge(60 * 60); // 1 hour
-                cookie.setPath("/");
-                response.addCookie(cookie);
-            }
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

@@ -45,16 +45,14 @@ import org.json.JSONObject;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionEvent;
-import java.util.Set;
 
 /**
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.0, Oct 15, 2018
+ * @version 1.10.0.1, Oct 24, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -230,47 +228,31 @@ public final class SoloServletListener extends AbstractServletListener {
 
     /**
      * Resolve skin (template) for the specified HTTP servlet request.
+     * https://github.com/b3log/solo/issues/12060
      *
      * @param httpServletRequest the specified HTTP servlet request
      */
     private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
-        // https://github.com/b3log/solo/issues/12060
-        httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        final Cookie[] cookies = httpServletRequest.getCookies();
-        if (null != cookies) {
-            for (final Cookie cookie : cookies) {
-                if (Skin.SKIN.equals(cookie.getName())) {
-                    final String skin = cookie.getValue();
-                    final Set<String> skinDirNames = Skins.getSkinDirNames();
-                    if (skinDirNames.contains(skin)) {
-                        httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
-
-                        return;
-                    }
+        String skin = Skins.getSkinDirNameFromCookie(httpServletRequest);
+        if (StringUtils.isBlank(skin)) {
+            try {
+                final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+                final JSONObject preference = preferenceQueryService.getPreference();
+                if (null != preference) {
+                    skin = preference.getString(Skin.SKIN_DIR_NAME);
                 }
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Resolves skin failed", e);
             }
         }
-
-        try {
-            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
-            final JSONObject preference = preferenceQueryService.getPreference();
-            if (null == preference) { // Not initialize yet
-                return;
-            }
-
-            final String requestURI = httpServletRequest.getRequestURI();
-            String desiredView = Requests.mobileSwitchToggle(httpServletRequest);
-            if (desiredView == null && !Solos.isMobile(httpServletRequest) || desiredView != null && desiredView.equals("normal")) {
-                desiredView = preference.getString(Skin.SKIN_DIR_NAME);
-            } else {
-                desiredView = Solos.MOBILE_SKIN;
-                LOGGER.log(Level.DEBUG, "The request [URI={0}] via mobile device", requestURI);
-            }
-
-            httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, desiredView);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Resolves skin failed", e);
+        if (StringUtils.isBlank(skin)) {
+            skin = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
         }
+        if (Solos.isMobile(httpServletRequest)) {
+            skin = Solos.MOBILE_SKIN;
+        }
+
+        httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
     }
 
     private static void fillBotAttrs(final HttpServletRequest request) {
