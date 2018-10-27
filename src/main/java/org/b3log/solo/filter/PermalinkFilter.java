@@ -159,7 +159,7 @@ public final class PermalinkFilter implements Filter {
 
         request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HTTPRequestMethod.GET.name());
 
-        final HttpControl httpControl = new HttpControl(DispatcherServlet.SYS_HANDLER.iterator(), context);
+        final HttpControl httpControl = new HttpControl(DispatcherServlet.HANDLERS.iterator(), context);
         try {
             httpControl.nextHandler();
         } catch (final Exception e) {

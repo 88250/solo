@@ -121,11 +121,10 @@ public final class InitCheckFilter implements Filter {
         context.setResponse((HttpServletResponse) response);
         request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/init");
         request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HTTPRequestMethod.GET.name());
-        final HttpControl httpControl = new HttpControl(DispatcherServlet.SYS_HANDLER.iterator(), context);
+        final HttpControl httpControl = new HttpControl(DispatcherServlet.HANDLERS.iterator(), context);
         try {
             httpControl.nextHandler();
-        } catch (
-                final Exception e) {
+        } catch (final Exception e) {
             context.setRenderer(new HTTP500Renderer(e));
         }
         DispatcherServlet.result(context);
