@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.1, Sep 24, 2018
+ * @version 1.4.1.1, Oct 27, 2018
  */
 
 /**
@@ -75,7 +75,8 @@ var Util = {
         storage: true,
         titleSuffix: '',
         filter: function(href){
-          if (href === latkeConfig.servePath + '/rss.xml') {
+          if (href === latkeConfig.servePath + '/rss.xml' ||
+            href.indexOf(latkeConfig.servePath + '/admin-index.do') > -1) {
             return true
           }
           if (href.indexOf(latkeConfig.servePath) > -1) {
