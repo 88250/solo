@@ -47,7 +47,7 @@ import java.util.*;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.2, Oct 24, 2018
+ * @version 1.1.6.3, Oct 28, 2018
  * @since 0.3.1
  */
 public final class Skins {
@@ -151,7 +151,9 @@ public final class Skins {
                 props.load(inputStream);
                 final Set<Object> keys = props.keySet();
                 for (final Object key : keys) {
-                    langs.put((String) key, props.getProperty((String) key));
+                    String val = props.getProperty((String) key);
+                    val = replaceVars(val);
+                    langs.put((String) key, val);
                 }
 
                 LANG_MAP.put(langName, langs);
@@ -254,5 +256,26 @@ public final class Skins {
         }
 
         return null;
+    }
+
+    /**
+     * Replaces all variables of the specified language value.
+     *
+     * <p>
+     * Variables:
+     * <ul>
+     * <li>${servePath}</li>
+     * <li>${staticServePath}</li>
+     * </ul>
+     * </p>
+     *
+     * @param langValue the specified language value
+     * @return replaced value
+     */
+    private static String replaceVars(final String langValue) {
+        String ret = StringUtils.replace(langValue, "${servePath}", Latkes.getServePath());
+        ret = StringUtils.replace(ret, "${staticServePath}", Latkes.getStaticServePath());
+
+        return ret;
     }
 }
