@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Collections;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -39,7 +40,7 @@ import static org.mockito.Mockito.when;
  * {@link BlogProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Oct 20, 2018
+ * @version 1.0.0.2, Oct 28, 2018
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -76,6 +77,7 @@ public class BlogProcessorTestCase extends AbstractTestCase {
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
         when(request.getRequestURI()).thenReturn("/blog/info");
         when(request.getMethod()).thenReturn("GET");
+        when(request.getHeaderNames()).thenReturn(Collections.emptyEnumeration());
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
         dispatcherServlet.init();
