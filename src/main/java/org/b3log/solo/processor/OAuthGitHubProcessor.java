@@ -28,7 +28,6 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -56,7 +55,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 21, 2018
+ * @version 1.0.0.1, Oct 31, 2018
  * @since 2.9.5
  */
 @RequestProcessor
@@ -204,7 +203,6 @@ public class OAuthGitHubProcessor {
                     addUserReq.put(UserExt.USER_AVATAR, userAvatar);
                     addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
                     userMgmtService.addUser(addUserReq);
-                    JdbcRepository.dispose();
                 }
             }
 

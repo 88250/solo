@@ -29,7 +29,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.servlet.AbstractServletListener;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
@@ -52,7 +51,7 @@ import javax.servlet.http.HttpSessionEvent;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.1, Oct 24, 2018
+ * @version 1.10.0.2, Oct 31, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -90,8 +89,6 @@ public final class SoloServletListener extends AbstractServletListener {
         // Import check https://github.com/b3log/solo/issues/12293
         final ImportService importService = beanManager.getReference(ImportService.class);
         importService.importMarkdowns();
-
-        JdbcRepository.dispose();
 
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
         final Transaction transaction = optionRepository.beginTransaction();
