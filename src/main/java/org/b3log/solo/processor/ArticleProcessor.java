@@ -22,7 +22,6 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -786,11 +785,7 @@ public class ArticleProcessor {
             // Fire [Before Render Article] event
             final JSONObject eventData = new JSONObject();
             eventData.put(Article.ARTICLE, article);
-            try {
-                eventManager.fireEventSynchronously(new Event<>(EventTypes.BEFORE_RENDER_ARTICLE, eventData));
-            } catch (final EventException e) {
-                LOGGER.log(Level.ERROR, "Fires [" + EventTypes.BEFORE_RENDER_ARTICLE + "] event failed", e);
-            }
+            eventManager.fireEventSynchronously(new Event<>(EventTypes.BEFORE_RENDER_ARTICLE, eventData));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

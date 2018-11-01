@@ -25,7 +25,6 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -513,18 +512,14 @@ public class AdminConsole {
      * @param dataModel        the specified data model
      */
     private void fireFreeMarkerActionEvent(final String hostTemplateName, final Map<String, Object> dataModel) {
-        try {
-            final ViewLoadEventData data = new ViewLoadEventData();
+        final ViewLoadEventData data = new ViewLoadEventData();
 
-            data.setViewName(hostTemplateName);
-            data.setDataModel(dataModel);
-            eventManager.fireEventSynchronously(new Event<>(Keys.FREEMARKER_ACTION, data));
-            if (StringUtils.isBlank((String) dataModel.get(Plugin.PLUGINS))) {
-                // There is no plugin for this template, fill ${plugins} with blank.
-                dataModel.put(Plugin.PLUGINS, "");
-            }
-        } catch (final EventException e) {
-            LOGGER.log(Level.WARN, "Event[FREEMARKER_ACTION] handle failed, ignores this exception for kernel health", e);
+        data.setViewName(hostTemplateName);
+        data.setDataModel(dataModel);
+        eventManager.fireEventSynchronously(new Event<>(Keys.FREEMARKER_ACTION, data));
+        if (StringUtils.isBlank((String) dataModel.get(Plugin.PLUGINS))) {
+            // There is no plugin for this template, fill ${plugins} with blank.
+            dataModel.put(Plugin.PLUGINS, "");
         }
     }
 

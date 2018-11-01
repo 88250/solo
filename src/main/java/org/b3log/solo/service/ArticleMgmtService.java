@@ -22,7 +22,6 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -367,21 +366,13 @@ public class ArticleMgmtService {
                 final JSONObject eventData = new JSONObject();
                 eventData.put(ARTICLE, article);
                 eventData.put(Keys.RESULTS, ret);
-                try {
-                    eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
-                } catch (final EventException e) {
-                    LOGGER.log(Level.ERROR, e.getMessage(), e);
-                }
+                eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
             } else {
                 // Fire update article event
                 final JSONObject eventData = new JSONObject();
                 eventData.put(ARTICLE, article);
                 eventData.put(Keys.RESULTS, ret);
-                try {
-                    eventManager.fireEventSynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
-                } catch (final EventException e) {
-                    LOGGER.log(Level.ERROR, e.getMessage(), e);
-                }
+                eventManager.fireEventSynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
             }
 
             transaction.commit();
@@ -528,12 +519,10 @@ public class ArticleMgmtService {
             }
 
             article.remove(Common.POST_TO_COMMUNITY);
-        } catch (final RepositoryException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Adds an article failed", e);
 
             throw new ServiceException(e);
-        } catch (final EventException e) {
-            LOGGER.log(Level.WARN, "Adds an article event process failed", e);
         }
 
         return ret;

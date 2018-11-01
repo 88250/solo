@@ -23,7 +23,6 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -592,17 +591,13 @@ public class DataModelService {
             }
 
             // Activates plugins
-            try {
-                final ViewLoadEventData data = new ViewLoadEventData();
-                data.setViewName("footer.ftl");
-                data.setDataModel(dataModel);
-                eventManager.fireEventSynchronously(new Event<>(Keys.FREEMARKER_ACTION, data));
-                if (StringUtils.isBlank((String) dataModel.get(Plugin.PLUGINS))) {
-                    // There is no plugin for this template, fill ${plugins} with blank.
-                    dataModel.put(Plugin.PLUGINS, "");
-                }
-            } catch (final EventException e) {
-                LOGGER.log(Level.WARN, "Event[FREEMARKER_ACTION] handle failed, ignores this exception for kernel health", e);
+            final ViewLoadEventData data = new ViewLoadEventData();
+            data.setViewName("footer.ftl");
+            data.setDataModel(dataModel);
+            eventManager.fireEventSynchronously(new Event<>(Keys.FREEMARKER_ACTION, data));
+            if (StringUtils.isBlank((String) dataModel.get(Plugin.PLUGINS))) {
+                // There is no plugin for this template, fill ${plugins} with blank.
+                dataModel.put(Plugin.PLUGINS, "");
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fills blog footer failed", e);

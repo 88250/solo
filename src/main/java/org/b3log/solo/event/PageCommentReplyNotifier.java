@@ -22,7 +22,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
@@ -97,7 +96,9 @@ public class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> 
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                throw new EventException("Not found preference");
+                LOGGER.log(Level.ERROR, "Not found preference");
+
+                return;
             }
 
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
