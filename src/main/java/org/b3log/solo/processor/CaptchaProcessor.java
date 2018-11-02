@@ -18,7 +18,6 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -37,6 +36,7 @@ import org.patchca.word.RandomWordFactory;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -167,19 +167,8 @@ public class CaptchaProcessor {
             }
         }
 
-        if (0 < fonts.length) {
-            for (int i = 0; i < 5; i++) {
-                ret.add(fonts[RandomUtils.nextInt(fonts.length)].getFontName());
-            }
-        }
-
-        if (ret.isEmpty()) {
-            ret.add(Font.DIALOG);
-            ret.add(Font.DIALOG_INPUT);
-            ret.add(Font.SERIF);
-            ret.add(Font.SANS_SERIF);
-            ret.add(Font.MONOSPACED);
-        }
+        final String defaultFontName = new JLabel().getFont().getFontName();
+        ret.add(defaultFontName);
 
         return ret;
     }
