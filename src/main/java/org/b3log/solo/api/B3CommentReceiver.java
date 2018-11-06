@@ -26,7 +26,6 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -53,7 +52,7 @@ import java.util.Date;
  * Comment receiver from B3log Symphony.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.18, Sep 25, 2018
+ * @version 1.1.1.19, Nov 6, 2018
  * @since 0.5.5
  */
 @RequestProcessor
@@ -256,7 +255,7 @@ public class B3CommentReceiver {
             ret.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(ret);
-        } catch (final ServiceException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);

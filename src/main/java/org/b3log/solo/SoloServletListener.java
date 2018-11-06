@@ -51,7 +51,7 @@ import javax.servlet.http.HttpSessionEvent;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.2, Oct 31, 2018
+ * @version 1.10.0.3, Nov 6, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -174,9 +174,6 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                LOGGER.info("Please open browser and visit [" + Latkes.getServePath() + "] to init your Solo, "
-                        + "and then enjoy it :-p");
-
                 return;
             }
 

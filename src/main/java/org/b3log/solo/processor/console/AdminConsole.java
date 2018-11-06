@@ -34,7 +34,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
@@ -68,7 +67,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.6, Oct 5, 2018
+ * @version 1.7.0.7, Nov 6, 2018
  * @since 0.4.1
  */
 @RequestProcessor
@@ -241,13 +240,7 @@ public class AdminConsole {
         dataModel.putAll(langs);
         dataModel.put(Option.ID_C_LOCALE_STRING, locale.toString());
 
-        JSONObject preference = null;
-        try {
-            preference = preferenceQueryService.getPreference();
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "Loads preference failed", e);
-        }
-
+        final JSONObject preference = preferenceQueryService.getPreference();
         final StringBuilder timeZoneIdOptions = new StringBuilder();
         final String[] availableIDs = TimeZone.getAvailableIDs();
         for (int i = 0; i < availableIDs.length; i++) {

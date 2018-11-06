@@ -57,7 +57,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.23, Sep 16, 2018
+ * @version 1.5.2.24, Nov 6, 2018
  * @since 0.4.0
  */
 @Service
@@ -159,9 +159,10 @@ public class InitService {
         try {
             final JSONObject admin = userRepository.getAdmin();
 
-            return null != admin;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "Solo has not been initialized");
+            return null != admin && 0 < optionRepository.count();
+        } catch (final Exception e) {
+            LOGGER.log(Level.WARN, "Solo has not been initialized, please open your browser and visit [" + Latkes.getServePath() + "] to init Solo");
+
             return false;
         }
     }

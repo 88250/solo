@@ -53,7 +53,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.6, Oct 7, 2018
+ * @version 1.3.2.7, Nov 6, 2018
  * @since 0.3.5
  */
 @Service
@@ -160,7 +160,7 @@ public class ArticleQueryService {
 
             final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.optJSONArray(Keys.RESULTS));
             ret.put(Article.ARTICLES, (Object) articles);
-        } catch (final RepositoryException | ServiceException e) {
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Searches articles error", e);
         }
 
@@ -244,7 +244,7 @@ public class ArticleQueryService {
             ret.put(Article.ARTICLES, (Object) articles);
 
             return ret;
-        } catch (final RepositoryException | ServiceException e) {
+        } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets category articles error", e);
 
             throw new ServiceException(e);
