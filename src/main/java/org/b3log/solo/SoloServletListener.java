@@ -51,7 +51,7 @@ import javax.servlet.http.HttpSessionEvent;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.3, Nov 6, 2018
+ * @version 1.10.0.4, Nov 9, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -82,25 +82,28 @@ public final class SoloServletListener extends AbstractServletListener {
 
         beanManager = BeanManager.getInstance();
 
-        // Upgrade check https://github.com/b3log/solo/issues/12040
-        final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
-        upgradeService.upgrade();
+        final InitService initService = beanManager.getReference(InitService.class);
+        if (initService.isInited()) {
+            // Upgrade check https://github.com/b3log/solo/issues/12040
+            final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
+            upgradeService.upgrade();
 
-        // Import check https://github.com/b3log/solo/issues/12293
-        final ImportService importService = beanManager.getReference(ImportService.class);
-        importService.importMarkdowns();
+            // Import check https://github.com/b3log/solo/issues/12293
+            final ImportService importService = beanManager.getReference(ImportService.class);
+            importService.importMarkdowns();
 
-        final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
-        final Transaction transaction = optionRepository.beginTransaction();
-        try {
-            loadPreference();
+            final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
+            final Transaction transaction = optionRepository.beginTransaction();
+            try {
+                loadPreference();
 
-            if (transaction.isActive()) {
-                transaction.commit();
-            }
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
+                if (transaction.isActive()) {
+                    transaction.commit();
+                }
+            } catch (final Exception e) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
             }
         }
 
@@ -109,7 +112,9 @@ public final class SoloServletListener extends AbstractServletListener {
         final PluginManager pluginManager = beanManager.getReference(PluginManager.class);
         pluginManager.load();
 
-        LOGGER.info("Solo is running [" + Latkes.getServePath() + "]");
+        if (initService.isInited()) {
+            LOGGER.info("Solo is running [" + Latkes.getServePath() + "]");
+        }
 
         Stopwatchs.end();
         LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
@@ -230,10 +235,13 @@ public final class SoloServletListener extends AbstractServletListener {
         String skin = Skins.getSkinDirNameFromCookie(httpServletRequest);
         if (StringUtils.isBlank(skin)) {
             try {
-                final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
-                final JSONObject preference = preferenceQueryService.getPreference();
-                if (null != preference) {
-                    skin = preference.getString(Skin.SKIN_DIR_NAME);
+                final InitService initService = beanManager.getReference(InitService.class);
+                if (initService.isInited()) {
+                    final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+                    final JSONObject preference = preferenceQueryService.getPreference();
+                    if (null != preference) {
+                        skin = preference.getString(Skin.SKIN_DIR_NAME);
+                    }
                 }
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Resolves skin failed", e);
