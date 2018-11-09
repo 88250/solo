@@ -21,9 +21,7 @@
  */
 package org.b3log.solo.service;
 
-import java.util.List;
 import org.b3log.latke.Keys;
-import org.b3log.latke.model.User;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
@@ -31,6 +29,8 @@ import org.b3log.solo.model.Comment;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 /**
  * {@link CommentQueryService} test case.
@@ -43,27 +43,17 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Init.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**
      * Get Comments.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
@@ -79,7 +69,7 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get Comment on id.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")

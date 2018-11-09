@@ -17,17 +17,17 @@
  */
 package org.b3log.solo.repository;
 
-import java.util.List;
 import junit.framework.Assert;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
-import org.b3log.solo.repository.TagArticleRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 /**
  * {@link TagArticleRepository} test case.

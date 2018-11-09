@@ -18,7 +18,6 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.model.User;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
@@ -46,17 +45,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**

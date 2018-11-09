@@ -19,7 +19,6 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
@@ -27,9 +26,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.service.ArticleMgmtService;
-import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.PageMgmtService;
-import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -62,17 +59,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**

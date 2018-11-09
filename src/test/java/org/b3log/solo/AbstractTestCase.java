@@ -20,12 +20,15 @@ package org.b3log.solo;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Discoverer;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.solo.api.MetaWeblogAPI;
 import org.b3log.solo.cache.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.service.*;
+import org.json.JSONObject;
+import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -91,6 +94,22 @@ public abstract class AbstractTestCase {
         statisticCache.clear();
         final UserCache userCache = beanManager.getReference(UserCache.class);
         userCache.clear();
+    }
+
+    /**
+     * Init solo in test.
+     *
+     * @throws Exception exception
+     */
+    public void init() throws Exception {
+        final InitService initService = getInitService();
+        final JSONObject requestJSONObject = new JSONObject();
+        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
+        requestJSONObject.put(User.USER_NAME, "Admin");
+        requestJSONObject.put(User.USER_PASSWORD, "pass");
+        initService.init(requestJSONObject);
+        final UserQueryService userQueryService = getUserQueryService();
+        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
     }
 
     /**

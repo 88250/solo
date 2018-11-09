@@ -20,7 +20,6 @@ package org.b3log.solo.repository;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Category;
-import org.b3log.solo.repository.CategoryRepository;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;

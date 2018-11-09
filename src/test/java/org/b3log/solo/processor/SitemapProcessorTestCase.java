@@ -17,21 +17,19 @@
  */
 package org.b3log.solo.processor;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import org.apache.commons.lang.StringUtils;
+import org.b3log.solo.AbstractTestCase;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.model.User;
-import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.service.InitService;
-import org.b3log.solo.service.UserQueryService;
-import org.json.JSONObject;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
  * {@link SitemapProcessor} test case.
@@ -50,17 +48,7 @@ public class SitemapProcessorTestCase extends AbstractTestCase {
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**

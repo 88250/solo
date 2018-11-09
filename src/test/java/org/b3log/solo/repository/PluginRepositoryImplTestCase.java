@@ -18,7 +18,6 @@
 package org.b3log.solo.repository;
 
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.repository.PluginRepository;
 import org.testng.annotations.Test;
 
 /**
@@ -32,7 +31,7 @@ public class PluginRepositoryImplTestCase extends AbstractTestCase {
 
     /**
      * Tests.
-     * 
+     *
      * @throws Exception exception
      */
     @Test

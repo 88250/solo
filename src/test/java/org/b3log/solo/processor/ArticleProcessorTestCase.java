@@ -21,14 +21,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.service.InitService;
-import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -60,17 +57,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**

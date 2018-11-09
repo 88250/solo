@@ -26,8 +26,6 @@ import org.b3log.latke.util.Crypts;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.processor.MockDispatcherServlet;
-import org.b3log.solo.service.InitService;
-import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -62,17 +60,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**
