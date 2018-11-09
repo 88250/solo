@@ -52,6 +52,7 @@ import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
@@ -169,10 +170,13 @@ public class InitService {
         }
 
         try (final Connection connection = Connections.getConnection()) {
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT 1 FROM `" + userRepository.getName() + "` WHERE 1 = 2");
-            preparedStatement.execute();
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(1) AS `c` FROM `" + userRepository.getName() + "`");
+            final ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            final int c = resultSet.getInt("c");
+            inited = 0 < c;
 
-            return inited = true;
+            return inited;
         } catch (final Exception e) {
             if (!printedInitMsg) {
                 LOGGER.log(Level.WARN, "Solo has not been initialized, please open your browser and visit [" + Latkes.getServePath() + "] to init Solo");
