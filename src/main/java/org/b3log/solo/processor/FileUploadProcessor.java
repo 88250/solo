@@ -34,6 +34,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Role;
+import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -54,7 +56,7 @@ import java.util.*;
  * File upload processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Aug 2, 2018
+ * @version 1.0.2.0, Nov 17, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -141,16 +143,31 @@ public class FileUploadProcessor {
     /**
      * Uploads file.
      *
-     * @param req the specified reuqest
+     * @param context  the specified context
+     * @param request  the specified request
+     * @param response the specified response
      * @throws Exception exception
      */
     @RequestProcessing(value = "/upload", method = HTTPRequestMethod.POST)
-    public void uploadFile(final HTTPRequestContext context, final HttpServletRequest req) throws Exception {
+    public void uploadFile(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) throws Exception {
         context.renderJSON();
+
+        if (!Solos.isLoggedIn(request, response)) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+
+            return;
+        }
+
+        final JSONObject currentUser = Solos.getCurrentUser(request, response);
+        if (Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+            return;
+        }
 
         final int maxSize = 1024 * 1024 * 100;
         final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
-        parser.parseRequestStream(req.getInputStream(), "UTF-8");
+        parser.parseRequestStream(request.getInputStream(), "UTF-8");
         final List<String> errFiles = new ArrayList();
         final Map<String, String> succMap = new LinkedHashMap<>();
         final FileUpload[] files = parser.getFiles("file[]");
