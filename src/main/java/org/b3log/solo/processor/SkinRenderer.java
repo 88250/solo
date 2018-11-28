@@ -33,7 +33,7 @@ import java.util.Map;
  * Skin renderer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 25, 2018
+ * @version 1.0.0.2, Nov 28, 2018
  * @since 2.9.1
  */
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
@@ -54,7 +54,14 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
 
     @Override
     protected Template getTemplate() {
-        return Skins.getSkinTemplate(request, getTemplateName());
+        final String templateName = getTemplateName();
+        Template ret = Skins.getSkinTemplate(request, templateName);
+        if (null == ret) {
+            // 优先使用皮肤内的登录、报错等模板 https://github.com/b3log/solo/issues/12566
+            ret = Skins.getTemplate(templateName);
+        }
+
+        return ret;
     }
 
     /**

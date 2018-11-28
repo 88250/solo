@@ -63,7 +63,7 @@ import java.util.Map;
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.1.14, Oct 5, 2018
+ * @version 1.1.1.15, Nov 28, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -422,7 +422,7 @@ public class LoginProcessor {
      */
     private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL,
                             final HttpServletRequest request) throws JSONException, ServiceException {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         renderer.setTemplateName(pageTemplate);
         context.setRenderer(renderer);
 
