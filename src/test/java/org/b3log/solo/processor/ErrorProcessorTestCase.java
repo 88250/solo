@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
  * {@link ErrorProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, May 29, 2018
+ * @version 1.0.1.2, Nov 28, 2018
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -62,7 +62,7 @@ public class ErrorProcessorTestCase extends AbstractTestCase {
     public void showErrorPage() throws Exception {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/error/403.html");
+        when(request.getRequestURI()).thenReturn("/error/403");
         when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getMethod()).thenReturn("GET");
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
