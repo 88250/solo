@@ -38,7 +38,6 @@ import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
@@ -55,7 +54,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.4.9, Oct 24, 2018
+ * @version 1.2.4.10, Nov 28, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -156,7 +155,7 @@ public class IndexProcessor {
     @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
     public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("kill-browser.ftl");
 
@@ -187,7 +186,7 @@ public class IndexProcessor {
     @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
     public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
             throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("register.ftl");
 
