@@ -35,7 +35,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -56,7 +55,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.1.0, Oct 13, 2018
+ * @version 1.1.1.1, Nov 28, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -128,15 +127,14 @@ public class SearchProcessor {
      */
     @RequestProcessing(value = "/search", method = HTTPRequestMethod.GET)
     public void search(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+        final HttpServletRequest request = context.getRequest();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName("search.ftl");
 
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.putAll(langs);
-
-        final HttpServletRequest request = context.getRequest();
 
         String page = request.getParameter("p");
         if (!Strings.isNumeric(page)) {
