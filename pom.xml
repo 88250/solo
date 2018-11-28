@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.35, Nov 15, 2018
+    Version: 3.18.3.36, Nov 28, 2018
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -75,7 +75,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <org.b3log.latke.version>2.4.27</org.b3log.latke.version>
+        <org.b3log.latke.version>2.4.29</org.b3log.latke.version>
 
         <servlet.version>3.1.0</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
