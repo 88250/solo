@@ -140,11 +140,10 @@ public final class PermalinkFilter implements Filter {
      * @param response the specified response
      * @param article  the specified article
      * @param page     the specified page
-     * @throws IOException io exception
      * @see DispatcherServlet#result(HTTPRequestContext)
      */
     private void dispatchToArticleOrPageProcessor(final ServletRequest request, final ServletResponse response,
-                                                  final JSONObject article, final JSONObject page) throws IOException {
+                                                  final JSONObject article, final JSONObject page) {
         final HTTPRequestContext context = new HTTPRequestContext();
         context.setRequest((HttpServletRequest) request);
         context.setResponse((HttpServletResponse) response);
