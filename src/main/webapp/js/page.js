@@ -436,7 +436,7 @@ $.extend(Page.prototype, {
     var randomArticles1Label = this.tips.randomArticles1Label;
     // getRandomArticles
     $.ajax({
-      url: latkeConfig.servePath + "/get-random-articles.do",
+      url: latkeConfig.servePath + "/articles/random",
       type: "POST",
       success: function (result, textStatus) {
         var randomArticles = result.randomArticles;

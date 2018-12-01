@@ -237,7 +237,7 @@ public class ArticleProcessor {
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/get-random-articles.do", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/articles/random", method = HTTPRequestMethod.POST)
     public void getRandomArticles(final HTTPRequestContext context) throws Exception {
         final JSONObject jsonObject = new JSONObject();
 

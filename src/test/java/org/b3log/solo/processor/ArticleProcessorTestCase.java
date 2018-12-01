@@ -193,7 +193,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
     public void getRandomArticles() throws Exception {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/get-random-articles.do");
+        when(request.getRequestURI()).thenReturn("/articles/random");
         when(request.getMethod()).thenReturn("POST");
         when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
