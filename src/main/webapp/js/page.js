@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.1, Nov 12, 2018
+ * @version 1.4.0.2, Dec 1, 2018
  */
 var Page = function (tips) {
   this.currentCommentId = "";
@@ -583,7 +583,7 @@ $.extend(Page.prototype, {
 
       $.ajax({
         type: "POST",
-        url: latkeConfig.servePath + "/add-" + type + "-comment.do",
+        url: latkeConfig.servePath + "/" + type + "/comment",
         cache: false,
         contentType: "application/json",
         data: JSON.stringify(requestJSONObject),
