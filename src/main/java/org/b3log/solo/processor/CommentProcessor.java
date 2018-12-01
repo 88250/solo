@@ -157,7 +157,7 @@ public class CommentProcessor {
             page.put(Common.PERMALINK, addResult.opt(Common.PERMALINK));
             dataModel.put(Article.ARTICLE, page);
 
-            // https://github.com/b3log/solo/issues/12246
+            // 添加评论优化 https://github.com/b3log/solo/issues/12246
             try {
                 final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
                 final Template template = Skins.getSkinTemplate(httpServletRequest, "common-comment.ftl");
@@ -252,7 +252,7 @@ public class CommentProcessor {
             article.put(Common.PERMALINK, addResult.opt(Common.PERMALINK));
             dataModel.put(Article.ARTICLE, article);
 
-            // https://github.com/b3log/solo/issues/12246
+            // 添加评论优化 https://github.com/b3log/solo/issues/12246
             try {
                 final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
                 final Template template = Skins.getSkinTemplate(httpServletRequest, "common-comment.ftl");
