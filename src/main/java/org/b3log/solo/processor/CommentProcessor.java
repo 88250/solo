@@ -117,7 +117,7 @@ public class CommentProcessor {
      *                          "commentContent": "",
      *                          "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      */
-    @RequestProcessing(value = "/page/comment", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/page/comments", method = HTTPRequestMethod.POST)
     public void addPageComment(final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
@@ -213,7 +213,7 @@ public class CommentProcessor {
      *                          "commentContent": "",
      *                          "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
      */
-    @RequestProcessing(value = "/article/comment", method = HTTPRequestMethod.POST)
+    @RequestProcessing(value = "/article/comments", method = HTTPRequestMethod.POST)
     public void addArticleComment(final HTTPRequestContext context, final JSONObject requestJSONObject) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();

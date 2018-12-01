@@ -409,7 +409,7 @@ $.extend(Page.prototype, {
     });
     // captcha
     $("#captcha").click(function () {
-      $(this).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+      $(this).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
     });
     // cookie
     if (!Util.isLoggedIn()) {
@@ -583,7 +583,7 @@ $.extend(Page.prototype, {
 
       $.ajax({
         type: "POST",
-        url: latkeConfig.servePath + "/" + type + "/comment",
+        url: latkeConfig.servePath + "/" + type + "/comments",
         cache: false,
         contentType: "application/json",
         data: JSON.stringify(requestJSONObject),
@@ -594,7 +594,7 @@ $.extend(Page.prototype, {
             $("#commentValidate" + state).val('');
             $("#captcha" + state).click();
             if (!Util.isLoggedIn()) {
-              $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+              $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
             }
 
             return;
@@ -605,7 +605,7 @@ $.extend(Page.prototype, {
 
           result.replyNameHTML = "";
           if (!Util.isLoggedIn()) {
-            $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+            $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
             if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
               result.replyNameHTML = '<a>' + $("#commentName" + state).val() + '</a>';
             } else {
@@ -676,8 +676,8 @@ $.extend(Page.prototype, {
         event.preventDefault();
       }
     });
-    $("#replyForm #captcha").attr("id", "captchaReply").attr("src", latkeConfig.servePath + "/captcha.do?" + new Date().getTime()).click(function () {
-      $(this).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+    $("#replyForm #captcha").attr("id", "captchaReply").attr("src", latkeConfig.servePath + "/captcha?" + new Date().getTime()).click(function () {
+      $(this).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
     });
     $("#replyForm #commentErrorTip").attr("id", "commentErrorTipReply").html("").hide();
     $("#replyForm #submitCommentButton").attr("id", "submitCommentButtonReply");
@@ -741,7 +741,7 @@ $.extend(Page.prototype, {
       $("#commentErrorTip").html("").hide();
       $("#comment").val("");
       $("#commentValidate").val("");
-      $("#captcha").attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+      $("#captcha").attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
     } else {
       $("#replyForm").remove();
     }

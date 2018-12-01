@@ -90,7 +90,7 @@ public class CaptchaProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/captcha.do", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/captcha", method = HTTPRequestMethod.GET)
     public void get(final HTTPRequestContext context) {
         final PNGRenderer renderer = new PNGRenderer();
         context.setRenderer(renderer);

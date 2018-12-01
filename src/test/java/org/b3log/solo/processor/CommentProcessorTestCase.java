@@ -71,7 +71,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
     public void addPageComment() throws Exception {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/add-page-comment.do");
+        when(request.getRequestURI()).thenReturn("/page/comments");
         when(request.getMethod()).thenReturn("POST");
         when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
@@ -112,7 +112,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
     public void addArticleComment() throws Exception {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/add-article-comment.do");
+        when(request.getRequestURI()).thenReturn("/article/comments");
         when(request.getMethod()).thenReturn("POST");
         when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 

@@ -82,7 +82,7 @@
                 <td>
                     <input style="width:50%" placeholder="${captchaLabel}" type="text"
                            id="commentValidate"/>
-                    <img class="comments__captcha" id="captcha" alt="validate" src="${servePath}/captcha.do"/>
+                    <img class="comments__captcha" id="captcha" alt="validate" src="${servePath}/captcha"/>
                 </td>
             </tr>
             </#if>

@@ -61,7 +61,7 @@ public class CaptchaProcessorTestCase extends AbstractTestCase {
     public void get() throws Exception {
         final HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/captcha.do");
+        when(request.getRequestURI()).thenReturn("/captcha");
         when(request.getMethod()).thenReturn("GET");
 
         final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
