@@ -121,10 +121,10 @@ public class AdminConsole {
     @Inject
     private EventManager eventManager;
 
-    private static String sanitizeFilename(String unsanitized) {
-        return unsanitized
-                .replaceAll("[\\?\\\\/:|<>\\*]", " ") // filter out ? \ / : | < > *
-                .replaceAll("\\s+", "_");              // white space as underscores
+    private static String sanitizeFilename(final String unsanitized) {
+        return unsanitized.
+                replaceAll("[\\?\\\\/:|<>\\*]", " "). // filter out ? \ / : | < > *
+                replaceAll("\\s+", "_");              // white space as underscores
     }
 
     /**
