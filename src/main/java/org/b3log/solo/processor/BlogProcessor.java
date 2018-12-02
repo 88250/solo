@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor;
 
-import jodd.http.HttpRequest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -30,12 +29,10 @@ import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.*;
-import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -46,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.5, Oct 20, 2018
+ * @version 1.3.1.6, Dec 2, 2018
  * @since 0.4.6
  */
 @RequestProcessor
@@ -133,40 +130,6 @@ public class BlogProcessor {
             jsonObject.put("qiniuDomain", qiniu.optString(Option.ID_C_QINIU_DOMAIN));
             jsonObject.put("qiniuBucket", qiniu.optString(Option.ID_C_QINIU_BUCKET));
         }
-    }
-
-    /**
-     * Sync user to https://hacpai.com.
-     *
-     * @param context the specified context
-     * @throws Exception exception
-     */
-    @RequestProcessing(value = "/blog/symphony/user", method = HTTPRequestMethod.GET)
-    public void syncUser(final HTTPRequestContext context) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
-        context.setRenderer(renderer);
-        final JSONObject jsonObject = new JSONObject();
-        renderer.setJSONObject(jsonObject);
-
-        if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServePath())) {
-            return;
-        }
-
-        final JSONObject preference = preferenceQueryService.getPreference();
-        if (null == preference) {
-            return; // not init yet
-        }
-
-        final JSONObject requestJSONObject = new JSONObject();
-        final JSONObject admin = userQueryService.getAdmin();
-        requestJSONObject.put(User.USER_NAME, admin.getString(User.USER_NAME));
-        requestJSONObject.put(User.USER_EMAIL, admin.getString(User.USER_EMAIL));
-        requestJSONObject.put(User.USER_PASSWORD, admin.getString(User.USER_PASSWORD));
-        requestJSONObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
-        requestJSONObject.put("clientHost", Latkes.getServePath());
-
-        HttpRequest.post(Solos.B3LOG_SYMPHONY_SERVE_PATH + "/apis/user").bodyText(requestJSONObject.toString())
-                .header("User-Agent", Solos.USER_AGENT).contentTypeJson().sendAsync();
     }
 
     /**

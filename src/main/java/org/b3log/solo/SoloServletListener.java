@@ -51,7 +51,7 @@ import javax.servlet.http.HttpSessionEvent;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.5, Nov 15, 2018
+ * @version 1.10.0.6, Dec 2, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -118,11 +118,17 @@ public final class SoloServletListener extends AbstractServletListener {
 
         Stopwatchs.end();
         LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+
+        final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
+        cronMgmtService.start();
     }
 
     @Override
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
+
+        final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
+        cronMgmtService.stop();
 
         LOGGER.info("Destroyed the context");
     }

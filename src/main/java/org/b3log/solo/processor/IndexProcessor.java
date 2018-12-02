@@ -54,7 +54,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.4.10, Nov 28, 2018
+ * @version 1.2.4.11, Dec 2, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -202,18 +202,6 @@ public class IndexProcessor {
 
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-    }
-
-    /**
-     * Online visitor count refresher.
-     *
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/console/stat/onlineVisitorRefresh", method = HTTPRequestMethod.GET)
-    public void onlineVisitorCountRefresher(final HTTPRequestContext context) {
-        context.setRenderer(new DoNothingRenderer());
-
-        StatisticMgmtService.removeExpiredOnlineVisitor();
     }
 
     /**
