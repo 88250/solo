@@ -326,6 +326,8 @@ public final class SoloServletListener extends AbstractServletListener {
                 "/admin-main.do",
                 "/admin-about.do"}, adminConsole::showAdminFunctions);
         DispatcherServlet.get("/console/export/sql", adminConsole::exportSQL);
+        DispatcherServlet.get("/console/export/json", adminConsole::exportJSON);
+        DispatcherServlet.get("/console/export/hexo", adminConsole::exportHexo);
         DispatcherServlet.mapping();
     }
 }

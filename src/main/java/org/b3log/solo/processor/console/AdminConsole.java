@@ -35,9 +35,7 @@ import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Execs;
@@ -247,7 +245,6 @@ public class AdminConsole {
      * Exports data as SQL zip file.
      *
      * @param context the specified HTTP request context
-     * @throws Exception exception
      */
     public void exportSQL(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
@@ -365,21 +362,26 @@ public class AdminConsole {
     /**
      * Exports data as JSON zip file.
      *
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @param context  the specified HTTP request context
-     * @throws Exception exception
+     * @param context the specified HTTP request context
      */
-    @RequestProcessing(value = "/console/export/json", method = HTTPRequestMethod.GET)
-    public void exportJSON(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void exportJSON(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            try {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            } catch (final Exception e) {
+                // ignored
+            }
 
             return;
         }
 
-        Thread.sleep(550);
+        try {
+            Thread.sleep(550);
+        } catch (final Exception e) {
+            // ignored
+        }
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
         final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
@@ -415,21 +417,26 @@ public class AdminConsole {
     /**
      * Exports data as Hexo markdown zip file.
      *
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @param context  the specified HTTP request context
-     * @throws Exception exception
+     * @param context the specified HTTP request context
      */
-    @RequestProcessing(value = "/console/export/hexo", method = HTTPRequestMethod.GET)
-    public void exportHexo(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void exportHexo(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            try {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            } catch (final Exception e) {
+                // ignored
+            }
 
             return;
         }
 
-        Thread.sleep(550);
+        try {
+            Thread.sleep(550);
+        } catch (final Exception e) {
+            // ignored
+        }
 
         final String tmpDir = System.getProperty("java.io.tmpdir");
         final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
