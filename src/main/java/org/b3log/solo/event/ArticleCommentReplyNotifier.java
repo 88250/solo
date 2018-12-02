@@ -26,10 +26,9 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.mail.MailService;
-import org.b3log.latke.mail.MailService.Message;
-import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.mail.MailService;
+import org.b3log.solo.mail.MailServiceFactory;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
@@ -111,7 +110,7 @@ public class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObjec
 
             final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
             final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
-            final Message message = new Message();
+            final MailService.Message message = new MailService.Message();
 
             message.setFrom(adminEmail);
             message.addRecipient(originalCommentEmail);

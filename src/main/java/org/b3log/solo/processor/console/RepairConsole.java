@@ -22,9 +22,6 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.mail.MailService;
-import org.b3log.latke.mail.MailService.Message;
-import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.annotation.Transactional;
 import org.b3log.latke.servlet.HTTPRequestContext;
@@ -33,6 +30,8 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
+import org.b3log.solo.mail.MailService;
+import org.b3log.solo.mail.MailServiceFactory;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
@@ -142,7 +141,7 @@ public class RepairConsole {
                 return;
             }
 
-            final Message msg = new MailService.Message();
+            final MailService.Message msg = new MailService.Message();
             msg.setFrom(preference.getString(Option.ID_C_ADMIN_EMAIL));
             msg.addRecipient("d@b3log.org");
             msg.setSubject("Restore signs");
