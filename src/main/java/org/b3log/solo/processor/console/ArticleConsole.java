@@ -139,21 +139,16 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request, for example,
-     *                 {
-     *                 "markdownText": ""
-     *                 }
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/markdown/2html", method = HTTPRequestMethod.POST)
-    public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void markdown2HTML(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
 
+        final HttpServletRequest request = context.getRequest();
         final String markdownText = request.getParameter("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             result.put("html", "");
@@ -164,7 +159,6 @@ public class ArticleConsole {
         try {
             String html = Emotions.convert(markdownText);
             html = Markdowns.toHTML(html);
-
             result.put("html", html);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
