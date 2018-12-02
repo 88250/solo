@@ -30,12 +30,14 @@ import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.AbstractServletListener;
+import org.b3log.latke.servlet.DispatcherServlet;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.processor.console.AdminConsole;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
@@ -76,11 +78,11 @@ public final class SoloServletListener extends AbstractServletListener {
         Latkes.USER_AGENT = Solos.USER_AGENT;
         Latkes.setScanPath("org.b3log.solo");
         super.contextInitialized(servletContextEvent);
+        beanManager = BeanManager.getInstance();
+        routePartial();
         Stopwatchs.start("Context Initialized");
 
         validateSkin();
-
-        beanManager = BeanManager.getInstance();
 
         final InitService initService = beanManager.getReference(InitService.class);
         if (initService.isInited()) {
@@ -302,5 +304,28 @@ public final class SoloServletListener extends AbstractServletListener {
 
             System.exit(-1);
         }
+    }
+
+    /**
+     * 部分控制器使用函数式路由. https://github.com/b3log/solo/issues/12580
+     */
+    private void routePartial() {
+        final AdminConsole adminConsole = beanManager.getReference(AdminConsole.class);
+        DispatcherServlet.get("/admin-index.do", adminConsole::showAdminIndex);
+        DispatcherServlet.get("/admin-preference.do", adminConsole::showAdminPreferenceFunction);
+        DispatcherServlet.route().get(new String[]{"/admin-article.do",
+                "/admin-article-list.do",
+                "/admin-comment-list.do",
+                "/admin-link-list.do",
+                "/admin-page-list.do",
+                "/admin-others.do",
+                "/admin-draft-list.do",
+                "/admin-user-list.do",
+                "/admin-category-list.do",
+                "/admin-plugin-list.do",
+                "/admin-main.do",
+                "/admin-about.do"}, adminConsole::showAdminFunctions);
+        DispatcherServlet.get("/console/export/sql", adminConsole::exportSQL);
+        DispatcherServlet.mapping();
     }
 }

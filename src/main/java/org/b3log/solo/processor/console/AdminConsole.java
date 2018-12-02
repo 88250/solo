@@ -67,7 +67,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.8, Nov 28, 2018
+ * @version 1.7.0.9, Dec 2, 2018
  * @since 0.4.1
  */
 @RequestProcessor
@@ -130,12 +130,11 @@ public class AdminConsole {
     /**
      * Shows administrator index with the specified context.
      *
-     * @param request  the specified request
-     * @param response the specified response
-     * @param context  the specified context
+     * @param context the specified context
      */
-    @RequestProcessing(value = "/admin-index.do", method = HTTPRequestMethod.GET)
-    public void showAdminIndex(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void showAdminIndex(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
         final String templateName = "admin-index.ftl";
@@ -182,26 +181,12 @@ public class AdminConsole {
     /**
      * Shows administrator functions with the specified context.
      *
-     * @param request the specified request
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/admin-article.do",
-            "/admin-article-list.do",
-            "/admin-comment-list.do",
-            "/admin-link-list.do",
-            "/admin-page-list.do",
-            "/admin-others.do",
-            "/admin-draft-list.do",
-            "/admin-user-list.do",
-            "/admin-category-list.do",
-            "/admin-plugin-list.do",
-            "/admin-main.do",
-            "/admin-about.do"},
-            method = HTTPRequestMethod.GET)
-    public void showAdminFunctions(final HttpServletRequest request, final HTTPRequestContext context) {
+    public void showAdminFunctions(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
-
         final String requestURI = request.getRequestURI();
         final String templateName = StringUtils.substringBetween(requestURI, Latkes.getContextPath() + '/', ".") + ".ftl";
 
@@ -224,11 +209,9 @@ public class AdminConsole {
     /**
      * Shows administrator preference function with the specified context.
      *
-     * @param request the specified request
      * @param context the specified context
      */
-    @RequestProcessing(value = "/admin-preference.do", method = HTTPRequestMethod.GET)
-    public void showAdminPreferenceFunction(final HttpServletRequest request, final HTTPRequestContext context) {
+    public void showAdminPreferenceFunction(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
         final String templateName = "admin-preference.ftl";
@@ -263,21 +246,28 @@ public class AdminConsole {
     /**
      * Exports data as SQL zip file.
      *
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @param context  the specified HTTP request context
+     * @param context the specified HTTP request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/export/sql", method = HTTPRequestMethod.GET)
-    public void exportSQL(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void exportSQL(final HTTPRequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+
         if (!Solos.isAdminLoggedIn(request, response)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            try {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            } catch (final Exception e) {
+                // ignored
+            }
 
             return;
         }
 
-        Thread.sleep(550); // 前端会发两次请求，文件名又是按秒生成，所以两次请求需要错开至少 1 秒避免文件名冲突
+        try {
+            Thread.sleep(550); // 前端会发两次请求，文件名又是按秒生成，所以两次请求需要错开至少 1 秒避免文件名冲突
+        } catch (final Exception e) {
+            // ignored
+        }
 
         final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
         if (Latkes.RuntimeDatabase.H2 != runtimeDatabase && Latkes.RuntimeDatabase.MYSQL != runtimeDatabase) {
@@ -308,10 +298,8 @@ public class AdminConsole {
                 return;
             }
         } else if (Latkes.RuntimeDatabase.H2 == runtimeDatabase) {
-            final Connection connection = Connections.getConnection();
-            final Statement statement = connection.createStatement();
-
-            try {
+            try (final Connection connection = Connections.getConnection();
+                 final Statement statement = connection.createStatement()) {
                 final StringBuilder sqlBuilder = new StringBuilder();
                 final ResultSet resultSet = statement.executeQuery("SCRIPT");
                 while (resultSet.next()) {
@@ -319,7 +307,6 @@ public class AdminConsole {
                     sqlBuilder.append(stmt).append(Strings.LINE_SEPARATOR);
                 }
                 resultSet.close();
-                statement.close();
 
                 sql = sqlBuilder.toString();
             } catch (final Exception e) {
@@ -327,10 +314,6 @@ public class AdminConsole {
                 context.renderJSON().renderMsg("Export failed, please check log");
 
                 return;
-            } finally {
-                if (null != connection) {
-                    connection.close();
-                }
             }
         } else {
             context.renderJSON().renderMsg("Just support MySQL/H2 export now");
