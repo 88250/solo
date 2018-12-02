@@ -27,6 +27,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
@@ -36,7 +37,6 @@ import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Strings;
@@ -68,7 +68,7 @@ import java.util.*;
  * @version 1.7.0.9, Dec 2, 2018
  * @since 0.4.1
  */
-@RequestProcessor
+@Singleton
 @Before(adviceClass = ConsoleAuthAdvice.class)
 public class AdminConsole {
 
@@ -130,6 +130,7 @@ public class AdminConsole {
      *
      * @param context the specified context
      */
+    @Before(adviceClass = ConsoleAuthAdvice.class)
     public void showAdminIndex(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();

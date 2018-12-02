@@ -22,13 +22,13 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
  * @version 1.1.1.5, Dec 2, 2018
  * @since 0.4.0
  */
-@RequestProcessor
+@Singleton
 @Before(adviceClass = ConsoleAuthAdvice.class)
 public class ArticleConsole {
 
