@@ -337,8 +337,10 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/articles/status/*/*/*/*" /* Requests.PAGINATION_PATH_PATTERN */, articleConsole::getArticles);
         DispatcherServlet.delete("/console/article/*", articleConsole::removeArticle);
         DispatcherServlet.put("/console/article/unpublish/*", articleConsole::cancelPublishArticle);
-
+        DispatcherServlet.put("/console/article/canceltop/*", articleConsole::cancelTopArticle);
+        DispatcherServlet.put("/console/article/puttop/*", articleConsole::putTopArticle);
         DispatcherServlet.put("/console/article/", articleConsole::updateArticle);
+        DispatcherServlet.post("/console/article/", articleConsole::addArticle);
         DispatcherServlet.mapping();
     }
 }

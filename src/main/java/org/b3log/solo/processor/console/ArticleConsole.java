@@ -27,9 +27,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.latke.util.Requests;
@@ -55,7 +53,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Oct 5, 2018
+ * @version 1.1.1.5, Dec 2, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -404,17 +402,16 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/canceltop/*", method = HTTPRequestMethod.PUT)
-    public void cancelTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void cancelTopArticle(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(request, response)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
@@ -449,16 +446,15 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/puttop/*", method = HTTPRequestMethod.PUT)
-    public void putTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void putTopArticle(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(request, response)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
@@ -484,7 +480,7 @@ public class ArticleConsole {
     /**
      * Updates an article by the specified request json object.
      * <p>
-     * requestJSONObject the specified request json object, for example,
+     * The specified request json object, for example,
      * <pre>
      * {
      *     "article": {
@@ -515,7 +511,6 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.PUT)
     public void updateArticle(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
@@ -553,6 +548,25 @@ public class ArticleConsole {
     /**
      * Adds an article with the specified request.
      * <p>
+     * The specified request json object, for example,
+     * <pre>
+     * {
+     *     "article": {
+     *         "articleTitle": "",
+     *         "articleAbstract": "",
+     *         "articleContent": "",
+     *         "articleTags": "tag1,tag2,tag3",
+     *         "articlePermalink": "", // optional
+     *         "articleIsPublished": boolean,
+     *         "postToCommunity": boolean,
+     *         "articleSignId": "" // optional
+     *         "articleCommentable": boolean,
+     *         "articleViewPwd": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -563,34 +577,16 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          {
-     *                          "article": {
-     *                          "articleTitle": "",
-     *                          "articleAbstract": "",
-     *                          "articleContent": "",
-     *                          "articleTags": "tag1,tag2,tag3",
-     *                          "articlePermalink": "", // optional
-     *                          "articleIsPublished": boolean,
-     *                          "postToCommunity": boolean,
-     *                          "articleSignId": "" // optional
-     *                          "articleCommentable": boolean,
-     *                          "articleViewPwd": ""
-     *                          }
-     *                          }
-     * @throws Exception exception
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.POST)
-    public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                           final JSONObject requestJSONObject) throws Exception {
+    public void addArticle(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         try {
+            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
             final JSONObject currentUser = Solos.getCurrentUser(request, response);
             requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
 
