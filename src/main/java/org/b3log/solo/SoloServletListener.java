@@ -38,6 +38,7 @@ import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.console.AdminConsole;
+import org.b3log.solo.processor.console.ArticleConsole;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
@@ -328,6 +329,10 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/export/sql", adminConsole::exportSQL);
         DispatcherServlet.get("/console/export/json", adminConsole::exportJSON);
         DispatcherServlet.get("/console/export/hexo", adminConsole::exportHexo);
+
+        final ArticleConsole articleConsole = beanManager.getReference(ArticleConsole.class);
+        DispatcherServlet.get("/console/thumbs", articleConsole::getArticleThumbs);
+
         DispatcherServlet.mapping();
     }
 }

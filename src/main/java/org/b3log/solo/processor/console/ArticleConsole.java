@@ -108,18 +108,16 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/thumbs", method = HTTPRequestMethod.GET)
-    public void getArticleThumbs(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void getArticleThumbs(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
 
+        final HttpServletRequest request = context.getRequest();
         String strN = request.getParameter("n");
         if (!Strings.isNumeric(strN)) {
             strN = "6";
