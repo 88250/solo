@@ -44,7 +44,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -54,7 +53,7 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.1, Sep 25, 2018
+ * @version 1.1.3.2, Dec 3, 2018
  * @since 2.0.0
  */
 @RequestProcessor
@@ -93,6 +92,15 @@ public class CategoryConsole {
     /**
      * Changes a category order by the specified category id and direction.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "direction": "" // "up"/"down"
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -102,24 +110,19 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "oId": "",
-     *                          "direction": "" // "up"/"down"
+     * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/category/order/", method = HTTPRequestMethod.PUT)
-    public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                            final JSONObject requestJSONObject) throws Exception {
+    public void changeOrder(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
         try {
-            final String categoryId = requestJSONObject.getString(Keys.OBJECT_ID);
-            final String direction = requestJSONObject.getString(Common.DIRECTION);
+            final JSONObject requestJSON = context.requestJSON();
+            final String categoryId = requestJSON.getString(Keys.OBJECT_ID);
+            final String direction = requestJSON.getString(Common.DIRECTION);
 
             categoryMgmtService.changeOrder(categoryId, direction);
 
@@ -153,17 +156,15 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/category/*", method = HTTPRequestMethod.GET)
-    public void getCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void getCategory(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         try {
+            final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String categoryId = requestURI.substring((Latkes.getContextPath() + "/console/category/").length());
 
@@ -205,19 +206,17 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/console/category/*", method = HTTPRequestMethod.DELETE)
-    public void removeCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void removeCategory(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
         try {
+            final HttpServletRequest request = context.getRequest();
             final String categoryId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/category/").length());
             categoryMgmtService.removeCategory(categoryId);
 
@@ -234,6 +233,18 @@ public class CategoryConsole {
     /**
      * Updates a category by the specified request.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "categoryTitle": "",
+     *     "categoryURI": "", // optional
+     *     "categoryDescription": "", // optional
+     *     "categoryTags": "tag1, tag2" // optional
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -243,27 +254,18 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param context           the specified http request context
-     * @param response          the specified http servlet response
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "oId": "",
-     *                          "categoryTitle": "",
-     *                          "categoryURI": "", // optional
-     *                          "categoryDescription": "", // optional
-     *                          "categoryTags": "tag1, tag2" // optional
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/category/", method = HTTPRequestMethod.PUT)
-    public void updateCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                               final JSONObject requestJSONObject) throws Exception {
+    public void updateCategory(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
         try {
-            String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
+            final JSONObject requestJSON = context.requestJSON();
+            String tagsStr = requestJSON.optString(Category.CATEGORY_T_TAGS);
             tagsStr = Tag.formatTags(tagsStr);
             if (StringUtils.isBlank(tagsStr)) {
                 throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
@@ -299,9 +301,8 @@ public class CategoryConsole {
                 deduplicate.add(tagTitle);
             }
 
-            final String categoryId = requestJSONObject.optString(Keys.OBJECT_ID);
-
-            final String title = requestJSONObject.optString(Category.CATEGORY_TITLE, "Category");
+            final String categoryId = requestJSON.optString(Keys.OBJECT_ID);
+            final String title = requestJSON.optString(Category.CATEGORY_TITLE, "Category");
             JSONObject mayExist = categoryQueryService.getByTitle(title);
             if (null != mayExist && !mayExist.optString(Keys.OBJECT_ID).equals(categoryId)) {
                 final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
@@ -311,7 +312,7 @@ public class CategoryConsole {
                 return;
             }
 
-            String uri = requestJSONObject.optString(Category.CATEGORY_URI, title);
+            String uri = requestJSON.optString(Category.CATEGORY_URI, title);
             if (StringUtils.isBlank(uri)) {
                 uri = title;
             }
@@ -332,7 +333,7 @@ public class CategoryConsole {
                 return;
             }
 
-            final String desc = requestJSONObject.optString(Category.CATEGORY_DESCRIPTION);
+            final String desc = requestJSON.optString(Category.CATEGORY_DESCRIPTION);
 
             final JSONObject category = new JSONObject();
             category.put(Category.CATEGORY_TITLE, title);
@@ -366,6 +367,17 @@ public class CategoryConsole {
     /**
      * Adds a category with the specified request.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "categoryTitle": "",
+     *     "categoryURI": "", // optional
+     *     "categoryDescription": "", // optional
+     *     "categoryTags": "tag1, tag2" // optional
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -376,26 +388,17 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "categoryTitle": "",
-     *                          "categoryURI": "", // optional
-     *                          "categoryDescription": "", // optional
-     *                          "categoryTags": "tag1, tag2" // optional
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/category/", method = HTTPRequestMethod.POST)
-    public void addCategory(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                            final JSONObject requestJSONObject)
-            throws Exception {
+    public void addCategory(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
             tagsStr = Tag.formatTags(tagsStr);
             if (StringUtils.isBlank(tagsStr)) {
@@ -517,18 +520,15 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/categories/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
-    public void getCategories(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void getCategories(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         try {
+            final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/categories/").length());
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);

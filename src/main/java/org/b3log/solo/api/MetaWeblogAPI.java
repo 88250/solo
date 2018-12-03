@@ -193,16 +193,16 @@ public class MetaWeblogAPI {
     /**
      * MetaWeblog requests processing.
      *
-     * @param request the specified http servlet request
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/apis/metaweblog", method = HTTPRequestMethod.POST)
-    public void metaWeblog(final HttpServletRequest request, final HTTPRequestContext context) {
+    public void metaWeblog(final HTTPRequestContext context) {
         final TextXMLRenderer renderer = new TextXMLRenderer();
         context.setRenderer(renderer);
 
         String responseContent;
         try {
+            final HttpServletRequest request = context.getRequest();
             final ServletInputStream inputStream = request.getInputStream();
             final String xml = IOUtils.toString(inputStream, "UTF-8");
             final JSONObject requestJSONObject = XML.toJSONObject(xml);

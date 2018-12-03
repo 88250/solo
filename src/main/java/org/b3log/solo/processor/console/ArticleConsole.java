@@ -519,7 +519,7 @@ public class ArticleConsole {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = context.requestJSON();
             final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
             final String articleId = article.getString(Keys.OBJECT_ID);
             renderer.setJSONObject(ret);
@@ -586,7 +586,7 @@ public class ArticleConsole {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         try {
-            final JSONObject requestJSONObject = Requests.parseRequestJSONObject(request, response);
+            final JSONObject requestJSONObject = context.requestJSON();
             final JSONObject currentUser = Solos.getCurrentUser(request, response);
             requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
 

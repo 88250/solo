@@ -453,12 +453,12 @@ public class ArticleProcessor {
      * Gets tag articles paged with the specified context.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/articles/archives/.+/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
-    public void getArchivesArticlesByPage(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void getArchivesArticlesByPage(final HTTPRequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
+        final HttpServletRequest request = context.getRequest();
         final String archiveDateString = getArchivesArticlesPagedArchive(request.getRequestURI());
         final int currentPageNum = getArchivesArticlesPagedCurrentPageNum(request.getRequestURI());
 
@@ -505,13 +505,13 @@ public class ArticleProcessor {
      * Gets author articles paged with the specified context.
      *
      * @param context the specified context
-     * @param request the specified request
      */
     @RequestProcessing(value = "/articles/authors/\\d+/\\d+", uriPatternsMode = URIPatternMode.REGEX,
             method = HTTPRequestMethod.GET)
-    public void getAuthorsArticlesByPage(final HTTPRequestContext context, final HttpServletRequest request) {
+    public void getAuthorsArticlesByPage(final HTTPRequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
+        final HttpServletRequest request = context.getRequest();
         final String authorId = getAuthorsArticlesPagedAuthorId(request.getRequestURI());
         final int currentPageNum = getAuthorsArticlesPagedCurrentPageNum(request.getRequestURI());
 
