@@ -21,7 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.service.StatisticMgmtService;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -139,35 +138,5 @@ public class IndexProcessorTestCase extends AbstractTestCase {
 
         final String content = stringWriter.toString();
         Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客</title>"));
-    }
-
-    /**
-     * showIndex.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "init")
-    public void onlineVisitorCountRefresher() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/console/stat/onlineVisitorRefresh");
-        when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
-
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        StatisticMgmtService.ONLINE_VISITORS.put("127.0.0.1", Long.MIN_VALUE);
-
-        dispatcherServlet.service(request, response);
-
-        Assert.assertTrue(0 == StatisticMgmtService.ONLINE_VISITORS.size());
     }
 }
