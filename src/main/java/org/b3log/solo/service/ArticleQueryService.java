@@ -753,10 +753,8 @@ public class ArticleQueryService {
      * @param article    the specified article
      * @param preference the specified preference
      * @return a list of articles, returns an empty list if not found
-     * @throws ServiceException service exception
      */
-    public List<JSONObject> getRelevantArticles(final JSONObject article, final JSONObject preference)
-            throws ServiceException {
+    public List<JSONObject> getRelevantArticles(final JSONObject article, final JSONObject preference) {
         try {
             final int displayCnt = preference.getInt(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
             final String[] tagTitles = article.getString(Article.ARTICLE_TAGS_REF).split(",");
@@ -819,7 +817,7 @@ public class ArticleQueryService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets relevant articles failed", e);
 
-            throw new ServiceException(e);
+            return Collections.emptyList();
         }
     }
 
@@ -897,14 +895,14 @@ public class ArticleQueryService {
      *
      * @param articleId the specified article id
      * @return an article, returns {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getArticleById(final String articleId) throws ServiceException {
+    public JSONObject getArticleById(final String articleId) {
         try {
             return articleRepository.get(articleId);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets an article[articleId=" + articleId + "] failed", e);
-            throw new ServiceException(e);
+            LOGGER.log(Level.ERROR, "Gets an article [id=" + articleId + "] failed", e);
+
+            return null;
         }
     }
 
