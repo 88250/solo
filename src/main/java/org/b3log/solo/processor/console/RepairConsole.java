@@ -18,7 +18,6 @@
 package org.b3log.solo.processor.console;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -52,7 +51,7 @@ import java.util.List;
  * Provides patches on some special issues.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.17, Sep 25, 2018
+ * @version 1.2.0.18, Dec 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -68,12 +67,6 @@ public class RepairConsole {
      * Mail service.
      */
     private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
-
-    /**
-     * Bean manager.
-     */
-    @Inject
-    private BeanManager beanManager;
 
     /**
      * Preference query service.

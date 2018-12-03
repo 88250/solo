@@ -44,7 +44,7 @@ import java.util.List;
  * Comment console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Sep 25, 2018
+ * @version 1.0.0.4, Dec 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -86,18 +86,18 @@ public class CommentConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/page/comment/*", method = HTTPRequestMethod.DELETE)
-    public void removePageComment(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void removePageComment(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
         try {
+            final HttpServletRequest request = context.getRequest();
+            final HttpServletResponse response = context.getResponse();
             final String commentId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/page/comment/").length());
 
             final JSONObject currentUser = Solos.getCurrentUser(request, response);
@@ -132,20 +132,18 @@ public class CommentConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/article/comment/*", method = HTTPRequestMethod.DELETE)
-    public void removeArticleComment(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void removeArticleComment(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
         try {
+            final HttpServletRequest request = context.getRequest();
+            final HttpServletResponse response = context.getResponse();
             final String commentId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/comment/").length());
             final JSONObject currentUser = Solos.getCurrentUser(request, response);
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
@@ -198,19 +196,16 @@ public class CommentConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/comments/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
             method = HTTPRequestMethod.GET)
-    public void getComments(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
+    public void getComments(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         try {
+            final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/comments/").length());
 
@@ -251,20 +246,17 @@ public class CommentConsole {
      * </pre>
      * </p>
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/comments/article/*", method = HTTPRequestMethod.GET)
-    public void getArticleComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void getArticleComments(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
         try {
+            final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String articleId = requestURI.substring((Latkes.getContextPath() + "/console/comments/article/").length());
 
@@ -303,20 +295,17 @@ public class CommentConsole {
      * </pre>
      * </p>
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/comments/page/*", method = HTTPRequestMethod.GET)
-    public void getPageComments(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    public void getPageComments(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
         try {
+            final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String pageId = requestURI.substring((Latkes.getContextPath() + "/console/comments/page/").length());
 

@@ -36,7 +36,6 @@ import org.b3log.solo.service.PluginQueryService;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -44,7 +43,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/mainlove">Love Yao</a>
- * @version 1.1.0.3, Sep 25, 2018
+ * @version 1.1.0.4, Dec 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -86,18 +85,16 @@ public class PluginConsole {
      * </pre>
      * </p>
      *
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified requeset json object
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/plugin/status/", method = HTTPRequestMethod.PUT)
-    public void setPluginStatus(final HTTPRequestContext context, final JSONObject requestJSONObject) throws Exception {
+    public void setPluginStatus(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
+        final JSONObject requestJSONObject = context.requestJSON();
         final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
         final String status = requestJSONObject.getString(Plugin.PLUGIN_STATUS);
-
         final JSONObject result = pluginMgmtService.setPluginStatus(pluginId, status);
 
         renderer.setJSONObject(result);
@@ -129,30 +126,24 @@ public class PluginConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      * @throws Exception exception
      * @see Requests#PAGINATION_PATH_PATTERN
      */
     @RequestProcessing(value = "/console/plugins/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
             method = HTTPRequestMethod.GET)
-    public void getPlugins(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context)
-            throws Exception {
-
+    public void getPlugins(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         try {
+            final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/plugins/").length());
-
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
-
             final JSONObject result = pluginQueryService.getPlugins(requestJSONObject);
 
             renderer.setJSONObject(result);
-
             result.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -166,23 +157,20 @@ public class PluginConsole {
     /**
      * get the info of the specified pluginoId,just fot the plugin-setting.
      *
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object
-     * @param renderer          the specified {@link ConsoleRenderer}
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/plugin/toSetting", method = HTTPRequestMethod.POST)
-    public void toSetting(final HTTPRequestContext context, final JSONObject requestJSONObject, final ConsoleRenderer renderer) {
+    public void toSetting(final HTTPRequestContext context) {
+        final ConsoleRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
+        renderer.setTemplateName("admin-plugin-setting.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
 
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             final String pluginId = requestJSONObject.getString(Keys.OBJECT_ID);
             final String setting = pluginQueryService.getPluginSetting(pluginId);
-
-            renderer.setTemplateName("admin-plugin-setting.ftl");
-            final Map<String, Object> dataModel = renderer.getDataModel();
-
             Keys.fillRuntime(dataModel);
-
             dataModel.put(Plugin.PLUGIN_SETTING, setting);
             dataModel.put(Keys.OBJECT_ID, pluginId);
         } catch (final Exception e) {
@@ -198,17 +186,16 @@ public class PluginConsole {
     /**
      * update the setting of the plugin.
      *
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object
-     * @param renderer          the specified {@link ConsoleRenderer}
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/plugin/updateSetting", method = HTTPRequestMethod.POST)
-    public void updateSetting(final HTTPRequestContext context, final JSONObject requestJSONObject, final JSONRenderer renderer) {
+    public void updateSetting(final HTTPRequestContext context) {
+        final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
+        final JSONObject requestJSONObject = context.requestJSON();
         final String pluginoId = requestJSONObject.optString(Keys.OBJECT_ID);
         final String settings = requestJSONObject.optString(Plugin.PLUGIN_SETTING);
-
         final JSONObject ret = pluginMgmtService.updatePluginSetting(pluginoId, settings);
 
         renderer.setJSONObject(ret);

@@ -43,7 +43,7 @@ import java.util.List;
  * Tag console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 25, 2018
+ * @version 1.0.0.2, Dec 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -87,13 +87,11 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/tags", method = HTTPRequestMethod.GET)
     @Before(adviceClass = ConsoleAuthAdvice.class)
-    public void getTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void getTags(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -124,19 +122,17 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/tag/unused", method = HTTPRequestMethod.GET)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void getUnusedTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void getUnusedTags(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
 
-        final List<JSONObject> unusedTags = new ArrayList<JSONObject>();
+        final List<JSONObject> unusedTags = new ArrayList<>();
 
         try {
             jsonObject.put(Common.UNUSED_TAGS, unusedTags);
@@ -170,13 +166,11 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
      * @param context  the specified http request context
      */
     @RequestProcessing(value = "/console/tag/unused", method = HTTPRequestMethod.DELETE)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void removeUnusedTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void removeUnusedTags(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();

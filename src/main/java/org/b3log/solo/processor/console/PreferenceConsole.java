@@ -41,7 +41,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
@@ -49,7 +48,7 @@ import java.util.Arrays;
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.14, Oct 17, 2018
+ * @version 1.2.0.15, Dec 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -111,14 +110,10 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.GET)
-    public void getReplyNotificationTemplate(final HttpServletRequest request,
-                                             final HttpServletResponse response,
-                                             final HTTPRequestContext context) {
+    public void getReplyNotificationTemplate(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -141,24 +136,27 @@ public class PreferenceConsole {
     /**
      * Updates reply template.
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "replyNotificationTemplate": {
-     *                          "subject": "",
-     *                          "body": ""
-     *                          }
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "replyNotificationTemplate": {
+     *         "subject": "",
+     *         "body": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.PUT)
-    public void updateReplyNotificationTemplate(final HttpServletRequest request,
-                                                final HttpServletResponse response,
-                                                final HTTPRequestContext context,
-                                                final JSONObject requestJSONObject) {
+    public void updateReplyNotificationTemplate(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             final JSONObject replyNotificationTemplate = requestJSONObject.getJSONObject("replyNotificationTemplate");
             preferenceMgmtService.updateReplyNotificationTemplate(replyNotificationTemplate);
 
@@ -190,12 +188,10 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/signs/", method = HTTPRequestMethod.GET)
-    public void getSigns(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void getSigns(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -273,12 +269,10 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.GET)
-    public void getPreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void getPreference(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -313,52 +307,56 @@ public class PreferenceConsole {
     /**
      * Updates the preference by the specified request.
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified reuqest json object, for example,
-     *                          "preference": {
-     *                          "mostViewArticleDisplayCount": int,
-     *                          "recentCommentDisplayCount": int,
-     *                          "mostUsedTagDisplayCount": int,
-     *                          "articleListDisplayCount": int,
-     *                          "articleListPaginationWindowSize": int,
-     *                          "mostCommentArticleDisplayCount": int,
-     *                          "externalRelevantArticlesDisplayCount": int,
-     *                          "relevantArticlesDisplayCount": int,
-     *                          "randomArticlesDisplayCount": int,
-     *                          "blogTitle": "",
-     *                          "blogSubtitle": "",
-     *                          "skinDirName": "",
-     *                          "localeString": "",
-     *                          "timeZoneId": "",
-     *                          "noticeBoard": "",
-     *                          "footerContent": "",
-     *                          "htmlHead": "",
-     *                          "metaKeywords": "",
-     *                          "metaDescription": "",
-     *                          "enableArticleUpdateHint": boolean,
-     *                          "signs": [{
-     *                          "oId": "",
-     *                          "signHTML": ""
-     *                          }, ...],
-     *                          "allowVisitDraftViaPermalink": boolean,
-     *                          "allowRegister": boolean,
-     *                          "articleListStyle": "",
-     *                          "editorType": "",
-     *                          "commentable": boolean,
-     *                          "feedOutputMode: "",
-     *                          "feedOutputCnt": int
-     *                          }
-     * @throws Exception exception
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "preference": {
+     *         "mostViewArticleDisplayCount": int,
+     *         "recentCommentDisplayCount": int,
+     *         "mostUsedTagDisplayCount": int,
+     *         "articleListDisplayCount": int,
+     *         "articleListPaginationWindowSize": int,
+     *         "mostCommentArticleDisplayCount": int,
+     *         "externalRelevantArticlesDisplayCount": int,
+     *         "relevantArticlesDisplayCount": int,
+     *         "randomArticlesDisplayCount": int,
+     *         "blogTitle": "",
+     *         "blogSubtitle": "",
+     *         "skinDirName": "",
+     *         "localeString": "",
+     *         "timeZoneId": "",
+     *         "noticeBoard": "",
+     *         "footerContent": "",
+     *         "htmlHead": "",
+     *         "metaKeywords": "",
+     *         "metaDescription": "",
+     *         "enableArticleUpdateHint": boolean,
+     *         "signs": [{
+     *             "oId": "",
+     *             "signHTML": ""
+     *             }, ...],
+     *         "allowVisitDraftViaPermalink": boolean,
+     *         "allowRegister": boolean,
+     *         "articleListStyle": "",
+     *         "editorType": "",
+     *         "commentable": boolean,
+     *         "feedOutputMode: "",
+     *         "feedOutputCnt": int
+     *     }
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified http request context
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.PUT)
-    public void updatePreference(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                                 final JSONObject requestJSONObject) throws Exception {
+    public void updatePreference(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             final JSONObject preference = requestJSONObject.getJSONObject(Option.CATEGORY_C_PREFERENCE);
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
@@ -368,6 +366,7 @@ public class PreferenceConsole {
 
             preferenceMgmtService.updatePreference(preference);
 
+            final HttpServletResponse response = context.getResponse();
             final Cookie cookie = new Cookie(Skin.SKIN, preference.getString(Skin.SKIN_DIR_NAME));
             cookie.setMaxAge(60 * 60); // 1 hour
             cookie.setPath("/");
@@ -399,13 +398,10 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HTTPRequestMethod.GET)
-    public void getQiniuPreference(final HttpServletRequest request, final HttpServletResponse response,
-                                   final HTTPRequestContext context) {
+    public void getQiniuPreference(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
@@ -433,23 +429,28 @@ public class PreferenceConsole {
     /**
      * Updates the Qiniu preference by the specified request.
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "qiniuAccessKey": "",
-     *                          "qiniuSecretKey": "",
-     *                          "qiniuDomain": "",
-     *                          "qiniuBucket": ""
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "qiniuAccessKey": "",
+     *     "qiniuSecretKey": "",
+     *     "qiniuDomain": "",
+     *     "qiniuBucket": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified http request context
      */
     @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HTTPRequestMethod.PUT)
-    public void updateQiniu(final HttpServletRequest request, final HttpServletResponse response,
-                            final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    public void updateQiniu(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             final String accessKey = requestJSONObject.optString(Option.ID_C_QINIU_ACCESS_KEY).trim();
             final String secretKey = requestJSONObject.optString(Option.ID_C_QINIU_SECRET_KEY).trim();
             String domain = requestJSONObject.optString(Option.ID_C_QINIU_DOMAIN).trim();

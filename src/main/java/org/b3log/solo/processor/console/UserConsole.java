@@ -50,7 +50,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.1.2, Sep 25, 2018
+ * @version 1.2.1.3, Dec 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -87,6 +87,21 @@ public class UserConsole {
 
     /**
      * Updates a user by the specified request.
+     *
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "userName": "",
+     *     "userEmail": "",
+     *     "userPassword": "", // Unhashed
+     *     "userRole": "", // optional
+     *     "userURL": "", // optional
+     *     "userAvatar": "" // optional
+     * }
+     * </pre>
+     * </p>
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -97,32 +112,21 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param context           the specified http request context
-     * @param response          the specified http servlet response
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "oId": "",
-     *                          "userName": "",
-     *                          "userEmail": "",
-     *                          "userPassword": "", // Unhashed
-     *                          "userRole": "", // optional
-     *                          "userURL": "", // optional
-     *                          "userAvatar": "" // optional
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.PUT)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void updateUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                           final JSONObject requestJSONObject) {
+    public void updateUser(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             userMgmtService.updateUser(requestJSONObject);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
-
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -135,6 +139,20 @@ public class UserConsole {
 
     /**
      * Adds a user with the specified request.
+     *
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "userName": "",
+     *     "userEmail": "",
+     *     "userPassword": "",
+     *     "userURL": "", // optional, uses 'servePath' instead if not specified
+     *     "userRole": "", // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not specified
+     *     "userAvatar": "" // optional
+     * }
+     * </pre>
+     * </p>
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -146,23 +164,19 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "userName": "",
-     *                          "userEmail": "",
-     *                          "userPassword": "",
-     *                          "userURL": "", // optional, uses 'servePath' instead if not specified
-     *                          "userRole": "", // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not specified
-     *                          "userAvatar": "" // optional
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.POST)
-    public void addUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    public void addUser(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
         try {
+            final HttpServletRequest request = context.getRequest();
+            final HttpServletResponse response = context.getResponse();
+            final JSONObject requestJSONObject = context.requestJSON();
             if (Solos.isAdminLoggedIn(request, response)) { // if the administrator register a new user, treats the new user as a normal user
                 // (defaultRole) who could post article
                 requestJSONObject.put(User.USER_ROLE, Role.DEFAULT_ROLE);
@@ -206,19 +220,18 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.DELETE)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void removeUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void removeUser(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
         try {
+            final HttpServletRequest request = context.getRequest();
             final String userId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/user/").length());
             userMgmtService.removeUser(userId);
 
@@ -258,17 +271,16 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/users/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void getUsers(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void getUsers(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         try {
+            final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/users/").length());
             final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
@@ -310,16 +322,15 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.GET)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void getUser(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void getUser(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         try {
+            final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String userId = requestURI.substring((Latkes.getContextPath() + "/console/user/").length());
 
@@ -353,19 +364,18 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/changeRole/*", method = HTTPRequestMethod.GET)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void changeUserRole(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void changeUserRole(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
         try {
+            final HttpServletRequest request = context.getRequest();
             final String userId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/changeRole/").length());
             userMgmtService.changeRole(userId);
 

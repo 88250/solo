@@ -41,13 +41,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Plugin console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Sep 25, 2018
+ * @version 1.0.0.8, Dec 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -86,6 +85,25 @@ public class PageConsole {
     /**
      * Updates a page by the specified request.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "page": {
+     *         "oId": "",
+     *         "pageTitle": "",
+     *         "pageContent": "",
+     *         "pageOrder": int,
+     *         "pageCommentCount": int,
+     *         "pagePermalink": "",
+     *         "pageCommentable": boolean,
+     *         "pageType": "",
+     *         "pageOpenTarget": "",
+     *         "pageIcon": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -95,39 +113,20 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified reuqest json object, for example,
-     *                          {
-     *                          "page": {
-     *                          "oId": "",
-     *                          "pageTitle": "",
-     *                          "pageContent": "",
-     *                          "pageOrder": int,
-     *                          "pageCommentCount": int,
-     *                          "pagePermalink": "",
-     *                          "pageCommentable": boolean,
-     *                          "pageType": "",
-     *                          "pageOpenTarget": "",
-     *                          "pageIcon": ""
-     *                          }
-     *                          }, see {@link org.b3log.solo.model.Page} for more details
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.PUT)
-    public void updatePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                           final JSONObject requestJSONObject) {
+    public void updatePage(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
 
         try {
-            pageMgmtService.updatePage(requestJSONObject);
+            final JSONObject requestJSON = context.requestJSON();
+            pageMgmtService.updatePage(requestJSON);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
-
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -150,18 +149,17 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.DELETE)
-    public void removePage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void removePage(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
 
         try {
+            final HttpServletRequest request = context.getRequest();
             final String pageId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/page/").length());
 
             pageMgmtService.removePage(pageId);
@@ -180,6 +178,22 @@ public class PageConsole {
     /**
      * Adds a page with the specified request.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "page": {
+     *         "pageTitle": "",
+     *         "pageContent": "",
+     *         "pagePermalink": "" // optional,
+     *         "pageCommentable": boolean,
+     *         "pageType": "",
+     *         "pageOpenTarget": "",
+     *         "pageIcon": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -190,32 +204,17 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param context           the specified http request context
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param requestJSONObject the specified request json object, for example,
-     *                          {
-     *                          "page": {
-     *                          "pageTitle": "",
-     *                          "pageContent": "",
-     *                          "pagePermalink": "" // optional,
-     *                          "pageCommentable": boolean,
-     *                          "pageType": "",
-     *                          "pageOpenTarget": "",
-     *                          "pageIcon": ""
-     *                          }
-     *                          }, see {@link org.b3log.solo.model.Page} for more details
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.POST)
-    public void addPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                        final JSONObject requestJSONObject) {
+    public void addPage(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
 
         try {
-            final String pageId = pageMgmtService.addPage(requestJSONObject);
+            final JSONObject requestJSON = context.requestJSON();
+            final String pageId = pageMgmtService.addPage(requestJSON);
 
             ret.put(Keys.OBJECT_ID, pageId);
             ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
@@ -234,6 +233,15 @@ public class PageConsole {
     /**
      * Changes a page order by the specified page id and direction.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "direction": "" // "up"/"down"
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -243,24 +251,16 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          {
-     *                          "oId": "",
-     *                          "direction": "" // "up"/"down"
-     *                          }
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/page/order/", method = HTTPRequestMethod.PUT)
-    public void changeOrder(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                            final JSONObject requestJSONObject) {
+    public void changeOrder(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
 
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
             final String direction = requestJSONObject.getString(Common.DIRECTION);
 
@@ -299,16 +299,15 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.GET)
-    public void getPage(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void getPage(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         try {
+            final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String pageId = requestURI.substring((Latkes.getContextPath() + "/console/page/").length());
 
@@ -354,18 +353,17 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      * @see Requests#PAGINATION_PATH_PATTERN
      */
     @RequestProcessing(value = "/console/pages/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
             method = HTTPRequestMethod.GET)
-    public void getPages(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
+    public void getPages(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
 
         try {
+            final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/pages/").length());
 
