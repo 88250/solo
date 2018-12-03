@@ -29,15 +29,13 @@ import org.b3log.latke.servlet.renderer.JSONRenderer;
 import org.b3log.solo.SoloServletListener;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 
 /**
  * KanBanNiang processor. https://github.com/b3log/solo/issues/12472
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 5, 2018
+ * @version 1.0.0.1, Dec 3, 2018
  * @since 2.9.2
  */
 @RequestProcessor
@@ -51,12 +49,10 @@ public class KanBanNiangProcessor {
     /**
      * Returns a random model.
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/plugins/kanbanniang/assert/model", method = HTTPRequestMethod.GET)
-    public void randomModel(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
+    public void randomModel(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         try {

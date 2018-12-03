@@ -825,18 +825,14 @@ public class DataModelService {
     /**
      * Fills statistic.
      *
-     * @param dataModel data model
-     * @throws ServiceException service exception
+     * @param dataModel the specified data model
      */
-    private void fillStatistic(final Map<String, Object> dataModel) throws ServiceException {
+    private void fillStatistic(final Map<String, Object> dataModel) {
         Stopwatchs.start("Fill Statistic");
         try {
             LOGGER.debug("Filling statistic....");
             final JSONObject statistic = statisticQueryService.getStatistic();
             dataModel.put(Option.CATEGORY_C_STATISTIC, statistic);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, "Fills statistic failed", e);
-            throw new ServiceException(e);
         } finally {
             Stopwatchs.end();
         }

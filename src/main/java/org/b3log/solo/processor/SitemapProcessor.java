@@ -55,7 +55,7 @@ import java.net.URLEncoder;
  * Sitemap processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.4, Sep 26, 2018
+ * @version 1.0.2.5, Dec 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -100,23 +100,19 @@ public class SitemapProcessor {
      * Returns the sitemap.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/sitemap.xml", method = HTTPRequestMethod.GET)
-    public void sitemap(final HTTPRequestContext context) throws Exception {
+    public void sitemap(final HTTPRequestContext context) {
         final TextXMLRenderer renderer = new TextXMLRenderer();
-
         context.setRenderer(renderer);
 
-        final Sitemap sitemap = new Sitemap();
-
         try {
+            final Sitemap sitemap = new Sitemap();
             addArticles(sitemap);
             addNavigations(sitemap);
             addTags(sitemap);
             addArchives(sitemap);
 
-            LOGGER.log(Level.INFO, "Generating sitemap....");
             String content = sitemap.toString();
             content = XMLs.format(content);
             LOGGER.log(Level.INFO, "Generated sitemap");
@@ -124,7 +120,7 @@ public class SitemapProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates sitemap failed", e);
 
-            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            context.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
     }
 

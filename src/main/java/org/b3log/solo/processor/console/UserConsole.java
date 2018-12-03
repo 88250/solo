@@ -329,27 +329,21 @@ public class UserConsole {
     public void getUser(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
-        try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
-            final String userId = requestURI.substring((Latkes.getContextPath() + "/console/user/").length());
+        final HttpServletRequest request = context.getRequest();
+        final String requestURI = request.getRequestURI();
+        final String userId = requestURI.substring((Latkes.getContextPath() + "/console/user/").length());
 
-            final JSONObject result = userQueryService.getUser(userId);
-            if (null == result) {
-                renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
-
-                return;
-            }
-
-            renderer.setJSONObject(result);
-            result.put(Keys.STATUS_CODE, true);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
+        final JSONObject result = userQueryService.getUser(userId);
+        if (null == result) {
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+
+            return;
         }
+
+        renderer.setJSONObject(result);
+        result.put(Keys.STATUS_CODE, true);
     }
 
     /**

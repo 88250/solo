@@ -51,7 +51,7 @@ import java.util.Map;
  * Tag processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Sep 20, 2018
+ * @version 1.1.1.7, Dec 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -108,10 +108,9 @@ public class TagProcessor {
      * Shows articles related with a tag with the specified context.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/tags/**", method = HTTPRequestMethod.GET)
-    public void showTagArticles(final HTTPRequestContext context) throws Exception {
+    public void showTagArticles(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
         renderer.setTemplateName("tag-articles.ftl");
@@ -175,7 +174,7 @@ public class TagProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

@@ -62,7 +62,7 @@ import java.util.Map;
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.1.15, Nov 28, 2018
+ * @version 1.1.1.16, Dec 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -130,10 +130,9 @@ public class LoginProcessor {
      * Shows login page.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/login", method = HTTPRequestMethod.GET)
-    public void showLogin(final HTTPRequestContext context) throws Exception {
+    public void showLogin(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
@@ -145,7 +144,7 @@ public class LoginProcessor {
 
         final HttpServletResponse response = context.getResponse();
         if (null != Solos.getCurrentUser(request, response)) { // User has already logged in
-            response.sendRedirect(destinationURL);
+            context.sendRedirect(destinationURL);
 
             return;
         }
@@ -165,13 +164,12 @@ public class LoginProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context
-     * @param requestJSONObject the specified request json object
+     * @param context the specified context
      */
     @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
-    public void login(final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    public void login(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
-
+        final JSONObject requestJSONObject = context.requestJSON();
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -218,10 +216,9 @@ public class LoginProcessor {
      * Logout.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/logout", method = HTTPRequestMethod.GET)
-    public void logout(final HTTPRequestContext context) throws Exception {
+    public void logout(final HTTPRequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
         Solos.logout(httpServletRequest, context.getResponse());
@@ -231,17 +228,16 @@ public class LoginProcessor {
             destinationURL = "/";
         }
 
-        context.getResponse().sendRedirect(destinationURL);
+        context.sendRedirect(destinationURL);
     }
 
     /**
      * Shows forgotten password page.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/forgot", method = HTTPRequestMethod.GET)
-    public void showForgot(final HTTPRequestContext context) throws Exception {
+    public void showForgot(final HTTPRequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
@@ -266,11 +262,10 @@ public class LoginProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context
-     * @param requestJSONObject the specified request json object
+     * @param context the specified context
      */
     @RequestProcessing(value = "/forgot", method = HTTPRequestMethod.POST)
-    public void forgot(final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    public void forgot(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -280,6 +275,7 @@ public class LoginProcessor {
             jsonObject.put("succeed", false);
             jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
 
+            final JSONObject requestJSONObject = context.requestJSON();
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 
             if (StringUtils.isBlank(userEmail)) {
@@ -315,11 +311,10 @@ public class LoginProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context
-     * @param requestJSONObject the specified request json object
+     * @param context the specified context
      */
     @RequestProcessing(value = "/reset", method = HTTPRequestMethod.POST)
-    public void reset(final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    public void reset(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
 
         context.setRenderer(renderer);
@@ -328,6 +323,7 @@ public class LoginProcessor {
         renderer.setJSONObject(jsonObject);
 
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             final String token = requestJSONObject.getString("token");
             final String newPwd = requestJSONObject.getString("newPwd");
             final JSONObject passwordResetOption = optionQueryService.getOptionById(token);
@@ -416,11 +412,9 @@ public class LoginProcessor {
      * @param pageTemplate   the page template
      * @param destinationURL the destination URL
      * @param request        for reset password page
-     * @throws JSONException    the JSONException
-     * @throws ServiceException the ServiceException
      */
     private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL,
-                            final HttpServletRequest request) throws JSONException, ServiceException {
+                            final HttpServletRequest request) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         renderer.setTemplateName(pageTemplate);
         context.setRenderer(renderer);

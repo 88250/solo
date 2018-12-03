@@ -332,7 +332,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         httpRequestContext.setResponse(response);
 
         final ArticleProcessor articleProcessor = BeanManager.getInstance().getReference(ArticleProcessor.class);
-        articleProcessor.showArticle(httpRequestContext, request, response);
+        articleProcessor.showArticle(httpRequestContext);
 
         final Map<String, Object> dataModel = httpRequestContext.getRenderer().getRenderDataModel();
         final JSONObject handledArticle = (JSONObject) dataModel.get(Article.ARTICLE);

@@ -49,7 +49,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Sep 20, 2018
+ * @version 1.0.0.9, Dec 3, 2018
  * @since 0.4.5
  */
 @RequestProcessor
@@ -87,20 +87,18 @@ public class UserTemplateProcessor {
     /**
      * Shows the user template page.
      *
-     * @param context  the specified context
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/*.html", method = HTTPRequestMethod.GET)
-    public void showPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final String requestURI = request.getRequestURI();
+    public void showPage(final HTTPRequestContext context) {
+        final String requestURI = context.requestURI();
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
 
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
         LOGGER.log(Level.DEBUG, "Shows page[requestURI={0}, templateName={1}]", requestURI, templateName);
 
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
         renderer.setTemplateName(templateName);
@@ -108,7 +106,7 @@ public class UserTemplateProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         final Template template = Skins.getSkinTemplate(request, templateName);
         if (null == template) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -124,7 +122,7 @@ public class UserTemplateProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }
