@@ -17,20 +17,13 @@
  */
 package org.b3log.solo.mail;
 
-import org.b3log.latke.logging.Logger;
-
 /**
  * Mail service factory.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.2, Jul 5, 2017
+ * @version 2.0.1.3, Dec 3, 2018
  */
 public final class MailServiceFactory {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(MailServiceFactory.class);
 
     /**
      * Mail service.
@@ -38,8 +31,6 @@ public final class MailServiceFactory {
     private static final MailService MAIL_SERVICE;
 
     static {
-        LOGGER.info("Constructing mail service....");
-
         try {
             final Class<MailService> mailServiceClass = (Class<MailService>) Class.forName(
                     "org.b3log.solo.mail.local.LocalMailService");
@@ -47,8 +38,6 @@ public final class MailServiceFactory {
         } catch (final Exception e) {
             throw new RuntimeException("Can not initialize mail service!", e);
         }
-
-        LOGGER.info("Constructed mail service");
     }
 
     /**
