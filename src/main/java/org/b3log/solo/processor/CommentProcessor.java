@@ -50,7 +50,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.3.3.4, Dec 1, 2018
+ * @version 1.3.3.5, Dec 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -93,6 +93,21 @@ public class CommentProcessor {
 
     /**
      * Adds a comment to a page.
+     *
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "captcha": "",
+     *     "oId": pageId,
+     *     "commentName": "",
+     *     "commentEmail": "",
+     *     "commentURL": "",
+     *     "commentContent": "",
+     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
+     * }
+     * </pre>
+     * </p>
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -107,21 +122,13 @@ public class CommentProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "captcha": "",
-     *                          "oId": pageId,
-     *                          "commentName": "",
-     *                          "commentEmail": "",
-     *                          "commentURL": "",
-     *                          "commentContent": "",
-     *                          "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
+     * @param context the specified context
      */
     @RequestProcessing(value = "/page/comments", method = HTTPRequestMethod.POST)
-    public void addPageComment(final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    public void addPageComment(final HTTPRequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
-
+        final JSONObject requestJSONObject = context.requestJSON();
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
         fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
@@ -188,6 +195,21 @@ public class CommentProcessor {
 
     /**
      * Adds a comment to an article.
+     *
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "captcha": "",
+     *     "oId": articleId,
+     *     "commentName": "",
+     *     "commentEmail": "",
+     *     "commentURL": "",
+     *     "commentContent": "",
+     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
+     * }
+     * </pre>
+     * </p>
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -203,21 +225,13 @@ public class CommentProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context, including a request json object
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "captcha": "",
-     *                          "oId": articleId,
-     *                          "commentName": "",
-     *                          "commentEmail": "",
-     *                          "commentURL": "",
-     *                          "commentContent": "",
-     *                          "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
+     * @param context the specified context, including a request json object
      */
     @RequestProcessing(value = "/article/comments", method = HTTPRequestMethod.POST)
-    public void addArticleComment(final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    public void addArticleComment(final HTTPRequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
-
+        final JSONObject requestJSONObject = context.requestJSON();
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
         fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);

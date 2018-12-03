@@ -36,7 +36,6 @@ import org.b3log.solo.service.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -102,10 +101,9 @@ public class BlogProcessor {
      * </ul>
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/blog/info", method = HTTPRequestMethod.GET)
-    public void getBlogInfo(final HTTPRequestContext context) throws Exception {
+    public void getBlogInfo(final HTTPRequestContext context) {
         final JSONRenderer renderer = new JSONRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -122,7 +120,13 @@ public class BlogProcessor {
         jsonObject.put("runtimeMode", Latkes.getRuntimeMode());
         jsonObject.put("runtimeDatabase", Latkes.getRuntimeDatabase());
         jsonObject.put("locale", Latkes.getLocale());
-        jsonObject.put("userName", userQueryService.getAdmin().optString(User.USER_NAME));
+        String userName = "";
+        try {
+            userName = userQueryService.getAdmin().optString(User.USER_NAME);
+        } catch (final Exception e) {
+            // ignored
+        }
+        jsonObject.put("userName", userName);
         jsonObject.put("qiniuDomain", "");
         jsonObject.put("qiniuBucket", "");
         final JSONObject qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
@@ -146,26 +150,26 @@ public class BlogProcessor {
      * </pre>
      * </p>
      *
-     * @param context  the specified context
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @throws Exception exception
+     * @param context the specified context
      */
     @RequestProcessing(value = "/blog/articles-tags", method = HTTPRequestMethod.GET)
-    public void getArticlesTags(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final String pwd = request.getParameter("pwd");
+    public void getArticlesTags(final HTTPRequestContext context) {
+        final String pwd = context.param("pwd");
         if (StringUtils.isBlank(pwd)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
 
-        final JSONObject admin = userQueryService.getAdmin();
-        if (!DigestUtils.md5Hex(pwd).equals(admin.getString(User.USER_PASSWORD))) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        try {
+            final JSONObject admin = userQueryService.getAdmin();
+            if (!DigestUtils.md5Hex(pwd).equals(admin.getString(User.USER_PASSWORD))) {
+                context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
-            return;
+                return;
+            }
+        } catch (final Exception e) {
+            // ignored
         }
 
         final JSONObject requestJSONObject = new JSONObject();

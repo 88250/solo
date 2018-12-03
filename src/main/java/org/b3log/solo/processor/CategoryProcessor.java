@@ -32,6 +32,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Common;
@@ -43,7 +44,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -141,10 +141,9 @@ public class CategoryProcessor {
      * Shows articles related with a category with the specified context.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/category/**", method = HTTPRequestMethod.GET)
-    public void showCategoryArticles(final HTTPRequestContext context) throws Exception {
+    public void showCategoryArticles(final HTTPRequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
         renderer.setTemplateName("category-articles.ftl");
@@ -162,7 +161,7 @@ public class CategoryProcessor {
             String categoryURI = getCategoryURI(requestURI);
             final int currentPageNum = getCurrentPageNum(requestURI, categoryURI);
             if (-1 == currentPageNum) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
             }
@@ -170,7 +169,7 @@ public class CategoryProcessor {
             LOGGER.log(Level.DEBUG, "Category [URI={0}, currentPageNum={1}]", categoryURI, currentPageNum);
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
             if (null == category) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
             }
@@ -186,7 +185,7 @@ public class CategoryProcessor {
 
             final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             if (0 == pageCount) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
             }
@@ -196,7 +195,7 @@ public class CategoryProcessor {
 
             final List<Integer> pageNums = (List) result.optJSONObject(Pagination.PAGINATION).opt(Pagination.PAGINATION_PAGE_NUMS);
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
-            dataModel.put(Common.PATH, "/category/" + URLEncoder.encode(categoryURI, "UTF-8"));
+            dataModel.put(Common.PATH, "/category/" + URLs.encode(categoryURI));
 
             dataModelService.fillCommon(request, response, dataModel, preference);
 
@@ -204,7 +203,7 @@ public class CategoryProcessor {
         } catch (final ServiceException | JSONException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

@@ -282,9 +282,8 @@ public class ArticleQueryService {
      * Gets time of the recent updated article.
      *
      * @return time of the recent updated article, returns {@code 0} if not found
-     * @throws ServiceException service exception
      */
-    public long getRecentArticleTime() throws ServiceException {
+    public long getRecentArticleTime() {
         try {
             final List<JSONObject> recentArticles = articleRepository.getRecentArticles(1);
             if (recentArticles.isEmpty()) {
@@ -295,8 +294,9 @@ public class ArticleQueryService {
 
             return recentArticle.getLong(Article.ARTICLE_UPDATED);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-            throw new ServiceException("Gets recent article time failed");
+            LOGGER.log(Level.ERROR, "Gets recent article time failed", e);
+
+            return 0;
         }
     }
 
@@ -541,10 +541,9 @@ public class ArticleQueryService {
      *      }, ....]
      * }
      * </pre>, order by article update date and sticky(put top).
-     * @throws ServiceException service exception
      * @see Pagination
      */
-    public JSONObject getArticles(final JSONObject requestJSONObject) throws ServiceException {
+    public JSONObject getArticles(final JSONObject requestJSONObject) {
         final JSONObject ret = new JSONObject();
 
         try {
@@ -607,7 +606,7 @@ public class ArticleQueryService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets articles failed", e);
 
-            throw new ServiceException(e);
+            return null;
         }
     }
 
