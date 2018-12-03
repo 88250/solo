@@ -80,15 +80,13 @@ public class ErrorProcessor {
     /**
      * Handles the error.
      *
-     * @param context  the specified context
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
+     * @param context the specified context
      * @throws Exception exception
      */
     @RequestProcessing(value = "/error/{statusCode}", method = HTTPRequestMethod.GET)
-    public void showErrorPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String statusCode)
-            throws Exception {
+    public void showErrorPage(final HTTPRequestContext context, final String statusCode) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         if (StringUtils.equals("GET", request.getMethod())) {
             final String requestURI = request.getRequestURI();
             final String templateName = statusCode + ".ftl";
@@ -109,7 +107,7 @@ public class ErrorProcessor {
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
             }
         } else {
             context.renderJSON().renderMsg(statusCode);
