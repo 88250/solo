@@ -73,9 +73,8 @@
     </scm>
 
     <properties>
-        <org.b3log.latke.version>2.4.33</org.b3log.latke.version>
+        <org.b3log.latke.version>2.4.34-SNAPSHOT</org.b3log.latke.version>
 
-        <servlet.version>3.1.0</servlet.version>
         <slf4j.version>1.7.5</slf4j.version>
         <jsoup.version>1.9.1</jsoup.version>
         <flexmark.version>0.34.58</flexmark.version>
@@ -89,15 +88,14 @@
         <snakeyaml.version>1.18</snakeyaml.version>
         <freemarker.version>2.3.28</freemarker.version>
         <user-agent-utils.version>1.21</user-agent-utils.version>
+        <servlet.version>3.1.0</servlet.version>
+        <javax.mail.version>1.6.2</javax.mail.version>
 
-        <!-- Maven Plugin -->
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
         <maven-min-plugin.version>1.0.4</maven-min-plugin.version>
-        <!-- Unit Test -->
         <testng.version>6.1.1</testng.version>
-        <!-- JDBC Drivers -->
         <mysql-connector-java.version>8.0.12</mysql-connector-java.version>
 
         <maven.compiler.target>1.8</maven.compiler.target>
@@ -108,7 +106,7 @@
     <dependencies>
         <dependency>
             <groupId>org.b3log</groupId>
-            <artifactId>latke</artifactId>
+            <artifactId>latke-core</artifactId>
             <version>${org.b3log.latke.version}</version>
         </dependency>
 
@@ -116,6 +114,12 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
+            <version>${javax.mail.version}</version>
         </dependency>
 
         <dependency>
