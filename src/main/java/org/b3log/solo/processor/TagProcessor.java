@@ -105,7 +105,7 @@ public class TagProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/tags/{tagTitle}"}, method = HttpMethod.GET)
+    @RequestProcessing(value = "/tags/{tagTitle}", method = HttpMethod.GET)
     public void showTagArticles(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);

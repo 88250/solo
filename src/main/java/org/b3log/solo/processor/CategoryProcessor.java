@@ -126,7 +126,7 @@ public class CategoryProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/category/{categoryURI}"}, method = HttpMethod.GET)
+    @RequestProcessing(value = "/category/{categoryURI}", method = HttpMethod.GET)
     public void showCategoryArticles(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
