@@ -283,9 +283,15 @@ public class MockHttpServletRequest implements HttpServletRequest {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+    private BufferedReader reader;
+
+    public void setReader(BufferedReader reader) {
+        this.reader = reader;
+    }
+
     @Override
     public BufferedReader getReader() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return reader;
     }
 
     @Override
