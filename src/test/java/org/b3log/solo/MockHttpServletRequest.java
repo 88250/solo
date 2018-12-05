@@ -22,8 +22,6 @@ import org.b3log.latke.servlet.HttpMethod;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.security.Principal;
 import java.util.*;
 
@@ -59,7 +57,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public Cookie[] getCookies() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 
     @Override
