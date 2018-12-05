@@ -31,6 +31,7 @@ import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.Article;
@@ -105,23 +106,6 @@ public class CategoryProcessor {
     private StatisticMgmtService statisticMgmtService;
 
     /**
-     * Gets the request page number from the specified request URI and category URI.
-     *
-     * @param requestURI  the specified request URI
-     * @param categoryURI the specified category URI
-     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
-     */
-    private static int getCurrentPageNum(final String requestURI, final String categoryURI) {
-        if (StringUtils.isBlank(categoryURI)) {
-            return -1;
-        }
-
-        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/category/" + categoryURI + "/").length());
-
-        return Requests.getCurrentPageNum(pageNumString);
-    }
-
-    /**
      * Gets category URI from the specified URI.
      *
      * @param requestURI the specified request URI
@@ -142,7 +126,7 @@ public class CategoryProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/category/{categoryTitle}", "/category/{categoryTitle}/{p}"}, method = HttpMethod.GET)
+    @RequestProcessing(value = {"/category/{categoryURI}"}, method = HttpMethod.GET)
     public void showCategoryArticles(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
@@ -153,19 +137,8 @@ public class CategoryProcessor {
         final HttpServletResponse response = context.getResponse();
 
         try {
-            String requestURI = request.getRequestURI();
-            if (!requestURI.endsWith("/")) {
-                requestURI += "/";
-            }
-
-            String categoryURI = getCategoryURI(requestURI);
-            final int currentPageNum = getCurrentPageNum(requestURI, categoryURI);
-            if (-1 == currentPageNum) {
-                context.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return;
-            }
-
+            final String categoryURI = context.pathVar("categoryURI");
+            final int currentPageNum = Paginator.getPage(request);
             LOGGER.log(Level.DEBUG, "Category [URI={0}, currentPageNum={1}]", categoryURI, currentPageNum);
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
             if (null == category) {

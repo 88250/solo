@@ -37,7 +37,10 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.servlet.renderer.TextHtmlRenderer;
-import org.b3log.latke.util.*;
+import org.b3log.latke.util.Dates;
+import org.b3log.latke.util.Locales;
+import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
@@ -51,8 +54,6 @@ import org.jsoup.Jsoup;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.*;
 
 /**
@@ -347,13 +348,13 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/{p}", method = HttpMethod.GET)
+    @RequestProcessing(value = "/articles", method = HttpMethod.GET)
     public void getArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
         final HttpServletRequest request = context.getRequest();
-        final int currentPageNum = getArticlesPagedCurrentPageNum(request.getRequestURI());
+        final int currentPageNum = Paginator.getPage(request);
 
-        Stopwatchs.start("Get Articles Paged[pageNum=" + currentPageNum + ']');
+        Stopwatchs.start("Get Articles Paged [pageNum=" + currentPageNum + ']');
         try {
             jsonObject.put(Keys.STATUS_CODE, true);
 
@@ -389,21 +390,13 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/tags/{tagTitle}/{p}", method = HttpMethod.GET)
+    @RequestProcessing(value = "/articles/tags/{tagTitle}", method = HttpMethod.GET)
     public void getTagArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
         final HttpServletRequest request = context.getRequest();
-        String tagTitle = getTagArticlesPagedTag(request.getRequestURI());
-        try {
-            tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
-        } catch (final UnsupportedEncodingException e) {
-            LOGGER.log(Level.ERROR, "Gets tag title failed[requestURI=" + request.getRequestURI() + ']', e);
-            tagTitle = "";
-        }
-
-        final int currentPageNum = getTagArticlesPagedCurrentPageNum(request.getRequestURI());
-
+        final String tagTitle = context.pathVar("tagTitle");
+        final int currentPageNum = Paginator.getPage(request);
         Stopwatchs.start("Get Tag-Articles Paged [tagTitle=" + tagTitle + ", pageNum=" + currentPageNum + ']');
         try {
             jsonObject.put(Keys.STATUS_CODE, true);
@@ -413,7 +406,7 @@ public class ArticleProcessor {
 
             final JSONObject tagQueryResult = tagQueryService.getTagByTitle(tagTitle);
             if (null == tagQueryResult) {
-                throw new Exception("Can not foud tag[title=" + tagTitle + "]");
+                throw new Exception("Can not found tag [title=" + tagTitle + "]");
             }
 
             final JSONObject tag = tagQueryResult.getJSONObject(Tag.TAG);
@@ -447,15 +440,15 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/archives/{archive}/{p}", method = HttpMethod.GET)
+    @RequestProcessing(value = "/articles/archives/{archive}", method = HttpMethod.GET)
     public void getArchivesArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
         final HttpServletRequest request = context.getRequest();
-        final String archiveDateString = getArchivesArticlesPagedArchive(request.getRequestURI());
-        final int currentPageNum = getArchivesArticlesPagedCurrentPageNum(request.getRequestURI());
+        final String archiveDateString = context.pathVar("archive");
+        final int currentPageNum = Paginator.getPage(request);
 
-        Stopwatchs.start("Get Archive-Articles Paged[archive=" + archiveDateString + ", pageNum=" + currentPageNum + ']');
+        Stopwatchs.start("Get Archive-Articles Paged [archive=" + archiveDateString + ", pageNum=" + currentPageNum + ']');
         try {
             jsonObject.put(Keys.STATUS_CODE, true);
 
@@ -499,13 +492,13 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/authors/{author}/{p}", method = HttpMethod.GET)
+    @RequestProcessing(value = "/articles/authors/{author}", method = HttpMethod.GET)
     public void getAuthorsArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
         final HttpServletRequest request = context.getRequest();
-        final String authorId = getAuthorsArticlesPagedAuthorId(request.getRequestURI());
-        final int currentPageNum = getAuthorsArticlesPagedCurrentPageNum(request.getRequestURI());
+        final String authorId = context.pathVar("author");
+        final int currentPageNum = Paginator.getPage(request);
 
         Stopwatchs.start("Get Author-Articles Paged [authorId=" + authorId + ", pageNum=" + currentPageNum + ']');
         try {
@@ -552,7 +545,7 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/authors/{author}", "/authors/{author}/{p}"}, method = HttpMethod.GET)
+    @RequestProcessing(value = {"/authors/{author}"}, method = HttpMethod.GET)
     public void showAuthorArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -560,22 +553,9 @@ public class ArticleProcessor {
         renderer.setTemplateName("author-articles.ftl");
 
         try {
-            String requestURI = request.getRequestURI();
-            if (!requestURI.endsWith("/")) {
-                requestURI += "/";
-            }
-
-            final String authorId = getAuthorId(requestURI);
-            LOGGER.log(Level.DEBUG, "Request author articles[requestURI={0}, authorId={1}]", requestURI, authorId);
-
-            final int currentPageNum = getAuthorCurrentPageNum(requestURI, authorId);
-            if (-1 == currentPageNum) {
-                context.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return;
-            }
-
-            LOGGER.log(Level.DEBUG, "Request author articles[authorId={0}, currentPageNum={1}]", authorId, currentPageNum);
+            final String authorId = context.pathVar("author");
+            final int currentPageNum = Paginator.getPage(request);
+            LOGGER.log(Level.DEBUG, "Request author articles [authorId={0}, currentPageNum={1}]", authorId, currentPageNum);
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -635,14 +615,9 @@ public class ArticleProcessor {
         renderer.setTemplateName("archive-articles.ftl");
 
         try {
-            String requestURI = request.getRequestURI();
-            if (!requestURI.endsWith("/")) {
-                requestURI += "/";
-            }
-
             final int currentPageNum = Paginator.getPage(request);
-            final String archiveDateString = getArchiveDate(requestURI);
-            LOGGER.log(Level.DEBUG, "Request archive date[string={0}, currentPageNum={1}]", archiveDateString, currentPageNum);
+            final String archiveDateString = context.pathVar("date");
+            LOGGER.log(Level.DEBUG, "Request archive date [string={0}, currentPageNum={1}]", archiveDateString, currentPageNum);
             final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
             if (null == result) {
                 LOGGER.log(Level.DEBUG, "Can not find articles for the specified archive date[string={0}]", archiveDateString);
@@ -966,133 +941,5 @@ public class ArticleProcessor {
         dataModel.put(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT));
         dataModel.put(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT));
         dataModel.put(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT, preference.getInt(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT));
-    }
-
-    /**
-     * Gets archive date from the specified URI.
-     *
-     * @param requestURI the specified request URI
-     * @return archive date
-     */
-    private static String getArchiveDate(final String requestURI) {
-        final String path = requestURI.substring((Latkes.getContextPath() + "/archives/").length());
-
-        return StringUtils.substring(path, 0, "yyyy/MM".length());
-    }
-
-    /**
-     * Gets author id from the specified URI.
-     *
-     * @param requestURI the specified request URI
-     * @return author id
-     */
-    private static String getAuthorId(final String requestURI) {
-        final String path = requestURI.substring((Latkes.getContextPath() + "/authors/").length());
-        final int idx = path.indexOf("/");
-        if (-1 == idx) {
-            return path;
-        } else {
-            return path.substring(0, idx);
-        }
-    }
-
-    /**
-     * Gets the request page number from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return page number
-     */
-    private static int getArticlesPagedCurrentPageNum(final String requestURI) {
-        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/articles/").length());
-
-        return Solos.getCurrentPageNum(pageNumString);
-    }
-
-    /**
-     * Gets the request page number from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return page number
-     */
-    private static int getTagArticlesPagedCurrentPageNum(final String requestURI) {
-        return Solos.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
-    }
-
-    /**
-     * Gets the request tag from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return tag
-     */
-    private static String getTagArticlesPagedTag(final String requestURI) {
-        String tagAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/tags/").length());
-        if (tagAndPageNum.endsWith("/")) {
-            tagAndPageNum = StringUtils.removeEnd(tagAndPageNum, "/");
-        }
-
-        return StringUtils.substringBefore(tagAndPageNum, "/");
-    }
-
-    /**
-     * Gets the request page number from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return page number
-     */
-    private static int getArchivesArticlesPagedCurrentPageNum(final String requestURI) {
-        return Solos.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
-    }
-
-    /**
-     * Gets the request archive from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return archive, for example "2012/05"
-     */
-    private static String getArchivesArticlesPagedArchive(final String requestURI) {
-        String archiveAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/archives/").length());
-        if (archiveAndPageNum.endsWith("/")) {
-            archiveAndPageNum = StringUtils.removeEnd(archiveAndPageNum, "/");
-        }
-
-        return StringUtils.substringBeforeLast(archiveAndPageNum, "/");
-    }
-
-    /**
-     * Gets the request page number from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return page number
-     */
-    private static int getAuthorsArticlesPagedCurrentPageNum(final String requestURI) {
-        return Solos.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
-    }
-
-    /**
-     * Gets the request author id from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return author id
-     */
-    private static String getAuthorsArticlesPagedAuthorId(final String requestURI) {
-        String authorIdAndPageNum = requestURI.substring((Latkes.getContextPath() + "/articles/authors/").length());
-        if (authorIdAndPageNum.endsWith("/")) {
-            authorIdAndPageNum = StringUtils.removeEnd(authorIdAndPageNum, "/");
-        }
-
-        return StringUtils.substringBefore(authorIdAndPageNum, "/");
-    }
-
-    /**
-     * Gets the request page number from the specified request URI and author id.
-     *
-     * @param requestURI the specified request URI
-     * @param authorId   the specified author id
-     * @return page number
-     */
-    private static int getAuthorCurrentPageNum(final String requestURI, final String authorId) {
-        final String pageNumString = StringUtils.substring(requestURI, (Latkes.getContextPath() + "/authors/" + authorId + "/").length());
-
-        return Solos.getCurrentPageNum(pageNumString);
     }
 }

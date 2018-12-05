@@ -17,9 +17,7 @@
  */
 package org.b3log.solo.processor;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -31,7 +29,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -42,7 +39,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
@@ -109,7 +105,7 @@ public class TagProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/tags/{tagTitle}", "/tags/{tagTitle}/{p}"}, method = HttpMethod.GET)
+    @RequestProcessing(value = {"/tags/{tagTitle}"}, method = HttpMethod.GET)
     public void showTagArticles(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
@@ -119,22 +115,9 @@ public class TagProcessor {
         final HttpServletResponse response = context.getResponse();
 
         try {
-            String requestURI = request.getRequestURI();
-            if (!requestURI.endsWith("/")) {
-                requestURI += "/";
-            }
-
-            String tagTitle = getTagTitle(requestURI);
-            final int currentPageNum = getCurrentPageNum(requestURI, tagTitle);
-            if (-1 == currentPageNum) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return;
-            }
-
-            LOGGER.log(Level.DEBUG, "Tag[title={0}, currentPageNum={1}]", tagTitle, currentPageNum);
-
-            tagTitle = URLDecoder.decode(tagTitle, "UTF-8");
+            String tagTitle = context.pathVar("tagTitle");
+            final int currentPageNum = Paginator.getPage(request);
+            LOGGER.log(Level.DEBUG, "Tag [title={0}, currentPageNum={1}]", tagTitle, currentPageNum);
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
             if (null == result) {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -205,38 +188,5 @@ public class TagProcessor {
         dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
         dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
         dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-    }
-
-    /**
-     * Gets the request page number from the specified request URI and tag title.
-     *
-     * @param requestURI the specified request URI
-     * @param tagTitle   the specified tag title
-     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
-     */
-    private static int getCurrentPageNum(final String requestURI, final String tagTitle) {
-        if (StringUtils.isBlank(tagTitle)) {
-            return -1;
-        }
-
-        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/tags/" + tagTitle + "/").length());
-
-        return Requests.getCurrentPageNum(pageNumString);
-    }
-
-    /**
-     * Gets tag title from the specified URI.
-     *
-     * @param requestURI the specified request URI
-     * @return tag title
-     */
-    private static String getTagTitle(final String requestURI) {
-        final String path = requestURI.substring((Latkes.getContextPath() + "/tags/").length());
-
-        if (path.contains("/")) {
-            return path.substring(0, path.indexOf("/"));
-        } else {
-            return path.substring(0);
-        }
     }
 }
