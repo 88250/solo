@@ -627,7 +627,7 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/archives/{data}", "/archives/{date}/{p}"}, method = HttpMethod.GET)
+    @RequestProcessing(value = {"/archives/{data}"}, method = HttpMethod.GET)
     public void showArchiveArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -640,13 +640,7 @@ public class ArticleProcessor {
                 requestURI += "/";
             }
 
-            final int currentPageNum = getArchiveCurrentPageNum(requestURI);
-            if (-1 == currentPageNum) {
-                context.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return;
-            }
-
+            final int currentPageNum = Paginator.getPage(request);
             final String archiveDateString = getArchiveDate(requestURI);
             LOGGER.log(Level.DEBUG, "Request archive date[string={0}, currentPageNum={1}]", archiveDateString, currentPageNum);
             final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
@@ -984,18 +978,6 @@ public class ArticleProcessor {
         final String path = requestURI.substring((Latkes.getContextPath() + "/archives/").length());
 
         return StringUtils.substring(path, 0, "yyyy/MM".length());
-    }
-
-    /**
-     * Gets the request page number from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
-     */
-    private static int getArchiveCurrentPageNum(final String requestURI) {
-        final String pageNumString = StringUtils.substring(requestURI, (Latkes.getContextPath() + "/archives/yyyy/MM/").length());
-
-        return Requests.getCurrentPageNum(pageNumString);
     }
 
     /**

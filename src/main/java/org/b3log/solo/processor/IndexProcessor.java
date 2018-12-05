@@ -32,7 +32,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Paginator;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
@@ -93,7 +93,7 @@ public class IndexProcessor {
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"", "/", "/{p}"}, method = HttpMethod.GET)
+    @RequestProcessing(value = {"", "/"}, method = HttpMethod.GET)
     public void showIndex(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
@@ -104,7 +104,7 @@ public class IndexProcessor {
         final String requestURI = request.getRequestURI();
 
         try {
-            final int currentPageNum = getCurrentPageNum(requestURI);
+            final int currentPageNum = Paginator.getPage(request);
             final JSONObject preference = preferenceQueryService.getPreference();
 
             // https://github.com/b3log/solo/issues/12060
@@ -195,17 +195,5 @@ public class IndexProcessor {
 
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-    }
-
-    /**
-     * Gets the request page number from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
-     */
-    private static int getCurrentPageNum(final String requestURI) {
-        final String pageNumString = StringUtils.substringAfterLast(requestURI, "/");
-
-        return Requests.getCurrentPageNum(pageNumString);
     }
 }
