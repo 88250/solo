@@ -440,12 +440,12 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/archives/{archive}", method = HttpMethod.GET)
+    @RequestProcessing(value = "/articles/archives/{yyyy}/{MM}", method = HttpMethod.GET)
     public void getArchivesArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
         final HttpServletRequest request = context.getRequest();
-        final String archiveDateString = context.pathVar("archive");
+        final String archiveDateString = context.pathVar("yyyy") + "/" + context.pathVar("MM");
         final int currentPageNum = Paginator.getPage(request);
 
         Stopwatchs.start("Get Archive-Articles Paged [archive=" + archiveDateString + ", pageNum=" + currentPageNum + ']');
@@ -607,7 +607,7 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = {"/archives/{data}"}, method = HttpMethod.GET)
+    @RequestProcessing(value = {"/archives/{yyyy}/{MM}"}, method = HttpMethod.GET)
     public void showArchiveArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -616,7 +616,7 @@ public class ArticleProcessor {
 
         try {
             final int currentPageNum = Paginator.getPage(request);
-            final String archiveDateString = context.pathVar("date");
+            final String archiveDateString = context.pathVar("yyyy") + "/" + context.pathVar("MM");
             LOGGER.log(Level.DEBUG, "Request archive date [string={0}, currentPageNum={1}]", archiveDateString, currentPageNum);
             final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
             if (null == result) {
