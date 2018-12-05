@@ -364,7 +364,7 @@ public class ArticleProcessor {
             final StringBuilder pathBuilder = new StringBuilder();
             pathBuilder.append(currentPageNum).append('/').append(pageSize).append('/').append(windowSize);
 
-            final JSONObject requestJSONObject = Requests.buildPaginationRequest(pathBuilder.toString());
+            final JSONObject requestJSONObject = Solos.buildPaginationRequest(pathBuilder.toString());
             requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, true);
             requestJSONObject.put(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, preference.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT));
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
@@ -1005,7 +1005,7 @@ public class ArticleProcessor {
     private static int getArticlesPagedCurrentPageNum(final String requestURI) {
         final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/articles/").length());
 
-        return Requests.getCurrentPageNum(pageNumString);
+        return Solos.getCurrentPageNum(pageNumString);
     }
 
     /**
@@ -1015,7 +1015,7 @@ public class ArticleProcessor {
      * @return page number
      */
     private static int getTagArticlesPagedCurrentPageNum(final String requestURI) {
-        return Requests.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
+        return Solos.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
     }
 
     /**
@@ -1040,7 +1040,7 @@ public class ArticleProcessor {
      * @return page number
      */
     private static int getArchivesArticlesPagedCurrentPageNum(final String requestURI) {
-        return Requests.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
+        return Solos.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
     }
 
     /**
@@ -1065,7 +1065,7 @@ public class ArticleProcessor {
      * @return page number
      */
     private static int getAuthorsArticlesPagedCurrentPageNum(final String requestURI) {
-        return Requests.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
+        return Solos.getCurrentPageNum(StringUtils.substringAfterLast(requestURI, "/"));
     }
 
     /**
@@ -1093,6 +1093,6 @@ public class ArticleProcessor {
     private static int getAuthorCurrentPageNum(final String requestURI, final String authorId) {
         final String pageNumString = StringUtils.substring(requestURI, (Latkes.getContextPath() + "/authors/" + authorId + "/").length());
 
-        return Requests.getCurrentPageNum(pageNumString);
+        return Solos.getCurrentPageNum(pageNumString);
     }
 }

@@ -25,18 +25,18 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.service.PageMgmtService;
 import org.b3log.solo.service.PageQueryService;
 import org.b3log.solo.service.UserQueryService;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -354,7 +354,6 @@ public class PageConsole {
      * </p>
      *
      * @param context the specified http request context
-     * @see Requests#PAGINATION_PATH_PATTERN
      */
     @RequestProcessing(value = "/console/pages/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
             method = HttpMethod.GET)
@@ -367,7 +366,7 @@ public class PageConsole {
             final String requestURI = request.getRequestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/pages/").length());
 
-            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
 
             final JSONObject result = pageQueryService.getPages(requestJSONObject);
             final JSONArray pages = result.optJSONArray(Page.PAGES);

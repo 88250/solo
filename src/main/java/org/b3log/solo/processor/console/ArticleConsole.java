@@ -30,7 +30,6 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
-import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -200,9 +199,7 @@ public class ArticleConsole {
         context.setRenderer(renderer);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/").length());
-
+            final String articleId = context.pathVar("id");
             final JSONObject result = articleQueryService.getArticle(articleId);
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
@@ -257,7 +254,7 @@ public class ArticleConsole {
             final String status = StringUtils.substringBefore(path, "/");
 
             path = path.substring((status + "/").length());
-            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final boolean published = "published".equals(status);
             requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, published);
 
@@ -318,7 +315,7 @@ public class ArticleConsole {
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final String articleId = StringUtils.substringAfter(request.getRequestURI(), "/article/");
+        final String articleId = context.pathVar("id");
         final JSONObject currentUser = Solos.getCurrentUser(request, response);
 
         try {
@@ -366,8 +363,7 @@ public class ArticleConsole {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/unpublish/").length());
-
+            final String articleId = context.pathVar("id");
             final JSONObject currentUser = Solos.getCurrentUser(request, response);
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
@@ -420,7 +416,7 @@ public class ArticleConsole {
         }
 
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/canceltop/").length());
+            final String articleId = context.pathVar("id");
             articleMgmtService.topArticle(articleId, false);
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("cancelTopSuccLabel"));
@@ -463,7 +459,7 @@ public class ArticleConsole {
         }
 
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/puttop/").length());
+            final String articleId = context.pathVar("id");
             articleMgmtService.topArticle(articleId, true);
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("putTopSuccLabel"));

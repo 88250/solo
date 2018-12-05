@@ -25,10 +25,12 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Crypts;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -402,6 +404,104 @@ public final class Solos {
      */
     public static JSONObject clone(final JSONObject src) {
         return new JSONObject(src, CollectionUtils.jsonArrayToArray(src.names(), String[].class));
+    }
+
+    /**
+     * Builds pagination request with the specified path.
+     *
+     * @param path the specified path, "/{page}/{pageSize}/{windowSize}"
+     * @return pagination request json object, for example,
+     * <pre>
+     * {
+     *     "paginationCurrentPageNum": int,
+     *     "paginationPageSize": int,
+     *     "paginationWindowSize": int
+     * }
+     * </pre>
+     */
+    public static JSONObject buildPaginationRequest(final String path) {
+        final Integer currentPageNum = getCurrentPageNum(path);
+        final Integer pageSize = getPageSize(path);
+        final Integer windowSize = getWindowSize(path);
+
+        final JSONObject ret = new JSONObject();
+        ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+        ret.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+        ret.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
+        return ret;
+    }
+
+    /**
+     * Default page size.
+     */
+    private static final int DEFAULT_PAGE_SIZE = 15;
+
+    /**
+     * Default window size.
+     */
+    private static final int DEFAULT_WINDOW_SIZE = 20;
+
+    /**
+     * Gets the request page number from the specified path.
+     *
+     * @param path the specified path
+     * @return page number, returns {@code 1} if the specified request URI can not convert to an number
+     */
+    public static int getCurrentPageNum(final String path) {
+        if (StringUtils.isBlank(path) || path.equals("/")) {
+            return 1;
+        }
+        final String currentPageNumber = path.split("/")[0];
+        if (!Strings.isNumeric(currentPageNumber)) {
+            return 1;
+        }
+
+        return Integer.valueOf(currentPageNumber);
+    }
+
+    /**
+     * Gets the request page size from the specified path.
+     *
+     * @param path the specified path
+     * @return page number, returns {@value #DEFAULT_PAGE_SIZE} if the specified request URI can not convert to an number
+     */
+    public static int getPageSize(final String path) {
+        if (StringUtils.isBlank(path)) {
+            return DEFAULT_PAGE_SIZE;
+        }
+        final String[] parts = path.split("/");
+        if (1 >= parts.length) {
+            return DEFAULT_PAGE_SIZE;
+        }
+        final String pageSize = parts[1];
+        if (!Strings.isNumeric(pageSize)) {
+            return DEFAULT_PAGE_SIZE;
+        }
+
+        return Integer.valueOf(pageSize);
+    }
+
+    /**
+     * Gets the request window size from the specified path.
+     *
+     * @param path the specified path
+     * @return page number, returns {@value #DEFAULT_WINDOW_SIZE} if the specified request URI can not convert to an number
+     */
+    public static int getWindowSize(final String path) {
+        if (StringUtils.isBlank(path)) {
+            return DEFAULT_WINDOW_SIZE;
+        }
+        final String[] parts = path.split("/");
+        if (2 >= parts.length) {
+            return DEFAULT_WINDOW_SIZE;
+        }
+        final String windowSize = parts[2];
+        if (!Strings.isNumeric(windowSize)) {
+            return DEFAULT_WINDOW_SIZE;
+        }
+
+        return Integer.valueOf(windowSize);
     }
 
     /**

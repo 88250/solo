@@ -333,12 +333,12 @@ public final class SoloServletListener extends AbstractServletListener {
         final ArticleConsole articleConsole = beanManager.getReference(ArticleConsole.class);
         DispatcherServlet.get("/console/thumbs", articleConsole::getArticleThumbs);
         DispatcherServlet.post("/console/markdown/2html", articleConsole::markdown2HTML);
-        DispatcherServlet.get("/console/article/*", articleConsole::getArticle);
-        DispatcherServlet.get("/console/articles/status/*/*/*/*" /* Requests.PAGINATION_PATH_PATTERN */, articleConsole::getArticles);
-        DispatcherServlet.delete("/console/article/*", articleConsole::removeArticle);
-        DispatcherServlet.put("/console/article/unpublish/*", articleConsole::cancelPublishArticle);
-        DispatcherServlet.put("/console/article/canceltop/*", articleConsole::cancelTopArticle);
-        DispatcherServlet.put("/console/article/puttop/*", articleConsole::putTopArticle);
+        DispatcherServlet.get("/console/article/{id}", articleConsole::getArticle);
+        DispatcherServlet.get("/console/articles/status/{status}/{page}/{pageSize}/{windowSize}", articleConsole::getArticles);
+        DispatcherServlet.delete("/console/article/{id}", articleConsole::removeArticle);
+        DispatcherServlet.put("/console/article/unpublish/{id}", articleConsole::cancelPublishArticle);
+        DispatcherServlet.put("/console/article/canceltop/{id}", articleConsole::cancelTopArticle);
+        DispatcherServlet.put("/console/article/puttop/{id}", articleConsole::putTopArticle);
         DispatcherServlet.put("/console/article/", articleConsole::updateArticle);
         DispatcherServlet.post("/console/article/", articleConsole::addArticle);
         DispatcherServlet.mapping();
