@@ -30,9 +30,8 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.URIPatternMode;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
@@ -348,7 +347,7 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HttpMethod.GET)
+    @RequestProcessing(value = "/articles/{p}", method = HttpMethod.GET)
     public void getArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
         final HttpServletRequest request = context.getRequest();
@@ -390,7 +389,7 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/tags/.+/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HttpMethod.GET)
+    @RequestProcessing(value = "/articles/tags/{tagTitle}/{p}", method = HttpMethod.GET)
     public void getTagArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
@@ -448,7 +447,7 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/archives/.+/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HttpMethod.GET)
+    @RequestProcessing(value = "/articles/archives/{archive}/{p}", method = HttpMethod.GET)
     public void getArchivesArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
@@ -500,8 +499,7 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/authors/\\d+/\\d+", uriPatternsMode = URIPatternMode.REGEX,
-            method = HttpMethod.GET)
+    @RequestProcessing(value = "/articles/authors/{author}/{p}", method = HttpMethod.GET)
     public void getAuthorsArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 

@@ -22,7 +22,7 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.repository.Query;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
@@ -327,14 +327,14 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final HttpServletResponse response = mock(HttpServletResponse.class);
         when(response.getWriter()).thenReturn(printWriter);
 
-        final HTTPRequestContext httpRequestContext = new HTTPRequestContext();
-        httpRequestContext.setRequest(request);
-        httpRequestContext.setResponse(response);
+        final RequestContext RequestContext = new RequestContext();
+        RequestContext.setRequest(request);
+        RequestContext.setResponse(response);
 
         final ArticleProcessor articleProcessor = BeanManager.getInstance().getReference(ArticleProcessor.class);
-        articleProcessor.showArticle(httpRequestContext);
+        articleProcessor.showArticle(RequestContext);
 
-        final Map<String, Object> dataModel = httpRequestContext.getRenderer().getRenderDataModel();
+        final Map<String, Object> dataModel = RequestContext.getRenderer().getRenderDataModel();
         final JSONObject handledArticle = (JSONObject) dataModel.get(Article.ARTICLE);
         Assert.assertTrue(StringUtils.contains(handledArticle.optString(Keys.OBJECT_ID), article.optString(Keys.OBJECT_ID)));
     }

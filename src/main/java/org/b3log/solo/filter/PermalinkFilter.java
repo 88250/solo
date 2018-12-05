@@ -25,10 +25,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.servlet.DispatcherServlet;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.HttpControl;
-import org.b3log.latke.servlet.renderer.Http500Renderer;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
@@ -47,8 +45,7 @@ import java.io.IOException;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.8, Oct 5, 2018
- * @see org.b3log.solo.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.RequestContext,
- * javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+ * @see org.b3log.solo.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.RequestContext)
  * @see org.b3log.solo.processor.PageProcessor#showPage(org.b3log.latke.servlet.RequestContext)
  * @since 0.3.1
  */
@@ -130,6 +127,7 @@ public final class PermalinkFilter implements Filter {
         }
 
         dispatchToArticleOrPageProcessor(request, response, article, page);
+        chain.doFilter(request, response);
     }
 
     /**
@@ -155,17 +153,7 @@ public final class PermalinkFilter implements Filter {
             request.setAttribute(Page.PAGE, page);
             request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/page");
         }
-
         request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HttpMethod.GET.name());
-
-        final HttpControl httpControl = new HttpControl(DispatcherServlet.HANDLERS.iterator(), context);
-        try {
-            httpControl.nextHandler();
-        } catch (final Exception e) {
-            context.setRenderer(new Http500Renderer(e));
-        }
-
-        DispatcherServlet.result(context);
     }
 
     @Override

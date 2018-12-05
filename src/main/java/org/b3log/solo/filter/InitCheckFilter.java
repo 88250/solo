@@ -23,11 +23,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.DispatcherServlet;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.HttpControl;
-import org.b3log.latke.servlet.renderer.Http500Renderer;
 import org.b3log.solo.service.InitService;
 
 import javax.servlet.*;
@@ -84,13 +79,6 @@ public final class InitCheckFilter implements Filter {
             return;
         }
 
-        // If requests Latke Remote APIs, skips this filter
-        if (requestURI.startsWith(Latkes.getContextPath() + "/latke/remote")) {
-            chain.doFilter(request, response);
-
-            return;
-        }
-
         final BeanManager beanManager = BeanManager.getInstance();
         final InitService initService = beanManager.getReference(InitService.class);
         if (initService.isInited()) {
@@ -99,11 +87,8 @@ public final class InitCheckFilter implements Filter {
             return;
         }
 
-        if ("POST".
-
-                equalsIgnoreCase(httpServletRequest.getMethod()) && (Latkes.getContextPath() + "/init").
-
-                equals(requestURI) ||
+        if ("POST".equalsIgnoreCase(httpServletRequest.getMethod())
+                && (Latkes.getContextPath() + "/init").equals(requestURI) ||
                 StringUtils.startsWith(requestURI, Latkes.getContextPath() + "/oauth/github")) {
             // Do initialization
             chain.doFilter(request, response);
@@ -116,18 +101,7 @@ public final class InitCheckFilter implements Filter {
             initReported = true;
         }
 
-        final RequestContext context = new RequestContext();
-        context.setRequest((HttpServletRequest) request);
-        context.setResponse((HttpServletResponse) response);
-        request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/init");
-        request.setAttribute(Keys.HttpRequest.REQUEST_METHOD, HttpMethod.GET.name());
-        final HttpControl httpControl = new HttpControl(DispatcherServlet.HANDLERS.iterator(), context);
-        try {
-            httpControl.nextHandler();
-        } catch (final Exception e) {
-            context.setRenderer(new Http500Renderer(e));
-        }
-        DispatcherServlet.result(context);
+        chain.doFilter(request, response);
     }
 
     @Override

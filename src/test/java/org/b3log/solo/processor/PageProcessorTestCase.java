@@ -20,7 +20,7 @@ package org.b3log.solo.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.BeanManager;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
@@ -83,14 +83,14 @@ public class PageProcessorTestCase extends AbstractTestCase {
         final HttpServletResponse response = mock(HttpServletResponse.class);
         when(response.getWriter()).thenReturn(printWriter);
 
-        final HTTPRequestContext httpRequestContext = new HTTPRequestContext();
-        httpRequestContext.setRequest(request);
-        httpRequestContext.setResponse(response);
+        final RequestContext RequestContext = new RequestContext();
+        RequestContext.setRequest(request);
+        RequestContext.setResponse(response);
 
         final PageProcessor pageProcessor = BeanManager.getInstance().getReference(PageProcessor.class);
-        pageProcessor.showPage(httpRequestContext);
+        pageProcessor.showPage(RequestContext);
 
-        final Map<String, Object> dataModel = httpRequestContext.getRenderer().getRenderDataModel();
+        final Map<String, Object> dataModel = RequestContext.getRenderer().getRenderDataModel();
         final JSONObject handledPage = (JSONObject) dataModel.get(Page.PAGE);
         Assert.assertTrue(StringUtils.contains(handledPage.optString(Keys.OBJECT_ID), page.optString(Keys.OBJECT_ID)));
     }
