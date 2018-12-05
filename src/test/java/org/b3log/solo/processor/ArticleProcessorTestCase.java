@@ -24,6 +24,8 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockHttpServletRequest;
+import org.b3log.solo.MockHttpServletResponse;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.json.JSONObject;
@@ -63,30 +65,16 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
     /**
      * getArchivesArticlesByPage.
      *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void getArchivesArticlesByPage() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/articles/archives/"
-                + DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM") + "/1");
-        when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
+    public void getArchivesArticlesByPage() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/articles/archives/"+ DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM"));
+        request.putParameter("p", "1");
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
+        final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
     }
 
@@ -100,55 +88,29 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
         final String articleId = article.optString(Keys.OBJECT_ID);
 
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/get-article-content");
-        when(request.getParameter("id")).thenReturn(articleId);
-        when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/get-article-content");
+        request.putParameter("id", articleId);
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
+        final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "<p>欢迎使用"));
     }
 
     /**
      * getArticlesByPage.
      *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void getArticlesByPage() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/articles/1");
-        when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
+    public void getArticlesByPage() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/articles");
+        request.putParameter("p", "1");
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
+        final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
     }
 

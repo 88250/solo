@@ -25,6 +25,7 @@ import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.solo.api.MetaWeblogAPI;
 import org.b3log.solo.cache.*;
+import org.b3log.solo.processor.MockDispatcherServlet;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.service.*;
 import org.json.JSONObject;
@@ -32,6 +33,9 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
+import javax.servlet.http.HttpServletRequest;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Connection;
 import java.util.Collection;
 import java.util.Locale;
@@ -40,7 +44,8 @@ import java.util.Locale;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.0.11, Sep 25, 2018
+ * @version 3.0.0.0, Dec 5, 2018
+ * @since 2.9.7
  */
 public abstract class AbstractTestCase {
 
@@ -110,6 +115,47 @@ public abstract class AbstractTestCase {
         initService.init(requestJSONObject);
         final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+    }
+
+    /**
+     * Gets a mock dispatcher servlet and run service.
+     *
+     * @param request  the specified request
+     * @param response the specified response
+     * @return mock dispatcher servlet
+     */
+    public MockDispatcherServlet mockDispatcherServletService(final HttpServletRequest request, final MockHttpServletResponse response) {
+        final MockDispatcherServlet ret = new MockDispatcherServlet();
+        ret.init();
+        ret.service(request, response);
+
+        return ret;
+    }
+
+    /**
+     * Gets a mock request.
+     *
+     * @return mock request
+     */
+    public MockHttpServletRequest mockRequest() {
+        final MockHttpServletRequest ret = new MockHttpServletRequest();
+
+        return ret;
+    }
+
+    /**
+     * Gets a mock response.
+     *
+     * @return mock response
+     */
+    public MockHttpServletResponse mockResponse() {
+        final StringWriter stringWriter = new StringWriter();
+        final PrintWriter printWriter = new PrintWriter(stringWriter);
+        final MockHttpServletResponse response = new MockHttpServletResponse();
+        response.setWriter(printWriter);
+        response.setBodyWriter(stringWriter);
+
+        return response;
     }
 
     /**
