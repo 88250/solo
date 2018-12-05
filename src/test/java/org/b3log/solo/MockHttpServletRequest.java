@@ -17,6 +17,7 @@
  */
 package org.b3log.solo;
 
+import org.b3log.latke.Latkes;
 import org.b3log.latke.servlet.HttpMethod;
 
 import javax.servlet.*;
@@ -163,7 +164,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public StringBuffer getRequestURL() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new StringBuffer(Latkes.getServePath() + requestURI);
     }
 
     @Override
@@ -173,7 +174,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public HttpSession getSession(final boolean create) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return null;
     }
 
     @Override

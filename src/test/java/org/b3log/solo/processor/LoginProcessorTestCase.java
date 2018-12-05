@@ -21,6 +21,8 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockHttpServletRequest;
+import org.b3log.solo.MockHttpServletResponse;
 import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -58,30 +60,15 @@ public class LoginProcessorTestCase extends AbstractTestCase {
 
     /**
      * showLogin.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void showLogin() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/login");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
+    public void showLogin() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/login");
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
+        final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用 Solo!</title>"));
     }
 
@@ -150,29 +137,15 @@ public class LoginProcessorTestCase extends AbstractTestCase {
     /**
      * showForgot.
      *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void showForgot() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/forgot");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
+    public void showForgot() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/forgot");
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
+        final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, " <title>忘记密码 Solo!</title>"));
     }
 
