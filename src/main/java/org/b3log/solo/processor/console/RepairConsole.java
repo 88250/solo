@@ -55,7 +55,7 @@ import java.util.List;
  * @since 0.3.1
  */
 @RequestProcessor
-@Before(adviceClass = ConsoleAuthAdvice.class)
+@Before( ConsoleAuthAdvice.class)
 public class RepairConsole {
 
     /**

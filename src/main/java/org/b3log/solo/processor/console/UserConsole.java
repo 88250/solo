@@ -114,7 +114,7 @@ public class UserConsole {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/user/", method = HttpMethod.PUT)
-    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
+    @Before( ConsoleAdminAuthAdvice.class)
     public void updateUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -222,7 +222,7 @@ public class UserConsole {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/user/*", method = HttpMethod.DELETE)
-    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
+    @Before( ConsoleAdminAuthAdvice.class)
     public void removeUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -273,7 +273,7 @@ public class UserConsole {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/users/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
-    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
+    @Before( ConsoleAdminAuthAdvice.class)
     public void getUsers(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -324,7 +324,7 @@ public class UserConsole {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/user/*", method = HttpMethod.GET)
-    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
+    @Before( ConsoleAdminAuthAdvice.class)
     public void getUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -360,7 +360,7 @@ public class UserConsole {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/changeRole/*", method = HttpMethod.GET)
-    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
+    @Before( ConsoleAdminAuthAdvice.class)
     public void changeUserRole(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

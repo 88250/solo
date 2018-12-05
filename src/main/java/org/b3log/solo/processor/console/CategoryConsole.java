@@ -57,7 +57,7 @@ import java.util.Set;
  * @since 2.0.0
  */
 @RequestProcessor
-@Before(adviceClass = ConsoleAdminAuthAdvice.class)
+@Before( ConsoleAdminAuthAdvice.class)
 public class CategoryConsole {
 
     /**

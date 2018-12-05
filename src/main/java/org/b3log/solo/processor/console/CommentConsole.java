@@ -47,7 +47,7 @@ import java.util.List;
  * @since 0.4.0
  */
 @RequestProcessor
-@Before(adviceClass = ConsoleAuthAdvice.class)
+@Before( ConsoleAuthAdvice.class)
 public class CommentConsole {
 
     /**

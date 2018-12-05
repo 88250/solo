@@ -69,7 +69,7 @@ import java.util.*;
  * @since 0.4.1
  */
 @Singleton
-@Before(adviceClass = ConsoleAuthAdvice.class)
+@Before( ConsoleAuthAdvice.class)
 public class AdminConsole {
 
     /**
@@ -130,7 +130,7 @@ public class AdminConsole {
      *
      * @param context the specified context
      */
-    @Before(adviceClass = ConsoleAuthAdvice.class)
+    @Before( ConsoleAuthAdvice.class)
     public void showAdminIndex(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();

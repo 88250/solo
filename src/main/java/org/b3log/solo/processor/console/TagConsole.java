@@ -90,7 +90,7 @@ public class TagConsole {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/tags", method = HttpMethod.GET)
-    @Before(adviceClass = ConsoleAuthAdvice.class)
+    @Before( ConsoleAuthAdvice.class)
     public void getTags(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -125,7 +125,7 @@ public class TagConsole {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/tag/unused", method = HttpMethod.GET)
-    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
+    @Before( ConsoleAdminAuthAdvice.class)
     public void getUnusedTags(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -169,7 +169,7 @@ public class TagConsole {
      * @param context  the specified http request context
      */
     @RequestProcessing(value = "/console/tag/unused", method = HttpMethod.DELETE)
-    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
+    @Before( ConsoleAdminAuthAdvice.class)
     public void removeUnusedTags(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

@@ -50,7 +50,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 0.4.0
  */
 @RequestProcessor
-@Before(adviceClass = ConsoleAdminAuthAdvice.class)
+@Before( ConsoleAdminAuthAdvice.class)
 public class PageConsole {
 
     /**

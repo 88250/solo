@@ -56,7 +56,7 @@ import java.util.stream.Collectors;
  * @since 0.4.0
  */
 @Singleton
-@Before(adviceClass = ConsoleAuthAdvice.class)
+@Before( ConsoleAuthAdvice.class)
 public class ArticleConsole {
 
     /**
