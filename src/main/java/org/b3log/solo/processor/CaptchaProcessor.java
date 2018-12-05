@@ -20,11 +20,11 @@ package org.b3log.solo.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.PNGRenderer;
+import org.b3log.latke.servlet.renderer.PngRenderer;
 import org.b3log.latke.util.Strings;
 import org.patchca.color.GradientColorFactory;
 import org.patchca.color.RandomColorFactory;
@@ -90,9 +90,9 @@ public class CaptchaProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/captcha", method = HTTPRequestMethod.GET)
-    public void get(final HTTPRequestContext context) {
-        final PNGRenderer renderer = new PNGRenderer();
+    @RequestProcessing(value = "/captcha", method = HttpMethod.GET)
+    public void get(final RequestContext context) {
+        final PngRenderer renderer = new PngRenderer();
         context.setRenderer(renderer);
 
         try {

@@ -27,12 +27,12 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -114,10 +114,10 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.PUT)
+    @RequestProcessing(value = "/console/user/", method = HttpMethod.PUT)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void updateUser(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void updateUser(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
@@ -166,9 +166,9 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/user/", method = HTTPRequestMethod.POST)
-    public void addUser(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/user/", method = HttpMethod.POST)
+    public void addUser(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
@@ -222,10 +222,10 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/console/user/*", method = HttpMethod.DELETE)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void removeUser(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void removeUser(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();
@@ -273,10 +273,10 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/users/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/users/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HttpMethod.GET)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void getUsers(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getUsers(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -324,10 +324,10 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/user/*", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/user/*", method = HttpMethod.GET)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void getUser(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getUser(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final HttpServletRequest request = context.getRequest();
         final String requestURI = request.getRequestURI();
@@ -360,10 +360,10 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/changeRole/*", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/changeRole/*", method = HttpMethod.GET)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void changeUserRole(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void changeUserRole(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         final JSONObject jsonObject = new JSONObject();

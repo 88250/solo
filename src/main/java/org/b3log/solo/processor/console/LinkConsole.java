@@ -24,12 +24,12 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Link;
@@ -88,9 +88,9 @@ public class LinkConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.DELETE)
-    public void removeLink(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/link/*", method = HttpMethod.DELETE)
+    public void removeLink(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -138,9 +138,9 @@ public class LinkConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.PUT)
-    public void updateLink(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/link/", method = HttpMethod.PUT)
+    public void updateLink(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -185,9 +185,9 @@ public class LinkConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/order/", method = HTTPRequestMethod.PUT)
-    public void changeOrder(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/link/order/", method = HttpMethod.PUT)
+    public void changeOrder(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
@@ -236,9 +236,9 @@ public class LinkConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.POST)
-    public void addLink(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/link/", method = HttpMethod.POST)
+    public void addLink(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
@@ -287,9 +287,9 @@ public class LinkConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/links/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
-    public void getLinks(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/links/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HttpMethod.GET)
+    public void getLinks(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -336,9 +336,9 @@ public class LinkConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.GET)
-    public void getLink(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/link/*", method = HttpMethod.GET)
+    public void getLink(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {

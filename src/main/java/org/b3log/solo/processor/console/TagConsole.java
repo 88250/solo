@@ -22,12 +22,12 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.TagMgmtService;
@@ -89,10 +89,10 @@ public class TagConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/tags", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/tags", method = HttpMethod.GET)
     @Before(adviceClass = ConsoleAuthAdvice.class)
-    public void getTags(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getTags(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -124,10 +124,10 @@ public class TagConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/tag/unused", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/console/tag/unused", method = HttpMethod.GET)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void getUnusedTags(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getUnusedTags(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -168,10 +168,10 @@ public class TagConsole {
      *
      * @param context  the specified http request context
      */
-    @RequestProcessing(value = "/console/tag/unused", method = HTTPRequestMethod.DELETE)
+    @RequestProcessing(value = "/console/tag/unused", method = HttpMethod.DELETE)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void removeUnusedTags(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void removeUnusedTags(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);

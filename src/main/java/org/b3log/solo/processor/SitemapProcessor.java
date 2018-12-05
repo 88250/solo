@@ -28,11 +28,11 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.TextXMLRenderer;
+import org.b3log.latke.servlet.renderer.TextXmlRenderer;
 import org.b3log.latke.util.XMLs;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
@@ -101,9 +101,9 @@ public class SitemapProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/sitemap.xml", method = HTTPRequestMethod.GET)
-    public void sitemap(final HTTPRequestContext context) {
-        final TextXMLRenderer renderer = new TextXMLRenderer();
+    @RequestProcessing(value = "/sitemap.xml", method = HttpMethod.GET)
+    public void sitemap(final RequestContext context) {
+        final TextXmlRenderer renderer = new TextXmlRenderer();
         context.setRenderer(renderer);
 
         try {

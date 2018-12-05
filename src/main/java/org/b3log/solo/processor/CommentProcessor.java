@@ -24,11 +24,11 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.*;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -124,8 +124,8 @@ public class CommentProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/page/comments", method = HTTPRequestMethod.POST)
-    public void addPageComment(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/page/comments", method = HttpMethod.POST)
+    public void addPageComment(final RequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
         final JSONObject requestJSONObject = context.requestJSON();
@@ -134,7 +134,7 @@ public class CommentProcessor {
         fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -227,8 +227,8 @@ public class CommentProcessor {
      *
      * @param context the specified context, including a request json object
      */
-    @RequestProcessing(value = "/article/comments", method = HTTPRequestMethod.POST)
-    public void addArticleComment(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/article/comments", method = HttpMethod.POST)
+    public void addArticleComment(final RequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
         final JSONObject requestJSONObject = context.requestJSON();
@@ -237,7 +237,7 @@ public class CommentProcessor {
         fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 

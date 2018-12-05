@@ -31,12 +31,12 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.mail.MailService;
@@ -131,8 +131,8 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/login", method = HTTPRequestMethod.GET)
-    public void showLogin(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/login", method = HttpMethod.GET)
+    public void showLogin(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
@@ -166,11 +166,11 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
-    public void login(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/login", method = HttpMethod.POST)
+    public void login(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final JSONObject requestJSONObject = context.requestJSON();
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -217,8 +217,8 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/logout", method = HTTPRequestMethod.GET)
-    public void logout(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/logout", method = HttpMethod.GET)
+    public void logout(final RequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
         Solos.logout(httpServletRequest, context.getResponse());
@@ -236,8 +236,8 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/forgot", method = HTTPRequestMethod.GET)
-    public void showForgot(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/forgot", method = HttpMethod.GET)
+    public void showForgot(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
         String destinationURL = request.getParameter(Common.GOTO);
@@ -264,9 +264,9 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/forgot", method = HTTPRequestMethod.POST)
-    public void forgot(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/forgot", method = HttpMethod.POST)
+    public void forgot(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -313,9 +313,9 @@ public class LoginProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/reset", method = HTTPRequestMethod.POST)
-    public void reset(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/reset", method = HttpMethod.POST)
+    public void reset(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
 
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -413,7 +413,7 @@ public class LoginProcessor {
      * @param destinationURL the destination URL
      * @param request        for reset password page
      */
-    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL,
+    private void renderPage(final RequestContext context, final String pageTemplate, final String destinationURL,
                             final HttpServletRequest request) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         renderer.setTemplateName(pageTemplate);

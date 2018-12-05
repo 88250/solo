@@ -26,11 +26,11 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -134,10 +134,10 @@ public class B3CommentReceiver {
      *                          }
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/apis/symphony/comment", method = HTTPRequestMethod.PUT)
-    public void addComment(final HTTPRequestContext context, final JSONObject requestJSONObject)
+    @RequestProcessing(value = "/apis/symphony/comment", method = HttpMethod.PUT)
+    public void addComment(final RequestContext context, final JSONObject requestJSONObject)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);

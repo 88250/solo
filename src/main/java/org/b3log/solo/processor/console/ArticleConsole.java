@@ -27,9 +27,9 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
@@ -108,8 +108,8 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    public void getArticleThumbs(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getArticleThumbs(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
@@ -139,8 +139,8 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    public void markdown2HTML(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void markdown2HTML(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
@@ -195,8 +195,8 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    public void getArticle(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -247,8 +247,8 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    public void getArticles(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getArticles(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -310,8 +310,8 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    public void removeArticle(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void removeArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
@@ -357,8 +357,8 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    public void cancelPublishArticle(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void cancelPublishArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
@@ -404,8 +404,8 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    public void cancelTopArticle(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void cancelTopArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
@@ -448,8 +448,8 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    public void putTopArticle(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void putTopArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
@@ -511,8 +511,8 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    public void updateArticle(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void updateArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
@@ -579,8 +579,8 @@ public class ArticleConsole {
      *
      * @param context the specified http request context
      */
-    public void addArticle(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void addArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         final HttpServletRequest request = context.getRequest();

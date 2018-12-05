@@ -21,7 +21,7 @@ import freemarker.template.Template;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.solo.util.Skins;
 
@@ -104,11 +104,11 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     }
 
     @Override
-    protected void beforeRender(final HTTPRequestContext context) {
+    protected void beforeRender(final RequestContext context) {
     }
 
     @Override
-    protected void afterRender(final HTTPRequestContext context) {
+    protected void afterRender(final RequestContext context) {
     }
 
     /**

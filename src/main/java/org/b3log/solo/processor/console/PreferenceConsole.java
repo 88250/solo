@@ -24,12 +24,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Sign;
 import org.b3log.solo.model.Skin;
@@ -112,9 +112,9 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.GET)
-    public void getReplyNotificationTemplate(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/reply/notification/template", method = HttpMethod.GET)
+    public void getReplyNotificationTemplate(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -150,9 +150,9 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/reply/notification/template", method = HTTPRequestMethod.PUT)
-    public void updateReplyNotificationTemplate(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/reply/notification/template", method = HttpMethod.PUT)
+    public void updateReplyNotificationTemplate(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -190,9 +190,9 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/signs/", method = HTTPRequestMethod.GET)
-    public void getSigns(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/signs/", method = HttpMethod.GET)
+    public void getSigns(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -271,9 +271,9 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.GET)
-    public void getPreference(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HttpMethod.GET)
+    public void getPreference(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -350,9 +350,9 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HTTPRequestMethod.PUT)
-    public void updatePreference(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HttpMethod.PUT)
+    public void updatePreference(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -400,9 +400,9 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HTTPRequestMethod.GET)
-    public void getQiniuPreference(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HttpMethod.GET)
+    public void getQiniuPreference(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -443,9 +443,9 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HTTPRequestMethod.PUT)
-    public void updateQiniu(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = PREFERENCE_URI_PREFIX + "qiniu", method = HttpMethod.PUT)
+    public void updateQiniu(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);

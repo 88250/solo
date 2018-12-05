@@ -24,11 +24,11 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
@@ -102,9 +102,9 @@ public class BlogProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/blog/info", method = HTTPRequestMethod.GET)
-    public void getBlogInfo(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/blog/info", method = HttpMethod.GET)
+    public void getBlogInfo(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -152,8 +152,8 @@ public class BlogProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/blog/articles-tags", method = HTTPRequestMethod.GET)
-    public void getArticlesTags(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/blog/articles-tags", method = HttpMethod.GET)
+    public void getArticlesTags(final RequestContext context) {
         final String pwd = context.param("pwd");
         if (StringUtils.isBlank(pwd)) {
             context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -193,7 +193,7 @@ public class BlogProcessor {
         final JSONObject result = articleQueryService.getArticles(requestJSONObject);
         final JSONArray articles = result.optJSONArray(Article.ARTICLES);
 
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);

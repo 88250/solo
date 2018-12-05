@@ -26,8 +26,8 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
@@ -142,8 +142,8 @@ public class CategoryProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/category/**", method = HTTPRequestMethod.GET)
-    public void showCategoryArticles(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/category/**", method = HttpMethod.GET)
+    public void showCategoryArticles(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
         renderer.setTemplateName("category-articles.ftl");

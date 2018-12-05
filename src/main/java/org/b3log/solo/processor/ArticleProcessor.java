@@ -30,14 +30,14 @@ import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.URIPatternMode;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
+import org.b3log.latke.servlet.renderer.TextHtmlRenderer;
 import org.b3log.latke.util.*;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
@@ -143,8 +143,8 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/console/article-pwd", method = HTTPRequestMethod.GET)
-    public void showArticlePwdForm(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/console/article-pwd", method = HttpMethod.GET)
+    public void showArticlePwdForm(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final String articleId = request.getParameter("articleId");
@@ -194,8 +194,8 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/console/article-pwd", method = HTTPRequestMethod.POST)
-    public void onArticlePwdForm(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/console/article-pwd", method = HttpMethod.POST)
+    public void onArticlePwdForm(final RequestContext context) {
         try {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
@@ -234,8 +234,8 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/random", method = HTTPRequestMethod.POST)
-    public void getRandomArticles(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/articles/random", method = HttpMethod.POST)
+    public void getRandomArticles(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
         final JSONObject preference = preferenceQueryService.getPreference();
@@ -243,7 +243,7 @@ public class ArticleProcessor {
         if (0 == displayCnt) {
             jsonObject.put(Common.RANDOM_ARTICLES, new ArrayList<JSONObject>());
 
-            final JSONRenderer renderer = new JSONRenderer();
+            final JsonRenderer renderer = new JsonRenderer();
             context.setRenderer(renderer);
             renderer.setJSONObject(jsonObject);
 
@@ -255,7 +255,7 @@ public class ArticleProcessor {
 
         jsonObject.put(Common.RANDOM_ARTICLES, randomArticles);
 
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -267,8 +267,8 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/article/id/*/relevant/articles", method = HTTPRequestMethod.GET)
-    public void getRelevantArticles(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/article/id/*/relevant/articles", method = HttpMethod.GET)
+    public void getRelevantArticles(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
         final JSONObject preference = preferenceQueryService.getPreference();
@@ -277,7 +277,7 @@ public class ArticleProcessor {
         if (0 == displayCnt) {
             jsonObject.put(Common.RANDOM_ARTICLES, new ArrayList<JSONObject>());
 
-            final JSONRenderer renderer = new JSONRenderer();
+            final JsonRenderer renderer = new JsonRenderer();
             context.setRenderer(renderer);
             renderer.setJSONObject(jsonObject);
 
@@ -305,7 +305,7 @@ public class ArticleProcessor {
         final List<JSONObject> relevantArticles = articleQueryService.getRelevantArticles(article, preference);
         jsonObject.put(Common.RELEVANT_ARTICLES, relevantArticles);
 
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -317,15 +317,15 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/get-article-content", method = HTTPRequestMethod.GET)
-    public void getArticleContent(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/get-article-content", method = HttpMethod.GET)
+    public void getArticleContent(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final String articleId = context.param("id");
         if (StringUtils.isBlank(articleId)) {
             return;
         }
 
-        final TextHTMLRenderer renderer = new TextHTMLRenderer();
+        final TextHtmlRenderer renderer = new TextHtmlRenderer();
         context.setRenderer(renderer);
 
         String content;
@@ -348,8 +348,8 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
-    public void getArticlesByPage(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/articles/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HttpMethod.GET)
+    public void getArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
         final HttpServletRequest request = context.getRequest();
         final int currentPageNum = getArticlesPagedCurrentPageNum(request.getRequestURI());
@@ -380,7 +380,7 @@ public class ArticleProcessor {
             Stopwatchs.end();
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
     }
@@ -390,8 +390,8 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/tags/.+/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
-    public void getTagArticlesByPage(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/articles/tags/.+/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HttpMethod.GET)
+    public void getTagArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
         final HttpServletRequest request = context.getRequest();
@@ -438,7 +438,7 @@ public class ArticleProcessor {
             Stopwatchs.end();
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
     }
@@ -448,8 +448,8 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/articles/archives/.+/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
-    public void getArchivesArticlesByPage(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/articles/archives/.+/\\d+", uriPatternsMode = URIPatternMode.REGEX, method = HttpMethod.GET)
+    public void getArchivesArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
         final HttpServletRequest request = context.getRequest();
@@ -490,7 +490,7 @@ public class ArticleProcessor {
             Stopwatchs.end();
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
     }
@@ -501,8 +501,8 @@ public class ArticleProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/articles/authors/\\d+/\\d+", uriPatternsMode = URIPatternMode.REGEX,
-            method = HTTPRequestMethod.GET)
-    public void getAuthorsArticlesByPage(final HTTPRequestContext context) {
+            method = HttpMethod.GET)
+    public void getAuthorsArticlesByPage(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
         final HttpServletRequest request = context.getRequest();
@@ -544,7 +544,7 @@ public class ArticleProcessor {
             Stopwatchs.end();
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
     }
@@ -554,8 +554,8 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/authors/**", method = HTTPRequestMethod.GET)
-    public void showAuthorArticles(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/authors/**", method = HttpMethod.GET)
+    public void showAuthorArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
@@ -629,8 +629,8 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/archives/**", method = HTTPRequestMethod.GET)
-    public void showArchiveArticles(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/archives/**", method = HttpMethod.GET)
+    public void showArchiveArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);
@@ -695,8 +695,8 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/article", method = HTTPRequestMethod.GET)
-    public void showArticle(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/article", method = HttpMethod.GET)
+    public void showArticle(final RequestContext context) {
         // See PermalinkFilter#dispatchToArticleOrPageProcessor()
         final JSONObject article = (JSONObject) context.attr(Article.ARTICLE);
         if (null == article) {

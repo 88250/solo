@@ -26,12 +26,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.Category;
@@ -113,9 +113,9 @@ public class CategoryConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/category/order/", method = HTTPRequestMethod.PUT)
-    public void changeOrder(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/category/order/", method = HttpMethod.PUT)
+    public void changeOrder(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         final JSONObject ret = new JSONObject();
@@ -159,9 +159,9 @@ public class CategoryConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/category/*", method = HTTPRequestMethod.GET)
-    public void getCategory(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/category/*", method = HttpMethod.GET)
+    public void getCategory(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         try {
             final HttpServletRequest request = context.getRequest();
@@ -209,9 +209,9 @@ public class CategoryConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/category/*", method = HTTPRequestMethod.DELETE)
-    public void removeCategory(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/category/*", method = HttpMethod.DELETE)
+    public void removeCategory(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -256,9 +256,9 @@ public class CategoryConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/category/", method = HTTPRequestMethod.PUT)
-    public void updateCategory(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/category/", method = HttpMethod.PUT)
+    public void updateCategory(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
@@ -390,9 +390,9 @@ public class CategoryConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/category/", method = HTTPRequestMethod.POST)
-    public void addCategory(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/category/", method = HttpMethod.POST)
+    public void addCategory(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
@@ -522,9 +522,9 @@ public class CategoryConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/categories/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HTTPRequestMethod.GET)
-    public void getCategories(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/categories/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HttpMethod.GET)
+    public void getCategories(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {

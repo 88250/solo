@@ -25,12 +25,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.TextXMLRenderer;
+import org.b3log.latke.servlet.renderer.TextXmlRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -101,9 +101,9 @@ public class SearchProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/opensearch.xml", method = HTTPRequestMethod.GET)
-    public void showOpensearchXML(final HTTPRequestContext context) {
-        final TextXMLRenderer renderer = new TextXMLRenderer();
+    @RequestProcessing(value = "/opensearch.xml", method = HttpMethod.GET)
+    public void showOpensearchXML(final RequestContext context) {
+        final TextXmlRenderer renderer = new TextXmlRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -125,8 +125,8 @@ public class SearchProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/search", method = HTTPRequestMethod.GET)
-    public void search(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/search", method = HttpMethod.GET)
+    public void search(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
         context.setRenderer(renderer);

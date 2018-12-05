@@ -36,8 +36,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.URLs;
@@ -94,8 +94,8 @@ public class FileUploadProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/upload/*", method = HTTPRequestMethod.GET)
-    public void getFile(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/upload/*", method = HttpMethod.GET)
+    public void getFile(final RequestContext context) {
         if (QN_ENABLED) {
             return;
         }
@@ -154,8 +154,8 @@ public class FileUploadProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/upload", method = HTTPRequestMethod.POST)
-    public void uploadFile(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/upload", method = HttpMethod.POST)
+    public void uploadFile(final RequestContext context) {
         context.renderJSON();
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();

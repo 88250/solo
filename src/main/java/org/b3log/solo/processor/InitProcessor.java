@@ -25,12 +25,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -93,8 +93,8 @@ public class InitProcessor {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/init", method = HTTPRequestMethod.GET)
-    public void showInit(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/init", method = HttpMethod.GET)
+    public void showInit(final RequestContext context) {
         if (initService.isInited()) {
             context.sendRedirect("/");
 
@@ -132,15 +132,15 @@ public class InitProcessor {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/init", method = HTTPRequestMethod.POST)
-    public void initSolo(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/init", method = HttpMethod.POST)
+    public void initSolo(final RequestContext context) {
         if (initService.isInited()) {
             context.sendRedirect("/");
 
             return;
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         renderer.setJSONObject(ret);

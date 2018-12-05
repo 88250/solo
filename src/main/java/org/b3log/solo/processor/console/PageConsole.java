@@ -25,12 +25,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
@@ -115,9 +115,9 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.PUT)
-    public void updatePage(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/page/", method = HttpMethod.PUT)
+    public void updatePage(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
@@ -151,9 +151,9 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.DELETE)
-    public void removePage(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/page/*", method = HttpMethod.DELETE)
+    public void removePage(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -206,9 +206,9 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/", method = HTTPRequestMethod.POST)
-    public void addPage(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/page/", method = HttpMethod.POST)
+    public void addPage(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
@@ -253,9 +253,9 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/order/", method = HTTPRequestMethod.PUT)
-    public void changeOrder(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/page/order/", method = HttpMethod.PUT)
+    public void changeOrder(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
@@ -301,9 +301,9 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/*", method = HTTPRequestMethod.GET)
-    public void getPage(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/page/*", method = HttpMethod.GET)
+    public void getPage(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -357,9 +357,9 @@ public class PageConsole {
      * @see Requests#PAGINATION_PATH_PATTERN
      */
     @RequestProcessing(value = "/console/pages/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-            method = HTTPRequestMethod.GET)
-    public void getPages(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+            method = HttpMethod.GET)
+    public void getPages(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {

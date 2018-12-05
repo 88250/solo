@@ -22,11 +22,11 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -100,10 +100,10 @@ public class B3ArticleReceiver {
      *                          }
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/apis/symphony/article", method = HTTPRequestMethod.POST)
-    public void addArticle(final HTTPRequestContext context, final JSONObject requestJSONObject)
+    @RequestProcessing(value = "/apis/symphony/article", method = HttpMethod.POST)
+    public void addArticle(final RequestContext context, final JSONObject requestJSONObject)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
@@ -172,10 +172,10 @@ public class B3ArticleReceiver {
      *                          }
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/apis/symphony/article", method = HTTPRequestMethod.PUT)
-    public void updateArticle(final HTTPRequestContext context, final JSONObject requestJSONObject)
+    @RequestProcessing(value = "/apis/symphony/article", method = HttpMethod.PUT)
+    public void updateArticle(final RequestContext context, final JSONObject requestJSONObject)
             throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);

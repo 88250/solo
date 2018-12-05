@@ -35,7 +35,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Execs;
@@ -131,7 +131,7 @@ public class AdminConsole {
      * @param context the specified context
      */
     @Before(adviceClass = ConsoleAuthAdvice.class)
-    public void showAdminIndex(final HTTPRequestContext context) {
+    public void showAdminIndex(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
@@ -182,7 +182,7 @@ public class AdminConsole {
      *
      * @param context the specified context
      */
-    public void showAdminFunctions(final HTTPRequestContext context) {
+    public void showAdminFunctions(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
@@ -210,7 +210,7 @@ public class AdminConsole {
      *
      * @param context the specified context
      */
-    public void showAdminPreferenceFunction(final HTTPRequestContext context) {
+    public void showAdminPreferenceFunction(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
         final String templateName = "admin-preference.ftl";
@@ -247,7 +247,7 @@ public class AdminConsole {
      *
      * @param context the specified HTTP request context
      */
-    public void exportSQL(final HTTPRequestContext context) {
+    public void exportSQL(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
@@ -365,7 +365,7 @@ public class AdminConsole {
      *
      * @param context the specified HTTP request context
      */
-    public void exportJSON(final HTTPRequestContext context) {
+    public void exportJSON(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(request, response)) {
@@ -420,7 +420,7 @@ public class AdminConsole {
      *
      * @param context the specified HTTP request context
      */
-    public void exportHexo(final HTTPRequestContext context) {
+    public void exportHexo(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(request, response)) {

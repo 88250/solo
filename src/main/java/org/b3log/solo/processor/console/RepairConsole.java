@@ -23,12 +23,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.annotation.Transactional;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.TextHTMLRenderer;
+import org.b3log.latke.servlet.renderer.TextHtmlRenderer;
 import org.b3log.solo.mail.MailService;
 import org.b3log.solo.mail.MailServiceFactory;
 import org.b3log.solo.model.Article;
@@ -115,9 +115,9 @@ public class RepairConsole {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/fix/restore-signs.do", method = HTTPRequestMethod.GET)
-    public void restoreSigns(final HTTPRequestContext context) {
-        final TextHTMLRenderer renderer = new TextHTMLRenderer();
+    @RequestProcessing(value = "/fix/restore-signs.do", method = HttpMethod.GET)
+    public void restoreSigns(final RequestContext context) {
+        final TextHtmlRenderer renderer = new TextHtmlRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -153,10 +153,10 @@ public class RepairConsole {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/fix/tag-article-counter-repair.do", method = HTTPRequestMethod.GET)
+    @RequestProcessing(value = "/fix/tag-article-counter-repair.do", method = HttpMethod.GET)
     @Transactional
-    public void repairTagArticleCounter(final HTTPRequestContext context) {
-        final TextHTMLRenderer renderer = new TextHTMLRenderer();
+    public void repairTagArticleCounter(final RequestContext context) {
+        final TextHtmlRenderer renderer = new TextHtmlRenderer();
         context.setRenderer(renderer);
 
         try {

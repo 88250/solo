@@ -23,12 +23,12 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.service.CommentMgmtService;
@@ -88,9 +88,9 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/comment/*", method = HTTPRequestMethod.DELETE)
-    public void removePageComment(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/page/comment/*", method = HttpMethod.DELETE)
+    public void removePageComment(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
@@ -134,9 +134,9 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/comment/*", method = HTTPRequestMethod.DELETE)
-    public void removeArticleComment(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/article/comment/*", method = HttpMethod.DELETE)
+    public void removeArticleComment(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
@@ -199,9 +199,9 @@ public class CommentConsole {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/comments/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-            method = HTTPRequestMethod.GET)
-    public void getComments(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+            method = HttpMethod.GET)
+    public void getComments(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -248,9 +248,9 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/comments/article/*", method = HTTPRequestMethod.GET)
-    public void getArticleComments(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/comments/article/*", method = HttpMethod.GET)
+    public void getArticleComments(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
@@ -297,9 +297,9 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/comments/page/*", method = HTTPRequestMethod.GET)
-    public void getPageComments(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/comments/page/*", method = HttpMethod.GET)
+    public void getPageComments(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);

@@ -25,8 +25,8 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AtomRenderer;
@@ -93,8 +93,8 @@ public class FeedProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/atom.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void blogArticlesAtom(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/atom.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
+    public void blogArticlesAtom(final RequestContext context) {
         final AtomRenderer renderer = new AtomRenderer();
         context.setRenderer(renderer);
 
@@ -166,8 +166,8 @@ public class FeedProcessor {
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/rss.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void blogArticlesRSS(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/rss.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
+    public void blogArticlesRSS(final RequestContext context) {
         final HttpServletResponse response = context.getResponse();
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);

@@ -24,12 +24,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
@@ -87,9 +87,9 @@ public class PluginConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/plugin/status/", method = HTTPRequestMethod.PUT)
-    public void setPluginStatus(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/plugin/status/", method = HttpMethod.PUT)
+    public void setPluginStatus(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         final JSONObject requestJSONObject = context.requestJSON();
@@ -131,9 +131,9 @@ public class PluginConsole {
      * @see Requests#PAGINATION_PATH_PATTERN
      */
     @RequestProcessing(value = "/console/plugins/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-            method = HTTPRequestMethod.GET)
-    public void getPlugins(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+            method = HttpMethod.GET)
+    public void getPlugins(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -159,8 +159,8 @@ public class PluginConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/plugin/toSetting", method = HTTPRequestMethod.POST)
-    public void toSetting(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/console/plugin/toSetting", method = HttpMethod.POST)
+    public void toSetting(final RequestContext context) {
         final ConsoleRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
         renderer.setTemplateName("admin-plugin-setting.ftl");
@@ -177,8 +177,8 @@ public class PluginConsole {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            final JSONRenderer jsonRenderer = new JSONRenderer();
-            jsonRenderer.setJSONObject(jsonObject);
+            final JsonRenderer JsonRenderer = new JsonRenderer();
+            JsonRenderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
         }
     }
@@ -188,9 +188,9 @@ public class PluginConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/plugin/updateSetting", method = HTTPRequestMethod.POST)
-    public void updateSetting(final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/console/plugin/updateSetting", method = HttpMethod.POST)
+    public void updateSetting(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         final JSONObject requestJSONObject = context.requestJSON();

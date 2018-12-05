@@ -26,8 +26,8 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.URIPatternMode;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -94,8 +94,8 @@ public class IndexProcessor {
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
-    public void showIndex(final HTTPRequestContext context) {
+    @RequestProcessing(value = {"/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HttpMethod.GET)
+    public void showIndex(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -147,8 +147,8 @@ public class IndexProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
-    public void showKillBrowser(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/kill-browser", method = HttpMethod.GET)
+    public void showKillBrowser(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
@@ -176,8 +176,8 @@ public class IndexProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
-    public void register(final HTTPRequestContext context) {
+    @RequestProcessing(value = "/register", method = HttpMethod.GET)
+    public void register(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);

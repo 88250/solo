@@ -30,11 +30,11 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.TextXMLRenderer;
+import org.b3log.latke.servlet.renderer.TextXmlRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
@@ -195,9 +195,9 @@ public class MetaWeblogAPI {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/apis/metaweblog", method = HTTPRequestMethod.POST)
-    public void metaWeblog(final HTTPRequestContext context) {
-        final TextXMLRenderer renderer = new TextXMLRenderer();
+    @RequestProcessing(value = "/apis/metaweblog", method = HttpMethod.POST)
+    public void metaWeblog(final RequestContext context) {
+        final TextXmlRenderer renderer = new TextXmlRenderer();
         context.setRenderer(renderer);
 
         String responseContent;
