@@ -266,7 +266,7 @@ public class ArticleProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/article/id/*/relevant/articles", method = HttpMethod.GET)
+    @RequestProcessing(value = "/article/id/{id}/relevant/articles", method = HttpMethod.GET)
     public void getRelevantArticles(final RequestContext context) {
         final JSONObject jsonObject = new JSONObject();
 
@@ -287,7 +287,7 @@ public class ArticleProcessor {
         Stopwatchs.start("Get Relevant Articles");
         final String requestURI = request.getRequestURI();
 
-        final String articleId = StringUtils.substringBetween(requestURI, "/article/id/", "/relevant/articles");
+        final String articleId = context.pathVar("id");
         if (StringUtils.isBlank(articleId)) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 

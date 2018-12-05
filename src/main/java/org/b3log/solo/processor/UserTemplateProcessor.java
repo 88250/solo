@@ -89,13 +89,13 @@ public class UserTemplateProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/{name}.html", method = HttpMethod.GET)
+    @RequestProcessing(value = "/page/{name}.html", method = HttpMethod.GET)
     public void showPage(final RequestContext context) {
         final String requestURI = context.requestURI();
         String templateName = StringUtils.substringAfterLast(requestURI, "/");
 
         templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-        LOGGER.log(Level.DEBUG, "Shows page[requestURI={0}, templateName={1}]", requestURI, templateName);
+        LOGGER.log(Level.DEBUG, "Shows page [requestURI={0}, templateName={1}]", requestURI, templateName);
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
