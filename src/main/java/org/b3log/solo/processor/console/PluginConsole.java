@@ -33,6 +33,7 @@ import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -140,7 +141,7 @@ public class PluginConsole {
             final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/plugins/").length());
-            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = pluginQueryService.getPlugins(requestJSONObject);
 
             renderer.setJSONObject(result);

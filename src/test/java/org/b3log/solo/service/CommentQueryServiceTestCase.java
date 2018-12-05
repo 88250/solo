@@ -22,10 +22,10 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -60,7 +60,7 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
     public void getComments() throws Exception {
         final CommentQueryService commentQueryService = getCommentQueryService();
 
-        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
+        final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
         final JSONObject result = commentQueryService.getComments(paginationRequest);
 
         Assert.assertNotNull(result);
@@ -75,7 +75,7 @@ public class CommentQueryServiceTestCase extends AbstractTestCase {
     @Test(dependsOnMethods = "init")
     public void getCommentsOnId() throws Exception {
         final ArticleQueryService articleQueryService = getArticleQueryService();
-        final JSONObject result = articleQueryService.getArticles(Requests.buildPaginationRequest("1/10/20"));
+        final JSONObject result = articleQueryService.getArticles(Solos.buildPaginationRequest("1/10/20"));
         Assert.assertNotNull(result);
         Assert.assertEquals(result.getJSONArray(Article.ARTICLES).length(), 1);
 

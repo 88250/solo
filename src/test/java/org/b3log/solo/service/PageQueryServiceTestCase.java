@@ -17,9 +17,9 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -77,7 +77,7 @@ public class PageQueryServiceTestCase extends AbstractTestCase {
     public void getPages() throws Exception {
         final PageQueryService pageQueryService = getPageQueryService();
 
-        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
+        final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
         final JSONObject result = pageQueryService.getPages(paginationRequest);
 
         Assert.assertNotNull(result);

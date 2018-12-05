@@ -19,8 +19,8 @@ package org.b3log.solo.service;
 
 import junit.framework.Assert;
 import org.b3log.latke.model.User;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.annotations.Test;
@@ -90,7 +90,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
     public void getUsers() throws Exception {
         final UserQueryService userQueryService = getUserQueryService();
 
-        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/20/10");
+        final JSONObject paginationRequest = Solos.buildPaginationRequest("1/20/10");
         final JSONObject result = userQueryService.getUsers(paginationRequest);
         final JSONArray users = result.getJSONArray(User.USERS);
         Assert.assertEquals(1, users.length());

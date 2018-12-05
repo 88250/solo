@@ -17,9 +17,9 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Category;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -71,7 +71,7 @@ public class CategoryQueryServiceTestCase extends AbstractTestCase {
     public void getCategories() throws Exception {
         final CategoryQueryService categoryQueryService = getCategoryQueryService();
 
-        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
+        final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
         final JSONObject result = categoryQueryService.getCategoris(paginationRequest);
 
         Assert.assertNotNull(result);

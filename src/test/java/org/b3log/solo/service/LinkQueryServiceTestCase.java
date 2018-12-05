@@ -17,9 +17,9 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Link;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -73,8 +73,7 @@ public class LinkQueryServiceTestCase extends AbstractTestCase {
     public void getLinks() throws Exception {
         final LinkQueryService linkQueryService = getLinkQueryService();
 
-        final JSONObject paginationRequest =
-                Requests.buildPaginationRequest("1/10/20");
+        final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
         final JSONObject result = linkQueryService.getLinks(paginationRequest);
 
         Assert.assertNotNull(result);
