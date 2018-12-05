@@ -26,8 +26,8 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
@@ -93,7 +93,7 @@ public class IndexProcessor {
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/{p}", ""}, method = HttpMethod.GET)
+    @RequestProcessing(value = {"", "/", "/{p}"}, method = HttpMethod.GET)
     public void showIndex(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
