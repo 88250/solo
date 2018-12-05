@@ -272,7 +272,7 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/users/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/users/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     @Before(adviceClass = ConsoleAdminAuthAdvice.class)
     public void getUsers(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();

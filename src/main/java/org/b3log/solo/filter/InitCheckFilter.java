@@ -101,6 +101,7 @@ public final class InitCheckFilter implements Filter {
             initReported = true;
         }
 
+        request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/init");
         chain.doFilter(request, response);
     }
 

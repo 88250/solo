@@ -197,8 +197,7 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/comments/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-            method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/comments/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     public void getComments(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

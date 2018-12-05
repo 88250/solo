@@ -355,8 +355,7 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/pages/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-            method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/pages/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     public void getPages(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

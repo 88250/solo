@@ -522,7 +522,7 @@ public class CategoryConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/categories/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/categories/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     public void getCategories(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

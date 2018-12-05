@@ -84,9 +84,10 @@ public class ErrorProcessor {
      * @throws Exception exception
      */
     @RequestProcessing(value = "/error/{statusCode}", method = HttpMethod.GET)
-    public void showErrorPage(final RequestContext context, final String statusCode) {
+    public void showErrorPage(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
+        final String statusCode = context.pathVar("statusCode");
         if (StringUtils.equals("GET", request.getMethod())) {
             final String requestURI = request.getRequestURI();
             final String templateName = statusCode + ".ftl";

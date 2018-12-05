@@ -287,7 +287,7 @@ public class LinkConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/links/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */, method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/links/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     public void getLinks(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

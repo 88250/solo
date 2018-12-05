@@ -24,13 +24,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.service.PluginMgmtService;
 import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.Solos;
@@ -129,10 +128,8 @@ public class PluginConsole {
      *
      * @param context the specified http request context
      * @throws Exception exception
-     * @see Requests#PAGINATION_PATH_PATTERN
      */
-    @RequestProcessing(value = "/console/plugins/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-            method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/plugins/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     public void getPlugins(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
