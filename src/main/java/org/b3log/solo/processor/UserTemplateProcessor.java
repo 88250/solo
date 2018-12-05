@@ -89,7 +89,7 @@ public class UserTemplateProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/*.html", method = HttpMethod.GET)
+    @RequestProcessing(value = "/{name}.html", method = HttpMethod.GET)
     public void showPage(final RequestContext context) {
         final String requestURI = context.requestURI();
         String templateName = StringUtils.substringAfterLast(requestURI, "/");

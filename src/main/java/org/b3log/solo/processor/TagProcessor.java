@@ -25,8 +25,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
@@ -109,7 +109,7 @@ public class TagProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/tags/**", method = HttpMethod.GET)
+    @RequestProcessing(value = {"/tags/{tagTitle}", "/tags/{tagTitle}/{p}"}, method = HttpMethod.GET)
     public void showTagArticles(final RequestContext context) {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
         context.setRenderer(renderer);
