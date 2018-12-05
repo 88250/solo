@@ -19,6 +19,8 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockHttpServletRequest;
+import org.b3log.solo.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -59,41 +61,12 @@ public class CaptchaProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void get() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/captcha");
-        when(request.getMethod()).thenReturn("GET");
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/captcha");
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getOutputStream()).thenReturn(new ServletOutputStream() {
-
-            private long size;
-
-            @Override
-            public boolean isReady() {
-                return true;
-            }
-
-            @Override
-            public void setWriteListener(final WriteListener writeListener) {
-            }
-
-            @Override
-            public void write(int b) throws IOException {
-                size++;
-            }
-
-            @Override
-            public String toString() {
-                return "size: " + String.valueOf(size);
-            }
-        });
-
-        dispatcherServlet.service(request, response);
-
-        Assert.assertTrue(StringUtils.startsWith(response.getOutputStream().toString(), "size: "));
+        final String pragma = response.getHeader("Pragma");
+        Assert.assertEquals(pragma, "no-cache");
     }
 }

@@ -18,13 +18,16 @@
 package org.b3log.solo;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Mock HTTP servlet request.
@@ -90,14 +93,21 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
     }
 
+    private Map<String, String> headers = new HashMap<>();
+
     @Override
     public void setHeader(String name, String value) {
+        headers.put(name, value);
+    }
 
+    @Override
+    public String getHeader(String name) {
+        return headers.get(name);
     }
 
     @Override
     public void addHeader(String name, String value) {
-
+        headers.put(name, value);
     }
 
     @Override
@@ -126,11 +136,6 @@ public class MockHttpServletResponse implements HttpServletResponse {
     }
 
     @Override
-    public String getHeader(String name) {
-        return null;
-    }
-
-    @Override
     public Collection<String> getHeaders(String name) {
         return null;
     }
@@ -152,7 +157,22 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
     @Override
     public ServletOutputStream getOutputStream() throws IOException {
-        return null;
+        return new ServletOutputStream() {
+            @Override
+            public boolean isReady() {
+                return false;
+            }
+
+            @Override
+            public void setWriteListener(WriteListener writeListener) {
+
+            }
+
+            @Override
+            public void write(int b) throws IOException {
+
+            }
+        };
     }
 
     private StringWriter bodyWriter;
