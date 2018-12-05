@@ -448,7 +448,7 @@ public final class Solos {
      * @param path the specified path
      * @return page number, returns {@code 1} if the specified request URI can not convert to an number
      */
-    public static int getCurrentPageNum(final String path) {
+    private static int getCurrentPageNum(final String path) {
         if (StringUtils.isBlank(path) || path.equals("/")) {
             return 1;
         }
@@ -466,7 +466,7 @@ public final class Solos {
      * @param path the specified path
      * @return page number, returns {@value #DEFAULT_PAGE_SIZE} if the specified request URI can not convert to an number
      */
-    public static int getPageSize(final String path) {
+    private static int getPageSize(final String path) {
         if (StringUtils.isBlank(path)) {
             return DEFAULT_PAGE_SIZE;
         }
@@ -488,7 +488,7 @@ public final class Solos {
      * @param path the specified path
      * @return page number, returns {@value #DEFAULT_WINDOW_SIZE} if the specified request URI can not convert to an number
      */
-    public static int getWindowSize(final String path) {
+    private static int getWindowSize(final String path) {
         if (StringUtils.isBlank(path)) {
             return DEFAULT_WINDOW_SIZE;
         }
