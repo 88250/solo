@@ -176,7 +176,7 @@ public class IndexProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/register", method = HttpMethod.GET)
-    public void register(final RequestContext context) {
+    public void showRegister(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);

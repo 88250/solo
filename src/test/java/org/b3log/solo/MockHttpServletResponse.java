@@ -69,17 +69,17 @@ public class MockHttpServletResponse implements HttpServletResponse {
     }
 
     @Override
-    public void sendError(int sc, String msg) throws IOException {
+    public void sendError(int sc, String msg) {
 
     }
 
     @Override
-    public void sendError(int sc) throws IOException {
+    public void sendError(int sc) {
 
     }
 
     @Override
-    public void sendRedirect(String location) throws IOException {
+    public void sendRedirect(String location) {
 
     }
 
@@ -156,7 +156,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
     }
 
     @Override
-    public ServletOutputStream getOutputStream() throws IOException {
+    public ServletOutputStream getOutputStream() {
         return new ServletOutputStream() {
             @Override
             public boolean isReady() {
@@ -169,7 +169,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
             }
 
             @Override
-            public void write(int b) throws IOException {
+            public void write(int b) {
 
             }
         };
@@ -191,7 +191,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
     }
 
     @Override
-    public PrintWriter getWriter() throws IOException {
+    public PrintWriter getWriter() {
         return writer;
     }
 
@@ -226,7 +226,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
     }
 
     @Override
-    public void flushBuffer() throws IOException {
+    public void flushBuffer() {
 
     }
 
