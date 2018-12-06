@@ -24,19 +24,15 @@ import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie;
 import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.StringWriter;
-
-import static org.mockito.Mockito.*;
+import java.util.List;
 
 /**
  * {@link LoginProcessor} test case.
@@ -74,69 +70,45 @@ public class LoginProcessorTestCase extends AbstractTestCase {
 
     /**
      * login.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void login() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/login");
-        when(request.getMethod()).thenReturn("POST");
+    public void login() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/login");
+        request.setMethod("POST");
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(User.USER_EMAIL, "test@gmail.com");
         requestJSON.put(User.USER_PASSWORD, "pass");
-
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        when(request.getReader()).thenReturn(reader);
+        request.setReader(reader);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
+        final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "isLoggedIn\":true"));
     }
 
     /**
      * logout.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void logout() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/logout");
-        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        when(request.getMethod()).thenReturn("GET");
-        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
+    public void logout() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/logout");
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        verify(response).sendRedirect("/");
+        final List<Cookie> cookies = response.cookies();
+        Assert.assertEquals(cookies.size(), 1);
+        Assert.assertEquals(cookies.get(0).getName(), Solos.COOKIE_NAME);
+        Assert.assertNull(cookies.get(0).getValue());
     }
 
     /**
      * showForgot.
-     *
      */
     @Test(dependsOnMethods = "init")
     public void showForgot() {
@@ -151,34 +123,23 @@ public class LoginProcessorTestCase extends AbstractTestCase {
 
     /**
      * forgot.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void forgot() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/forgot");
-        when(request.getMethod()).thenReturn("POST");
+    public void forgot() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/forgot");
+        request.setMethod("POST");
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(User.USER_EMAIL, "test@gmail.com");
-
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        when(request.getReader()).thenReturn(reader);
+        request.setReader(reader);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
+        final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "succeed\":true"));
     }
 }

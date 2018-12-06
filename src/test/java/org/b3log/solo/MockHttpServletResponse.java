@@ -21,13 +21,9 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Mock HTTP servlet request.
@@ -38,9 +34,15 @@ import java.util.Map;
  */
 public class MockHttpServletResponse implements HttpServletResponse {
 
+    private List<Cookie> cookies = new ArrayList<>();
+
     @Override
     public void addCookie(Cookie cookie) {
+        cookies.add(cookie);
+    }
 
+    public List<Cookie> cookies() {
+        return cookies;
     }
 
     @Override

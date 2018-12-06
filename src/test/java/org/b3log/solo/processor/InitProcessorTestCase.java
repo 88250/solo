@@ -18,9 +18,11 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
+import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -62,35 +64,27 @@ public class InitProcessorTestCase extends AbstractTestCase {
     /**
      * initSolo.
      *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "showInit")
-    public void initSolo() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/init");
-        when(request.getMethod()).thenReturn("POST");
+    public void initSolo() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/init");
+        request.setMethod("POST");
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+
+        CaptchaProcessor.CAPTCHA_ON = false;
 
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put("userName", "test");
         requestJSON.put("userEmail", "test@b3log.org");
         requestJSON.put("userPassword", "1");
-
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        when(request.getReader()).thenReturn(reader);
+        request.setReader(reader);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
+        final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
     }
 }

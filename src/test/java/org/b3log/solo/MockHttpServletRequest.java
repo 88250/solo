@@ -301,9 +301,16 @@ public class MockHttpServletRequest implements HttpServletRequest {
         return reader;
     }
 
+
+    private String remoteAddr;
+
+    public void setRemoteAddr(final String remoteAddr) {
+        this.remoteAddr = remoteAddr;
+    }
+
     @Override
     public String getRemoteAddr() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return remoteAddr;
     }
 
     @Override
