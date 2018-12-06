@@ -56,9 +56,16 @@ public class MockHttpServletRequest implements HttpServletRequest {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
+
+    private Cookie[] cookies;
+
+    public void setCookies(final Cookie[] cookies) {
+        this.cookies = cookies;
+    }
+
     @Override
     public Cookie[] getCookies() {
-        return null;
+        return cookies;
     }
 
     @Override
