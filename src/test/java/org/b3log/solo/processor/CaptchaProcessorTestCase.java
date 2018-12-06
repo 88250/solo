@@ -17,22 +17,11 @@
  */
 package org.b3log.solo.processor;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * {@link CaptchaProcessor} test case.

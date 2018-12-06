@@ -18,22 +18,11 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
-import org.b3log.solo.model.Option;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * {@link ErrorProcessor} test case.
@@ -57,7 +46,6 @@ public class ErrorProcessorTestCase extends AbstractTestCase {
 
     /**
      * showErrorPage.
-     *
      */
     @Test(dependsOnMethods = "init")
     public void showErrorPage() {

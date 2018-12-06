@@ -20,9 +20,7 @@ package org.b3log.solo.processor;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.repository.Query;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
@@ -31,16 +29,6 @@ import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Map;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * {@link ArticleProcessor} test case.

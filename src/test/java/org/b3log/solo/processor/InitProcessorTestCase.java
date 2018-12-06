@@ -27,16 +27,8 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.io.StringReader;
-import java.io.StringWriter;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * {@link IndexProcessor} test case.
@@ -63,7 +55,6 @@ public class InitProcessorTestCase extends AbstractTestCase {
 
     /**
      * initSolo.
-     *
      */
     @Test(dependsOnMethods = "showInit")
     public void initSolo() {

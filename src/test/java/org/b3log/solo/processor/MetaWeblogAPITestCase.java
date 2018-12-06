@@ -18,7 +18,6 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
@@ -26,16 +25,8 @@ import org.b3log.solo.api.MetaWeblogAPI;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.Date;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.io.BufferedReader;
+import java.io.StringReader;
 
 /**
  * {@link MetaWeblogAPI} test case.
