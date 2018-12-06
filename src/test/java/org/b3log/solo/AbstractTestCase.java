@@ -32,10 +32,12 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.Collection;
 import java.util.Locale;
@@ -77,6 +79,11 @@ public abstract class AbstractTestCase {
         connection.close();
 
         JdbcRepositories.initAllTables();
+    }
+
+    @BeforeMethod
+    public void beforeMethod(final Method method) {
+        System.out.println(method.getDeclaringClass().getSimpleName() + "#" + method.getName());
     }
 
     /**
