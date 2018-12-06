@@ -20,6 +20,8 @@ package org.b3log.solo.processor;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockHttpServletRequest;
+import org.b3log.solo.MockHttpServletResponse;
 import org.b3log.solo.api.MetaWeblogAPI;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -29,10 +31,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.util.Date;
 
 import static org.mockito.Mockito.mock;
@@ -66,41 +65,10 @@ public class MetaWeblogAPITestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void metaWeblog() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/apis/metaweblog");
-        when(request.getMethod()).thenReturn("POST");
-
-//        Date date = (Date) DateFormatUtils.ISO_DATETIME_FORMAT.parseObject("2004-05-03T17:30:08");
-        Date date = DateUtils.parseDate("20040503T17:30:08", new String[]{"yyyyMMdd'T'HH:mm:ss", "yyyyMMdd'T'HH:mm:ss'Z'"});
-
-        final class MockServletInputStream extends ServletInputStream {
-
-            private ByteArrayInputStream stream;
-
-            public MockServletInputStream(byte[] data) {
-                stream = new ByteArrayInputStream(data);
-            }
-
-            public int read() throws IOException {
-                return stream.read();
-            }
-
-            @Override
-            public boolean isFinished() {
-                return false;
-            }
-
-            @Override
-            public boolean isReady() {
-                return false;
-            }
-
-            @Override
-            public void setReadListener(ReadListener readListener) {
-            }
-        }
-        StringBuilder sb = new StringBuilder();
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/apis/metaweblog");
+        request.setMethod("POST");
+        final StringBuilder sb = new StringBuilder();
         sb.append("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>")
                 .append("<methodCall>")
                 .append("<methodName>metaWeblog.newPost</methodName>")
@@ -149,20 +117,13 @@ public class MetaWeblogAPITestCase extends AbstractTestCase {
                 .append("</param>")
                 .append("</params>")
                 .append("</methodCall>");
-        when(request.getInputStream()).thenReturn(new MockServletInputStream(sb.toString().getBytes()));
+        final BufferedReader reader = new BufferedReader(new StringReader(sb.toString()));
+        request.setReader(reader);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getWriter()).thenReturn(printWriter);
-
-        dispatcherServlet.service(request, response);
-
-        final String content = stringWriter.toString();
+        final String content = response.body();
         // System.out.println("xxxxxcontent:" + content);
         Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));
     }

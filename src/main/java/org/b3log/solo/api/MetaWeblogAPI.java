@@ -30,8 +30,8 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextXmlRenderer;
@@ -203,8 +203,14 @@ public class MetaWeblogAPI {
         String responseContent;
         try {
             final HttpServletRequest request = context.getRequest();
-            final ServletInputStream inputStream = request.getInputStream();
-            final String xml = IOUtils.toString(inputStream, "UTF-8");
+            String xml;
+            try {
+                final ServletInputStream inputStream = request.getInputStream();
+                xml = IOUtils.toString(inputStream, "UTF-8");
+            } catch (final Exception e) {
+                xml = IOUtils.toString(request.getReader());
+            }
+
             final JSONObject requestJSONObject = XML.toJSONObject(xml);
 
             final JSONObject methodCall = requestJSONObject.getJSONObject(METHOD_CALL);
