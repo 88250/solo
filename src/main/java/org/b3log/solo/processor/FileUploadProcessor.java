@@ -36,8 +36,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.URLs;
@@ -56,7 +56,7 @@ import java.util.*;
  * File upload processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.1, Dec 3, 2018
+ * @version 1.0.2.2, Dec 7, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -94,7 +94,7 @@ public class FileUploadProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/upload/*", method = HttpMethod.GET)
+    @RequestProcessing(value = "/upload/{file}", method = HttpMethod.GET)
     public void getFile(final RequestContext context) {
         if (QN_ENABLED) {
             return;
