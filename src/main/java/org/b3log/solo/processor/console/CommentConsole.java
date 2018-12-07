@@ -47,7 +47,7 @@ import java.util.List;
  * @since 0.4.0
  */
 @RequestProcessor
-@Before( ConsoleAuthAdvice.class)
+@Before(ConsoleAuthAdvice.class)
 public class CommentConsole {
 
     /**
@@ -246,7 +246,7 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/comments/article/*", method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/comments/article/{id}", method = HttpMethod.GET)
     public void getArticleComments(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -254,10 +254,7 @@ public class CommentConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
-            final String articleId = requestURI.substring((Latkes.getContextPath() + "/console/comments/article/").length());
-
+            final String articleId = context.pathVar("id");
             final List<JSONObject> comments = commentQueryService.getComments(articleId);
 
             ret.put(Comment.COMMENTS, comments);
@@ -295,7 +292,7 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/comments/page/*", method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/comments/page/{id}", method = HttpMethod.GET)
     public void getPageComments(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -303,10 +300,7 @@ public class CommentConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
-            final String pageId = requestURI.substring((Latkes.getContextPath() + "/console/comments/page/").length());
-
+            final String pageId = context.pathVar("id");
             final List<JSONObject> comments = commentQueryService.getComments(pageId);
 
             ret.put(Comment.COMMENTS, comments);

@@ -50,7 +50,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 0.4.0
  */
 @RequestProcessor
-@Before( ConsoleAdminAuthAdvice.class)
+@Before(ConsoleAdminAuthAdvice.class)
 public class PageConsole {
 
     /**
@@ -151,7 +151,7 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/*", method = HttpMethod.DELETE)
+    @RequestProcessing(value = "/console/page/{id}", method = HttpMethod.DELETE)
     public void removePage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -159,9 +159,7 @@ public class PageConsole {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String pageId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/page/").length());
-
+            final String pageId = context.pathVar("id");
             pageMgmtService.removePage(pageId);
 
             jsonObject.put(Keys.STATUS_CODE, true);
@@ -301,16 +299,13 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/*", method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/page/{id}", method = HttpMethod.GET)
     public void getPage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
-            final String pageId = requestURI.substring((Latkes.getContextPath() + "/console/page/").length());
-
+            final String pageId = context.pathVar("id");
             final JSONObject result = pageQueryService.getPage(pageId);
             if (null == result) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
