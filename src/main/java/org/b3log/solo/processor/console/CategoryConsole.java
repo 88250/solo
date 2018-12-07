@@ -57,7 +57,7 @@ import java.util.Set;
  * @since 2.0.0
  */
 @RequestProcessor
-@Before( ConsoleAdminAuthAdvice.class)
+@Before(ConsoleAdminAuthAdvice.class)
 public class CategoryConsole {
 
     /**
@@ -159,15 +159,12 @@ public class CategoryConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/category/*", method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/category/{id}", method = HttpMethod.GET)
     public void getCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
-            final String categoryId = requestURI.substring((Latkes.getContextPath() + "/console/category/").length());
-
+            final String categoryId = context.pathVar("id");
             final JSONObject result = categoryQueryService.getCategory(categoryId);
             if (null == result) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
@@ -209,15 +206,14 @@ public class CategoryConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/category/*", method = HttpMethod.DELETE)
+    @RequestProcessing(value = "/console/category/{id}", method = HttpMethod.DELETE)
     public void removeCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String categoryId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/category/").length());
+            final String categoryId = context.pathVar("id");
             categoryMgmtService.removeCategory(categoryId);
 
             jsonObject.put(Keys.STATUS_CODE, true);

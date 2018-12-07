@@ -48,7 +48,7 @@ import javax.servlet.http.HttpServletRequest;
  * @since 0.4.0
  */
 @RequestProcessor
-@Before( ConsoleAdminAuthAdvice.class)
+@Before(ConsoleAdminAuthAdvice.class)
 public class LinkConsole {
 
     /**
@@ -88,7 +88,7 @@ public class LinkConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/*", method = HttpMethod.DELETE)
+    @RequestProcessing(value = "/console/link/{id}", method = HttpMethod.DELETE)
     public void removeLink(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -96,9 +96,7 @@ public class LinkConsole {
         renderer.setJSONObject(jsonObject);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String linkId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/link/").length());
-
+            final String linkId = context.pathVar("id");
             linkMgmtService.removeLink(linkId);
 
             jsonObject.put(Keys.STATUS_CODE, true);
@@ -336,16 +334,13 @@ public class LinkConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/*", method = HttpMethod.GET)
+    @RequestProcessing(value = "/console/link/{id}", method = HttpMethod.GET)
     public void getLink(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
-            final String linkId = requestURI.substring((Latkes.getContextPath() + "/console/link/").length());
-
+            final String linkId = context.pathVar("id");
             final JSONObject result = linkQueryService.getLink(linkId);
             if (null == result) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));

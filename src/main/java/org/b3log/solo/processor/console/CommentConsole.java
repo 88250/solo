@@ -87,7 +87,7 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/comment/*", method = HttpMethod.DELETE)
+    @RequestProcessing(value = "/console/page/comment/{id}", method = HttpMethod.DELETE)
     public void removePageComment(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -97,8 +97,7 @@ public class CommentConsole {
         try {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
-            final String commentId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/page/comment/").length());
-
+            final String commentId = context.pathVar("id");
             final JSONObject currentUser = Solos.getCurrentUser(request, response);
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
@@ -133,7 +132,7 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/comment/*", method = HttpMethod.DELETE)
+    @RequestProcessing(value = "/console/article/comment/{id}", method = HttpMethod.DELETE)
     public void removeArticleComment(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -143,7 +142,7 @@ public class CommentConsole {
         try {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
-            final String commentId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/comment/").length());
+            final String commentId = context.pathVar("id");
             final JSONObject currentUser = Solos.getCurrentUser(request, response);
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
