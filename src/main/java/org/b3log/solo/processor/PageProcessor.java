@@ -108,7 +108,8 @@ public class PageProcessor {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
 
@@ -117,7 +118,8 @@ public class PageProcessor {
             // See PermalinkFilter#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
             if (null == page) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
 
