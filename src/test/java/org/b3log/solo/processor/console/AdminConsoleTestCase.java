@@ -116,4 +116,39 @@ public class AdminConsoleTestCase extends AbstractTestCase {
         Assert.assertTrue(0 < outputBytes);
     }
 
+    /**
+     * exportJSON.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void exportJSON() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/export/json");
+        mockAdminLogin(request);
+        final MockHttpServletResponse response = mockResponse();
+
+        mockDispatcherServletService(request, response);
+
+        final long outputBytes = response.outputBytes();
+        Assert.assertTrue(0 < outputBytes);
+    }
+
+    /**
+     * exportHexo.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void exportHexo() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/export/hexo");
+        mockAdminLogin(request);
+        final MockHttpServletResponse response = mockResponse();
+
+        mockDispatcherServletService(request, response);
+
+        final long outputBytes = response.outputBytes();
+        Assert.assertTrue(0 < outputBytes);
+    }
 }
