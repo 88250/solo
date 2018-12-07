@@ -28,7 +28,7 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta http-equiv="Window-target" content="_top">
         <meta name="robots" content="none" />
-        <title>${blogTitle} - ${adminConsoleLabel}</title>
+        <title>${adminConsoleLabel} - ${blogTitle}</title>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/CodeMirrorEditor/codemirror.min.css?${staticResourceVersion}" />

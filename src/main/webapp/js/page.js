@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.2, Dec 1, 2018
+ * @version 1.4.1.3, Dec 7, 2018
  */
 var Page = function (tips) {
   this.currentCommentId = "";
@@ -44,7 +44,7 @@ $.extend(Page.prototype, {
         textValue = $comment[0].value;
       textValue = textValue.substring(0, endPosition) + key + textValue.substring(endPosition, textValue.length);
       $("#comment" + name).val(textValue);
-      if ($.browser.msie) {
+      if (!!window.ActiveXObject || "ActiveXObject" in window) {
         endPosition -= textValue.split('\n').length - 1;
         var oR = $comment[0].createTextRange();
         oR.collapse(true);
@@ -372,7 +372,7 @@ $.extend(Page.prototype, {
     if (document.createStyleSheet) {
       document.createStyleSheet(latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/styles/default.css");
     } else {
-      $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/styles/github.css'>"));
+      $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/styles/" + ((obj && obj.theme) || 'github') + ".css'>"));
     }
     $.ajax({
       url: latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/highlight.pack.js",
