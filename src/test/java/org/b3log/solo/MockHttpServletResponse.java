@@ -157,6 +157,12 @@ public class MockHttpServletResponse implements HttpServletResponse {
         return null;
     }
 
+    private long outputBytes;
+
+    public long outputBytes() {
+        return outputBytes;
+    }
+
     @Override
     public ServletOutputStream getOutputStream() {
         return new ServletOutputStream() {
@@ -172,7 +178,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 
             @Override
             public void write(int b) {
-
+                outputBytes++;
             }
         };
     }

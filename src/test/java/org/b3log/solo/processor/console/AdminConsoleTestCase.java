@@ -49,6 +49,7 @@ public class AdminConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
+    @Test(dependsOnMethods = "init")
     public void showAdminIndex() throws Exception {
         final MockHttpServletRequest request = mockRequest();
         request.setRequestURI("/admin-index.do");
@@ -59,6 +60,60 @@ public class AdminConsoleTestCase extends AbstractTestCase {
 
         final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "Admin 的个人博客 - 后台管理"));
+    }
+
+    /**
+     * showAdminFunctions.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void showAdminFunctions() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/admin-article.do");
+        mockAdminLogin(request);
+        final MockHttpServletResponse response = mockResponse();
+
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "<div class=\"form\">"));
+    }
+
+    /**
+     * showAdminPreferenceFunction.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void showAdminPreferenceFunction() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/admin-preference.do");
+        mockAdminLogin(request);
+        final MockHttpServletResponse response = mockResponse();
+
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "<div id=\"tabPreference\" class=\"sub-tabs fn-clear\">"));
+    }
+
+    /**
+     * exportSQL.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void exportSQL() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/export/sql");
+        mockAdminLogin(request);
+        final MockHttpServletResponse response = mockResponse();
+
+        mockDispatcherServletService(request, response);
+
+        final long outputBytes = response.outputBytes();
+        Assert.assertTrue(0 < outputBytes);
     }
 
 }
