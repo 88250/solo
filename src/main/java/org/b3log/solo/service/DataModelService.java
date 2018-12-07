@@ -304,8 +304,7 @@ public class DataModelService {
 
         try {
             LOGGER.debug("Filling categories....");
-            final int mostUsedCategoryDisplayCnt = Integer.MAX_VALUE; // XXX: preference instead
-            final List<JSONObject> categories = categoryRepository.getMostUsedCategories(mostUsedCategoryDisplayCnt);
+            final List<JSONObject> categories = categoryRepository.getMostUsedCategories(Integer.MAX_VALUE);
             dataModel.put(Category.CATEGORIES, categories);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Fills categories failed", e);
