@@ -78,6 +78,21 @@ public class B3ArticleReceiver {
     /**
      * Adds an article with the specified request.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "article": {
+     *          "oId": "",
+     *          "articleTitle": "",
+     *          "articleContent": "",
+     *          "articleTags": "tag1,tag2,tag3",
+     *          "userB3Key": "",
+     *          "articleEditorType": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -88,24 +103,14 @@ public class B3ArticleReceiver {
      * </pre>
      * </p>
      *
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified http servlet request, for example,
-     *                          "article": {
-     *                          "oId": "",
-     *                          "articleTitle": "",
-     *                          "articleContent": "",
-     *                          "articleTags": "tag1,tag2,tag3",
-     *                          "userB3Key": "",
-     *                          "articleEditorType": ""
-     *                          }
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/apis/symphony/article", method = HttpMethod.POST)
-    public void addArticle(final RequestContext context, final JSONObject requestJSONObject)
-            throws Exception {
+    public void addArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
+        final JSONObject requestJSONObject = context.requestJSON();
 
         try {
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
@@ -151,6 +156,21 @@ public class B3ArticleReceiver {
     /**
      * Updates an article with the specified request.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "article": {
+     *         "oId": "", // Symphony Article#clientArticleId
+     *          "articleTitle": "",
+     *          "articleContent": "",
+     *          "articleTags": "tag1,tag2,tag3",
+     *          "userB3Key": "",
+     *          "articleEditorType": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -160,25 +180,15 @@ public class B3ArticleReceiver {
      * </pre>
      * </p>
      *
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified http servlet request, for example,
-     *                          "article": {
-     *                          "oId": "", // Symphony Article#clientArticleId
-     *                          "articleTitle": "",
-     *                          "articleContent": "",
-     *                          "articleTags": "tag1,tag2,tag3",
-     *                          "userB3Key": "",
-     *                          "articleEditorType": ""
-     *                          }
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/apis/symphony/article", method = HttpMethod.PUT)
-    public void updateArticle(final RequestContext context, final JSONObject requestJSONObject)
-            throws Exception {
+    public void updateArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
+        final JSONObject requestJSONObject = context.requestJSON();
 
         try {
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
