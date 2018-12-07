@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.api;
+package org.b3log.solo.processor.api;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -49,7 +49,7 @@ import java.net.URL;
 import java.util.Date;
 
 /**
- * Comment receiver from B3log Symphony.
+ * Receiving comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.1.19, Nov 6, 2018

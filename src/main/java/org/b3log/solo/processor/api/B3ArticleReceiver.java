@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.api;
+package org.b3log.solo.processor.api;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
@@ -37,7 +37,7 @@ import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
- * Article receiver from B3log Symphony.
+ * Receiving articles from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.4.3, Sep 25, 2018
