@@ -168,7 +168,6 @@ public class FeedProcessor {
      */
     @RequestProcessing(value = "/rss.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
     public void blogArticlesRSS(final RequestContext context) {
-        final HttpServletResponse response = context.getResponse();
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);
 
@@ -177,7 +176,8 @@ public class FeedProcessor {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
 

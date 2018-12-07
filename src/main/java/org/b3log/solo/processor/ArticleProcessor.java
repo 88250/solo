@@ -198,7 +198,6 @@ public class ArticleProcessor {
     public void onArticlePwdForm(final RequestContext context) {
         try {
             final HttpServletRequest request = context.getRequest();
-            final HttpServletResponse response = context.getResponse();
             final String articleId = request.getParameter("articleId");
             final String pwdTyped = request.getParameter("pwdTyped");
 
@@ -216,12 +215,12 @@ public class ArticleProcessor {
                     session.setAttribute(Common.ARTICLES_VIEW_PWD, viewPwds);
                 }
 
-                response.sendRedirect(Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK));
+                context.sendRedirect(Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK));
 
                 return;
             }
 
-            response.sendRedirect(Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID) + "&msg=1");
+            context.sendRedirect(Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID) + "&msg=1");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Processes article view password form submits failed", e);
 
@@ -509,7 +508,7 @@ public class ArticleProcessor {
 
             final JSONObject authorRet = userQueryService.getUser(authorId);
             if (null == authorRet) {
-                context.getResponse().sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
             }

@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.api;
+package org.b3log.solo.processor.api;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
@@ -37,7 +37,7 @@ import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 
 /**
- * Article receiver from B3log Symphony.
+ * Receiving articles from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.4.3, Sep 25, 2018
@@ -78,6 +78,21 @@ public class B3ArticleReceiver {
     /**
      * Adds an article with the specified request.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "article": {
+     *          "oId": "",
+     *          "articleTitle": "",
+     *          "articleContent": "",
+     *          "articleTags": "tag1,tag2,tag3",
+     *          "userB3Key": "",
+     *          "articleEditorType": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -88,24 +103,14 @@ public class B3ArticleReceiver {
      * </pre>
      * </p>
      *
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified http servlet request, for example,
-     *                          "article": {
-     *                          "oId": "",
-     *                          "articleTitle": "",
-     *                          "articleContent": "",
-     *                          "articleTags": "tag1,tag2,tag3",
-     *                          "userB3Key": "",
-     *                          "articleEditorType": ""
-     *                          }
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/apis/symphony/article", method = HttpMethod.POST)
-    public void addArticle(final RequestContext context, final JSONObject requestJSONObject)
-            throws Exception {
+    public void addArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
+        final JSONObject requestJSONObject = context.requestJSON();
 
         try {
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
@@ -151,6 +156,21 @@ public class B3ArticleReceiver {
     /**
      * Updates an article with the specified request.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "article": {
+     *         "oId": "", // Symphony Article#clientArticleId
+     *          "articleTitle": "",
+     *          "articleContent": "",
+     *          "articleTags": "tag1,tag2,tag3",
+     *          "userB3Key": "",
+     *          "articleEditorType": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -160,25 +180,15 @@ public class B3ArticleReceiver {
      * </pre>
      * </p>
      *
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified http servlet request, for example,
-     *                          "article": {
-     *                          "oId": "", // Symphony Article#clientArticleId
-     *                          "articleTitle": "",
-     *                          "articleContent": "",
-     *                          "articleTags": "tag1,tag2,tag3",
-     *                          "userB3Key": "",
-     *                          "articleEditorType": ""
-     *                          }
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/apis/symphony/article", method = HttpMethod.PUT)
-    public void updateArticle(final RequestContext context, final JSONObject requestJSONObject)
-            throws Exception {
+    public void updateArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
+        final JSONObject requestJSONObject = context.requestJSON();
 
         try {
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);

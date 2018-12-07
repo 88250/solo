@@ -120,7 +120,7 @@ public class TagProcessor {
             LOGGER.log(Level.DEBUG, "Tag [title={0}, currentPageNum={1}]", tagTitle, currentPageNum);
             final JSONObject result = tagQueryService.getTagByTitle(tagTitle);
             if (null == result) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
             }
@@ -135,7 +135,7 @@ public class TagProcessor {
             final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
             final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
             if (articles.isEmpty()) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
             }

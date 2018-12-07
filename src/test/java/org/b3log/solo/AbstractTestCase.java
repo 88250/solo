@@ -27,7 +27,7 @@ import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Crypts;
-import org.b3log.solo.api.MetaWeblogAPI;
+import org.b3log.solo.processor.api.MetaWeblogAPI;
 import org.b3log.solo.cache.*;
 import org.b3log.solo.processor.MockDispatcherServlet;
 import org.b3log.solo.repository.*;

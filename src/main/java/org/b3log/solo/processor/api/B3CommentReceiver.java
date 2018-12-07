@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.api;
+package org.b3log.solo.processor.api;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -49,7 +49,7 @@ import java.net.URL;
 import java.util.Date;
 
 /**
- * Comment receiver from B3log Symphony.
+ * Receiving comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.1.1.19, Nov 6, 2018
@@ -108,6 +108,25 @@ public class B3CommentReceiver {
     /**
      * Adds a comment with the specified request.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "comment": {
+     *         "userB3Key": "",
+     *         "oId": "",
+     *         "commentSymphonyArticleId": "",
+     *         "commentOnArticleId": "",
+     *         "commentAuthorName": "",
+     *         "commentAuthorEmail": "",
+     *         "commentAuthorURL": "",
+     *         "commentAuthorThumbnailURL": "",
+     *         "commentContent": "",
+     *         "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -116,32 +135,16 @@ public class B3CommentReceiver {
      * </pre>
      * </p>
      *
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified http servlet request, for example,
-     *                          {
-     *                          "comment": {
-     *                          "userB3Key": "",
-     *                          "oId": "",
-     *                          "commentSymphonyArticleId": "",
-     *                          "commentOnArticleId": "",
-     *                          "commentAuthorName": "",
-     *                          "commentAuthorEmail": "",
-     *                          "commentAuthorURL": "",
-     *                          "commentAuthorThumbnailURL": "",
-     *                          "commentContent": "",
-     *                          "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
-     *                          }
-     *                          }
-     * @throws Exception exception
+     * @param context the specified http request context
      */
     @RequestProcessing(value = "/apis/symphony/comment", method = HttpMethod.PUT)
-    public void addComment(final RequestContext context, final JSONObject requestJSONObject)
-            throws Exception {
+    public void addComment(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
+        final JSONObject requestJSONObject = context.requestJSON();
         final Transaction transaction = commentRepository.beginTransaction();
         try {
             final JSONObject symphonyCmt = requestJSONObject.optJSONObject(Comment.COMMENT);

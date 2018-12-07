@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
-import org.b3log.solo.api.MetaWeblogAPI;
+import org.b3log.solo.processor.api.MetaWeblogAPI;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

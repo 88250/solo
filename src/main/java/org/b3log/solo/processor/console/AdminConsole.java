@@ -252,11 +252,7 @@ public class AdminConsole {
         final HttpServletResponse response = context.getResponse();
 
         if (!Solos.isAdminLoggedIn(request, response)) {
-            try {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            } catch (final Exception e) {
-                // ignored
-            }
+            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -369,11 +365,7 @@ public class AdminConsole {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(request, response)) {
-            try {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            } catch (final Exception e) {
-                // ignored
-            }
+            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -424,11 +416,7 @@ public class AdminConsole {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(request, response)) {
-            try {
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-            } catch (final Exception e) {
-                // ignored
-            }
+            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
