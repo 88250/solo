@@ -60,7 +60,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.6.16.12, Oct 15, 2018
+ * @version 1.7.0.0, Dec 7, 2018
  * @since 0.3.1
  */
 @Service
@@ -291,6 +291,29 @@ public class DataModelService {
         }
 
         Stopwatchs.end();
+    }
+
+    /**
+     * Fills categories.
+     *
+     * @param dataModel data model
+     * @throws ServiceException service exception
+     */
+    public void fillCategories(final Map<String, Object> dataModel) throws ServiceException {
+        Stopwatchs.start("Fill Categories");
+
+        try {
+            LOGGER.debug("Filling categories....");
+            final int mostUsedCategoryDisplayCnt = Integer.MAX_VALUE; // XXX: preference instead
+            final List<JSONObject> categories = categoryRepository.getMostUsedCategories(mostUsedCategoryDisplayCnt);
+            dataModel.put(Category.CATEGORIES, categories);
+        } catch (final RepositoryException e) {
+            LOGGER.log(Level.ERROR, "Fills categories failed", e);
+
+            throw new ServiceException(e);
+        } finally {
+            Stopwatchs.end();
+        }
     }
 
     /**
@@ -764,6 +787,10 @@ public class DataModelService {
 
             if (Templates.hasExpression(template, "<#list tags as tag>")) {
                 fillTags(dataModel);
+            }
+
+            if (Templates.hasExpression(template, "<#list categories as category>")) {
+                fillCategories(dataModel);
             }
 
             if (Templates.hasExpression(template, "<#list recentComments as comment>")) {
