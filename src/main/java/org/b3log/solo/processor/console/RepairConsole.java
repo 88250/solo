@@ -23,8 +23,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.annotation.Transactional;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -55,7 +55,7 @@ import java.util.List;
  * @since 0.3.1
  */
 @RequestProcessor
-@Before( ConsoleAuthAdvice.class)
+@Before(ConsoleAuthAdvice.class)
 public class RepairConsole {
 
     /**

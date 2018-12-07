@@ -24,8 +24,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
@@ -52,7 +52,7 @@ import java.util.Arrays;
  * @since 0.4.0
  */
 @RequestProcessor
-@Before( ConsoleAdminAuthAdvice.class)
+@Before(ConsoleAdminAuthAdvice.class)
 public class PreferenceConsole {
 
     /**

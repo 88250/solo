@@ -63,5 +63,6 @@ public final class ArchiveDate {
     /**
      * Private constructor.
      */
-    private ArchiveDate() {}
+    private ArchiveDate() {
+    }
 }

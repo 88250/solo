@@ -47,7 +47,7 @@ import java.util.Map;
  * @since 0.4.0
  */
 @RequestProcessor
-@Before( ConsoleAdminAuthAdvice.class)
+@Before(ConsoleAdminAuthAdvice.class)
 public class PluginConsole {
 
     /**
