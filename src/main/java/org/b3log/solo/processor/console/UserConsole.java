@@ -114,7 +114,7 @@ public class UserConsole {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/user/", method = HttpMethod.PUT)
-    @Before( ConsoleAdminAuthAdvice.class)
+    @Before(ConsoleAdminAuthAdvice.class)
     public void updateUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -221,8 +221,8 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/user/*", method = HttpMethod.DELETE)
-    @Before( ConsoleAdminAuthAdvice.class)
+    @RequestProcessing(value = "/console/user/{id}", method = HttpMethod.DELETE)
+    @Before(ConsoleAdminAuthAdvice.class)
     public void removeUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -230,8 +230,7 @@ public class UserConsole {
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String userId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/user/").length());
+            final String userId = context.pathVar("id");
             userMgmtService.removeUser(userId);
 
             jsonObject.put(Keys.STATUS_CODE, true);
@@ -273,7 +272,7 @@ public class UserConsole {
      * @param context the specified http request context
      */
     @RequestProcessing(value = "/console/users/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
-    @Before( ConsoleAdminAuthAdvice.class)
+    @Before(ConsoleAdminAuthAdvice.class)
     public void getUsers(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -323,14 +322,13 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/user/*", method = HttpMethod.GET)
-    @Before( ConsoleAdminAuthAdvice.class)
+    @RequestProcessing(value = "/console/user/{id}", method = HttpMethod.GET)
+    @Before(ConsoleAdminAuthAdvice.class)
     public void getUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final HttpServletRequest request = context.getRequest();
-        final String requestURI = request.getRequestURI();
-        final String userId = requestURI.substring((Latkes.getContextPath() + "/console/user/").length());
+        final String userId = context.pathVar("id");
 
         final JSONObject result = userQueryService.getUser(userId);
         if (null == result) {
@@ -359,8 +357,8 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/changeRole/*", method = HttpMethod.GET)
-    @Before( ConsoleAdminAuthAdvice.class)
+    @RequestProcessing(value = "/console/changeRole/{id}", method = HttpMethod.GET)
+    @Before(ConsoleAdminAuthAdvice.class)
     public void changeUserRole(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -368,8 +366,7 @@ public class UserConsole {
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String userId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/changeRole/").length());
+            final String userId = context.pathVar("id");
             userMgmtService.changeRole(userId);
 
             jsonObject.put(Keys.STATUS_CODE, true);
