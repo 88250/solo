@@ -115,17 +115,4 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         Assert.assertNotNull(category);
         Assert.assertEquals(category.optInt(Category.CATEGORY_TAG_CNT), 1); // https://github.com/b3log/solo/issues/12274
     }
-
-    private void mockAdminLogin(final MockHttpServletRequest request) throws ServiceException {
-        final JSONObject adminUser = getUserQueryService().getAdmin();
-        final String userId = adminUser.optString(Keys.OBJECT_ID);
-        final JSONObject cookieJSONObject = new JSONObject();
-        cookieJSONObject.put(Keys.OBJECT_ID, userId);
-        cookieJSONObject.put(User.USER_PASSWORD, adminUser.optString(User.USER_PASSWORD));
-        final String random = RandomStringUtils.randomAlphanumeric(16);
-        cookieJSONObject.put(Keys.TOKEN, adminUser.optString(User.USER_PASSWORD) + ":" + random);
-        final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), Solos.COOKIE_SECRET);
-        final Cookie cookie = new Cookie(Solos.COOKIE_NAME, cookieValue);
-        request.setCookies(new Cookie[]{cookie});
-    }
 }

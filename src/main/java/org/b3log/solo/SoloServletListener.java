@@ -310,7 +310,8 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * 部分控制器使用函数式路由. https://github.com/b3log/solo/issues/12580
      */
-    private void routePartial() {
+    public static void routePartial() {
+        final BeanManager beanManager = BeanManager.getInstance();
         final AdminConsole adminConsole = beanManager.getReference(AdminConsole.class);
         DispatcherServlet.get("/admin-index.do", adminConsole::showAdminIndex);
         DispatcherServlet.get("/admin-preference.do", adminConsole::showAdminPreferenceFunction);

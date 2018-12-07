@@ -17,23 +17,29 @@
  */
 package org.b3log.solo;
 
+import org.apache.commons.lang.RandomStringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Discoverer;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
+import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.util.Crypts;
 import org.b3log.solo.api.MetaWeblogAPI;
 import org.b3log.solo.cache.*;
 import org.b3log.solo.processor.MockDispatcherServlet;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.service.*;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -125,6 +131,25 @@ public abstract class AbstractTestCase {
     }
 
     /**
+     * Mocks admin login for console testing.
+     *
+     * @param request the specified request
+     * @throws ServiceException service exception
+     */
+    public void mockAdminLogin(final MockHttpServletRequest request) throws ServiceException {
+        final JSONObject adminUser = getUserQueryService().getAdmin();
+        final String userId = adminUser.optString(Keys.OBJECT_ID);
+        final JSONObject cookieJSONObject = new JSONObject();
+        cookieJSONObject.put(Keys.OBJECT_ID, userId);
+        cookieJSONObject.put(User.USER_PASSWORD, adminUser.optString(User.USER_PASSWORD));
+        final String random = RandomStringUtils.randomAlphanumeric(16);
+        cookieJSONObject.put(Keys.TOKEN, adminUser.optString(User.USER_PASSWORD) + ":" + random);
+        final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), Solos.COOKIE_SECRET);
+        final Cookie cookie = new Cookie(Solos.COOKIE_NAME, cookieValue);
+        request.setCookies(new Cookie[]{cookie});
+    }
+
+    /**
      * Gets a mock dispatcher servlet and run service.
      *
      * @param request  the specified request
@@ -134,6 +159,7 @@ public abstract class AbstractTestCase {
     public MockDispatcherServlet mockDispatcherServletService(final HttpServletRequest request, final MockHttpServletResponse response) {
         final MockDispatcherServlet ret = new MockDispatcherServlet();
         ret.init();
+        SoloServletListener.routePartial();
         ret.service(request, response);
 
         return ret;
