@@ -95,7 +95,7 @@
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
         <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
-        <cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
         <maven-min-plugin.version>1.0.4</maven-min-plugin.version>
         <testng.version>6.1.1</testng.version>
         <mysql-connector-java.version>8.0.12</mysql-connector-java.version>
@@ -280,21 +280,17 @@
             </plugin>
 
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>${cobertura-maven-plugin.version}</version>
-                <configuration>
-                    <check>true</check>
-                    <format>xml</format>
-                    <aggregate>true</aggregate>
-                    <instrumentation>
-                        <excludes>
-                            <exclude>org/b3log/solo/model/**</exclude>
-                            <exclude>org/b3log/solo/SoloServletListener.class</exclude>
-                            <exclude>org/b3log/solo/Starter.class</exclude>
-                        </excludes>
-                    </instrumentation>
-                </configuration>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
