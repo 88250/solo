@@ -21,7 +21,7 @@ import org.json.JSONObject;
 public class CloudStorgeService {
 
     public static final String ERR_MSG =
-            "Cloud Storge settings failed, please visit https://hacpai.com/article/1442418791213 for more details";
+            "Cloud Storge settings failed, please visit http://hzchendou.com/articles/2018/12/09/1544343203696.html for more details";
 
 
     /**

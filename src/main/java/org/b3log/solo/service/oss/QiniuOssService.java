@@ -29,6 +29,8 @@ public class QiniuOssService implements OssService {
      */
     private static final Logger LOGGER = Logger.getLogger(CloudStorgeService.class);
 
+    private static final String ERR_MSG = "Qiniu settings failed, please visit https://hacpai.com/article/1442418791213 for more details";
+
     /**
      * 七牛数据库对象
      */
@@ -53,9 +55,7 @@ public class QiniuOssService implements OssService {
             final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
             qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
             if (null == qiniu) {
-                final String msg =
-                        "Qiniu settings failed, please visit https://hacpai.com/article/1442418791213 for more details";
-                LOGGER.log(Level.ERROR, msg);
+                LOGGER.log(Level.ERROR, ERR_MSG);
                 throw new RuntimeException();
             }
             Auth auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY),
@@ -63,10 +63,8 @@ public class QiniuOssService implements OssService {
             uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET), null, 3600 * 6, null);
             uploadManager = new UploadManager(new Configuration());
         } catch (final Exception e) {
-            final String msg =
-                    "Qiniu settings failed, please visit https://hacpai.com/article/1442418791213 for more details";
-            LOGGER.log(Level.ERROR, msg);
-            throw new RuntimeException(msg);
+            LOGGER.log(Level.ERROR, ERR_MSG);
+            throw new RuntimeException(ERR_MSG);
         }
     }
 

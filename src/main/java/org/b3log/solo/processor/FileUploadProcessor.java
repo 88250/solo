@@ -17,21 +17,27 @@
  */
 package org.b3log.solo.processor;
 
-import com.qiniu.storage.Configuration;
-import com.qiniu.storage.UploadManager;
-import com.qiniu.util.Auth;
-import jodd.io.FileUtil;
-import jodd.io.upload.FileUpload;
-import jodd.io.upload.MultipartStreamParser;
-import jodd.io.upload.impl.MemoryFileUploadFactory;
-import jodd.net.MimeTypes;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -43,17 +49,16 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.Option;
-import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.oss.CloudStorgeService;
 import org.b3log.solo.service.oss.OssService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.*;
-import java.util.*;
+import jodd.io.FileUtil;
+import jodd.io.upload.FileUpload;
+import jodd.io.upload.MultipartStreamParser;
+import jodd.io.upload.impl.MemoryFileUploadFactory;
+import jodd.net.MimeTypes;
 
 /**
  * File upload processor.
@@ -179,7 +184,8 @@ public class FileUploadProcessor {
         }
 
         final int maxSize = 1024 * 1024 * 100;
-        final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
+        final MultipartStreamParser parser =
+                new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
         try {
             parser.parseRequestStream(request.getInputStream(), "UTF-8");
         } catch (final Exception e) {
@@ -236,7 +242,7 @@ public class FileUploadProcessor {
                     succMap.put(originalName, fileLink);
                 } else {
                     try (final OutputStream output = new FileOutputStream(Solos.UPLOAD_DIR_PATH + fileName);
-                         final InputStream input = file.getFileInputStream()) {
+                            final InputStream input = file.getFileInputStream()) {
                         IOUtils.copy(input, output);
                     }
                     succMap.put(originalName, Latkes.getServePath() + "/upload/" + fileName);

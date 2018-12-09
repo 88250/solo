@@ -30,7 +30,7 @@ public class AliyunOssService implements OssService {
     private static final Logger LOGGER = Logger.getLogger(AliyunOssService.class);
 
     private static final String ERR_MSG =
-            "Aliyun settings failed, please visit https://hacpai.com/article/1442418791213 for more details";
+            "Aliyun settings failed, please visit http://hzchendou.com/articles/2018/12/09/1544343203696.html for more details";
 
     /**
      * oss客户端
