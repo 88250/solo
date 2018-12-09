@@ -32,6 +32,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
@@ -44,6 +45,8 @@ import org.b3log.latke.util.URLs;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.OptionQueryService;
+import org.b3log.solo.service.oss.CloudStorgeService;
+import org.b3log.solo.service.oss.OssService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
@@ -70,10 +73,10 @@ public class FileUploadProcessor {
     /**
      * Qiniu enabled.
      */
-    private static final Boolean QN_ENABLED = StringUtils.isBlank(Solos.UPLOAD_DIR_PATH);
+    private static final Boolean OSS_ENABLED = StringUtils.isBlank(Solos.UPLOAD_DIR_PATH);
 
     static {
-        if (!QN_ENABLED) {
+        if (!OSS_ENABLED) {
             final File file = new File(Solos.UPLOAD_DIR_PATH);
             if (!FileUtil.isExistingFolder(file)) {
                 try {
@@ -89,6 +92,9 @@ public class FileUploadProcessor {
         }
     }
 
+    @Inject
+    private CloudStorgeService cloudStorgeService;
+
     /**
      * Gets file by the specified URL.
      *
@@ -96,7 +102,7 @@ public class FileUploadProcessor {
      */
     @RequestProcessing(value = "/upload/{file}", method = HttpMethod.GET)
     public void getFile(final RequestContext context) {
-        if (QN_ENABLED) {
+        if (OSS_ENABLED) {
             return;
         }
 
@@ -188,32 +194,14 @@ public class FileUploadProcessor {
         final String[] names = parser.getParameterValues("name[]");
         String fileName;
 
-        Auth auth;
-        UploadManager uploadManager = null;
-        String uploadToken = null;
-        JSONObject qiniu = null;
+        OssService ossService = null;
         final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM");
-        if (QN_ENABLED) {
+        if (OSS_ENABLED) {
             try {
-                final BeanManager beanManager = BeanManager.getInstance();
-                final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
-                qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
-                if (null == qiniu) {
-                    final String msg = "Qiniu settings failed, please visit https://hacpai.com/article/1442418791213 for more details";
-                    LOGGER.log(Level.ERROR, msg);
-                    context.renderMsg(msg);
-
-                    return;
-                }
-
-                auth = Auth.create(qiniu.optString(Option.ID_C_QINIU_ACCESS_KEY), qiniu.optString(Option.ID_C_QINIU_SECRET_KEY));
-                uploadToken = auth.uploadToken(qiniu.optString(Option.ID_C_QINIU_BUCKET), null, 3600 * 6, null);
-                uploadManager = new UploadManager(new Configuration());
+                ossService = cloudStorgeService.createStorge();
             } catch (final Exception e) {
-                final String msg = "Qiniu settings failed, please visit https://hacpai.com/article/1442418791213 for more details";
-                LOGGER.log(Level.ERROR, msg);
-                context.renderMsg(msg);
-
+                LOGGER.log(Level.ERROR, e.getMessage());
+                context.renderMsg(e.getMessage());
                 return;
             }
         }
@@ -239,13 +227,13 @@ public class FileUploadProcessor {
                 final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
                 fileName = uuid + '_' + processName + "." + suffix;
 
-                if (QN_ENABLED) {
+                if (OSS_ENABLED) {
                     fileName = "file/" + date + "/" + fileName;
                     if (!ArrayUtils.isEmpty(names)) {
                         fileName = names[i];
                     }
-                    uploadManager.put(file.getFileInputStream(), fileName, uploadToken, null, contentType);
-                    succMap.put(originalName, qiniu.optString(Option.ID_C_QINIU_DOMAIN) + "/" + fileName);
+                    String fileLink = ossService.upload(file, fileName);
+                    succMap.put(originalName, fileLink);
                 } else {
                     try (final OutputStream output = new FileOutputStream(Solos.UPLOAD_DIR_PATH + fileName);
                          final InputStream input = file.getFileInputStream()) {

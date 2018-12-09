@@ -40,8 +40,8 @@
             </div>
         </li>
         <li>
-            <div id="tabPreference_qiniu">
-                <a href="#toos/preference/qiniu">${qiniuLabel}</a>
+            <div id="tabPreference_oss">
+                <a href="#toos/preference/oss">${ossServerLabel}</a>
             </div>
         </li>
         <li>
@@ -170,21 +170,25 @@
         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
         <div class="clear"></div>
     </div>
-    <div id="tabPreferencePanel_qiniu" class="none form">
-        <span class="right">
+    <div id="tabPreferencePanel_oss" class="none form">
+         <span class="right">
             <a href="https://hacpai.com/article/1442418791213" target="_blank">${howConfigLabel}</a>
             &nbsp;
-            <button onclick="admin.preference.updateQiniu()">${updateLabel}</button>
+            <button onclick="admin.preference.updateOss()">${updateLabel}</button>
         </span>
+            ${qiniuOssLabel}
+        <input name="ossServer" id= "qiniuOss" type="radio" value="qiniu"/>
+            ${aliyunOssLabel}
+        <input name="ossServer" id= "aliyunOss" type="radio" value="aliyun"/>
         <div class="clear"></div>
-        <label for="qiniuAccessKey">${accessKey1Label}</label>
-        <input id="qiniuAccessKey" type="text"/>
-        <label for="qiniuSecretKey">${secretKey1Label}</label>
-        <input id="qiniuSecretKey" type="text"/>
-        <label for="qiniuDomain">${domain1Label}</label>
-        <input id="qiniuDomain" type="text"/>
-        <label for="qiniuBucket">${bucket1Label}</label>
-        <input id="qiniuBucket" type="text"/>
+        <label for="osSAccessKey">${accessKey1Label}</label>
+        <input id="ossAccessKey" type="text"/>
+        <label for="ossSecretKey">${secretKey1Label}</label>
+        <input id="ossSecretKey" type="text"/>
+        <label for="ossDomain">${domain1Label}</label>
+        <input id="ossDomain" type="text"/>
+        <label for="ossBucket">${bucket1Label}</label>
+        <input id="ossBucket" type="text"/>
     </div>
 </div>
 ${plugins}

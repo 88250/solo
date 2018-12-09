@@ -113,7 +113,7 @@ admin.preference = {
         });
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/preference/qiniu",
+            url: latkeConfig.servePath + "/console/preference/oss",
             type: "GET",
             cache: false,
             success: function (result, textStatus) {
@@ -122,11 +122,15 @@ admin.preference = {
                     $("#loadMsg").text("");
                     return;
                 }
-
-                $("#qiniuAccessKey").val(result.qiniu.qiniuAccessKey);
-                $("#qiniuSecretKey").val(result.qiniu.qiniuSecretKey);
-                $("#qiniuDomain").val(result.qiniu.qiniuDomain);
-                $("#qiniuBucket").val(result.qiniu.qiniuBucket);
+                //设置服务商信息
+                var ossServer = result.oss.ossServer;
+                if (ossServer) {
+                    $('input[name=ossServer][value='+ ossServer+']')[0].checked = true
+                }
+                $("#ossAccessKey").val(result.oss.ossAccessKey);
+                $("#ossSecretKey").val(result.oss.ossSecretKey);
+                $("#ossDomain").val(result.oss.ossDomain);
+                $("#ossBucket").val(result.oss.ossBucket);
             }
         });
     },
@@ -263,19 +267,29 @@ admin.preference = {
     /*
      * @description 更新 Qiniu 参数
      */
-    updateQiniu: function () {
+    updateOss: function () {
         $("#tipMsg").text("");
         $("#loadMsg").text(Label.loadingLabel);
 
+        var ossServers = document.getElementsByName("ossServer");
+        var ossServer = "qiniu";
+        for (var i in ossServers) {
+            if (ossServers[i].checked) {
+                ossServer = ossServers[i].value;
+                break;
+            }
+        }
+
         var requestJSONObject = {
-            "qiniuAccessKey": $("#qiniuAccessKey").val(),
-            "qiniuSecretKey": $("#qiniuSecretKey").val(),
-            "qiniuDomain": $("#qiniuDomain").val(),
-            "qiniuBucket": $("#qiniuBucket").val()
+            "ossServer" : ossServer,
+            "ossAccessKey": $("#ossAccessKey").val(),
+            "ossSecretKey": $("#ossSecretKey").val(),
+            "ossDomain": $("#ossDomain").val(),
+            "ossBucket": $("#ossBucket").val()
         };
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/preference/qiniu",
+            url: latkeConfig.servePath + "/console/preference/oss",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),

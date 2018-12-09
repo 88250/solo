@@ -61,6 +61,11 @@ public final class Option {
     public static final String ID_C_BROADCAST_CHANCE_EXPIRATION_TIME = "broadcastChanceExpirationTime";
 
     /**
+     * key of cloud storge service(云存储服务商)
+     */
+    public static final String ID_C_CLOUD_STORGE_KEY = "ossServer";
+
+    /**
      * Key of Qiniu access key.
      */
     public static final String ID_C_QINIU_ACCESS_KEY = "qiniuAccessKey";
@@ -79,6 +84,27 @@ public final class Option {
      * Key of Qiniu bucket.
      */
     public static final String ID_C_QINIU_BUCKET = "qiniuBucket";
+
+    //Aliyun 配置OOS配置
+    /**
+     * key of aliyun access key
+     */
+    public static final String ID_C_ALIYUN_ACCESS_KEY = "aliyunAccessKey";
+
+    /**
+     * Key of aliyun secret key.
+     */
+    public static final String ID_C_ALIYUN_SECRET_KEY = "aliyunSecretKey";
+
+    /**
+     * key of aliyun OOS domain
+     */
+    public static final String ID_C_ALIYUN_DOMAIN = "aliyunDomain";
+
+    /**
+     * key of aliyun bucket
+     */
+    public static final String ID_C_ALIYUN_BUCKET = "aliyunBucket";
 
     /**
      * Key of blog title.
@@ -325,6 +351,16 @@ public final class Option {
     public static final String CATEGORY_C_QINIU = "qiniu";
 
     /**
+     * aliyun
+     */
+    public static final String CATEGORY_C_ALIYUN = "aliyun";
+
+    /**
+     * Cloud Storge
+     */
+    public static final String CATEGORY_C_CLOU_STORGE = "cloudStorge";
+
+    /**
      * Preference.
      */
     public static final String CATEGORY_C_PREFERENCE = "preference";
@@ -402,7 +438,7 @@ public final class Option {
         /**
          * Default skin directory name.
          */
-        public static final String DEFAULT_SKIN_DIR_NAME = "Jane";
+        public static final String DEFAULT_SKIN_DIR_NAME = "classic";
 
         /**
          * Default language.
