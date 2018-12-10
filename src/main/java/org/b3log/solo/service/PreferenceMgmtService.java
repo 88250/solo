@@ -45,7 +45,7 @@ import static org.b3log.solo.util.Skins.getSkinDirNames;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.16, Sep 26, 2018
+ * @version 1.3.2.17, Dec 10, 2018
  * @since 0.4.0
  */
 @Service
@@ -356,6 +356,10 @@ public class PreferenceMgmtService {
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_VERSION));
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
+
+            final JSONObject customVarsOpt = optionRepository.get(Option.ID_C_CUSTOM_VARS);
+            customVarsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_CUSTOM_VARS));
+            optionRepository.update(Option.ID_C_CUSTOM_VARS, customVarsOpt);
 
             transaction.commit();
         } catch (final Exception e) {

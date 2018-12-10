@@ -48,7 +48,7 @@ import java.util.Arrays;
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.15, Dec 3, 2018
+ * @version 1.2.0.16, Dec 10, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -263,7 +263,8 @@ public class PreferenceConsole {
      *         "articleListStyle": "", // Optional values: "titleOnly"/"titleAndContent"/"titleAndAbstract"
      *         "commentable": boolean,
      *         "feedOutputMode: "" // Optional values: "abstract"/"full"
-     *         "feedOutputCnt": int
+     *         "feedOutputCnt": int,
+     *         "customVars" "", // 支持配置自定义参数 https://github.com/b3log/solo/issues/12535
      *     }
      * }
      * </pre>
@@ -342,7 +343,8 @@ public class PreferenceConsole {
      *         "editorType": "",
      *         "commentable": boolean,
      *         "feedOutputMode: "",
-     *         "feedOutputCnt": int
+     *         "feedOutputCnt": int,
+     *         "customVars" "", // 支持配置自定义参数 https://github.com/b3log/solo/issues/12535
      *     }
      * }
      * </pre>
