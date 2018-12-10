@@ -1053,7 +1053,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.0, Sep 10, 2018
+ * @version 1.5.1.1, Dec 10, 2018
  */
 admin.article = {
     currentEditorType: '',
@@ -1530,8 +1530,7 @@ admin.article = {
      */
     _autoSaveToDraft: function () {
         if ($("#title").val().replace(/\s/g, "") === "" ||
-                admin.editors.articleEditor.getContent().replace(/\s/g, "") === "" ||
-                $("#tag").val().replace(/\s/g, "") === "") {
+                admin.editors.articleEditor.getContent().replace(/\s/g, "") === "") {
             return;
         }
         if (admin.article.status.id) {

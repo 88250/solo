@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.5, Dec 2, 2018
+ * @version 1.1.1.6, Dec 10, 2018
  * @since 0.4.0
  */
 @Singleton
@@ -484,7 +484,7 @@ public class ArticleConsole {
      *         "articleTitle": "",
      *         "articleAbstract": "",
      *         "articleContent": "",
-     *         "articleTags": "tag1,tag2,tag3",
+     *         "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
      *         "articleSignId": "" // optional
@@ -551,7 +551,7 @@ public class ArticleConsole {
      *         "articleTitle": "",
      *         "articleAbstract": "",
      *         "articleContent": "",
-     *         "articleTags": "tag1,tag2,tag3",
+     *         "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
      *         "postToCommunity": boolean,
