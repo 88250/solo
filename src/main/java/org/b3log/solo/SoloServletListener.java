@@ -39,6 +39,7 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.console.AdminConsole;
 import org.b3log.solo.processor.console.ArticleConsole;
+import org.b3log.solo.processor.console.CategoryConsole;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
@@ -342,6 +343,16 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.put("/console/article/puttop/{id}", articleConsole::putTopArticle);
         DispatcherServlet.put("/console/article/", articleConsole::updateArticle);
         DispatcherServlet.post("/console/article/", articleConsole::addArticle);
+
+        final CategoryConsole categoryConsole = beanManager.getReference(CategoryConsole.class);
+        DispatcherServlet.put("/console/category/order/", categoryConsole::changeOrder);
+        DispatcherServlet.get("/console/category/{id}", categoryConsole::getCategory);
+        DispatcherServlet.delete("/console/category/{id}", categoryConsole::removeCategory);
+        DispatcherServlet.put("/console/category/", categoryConsole::updateCategory);
+        DispatcherServlet.post("/console/category/", categoryConsole::addCategory);
+        DispatcherServlet.get("/console/categories/{page}/{pageSize}/{windowSize}", categoryConsole::getCategories);
+
+
         DispatcherServlet.mapping();
     }
 }

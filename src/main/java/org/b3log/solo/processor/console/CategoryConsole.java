@@ -26,10 +26,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.URLs;
@@ -53,7 +51,7 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.2, Dec 3, 2018
+ * @version 1.1.3.3, Dec 10, 2018
  * @since 2.0.0
  */
 @RequestProcessor
@@ -113,11 +111,9 @@ public class CategoryConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/category/order/", method = HttpMethod.PUT)
     public void changeOrder(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
         try {
             final JSONObject requestJSON = context.requestJSON();
@@ -128,7 +124,6 @@ public class CategoryConsole {
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
-
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -159,7 +154,6 @@ public class CategoryConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/category/{id}", method = HttpMethod.GET)
     public void getCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -206,7 +200,6 @@ public class CategoryConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/category/{id}", method = HttpMethod.DELETE)
     public void removeCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -252,7 +245,6 @@ public class CategoryConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/category/", method = HttpMethod.PUT)
     public void updateCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -267,7 +259,6 @@ public class CategoryConsole {
                 throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
             }
             final String[] tagTitles = tagsStr.split(",");
-
             String addArticleWithTagFirstLabel = langPropsService.get("addArticleWithTagFirstLabel");
 
             final List<JSONObject> tags = new ArrayList<>();
@@ -386,7 +377,6 @@ public class CategoryConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/category/", method = HttpMethod.POST)
     public void addCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -401,7 +391,6 @@ public class CategoryConsole {
                 throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
             }
             final String[] tagTitles = tagsStr.split(",");
-
             String addArticleWithTagFirstLabel = langPropsService.get("addArticleWithTagFirstLabel");
 
             final List<JSONObject> tags = new ArrayList<>();
@@ -518,7 +507,6 @@ public class CategoryConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/categories/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     public void getCategories(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

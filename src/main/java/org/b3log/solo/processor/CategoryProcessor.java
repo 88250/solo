@@ -135,7 +135,8 @@ public class CategoryProcessor {
         final HttpServletResponse response = context.getResponse();
 
         try {
-            final String categoryURI = context.pathVar("categoryURI");
+            String categoryURI = context.pathVar("categoryURI");
+            categoryURI = URLs.encode(categoryURI);
             final int currentPageNum = Paginator.getPage(request);
             LOGGER.log(Level.DEBUG, "Category [URI={0}, currentPageNum={1}]", categoryURI, currentPageNum);
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
