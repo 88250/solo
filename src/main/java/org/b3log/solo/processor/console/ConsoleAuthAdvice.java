@@ -62,6 +62,5 @@ public class ConsoleAuthAdvice extends ProcessAdvice {
 
             throw new RequestProcessAdviceException(exception403);
         }
-
     }
 }
