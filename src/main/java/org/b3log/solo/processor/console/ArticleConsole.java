@@ -113,7 +113,6 @@ public class ArticleConsole {
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
-
         final HttpServletRequest request = context.getRequest();
         String strN = request.getParameter("n");
         if (!Strings.isNumeric(strN)) {
@@ -144,7 +143,6 @@ public class ArticleConsole {
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
-
         final HttpServletRequest request = context.getRequest();
         final String markdownText = request.getParameter("markdownText");
         if (StringUtils.isBlank(markdownText)) {
@@ -197,7 +195,6 @@ public class ArticleConsole {
     public void getArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         try {
             final String articleId = context.pathVar("id");
             final JSONObject result = articleQueryService.getArticle(articleId);
@@ -247,7 +244,6 @@ public class ArticleConsole {
     public void getArticles(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         try {
             final HttpServletRequest request = context.getRequest();
             String path = request.getRequestURI().substring((Latkes.getContextPath() + "/console/articles/status/").length());
@@ -312,7 +308,6 @@ public class ArticleConsole {
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final String articleId = context.pathVar("id");
@@ -405,7 +400,6 @@ public class ArticleConsole {
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(request, response)) {
@@ -511,7 +505,6 @@ public class ArticleConsole {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         try {
