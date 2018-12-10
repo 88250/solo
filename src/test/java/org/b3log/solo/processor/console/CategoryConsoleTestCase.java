@@ -17,22 +17,17 @@
  */
 package org.b3log.solo.processor.console;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.model.User;
-import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.util.Crypts;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
 import org.b3log.solo.model.Category;
-import org.b3log.solo.util.Solos;
+import org.b3log.solo.model.Common;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import javax.servlet.http.Cookie;
 import java.io.BufferedReader;
 import java.io.StringReader;
 
@@ -40,7 +35,7 @@ import java.io.StringReader;
  * {@link CategoryConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Oct 15, 2018
+ * @version 1.1.0.0, Dec 10, 2018
  * @since 2.1.0
  */
 @Test(suiteName = "processor")
@@ -83,6 +78,28 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
     }
 
     /**
+     * getCategory.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "addCategory")
+    public void getCategory() throws Exception {
+        final JSONObject category = getCategoryQueryService().getByTitle("分类1");
+
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/category/" + category.optString(Keys.OBJECT_ID));
+        request.setMethod("GET");
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
+
+    /**
      * updateCategory.
      *
      * @throws Exception exception
@@ -114,5 +131,74 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         category = getCategoryQueryService().getByTitle("新的分类1");
         Assert.assertNotNull(category);
         Assert.assertEquals(category.optInt(Category.CATEGORY_TAG_CNT), 1); // https://github.com/b3log/solo/issues/12274
+    }
+
+    /**
+     * getCategories.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "updateCategory")
+    public void getCategories() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/categories/1/10/20");
+        request.setMethod("GET");
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
+
+    /**
+     * changeOrder.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "getCategories")
+    public void changeOrder() throws Exception {
+        final JSONObject category = getCategoryQueryService().getByTitle("新的分类1");
+
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/category/order/");
+        request.setMethod("PUT");
+        final JSONObject requestJSON = new JSONObject();
+        requestJSON.put(Keys.OBJECT_ID, category.optString(Keys.OBJECT_ID));
+        requestJSON.put(Common.DIRECTION, "up");
+        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
+        request.setReader(reader);
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
+
+    /**
+     * removeCategory.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "changeOrder")
+    public void removeCategory() throws Exception {
+        final JSONObject category = getCategoryQueryService().getByTitle("新的分类1");
+
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/category/" + category.optString(Keys.OBJECT_ID));
+        request.setMethod("DELETE");
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 }
