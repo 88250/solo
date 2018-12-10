@@ -1070,7 +1070,7 @@ admin.article = {
     // 自动保存间隔
     AUTOSAVETIME: 1000 * 60,
     /**
-     * @description 获取文章并把值塞入发布文章页面 
+     * @description 获取文章并把值塞入发布文章页面
      * @param {String} id 文章 id
      * @param {Boolean} isArticle 文章或者草稿
      */
@@ -1562,16 +1562,13 @@ admin.article = {
             $("#title").focus().val("");
         } else if (articleContent.replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.contentEmptyLabel);
-        } else if ($("#tag").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text(Label.tagsEmptyLabel);
-            $("#tag").focus().val("");
         } else {
             return true;
         }
         return false;
     },
     /**
-     * @description 取消发布 
+     * @description 取消发布
      * @param {Boolean} isAuto 是否为自动保存
      */
     unPublish: function (isAuto) {
@@ -1673,7 +1670,7 @@ admin.article = {
 };
 
 /**
- * @description 注册到 admin 进行管理 
+ * @description 注册到 admin 进行管理
  */
 admin.register.article = {
     "obj": admin.article,
