@@ -24,44 +24,55 @@
     </div>
     <div>
         <label>${content1Label}</label>
-        <textarea id="articleContent" name="articleContent"
+        <div class="right">
+            <label for="articleThumbnail" style="margin-bottom: 0">
+                ${useTumbnailLabel}
+                <input type="checkbox" style="vertical-align: middle;"
+                       id="articleThumbnail" onclick="$('.article__thumbnail').slideToggle()" />
+            </label>
+        </div>
+        <div class="clear"></div>
+        <div class="article__thumbnail">
+            <div class="thumbnail__img"></div>
+            <button id="articleThumbnailBtn">${chageLabel}</button>
+        </div>
+        <div>
+            <textarea id="articleContent" name="articleContent"
                   style="height: 500px;width:100%;"></textarea>
-    </div>
-    <div>
-        <label>${uploadFileLabel}</label>
-        <form id="articleUpload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="file" multiple=""/>
-        </form>
+        </div>
     </div>
     <div>
         <label>${tags1WithTips1Label}</label>
-        <input id="tag" type="text"/>
+        <div class="tag__select">
+            <input id="tag" type="text"/>
+        </div>
     </div>
     <div class="comment-content">
         <label>${abstract1Label}</label>
-        <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
-    </div>
-    <div>
-        <div class="left">
-            <label for="permalink">${permalink1Label}</label>
-            <input id="permalink" type="text" style="width: 416px;" />
+        <div>
+            <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
         </div>
-        <div class="right">
+    </div>
+    <div class="fn__flex">
+        <div class="fn__flex fn__flex1" style="align-items: center">
+            <label for="permalink" class="permalink__label" style="margin-bottom: 0">${permalink1Label}</label>
+            <input id="permalink" class="fn__flex1" type="text" style="margin: 0 12px 0 6px;" />
+        </div>
+        <div class="right viewpwd__panel">
             <label for="viewPwd">${articleViewPwd1Label}</label>
             <input id="viewPwd" type="text" style="width: 156px" />
         </div>
-        <div class="clear"></div>
     </div>
     <div>
         <span class="signs">
             <label>${sign1Label}</label>
-            <button style="margin-left: 0px;" id="articleSign1" class="selected">${signLabel} 1</button>
-            <button id="articleSign2">${signLabel} 2</button>
-            <button id="articleSign3">${signLabel} 3</button>
+            <button style="margin-left: 0px;" id="articleSign1" class="selected">${signLabel}1</button>
+            <button id="articleSign2">${signLabel}2</button>
+            <button id="articleSign3">${signLabel}3</button>
             <button id="articleSign0">${noSignLabel}</button>
         </span>
-        <div class="right">
-            <label for="articleCommentable">${allowComment1Label}</label>
+        <div class="right article-commentable__panel">
+            <label for="articleCommentable" style="margin: 13px 0 0 0">${allowComment1Label}</label>
             <input type="checkbox" id="articleCommentable" checked="checked" />
             <span id="postToCommunityPanel" class="none">
                 <label for="postToCommunity">
@@ -73,9 +84,9 @@
         <div class="clear"></div>
     </div>
     <div class="right">
-        <button class="marginRight12" id="saveArticle">${saveLabel}</button>
+        <button id="unSubmitArticle" class="none marginRight12" onclick="admin.article.unPublish();">${unPublishLabel}</button>
+        <button class="marginRight12" id="saveArticle">${saveLabel}${draftListLabel}</button>
         <button id="submitArticle">${publishLabel}</button>
-        <button id="unSubmitArticle" class="none" onclick="admin.article.unPublish();">${unPublishLabel}</button>
     </div>
     <div class="clear"></div>
 </div>

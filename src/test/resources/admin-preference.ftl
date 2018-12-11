@@ -52,380 +52,141 @@
     </ul>
 </div>
 <div id="tabPreferencePanel" class="sub-tabs-main">
-    <div id="tabPreferencePanel_config">
-        <table class="form" width="100%" cellpadding="0" cellspacing="9px">
-            <tbody>
-                <tr>
-                    <td colspan="2" align="right">
-                        <button onclick="admin.preference.update()">${updateLabel}</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th width="234px">
-                        <label for="blogTitle">${blogTitle1Label}</label>
-                    </th>
-                    <td>
-                        <input id="blogTitle" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="blogSubtitle">${blogSubtitle1Label}</label>
-                    </th>
-                    <td>
-                        <input id="blogSubtitle" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="blogHost">${blogHost1Label}</label>
-                    </th>
-                    <td>
-                        <input id="blogHost" type="text" value="${servePath}" readonly="true" />
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="metaKeywords">${metaKeywords1Label}</label>
-                    </th>
-                    <td>
-                        <input id="metaKeywords" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="metaDescription">${metaDescription1Label}</label>
-                    </th>
-                    <td>
-                        <input id="metaDescription" type="text" />
-                    </td>
-                </tr>
-                <tr>
-                    <th valign="top">
-                        <label for="htmlHead">${htmlhead1Label}</label>
-                    </th>
-                    <td>
-                        <textarea rows="6" id="htmlHead"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th valign="top">
-                        <label for="noticeBoard">${noticeBoard1Label}</label>
-                    </th>
-                    <td>
-                        <textarea rows="6" id="noticeBoard"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th valign="top">
-                        <label for="footerContent">${footerContent1Label}</label>
-                    </th>
-                    <td>
-                        <textarea rows="2" id="footerContent"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="right">
-                        <button onclick="admin.preference.update()">${updateLabel}</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div id="tabPreferencePanel_config" class="form">
+        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
+        <div class="clear"></div>
+        <label for="blogTitle">${blogTitle1Label}</label>
+        <input id="blogTitle" type="text"/>
+        <label for="blogSubtitle">${blogSubtitle1Label}</label>
+        <input id="blogSubtitle" type="text"/>
+        <label for="blogHost">${blogHost1Label}</label>
+        <input id="blogHost" type="text" value="${servePath}" readonly="true"/>
+        <label for="metaKeywords">${metaKeywords1Label}</label>
+        <input id="metaKeywords" type="text"/>
+        <label for="metaDescription">${metaDescription1Label}</label>
+        <input id="metaDescription" type="text"/>
+        <label for="htmlHead">${htmlhead1Label}</label>
+        <textarea rows="6" id="htmlHead"></textarea>
+        <label for="noticeBoard">${noticeBoard1Label}</label>
+        <textarea rows="6" id="noticeBoard"></textarea>
+        <label for="footerContent">${footerContent1Label}</label>
+        <textarea rows="2" id="footerContent"></textarea><br><br>
+        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
+        <div class="clear"></div>
     </div>
-    <div id="tabPreferencePanel_solo" class="none">
-        <table class="form" width="100%" cellpadding="0" cellspacing="9px">
-            <tbody>
-                <tr>
-                    <th width="80px">
-                        <label for="keyOfSolo">${keyOfSolo1Label}</label>
-                    </th>
-                    <td>
-                        <input id="keyOfSolo" class="normalInput" type="text" readonly="readonly"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <a href="https://hacpai.com/article/1457158841475" target="_blank">${APILabel}</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div id="tabPreferencePanel_solo" class="none form">
+        <label for="keyOfSolo">${keyOfSolo1Label}</label>
+        <input id="keyOfSolo" class="normalInput" type="text" readonly="readonly"/><br><br>
+        <a href="https://hacpai.com/article/1457158841475" target="_blank">${APILabel}</a>
     </div>
-    <div id="tabPreferencePanel_setting" class="none">
-        <table class="form" width="100%" cellpadding="0" cellspacing="9px">
-            <tbody>
-                <tr>
-                    <td colspan="2" align="right">
-                        <button onclick="admin.preference.update()">${updateLabel}</button>
-                    </td>
-                </tr>
-                <tr>
-                    <th width="234px">
-                        <label for="localeString">${localeString1Label}</label>
-                    </th>
-                    <td>
-                        <select id="localeString">
-                            <option value="zh_CN">简体中文</option>
-                            <option value="en_US">Englisth(US)</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th width="234px">
-                        <label for="timeZoneId">${timeZoneId1Label}</label>
-                    </th>
-                    <td>
-                        <select id="timeZoneId">
-                            ${timeZoneIdOptions}
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="editorType">${editType1Label}</label>
-                    </th>
-                    <td>
-                        <select id="editorType">
-                            <option value="tinyMCE">TinyMCE</option>
-                            <option value="CodeMirror-Markdown">CodeMirror(Markdown)</option>
-                            <option value="KindEditor">KindEditor</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="articleListDisplay">${articleListDisplay1Label}</label>
-                    </th>
-                    <td>
-                        <select id="articleListDisplay">
-                            <option value="titleOnly">${titleOnlyLabel}</option>
-                            <option value="titleAndAbstract">${titleAndAbstractLabel}</option>
-                            <option value="titleAndContent">${titleAndContentLabel}</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="mostUsedTagDisplayCount">${indexTagDisplayCnt1Label}</label>
-                    </th>
-                    <td>
-                        <input id="mostUsedTagDisplayCount" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="recentCommentDisplayCount">${indexRecentCommentDisplayCnt1Label}</label>
-                    </th>
-                    <td>
-                        <input id="recentCommentDisplayCount" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="mostCommentArticleDisplayCount">${indexMostCommentArticleDisplayCnt1Label}</label>
-                    </th>
-                    <td>
-                        <input id="mostCommentArticleDisplayCount" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="mostViewArticleDisplayCount">${indexMostViewArticleDisplayCnt1Label}</label>
-                    </th>
-                    <td>
-                        <input id="mostViewArticleDisplayCount" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="articleListDisplayCount">${pageSize1Label}</label>
-                    </th>
-                    <td>
-                        <input id="articleListDisplayCount" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="articleListPaginationWindowSize">${windowSize1Label}</label>
-                    </th>
-                    <td>
-                        <input id="articleListPaginationWindowSize" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="randomArticlesDisplayCount">${randomArticlesDisplayCnt1Label}</label>
-                    </th>
-                    <td>
-                        <input id="randomArticlesDisplayCount" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="relevantArticlesDisplayCount">${relevantArticlesDisplayCnt1Label}</label>
-                    </th>
-                    <td>
-                        <input id="relevantArticlesDisplayCount" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="externalRelevantArticlesDisplayCount">${externalRelevantArticlesDisplayCnt1Label}</label>
-                    </th>
-                    <td>
-                        <input id="externalRelevantArticlesDisplayCount" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="enableArticleUpdateHint">${enableArticleUpdateHint1Label}</label>
-                    </th>
-                    <td>
-                        <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="allowVisitDraftViaPermalink">${allowVisitDraftViaPermalink1Label}</label>
-                    </th>
-                    <td>
-                        <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="commentable">${allowComment1Label}</label>
-                    </th>
-                    <td>
-                        <input id="commentable" type="checkbox" class="normalInput"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="allowRegister">${allowRegister1Label}</label>
-                    </th>
-                    <td>
-                        <input id="allowRegister" type="checkbox" class="normalInput"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="feedOutputMode">${feedOutputModel1Label}</label>
-                    </th>
-                    <td>
-                        <select id="feedOutputMode">
-                            <option value="abstract">${abstractLabel}</option>
-                            <option value="fullContent">${fullContentLabel}</option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="feedOutputCnt">${feedOutputCnt1Label}</label>
-                    </th>
-                    <td>
-                        <input id="feedOutputCnt" class="normalInput" type="text"/>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th colspan="2">
-                        <button onclick="admin.preference.update()">${updateLabel}</button>
-                    </th>
-                </tr>
-            </tbody>
-        </table>
+    <div id="tabPreferencePanel_setting" class="none form">
+        <button class="right" onclick="admin.preference.update()">${updateLabel}</button>
+        <div class="clear"></div>
+        <label for="localeString">${localeString1Label}</label>
+        <select id="localeString">
+            <option value="zh_CN">简体中文</option>
+            <option value="en_US">Englisth(US)</option>
+        </select>
+        <label for="timeZoneId">${timeZoneId1Label}</label>
+        <select id="timeZoneId">
+        ${timeZoneIdOptions}
+        </select>
+        <label for="articleListDisplay">${articleListDisplay1Label}</label>
+        <select id="articleListDisplay">
+            <option value="titleOnly">${titleOnlyLabel}</option>
+            <option value="titleAndAbstract">${titleAndAbstractLabel}</option>
+            <option value="titleAndContent">${titleAndContentLabel}</option>
+        </select>
+        <label for="mostUsedTagDisplayCount">${indexTagDisplayCnt1Label}</label>
+        <input id="mostUsedTagDisplayCount" class="normalInput" type="text"/>
+        <label for="recentCommentDisplayCount">${indexRecentCommentDisplayCnt1Label}</label>
+        <input id="recentCommentDisplayCount" class="normalInput" type="text"/>
+        <label for="mostCommentArticleDisplayCount">${indexMostCommentArticleDisplayCnt1Label}</label>
+        <input id="mostCommentArticleDisplayCount" class="normalInput" type="text"/>
+        <label for="mostViewArticleDisplayCount">${indexMostViewArticleDisplayCnt1Label}</label>
+        <input id="mostViewArticleDisplayCount" class="normalInput" type="text"/>
+        <label for="articleListDisplayCount">${pageSize1Label}</label>
+        <input id="articleListDisplayCount" class="normalInput" type="text"/>
+        <label for="articleListPaginationWindowSize">${windowSize1Label}</label>
+        <input id="articleListPaginationWindowSize" class="normalInput" type="text"/>
+        <label for="randomArticlesDisplayCount">${randomArticlesDisplayCnt1Label}</label>
+        <input id="randomArticlesDisplayCount" class="normalInput" type="text"/>
+        <label for="relevantArticlesDisplayCount">${relevantArticlesDisplayCnt1Label}</label>
+        <input id="relevantArticlesDisplayCount" class="normalInput" type="text"/>
+        <label for="externalRelevantArticlesDisplayCount">${externalRelevantArticlesDisplayCnt1Label}</label>
+        <input id="externalRelevantArticlesDisplayCount" class="normalInput" type="text"/>
+        <label for="enableArticleUpdateHint">${enableArticleUpdateHint1Label}</label>
+        <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
+        <label for="allowVisitDraftViaPermalink">${allowVisitDraftViaPermalink1Label}</label>
+        <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
+        <label for="commentable">${allowComment1Label}</label>
+        <input id="commentable" type="checkbox" class="normalInput"/>
+        <label for="allowRegister">${allowRegister1Label}</label>
+        <input id="allowRegister" type="checkbox" class="normalInput"/>
+        <label for="feedOutputMode">${feedOutputModel1Label}</label>
+        <select id="feedOutputMode">
+            <option value="abstract">${abstractLabel}</option>
+            <option value="fullContent">${fullContentLabel}</option>
+        </select>
+        <label for="feedOutputCnt">${feedOutputCnt1Label}</label>
+        <input id="feedOutputCnt" class="normalInput" type="text"/>
+        <label for="customVars">${customVars1Label}</label>
+        <input id="customVars" class="normalInput" type="text"/><br/><br/>
+        <button class="right" onclick="admin.preference.update()">${updateLabel}</button>
+        <div class="clear"></div>
     </div>
     <div id="tabPreferencePanel_skins" class="none form">
-        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
-        <div class="clear"></div>
-        <div id="skinMain">
-        </div>
-        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
-        <div class="clear"></div>
-    </div>
-    <div id="tabPreferencePanel_signs" class="none">
-        <table class="form" width="100%" cellpadding="0" cellspacing="9px">
+        <table class="form" width="100%" cellpadding="0" cellspacing="0">
             <tbody>
-                <tr>
-                    <th colspan="2">
-                        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
-                    </th>
-                </tr>
-                <tr>
-                    <th valign="top" width="80">
-                        <button id="preferenceSignButton1">${signLabel}1</button>
-                    </th>
-                    <td>
-                        <textarea rows="8" id="preferenceSign1"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th valign="top">
-                        <button id="preferenceSignButton2">${signLabel}2</button>
-                    </th>
-                    <td>
-                        <textarea rows="8" id="preferenceSign2"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th valign="top">
-                        <button id="preferenceSignButton3">${signLabel}3</button>
-                    </th>
-                    <td>
-                        <textarea rows="8" id="preferenceSign3"></textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <th colspan="2">
-                        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
-                    </th>
-                </tr>
+            <tr>
+                <td>
+                    <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
+                    <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
+                    <button style="float: right" onclick="admin.preference.update()">${updateLabel}</button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div id="skinMain"></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
+                    <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
+                    <button style="float: right" onclick="admin.preference.update()">${updateLabel}</button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
-    <div id="tabPreferencePanel_qiniu" class="none">
-        <table class="form" width="100%" cellpadding="0" cellspacing="9px">
-            <tbody>
-                <tr>
-                    <th colspan="2">
-                        <button onclick="admin.preference.updateQiniu()">${updateLabel}</button>
-                    </th>
-                </tr>
-                <tr>
-                    <th width="120">
-                        <label for="qiniuAccessKey">${accessKey1Label}</label>
-                    </th>
-                    <td>
-                        <input id="qiniuAccessKey" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="qiniuSecretKey">${secretKey1Label}</label>
-                    </th>
-                    <td>
-                        <input id="qiniuSecretKey" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="qiniuDomain">${domain1Label}</label>
-                    </th>
-                    <td>
-                        <input id="qiniuDomain" type="text"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>
-                        <label for="qiniuBucket">${bucket1Label}</label>
-                    </th>
-                    <td>
-                        <input id="qiniuBucket" type="text"/>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div id="tabPreferencePanel_signs" class="none form">
+        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
+        <div class="clear"></div>
+        <button id="preferenceSignButton1">${signLabel}1</button>
+        <textarea rows="8" id="preferenceSign1"></textarea>
+        <button id="preferenceSignButton2">${signLabel}2</button>
+        <textarea rows="8" id="preferenceSign2"></textarea>
+        <button id="preferenceSignButton3">${signLabel}3</button>
+        <textarea rows="8" id="preferenceSign3"></textarea><br><br>
+        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
+        <div class="clear"></div>
+    </div>
+    <div id="tabPreferencePanel_qiniu" class="none form">
+        <span class="right">
+            <a href="https://hacpai.com/article/1442418791213" target="_blank">${howConfigLabel}</a>
+            &nbsp;
+            <button onclick="admin.preference.updateQiniu()">${updateLabel}</button>
+        </span>
+        <div class="clear"></div>
+        <label for="qiniuAccessKey">${accessKey1Label}</label>
+        <input id="qiniuAccessKey" type="text"/>
+        <label for="qiniuSecretKey">${secretKey1Label}</label>
+        <input id="qiniuSecretKey" type="text"/>
+        <label for="qiniuDomain">${domain1Label}</label>
+        <input id="qiniuDomain" type="text"/>
+        <label for="qiniuBucket">${bucket1Label}</label>
+        <input id="qiniuBucket" type="text"/>
     </div>
 </div>
 ${plugins}
