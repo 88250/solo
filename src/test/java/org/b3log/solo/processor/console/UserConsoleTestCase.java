@@ -142,7 +142,6 @@ public class UserConsoleTestCase extends AbstractTestCase {
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
-
     /**
      * changeUserRole.
      *
