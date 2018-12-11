@@ -380,7 +380,7 @@ public class UpgradeService {
      * @throws Exception exception
      */
     private void notifyUserByEmail() throws Exception {
-        if (!Solos.isConfigured()) {
+        if (!Solos.isMailConfigured()) {
             return;
         }
 

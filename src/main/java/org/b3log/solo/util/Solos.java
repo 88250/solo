@@ -342,7 +342,7 @@ public final class Solos {
      *
      * @return {@code true} if user configured, returns {@code false} otherwise
      */
-    public static boolean isConfigured() {
+    public static boolean isMailConfigured() {
         try {
             return StringUtils.isNotBlank(mailConf.getString("mail.user")) &&
                     StringUtils.isNotBlank(mailConf.getString("mail.password")) &&

@@ -392,7 +392,7 @@ public class LoginProcessor {
         message.setSubject(mailSubject);
         message.setHtmlBody(mailBody);
 
-        if (Solos.isConfigured()) {
+        if (Solos.isMailConfigured()) {
             mailService.send(message);
         } else {
             LOGGER.log(Level.INFO, "Do not send mail caused by not configure mail.properties");
