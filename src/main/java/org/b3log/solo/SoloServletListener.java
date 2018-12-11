@@ -373,12 +373,21 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/page/{id}", pageConsole::getPage);
         DispatcherServlet.get("/console/pages/{page}/{pageSize}/{windowSize}", pageConsole::getPages);
 
-        final PluginConsole pluginConsole =beanManager.getReference(PluginConsole.class);
+        final PluginConsole pluginConsole = beanManager.getReference(PluginConsole.class);
         DispatcherServlet.put("/console/plugin/status/", pluginConsole::setPluginStatus);
         DispatcherServlet.get("/console/plugins/{page}/{pageSize}/{windowSize}", pluginConsole::getPlugins);
         DispatcherServlet.post("/console/plugin/toSetting", pluginConsole::toSetting);
         DispatcherServlet.post("/console/plugin/updateSetting", pluginConsole::updateSetting);
 
+        final PreferenceConsole preferenceConsole = beanManager.getReference(PreferenceConsole.class);
+        DispatcherServlet.get("/console/reply/notification/template", preferenceConsole::getReplyNotificationTemplate);
+        DispatcherServlet.put("/console/reply/notification/template", preferenceConsole::updateReplyNotificationTemplate);
+        DispatcherServlet.get("/console/signs/", preferenceConsole::getSigns);
+        DispatcherServlet.get("/console/preference/", preferenceConsole::getPreference);
+        DispatcherServlet.put("/console/preference/", preferenceConsole::updatePreference);
+        DispatcherServlet.get("/console/preference/qiniu", preferenceConsole::getQiniuPreference);
+        DispatcherServlet.put("/console/preference/qiniu", preferenceConsole::updateQiniu);
+        
 
         DispatcherServlet.mapping();
     }
