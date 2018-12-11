@@ -158,6 +158,51 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
-    
+    /**
+     * updateQiniu.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void updateQiniu() throws Exception {
+        final JSONObject p = new JSONObject();
+        p.put(Option.ID_C_QINIU_ACCESS_KEY, "1");
+        p.put(Option.ID_C_QINIU_SECRET_KEY, "1");
+        p.put(Option.ID_C_QINIU_DOMAIN, "1");
+        p.put(Option.ID_C_QINIU_BUCKET, "1");
+
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/preference/qiniu");
+        request.setMethod("PUT");
+        final BufferedReader reader = new BufferedReader(new StringReader(p.toString()));
+        request.setReader(reader);
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
+
+    /**
+     * getQiniuPreference.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "updateQiniu")
+    public void getQiniuPreference() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/preference/qiniu");
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
 
 }
