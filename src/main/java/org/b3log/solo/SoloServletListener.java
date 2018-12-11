@@ -365,6 +365,21 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/links/{page}/{pageSize}/{windowSize}", linkConsole::getLinks);
         DispatcherServlet.get("/console/link/{id}", linkConsole::getLink);
 
+        final PageConsole pageConsole = beanManager.getReference(PageConsole.class);
+        DispatcherServlet.put("/console/page/", pageConsole::updatePage);
+        DispatcherServlet.delete("/console/page/{id}", pageConsole::removePage);
+        DispatcherServlet.post("/console/page/", pageConsole::addPage);
+        DispatcherServlet.put("/console/page/order/", pageConsole::changeOrder);
+        DispatcherServlet.get("/console/page/{id}", pageConsole::getPage);
+        DispatcherServlet.get("/console/pages/{page}/{pageSize}/{windowSize}", pageConsole::getPages);
+
+        final PluginConsole pluginConsole =beanManager.getReference(PluginConsole.class);
+        DispatcherServlet.put("/console/plugin/status/", pluginConsole::setPluginStatus);
+        DispatcherServlet.get("/console/plugins/{page}/{pageSize}/{windowSize}", pluginConsole::getPlugins);
+        DispatcherServlet.post("/console/plugin/toSetting", pluginConsole::toSetting);
+        DispatcherServlet.post("/console/plugin/updateSetting", pluginConsole::updateSetting);
+
+
         DispatcherServlet.mapping();
     }
 }

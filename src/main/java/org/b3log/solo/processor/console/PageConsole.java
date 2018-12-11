@@ -25,10 +25,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Common;
@@ -46,7 +44,7 @@ import javax.servlet.http.HttpServletRequest;
  * Plugin console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Dec 3, 2018
+ * @version 1.0.0.9, Dec 11, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -115,7 +113,6 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/", method = HttpMethod.PUT)
     public void updatePage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -151,7 +148,6 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/{id}", method = HttpMethod.DELETE)
     public void removePage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -204,7 +200,6 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/", method = HttpMethod.POST)
     public void addPage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -217,7 +212,6 @@ public class PageConsole {
             ret.put(Keys.OBJECT_ID, pageId);
             ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
             ret.put(Keys.STATUS_CODE, true);
-
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) { // May be permalink check exception
             LOGGER.log(Level.WARN, e.getMessage(), e);
@@ -251,7 +245,6 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/order/", method = HttpMethod.PUT)
     public void changeOrder(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -299,7 +292,6 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/{id}", method = HttpMethod.GET)
     public void getPage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -350,7 +342,6 @@ public class PageConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/pages/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     public void getPages(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -359,15 +350,12 @@ public class PageConsole {
             final HttpServletRequest request = context.getRequest();
             final String requestURI = request.getRequestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/pages/").length());
-
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
-
             final JSONObject result = pageQueryService.getPages(requestJSONObject);
             final JSONArray pages = result.optJSONArray(Page.PAGES);
 
             for (int i = 0; i < pages.length(); i++) {
                 final JSONObject page = pages.getJSONObject(i);
-
                 if ("page".equals(page.optString(Page.PAGE_TYPE))) {
                     final String permalink = page.optString(Page.PAGE_PERMALINK);
                     page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + permalink);
@@ -379,7 +367,6 @@ public class PageConsole {
             }
 
             result.put(Keys.STATUS_CODE, true);
-
             renderer.setJSONObject(result);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

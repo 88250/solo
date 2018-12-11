@@ -24,10 +24,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.service.PluginMgmtService;
@@ -43,7 +41,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/mainlove">Love Yao</a>
- * @version 1.1.0.4, Dec 3, 2018
+ * @version 1.1.0.5, Dec 11, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -87,7 +85,6 @@ public class PluginConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/plugin/status/", method = HttpMethod.PUT)
     public void setPluginStatus(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -129,7 +126,6 @@ public class PluginConsole {
      * @param context the specified http request context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/console/plugins/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     public void getPlugins(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -157,7 +153,6 @@ public class PluginConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/plugin/toSetting", method = HttpMethod.POST)
     public void toSetting(final RequestContext context) {
         final ConsoleRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
@@ -186,7 +181,6 @@ public class PluginConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/plugin/updateSetting", method = HttpMethod.POST)
     public void updateSetting(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
