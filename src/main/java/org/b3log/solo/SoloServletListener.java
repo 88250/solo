@@ -37,10 +37,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.processor.console.AdminConsole;
-import org.b3log.solo.processor.console.ArticleConsole;
-import org.b3log.solo.processor.console.CategoryConsole;
-import org.b3log.solo.processor.console.CommentConsole;
+import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
@@ -360,8 +357,13 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/comments/article/{id}", commentConsole::getArticleComments);
         DispatcherServlet.get("/console/comments/page/{id}", commentConsole::getPageComments);
 
-
-
+        final LinkConsole linkConsole = beanManager.getReference(LinkConsole.class);
+        DispatcherServlet.delete("/console/link/{id}", linkConsole::removeLink);
+        DispatcherServlet.put("/console/link/", linkConsole::updateLink);
+        DispatcherServlet.put("/console/link/order/", linkConsole::changeOrder);
+        DispatcherServlet.post("/console/link/", linkConsole::addLink);
+        DispatcherServlet.get("/console/links/{page}/{pageSize}/{windowSize}", linkConsole::getLinks);
+        DispatcherServlet.get("/console/link/{id}", linkConsole::getLink);
 
         DispatcherServlet.mapping();
     }
