@@ -82,7 +82,7 @@ public final class SoloServletListener extends AbstractServletListener {
         Latkes.setScanPath("org.b3log.solo");
         super.contextInitialized(servletContextEvent);
         beanManager = BeanManager.getInstance();
-        routePartial();
+        routeConsoleProcessors();
         Stopwatchs.start("Context Initialized");
 
         validateSkin();
@@ -310,9 +310,9 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * 部分控制器使用函数式路由. https://github.com/b3log/solo/issues/12580
+     * 后台控制器使用函数式路由. https://github.com/b3log/solo/issues/12580
      */
-    public static void routePartial() {
+    public static void routeConsoleProcessors() {
         final BeanManager beanManager = BeanManager.getInstance();
         final AdminConsole adminConsole = beanManager.getReference(AdminConsole.class);
         DispatcherServlet.get("/admin-index.do", adminConsole::showAdminIndex);
