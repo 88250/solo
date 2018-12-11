@@ -573,9 +573,13 @@ public class DataModelService {
         final String[] customVarsArray = customVarsStr.split("\\|");
         for (int i = 0; i < customVarsArray.length; i++) {
             final String customVarPair = customVarsArray[i];
-            final String customVarKey = customVarPair.split("=")[0];
-            final String customVarVal = customVarPair.split("=")[1];
-            customVars.put(customVarKey, customVarVal);
+            if (StringUtils.isNotBlank(customVarsStr)) {
+                final String customVarKey = customVarPair.split("=")[0];
+                final String customVarVal = customVarPair.split("=")[1];
+                if (StringUtils.isNotBlank(customVarKey) && StringUtils.isNotBlank(customVarVal)) {
+                    customVars.put(customVarKey, customVarVal);
+                }
+            }
         }
         dataModel.put("customVars", customVars);
     }
