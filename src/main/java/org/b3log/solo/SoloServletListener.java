@@ -40,6 +40,7 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.console.AdminConsole;
 import org.b3log.solo.processor.console.ArticleConsole;
 import org.b3log.solo.processor.console.CategoryConsole;
+import org.b3log.solo.processor.console.CommentConsole;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
@@ -55,7 +56,7 @@ import javax.servlet.http.HttpSessionEvent;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.6, Dec 2, 2018
+ * @version 1.10.0.7, Dec 11, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -351,6 +352,15 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.put("/console/category/", categoryConsole::updateCategory);
         DispatcherServlet.post("/console/category/", categoryConsole::addCategory);
         DispatcherServlet.get("/console/categories/{page}/{pageSize}/{windowSize}", categoryConsole::getCategories);
+
+        final CommentConsole commentConsole = beanManager.getReference(CommentConsole.class);
+        DispatcherServlet.delete("/console/page/comment/{id}", commentConsole::removePageComment);
+        DispatcherServlet.delete("/console/article/comment/{id}", commentConsole::removeArticleComment);
+        DispatcherServlet.get("/console/comments/{page}/{pageSize}/{windowSize}", commentConsole::getComments);
+        DispatcherServlet.get("/console/comments/article/{id}", commentConsole::getArticleComments);
+        DispatcherServlet.get("/console/comments/page/{id}", commentConsole::getPageComments);
+
+
 
 
         DispatcherServlet.mapping();
