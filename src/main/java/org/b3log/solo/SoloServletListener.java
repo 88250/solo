@@ -387,7 +387,16 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.put("/console/preference/", preferenceConsole::updatePreference);
         DispatcherServlet.get("/console/preference/qiniu", preferenceConsole::getQiniuPreference);
         DispatcherServlet.put("/console/preference/qiniu", preferenceConsole::updateQiniu);
-        
+
+        final RepairConsole repairConsole = beanManager.getReference(RepairConsole.class);
+        DispatcherServlet.get("/fix/restore-signs", repairConsole::restoreSigns);
+        DispatcherServlet.get("/fix/tag-article-counter-repair", repairConsole::repairTagArticleCounter);
+
+        final TagConsole tagConsole = beanManager.getReference(TagConsole.class);
+        DispatcherServlet.get("/console/tags", tagConsole::getTags);
+        DispatcherServlet.get("/console/tag/unused", tagConsole::getUnusedTags);
+        DispatcherServlet.delete("/console/tag/unused", tagConsole::removeUnusedTags);
+
 
         DispatcherServlet.mapping();
     }

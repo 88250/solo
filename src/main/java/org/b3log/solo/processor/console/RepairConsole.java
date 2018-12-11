@@ -22,11 +22,9 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.annotation.Transactional;
-import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHtmlRenderer;
 import org.b3log.solo.mail.MailService;
@@ -51,7 +49,7 @@ import java.util.List;
  * Provides patches on some special issues.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.18, Dec 3, 2018
+ * @version 1.2.0.19, Dec 11, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -115,7 +113,6 @@ public class RepairConsole {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/fix/restore-signs.do", method = HttpMethod.GET)
     public void restoreSigns(final RequestContext context) {
         final TextHtmlRenderer renderer = new TextHtmlRenderer();
         context.setRenderer(renderer);
@@ -144,7 +141,7 @@ public class RepairConsole {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            renderer.setContent("Restores signs failed, error msg[" + e.getMessage() + "]");
+            renderer.setContent("Restores signs failed, error msg [" + e.getMessage() + "]");
         }
     }
 
@@ -153,12 +150,11 @@ public class RepairConsole {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/fix/tag-article-counter-repair.do", method = HttpMethod.GET)
-    @Transactional
     public void repairTagArticleCounter(final RequestContext context) {
         final TextHtmlRenderer renderer = new TextHtmlRenderer();
         context.setRenderer(renderer);
 
+        final Transaction transaction = tagRepository.beginTransaction();
         try {
             final List<JSONObject> tags = tagRepository.getList(new Query());
             for (final JSONObject tag : tags) {
@@ -191,11 +187,12 @@ public class RepairConsole {
                 LOGGER.log(Level.INFO, "Repaired tag[title={0}, refCnt={1}, publishedTagRefCnt={2}]",
                         tag.getString(Tag.TAG_TITLE), tagRefCnt, publishedTagRefCnt);
             }
+            transaction.commit();
 
             renderer.setContent("Repair successfully!");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-            renderer.setContent("Repairs failed, error msg[" + e.getMessage() + "]");
+            renderer.setContent("Repairs failed, error msg [" + e.getMessage() + "]");
         }
     }
 }
