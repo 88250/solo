@@ -178,7 +178,7 @@ public class PageConsole {
      *     "page": {
      *         "pageTitle": "",
      *         "pageContent": "",
-     *         "pagePermalink": "" // optional,
+     *         "pagePermalink": "" // optional
      *         "pageCommentable": boolean,
      *         "pageType": "",
      *         "pageOpenTarget": "",
