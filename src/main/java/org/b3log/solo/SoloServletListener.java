@@ -397,6 +397,13 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/tag/unused", tagConsole::getUnusedTags);
         DispatcherServlet.delete("/console/tag/unused", tagConsole::removeUnusedTags);
 
+        final UserConsole userConsole = beanManager.getReference(UserConsole.class);
+        DispatcherServlet.put("/console/user/", userConsole::updateUser);
+        DispatcherServlet.post("/console/user/", userConsole::addUser);
+        DispatcherServlet.delete("/console/user/{id}", userConsole::removeUser);
+        DispatcherServlet.get("/console/users/{page}/{pageSize}/{windowSize}", userConsole::getUsers);
+        DispatcherServlet.get("/console/user/{id}", userConsole::getUser);
+        DispatcherServlet.get("/console/changeRole/{id}", userConsole::changeUserRole);
 
         DispatcherServlet.mapping();
     }
