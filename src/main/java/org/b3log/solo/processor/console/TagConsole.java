@@ -39,7 +39,7 @@ import java.util.List;
  * Tag console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Dec 3, 2018
+ * @version 1.0.0.3, Dec 11, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -172,6 +172,7 @@ public class TagConsole {
         try {
             tagMgmtService.removeUnusedTags();
 
+            jsonObject.put(Keys.STATUS_CODE, true);
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes unused tags failed", e);
