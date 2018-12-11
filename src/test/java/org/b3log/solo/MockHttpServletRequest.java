@@ -95,7 +95,17 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public Enumeration getHeaderNames() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return new Enumeration() {
+            @Override
+            public boolean hasMoreElements() {
+                return false;
+            }
+
+            @Override
+            public Object nextElement() {
+                return null;
+            }
+        };
     }
 
     @Override
@@ -221,7 +231,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getCharacterEncoding() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "mock character encoding";
     }
 
     @Override
@@ -236,7 +246,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getContentType() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "mock content type";
     }
 
     @Override
@@ -315,7 +325,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getRemoteHost() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "mock remote host";
     }
 
     @Override
@@ -355,22 +365,22 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public int getRemotePort() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return 0;
     }
 
     @Override
     public String getLocalName() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "mock local name";
     }
 
     @Override
     public String getLocalAddr() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "mock local addr";
     }
 
     @Override
     public int getLocalPort() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return 0;
     }
 
     @Override

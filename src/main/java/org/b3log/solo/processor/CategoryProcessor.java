@@ -104,22 +104,6 @@ public class CategoryProcessor {
     private StatisticMgmtService statisticMgmtService;
 
     /**
-     * Gets category URI from the specified URI.
-     *
-     * @param requestURI the specified request URI
-     * @return category URI
-     */
-    private static String getCategoryURI(final String requestURI) {
-        final String path = requestURI.substring((Latkes.getContextPath() + "/category/").length());
-
-        if (path.contains("/")) {
-            return path.substring(0, path.indexOf("/"));
-        } else {
-            return path.substring(0);
-        }
-    }
-
-    /**
      * Shows articles related with a category with the specified context.
      *
      * @param context the specified context
