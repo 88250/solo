@@ -39,7 +39,6 @@ import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.service.StatisticQueryService;
-import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -119,25 +118,10 @@ public class RepairConsole {
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
-            final String originalSigns = preference.getString(Option.ID_C_SIGNS);
-
             preference.put(Option.ID_C_SIGNS, Option.DefaultPreference.DEFAULT_SIGNS);
             preferenceMgmtService.updatePreference(preference);
 
-            renderer.setContent("Restores signs succeeded.");
-
-            // Sends the sample signs to developer
-            if (!Solos.isConfigured()) {
-                return;
-            }
-
-            final MailService.Message msg = new MailService.Message();
-            msg.setFrom(preference.getString(Option.ID_C_ADMIN_EMAIL));
-            msg.addRecipient("d@b3log.org");
-            msg.setSubject("Restore signs");
-            msg.setHtmlBody(originalSigns + "<p>Admin email: " + preference.getString(Option.ID_C_ADMIN_EMAIL) + "</p>");
-
-            MAIL_SVC.send(msg);
+            renderer.setContent("Restore signs succeeded.");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
