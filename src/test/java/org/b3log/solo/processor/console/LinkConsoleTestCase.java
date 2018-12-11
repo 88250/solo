@@ -85,7 +85,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "init")
+    @Test(dependsOnMethods = "addLink")
     public void updateLink() throws Exception {
         final JSONObject l = getLinkRepository().getList(new Query()).get(0);
         final String linkId = l.optString(Keys.OBJECT_ID);
