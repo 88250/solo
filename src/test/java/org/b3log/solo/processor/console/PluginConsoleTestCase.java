@@ -44,7 +44,6 @@ public class PluginConsoleTestCase extends AbstractTestCase {
         super.init();
     }
 
-
     /**
      * getPlugins.
      *
