@@ -50,7 +50,7 @@ public class InitProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用 Solo!</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用!</title>"));
     }
 
     /**

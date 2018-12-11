@@ -69,7 +69,7 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 403 Forbidden!</title>"));
     }
 
     /**
@@ -83,6 +83,6 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 注册 Solo 用户!</title>"));
     }
 }
