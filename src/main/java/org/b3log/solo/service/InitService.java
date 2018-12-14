@@ -61,7 +61,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.25, Nov 9, 2018
+ * @version 1.5.2.26, Dec 10, 2018
  * @since 0.4.0
  */
 @Service
@@ -603,6 +603,12 @@ public class InitService {
      */
     private void initPreference(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
+
+        final JSONObject customVarsOpt = new JSONObject();
+        customVarsOpt.put(Keys.OBJECT_ID, Option.ID_C_CUSTOM_VARS);
+        customVarsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        customVarsOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_CUSTOM_VARS);
+        optionRepository.add(customVarsOpt);
 
         final JSONObject noticeBoardOpt = new JSONObject();
         noticeBoardOpt.put(Keys.OBJECT_ID, Option.ID_C_NOTICE_BOARD);

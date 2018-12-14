@@ -52,7 +52,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.5, Dec 2, 2018
+ * @version 1.1.1.6, Dec 10, 2018
  * @since 0.4.0
  */
 @Singleton
@@ -113,7 +113,6 @@ public class ArticleConsole {
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
-
         final HttpServletRequest request = context.getRequest();
         String strN = request.getParameter("n");
         if (!Strings.isNumeric(strN)) {
@@ -144,7 +143,6 @@ public class ArticleConsole {
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
-
         final HttpServletRequest request = context.getRequest();
         final String markdownText = request.getParameter("markdownText");
         if (StringUtils.isBlank(markdownText)) {
@@ -197,7 +195,6 @@ public class ArticleConsole {
     public void getArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         try {
             final String articleId = context.pathVar("id");
             final JSONObject result = articleQueryService.getArticle(articleId);
@@ -247,7 +244,6 @@ public class ArticleConsole {
     public void getArticles(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         try {
             final HttpServletRequest request = context.getRequest();
             String path = request.getRequestURI().substring((Latkes.getContextPath() + "/console/articles/status/").length());
@@ -312,7 +308,6 @@ public class ArticleConsole {
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final String articleId = context.pathVar("id");
@@ -405,7 +400,6 @@ public class ArticleConsole {
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(request, response)) {
@@ -484,7 +478,7 @@ public class ArticleConsole {
      *         "articleTitle": "",
      *         "articleAbstract": "",
      *         "articleContent": "",
-     *         "articleTags": "tag1,tag2,tag3",
+     *         "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
      *         "articleSignId": "" // optional
@@ -511,7 +505,6 @@ public class ArticleConsole {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         try {
@@ -551,7 +544,7 @@ public class ArticleConsole {
      *         "articleTitle": "",
      *         "articleAbstract": "",
      *         "articleContent": "",
-     *         "articleTags": "tag1,tag2,tag3",
+     *         "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
      *         "articlePermalink": "", // optional
      *         "articleIsPublished": boolean,
      *         "postToCommunity": boolean,

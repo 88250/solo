@@ -1053,7 +1053,7 @@ $.extend(TablePaginate.prototype, {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.0, Sep 10, 2018
+ * @version 1.5.1.1, Dec 10, 2018
  */
 admin.article = {
     currentEditorType: '',
@@ -1070,7 +1070,7 @@ admin.article = {
     // 自动保存间隔
     AUTOSAVETIME: 1000 * 60,
     /**
-     * @description 获取文章并把值塞入发布文章页面 
+     * @description 获取文章并把值塞入发布文章页面
      * @param {String} id 文章 id
      * @param {Boolean} isArticle 文章或者草稿
      */
@@ -1530,8 +1530,7 @@ admin.article = {
      */
     _autoSaveToDraft: function () {
         if ($("#title").val().replace(/\s/g, "") === "" ||
-                admin.editors.articleEditor.getContent().replace(/\s/g, "") === "" ||
-                $("#tag").val().replace(/\s/g, "") === "") {
+                admin.editors.articleEditor.getContent().replace(/\s/g, "") === "") {
             return;
         }
         if (admin.article.status.id) {
@@ -1563,16 +1562,13 @@ admin.article = {
             $("#title").focus().val("");
         } else if (articleContent.replace(/\s/g, "") === "") {
             $("#tipMsg").text(Label.contentEmptyLabel);
-        } else if ($("#tag").val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text(Label.tagsEmptyLabel);
-            $("#tag").focus().val("");
         } else {
             return true;
         }
         return false;
     },
     /**
-     * @description 取消发布 
+     * @description 取消发布
      * @param {Boolean} isAuto 是否为自动保存
      */
     unPublish: function (isAuto) {
@@ -1674,7 +1670,7 @@ admin.article = {
 };
 
 /**
- * @description 注册到 admin 进行管理 
+ * @description 注册到 admin 进行管理
  */
 admin.register.article = {
     "obj": admin.article,
@@ -3125,7 +3121,7 @@ admin.register["link-list"] =  {
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.11, Oct 17, 2018
+ * @version 1.2.1.12, Dec 10, 2018
  */
 
 /* preference 相关操作 */
@@ -3151,13 +3147,13 @@ admin.preference = {
 
                 var preference = result.preference;
 
-                $("#metaKeywords").val(preference.metaKeywords),
-                        $("#metaDescription").val(preference.metaDescription),
-                        $("#blogTitle").val(preference.blogTitle),
-                        $("#blogSubtitle").val(preference.blogSubtitle),
-                        $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
-                $("#mostViewArticleDisplayCount").val(preference.mostViewArticleDisplayCount),
-                        $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
+                $("#metaKeywords").val(preference.metaKeywords);
+                $("#metaDescription").val(preference.metaDescription);
+                $("#blogTitle").val(preference.blogTitle);
+                $("#blogSubtitle").val(preference.blogSubtitle);
+                $("#mostCommentArticleDisplayCount").val(preference.mostCommentArticleDisplayCount);
+                $("#mostViewArticleDisplayCount").val(preference.mostViewArticleDisplayCount);
+                $("#recentCommentDisplayCount").val(preference.recentCommentDisplayCount);
                 $("#mostUsedTagDisplayCount").val(preference.mostUsedTagDisplayCount);
                 $("#articleListDisplayCount").val(preference.articleListDisplayCount);
                 $("#articleListPaginationWindowSize").val(preference.articleListPaginationWindowSize);
@@ -3170,6 +3166,7 @@ admin.preference = {
                 $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
                 $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
                 $("#keyOfSolo").val(preference.keyOfSolo);
+                $("#customVars").val(preference.customVars);
 
                 "true" === preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
                 "true" === preference.allowVisitDraftViaPermalink ? $("#allowVisitDraftViaPermalink").attr("checked", "checked") : $("allowVisitDraftViaPermalink").removeAttr("checked");
@@ -3332,7 +3329,8 @@ admin.preference = {
                 "feedOutputMode": $("#feedOutputMode").val(),
                 "feedOutputCnt": $("#feedOutputCnt").val(),
                 "commentable": $("#commentable").prop("checked"),
-                "allowRegister": $("#allowRegister").prop("checked")
+                "allowRegister": $("#allowRegister").prop("checked"),
+                "customVars": $("#customVars").val()
             }
         };
 

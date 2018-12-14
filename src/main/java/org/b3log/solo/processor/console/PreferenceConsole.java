@@ -31,6 +31,11 @@ import static org.b3log.solo.model.Option.ID_C_QINIU_DOMAIN;
 import static org.b3log.solo.model.Option.ID_C_QINIU_SECRET_KEY;
 import static org.b3log.solo.util.TernaryExpressionUtils.expressionSelectOptions;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
+import java.util.Arrays;
+
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
@@ -38,10 +43,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Option;
@@ -54,15 +57,11 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-
 /**
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.15, Dec 3, 2018
+ * @version 1.2.0.17, Dec 11, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -73,11 +72,6 @@ public class PreferenceConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PreferenceConsole.class);
-
-    /**
-     * Preference URI prefix.
-     */
-    private static final String PREFERENCE_URI_PREFIX = "/console/preference/";
 
     /**
      * Preference query service.
@@ -126,7 +120,6 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/reply/notification/template", method = HttpMethod.GET)
     public void getReplyNotificationTemplate(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -149,7 +142,7 @@ public class PreferenceConsole {
 
     /**
      * Updates reply template.
-     *
+     * <p>
      * <p>
      * Request json:
      * <pre>
@@ -164,7 +157,6 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/reply/notification/template", method = HttpMethod.PUT)
     public void updateReplyNotificationTemplate(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -204,7 +196,6 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/signs/", method = HttpMethod.GET)
     public void getSigns(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -212,8 +203,7 @@ public class PreferenceConsole {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             final JSONArray signs = new JSONArray();
-            final JSONArray allSigns
-                    = // includes the empty sign(id=0)
+            final JSONArray allSigns = // includes the empty sign(id=0)
                     new JSONArray(preference.getString(Option.ID_C_SIGNS));
 
             for (int i = 1; i < allSigns.length(); i++) { // excludes the empty sign
@@ -277,7 +267,8 @@ public class PreferenceConsole {
      *         "articleListStyle": "", // Optional values: "titleOnly"/"titleAndContent"/"titleAndAbstract"
      *         "commentable": boolean,
      *         "feedOutputMode: "" // Optional values: "abstract"/"full"
-     *         "feedOutputCnt": int
+     *         "feedOutputCnt": int,
+     *         "customVars" "", // 支持配置自定义参数 https://github.com/b3log/solo/issues/12535
      *     }
      * }
      * </pre>
@@ -285,7 +276,6 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HttpMethod.GET)
     public void getPreference(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -320,7 +310,7 @@ public class PreferenceConsole {
 
     /**
      * Updates the preference by the specified request.
-     *
+     * <p>
      * <p>
      * Request json:
      * <pre>
@@ -356,7 +346,8 @@ public class PreferenceConsole {
      *         "editorType": "",
      *         "commentable": boolean,
      *         "feedOutputMode: "",
-     *         "feedOutputCnt": int
+     *         "feedOutputCnt": int,
+     *         "customVars" "", // 支持配置自定义参数 https://github.com/b3log/solo/issues/12535
      *     }
      * }
      * </pre>
@@ -364,7 +355,6 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = PREFERENCE_URI_PREFIX, method = HttpMethod.PUT)
     public void updatePreference(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -398,41 +388,47 @@ public class PreferenceConsole {
     }
 
     /**
-     * Gets Qiniu preference.
+     * Gets Oss preference.
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
      *     "sc": boolean,
-     *     "qiniuAccessKey": "",
-     *     "qiniuSecretKey": "",
-     *     "qiniuDomain": "",
-     *     "qiniuBucket": ""
+     *     oss: {
+     *         "ossServer":"",
+     *         "ossAccessKey": "",
+     *         "ossSecretKey": "",
+     *         "ossDomain": "",
+     *         "ossBucket": ""
+     *     }
      * }
      * </pre>
      * </p>
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = PREFERENCE_URI_PREFIX + "oss", method = HttpMethod.GET)
     public void getOssPreference(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
-            //1.获取服务器厂商信息
-            final JSONObject ossServer = optionQueryService.getOptions(CATEGORY_C_CLOU_STORGE);
-            if (ossServer == null) {
-                renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
-                return;
+            String ossServerVal = CATEGORY_C_QINIU;
+            //获取请求参数：ossServer(前端服务商切换)
+            String ossServerTemp = context.param(ID_C_CLOUD_STORGE_KEY);
+            if (ossServerTemp != null && ossServerTemp.length() > 0) {
+                ossServerVal = ossServerTemp;
+            } else {
+                //1.获取服务提供商信息
+                final JSONObject ossServer = optionQueryService.getOptions(CATEGORY_C_CLOU_STORGE);
+                if (ossServer != null) {
+                    ossServerVal = ossServer.getString(ID_C_CLOUD_STORGE_KEY);
+                }
             }
-            String ossServerVal = ossServer.getString(ID_C_CLOUD_STORGE_KEY);
             final JSONObject oss = optionQueryService.getOptions(ossServerVal);
             if (null == oss) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
                 return;
             }
-
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
             ret.put("oss", convertOssOpts(ossServerVal, oss));
@@ -448,7 +444,7 @@ public class PreferenceConsole {
 
     /**
      * Updates the Qiniu preference by the specified request.
-     *
+     * <p>
      * <p>
      * Request json:
      * <pre>
@@ -463,7 +459,6 @@ public class PreferenceConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = PREFERENCE_URI_PREFIX + "oss", method = HttpMethod.PUT)
     public void updateOss(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -546,80 +541,80 @@ public class PreferenceConsole {
 
         String input = preference.optString(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("externalRelevantArticlesDisplayCntLabel")).append("]  ").append(
-                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("externalRelevantArticlesDisplayCntLabel")).append("]  ")
+                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("relevantArticlesDisplayCntLabel")).append("]  ").append(
-                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("relevantArticlesDisplayCntLabel")).append("]  ")
+                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("randomArticlesDisplayCntLabel")).append("]  ").append(
-                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("randomArticlesDisplayCntLabel")).append("]  ")
+                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Option.ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexMostCommentArticleDisplayCntLabel")).append("]  ").append(
-                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("indexMostCommentArticleDisplayCntLabel")).append("]  ")
+                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexMostViewArticleDisplayCntLabel")).append("]  ").append(
-                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("indexMostViewArticleDisplayCntLabel")).append("]  ")
+                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexRecentCommentDisplayCntLabel")).append("]  ").append(
-                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("indexRecentCommentDisplayCntLabel")).append("]  ")
+                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Option.ID_C_MOST_USED_TAG_DISPLAY_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexTagDisplayCntLabel")).append("]  ").append(
-                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("indexTagDisplayCntLabel")).append("]  ")
+                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("pageSizeLabel")).append("]  ").append(
-                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("pageSizeLabel")).append("]  ")
+                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("windowSizeLabel")).append("]  ").append(
-                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("windowSizeLabel")).append("]  ")
+                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }
 
         input = preference.optString(Option.ID_C_FEED_OUTPUT_CNT);
         if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("feedOutputCntLabel")).append("]  ").append(
-                    langPropsService.get("nonNegativeIntegerOnlyLabel"));
+            errMsgBuilder.append(langPropsService.get("feedOutputCntLabel")).append("]  ")
+                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
             responseObject.put(Keys.MSG, errMsgBuilder.toString());
             return true;
         }

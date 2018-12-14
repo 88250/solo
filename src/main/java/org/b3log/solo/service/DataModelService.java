@@ -56,11 +56,11 @@ import java.util.*;
 import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
 
 /**
- * DataModelService utilities.
+ * Data model service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.0, Dec 7, 2018
+ * @version 1.7.0.1, Dec 10, 2018
  * @since 0.3.1
  */
 @Service
@@ -566,6 +566,22 @@ public class DataModelService {
         fillSide(request, dataModel, preference);
         fillBlogHeader(request, response, dataModel, preference);
         fillBlogFooter(request, response, dataModel, preference);
+
+        // 支持配置自定义模板变量 https://github.com/b3log/solo/issues/12535
+        final Map<String, String> customVars = new HashMap<>();
+        final String customVarsStr = preference.optString(Option.ID_C_CUSTOM_VARS);
+        final String[] customVarsArray = customVarsStr.split("\\|");
+        for (int i = 0; i < customVarsArray.length; i++) {
+            final String customVarPair = customVarsArray[i];
+            if (StringUtils.isNotBlank(customVarsStr)) {
+                final String customVarKey = customVarPair.split("=")[0];
+                final String customVarVal = customVarPair.split("=")[1];
+                if (StringUtils.isNotBlank(customVarKey) && StringUtils.isNotBlank(customVarVal)) {
+                    customVars.put(customVarKey, customVarVal);
+                }
+            }
+        }
+        dataModel.put("customVars", customVars);
     }
 
     /**

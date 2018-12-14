@@ -173,7 +173,7 @@ public class CommentMgmtService {
                                      final JSONObject comment,
                                      final JSONObject originalComment,
                                      final JSONObject preference) throws Exception {
-        if (!Solos.isConfigured()) {
+        if (!Solos.isMailConfigured()) {
             return;
         }
 

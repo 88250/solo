@@ -159,7 +159,7 @@ public abstract class AbstractTestCase {
     public MockDispatcherServlet mockDispatcherServletService(final HttpServletRequest request, final MockHttpServletResponse response) {
         final MockDispatcherServlet ret = new MockDispatcherServlet();
         ret.init();
-        SoloServletListener.routePartial();
+        SoloServletListener.routeConsoleProcessors();
         ret.service(request, response);
 
         return ret;

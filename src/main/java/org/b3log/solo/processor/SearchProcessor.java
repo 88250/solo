@@ -31,7 +31,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.TextXmlRenderer;
-import org.b3log.latke.util.Strings;
+import org.b3log.latke.util.Paginator;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -136,11 +136,7 @@ public class SearchProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.putAll(langs);
 
-        String page = request.getParameter("p");
-        if (!Strings.isNumeric(page)) {
-            page = "1";
-        }
-        final int pageNum = Integer.valueOf(page);
+        final int pageNum = Paginator.getPage(request);
         String keyword = request.getParameter(Common.KEYWORD);
         if (StringUtils.isBlank(keyword)) {
             keyword = "";

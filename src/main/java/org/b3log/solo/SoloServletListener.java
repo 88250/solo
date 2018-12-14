@@ -37,8 +37,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.processor.console.AdminConsole;
-import org.b3log.solo.processor.console.ArticleConsole;
+import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
@@ -54,7 +53,7 @@ import javax.servlet.http.HttpSessionEvent;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.6, Dec 2, 2018
+ * @version 1.10.0.7, Dec 11, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -67,7 +66,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Solo version.
      */
-    public static final String VERSION = "2.9.6";
+    public static final String VERSION = "2.9.7";
 
     /**
      * Bean manager.
@@ -80,7 +79,7 @@ public final class SoloServletListener extends AbstractServletListener {
         Latkes.setScanPath("org.b3log.solo");
         super.contextInitialized(servletContextEvent);
         beanManager = BeanManager.getInstance();
-        routePartial();
+        routeConsoleProcessors();
         Stopwatchs.start("Context Initialized");
 
         validateSkin();
@@ -308,9 +307,9 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * 部分控制器使用函数式路由. https://github.com/b3log/solo/issues/12580
+     * 后台控制器使用函数式路由. https://github.com/b3log/solo/issues/12580
      */
-    public static void routePartial() {
+    public static void routeConsoleProcessors() {
         final BeanManager beanManager = BeanManager.getInstance();
         final AdminConsole adminConsole = beanManager.getReference(AdminConsole.class);
         DispatcherServlet.get("/admin-index.do", adminConsole::showAdminIndex);
@@ -342,6 +341,70 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.put("/console/article/puttop/{id}", articleConsole::putTopArticle);
         DispatcherServlet.put("/console/article/", articleConsole::updateArticle);
         DispatcherServlet.post("/console/article/", articleConsole::addArticle);
+
+        final CategoryConsole categoryConsole = beanManager.getReference(CategoryConsole.class);
+        DispatcherServlet.put("/console/category/order/", categoryConsole::changeOrder);
+        DispatcherServlet.get("/console/category/{id}", categoryConsole::getCategory);
+        DispatcherServlet.delete("/console/category/{id}", categoryConsole::removeCategory);
+        DispatcherServlet.put("/console/category/", categoryConsole::updateCategory);
+        DispatcherServlet.post("/console/category/", categoryConsole::addCategory);
+        DispatcherServlet.get("/console/categories/{page}/{pageSize}/{windowSize}", categoryConsole::getCategories);
+
+        final CommentConsole commentConsole = beanManager.getReference(CommentConsole.class);
+        DispatcherServlet.delete("/console/page/comment/{id}", commentConsole::removePageComment);
+        DispatcherServlet.delete("/console/article/comment/{id}", commentConsole::removeArticleComment);
+        DispatcherServlet.get("/console/comments/{page}/{pageSize}/{windowSize}", commentConsole::getComments);
+        DispatcherServlet.get("/console/comments/article/{id}", commentConsole::getArticleComments);
+        DispatcherServlet.get("/console/comments/page/{id}", commentConsole::getPageComments);
+
+        final LinkConsole linkConsole = beanManager.getReference(LinkConsole.class);
+        DispatcherServlet.delete("/console/link/{id}", linkConsole::removeLink);
+        DispatcherServlet.put("/console/link/", linkConsole::updateLink);
+        DispatcherServlet.put("/console/link/order/", linkConsole::changeOrder);
+        DispatcherServlet.post("/console/link/", linkConsole::addLink);
+        DispatcherServlet.get("/console/links/{page}/{pageSize}/{windowSize}", linkConsole::getLinks);
+        DispatcherServlet.get("/console/link/{id}", linkConsole::getLink);
+
+        final PageConsole pageConsole = beanManager.getReference(PageConsole.class);
+        DispatcherServlet.put("/console/page/", pageConsole::updatePage);
+        DispatcherServlet.delete("/console/page/{id}", pageConsole::removePage);
+        DispatcherServlet.post("/console/page/", pageConsole::addPage);
+        DispatcherServlet.put("/console/page/order/", pageConsole::changeOrder);
+        DispatcherServlet.get("/console/page/{id}", pageConsole::getPage);
+        DispatcherServlet.get("/console/pages/{page}/{pageSize}/{windowSize}", pageConsole::getPages);
+
+        final PluginConsole pluginConsole = beanManager.getReference(PluginConsole.class);
+        DispatcherServlet.put("/console/plugin/status/", pluginConsole::setPluginStatus);
+        DispatcherServlet.get("/console/plugins/{page}/{pageSize}/{windowSize}", pluginConsole::getPlugins);
+        DispatcherServlet.post("/console/plugin/toSetting", pluginConsole::toSetting);
+        DispatcherServlet.post("/console/plugin/updateSetting", pluginConsole::updateSetting);
+
+        final PreferenceConsole preferenceConsole = beanManager.getReference(PreferenceConsole.class);
+        DispatcherServlet.get("/console/reply/notification/template", preferenceConsole::getReplyNotificationTemplate);
+        DispatcherServlet.put("/console/reply/notification/template", preferenceConsole::updateReplyNotificationTemplate);
+        DispatcherServlet.get("/console/signs/", preferenceConsole::getSigns);
+        DispatcherServlet.get("/console/preference/", preferenceConsole::getPreference);
+        DispatcherServlet.put("/console/preference/", preferenceConsole::updatePreference);
+        DispatcherServlet.get("/console/preference/oss", preferenceConsole::getOssPreference);
+        DispatcherServlet.put("/console/preference/oss", preferenceConsole::updateOss);
+
+        final RepairConsole repairConsole = beanManager.getReference(RepairConsole.class);
+        DispatcherServlet.get("/fix/restore-signs", repairConsole::restoreSigns);
+        DispatcherServlet.get("/fix/tag-article-counter-repair", repairConsole::repairTagArticleCounter);
+
+        final TagConsole tagConsole = beanManager.getReference(TagConsole.class);
+        DispatcherServlet.get("/console/tags", tagConsole::getTags);
+        DispatcherServlet.get("/console/tag/unused", tagConsole::getUnusedTags);
+        DispatcherServlet.delete("/console/tag/unused", tagConsole::removeUnusedTags);
+
+        final UserConsole userConsole = beanManager.getReference(UserConsole.class);
+        DispatcherServlet.put("/console/user/", userConsole::updateUser);
+        DispatcherServlet.post("/console/user/", userConsole::addUser);
+        DispatcherServlet.delete("/console/user/{id}", userConsole::removeUser);
+        DispatcherServlet.get("/console/users/{page}/{pageSize}/{windowSize}", userConsole::getUsers);
+        DispatcherServlet.get("/console/user/{id}", userConsole::getUser);
+        DispatcherServlet.get("/console/changeRole/{id}", userConsole::changeUserRole);
+
         DispatcherServlet.mapping();
     }
 }

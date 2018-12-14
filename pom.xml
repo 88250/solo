@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.37, Dec 2, 2018
+    Version: 3.18.3.38, Dec 11, 2018
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -15,7 +15,7 @@
     <artifactId>solo</artifactId>
     <packaging>war</packaging>
     <name>Solo</name>
-    <version>2.9.6</version>
+    <version>2.9.7</version>
     <description>
         一款小而美的 Java 博客系统。
     </description>
@@ -73,7 +73,7 @@
     </scm>
 
     <properties>
-        <org.b3log.latke.version>2.4.36</org.b3log.latke.version>
+        <org.b3log.latke.version>2.4.37</org.b3log.latke.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <jsoup.version>1.9.1</jsoup.version>

@@ -23,59 +23,41 @@ import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
 import org.b3log.solo.model.Option;
-import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
-
 /**
- * {@link IndexProcessor} test case.
+ * {@link UserTemplateProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Feb 18, 2017
- * @since 1.7.0
+ * @version 1.0.0.0, Dec 11, 2018
+ * @since 2.9.8
  */
 @Test(suiteName = "processor")
-public class InitProcessorTestCase extends AbstractTestCase {
+public class UserTemplateProcessorTestCase extends AbstractTestCase {
 
     /**
-     * showInit.
+     * Init.
+     *
+     * @throws Exception exception
      */
-    public void showInit() {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/init");
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用!</title>"));
+    @Test
+    public void init() throws Exception {
+        super.init();
     }
 
     /**
-     * initSolo.
+     * showCategoryArticles.
      */
-    @Test(dependsOnMethods = "showInit")
-    public void initSolo() {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/init");
-        request.setMethod("POST");
+    @Test(dependsOnMethods = "init")
+    public void showCategoryArticles() {
+        MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/links.html");
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-
-        CaptchaProcessor.CAPTCHA_ON = false;
-
-        final JSONObject requestJSON = new JSONObject();
-        requestJSON.put("userName", "test");
-        requestJSON.put("userEmail", "test@b3log.org");
-        requestJSON.put("userPassword", "1");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
-
-        final MockHttpServletResponse response = mockResponse();
+        MockHttpServletResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>友情链接 - Admin 的个人博客</title>"));
     }
 }

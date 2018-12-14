@@ -22,10 +22,8 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Common;
@@ -41,7 +39,7 @@ import java.util.List;
  * Tag console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Dec 3, 2018
+ * @version 1.0.0.3, Dec 11, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -87,7 +85,6 @@ public class TagConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/tags", method = HttpMethod.GET)
     @Before(ConsoleAuthAdvice.class)
     public void getTags(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -122,7 +119,6 @@ public class TagConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/tag/unused", method = HttpMethod.GET)
     @Before(ConsoleAdminAuthAdvice.class)
     public void getUnusedTags(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -166,7 +162,6 @@ public class TagConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/tag/unused", method = HttpMethod.DELETE)
     @Before(ConsoleAdminAuthAdvice.class)
     public void removeUnusedTags(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -177,6 +172,7 @@ public class TagConsole {
         try {
             tagMgmtService.removeUnusedTags();
 
+            jsonObject.put(Keys.STATUS_CODE, true);
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes unused tags failed", e);

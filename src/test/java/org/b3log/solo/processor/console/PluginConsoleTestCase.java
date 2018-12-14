@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.processor;
+package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
@@ -25,14 +25,14 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- * {@link IndexProcessor} test case.
+ * {@link PluginConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, May 29, 2018
- * @since 1.7.0
+ * @version 1.0.0.0, Dec 11, 2018
+ * @since 2.9.8
  */
 @Test(suiteName = "processor")
-public class IndexProcessorTestCase extends AbstractTestCase {
+public class PluginConsoleTestCase extends AbstractTestCase {
 
     /**
      * Init.
@@ -45,44 +45,21 @@ public class IndexProcessorTestCase extends AbstractTestCase {
     }
 
     /**
-     * showIndex.
+     * getPlugins.
+     *
+     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void showIndex() {
+    public void getPlugins() throws Exception {
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/");
+        request.setRequestURI("/console/plugins/1/10/20");
+
+        mockAdminLogin(request);
+
         final MockHttpServletResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客</title>"));
-    }
-
-    /**
-     * showKillBrowser.
-     */
-    @Test(dependsOnMethods = "init")
-    public void showKillBrowser() {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/kill-browser");
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 403 Forbidden!</title>"));
-    }
-
-    /**
-     * showRegister.
-     */
-    @Test(dependsOnMethods = "init")
-    public void showRegister() {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/register");
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 注册 Solo 用户!</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 }

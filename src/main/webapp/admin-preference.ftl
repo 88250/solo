@@ -129,7 +129,9 @@
             <option value="fullContent">${fullContentLabel}</option>
         </select>
         <label for="feedOutputCnt">${feedOutputCnt1Label}</label>
-        <input id="feedOutputCnt" class="normalInput" type="text"/><br/><br/>
+        <input id="feedOutputCnt" class="normalInput" type="text"/>
+        <label for="customVars">${customVars1Label}</label>
+        <input id="customVars" class="normalInput" type="text"/><br/><br/>
         <button class="right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="clear"></div>
     </div>
@@ -177,9 +179,9 @@
             <button onclick="admin.preference.updateOss()">${updateLabel}</button>
         </span>
             ${qiniuOssLabel}
-        <input name="ossServer" id= "qiniuOss" type="radio" value="qiniu"/>
+        <input name="ossServer" id= "qiniuOss" type="radio" value="qiniu" onclick="admin.preference.ossServerChange()"/>
             ${aliyunOssLabel}
-        <input name="ossServer" id= "aliyunOss" type="radio" value="aliyun"/>
+        <input name="ossServer" id= "aliyunOss" type="radio" value="aliyun" onclick="admin.preference.ossServerChange()"/>
         <div class="clear"></div>
         <label for="osSAccessKey">${accessKey1Label}</label>
         <input id="ossAccessKey" type="text"/>

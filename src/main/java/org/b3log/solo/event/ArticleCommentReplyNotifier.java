@@ -79,7 +79,7 @@ public class ArticleCommentReplyNotifier extends AbstractEventListener<JSONObjec
             return;
         }
 
-        if (!Solos.isConfigured()) {
+        if (!Solos.isMailConfigured()) {
             return;
         }
 

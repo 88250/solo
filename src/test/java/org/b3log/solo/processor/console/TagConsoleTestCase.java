@@ -15,67 +15,90 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.processor;
+package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
-import org.b3log.solo.model.Option;
-import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
-
 /**
- * {@link IndexProcessor} test case.
+ * {@link TagConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Feb 18, 2017
- * @since 1.7.0
+ * @version 1.0.0.0, Dec 11, 2018
+ * @since 2.9.8
  */
 @Test(suiteName = "processor")
-public class InitProcessorTestCase extends AbstractTestCase {
+public class TagConsoleTestCase extends AbstractTestCase {
 
     /**
-     * showInit.
+     * Init.
+     *
+     * @throws Exception exception
      */
-    public void showInit() {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/init");
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用!</title>"));
+    @Test
+    public void init() throws Exception {
+        super.init();
     }
 
     /**
-     * initSolo.
+     * getTags.
+     *
+     * @throws Exception exception
      */
-    @Test(dependsOnMethods = "showInit")
-    public void initSolo() {
+    @Test(dependsOnMethods = "init")
+    public void getTags() throws Exception {
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/init");
-        request.setMethod("POST");
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+        request.setRequestURI("/console/tags");
 
-        CaptchaProcessor.CAPTCHA_ON = false;
-
-        final JSONObject requestJSON = new JSONObject();
-        requestJSON.put("userName", "test");
-        requestJSON.put("userEmail", "test@b3log.org");
-        requestJSON.put("userPassword", "1");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        mockAdminLogin(request);
 
         final MockHttpServletResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
+
+    /**
+     * getUnusedTags.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "getTags")
+    public void getUnusedTags() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/tag/unused");
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
+
+    /**
+     * removeUnusedTags.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "getUnusedTags")
+    public void removeUnusedTags() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/tag/unused");
+        request.setMethod("DELETE");
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 }

@@ -23,10 +23,8 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Comment;
@@ -43,7 +41,7 @@ import java.util.List;
  * Comment console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Dec 3, 2018
+ * @version 1.0.0.5, Dec 11, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -87,7 +85,6 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/page/comment/{id}", method = HttpMethod.DELETE)
     public void removePageComment(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -132,7 +129,6 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/comment/{id}", method = HttpMethod.DELETE)
     public void removeArticleComment(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -196,7 +192,6 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/comments/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     public void getComments(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -245,7 +240,6 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/comments/article/{id}", method = HttpMethod.GET)
     public void getArticleComments(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -291,7 +285,6 @@ public class CommentConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/comments/page/{id}", method = HttpMethod.GET)
     public void getPageComments(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);

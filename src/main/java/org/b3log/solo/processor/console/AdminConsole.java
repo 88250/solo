@@ -130,7 +130,6 @@ public class AdminConsole {
      *
      * @param context the specified context
      */
-    @Before(ConsoleAuthAdvice.class)
     public void showAdminIndex(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();

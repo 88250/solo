@@ -1,5 +1,7 @@
 package org.b3log.solo.service.oss;
 
+import static org.b3log.solo.model.Option.CATEGORY_C_ALIYUN;
+import static org.b3log.solo.model.Option.CATEGORY_C_QINIU;
 import static org.b3log.solo.model.Option.ID_C_CLOUD_STORGE_KEY;
 
 import java.util.Objects;
@@ -33,18 +35,18 @@ public class CloudStorgeService {
         final BeanManager beanManager = BeanManager.getInstance();
         final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
         JSONObject cloudStorgeJson = optionQueryService.getOptions(Option.CATEGORY_C_CLOU_STORGE);
-        if (cloudStorgeJson == null) {
-            throw new RuntimeException(ERR_MSG);
+        //查询存储服务商(默认使用qiniu)
+        String cloudServer = CATEGORY_C_QINIU;
+        if (cloudStorgeJson != null) {
+            cloudServer = cloudStorgeJson.getString(ID_C_CLOUD_STORGE_KEY);
         }
-        //查询云存储服务商
-        String cloudServer = cloudStorgeJson.getString(ID_C_CLOUD_STORGE_KEY);
         if (cloudServer == null || cloudServer.length() < 1) {
             throw new RuntimeException(ERR_MSG);
         }
-        if (Objects.equals(cloudServer, "aliyun")) {
+        if (Objects.equals(cloudServer, CATEGORY_C_ALIYUN)) {
             return new AliyunOssService();
         }
-        if (Objects.equals(cloudServer, "qiniu")) {
+        if (Objects.equals(cloudServer, CATEGORY_C_QINIU)) {
             return new QiniuOssService();
         }
         throw new RuntimeException(ERR_MSG);

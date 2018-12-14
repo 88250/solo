@@ -19,11 +19,12 @@ package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.repository.Query;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
-import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Page;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -32,14 +33,14 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 
 /**
- * {@link CategoryConsole} test case.
+ * {@link PageConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Dec 10, 2018
- * @since 2.1.0
+ * @version 1.0.0.0, Dec 11, 2018
+ * @since 2.9.8
  */
 @Test(suiteName = "processor")
-public class CategoryConsoleTestCase extends AbstractTestCase {
+public class PageConsoleTestCase extends AbstractTestCase {
 
     /**
      * Init.
@@ -52,45 +53,29 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * addCategory.
+     * addPage.
      *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void addCategory() throws Exception {
+    public void addPage() throws Exception {
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/category/");
+        request.setRequestURI("/console/page/");
         request.setMethod("POST");
         final JSONObject requestJSON = new JSONObject();
-        requestJSON.put(Category.CATEGORY_T_TAGS, "Solo");
-        requestJSON.put(Category.CATEGORY_TITLE, "分类1");
-        requestJSON.put(Category.CATEGORY_URI, "cate1");
-
+        final JSONObject page = new JSONObject();
+        requestJSON.put(Page.PAGE, page);
+        page.put(Page.PAGE_TITLE, "黑客派");
+        page.put(Page.PAGE_CONTENT, "");
+        page.put(Page.PAGE_PERMALINK, "https://hacpai.com");
+        page.put(Page.PAGE_COMMENTABLE, true);
+        page.put(Page.PAGE_TYPE, "link");
+        page.put(Page.PAGE_OPEN_TARGET, "");
+        page.put(Page.PAGE_ICON, "");
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
 
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
-    }
-
-    /**
-     * getCategory.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "addCategory")
-    public void getCategory() throws Exception {
-        final JSONObject category = getCategoryQueryService().getByTitle("分类1");
-
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/category/" + category.optString(Keys.OBJECT_ID));
-        request.setMethod("GET");
-
-        mockAdminLogin(request);
 
         final MockHttpServletResponse response = mockResponse();
         mockDispatcherServletService(request, response);
@@ -100,49 +85,21 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * updateCategory.
+     * updatePage.
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "addCategory")
-    public void updateCategory() throws Exception {
+    @Test(dependsOnMethods = "addPage")
+    public void updatePage() throws Exception {
+        final JSONObject p = getPageRepository().getList(new Query()).get(0);
+
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/category/");
+        request.setRequestURI("/console/page/");
         request.setMethod("PUT");
         final JSONObject requestJSON = new JSONObject();
-        requestJSON.put(Category.CATEGORY_T_TAGS, "Solo");
-        JSONObject category = getCategoryQueryService().getByTitle("分类1");
-        requestJSON.put(Keys.OBJECT_ID, category.optString(Keys.OBJECT_ID));
-        requestJSON.put(Category.CATEGORY_TITLE, "新的分类1");
+        requestJSON.put(Page.PAGE, p);
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
-
-        mockAdminLogin(request);
-
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
-
-        category = getCategoryQueryService().getByTitle("分类1");
-        Assert.assertNull(category);
-
-        category = getCategoryQueryService().getByTitle("新的分类1");
-        Assert.assertNotNull(category);
-        Assert.assertEquals(category.optInt(Category.CATEGORY_TAG_CNT), 1); // https://github.com/b3log/solo/issues/12274
-    }
-
-    /**
-     * getCategories.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "updateCategory")
-    public void getCategories() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/categories/1/10/20");
-        request.setMethod("GET");
 
         mockAdminLogin(request);
 
@@ -158,15 +115,16 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "getCategories")
+    @Test(dependsOnMethods = "updatePage")
     public void changeOrder() throws Exception {
-        final JSONObject category = getCategoryQueryService().getByTitle("新的分类1");
+        final JSONObject p = getPageRepository().getList(new Query()).get(0);
+        final String pageId = p.optString(Keys.OBJECT_ID);
 
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/category/order/");
+        request.setRequestURI("/console/page/order/");
         request.setMethod("PUT");
         final JSONObject requestJSON = new JSONObject();
-        requestJSON.put(Keys.OBJECT_ID, category.optString(Keys.OBJECT_ID));
+        requestJSON.put(Keys.OBJECT_ID, pageId);
         requestJSON.put(Common.DIRECTION, "up");
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
@@ -181,16 +139,58 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * removeCategory.
+     * getPage.
      *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "changeOrder")
-    public void removeCategory() throws Exception {
-        final JSONObject category = getCategoryQueryService().getByTitle("新的分类1");
+    public void getPage() throws Exception {
+        final JSONObject p = getPageRepository().getList(new Query()).get(0);
+        final String pageId = p.optString(Keys.OBJECT_ID);
 
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/category/" + category.optString(Keys.OBJECT_ID));
+        request.setRequestURI("/console/page/" + pageId);
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
+
+    /**
+     * getPages.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "getPage")
+    public void getPages() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/pages/1/10/20");
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
+
+    /**
+     * removePage.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "getPages")
+    public void removeLink() throws Exception {
+        final JSONObject p = getPageRepository().getList(new Query()).get(0);
+        final String pageId = p.optString(Keys.OBJECT_ID);
+
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/page/" + pageId);
         request.setMethod("DELETE");
 
         mockAdminLogin(request);

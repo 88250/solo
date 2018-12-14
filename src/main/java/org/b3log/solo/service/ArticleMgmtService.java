@@ -51,7 +51,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.13, Oct 7, 2018
+ * @version 1.2.2.14, Dec 10, 2018
  * @since 0.3.5
  */
 @Service
@@ -261,7 +261,7 @@ public class ArticleMgmtService {
      *                          "articleTitle": "",
      *                          "articleAbstract": "",
      *                          "articleContent": "",
-     *                          "articleTags": "tag1,tag2,tag3",
+     *                          "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
      *                          "articlePermalink": "", // optional
      *                          "articleIsPublished": boolean,
      *                          "articleSignId": "", // optional
@@ -282,7 +282,7 @@ public class ArticleMgmtService {
             String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
             tagsString = Tag.formatTags(tagsString);
             if (StringUtils.isBlank(tagsString)) {
-                throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
+                tagsString = "待分类";
             }
             article.put(Article.ARTICLE_TAGS_REF, tagsString);
 
@@ -455,7 +455,7 @@ public class ArticleMgmtService {
             String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
             tagsString = Tag.formatTags(tagsString);
             if (StringUtils.isBlank(tagsString)) {
-                throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
+                tagsString = "待分类";
             }
             article.put(Article.ARTICLE_TAGS_REF, tagsString);
             final String[] tagTitles = tagsString.split(",");

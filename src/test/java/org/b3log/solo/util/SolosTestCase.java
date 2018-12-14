@@ -24,23 +24,20 @@ import org.testng.annotations.Test;
 import java.util.Locale;
 
 /**
- * {@link org.b3log.solo.util.Thumbnails} test case.
+ * {@link org.b3log.solo.util.Solos} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Mar 11, 2018
  * @since 0.6.1
  */
-public final class ThumbnailsTestCase {
+public final class SolosTestCase {
 
     /**
      * Test method for {@linkplain Solos#getGravatarURL(String, String)}.
-     *
-     * @throws Exception exception
      */
     @Test
-    public void getGravatarURL() throws Exception {
+    public void getGravatarURL() {
         Latkes.init();
-        Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
 
         final String gravatarURL = Solos.getGravatarURL("test@b3log.org", "128");
 

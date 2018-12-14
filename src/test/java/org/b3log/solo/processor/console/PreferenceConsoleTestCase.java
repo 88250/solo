@@ -18,12 +18,10 @@
 package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
-import org.b3log.solo.model.Category;
-import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -32,14 +30,14 @@ import java.io.BufferedReader;
 import java.io.StringReader;
 
 /**
- * {@link CategoryConsole} test case.
+ * {@link PreferenceConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Dec 10, 2018
- * @since 2.1.0
+ * @version 1.0.0.0, Dec 11, 2018
+ * @since 2.9.8
  */
 @Test(suiteName = "processor")
-public class CategoryConsoleTestCase extends AbstractTestCase {
+public class PreferenceConsoleTestCase extends AbstractTestCase {
 
     /**
      * Init.
@@ -52,43 +50,14 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * addCategory.
+     * getReplyNotificationTemplate.
      *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void addCategory() throws Exception {
+    public void getReplyNotificationTemplate() throws Exception {
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/category/");
-        request.setMethod("POST");
-        final JSONObject requestJSON = new JSONObject();
-        requestJSON.put(Category.CATEGORY_T_TAGS, "Solo");
-        requestJSON.put(Category.CATEGORY_TITLE, "分类1");
-        requestJSON.put(Category.CATEGORY_URI, "cate1");
-
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
-
-        mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
-    }
-
-    /**
-     * getCategory.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "addCategory")
-    public void getCategory() throws Exception {
-        final JSONObject category = getCategoryQueryService().getByTitle("分类1");
-
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/category/" + category.optString(Keys.OBJECT_ID));
-        request.setMethod("GET");
+        request.setRequestURI("/console/reply/notification/template");
 
         mockAdminLogin(request);
 
@@ -100,20 +69,19 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * updateCategory.
+     * updateReplyNotificationTemplate.
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "addCategory")
-    public void updateCategory() throws Exception {
+    @Test(dependsOnMethods = "getReplyNotificationTemplate")
+    public void updateReplyNotificationTemplate() throws Exception {
+        final JSONObject p = getPreferenceQueryService().getReplyNotificationTemplate();
+
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/category/");
+        request.setRequestURI("/console/reply/notification/template");
         request.setMethod("PUT");
         final JSONObject requestJSON = new JSONObject();
-        requestJSON.put(Category.CATEGORY_T_TAGS, "Solo");
-        JSONObject category = getCategoryQueryService().getByTitle("分类1");
-        requestJSON.put(Keys.OBJECT_ID, category.optString(Keys.OBJECT_ID));
-        requestJSON.put(Category.CATEGORY_TITLE, "新的分类1");
+        requestJSON.put("replyNotificationTemplate", p);
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
 
@@ -124,25 +92,17 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
 
         final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
-
-        category = getCategoryQueryService().getByTitle("分类1");
-        Assert.assertNull(category);
-
-        category = getCategoryQueryService().getByTitle("新的分类1");
-        Assert.assertNotNull(category);
-        Assert.assertEquals(category.optInt(Category.CATEGORY_TAG_CNT), 1); // https://github.com/b3log/solo/issues/12274
     }
 
     /**
-     * getCategories.
+     * getSigns.
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "updateCategory")
-    public void getCategories() throws Exception {
+    @Test(dependsOnMethods = "init")
+    public void getSigns() throws Exception {
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/categories/1/10/20");
-        request.setMethod("GET");
+        request.setRequestURI("/console/signs/");
 
         mockAdminLogin(request);
 
@@ -154,20 +114,38 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * changeOrder.
+     * getPreference.
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "getCategories")
-    public void changeOrder() throws Exception {
-        final JSONObject category = getCategoryQueryService().getByTitle("新的分类1");
+    @Test(dependsOnMethods = "init")
+    public void getPreference() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/preference/");
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
+
+    /**
+     * updatePreference.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void updatePreference() throws Exception {
+        final JSONObject p = getPreferenceQueryService().getPreference();
 
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/category/order/");
+        request.setRequestURI("/console/preference/");
         request.setMethod("PUT");
         final JSONObject requestJSON = new JSONObject();
-        requestJSON.put(Keys.OBJECT_ID, category.optString(Keys.OBJECT_ID));
-        requestJSON.put(Common.DIRECTION, "up");
+        requestJSON.put(Option.CATEGORY_C_PREFERENCE, p);
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
 
@@ -181,17 +159,23 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * removeCategory.
+     * updateQiniu.
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "changeOrder")
-    public void removeCategory() throws Exception {
-        final JSONObject category = getCategoryQueryService().getByTitle("新的分类1");
+    @Test(dependsOnMethods = "init")
+    public void updateQiniu() throws Exception {
+        final JSONObject p = new JSONObject();
+        p.put(Option.ID_C_QINIU_ACCESS_KEY, "1");
+        p.put(Option.ID_C_QINIU_SECRET_KEY, "1");
+        p.put(Option.ID_C_QINIU_DOMAIN, "1");
+        p.put(Option.ID_C_QINIU_BUCKET, "1");
 
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/category/" + category.optString(Keys.OBJECT_ID));
-        request.setMethod("DELETE");
+        request.setRequestURI("/console/preference/qiniu");
+        request.setMethod("PUT");
+        final BufferedReader reader = new BufferedReader(new StringReader(p.toString()));
+        request.setReader(reader);
 
         mockAdminLogin(request);
 
@@ -201,4 +185,24 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
+
+    /**
+     * getQiniuPreference.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "updateQiniu")
+    public void getQiniuPreference() throws Exception {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/console/preference/qiniu");
+
+        mockAdminLogin(request);
+
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
+    }
+
 }

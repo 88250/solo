@@ -65,7 +65,7 @@ public class LoginProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用 Solo!</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 欢迎使用!</title>"));
     }
 
     /**
@@ -118,7 +118,7 @@ public class LoginProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, " <title>忘记密码 Solo!</title>"));
+        Assert.assertTrue(StringUtils.contains(content, " <title>Admin 的个人博客 - 忘记密码!</title>"));
     }
 
     /**

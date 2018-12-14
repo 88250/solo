@@ -27,10 +27,8 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Option;
@@ -49,7 +47,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.1.3, Dec 3, 2018
+ * @version 1.2.1.4, Dec 11, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -113,7 +111,6 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/user/", method = HttpMethod.PUT)
     @Before(ConsoleAdminAuthAdvice.class)
     public void updateUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -165,7 +162,7 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/user/", method = HttpMethod.POST)
+    @Before(ConsoleAdminAuthAdvice.class)
     public void addUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -221,12 +218,10 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/user/{id}", method = HttpMethod.DELETE)
     @Before(ConsoleAdminAuthAdvice.class)
     public void removeUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
         try {
@@ -271,7 +266,6 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/users/{page}/{pageSize}/{windowSize}", method = HttpMethod.GET)
     @Before(ConsoleAdminAuthAdvice.class)
     public void getUsers(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -322,12 +316,10 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/user/{id}", method = HttpMethod.GET)
     @Before(ConsoleAdminAuthAdvice.class)
     public void getUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-        final HttpServletRequest request = context.getRequest();
         final String userId = context.pathVar("id");
 
         final JSONObject result = userQueryService.getUser(userId);
@@ -357,12 +349,10 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/changeRole/{id}", method = HttpMethod.GET)
     @Before(ConsoleAdminAuthAdvice.class)
     public void changeUserRole(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
         try {
