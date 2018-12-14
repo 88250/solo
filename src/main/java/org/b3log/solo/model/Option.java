@@ -448,8 +448,7 @@ public final class Option {
         /**
          * Default skin directory name.
          */
-//        public static final String DEFAULT_SKIN_DIR_NAME = "Jane";
-        public static final String DEFAULT_SKIN_DIR_NAME = "nijigen";
+        public static final String DEFAULT_SKIN_DIR_NAME = "Jane";
 
         /**
          * Default language.
