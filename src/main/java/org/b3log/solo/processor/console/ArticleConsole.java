@@ -114,7 +114,7 @@ public class ArticleConsole {
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
         final HttpServletRequest request = context.getRequest();
-        String strN = request.getParameter("n");
+        String strN = context.param("n");
         if (!Strings.isNumeric(strN)) {
             strN = "6";
         }
@@ -144,7 +144,7 @@ public class ArticleConsole {
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
         final HttpServletRequest request = context.getRequest();
-        final String markdownText = request.getParameter("markdownText");
+        final String markdownText = context.param("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             result.put("html", "");
 
@@ -264,7 +264,7 @@ public class ArticleConsole {
             excludes.put(Article.ARTICLE_RANDOM_DOUBLE);
             requestJSONObject.put(Keys.EXCLUDES, excludes);
 
-            final String keyword = StringUtils.trim(request.getParameter("k"));
+            final String keyword = StringUtils.trim(context.param("k"));
             if (StringUtils.isNotBlank(keyword)) {
                 requestJSONObject.put(Common.KEYWORD, keyword);
             }

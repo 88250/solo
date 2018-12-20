@@ -135,7 +135,7 @@ public class LoginProcessor {
     public void showLogin(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        String destinationURL = request.getParameter(Common.GOTO);
+        String destinationURL = context.param(Common.GOTO);
         if (StringUtils.isBlank(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         } else if (!isInternalLinks(destinationURL)) {
@@ -223,7 +223,7 @@ public class LoginProcessor {
 
         Solos.logout(httpServletRequest, context.getResponse());
 
-        String destinationURL = httpServletRequest.getParameter(Common.GOTO);
+        String destinationURL = context.param(Common.GOTO);
         if (StringUtils.isBlank(destinationURL) || !isInternalLinks(destinationURL)) {
             destinationURL = "/";
         }
@@ -240,7 +240,7 @@ public class LoginProcessor {
     public void showForgot(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        String destinationURL = request.getParameter(Common.GOTO);
+        String destinationURL = context.param(Common.GOTO);
         if (StringUtils.isBlank(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         } else if (!isInternalLinks(destinationURL)) {
@@ -430,7 +430,7 @@ public class LoginProcessor {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
 
-        String token = request.getParameter("token");
+        String token = context.param("token");
         if (StringUtils.isBlank(token)) {
             token = "";
         }
@@ -444,7 +444,7 @@ public class LoginProcessor {
             dataModel.put("tokenHidden", token);
         }
 
-        final String from = request.getParameter("from");
+        final String from = context.param("from");
 
         if ("forgot".equals(from)) {
             dataModel.put("resetMsg", langPropsService.get("resetPwdSuccessSend"));

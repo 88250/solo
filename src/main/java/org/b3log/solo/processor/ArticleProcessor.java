@@ -147,7 +147,7 @@ public class ArticleProcessor {
     public void showArticlePwdForm(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final String articleId = request.getParameter("articleId");
+        final String articleId = context.param("articleId");
         if (StringUtils.isBlank(articleId)) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -170,7 +170,7 @@ public class ArticleProcessor {
         dataModel.put("articlePermalink", article.optString(Article.ARTICLE_PERMALINK));
         dataModel.put("articleTitle", article.optString(Article.ARTICLE_TITLE));
         dataModel.put("articleAbstract", article.optString(Article.ARTICLE_ABSTRACT));
-        final String msg = request.getParameter(Keys.MSG);
+        final String msg = context.param(Keys.MSG);
 
         if (StringUtils.isNotBlank(msg)) {
             dataModel.put(Keys.MSG, langPropsService.get("passwordNotMatchLabel"));
@@ -198,8 +198,8 @@ public class ArticleProcessor {
     public void onArticlePwdForm(final RequestContext context) {
         try {
             final HttpServletRequest request = context.getRequest();
-            final String articleId = request.getParameter("articleId");
-            final String pwdTyped = request.getParameter("pwdTyped");
+            final String articleId = context.param("articleId");
+            final String pwdTyped = context.param("pwdTyped");
 
             final JSONObject article = articleQueryService.getArticleById(articleId);
 
@@ -591,7 +591,7 @@ public class ArticleProcessor {
             prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author);
             final HttpServletResponse response = context.getResponse();
             dataModelService.fillCommon(request, response, dataModel, preference);
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
@@ -644,7 +644,7 @@ public class ArticleProcessor {
             dataModelService.setArticlesExProperties(request, articles, preference);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
             prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount, archiveDateString, archiveDate);
             final HttpServletResponse response = context.getResponse();
             dataModelService.fillCommon(request, response, dataModel, preference);
@@ -727,7 +727,7 @@ public class ArticleProcessor {
 
             final HttpServletResponse response = context.getResponse();
             dataModelService.fillCommon(request, response, dataModel, preference);
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             if (!StatisticMgmtService.hasBeenServed(request, response)) {
                 articleMgmtService.incViewCount(articleId);

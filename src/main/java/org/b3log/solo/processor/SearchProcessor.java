@@ -137,7 +137,7 @@ public class SearchProcessor {
         dataModel.putAll(langs);
 
         final int pageNum = Paginator.getPage(request);
-        String keyword = request.getParameter(Common.KEYWORD);
+        String keyword = context.param(Common.KEYWORD);
         if (StringUtils.isBlank(keyword)) {
             keyword = "";
         }

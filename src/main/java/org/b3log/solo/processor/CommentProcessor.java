@@ -166,7 +166,7 @@ public class CommentProcessor {
 
             // 添加评论优化 https://github.com/b3log/solo/issues/12246
             try {
-                final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+                final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
                 final Template template = Skins.getSkinTemplate(httpServletRequest, "common-comment.ftl");
                 final JSONObject preference = preferenceQueryService.getPreference();
                 Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
@@ -268,7 +268,7 @@ public class CommentProcessor {
 
             // 添加评论优化 https://github.com/b3log/solo/issues/12246
             try {
-                final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+                final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
                 final Template template = Skins.getSkinTemplate(httpServletRequest, "common-comment.ftl");
                 final JSONObject preference = preferenceQueryService.getPreference();
                 Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);

@@ -113,10 +113,10 @@ public class PageProcessor {
                 return;
             }
 
-            Skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             // See PermalinkFilter#dispatchToArticleOrPageProcessor()
-            final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
+            final JSONObject page = (JSONObject) context.attr(Page.PAGE);
             if (null == page) {
                 context.sendError(HttpServletResponse.SC_NOT_FOUND);
 

@@ -114,7 +114,7 @@ public class UserTemplateProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
             dataModelService.fillCommon(request, response, dataModel, preference);
             dataModelService.fillUserTemplate(request, template, dataModel, preference);
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
             statisticMgmtService.incBlogViewCount(request, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
