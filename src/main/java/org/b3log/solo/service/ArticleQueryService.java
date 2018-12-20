@@ -976,12 +976,11 @@ public class ArticleQueryService {
 
         try {
             final JSONObject article = articleRepository.get(articleId);
-
             if (null == article) {
                 return null;
             }
 
-            if (Solos.needViewPwd(context.getRequest(), article)) {
+            if (null != context && Solos.needViewPwd(context.getRequest(), context.getResponse(), article)) {
                 final String content = langPropsService.get("articleContentPwd");
 
                 article.put(ARTICLE_CONTENT, content);

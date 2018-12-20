@@ -301,7 +301,7 @@ public class CommentProcessor {
      * @param context           the specified HTTP servlet request context
      */
     private void fillCommenter(final JSONObject requestJSONObject, final RequestContext context) {
-        final JSONObject currentUser = Solos.getCurrentUser(context);
+        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         if (null == currentUser) {
             return;
         }

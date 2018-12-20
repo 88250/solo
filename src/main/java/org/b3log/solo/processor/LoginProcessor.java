@@ -143,7 +143,7 @@ public class LoginProcessor {
         }
 
         final HttpServletResponse response = context.getResponse();
-        if (null != Solos.getCurrentUser(context)) { // User has already logged in
+        if (null != Solos.getCurrentUser(context.getRequest(), context.getResponse())) { // User has already logged in
             context.sendRedirect(destinationURL);
 
             return;

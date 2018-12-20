@@ -140,7 +140,7 @@ public class AdminConsole {
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.putAll(langs);
-        final JSONObject currentUser = Solos.getCurrentUser(context);
+        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         final String userName = currentUser.optString(User.USER_NAME);
         dataModel.put(User.USER_NAME, userName);
         final String roleName = currentUser.optString(User.USER_ROLE);
@@ -185,7 +185,7 @@ public class AdminConsole {
         final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
-        final String requestURI = request.getRequestURI();
+        final String requestURI = context.requestURI();
         final String templateName = StringUtils.substringBetween(requestURI, Latkes.getContextPath() + '/', ".") + ".ftl";
 
         LOGGER.log(Level.TRACE, "Admin function[templateName={0}]", templateName);

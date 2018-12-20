@@ -101,8 +101,6 @@ public class IndexProcessor {
         context.setRenderer(renderer);
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final String requestURI = request.getRequestURI();
-
         try {
             final int currentPageNum = Paginator.getPage(request);
             final JSONObject preference = preferenceQueryService.getPreference();

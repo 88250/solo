@@ -285,8 +285,6 @@ public class ArticleProcessor {
 
         final HttpServletRequest request = context.getRequest();
         Stopwatchs.start("Get Relevant Articles");
-        final String requestURI = request.getRequestURI();
-
         final String articleId = context.pathVar("id");
         if (StringUtils.isBlank(articleId)) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);

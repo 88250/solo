@@ -216,7 +216,7 @@ public final class Skins {
      * @return directory name, or {@code null} if not found
      */
     public static String getSkinDirName(final RequestContext context) {
-        if (Solos.isMobile(context)) {
+        if (Solos.isMobile(context.getRequest())) {
             return Solos.MOBILE_SKIN;
         }
 
@@ -232,17 +232,16 @@ public final class Skins {
         }
 
         // 2. Get skin from cookie
-        return getSkinDirNameFromCookie(context);
+        return getSkinDirNameFromCookie(context.getRequest());
     }
 
     /**
      * Gets skin directory name from the specified request's cookie.
      *
-     * @param context the specified request context
+     * @param request the specified request
      * @return directory name, or {@code null} if not found
      */
-    public static String getSkinDirNameFromCookie(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+    public static String getSkinDirNameFromCookie(final HttpServletRequest request) {
         final Cookie[] cookies = request.getCookies();
         if (null != cookies) {
             for (final Cookie cookie : cookies) {

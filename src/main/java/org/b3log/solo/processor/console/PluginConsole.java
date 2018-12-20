@@ -131,8 +131,7 @@ public class PluginConsole {
         context.setRenderer(renderer);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
+            final String requestURI = context.requestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/plugins/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = pluginQueryService.getPlugins(requestJSONObject);

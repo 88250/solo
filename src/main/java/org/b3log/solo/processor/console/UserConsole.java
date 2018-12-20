@@ -272,8 +272,7 @@ public class UserConsole {
         context.setRenderer(renderer);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
+            final String requestURI = context.requestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/users/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = userQueryService.getUsers(requestJSONObject);

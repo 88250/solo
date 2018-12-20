@@ -611,7 +611,7 @@ public class DataModelService {
             dataModel.put(Keys.Server.SERVER, Latkes.getServer());
             dataModel.put(Common.IS_INDEX, "/".equals(context.requestURI()));
             dataModel.put(User.USER_NAME, "");
-            final JSONObject currentUser = Solos.getCurrentUser(context);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (null != currentUser) {
                 final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
                 if (StringUtils.isNotBlank(userAvatar)) {
@@ -678,7 +678,7 @@ public class DataModelService {
             }
             dataModel.put(Option.ID_C_META_DESCRIPTION, metaDescription);
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-            dataModel.put(Common.IS_LOGGED_IN, null != Solos.getCurrentUser(context));
+            dataModel.put(Common.IS_LOGGED_IN, null != Solos.getCurrentUser(context.getRequest(), context.getResponse()));
             dataModel.put(Common.FAVICON_API, Solos.FAVICON_API);
             final String noticeBoard = preference.getString(Option.ID_C_NOTICE_BOARD);
             dataModel.put(Option.ID_C_NOTICE_BOARD, noticeBoard);
@@ -921,7 +921,7 @@ public class DataModelService {
                 article.put(Common.HAS_UPDATED, false);
             }
 
-            if (Solos.needViewPwd(context.getRequest(), article)) {
+            if (Solos.needViewPwd(context.getRequest(), context.getResponse(), article)) {
                 final String content = langPropsService.get("articleContentPwd");
                 article.put(ARTICLE_CONTENT, content);
             }
@@ -1003,11 +1003,11 @@ public class DataModelService {
             final Template topBarTemplate = Skins.getTemplate("top-bar.ftl");
             final StringWriter stringWriter = new StringWriter();
             final Map<String, Object> topBarModel = new HashMap<>();
-            final JSONObject currentUser = Solos.getCurrentUser(context);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
 
             Keys.fillServer(topBarModel);
             topBarModel.put(Common.IS_LOGGED_IN, false);
-            topBarModel.put(Common.IS_MOBILE_REQUEST, Solos.isMobile(context));
+            topBarModel.put(Common.IS_MOBILE_REQUEST, Solos.isMobile(context.getRequest()));
             topBarModel.put("mobileLabel", langPropsService.get("mobileLabel"));
             topBarModel.put("onlineVisitor1Label", langPropsService.get("onlineVisitor1Label"));
             topBarModel.put(Common.ONLINE_VISITOR_CNT, StatisticQueryService.getOnlineVisitorCount());

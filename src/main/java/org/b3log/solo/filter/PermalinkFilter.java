@@ -114,7 +114,7 @@ public final class PermalinkFilter implements Filter {
         }
 
         // If requests an article and the article need view password, sends redirect to the password form
-        if (null != article && Solos.needViewPwd(httpServletRequest, article)) {
+        if (null != article && Solos.needViewPwd(httpServletRequest, httpServletResponse, article)) {
             try {
                 httpServletResponse.sendRedirect(Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
 

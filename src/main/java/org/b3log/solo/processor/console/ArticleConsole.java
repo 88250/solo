@@ -245,8 +245,7 @@ public class ArticleConsole {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         try {
-            final HttpServletRequest request = context.getRequest();
-            String path = request.getRequestURI().substring((Latkes.getContextPath() + "/console/articles/status/").length());
+            String path = context.requestURI().substring((Latkes.getContextPath() + "/console/articles/status/").length());
             final String status = StringUtils.substringBefore(path, "/");
 
             path = path.substring((status + "/").length());
@@ -311,7 +310,7 @@ public class ArticleConsole {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final String articleId = context.pathVar("id");
-        final JSONObject currentUser = Solos.getCurrentUser(context);
+        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
 
         try {
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
@@ -359,7 +358,7 @@ public class ArticleConsole {
         final HttpServletResponse response = context.getResponse();
         try {
             final String articleId = context.pathVar("id");
-            final JSONObject currentUser = Solos.getCurrentUser(context);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
@@ -513,7 +512,7 @@ public class ArticleConsole {
             final String articleId = article.getString(Keys.OBJECT_ID);
             renderer.setJSONObject(ret);
 
-            final JSONObject currentUser = Solos.getCurrentUser(context);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
                 ret.put(Keys.STATUS_CODE, false);
@@ -576,7 +575,7 @@ public class ArticleConsole {
         final HttpServletResponse response = context.getResponse();
         try {
             final JSONObject requestJSONObject = context.requestJSON();
-            final JSONObject currentUser = Solos.getCurrentUser(context);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
 
             final String articleId = articleMgmtService.addArticle(requestJSONObject);

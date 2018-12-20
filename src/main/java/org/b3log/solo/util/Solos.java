@@ -168,12 +168,11 @@ public final class Solos {
     /**
      * Gets the current logged-in user.
      *
-     * @param context the specified request context
+     * @param request  the specified request
+     * @param response the specified response
      * @return the current logged-in user, returns {@code null} if not found
      */
-    public static JSONObject getCurrentUser(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
+    public static JSONObject getCurrentUser(final HttpServletRequest request, final HttpServletResponse response) {
         final Cookie[] cookies = request.getCookies();
         if (null == cookies || 0 == cookies.length) {
             return null;
@@ -277,7 +276,7 @@ public final class Solos {
      * @return {@code true} if the current request is made by logged in user, returns {@code false} otherwise
      */
     public static boolean isLoggedIn(final RequestContext context) {
-        return null != Solos.getCurrentUser(context);
+        return null != Solos.getCurrentUser(context.getRequest(), context.getResponse());
     }
 
     /**
@@ -288,7 +287,7 @@ public final class Solos {
      * administrator, returns {@code false} otherwise
      */
     public static boolean isAdminLoggedIn(final RequestContext context) {
-        final JSONObject user = getCurrentUser(context);
+        final JSONObject user = getCurrentUser(context.getRequest(), context.getResponse());
         if (null == user) {
             return false;
         }
@@ -305,11 +304,12 @@ public final class Solos {
      * The blogger itself dose not need view password never.
      * </p>
      *
-     * @param request the specified request
-     * @param article the specified article
+     * @param request  the specified request
+     * @param response the specified response
+     * @param article  the specified article
      * @return {@code true} if need, returns {@code false} otherwise
      */
-    public static boolean needViewPwd(final HttpServletRequest request, final JSONObject article) {
+    public static boolean needViewPwd(final HttpServletRequest request, final HttpServletResponse response, final JSONObject article) {
         final String articleViewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
 
         if (StringUtils.isBlank(articleViewPwd)) {
@@ -332,7 +332,7 @@ public final class Solos {
             }
         }
 
-        final JSONObject currentUser = getCurrentUser(context);
+        final JSONObject currentUser = getCurrentUser(request, response);
 
         return !(null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE)));
     }
@@ -356,11 +356,11 @@ public final class Solos {
     /**
      * Checks the specified request is made from a mobile device.
      *
-     * @param context the specified request context
+     * @param request the specified request
      * @return {@code true} if it is, returns {@code false} otherwise
      */
-    public static boolean isMobile(final RequestContext context) {
-        final Object val = context.attr(Keys.HttpRequest.IS_MOBILE_BOT);
+    public static boolean isMobile(final HttpServletRequest request) {
+        final Object val = request.getAttribute(Keys.HttpRequest.IS_MOBILE_BOT);
         if (!(val instanceof Boolean)) {
             return false;
         }
