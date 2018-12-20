@@ -173,7 +173,7 @@ public class UserConsole {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
             final JSONObject requestJSONObject = context.requestJSON();
-            if (Solos.isAdminLoggedIn(request, response)) { // if the administrator register a new user, treats the new user as a normal user
+            if (Solos.isAdminLoggedIn(context)) { // if the administrator register a new user, treats the new user as a normal user
                 // (defaultRole) who could post article
                 requestJSONObject.put(User.USER_ROLE, Role.DEFAULT_ROLE);
             } else {

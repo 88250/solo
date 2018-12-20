@@ -94,7 +94,7 @@ public class ErrorProcessor {
             LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]",
                     requestURI, templateName);
 
-            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
             context.setRenderer(renderer);
             renderer.setTemplateName("error/" + templateName);
 
@@ -103,7 +103,7 @@ public class ErrorProcessor {
                 final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
                 dataModel.putAll(langs);
                 final JSONObject preference = preferenceQueryService.getPreference();
-                dataModelService.fillCommon(request, response, dataModel, preference);
+                dataModelService.fillCommon(context, dataModel, preference);
                 dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);

@@ -44,7 +44,7 @@ public class ConsoleAuthAdvice extends ProcessAdvice {
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        if (!Solos.isLoggedIn(request, response)) {
+        if (!Solos.isLoggedIn(context)) {
             final JSONObject exception401 = new JSONObject();
             exception401.put(Keys.MSG, "Unauthorized to request [" + request.getRequestURI() + "]");
             exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);
@@ -53,7 +53,7 @@ public class ConsoleAuthAdvice extends ProcessAdvice {
         }
 
 
-        final JSONObject currentUser = Solos.getCurrentUser(request, response);
+        final JSONObject currentUser = Solos.getCurrentUser(context);
         final String userRole = currentUser.optString(User.USER_ROLE);
         if (Role.VISITOR_ROLE.equals(userRole)) {
             final JSONObject exception403 = new JSONObject();

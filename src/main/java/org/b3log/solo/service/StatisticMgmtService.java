@@ -25,6 +25,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.cache.StatisticCache;
 import org.b3log.solo.model.Option;
@@ -133,11 +134,12 @@ public class StatisticMgmtService {
      * Sees this issue (https://github.com/b3log/solo/issues/44) for more details.
      * </p>
      *
-     * @param request  the specified request
+     * @param context the specified request context
      * @param response the specified response
      * @return {@code true} if the specified request has been served, returns {@code false} otherwise
      */
-    public static boolean hasBeenServed(final HttpServletRequest request, final HttpServletResponse response) {
+    public static boolean hasBeenServed(final RequestContext context, final HttpServletResponse response) {
+        final HttpServletRequest request = context.getRequest();
         final Cookie[] cookies = request.getCookies();
         if (null == cookies || 0 == cookies.length) {
             return false;
@@ -210,16 +212,16 @@ public class StatisticMgmtService {
      * There is a cron job (/console/stat/viewcnt) to flush the blog view count from cache to datastore.
      * </p>
      *
-     * @param request  the specified request
+     * @param context  the specified request context
      * @param response the specified response
      * @throws ServiceException service exception
      */
-    public void incBlogViewCount(final HttpServletRequest request, final HttpServletResponse response) throws ServiceException {
-        if (Solos.isBot(request)) {
+    public void incBlogViewCount(final RequestContext context, final HttpServletResponse response) throws ServiceException {
+        if (Solos.isBot(context.getRequest())) {
             return;
         }
 
-        if (hasBeenServed(request, response)) {
+        if (hasBeenServed(context, response)) {
             return;
         }
 

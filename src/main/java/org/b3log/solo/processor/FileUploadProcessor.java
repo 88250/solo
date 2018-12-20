@@ -158,14 +158,13 @@ public class FileUploadProcessor {
     public void uploadFile(final RequestContext context) {
         context.renderJSON();
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        if (!Solos.isLoggedIn(request, response)) {
+        if (!Solos.isLoggedIn(context)) {
             context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
 
-        final JSONObject currentUser = Solos.getCurrentUser(request, response);
+        final JSONObject currentUser = Solos.getCurrentUser(context);
         if (Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 

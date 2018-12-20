@@ -95,7 +95,7 @@ public class CommentConsole {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
             final String commentId = context.pathVar("id");
-            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            final JSONObject currentUser = Solos.getCurrentUser(context);
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
@@ -139,7 +139,7 @@ public class CommentConsole {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
             final String commentId = context.pathVar("id");
-            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            final JSONObject currentUser = Solos.getCurrentUser(context);
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));

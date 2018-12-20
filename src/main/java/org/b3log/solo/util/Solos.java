@@ -28,6 +28,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.Strings;
@@ -167,11 +168,12 @@ public final class Solos {
     /**
      * Gets the current logged-in user.
      *
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified request context
      * @return the current logged-in user, returns {@code null} if not found
      */
-    public static JSONObject getCurrentUser(final HttpServletRequest request, final HttpServletResponse response) {
+    public static JSONObject getCurrentUser(final RequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         final Cookie[] cookies = request.getCookies();
         if (null == cookies || 0 == cookies.length) {
             return null;
@@ -271,24 +273,22 @@ public final class Solos {
      * Checks whether the current request is made by a logged in user
      * (including default user and administrator lists in <i>users</i>).
      *
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified request context
      * @return {@code true} if the current request is made by logged in user, returns {@code false} otherwise
      */
-    public static boolean isLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
-        return null != Solos.getCurrentUser(request, response);
+    public static boolean isLoggedIn(final RequestContext context) {
+        return null != Solos.getCurrentUser(context);
     }
 
     /**
      * Checks whether the current request is made by logged in administrator.
      *
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified request context
      * @return {@code true} if the current request is made by logged in
      * administrator, returns {@code false} otherwise
      */
-    public static boolean isAdminLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
-        final JSONObject user = getCurrentUser(request, response);
+    public static boolean isAdminLoggedIn(final RequestContext context) {
+        final JSONObject user = getCurrentUser(context);
         if (null == user) {
             return false;
         }
@@ -332,7 +332,7 @@ public final class Solos {
             }
         }
 
-        final JSONObject currentUser = getCurrentUser(request, null);
+        final JSONObject currentUser = getCurrentUser(context);
 
         return !(null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE)));
     }
@@ -356,12 +356,11 @@ public final class Solos {
     /**
      * Checks the specified request is made from a mobile device.
      *
-     * @param request the specified request
+     * @param context the specified request context
      * @return {@code true} if it is, returns {@code false} otherwise
-     * @see SoloServletListener#fillBotAttrs(HttpServletRequest)
      */
-    public static boolean isMobile(final HttpServletRequest request) {
-        final Object val = request.getAttribute(Keys.HttpRequest.IS_MOBILE_BOT);
+    public static boolean isMobile(final RequestContext context) {
+        final Object val = context.attr(Keys.HttpRequest.IS_MOBILE_BOT);
         if (!(val instanceof Boolean)) {
             return false;
         }
@@ -374,7 +373,6 @@ public final class Solos {
      *
      * @param request the specified request
      * @return {@code true} if it is, returns {@code false} otherwise
-     * @see SoloServletListener#fillBotAttrs(HttpServletRequest)
      */
     public static boolean isBot(final HttpServletRequest request) {
         final Object val = request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);

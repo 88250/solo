@@ -39,23 +39,23 @@ import java.util.Map;
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
 
     /**
-     * HTTP servlet request.
+     * HTTP servlet request context.
      */
-    private final HttpServletRequest request;
+    private final RequestContext context;
 
     /**
      * Constructs a skin renderer with the specified HTTP servlet request.
      *
-     * @param request the specified HTTP servlet request
+     * @param context the specified HTTP servlet request context
      */
-    public SkinRenderer(final HttpServletRequest request) {
-        this.request = request;
+    public SkinRenderer(final RequestContext context) {
+        this.context = context;
     }
 
     @Override
     protected Template getTemplate() {
         final String templateName = getTemplateName();
-        Template ret = Skins.getSkinTemplate(request, templateName);
+        Template ret = Skins.getSkinTemplate(context, templateName);
         if (null == ret) {
             // 优先使用皮肤内的登录、报错等模板 https://github.com/b3log/solo/issues/12566
             ret = Skins.getTemplate(templateName);

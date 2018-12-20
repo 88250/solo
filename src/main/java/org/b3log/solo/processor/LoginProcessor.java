@@ -143,7 +143,7 @@ public class LoginProcessor {
         }
 
         final HttpServletResponse response = context.getResponse();
-        if (null != Solos.getCurrentUser(request, response)) { // User has already logged in
+        if (null != Solos.getCurrentUser(context)) { // User has already logged in
             context.sendRedirect(destinationURL);
 
             return;
@@ -415,7 +415,7 @@ public class LoginProcessor {
      */
     private void renderPage(final RequestContext context, final String pageTemplate, final String destinationURL,
                             final HttpServletRequest request) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         renderer.setTemplateName(pageTemplate);
         context.setRenderer(renderer);
 

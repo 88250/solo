@@ -99,7 +99,7 @@ public class ArticleRepository extends AbstractRepository {
 
     @Override
     public List<JSONObject> getRandomly(final int fetchSize) throws RepositoryException {
-        final List<JSONObject> ret = new ArrayList();
+        final List<JSONObject> ret = new ArrayList<>();
 
         if (0 == count()) {
             return ret;

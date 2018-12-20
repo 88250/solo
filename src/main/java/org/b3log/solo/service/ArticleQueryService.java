@@ -29,6 +29,7 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Paginator;
 import org.b3log.latke.util.Stopwatchs;
@@ -41,7 +42,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 import static org.b3log.solo.model.Article.*;
@@ -964,12 +964,12 @@ public class ArticleQueryService {
      * Invoking this method dose not effect on article view count.
      * </p>
      *
-     * @param request   the specified HTTP servlet request
+     * @param context   the specified HTTP servlet request context
      * @param articleId the specified article id
      * @return article contents, returns {@code null} if not found
      * @throws ServiceException service exception
      */
-    public String getArticleContent(final HttpServletRequest request, final String articleId) throws ServiceException {
+    public String getArticleContent(final RequestContext context, final String articleId) throws ServiceException {
         if (StringUtils.isBlank(articleId)) {
             return null;
         }
@@ -981,7 +981,7 @@ public class ArticleQueryService {
                 return null;
             }
 
-            if (Solos.needViewPwd(request, article)) {
+            if (Solos.needViewPwd(context.getRequest(), article)) {
                 final String content = langPropsService.get("articleContentPwd");
 
                 article.put(ARTICLE_CONTENT, content);
