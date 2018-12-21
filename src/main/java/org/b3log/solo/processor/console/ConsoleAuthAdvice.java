@@ -21,15 +21,14 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.advice.BeforeRequestProcessAdvice;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.advice.ProcessAdvice;
 import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 /**
  * The common auth check before advice for admin console.
@@ -39,30 +38,28 @@ import java.util.Map;
  * @since 2.9.5
  */
 @Singleton
-public class ConsoleAuthAdvice extends BeforeRequestProcessAdvice {
+public class ConsoleAuthAdvice extends ProcessAdvice {
 
     @Override
-    public void doAdvice(final HTTPRequestContext context, final Map<String, Object> args) throws RequestProcessAdviceException {
+    public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        if (!Solos.isLoggedIn(request, response)) {
+        if (!Solos.isLoggedIn(context)) {
             final JSONObject exception401 = new JSONObject();
-            exception401.put(Keys.MSG, "Unauthorized to request [" + request.getRequestURI() + "]");
+            exception401.put(Keys.MSG, "Unauthorized to request [" + context.requestURI() + "]");
             exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);
 
             throw new RequestProcessAdviceException(exception401);
         }
 
 
-        final JSONObject currentUser = Solos.getCurrentUser(request, response);
+        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         final String userRole = currentUser.optString(User.USER_ROLE);
         if (Role.VISITOR_ROLE.equals(userRole)) {
             final JSONObject exception403 = new JSONObject();
-            exception403.put(Keys.MSG, "Forbidden to request [" + request.getRequestURI() + "]");
+            exception403.put(Keys.MSG, "Forbidden to request [" + context.requestURI() + "]");
             exception403.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
 
             throw new RequestProcessAdviceException(exception403);
         }
-
     }
 }

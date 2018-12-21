@@ -25,12 +25,12 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -53,7 +53,7 @@ import java.util.Map;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.15, Oct 15, 2018
+ * @version 1.2.0.16, Dec 3, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -91,20 +91,17 @@ public class InitProcessor {
     /**
      * Shows initialization page.
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @throws Exception exception
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/init", method = HTTPRequestMethod.GET)
-    public void showInit(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
+    @RequestProcessing(value = "/init", method = HttpMethod.GET)
+    public void showInit(final RequestContext context) {
         if (initService.isInited()) {
-            response.sendRedirect("/");
+            context.sendRedirect("/");
 
             return;
         }
 
+        final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         renderer.setTemplateName("init.ftl");
         context.setRenderer(renderer);
@@ -121,33 +118,35 @@ public class InitProcessor {
     /**
      * Initializes Solo.
      *
-     * @param context           the specified http request context
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param requestJSONObject the specified request json object, for example,
-     *                          {
-     *                          "userName": "",
-     *                          "userEmail": "",
-     *                          "userPassword": "",
-     *                          "userAvatar": "" // optional
-     *                          }
-     * @throws Exception exception
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "userName": "",
+     *     "userEmail": "",
+     *     "userPassword": "",
+     *     "userAvatar": "" // optional
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/init", method = HTTPRequestMethod.POST)
-    public void initSolo(final HTTPRequestContext context, final HttpServletRequest request,
-                         final HttpServletResponse response, final JSONObject requestJSONObject) throws Exception {
+    @RequestProcessing(value = "/init", method = HttpMethod.POST)
+    public void initSolo(final RequestContext context) {
         if (initService.isInited()) {
-            response.sendRedirect("/");
+            context.sendRedirect("/");
 
             return;
         }
 
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject().put(Keys.STATUS_CODE, false);
         renderer.setJSONObject(ret);
 
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             final String userName = requestJSONObject.optString(User.USER_NAME);
             final String userEmail = requestJSONObject.optString(User.USER_EMAIL);
             final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
@@ -164,12 +163,14 @@ public class InitProcessor {
                 return;
             }
 
+            final HttpServletRequest request = context.getRequest();
             final Locale locale = Locales.getLocale(request);
             requestJSONObject.put(Keys.LOCALE, locale.toString());
 
             initService.init(requestJSONObject);
 
             final JSONObject admin = userQueryService.getAdmin();
+            final HttpServletResponse response = context.getResponse();
             Solos.login(admin, response);
 
             ret.put(Keys.STATUS_CODE, true);

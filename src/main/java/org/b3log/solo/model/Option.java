@@ -29,7 +29,7 @@ import java.util.Set;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.11, Oct 16, 2018
+ * @version 1.4.0.0, Dec 10, 2018
  * @since 0.6.0
  */
 public final class Option {
@@ -55,6 +55,11 @@ public final class Option {
     public static final String OPTION_CATEGORY = "optionCategory";
 
     // oId constants
+    /**
+     * Key of custom vars.
+     */
+    public static final String ID_C_CUSTOM_VARS = "customVars";
+
     /**
      * Key of broadcast chance expiration time.
      */
@@ -359,10 +364,15 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.1.0.9, Nov 23, 2015
+     * @version 2.2.0.0, Dec 10, 2018
      * @since 0.3.1
      */
     public static final class DefaultPreference {
+
+        /**
+         * Default custom vars.
+         */
+        public static final String DEFAULT_CUSTOM_VARS = "key0=val0|key1=val1|key2=val2";
 
         /**
          * Default recent article display count.
@@ -402,7 +412,7 @@ public final class Option {
         /**
          * Default skin directory name.
          */
-        public static final String DEFAULT_SKIN_DIR_NAME = "nijigen";
+        public static final String DEFAULT_SKIN_DIR_NAME = "Jane";
 
         /**
          * Default language.

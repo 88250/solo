@@ -23,8 +23,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.mail.MailService;
-import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
@@ -34,6 +32,8 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.cache.ArticleCache;
 import org.b3log.solo.cache.CommentCache;
+import org.b3log.solo.mail.MailService;
+import org.b3log.solo.mail.MailServiceFactory;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
@@ -56,7 +56,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.30, Oct 10, 2018
+ * @version 1.2.0.32, Dec 11, 2018
  * @since 1.2.0
  */
 @Service
@@ -80,7 +80,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "2.9.4";
+    private static final String FROM_VER = "2.9.6";
 
     /**
      * New version.
@@ -191,14 +191,20 @@ public class UpgradeService {
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
+            final JSONObject customVarsOpt = new JSONObject();
+            customVarsOpt.put(Keys.OBJECT_ID, Option.ID_C_CUSTOM_VARS);
+            customVarsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+            customVarsOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_CUSTOM_VARS);
+            optionRepository.add(customVarsOpt);
+
             transaction.commit();
+
+            LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Upgrade failed!", e);
 
             throw new Exception("Upgrade failed from version [" + FROM_VER + "] to version [" + TO_VER + ']');
         }
-
-        LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
     }
 
     private void alterTables() throws Exception {
@@ -374,7 +380,7 @@ public class UpgradeService {
      * @throws Exception exception
      */
     private void notifyUserByEmail() throws Exception {
-        if (!Solos.isConfigured()) {
+        if (!Solos.isMailConfigured()) {
             return;
         }
 

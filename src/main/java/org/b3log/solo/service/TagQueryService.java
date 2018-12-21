@@ -93,15 +93,14 @@ public class TagQueryService {
      * Gets the count of tags.
      *
      * @return count of tags
-     * @throws ServiceException service exception
      */
-    public long getTagCount() throws ServiceException {
+    public long getTagCount() {
         try {
             return tagRepository.count();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tags failed", e);
 
-            throw new ServiceException(e);
+            return 0;
         }
     }
 

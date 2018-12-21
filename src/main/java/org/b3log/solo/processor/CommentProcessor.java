@@ -24,11 +24,11 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.*;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -50,7 +50,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author ArmstrongCN
- * @version 1.3.3.3, Oct 7, 2018
+ * @version 1.3.3.5, Dec 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -93,6 +93,21 @@ public class CommentProcessor {
 
     /**
      * Adds a comment to a page.
+     *
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "captcha": "",
+     *     "oId": pageId,
+     *     "commentName": "",
+     *     "commentEmail": "",
+     *     "commentURL": "",
+     *     "commentContent": "",
+     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
+     * }
+     * </pre>
+     * </p>
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -107,27 +122,19 @@ public class CommentProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "captcha": "",
-     *                          "oId": pageId,
-     *                          "commentName": "",
-     *                          "commentEmail": "",
-     *                          "commentURL": "",
-     *                          "commentContent": "",
-     *                          "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
+     * @param context the specified context
      */
-    @RequestProcessing(value = "/add-page-comment.do", method = HTTPRequestMethod.POST)
-    public void addPageComment(final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    @RequestProcessing(value = "/page/comments", method = HttpMethod.POST)
+    public void addPageComment(final RequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
-
+        final JSONObject requestJSONObject = context.requestJSON();
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
-        fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
+        fillCommenter(requestJSONObject, context);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -136,7 +143,7 @@ public class CommentProcessor {
             return;
         }
 
-        if (!Solos.isLoggedIn(httpServletRequest, httpServletResponse)) {
+        if (!Solos.isLoggedIn(context)) {
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
             if (CaptchaProcessor.invalidCaptcha(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
@@ -157,10 +164,10 @@ public class CommentProcessor {
             page.put(Common.PERMALINK, addResult.opt(Common.PERMALINK));
             dataModel.put(Article.ARTICLE, page);
 
-            // https://github.com/b3log/solo/issues/12246
+            // 添加评论优化 https://github.com/b3log/solo/issues/12246
             try {
-                final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
-                final Template template = Skins.getSkinTemplate(httpServletRequest, "common-comment.ftl");
+                final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
+                final Template template = Skins.getSkinTemplate(context, "common-comment.ftl");
                 final JSONObject preference = preferenceQueryService.getPreference();
                 Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
                 Keys.fillServer(dataModel);
@@ -188,6 +195,21 @@ public class CommentProcessor {
 
     /**
      * Adds a comment to an article.
+     *
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "captcha": "",
+     *     "oId": articleId,
+     *     "commentName": "",
+     *     "commentEmail": "",
+     *     "commentURL": "",
+     *     "commentContent": "",
+     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
+     * }
+     * </pre>
+     * </p>
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
@@ -203,27 +225,19 @@ public class CommentProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context, including a request json object
-     * @param requestJSONObject the specified request json object, for example,
-     *                          "captcha": "",
-     *                          "oId": articleId,
-     *                          "commentName": "",
-     *                          "commentEmail": "",
-     *                          "commentURL": "",
-     *                          "commentContent": "",
-     *                          "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
+     * @param context the specified context, including a request json object
      */
-    @RequestProcessing(value = "/add-article-comment.do", method = HTTPRequestMethod.POST)
-    public void addArticleComment(final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    @RequestProcessing(value = "/article/comments", method = HttpMethod.POST)
+    public void addArticleComment(final RequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
         final HttpServletResponse httpServletResponse = context.getResponse();
-
+        final JSONObject requestJSONObject = context.requestJSON();
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
-        fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
+        fillCommenter(requestJSONObject, context);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
-        final JSONRenderer renderer = new JSONRenderer();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         renderer.setJSONObject(jsonObject);
 
@@ -232,7 +246,7 @@ public class CommentProcessor {
             return;
         }
 
-        if (!Solos.isLoggedIn(httpServletRequest, httpServletResponse)) {
+        if (!Solos.isLoggedIn(context)) {
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
             if (CaptchaProcessor.invalidCaptcha(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
@@ -252,10 +266,10 @@ public class CommentProcessor {
             article.put(Common.PERMALINK, addResult.opt(Common.PERMALINK));
             dataModel.put(Article.ARTICLE, article);
 
-            // https://github.com/b3log/solo/issues/12246
+            // 添加评论优化 https://github.com/b3log/solo/issues/12246
             try {
-                final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
-                final Template template = Skins.getSkinTemplate(httpServletRequest, "common-comment.ftl");
+                final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
+                final Template template = Skins.getSkinTemplate(context, "common-comment.ftl");
                 final JSONObject preference = preferenceQueryService.getPreference();
                 Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
                 Keys.fillServer(dataModel);
@@ -284,11 +298,10 @@ public class CommentProcessor {
      * Fills commenter info if logged in.
      *
      * @param requestJSONObject the specified request json object
-     * @param request           the specified HTTP servlet request
-     * @param request           the specified HTTP servlet response
+     * @param context           the specified HTTP servlet request context
      */
-    private void fillCommenter(final JSONObject requestJSONObject, final HttpServletRequest request, final HttpServletResponse response) {
-        final JSONObject currentUser = Solos.getCurrentUser(request, response);
+    private void fillCommenter(final JSONObject requestJSONObject, final RequestContext context) {
+        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         if (null == currentUser) {
             return;
         }

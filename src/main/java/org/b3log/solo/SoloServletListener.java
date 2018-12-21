@@ -29,14 +29,15 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.plugin.ViewLoadEventHandler;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
 import org.b3log.latke.servlet.AbstractServletListener;
+import org.b3log.latke.servlet.DispatcherServlet;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Skins;
@@ -45,16 +46,14 @@ import org.json.JSONObject;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletRequestEvent;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSessionEvent;
-import java.util.Set;
 
 /**
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.0, Oct 15, 2018
+ * @version 1.10.0.7, Dec 11, 2018
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -67,7 +66,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Solo version.
      */
-    public static final String VERSION = "2.9.5";
+    public static final String VERSION = "2.9.7";
 
     /**
      * Bean manager.
@@ -79,33 +78,34 @@ public final class SoloServletListener extends AbstractServletListener {
         Latkes.USER_AGENT = Solos.USER_AGENT;
         Latkes.setScanPath("org.b3log.solo");
         super.contextInitialized(servletContextEvent);
+        beanManager = BeanManager.getInstance();
+        routeConsoleProcessors();
         Stopwatchs.start("Context Initialized");
 
         validateSkin();
 
-        beanManager = BeanManager.getInstance();
+        final InitService initService = beanManager.getReference(InitService.class);
+        if (initService.isInited()) {
+            // Upgrade check https://github.com/b3log/solo/issues/12040
+            final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
+            upgradeService.upgrade();
 
-        // Upgrade check https://github.com/b3log/solo/issues/12040
-        final UpgradeService upgradeService = beanManager.getReference(UpgradeService.class);
-        upgradeService.upgrade();
+            // Import check https://github.com/b3log/solo/issues/12293
+            final ImportService importService = beanManager.getReference(ImportService.class);
+            importService.importMarkdowns();
 
-        // Import check https://github.com/b3log/solo/issues/12293
-        final ImportService importService = beanManager.getReference(ImportService.class);
-        importService.importMarkdowns();
+            final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
+            final Transaction transaction = optionRepository.beginTransaction();
+            try {
+                loadPreference();
 
-        JdbcRepository.dispose();
-
-        final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
-        final Transaction transaction = optionRepository.beginTransaction();
-        try {
-            loadPreference();
-
-            if (transaction.isActive()) {
-                transaction.commit();
-            }
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
+                if (transaction.isActive()) {
+                    transaction.commit();
+                }
+            } catch (final Exception e) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
+                }
             }
         }
 
@@ -114,15 +114,23 @@ public final class SoloServletListener extends AbstractServletListener {
         final PluginManager pluginManager = beanManager.getReference(PluginManager.class);
         pluginManager.load();
 
-        LOGGER.info("Solo is running [" + Latkes.getServePath() + "]");
+        if (initService.isInited()) {
+            LOGGER.info("Solo is running [" + Latkes.getServePath() + "]");
+        }
 
         Stopwatchs.end();
         LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+
+        final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
+        cronMgmtService.start();
     }
 
     @Override
     public void contextDestroyed(final ServletContextEvent servletContextEvent) {
         super.contextDestroyed(servletContextEvent);
+
+        final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
+        cronMgmtService.stop();
 
         LOGGER.info("Destroyed the context");
     }
@@ -179,9 +187,6 @@ public final class SoloServletListener extends AbstractServletListener {
         try {
             preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                LOGGER.info("Please open browser and visit [" + Latkes.getServePath() + "] to init your Solo, "
-                        + "and then enjoy it :-p");
-
                 return;
             }
 
@@ -230,47 +235,34 @@ public final class SoloServletListener extends AbstractServletListener {
 
     /**
      * Resolve skin (template) for the specified HTTP servlet request.
+     * https://github.com/b3log/solo/issues/12060
      *
      * @param httpServletRequest the specified HTTP servlet request
      */
     private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
-        // https://github.com/b3log/solo/issues/12060
-        httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        final Cookie[] cookies = httpServletRequest.getCookies();
-        if (null != cookies) {
-            for (final Cookie cookie : cookies) {
-                if (Skin.SKIN.equals(cookie.getName())) {
-                    final String skin = cookie.getValue();
-                    final Set<String> skinDirNames = Skins.getSkinDirNames();
-                    if (skinDirNames.contains(skin)) {
-                        httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
-
-                        return;
+        String skin = Skins.getSkinDirNameFromCookie(httpServletRequest);
+        if (StringUtils.isBlank(skin)) {
+            try {
+                final InitService initService = beanManager.getReference(InitService.class);
+                if (initService.isInited()) {
+                    final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+                    final JSONObject preference = preferenceQueryService.getPreference();
+                    if (null != preference) {
+                        skin = preference.getString(Skin.SKIN_DIR_NAME);
                     }
                 }
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Resolves skin failed", e);
             }
         }
-
-        try {
-            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
-            final JSONObject preference = preferenceQueryService.getPreference();
-            if (null == preference) { // Not initialize yet
-                return;
-            }
-
-            final String requestURI = httpServletRequest.getRequestURI();
-            String desiredView = Requests.mobileSwitchToggle(httpServletRequest);
-            if (desiredView == null && !Solos.isMobile(httpServletRequest) || desiredView != null && desiredView.equals("normal")) {
-                desiredView = preference.getString(Skin.SKIN_DIR_NAME);
-            } else {
-                desiredView = Solos.MOBILE_SKIN;
-                LOGGER.log(Level.DEBUG, "The request [URI={0}] via mobile device", requestURI);
-            }
-
-            httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, desiredView);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Resolves skin failed", e);
+        if (StringUtils.isBlank(skin)) {
+            skin = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
         }
+        if (Solos.isMobile(httpServletRequest)) {
+            skin = Solos.MOBILE_SKIN;
+        }
+
+        httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
     }
 
     private static void fillBotAttrs(final HttpServletRequest request) {
@@ -312,5 +304,107 @@ public final class SoloServletListener extends AbstractServletListener {
 
             System.exit(-1);
         }
+    }
+
+    /**
+     * 后台控制器使用函数式路由. https://github.com/b3log/solo/issues/12580
+     */
+    public static void routeConsoleProcessors() {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final AdminConsole adminConsole = beanManager.getReference(AdminConsole.class);
+        DispatcherServlet.get("/admin-index.do", adminConsole::showAdminIndex);
+        DispatcherServlet.get("/admin-preference.do", adminConsole::showAdminPreferenceFunction);
+        DispatcherServlet.route().get(new String[]{"/admin-article.do",
+                "/admin-article-list.do",
+                "/admin-comment-list.do",
+                "/admin-link-list.do",
+                "/admin-page-list.do",
+                "/admin-others.do",
+                "/admin-draft-list.do",
+                "/admin-user-list.do",
+                "/admin-category-list.do",
+                "/admin-plugin-list.do",
+                "/admin-main.do",
+                "/admin-about.do"}, adminConsole::showAdminFunctions);
+        DispatcherServlet.get("/console/export/sql", adminConsole::exportSQL);
+        DispatcherServlet.get("/console/export/json", adminConsole::exportJSON);
+        DispatcherServlet.get("/console/export/hexo", adminConsole::exportHexo);
+
+        final ArticleConsole articleConsole = beanManager.getReference(ArticleConsole.class);
+        DispatcherServlet.get("/console/thumbs", articleConsole::getArticleThumbs);
+        DispatcherServlet.post("/console/markdown/2html", articleConsole::markdown2HTML);
+        DispatcherServlet.get("/console/article/{id}", articleConsole::getArticle);
+        DispatcherServlet.get("/console/articles/status/{status}/{page}/{pageSize}/{windowSize}", articleConsole::getArticles);
+        DispatcherServlet.delete("/console/article/{id}", articleConsole::removeArticle);
+        DispatcherServlet.put("/console/article/unpublish/{id}", articleConsole::cancelPublishArticle);
+        DispatcherServlet.put("/console/article/canceltop/{id}", articleConsole::cancelTopArticle);
+        DispatcherServlet.put("/console/article/puttop/{id}", articleConsole::putTopArticle);
+        DispatcherServlet.put("/console/article/", articleConsole::updateArticle);
+        DispatcherServlet.post("/console/article/", articleConsole::addArticle);
+
+        final CategoryConsole categoryConsole = beanManager.getReference(CategoryConsole.class);
+        DispatcherServlet.put("/console/category/order/", categoryConsole::changeOrder);
+        DispatcherServlet.get("/console/category/{id}", categoryConsole::getCategory);
+        DispatcherServlet.delete("/console/category/{id}", categoryConsole::removeCategory);
+        DispatcherServlet.put("/console/category/", categoryConsole::updateCategory);
+        DispatcherServlet.post("/console/category/", categoryConsole::addCategory);
+        DispatcherServlet.get("/console/categories/{page}/{pageSize}/{windowSize}", categoryConsole::getCategories);
+
+        final CommentConsole commentConsole = beanManager.getReference(CommentConsole.class);
+        DispatcherServlet.delete("/console/page/comment/{id}", commentConsole::removePageComment);
+        DispatcherServlet.delete("/console/article/comment/{id}", commentConsole::removeArticleComment);
+        DispatcherServlet.get("/console/comments/{page}/{pageSize}/{windowSize}", commentConsole::getComments);
+        DispatcherServlet.get("/console/comments/article/{id}", commentConsole::getArticleComments);
+        DispatcherServlet.get("/console/comments/page/{id}", commentConsole::getPageComments);
+
+        final LinkConsole linkConsole = beanManager.getReference(LinkConsole.class);
+        DispatcherServlet.delete("/console/link/{id}", linkConsole::removeLink);
+        DispatcherServlet.put("/console/link/", linkConsole::updateLink);
+        DispatcherServlet.put("/console/link/order/", linkConsole::changeOrder);
+        DispatcherServlet.post("/console/link/", linkConsole::addLink);
+        DispatcherServlet.get("/console/links/{page}/{pageSize}/{windowSize}", linkConsole::getLinks);
+        DispatcherServlet.get("/console/link/{id}", linkConsole::getLink);
+
+        final PageConsole pageConsole = beanManager.getReference(PageConsole.class);
+        DispatcherServlet.put("/console/page/", pageConsole::updatePage);
+        DispatcherServlet.delete("/console/page/{id}", pageConsole::removePage);
+        DispatcherServlet.post("/console/page/", pageConsole::addPage);
+        DispatcherServlet.put("/console/page/order/", pageConsole::changeOrder);
+        DispatcherServlet.get("/console/page/{id}", pageConsole::getPage);
+        DispatcherServlet.get("/console/pages/{page}/{pageSize}/{windowSize}", pageConsole::getPages);
+
+        final PluginConsole pluginConsole = beanManager.getReference(PluginConsole.class);
+        DispatcherServlet.put("/console/plugin/status/", pluginConsole::setPluginStatus);
+        DispatcherServlet.get("/console/plugins/{page}/{pageSize}/{windowSize}", pluginConsole::getPlugins);
+        DispatcherServlet.post("/console/plugin/toSetting", pluginConsole::toSetting);
+        DispatcherServlet.post("/console/plugin/updateSetting", pluginConsole::updateSetting);
+
+        final PreferenceConsole preferenceConsole = beanManager.getReference(PreferenceConsole.class);
+        DispatcherServlet.get("/console/reply/notification/template", preferenceConsole::getReplyNotificationTemplate);
+        DispatcherServlet.put("/console/reply/notification/template", preferenceConsole::updateReplyNotificationTemplate);
+        DispatcherServlet.get("/console/signs/", preferenceConsole::getSigns);
+        DispatcherServlet.get("/console/preference/", preferenceConsole::getPreference);
+        DispatcherServlet.put("/console/preference/", preferenceConsole::updatePreference);
+        DispatcherServlet.get("/console/preference/qiniu", preferenceConsole::getQiniuPreference);
+        DispatcherServlet.put("/console/preference/qiniu", preferenceConsole::updateQiniu);
+
+        final RepairConsole repairConsole = beanManager.getReference(RepairConsole.class);
+        DispatcherServlet.get("/fix/restore-signs", repairConsole::restoreSigns);
+        DispatcherServlet.get("/fix/tag-article-counter-repair", repairConsole::repairTagArticleCounter);
+
+        final TagConsole tagConsole = beanManager.getReference(TagConsole.class);
+        DispatcherServlet.get("/console/tags", tagConsole::getTags);
+        DispatcherServlet.get("/console/tag/unused", tagConsole::getUnusedTags);
+        DispatcherServlet.delete("/console/tag/unused", tagConsole::removeUnusedTags);
+
+        final UserConsole userConsole = beanManager.getReference(UserConsole.class);
+        DispatcherServlet.put("/console/user/", userConsole::updateUser);
+        DispatcherServlet.post("/console/user/", userConsole::addUser);
+        DispatcherServlet.delete("/console/user/{id}", userConsole::removeUser);
+        DispatcherServlet.get("/console/users/{page}/{pageSize}/{windowSize}", userConsole::getUsers);
+        DispatcherServlet.get("/console/user/{id}", userConsole::getUser);
+        DispatcherServlet.get("/console/changeRole/{id}", userConsole::changeUserRole);
+
+        DispatcherServlet.mapping();
     }
 }

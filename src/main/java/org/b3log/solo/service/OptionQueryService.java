@@ -19,7 +19,6 @@ package org.b3log.solo.service;
 
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.repository.OptionRepository;
 import org.json.JSONObject;
@@ -28,7 +27,7 @@ import org.json.JSONObject;
  * Option query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 19, 2018
+ * @version 1.0.0.3, Dec 3, 2018
  * @since 0.6.0
  */
 @Service
@@ -45,13 +44,12 @@ public class OptionQueryService {
      *
      * @param optionId the specified option id
      * @return an option, returns {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getOptionById(final String optionId) throws ServiceException {
+    public JSONObject getOptionById(final String optionId) {
         try {
             return optionRepository.get(optionId);
         } catch (final RepositoryException e) {
-            throw new ServiceException(e);
+            return null;
         }
     }
 
@@ -69,13 +67,12 @@ public class OptionQueryService {
      *     ....
      * }
      * </pre>, returns {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getOptions(final String category) throws ServiceException {
+    public JSONObject getOptions(final String category) {
         try {
             return optionRepository.getOptions(category);
         } catch (final Exception e) {
-            throw new ServiceException(e);
+            return null;
         }
     }
 

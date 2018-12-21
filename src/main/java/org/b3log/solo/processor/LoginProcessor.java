@@ -25,25 +25,24 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.mail.MailService;
-import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Requests;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.mail.MailService;
+import org.b3log.solo.mail.MailServiceFactory;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Solos;
@@ -63,7 +62,7 @@ import java.util.Map;
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.1.14, Oct 5, 2018
+ * @version 1.1.1.16, Dec 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -131,13 +130,12 @@ public class LoginProcessor {
      * Shows login page.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
-    @RequestProcessing(value = "/login", method = HTTPRequestMethod.GET)
-    public void showLogin(final HTTPRequestContext context) throws Exception {
+    @RequestProcessing(value = "/login", method = HttpMethod.GET)
+    public void showLogin(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        String destinationURL = request.getParameter(Common.GOTO);
+        String destinationURL = context.param(Common.GOTO);
         if (StringUtils.isBlank(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         } else if (!isInternalLinks(destinationURL)) {
@@ -145,8 +143,8 @@ public class LoginProcessor {
         }
 
         final HttpServletResponse response = context.getResponse();
-        if (null != Solos.getCurrentUser(request, response)) { // User has already logged in
-            response.sendRedirect(destinationURL);
+        if (null != Solos.getCurrentUser(context.getRequest(), context.getResponse())) { // User has already logged in
+            context.sendRedirect(destinationURL);
 
             return;
         }
@@ -166,14 +164,13 @@ public class LoginProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context
-     * @param requestJSONObject the specified request json object
+     * @param context the specified context
      */
-    @RequestProcessing(value = "/login", method = HTTPRequestMethod.POST)
-    public void login(final HTTPRequestContext context, final JSONObject requestJSONObject) {
+    @RequestProcessing(value = "/login", method = HttpMethod.POST)
+    public void login(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-
-        final JSONRenderer renderer = new JSONRenderer();
+        final JSONObject requestJSONObject = context.requestJSON();
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -219,33 +216,31 @@ public class LoginProcessor {
      * Logout.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
-    @RequestProcessing(value = "/logout", method = HTTPRequestMethod.GET)
-    public void logout(final HTTPRequestContext context) throws Exception {
+    @RequestProcessing(value = "/logout", method = HttpMethod.GET)
+    public void logout(final RequestContext context) {
         final HttpServletRequest httpServletRequest = context.getRequest();
 
         Solos.logout(httpServletRequest, context.getResponse());
 
-        String destinationURL = httpServletRequest.getParameter(Common.GOTO);
+        String destinationURL = context.param(Common.GOTO);
         if (StringUtils.isBlank(destinationURL) || !isInternalLinks(destinationURL)) {
             destinationURL = "/";
         }
 
-        context.getResponse().sendRedirect(destinationURL);
+        context.sendRedirect(destinationURL);
     }
 
     /**
      * Shows forgotten password page.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
-    @RequestProcessing(value = "/forgot", method = HTTPRequestMethod.GET)
-    public void showForgot(final HTTPRequestContext context) throws Exception {
+    @RequestProcessing(value = "/forgot", method = HttpMethod.GET)
+    public void showForgot(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
 
-        String destinationURL = request.getParameter(Common.GOTO);
+        String destinationURL = context.param(Common.GOTO);
         if (StringUtils.isBlank(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         } else if (!isInternalLinks(destinationURL)) {
@@ -267,12 +262,11 @@ public class LoginProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context
-     * @param requestJSONObject the specified request json object
+     * @param context the specified context
      */
-    @RequestProcessing(value = "/forgot", method = HTTPRequestMethod.POST)
-    public void forgot(final HTTPRequestContext context, final JSONObject requestJSONObject) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/forgot", method = HttpMethod.POST)
+    public void forgot(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -281,6 +275,7 @@ public class LoginProcessor {
             jsonObject.put("succeed", false);
             jsonObject.put(Keys.MSG, langPropsService.get("resetPwdSuccessMsg"));
 
+            final JSONObject requestJSONObject = context.requestJSON();
             final String userEmail = requestJSONObject.getString(User.USER_EMAIL);
 
             if (StringUtils.isBlank(userEmail)) {
@@ -316,12 +311,11 @@ public class LoginProcessor {
      * </pre>
      * </p>
      *
-     * @param context           the specified context
-     * @param requestJSONObject the specified request json object
+     * @param context the specified context
      */
-    @RequestProcessing(value = "/reset", method = HTTPRequestMethod.POST)
-    public void reset(final HTTPRequestContext context, final JSONObject requestJSONObject) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/reset", method = HttpMethod.POST)
+    public void reset(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
 
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
@@ -329,6 +323,7 @@ public class LoginProcessor {
         renderer.setJSONObject(jsonObject);
 
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             final String token = requestJSONObject.getString("token");
             final String newPwd = requestJSONObject.getString("newPwd");
             final JSONObject passwordResetOption = optionQueryService.getOptionById(token);
@@ -397,7 +392,7 @@ public class LoginProcessor {
         message.setSubject(mailSubject);
         message.setHtmlBody(mailBody);
 
-        if (Solos.isConfigured()) {
+        if (Solos.isMailConfigured()) {
             mailService.send(message);
         } else {
             LOGGER.log(Level.INFO, "Do not send mail caused by not configure mail.properties");
@@ -417,12 +412,10 @@ public class LoginProcessor {
      * @param pageTemplate   the page template
      * @param destinationURL the destination URL
      * @param request        for reset password page
-     * @throws JSONException    the JSONException
-     * @throws ServiceException the ServiceException
      */
-    private void renderPage(final HTTPRequestContext context, final String pageTemplate, final String destinationURL,
-                            final HttpServletRequest request) throws JSONException, ServiceException {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+    private void renderPage(final RequestContext context, final String pageTemplate, final String destinationURL,
+                            final HttpServletRequest request) {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         renderer.setTemplateName(pageTemplate);
         context.setRenderer(renderer);
 
@@ -437,7 +430,7 @@ public class LoginProcessor {
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
 
-        String token = request.getParameter("token");
+        String token = context.param("token");
         if (StringUtils.isBlank(token)) {
             token = "";
         }
@@ -451,7 +444,7 @@ public class LoginProcessor {
             dataModel.put("tokenHidden", token);
         }
 
-        final String from = request.getParameter("from");
+        final String from = context.param("from");
 
         if ("forgot".equals(from)) {
             dataModel.put("resetMsg", langPropsService.get("resetPwdSuccessSend"));

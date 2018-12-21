@@ -24,32 +24,29 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.util.Requests;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Link;
 import org.b3log.solo.service.LinkMgmtService;
 import org.b3log.solo.service.LinkQueryService;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Link console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Sep 25, 2018
+ * @version 1.0.1.4, Dec 11, 2018
  * @since 0.4.0
  */
 @RequestProcessor
-@Before(adviceClass = ConsoleAdminAuthAdvice.class)
+@Before(ConsoleAdminAuthAdvice.class)
 public class LinkConsole {
 
     /**
@@ -87,20 +84,16 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.DELETE)
-    public void removeLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void removeLink(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
 
         try {
-            final String linkId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/link/").length());
-
+            final String linkId = context.pathVar("id");
             linkMgmtService.removeLink(linkId);
 
             jsonObject.put(Keys.STATUS_CODE, true);
@@ -116,6 +109,19 @@ public class LinkConsole {
     /**
      * Updates a link by the specified request.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "link": {
+     *         "oId": "",
+     *         "linkTitle": "",
+     *         "linkAddress": "",
+     *         "linkDescription": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -125,33 +131,19 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param context           the specified http request context
-     * @param response          the specified http servlet response
-     * @param requestJSONObject the specified request json object, for example,
-     *                          {
-     *                          "link": {
-     *                          "oId": "",
-     *                          "linkTitle": "",
-     *                          "linkAddress": "",
-     *                          "linkDescription": ""
-     *                          }
-     *                          }, see {@link org.b3log.solo.model.Link} for more details
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.PUT)
-    public void updateLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                           final JSONObject requestJSONObject) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void updateLink(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
 
         try {
-            linkMgmtService.updateLink(requestJSONObject);
+            final JSONObject requestJSON = context.requestJSON();
+            linkMgmtService.updateLink(requestJSON);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
-
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -165,6 +157,15 @@ public class LinkConsole {
     /**
      * Changes a link order by the specified link id and direction.
      * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "oId": "",
+     *     "direction": "" // "up"/"down"
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -174,25 +175,17 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          {
-     *                          "oId": "",
-     *                          "direction": "" // "up"/"down"
-     *                          }
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/order/", method = HTTPRequestMethod.PUT)
-    public void changeOrder(final HttpServletRequest request, final HttpServletResponse response,
-                            final HTTPRequestContext context, final JSONObject requestJSONObject) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void changeOrder(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
 
         try {
-            final String linkId = requestJSONObject.getString(Keys.OBJECT_ID);
-            final String direction = requestJSONObject.getString(Common.DIRECTION);
+            final JSONObject requestJSON = context.requestJSON();
+            final String linkId = requestJSON.getString(Keys.OBJECT_ID);
+            final String direction = requestJSON.getString(Common.DIRECTION);
 
             linkMgmtService.changeOrder(linkId, direction);
 
@@ -211,6 +204,17 @@ public class LinkConsole {
     /**
      * Adds a link with the specified request.
      * <p>
+     * <pre>
+     * {
+     *     "link": {
+     *         "linkTitle": "",
+     *         "linkAddress": "",
+     *         "linkDescription": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -221,33 +225,20 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          {
-     *                          "link": {
-     *                          "linkTitle": "",
-     *                          "linkAddress": "",
-     *                          "linkDescription": ""
-     *                          }
-     *                          }
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/", method = HTTPRequestMethod.POST)
-    public void addLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                        final JSONObject requestJSONObject) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void addLink(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         final JSONObject ret = new JSONObject();
 
         try {
-            final String linkId = linkMgmtService.addLink(requestJSONObject);
+            final JSONObject requestJSON = context.requestJSON();
+            final String linkId = linkMgmtService.addLink(requestJSON);
 
             ret.put(Keys.OBJECT_ID, linkId);
             ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
             ret.put(Keys.STATUS_CODE, true);
-
             renderer.setJSONObject(ret);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -284,20 +275,16 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/links/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-            method = HTTPRequestMethod.GET)
-    public void getLinks(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getLinks(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
-            final String requestURI = request.getRequestURI();
+            final String requestURI = context.requestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/links/").length());
-            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = linkQueryService.getLinks(requestJSONObject);
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
@@ -335,19 +322,14 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/link/*", method = HTTPRequestMethod.GET)
-    public void getLink(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getLink(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
-            final String requestURI = request.getRequestURI();
-            final String linkId = requestURI.substring((Latkes.getContextPath() + "/console/link/").length());
-
+            final String linkId = context.pathVar("id");
             final JSONObject result = linkQueryService.getLink(linkId);
             if (null == result) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));

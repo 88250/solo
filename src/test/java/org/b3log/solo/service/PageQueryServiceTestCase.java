@@ -17,10 +17,9 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.model.User;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -36,27 +35,17 @@ public class PageQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Init.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**
      * Add Page.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
@@ -81,14 +70,14 @@ public class PageQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get Pages.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "addPage")
     public void getPages() throws Exception {
         final PageQueryService pageQueryService = getPageQueryService();
 
-        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
+        final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
         final JSONObject result = pageQueryService.getPages(paginationRequest);
 
         Assert.assertNotNull(result);

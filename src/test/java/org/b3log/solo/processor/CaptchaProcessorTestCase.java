@@ -17,19 +17,9 @@
  */
 package org.b3log.solo.processor;
 
-import java.io.IOException;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.service.InitService;
-import org.b3log.solo.service.UserQueryService;
-import org.json.JSONObject;
-import static org.mockito.Mockito.*;
+import org.b3log.solo.MockHttpServletRequest;
+import org.b3log.solo.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -50,17 +40,7 @@ public class CaptchaProcessorTestCase extends AbstractTestCase {
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**
@@ -70,41 +50,12 @@ public class CaptchaProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void get() throws Exception {
-        final HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-        when(request.getRequestURI()).thenReturn("/captcha.do");
-        when(request.getMethod()).thenReturn("GET");
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/captcha");
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
 
-        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-        dispatcherServlet.init();
-
-        final HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getOutputStream()).thenReturn(new ServletOutputStream() {
-
-            private long size;
-
-            @Override
-            public boolean isReady() {
-                return true;
-            }
-
-            @Override
-            public void setWriteListener(final WriteListener writeListener) {
-            }
-
-            @Override
-            public void write(int b) throws IOException {
-                size++;
-            }
-
-            @Override
-            public String toString() {
-                return "size: " + String.valueOf(size);
-            }
-        });
-
-        dispatcherServlet.service(request, response);
-
-        Assert.assertTrue(StringUtils.startsWith(response.getOutputStream().toString(), "size: "));
+        final String pragma = response.getHeader("Pragma");
+        Assert.assertEquals(pragma, "no-cache");
     }
 }

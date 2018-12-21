@@ -59,13 +59,13 @@ public class LinkQueryService {
      * Gets links by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
-     * <pre>
-     * {
-     *     "paginationCurrentPageNum": 1,
-     *     "paginationPageSize": 20,
-     *     "paginationWindowSize": 10
-     * }, see {@link Pagination} for more details
-     * </pre>
+     *                          <pre>
+     *                          {
+     *                              "paginationCurrentPageNum": 1,
+     *                              "paginationPageSize": 20,
+     *                              "paginationWindowSize": 10
+     *                          }, see {@link Pagination} for more details
+     *                          </pre>
      * @return for example,
      * <pre>
      * {
@@ -93,7 +93,7 @@ public class LinkQueryService {
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
             final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(Link.LINK_ORDER,
-                SortDirection.ASCENDING);
+                    SortDirection.ASCENDING);
             final JSONObject result = linkRepository.get(query);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
 
@@ -154,7 +154,7 @@ public class LinkQueryService {
 
     /**
      * Sets the link repository with the specified link repository.
-     * 
+     *
      * @param linkRepository the specified link repository
      */
     public void setLinkRepository(final LinkRepository linkRepository) {

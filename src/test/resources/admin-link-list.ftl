@@ -22,86 +22,25 @@
     <div id="linkPagination" class="margin12 right"></div>
 </div>
 <div class="clear"></div>
-<table class="form" width="100%" cellpadding="0px" cellspacing="9px">
-    <thead>
-        <tr>
-            <th style="text-align: left" colspan="2">
-                ${addLinkLabel}
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th width="48px">
-                ${linkTitle1Label}
-            </th>
-            <td>
-                <input id="linkTitle" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                ${url1Label}
-            </th>
-            <td>
-                <input id="linkAddress" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                ${linkDescription1Label}
-            </th>
-            <td>
-                <input id="linkDescription" type="text"/>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right">
-                <button onclick="admin.linkList.add();">${saveLabel}</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
-<div id="updateLink" class="none">
-    <table class="form" width="100%" cellpadding="0px" cellspacing="9px">
-        <thead>
-            <tr>
-                <th style="text-align: left" colspan="2">
-                    ${updateLinkLabel}
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th width="48px">
-                    ${linkTitle1Label}
-                </th>
-                <td>
-                    <input id="linkTitleUpdate" type="text"/>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    ${url1Label}
-                </th>
-                <td>
-                    <input id="linkAddressUpdate" type="text"/>
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    ${linkDescription1Label}
-                </th>
-                <td>
-                    <input id="linkDescriptionUpdate" type="text"/>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2" align="right">
-                    <button onclick="admin.linkList.update();">${updateLabel}</button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<div class="form form__no-table">
+${addLinkLabel}
+    <label>${linkTitle1Label}</label>
+    <input id="linkTitle" type="text"/>
+    <label>${url1Label}</label>
+    <input id="linkAddress" type="text"/>
+    <label>${linkDescription1Label}</label>
+    <input id="linkDescription" type="text"/> <br><br>
+    <button onclick="admin.linkList.add();" class="right">${saveLabel}</button>
+    <div class="clear"></div>
+</div>
+<div id="updateLink" class="none form form__no-table" data-title="${updateLinkLabel}">
+    <label>${linkTitle1Label}</label>
+    <input id="linkTitleUpdate" type="text"/>
+    <label>${url1Label}</label>
+    <input id="linkAddressUpdate" type="text"/>
+    <label>${linkDescription1Label}</label>
+    <input id="linkDescriptionUpdate" type="text"/><br><br>
+    <button onclick="admin.linkList.update();" class="right">${updateLabel}</button>
+    <div class="clear"></div>
 </div>
 ${plugins}

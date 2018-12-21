@@ -25,17 +25,16 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.TextXMLRenderer;
-import org.b3log.latke.util.Strings;
+import org.b3log.latke.servlet.renderer.TextXmlRenderer;
+import org.b3log.latke.util.Paginator;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -56,7 +55,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.1.0, Oct 13, 2018
+ * @version 1.1.1.1, Nov 28, 2018
  * @since 2.4.0
  */
 @RequestProcessor
@@ -102,9 +101,9 @@ public class SearchProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/opensearch.xml", method = HTTPRequestMethod.GET)
-    public void showOpensearchXML(final HTTPRequestContext context) {
-        final TextXMLRenderer renderer = new TextXMLRenderer();
+    @RequestProcessing(value = "/opensearch.xml", method = HttpMethod.GET)
+    public void showOpensearchXML(final RequestContext context) {
+        final TextXmlRenderer renderer = new TextXmlRenderer();
         context.setRenderer(renderer);
 
         try {
@@ -126,9 +125,10 @@ public class SearchProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/search", method = HTTPRequestMethod.GET)
-    public void search(final HTTPRequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+    @RequestProcessing(value = "/search", method = HttpMethod.GET)
+    public void search(final RequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("search.ftl");
 
@@ -136,14 +136,8 @@ public class SearchProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.putAll(langs);
 
-        final HttpServletRequest request = context.getRequest();
-
-        String page = request.getParameter("p");
-        if (!Strings.isNumeric(page)) {
-            page = "1";
-        }
-        final int pageNum = Integer.valueOf(page);
-        String keyword = request.getParameter(Common.KEYWORD);
+        final int pageNum = Paginator.getPage(request);
+        String keyword = context.param(Common.KEYWORD);
         if (StringUtils.isBlank(keyword)) {
             keyword = "";
         }
@@ -156,8 +150,8 @@ public class SearchProcessor {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            dataModelService.fillCommon(request, context.getResponse(), dataModel, preference);
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             dataModel.put(Article.ARTICLES, articles);
             final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);

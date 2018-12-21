@@ -62,8 +62,8 @@ public class PermalinkQueryService {
      * Reserved permalinks.
      */
     public static final String[] RESERVED_LINKS = new String[]{
-            "/", "/article", "/tags.html", "/tags", "/page", "/atom.xml", "/rss.xml", "/get-random-articles.do", "/captcha.do", "/kill-browser",
-            "/add-article-comment.do", "/add-article-from-symphony-comment.do", "/add-page-comment.do", "/get-article-content", "/sitemap.xml",
+            "/", "/article", "/tags.html", "/tags", "/page", "/atom.xml", "/rss.xml", "/articles/random", "/captcha", "/kill-browser",
+            "/article/comments", "/add-article-from-symphony-comment.do", "/page/comments", "/get-article-content", "/sitemap.xml",
             "/login", "/logout", "/forgot", "/get-article-content", "/admin-index.do", "/admin-article.do", "/admin-article-list.do",
             "/admin-link-list.do", "/admin-preference.do", "/admin-file-list.do", "/admin-page-list.do", "/admin-others.do",
             "/admin-draft-list.do", "/admin-user-list.do", "/admin-plugin-list.do", "/admin-main.do", "/admin-about.do", "/admin-label",

@@ -21,23 +21,21 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.SoloServletListener;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 
 /**
  * KanBanNiang processor. https://github.com/b3log/solo/issues/12472
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jul 5, 2018
+ * @version 1.0.0.1, Dec 3, 2018
  * @since 2.9.2
  */
 @RequestProcessor
@@ -51,13 +49,11 @@ public class KanBanNiangProcessor {
     /**
      * Returns a random model.
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/plugins/kanbanniang/assert/model", method = HTTPRequestMethod.GET)
-    public void randomModel(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @RequestProcessing(value = "/plugins/kanbanniang/assert/model", method = HttpMethod.GET)
+    public void randomModel(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         try {
             final int i = RandomUtils.nextInt(MODEL_NAMES.length);

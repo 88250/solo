@@ -20,7 +20,6 @@ package org.b3log.solo.service;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Option;
@@ -31,7 +30,7 @@ import org.json.JSONObject;
  * Preference query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Sep 17, 2018
+ * @version 1.1.0.5, Nov 6, 2018
  * @since 0.4.0
  */
 @Service
@@ -79,9 +78,8 @@ public class PreferenceQueryService {
      * Gets the user preference.
      *
      * @return user preference, returns {@code null} if not found
-     * @throws ServiceException if repository exception
      */
-    public JSONObject getPreference() throws ServiceException {
+    public JSONObject getPreference() {
         try {
             final JSONObject checkInit = optionRepository.get(Option.ID_C_ADMIN_EMAIL);
             if (null == checkInit) {
@@ -89,7 +87,7 @@ public class PreferenceQueryService {
             }
 
             return optionQueryService.getOptions(Option.CATEGORY_C_PREFERENCE);
-        } catch (final RepositoryException e) {
+        } catch (final Exception e) {
             return null;
         }
     }

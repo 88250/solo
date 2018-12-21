@@ -17,81 +17,36 @@
  */
 package org.b3log.solo.processor;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.ServletException;
+import org.b3log.latke.servlet.DispatcherServlet;
+import org.b3log.latke.servlet.handler.*;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HttpControl;
-import org.b3log.latke.servlet.handler.AdviceHandler;
-import org.b3log.latke.servlet.handler.ArgsHandler;
-import org.b3log.latke.servlet.handler.Handler;
-import org.b3log.latke.servlet.handler.MethodInvokeHandler;
-import org.b3log.latke.servlet.handler.RequestDispatchHandler;
-import org.b3log.latke.servlet.handler.RequestPrepareHandler;
-import org.b3log.latke.servlet.renderer.AbstractHTTPResponseRenderer;
-import org.b3log.latke.servlet.renderer.HTTP404Renderer;
-import org.b3log.latke.servlet.renderer.HTTP500Renderer;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Mock dispatcher servlet for unit tests.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 22, 2017
+ * @version 1.0.0.2, Dec 5, 2018
  * @since 1.7.0
  */
 public class MockDispatcherServlet {
 
     /**
-     * the holder of all the sys-handler.
+     * Handlers
      */
-    private static final List<Handler> SYS_HANDLER = new ArrayList<>();
+    private static final List<Handler> HANDLERS = new ArrayList<>();
 
-    public void init() throws ServletException {
-        SYS_HANDLER.add(new RequestPrepareHandler());
-        SYS_HANDLER.add(new RequestDispatchHandler());
-        SYS_HANDLER.add(new ArgsHandler());
-        SYS_HANDLER.add(new AdviceHandler());
-        SYS_HANDLER.add(new MethodInvokeHandler());
+    public void init() {
+        HANDLERS.add(new RouteHandler());
+        HANDLERS.add(new BeforeHandleHandler());
+        HANDLERS.add(new ContextHandleHandler());
+        HANDLERS.add(new AfterHandleHandler());
     }
 
-    public void service(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
-        final HTTPRequestContext httpRequestContext = new HTTPRequestContext();
-
-        httpRequestContext.setRequest(req);
-        httpRequestContext.setResponse(resp);
-        final HttpControl httpControl = new HttpControl(SYS_HANDLER.iterator(), httpRequestContext);
-
-        try {
-            httpControl.nextHandler();
-        } catch (final Exception e) {
-            httpRequestContext.setRenderer(new HTTP500Renderer(e));
-        }
-
-        result(httpRequestContext);
-    }
-
-    /**
-     * To http repsonse.
-     *
-     * @param context {@link HTTPRequestContext}
-     * @throws IOException IOException
-     */
-    public static void result(final HTTPRequestContext context) throws IOException {
-        final HttpServletResponse response = context.getResponse();
-
-        if (response.isCommitted()) { // Response sends redirect or error
-            return;
-        }
-
-        AbstractHTTPResponseRenderer renderer = context.getRenderer();
-
-        if (null == renderer) {
-            renderer = new HTTP404Renderer();
-        }
-
-        renderer.render(context);
+    public void service(final HttpServletRequest req, final HttpServletResponse resp) {
+        DispatcherServlet.handle(req, resp);
     }
 }

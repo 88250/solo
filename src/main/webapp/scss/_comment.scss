@@ -8,7 +8,7 @@
  * comment
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</ta>
- * @version 0.1.0.0, Sep 1, 2018
+ * @version 0.2.0.0, Nov 12, 2018
  */
 
 .em00,.em01,.em02,.em03,.em04,.em05,.em06,.em07,.em08,.em09,.em10,.em11,.em12,.em13,.em14 {
@@ -24,7 +24,8 @@
   -moz-transition: all .2s ease-out
 }
 
-#emotions span:hover {
+#emotions span:hover,
+#emotionsReply span:hover {
   transform: scale(1.2) rotate(360deg);
   -webkit-transform: scale(1.2) rotate(360deg);
   -moz-transform: scale(1.2) rotate(360deg)

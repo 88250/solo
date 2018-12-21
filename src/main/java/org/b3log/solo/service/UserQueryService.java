@@ -83,9 +83,8 @@ public class UserQueryService {
      *
      * @param emailOrUserName the specified email or username
      * @return user, returns {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getUserByEmailOrUserName(final String emailOrUserName) throws ServiceException {
+    public JSONObject getUserByEmailOrUserName(final String emailOrUserName) {
         try {
             JSONObject ret = userRepository.getByEmail(emailOrUserName);
             if (null == ret) {
@@ -95,7 +94,8 @@ public class UserQueryService {
             return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a user by email or username [" + emailOrUserName + "] failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
     }
 
@@ -169,9 +169,8 @@ public class UserQueryService {
      *     }
      * }
      * </pre>, returns {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getUser(final String userId) throws ServiceException {
+    public JSONObject getUser(final String userId) {
         final JSONObject ret = new JSONObject();
 
         JSONObject user;
@@ -179,7 +178,8 @@ public class UserQueryService {
             user = userRepository.get(userId);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets a user failed", e);
-            throw new ServiceException(e);
+
+            return null;
         }
 
         if (null == user) {

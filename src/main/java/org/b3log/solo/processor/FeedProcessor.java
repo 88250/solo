@@ -25,8 +25,8 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AtomRenderer;
@@ -59,7 +59,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 2.0.0.0, Sep 26, 2018
+ * @version 2.0.0.1, Dec 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -92,10 +92,9 @@ public class FeedProcessor {
      * Blog articles Atom output.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
-    @RequestProcessing(value = "/atom.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void blogArticlesAtom(final HTTPRequestContext context) throws Exception {
+    @RequestProcessing(value = "/atom.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
+    public void blogArticlesAtom(final RequestContext context) {
         final AtomRenderer renderer = new AtomRenderer();
         context.setRenderer(renderer);
 
@@ -130,7 +129,7 @@ public class FeedProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article feed error", e);
 
-            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            context.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
     }
 
@@ -167,9 +166,8 @@ public class FeedProcessor {
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/rss.xml", method = {HTTPRequestMethod.GET, HTTPRequestMethod.HEAD})
-    public void blogArticlesRSS(final HTTPRequestContext context) throws Exception {
-        final HttpServletResponse response = context.getResponse();
+    @RequestProcessing(value = "/rss.xml", method = {HttpMethod.GET, HttpMethod.HEAD})
+    public void blogArticlesRSS(final RequestContext context) {
         final RssRenderer renderer = new RssRenderer();
         context.setRenderer(renderer);
 
@@ -178,7 +176,8 @@ public class FeedProcessor {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
 
@@ -220,7 +219,7 @@ public class FeedProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article rss error", e);
 
-            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            context.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
     }
 

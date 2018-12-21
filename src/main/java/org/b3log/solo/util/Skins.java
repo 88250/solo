@@ -28,6 +28,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.SoloServletListener;
@@ -47,7 +48,7 @@ import java.util.*;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.1, Sep 26, 2018
+ * @version 1.1.6.3, Oct 28, 2018
  * @since 0.3.1
  */
 public final class Skins {
@@ -101,12 +102,12 @@ public final class Skins {
     /**
      * Gets a skins template with the specified request and template name.
      *
-     * @param request      the specified request
+     * @param context      the specified request context
      * @param templateName the specified template name
      * @return template, returns {@code null} if not found
      */
-    public static Template getSkinTemplate(final HttpServletRequest request, final String templateName) {
-        String templateDirName = (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+    public static Template getSkinTemplate(final RequestContext context, final String templateName) {
+        String templateDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
         if (StringUtils.isBlank(templateDirName)) {
             templateDirName = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
         }
@@ -151,7 +152,9 @@ public final class Skins {
                 props.load(inputStream);
                 final Set<Object> keys = props.keySet();
                 for (final Object key : keys) {
-                    langs.put((String) key, props.getProperty((String) key));
+                    String val = props.getProperty((String) key);
+                    val = replaceVars(val);
+                    langs.put((String) key, val);
                 }
 
                 LANG_MAP.put(langName, langs);
@@ -209,20 +212,16 @@ public final class Skins {
      * Gets skin directory name from the specified request. Refers to https://github.com/b3log/solo/issues/12060 for
      * more details.
      *
-     * @param request the specified request
-     * @return directory name, or {@code "default"} if not found
+     * @param context the specified request context
+     * @return directory name, or {@code null} if not found
      */
-    public static String getSkinDirName(final HttpServletRequest request) {
-        if (Solos.isMobile(request)) {
-            return (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME); // resolved in listener
+    public static String getSkinDirName(final RequestContext context) {
+        if (Solos.isMobile(context.getRequest())) {
+            return Solos.MOBILE_SKIN;
         }
 
         // 1. Get skin from query
-        final String specifiedSkin = request.getParameter(Skin.SKIN);
-        if ("default".equals(specifiedSkin)) {
-            return "default";
-        }
-
+        final String specifiedSkin = context.param(Skin.SKIN);
         if (StringUtils.isNotBlank(specifiedSkin)) {
             final Set<String> skinDirNames = Skins.getSkinDirNames();
             if (skinDirNames.contains(specifiedSkin)) {
@@ -233,6 +232,16 @@ public final class Skins {
         }
 
         // 2. Get skin from cookie
+        return getSkinDirNameFromCookie(context.getRequest());
+    }
+
+    /**
+     * Gets skin directory name from the specified request's cookie.
+     *
+     * @param request the specified request
+     * @return directory name, or {@code null} if not found
+     */
+    public static String getSkinDirNameFromCookie(final HttpServletRequest request) {
         final Cookie[] cookies = request.getCookies();
         if (null != cookies) {
             for (final Cookie cookie : cookies) {
@@ -247,6 +256,27 @@ public final class Skins {
             }
         }
 
-        return "default";
+        return null;
+    }
+
+    /**
+     * Replaces all variables of the specified language value.
+     *
+     * <p>
+     * Variables:
+     * <ul>
+     * <li>${servePath}</li>
+     * <li>${staticServePath}</li>
+     * </ul>
+     * </p>
+     *
+     * @param langValue the specified language value
+     * @return replaced value
+     */
+    private static String replaceVars(final String langValue) {
+        String ret = StringUtils.replace(langValue, "${servePath}", Latkes.getServePath());
+        ret = StringUtils.replace(ret, "${staticServePath}", Latkes.getStaticServePath());
+
+        return ret;
     }
 }

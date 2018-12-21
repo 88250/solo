@@ -25,10 +25,13 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Crypts;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -269,24 +272,22 @@ public final class Solos {
      * Checks whether the current request is made by a logged in user
      * (including default user and administrator lists in <i>users</i>).
      *
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified request context
      * @return {@code true} if the current request is made by logged in user, returns {@code false} otherwise
      */
-    public static boolean isLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
-        return null != Solos.getCurrentUser(request, response);
+    public static boolean isLoggedIn(final RequestContext context) {
+        return null != Solos.getCurrentUser(context.getRequest(), context.getResponse());
     }
 
     /**
      * Checks whether the current request is made by logged in administrator.
      *
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified request context
      * @return {@code true} if the current request is made by logged in
      * administrator, returns {@code false} otherwise
      */
-    public static boolean isAdminLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
-        final JSONObject user = getCurrentUser(request, response);
+    public static boolean isAdminLoggedIn(final RequestContext context) {
+        final JSONObject user = getCurrentUser(context.getRequest(), context.getResponse());
         if (null == user) {
             return false;
         }
@@ -303,11 +304,12 @@ public final class Solos {
      * The blogger itself dose not need view password never.
      * </p>
      *
-     * @param request the specified request
-     * @param article the specified article
+     * @param request  the specified request
+     * @param response the specified response
+     * @param article  the specified article
      * @return {@code true} if need, returns {@code false} otherwise
      */
-    public static boolean needViewPwd(final HttpServletRequest request, final JSONObject article) {
+    public static boolean needViewPwd(final HttpServletRequest request, final HttpServletResponse response, final JSONObject article) {
         final String articleViewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
 
         if (StringUtils.isBlank(articleViewPwd)) {
@@ -330,7 +332,7 @@ public final class Solos {
             }
         }
 
-        final JSONObject currentUser = getCurrentUser(request, null);
+        final JSONObject currentUser = getCurrentUser(request, response);
 
         return !(null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE)));
     }
@@ -340,7 +342,7 @@ public final class Solos {
      *
      * @return {@code true} if user configured, returns {@code false} otherwise
      */
-    public static boolean isConfigured() {
+    public static boolean isMailConfigured() {
         try {
             return StringUtils.isNotBlank(mailConf.getString("mail.user")) &&
                     StringUtils.isNotBlank(mailConf.getString("mail.password")) &&
@@ -356,7 +358,6 @@ public final class Solos {
      *
      * @param request the specified request
      * @return {@code true} if it is, returns {@code false} otherwise
-     * @see SoloServletListener#fillBotAttrs(HttpServletRequest)
      */
     public static boolean isMobile(final HttpServletRequest request) {
         final Object val = request.getAttribute(Keys.HttpRequest.IS_MOBILE_BOT);
@@ -372,7 +373,6 @@ public final class Solos {
      *
      * @param request the specified request
      * @return {@code true} if it is, returns {@code false} otherwise
-     * @see SoloServletListener#fillBotAttrs(HttpServletRequest)
      */
     public static boolean isBot(final HttpServletRequest request) {
         final Object val = request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
@@ -402,6 +402,104 @@ public final class Solos {
      */
     public static JSONObject clone(final JSONObject src) {
         return new JSONObject(src, CollectionUtils.jsonArrayToArray(src.names(), String[].class));
+    }
+
+    /**
+     * Builds pagination request with the specified path.
+     *
+     * @param path the specified path, "/{page}/{pageSize}/{windowSize}"
+     * @return pagination request json object, for example,
+     * <pre>
+     * {
+     *     "paginationCurrentPageNum": int,
+     *     "paginationPageSize": int,
+     *     "paginationWindowSize": int
+     * }
+     * </pre>
+     */
+    public static JSONObject buildPaginationRequest(final String path) {
+        final Integer currentPageNum = getCurrentPageNum(path);
+        final Integer pageSize = getPageSize(path);
+        final Integer windowSize = getWindowSize(path);
+
+        final JSONObject ret = new JSONObject();
+        ret.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
+        ret.put(Pagination.PAGINATION_PAGE_SIZE, pageSize);
+        ret.put(Pagination.PAGINATION_WINDOW_SIZE, windowSize);
+
+        return ret;
+    }
+
+    /**
+     * Default page size.
+     */
+    private static final int DEFAULT_PAGE_SIZE = 15;
+
+    /**
+     * Default window size.
+     */
+    private static final int DEFAULT_WINDOW_SIZE = 20;
+
+    /**
+     * Gets the request page number from the specified path.
+     *
+     * @param path the specified path
+     * @return page number, returns {@code 1} if the specified request URI can not convert to an number
+     */
+    private static int getCurrentPageNum(final String path) {
+        if (StringUtils.isBlank(path) || path.equals("/")) {
+            return 1;
+        }
+        final String currentPageNumber = path.split("/")[0];
+        if (!Strings.isNumeric(currentPageNumber)) {
+            return 1;
+        }
+
+        return Integer.valueOf(currentPageNumber);
+    }
+
+    /**
+     * Gets the request page size from the specified path.
+     *
+     * @param path the specified path
+     * @return page number, returns {@value #DEFAULT_PAGE_SIZE} if the specified request URI can not convert to an number
+     */
+    private static int getPageSize(final String path) {
+        if (StringUtils.isBlank(path)) {
+            return DEFAULT_PAGE_SIZE;
+        }
+        final String[] parts = path.split("/");
+        if (1 >= parts.length) {
+            return DEFAULT_PAGE_SIZE;
+        }
+        final String pageSize = parts[1];
+        if (!Strings.isNumeric(pageSize)) {
+            return DEFAULT_PAGE_SIZE;
+        }
+
+        return Integer.valueOf(pageSize);
+    }
+
+    /**
+     * Gets the request window size from the specified path.
+     *
+     * @param path the specified path
+     * @return page number, returns {@value #DEFAULT_WINDOW_SIZE} if the specified request URI can not convert to an number
+     */
+    private static int getWindowSize(final String path) {
+        if (StringUtils.isBlank(path)) {
+            return DEFAULT_WINDOW_SIZE;
+        }
+        final String[] parts = path.split("/");
+        if (2 >= parts.length) {
+            return DEFAULT_WINDOW_SIZE;
+        }
+        final String windowSize = parts[2];
+        if (!Strings.isNumeric(windowSize)) {
+            return DEFAULT_WINDOW_SIZE;
+        }
+
+        return Integer.valueOf(windowSize);
     }
 
     /**

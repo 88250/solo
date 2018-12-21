@@ -22,15 +22,13 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.mail.MailService;
-import org.b3log.latke.mail.MailService.Message;
-import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.mail.MailService;
+import org.b3log.solo.mail.MailServiceFactory;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
@@ -74,7 +72,7 @@ public class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> 
             return;
         }
 
-        if (!Solos.isConfigured()) {
+        if (!Solos.isMailConfigured()) {
             return;
         }
 
@@ -97,7 +95,9 @@ public class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> 
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                throw new EventException("Not found preference");
+                LOGGER.log(Level.ERROR, "Not found preference");
+
+                return;
             }
 
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
@@ -105,7 +105,7 @@ public class PageCommentReplyNotifier extends AbstractEventListener<JSONObject> 
 
             final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
             final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
-            final Message message = new Message();
+            final MailService.Message message = new MailService.Message();
 
             message.setFrom(adminEmail);
             message.addRecipient(originalCommentEmail);

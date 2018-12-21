@@ -17,16 +17,16 @@
  */
 package org.b3log.solo.service;
 
-import java.util.Date;
-import java.util.List;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.ArchiveDate;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * {@link ArchiveDateQueryService} test case.
@@ -38,27 +38,17 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Init.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**
      * Get Archive Dates.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
@@ -73,7 +63,7 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get By Archive Date String.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
@@ -83,7 +73,7 @@ public class ArchiveDateQueryServiceTestCase extends AbstractTestCase {
         final String archiveDateString = DateFormatUtils.format(new Date(), "yyyy/MM");
         final JSONObject result = archiveDateQueryService.getByArchiveDateString(archiveDateString);
         Assert.assertNotNull(result);
-        Assert.assertEquals(result.getJSONObject(ArchiveDate.ARCHIVE_DATE).getLong(ArchiveDate.ARCHIVE_TIME), 
-                            DateUtils.parseDate(archiveDateString, new String[] {"yyyy/MM"}).getTime());
+        Assert.assertEquals(result.getJSONObject(ArchiveDate.ARCHIVE_DATE).getLong(ArchiveDate.ARCHIVE_TIME),
+                DateUtils.parseDate(archiveDateString, new String[]{"yyyy/MM"}).getTime());
     }
 }

@@ -18,6 +18,8 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Option;
@@ -32,6 +34,11 @@ import org.json.JSONObject;
  */
 @Service
 public class StatisticQueryService {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(StatisticQueryService.class);
 
     /**
      * Option query service.
@@ -112,10 +119,15 @@ public class StatisticQueryService {
      * Gets the statistic.
      *
      * @return statistic, returns {@code null} if not found
-     * @throws ServiceException if repository exception
      */
-    public JSONObject getStatistic() throws ServiceException {
-        return optionQueryService.getOptions(Option.CATEGORY_C_STATISTIC);
+    public JSONObject getStatistic() {
+        try {
+            return optionQueryService.getOptions(Option.CATEGORY_C_STATISTIC);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets statistic failed", e);
+
+            return null;
+        }
     }
 
     /**

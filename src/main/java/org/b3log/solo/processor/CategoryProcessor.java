@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
@@ -26,12 +25,13 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Common;
@@ -43,7 +43,6 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
@@ -105,47 +104,13 @@ public class CategoryProcessor {
     private StatisticMgmtService statisticMgmtService;
 
     /**
-     * Gets the request page number from the specified request URI and category URI.
-     *
-     * @param requestURI  the specified request URI
-     * @param categoryURI the specified category URI
-     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
-     */
-    private static int getCurrentPageNum(final String requestURI, final String categoryURI) {
-        if (StringUtils.isBlank(categoryURI)) {
-            return -1;
-        }
-
-        final String pageNumString = requestURI.substring((Latkes.getContextPath() + "/category/" + categoryURI + "/").length());
-
-        return Requests.getCurrentPageNum(pageNumString);
-    }
-
-    /**
-     * Gets category URI from the specified URI.
-     *
-     * @param requestURI the specified request URI
-     * @return category URI
-     */
-    private static String getCategoryURI(final String requestURI) {
-        final String path = requestURI.substring((Latkes.getContextPath() + "/category/").length());
-
-        if (path.contains("/")) {
-            return path.substring(0, path.indexOf("/"));
-        } else {
-            return path.substring(0);
-        }
-    }
-
-    /**
      * Shows articles related with a category with the specified context.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
-    @RequestProcessing(value = "/category/**", method = HTTPRequestMethod.GET)
-    public void showCategoryArticles(final HTTPRequestContext context) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
+    @RequestProcessing(value = "/category/{categoryURI}", method = HttpMethod.GET)
+    public void showCategoryArticles(final RequestContext context) {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("category-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -154,23 +119,13 @@ public class CategoryProcessor {
         final HttpServletResponse response = context.getResponse();
 
         try {
-            String requestURI = request.getRequestURI();
-            if (!requestURI.endsWith("/")) {
-                requestURI += "/";
-            }
-
-            String categoryURI = getCategoryURI(requestURI);
-            final int currentPageNum = getCurrentPageNum(requestURI, categoryURI);
-            if (-1 == currentPageNum) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return;
-            }
-
+            String categoryURI = context.pathVar("categoryURI");
+            categoryURI = URLs.encode(categoryURI);
+            final int currentPageNum = Paginator.getPage(request);
             LOGGER.log(Level.DEBUG, "Category [URI={0}, currentPageNum={1}]", categoryURI, currentPageNum);
             final JSONObject category = categoryQueryService.getByURI(categoryURI);
             if (null == category) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
             }
@@ -186,25 +141,25 @@ public class CategoryProcessor {
 
             final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             if (0 == pageCount) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
             }
 
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             final List<Integer> pageNums = (List) result.optJSONObject(Pagination.PAGINATION).opt(Pagination.PAGINATION_PAGE_NUMS);
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
-            dataModel.put(Common.PATH, "/category/" + URLEncoder.encode(categoryURI, "UTF-8"));
+            dataModel.put(Common.PATH, "/category/" + URLs.encode(categoryURI));
 
-            dataModelService.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
 
-            statisticMgmtService.incBlogViewCount(request, response);
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final ServiceException | JSONException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 

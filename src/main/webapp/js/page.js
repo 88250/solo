@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Nov 10, 2017
+ * @version 1.4.1.3, Dec 7, 2018
  */
 var Page = function (tips) {
   this.currentCommentId = "";
@@ -44,7 +44,7 @@ $.extend(Page.prototype, {
         textValue = $comment[0].value;
       textValue = textValue.substring(0, endPosition) + key + textValue.substring(endPosition, textValue.length);
       $("#comment" + name).val(textValue);
-      if ($.browser.msie) {
+      if (!!window.ActiveXObject || "ActiveXObject" in window) {
         endPosition -= textValue.split('\n').length - 1;
         var oR = $comment[0].createTextRange();
         oR.collapse(true);
@@ -372,7 +372,7 @@ $.extend(Page.prototype, {
     if (document.createStyleSheet) {
       document.createStyleSheet(latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/styles/default.css");
     } else {
-      $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/styles/github.css'>"));
+      $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/styles/" + ((obj && obj.theme) || 'github') + ".css'>"));
     }
     $.ajax({
       url: latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/highlight.pack.js",
@@ -409,7 +409,7 @@ $.extend(Page.prototype, {
     });
     // captcha
     $("#captcha").click(function () {
-      $(this).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+      $(this).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
     });
     // cookie
     if (!Util.isLoggedIn()) {
@@ -436,7 +436,7 @@ $.extend(Page.prototype, {
     var randomArticles1Label = this.tips.randomArticles1Label;
     // getRandomArticles
     $.ajax({
-      url: latkeConfig.servePath + "/get-random-articles.do",
+      url: latkeConfig.servePath + "/articles/random",
       type: "POST",
       success: function (result, textStatus) {
         var randomArticles = result.randomArticles;
@@ -583,7 +583,7 @@ $.extend(Page.prototype, {
 
       $.ajax({
         type: "POST",
-        url: latkeConfig.servePath + "/add-" + type + "-comment.do",
+        url: latkeConfig.servePath + "/" + type + "/comments",
         cache: false,
         contentType: "application/json",
         data: JSON.stringify(requestJSONObject),
@@ -594,7 +594,7 @@ $.extend(Page.prototype, {
             $("#commentValidate" + state).val('');
             $("#captcha" + state).click();
             if (!Util.isLoggedIn()) {
-              $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+              $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
             }
 
             return;
@@ -605,7 +605,7 @@ $.extend(Page.prototype, {
 
           result.replyNameHTML = "";
           if (!Util.isLoggedIn()) {
-            $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+            $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
             if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
               result.replyNameHTML = '<a>' + $("#commentName" + state).val() + '</a>';
             } else {
@@ -676,14 +676,15 @@ $.extend(Page.prototype, {
         event.preventDefault();
       }
     });
-    $("#replyForm #captcha").attr("id", "captchaReply").attr("src", latkeConfig.servePath + "/captcha.do?" + new Date().getTime()).click(function () {
-      $(this).attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+    $("#replyForm #captcha").attr("id", "captchaReply").attr("src", latkeConfig.servePath + "/captcha?" + new Date().getTime()).click(function () {
+      $(this).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
     });
     $("#replyForm #commentErrorTip").attr("id", "commentErrorTipReply").html("").hide();
     $("#replyForm #submitCommentButton").attr("id", "submitCommentButtonReply");
     $("#replyForm #submitCommentButtonReply").unbind("click").removeAttr("onclick").click(function () {
       that.submitComment(id, 'Reply');
     });
+    $('#replyForm #cancelCommentButton').show()
     if ($("#commentNameReply").val() === "") {
       $("#commentNameReply").focus();
     } else if ($("#commentEmailReply").val() === "") {
@@ -740,7 +741,7 @@ $.extend(Page.prototype, {
       $("#commentErrorTip").html("").hide();
       $("#comment").val("");
       $("#commentValidate").val("");
-      $("#captcha").attr("src", latkeConfig.servePath + "/captcha.do?code=" + Math.random());
+      $("#captcha").attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
     } else {
       $("#replyForm").remove();
     }

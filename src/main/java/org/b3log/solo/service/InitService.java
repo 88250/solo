@@ -32,6 +32,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
@@ -49,6 +50,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
@@ -57,7 +61,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.23, Sep 16, 2018
+ * @version 1.5.2.26, Dec 10, 2018
  * @since 0.4.0
  */
 @Service
@@ -72,11 +76,6 @@ public class InitService {
      * Maximum count of initialization.
      */
     private static final int MAX_RETRIES_CNT = 3;
-
-    /**
-     * Initialized time zone id.
-     */
-    private static final String INIT_TIME_ZONE_ID = "Asia/Shanghai";
 
     /**
      * Option repository.
@@ -151,17 +150,39 @@ public class InitService {
     private PluginManager pluginManager;
 
     /**
+     * Flag of init status.
+     */
+    private static boolean inited;
+
+    /**
+     * Flag of printed init prompt.
+     */
+    private static boolean printedInitMsg;
+
+    /**
      * Determines Solo had been initialized.
      *
      * @return {@code true} if it had been initialized, {@code false} otherwise
      */
     public boolean isInited() {
-        try {
-            final JSONObject admin = userRepository.getAdmin();
+        if (inited) {
+            return true;
+        }
 
-            return null != admin;
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.WARN, "Solo has not been initialized");
+        try (final Connection connection = Connections.getConnection()) {
+            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(1) AS `c` FROM `" + userRepository.getName() + "`");
+            final ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet.next();
+            final int c = resultSet.getInt("c");
+            inited = 0 < c;
+
+            return inited;
+        } catch (final Exception e) {
+            if (!printedInitMsg) {
+                LOGGER.log(Level.WARN, "Solo has not been initialized, please open your browser and visit [" + Latkes.getServePath() + "] to init Solo");
+            }
+            printedInitMsg = true;
+
             return false;
         }
     }
@@ -582,6 +603,12 @@ public class InitService {
      */
     private void initPreference(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
+
+        final JSONObject customVarsOpt = new JSONObject();
+        customVarsOpt.put(Keys.OBJECT_ID, Option.ID_C_CUSTOM_VARS);
+        customVarsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        customVarsOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_CUSTOM_VARS);
+        optionRepository.add(customVarsOpt);
 
         final JSONObject noticeBoardOpt = new JSONObject();
         noticeBoardOpt.put(Keys.OBJECT_ID, Option.ID_C_NOTICE_BOARD);

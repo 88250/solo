@@ -18,11 +18,10 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.model.User;
-import org.b3log.latke.util.Requests;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -46,17 +45,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**
@@ -215,7 +204,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
     public void topArticle() throws Exception {
         final ArticleMgmtService articleMgmtService = getArticleMgmtService();
         final ArticleQueryService articleQueryService = getArticleQueryService();
-        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
+        final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
         final JSONArray articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
 
         Assert.assertNotEquals(articles.length(), 0);
@@ -259,7 +248,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         Assert.assertNotNull(articleId);
 
         final ArticleQueryService articleQueryService = getArticleQueryService();
-        final JSONObject paginationRequest = Requests.buildPaginationRequest("1/10/20");
+        final JSONObject paginationRequest = Solos.buildPaginationRequest("1/10/20");
         JSONArray articles = articleQueryService.getArticles(paginationRequest).optJSONArray(Article.ARTICLES);
 
         int articleCount = articles.length();

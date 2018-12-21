@@ -23,7 +23,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
@@ -81,7 +80,9 @@ public class B3ArticleUpdater extends AbstractEventListener<JSONObject> {
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                throw new EventException("Not found preference");
+                LOGGER.log(Level.ERROR, "Not found preference");
+
+                return;
             }
 
             if (StringUtils.isNotBlank(originalArticle.optString(Article.ARTICLE_VIEW_PWD))) {

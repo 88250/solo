@@ -22,8 +22,8 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
@@ -49,7 +49,7 @@ import java.util.Map;
  * Page processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Jun 22, 2018
+ * @version 1.1.0.8, Dec 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -94,11 +94,10 @@ public class PageProcessor {
      * Shows page with the specified context.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
-    @RequestProcessing(value = "/page", method = HTTPRequestMethod.GET)
-    public void showPage(final HTTPRequestContext context) throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
+    @RequestProcessing(value = "/page", method = HttpMethod.GET)
+    public void showPage(final RequestContext context) {
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("page.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -109,16 +108,18 @@ public class PageProcessor {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
 
-            Skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             // See PermalinkFilter#dispatchToArticleOrPageProcessor()
-            final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
+            final JSONObject page = (JSONObject) context.attr(Page.PAGE);
             if (null == page) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
                 return;
             }
 
@@ -142,12 +143,12 @@ public class PageProcessor {
                 Stopwatchs.end();
             }
 
-            dataModelService.fillCommon(request, response, dataModel, preference);
-            statisticMgmtService.incBlogViewCount(request, response);
+            dataModelService.fillCommon(context, dataModel, preference);
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }

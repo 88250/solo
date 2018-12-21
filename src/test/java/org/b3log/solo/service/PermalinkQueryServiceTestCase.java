@@ -17,8 +17,8 @@
  */
 package org.b3log.solo.service;
 
-import org.testng.annotations.Test;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * {@link org.b3log.solo.service.PermalinkQueryService} test case.
@@ -36,25 +36,25 @@ public final class PermalinkQueryServiceTestCase {
     public void matchDefaultArticlePermalinkFormat() {
         Assert.assertTrue(
                 PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                "/articles/1986/08/25/1234567890.html"));
+                        "/articles/1986/08/25/1234567890.html"));
         Assert.assertFalse(
                 PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                "/articles/1986/0/25/1234567890.html"));
+                        "/articles/1986/0/25/1234567890.html"));
         Assert.assertFalse(
                 PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                "/articles/1.html"));
+                        "/articles/1.html"));
         Assert.assertFalse(
                 PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                "/articles/1986/08/25/a.html"));
+                        "/articles/1986/08/25/a.html"));
         Assert.assertFalse(
                 PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                "/articles/1986/aa/25/1234567890.html"));
+                        "/articles/1986/aa/25/1234567890.html"));
         Assert.assertFalse(
                 PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                "/1986/aa/25/1234567890.html"));
+                        "/1986/aa/25/1234567890.html"));
         Assert.assertFalse(
                 PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                "/articles/1986/08/25/1234567890html"));
+                        "/articles/1986/08/25/1234567890html"));
 
     }
 

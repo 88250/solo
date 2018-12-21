@@ -22,7 +22,6 @@ import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventException;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -52,7 +51,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.13, Oct 7, 2018
+ * @version 1.2.2.14, Dec 10, 2018
  * @since 0.3.5
  */
 @Service
@@ -262,7 +261,7 @@ public class ArticleMgmtService {
      *                          "articleTitle": "",
      *                          "articleAbstract": "",
      *                          "articleContent": "",
-     *                          "articleTags": "tag1,tag2,tag3",
+     *                          "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
      *                          "articlePermalink": "", // optional
      *                          "articleIsPublished": boolean,
      *                          "articleSignId": "", // optional
@@ -283,7 +282,7 @@ public class ArticleMgmtService {
             String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
             tagsString = Tag.formatTags(tagsString);
             if (StringUtils.isBlank(tagsString)) {
-                throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
+                tagsString = "待分类";
             }
             article.put(Article.ARTICLE_TAGS_REF, tagsString);
 
@@ -367,21 +366,13 @@ public class ArticleMgmtService {
                 final JSONObject eventData = new JSONObject();
                 eventData.put(ARTICLE, article);
                 eventData.put(Keys.RESULTS, ret);
-                try {
-                    eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
-                } catch (final EventException e) {
-                    LOGGER.log(Level.ERROR, e.getMessage(), e);
-                }
+                eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
             } else {
                 // Fire update article event
                 final JSONObject eventData = new JSONObject();
                 eventData.put(ARTICLE, article);
                 eventData.put(Keys.RESULTS, ret);
-                try {
-                    eventManager.fireEventSynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
-                } catch (final EventException e) {
-                    LOGGER.log(Level.ERROR, e.getMessage(), e);
-                }
+                eventManager.fireEventSynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
             }
 
             transaction.commit();
@@ -464,7 +455,7 @@ public class ArticleMgmtService {
             String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
             tagsString = Tag.formatTags(tagsString);
             if (StringUtils.isBlank(tagsString)) {
-                throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
+                tagsString = "待分类";
             }
             article.put(Article.ARTICLE_TAGS_REF, tagsString);
             final String[] tagTitles = tagsString.split(",");
@@ -528,12 +519,10 @@ public class ArticleMgmtService {
             }
 
             article.remove(Common.POST_TO_COMMUNITY);
-        } catch (final RepositoryException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Adds an article failed", e);
 
             throw new ServiceException(e);
-        } catch (final EventException e) {
-            LOGGER.log(Level.WARN, "Adds an article event process failed", e);
         }
 
         return ret;

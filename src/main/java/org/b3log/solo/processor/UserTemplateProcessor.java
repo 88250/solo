@@ -18,14 +18,13 @@
 package org.b3log.solo.processor;
 
 import freemarker.template.Template;
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
@@ -49,7 +48,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Sep 20, 2018
+ * @version 1.0.0.9, Dec 3, 2018
  * @since 0.4.5
  */
 @RequestProcessor
@@ -87,28 +86,24 @@ public class UserTemplateProcessor {
     /**
      * Shows the user template page.
      *
-     * @param context  the specified context
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @throws Exception exception
+     * @param context the specified context
      */
-    @RequestProcessing(value = "/*.html", method = HTTPRequestMethod.GET)
-    public void showPage(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final String requestURI = request.getRequestURI();
-        String templateName = StringUtils.substringAfterLast(requestURI, "/");
+    @RequestProcessing(value = "/{name}.html", method = HttpMethod.GET)
+    public void showPage(final RequestContext context) {
+        final String requestURI = context.requestURI();
+        final String templateName = context.pathVar("name") + ".ftl";
+        LOGGER.log(Level.DEBUG, "Shows page [requestURI={0}, templateName={1}]", requestURI, templateName);
 
-        templateName = StringUtils.substringBefore(templateName, ".") + ".ftl";
-        LOGGER.log(Level.DEBUG, "Shows page[requestURI={0}, templateName={1}]", requestURI, templateName);
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName(templateName);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final Template template = Skins.getSkinTemplate(request, templateName);
+        final Template template = Skins.getSkinTemplate(context, templateName);
         if (null == template) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
@@ -117,14 +112,14 @@ public class UserTemplateProcessor {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
-            dataModelService.fillCommon(request, response, dataModel, preference);
-            dataModelService.fillUserTemplate(request, template, dataModel, preference);
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
-            statisticMgmtService.incBlogViewCount(request, response);
+            dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillUserTemplate(context, template, dataModel, preference);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 }

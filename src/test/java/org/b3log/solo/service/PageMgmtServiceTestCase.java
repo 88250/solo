@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Page;
 import org.json.JSONObject;
@@ -35,27 +34,17 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Init.
-     * 
+     *
      * @throws Exception exception
      */
     @Test
     public void init() throws Exception {
-        final InitService initService = getInitService();
-
-        final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
-
-        initService.init(requestJSONObject);
-
-        final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        super.init();
     }
 
     /**
      * Add Page.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
@@ -80,7 +69,7 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Remove Page.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
@@ -115,7 +104,7 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Update Page.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
@@ -152,7 +141,7 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
 
     /**
      * Change Order.
-     * 
+     *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "addPage")

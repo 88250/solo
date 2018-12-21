@@ -48,5 +48,6 @@ public final class Skin {
     /**
      * Private constructor.
      */
-    private Skin() {}
+    private Skin() {
+    }
 }

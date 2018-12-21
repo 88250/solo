@@ -27,8 +27,6 @@ import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.mail.MailService;
-import org.b3log.latke.mail.MailServiceFactory;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
@@ -37,6 +35,8 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
+import org.b3log.solo.mail.MailService;
+import org.b3log.solo.mail.MailServiceFactory;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
@@ -173,7 +173,7 @@ public class CommentMgmtService {
                                      final JSONObject comment,
                                      final JSONObject originalComment,
                                      final JSONObject preference) throws Exception {
-        if (!Solos.isConfigured()) {
+        if (!Solos.isMailConfigured()) {
             return;
         }
 

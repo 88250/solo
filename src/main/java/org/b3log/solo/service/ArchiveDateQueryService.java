@@ -52,7 +52,7 @@ public class ArchiveDateQueryService {
 
     /**
      * Gets all archive dates.
-     * 
+     *
      * @return a list of archive dates, returns an empty list if not found
      * @throws ServiceException service exception
      */
@@ -67,7 +67,7 @@ public class ArchiveDateQueryService {
 
     /**
      * Gets an archive date by the specified archive date string.
-     * 
+     *
      * @param archiveDateString the specified archive date string (yyyy/MM)
      * @return for example,
      * <pre>
@@ -102,7 +102,7 @@ public class ArchiveDateQueryService {
 
     /**
      * Sets archive date repository with the specified archive date repository.
-     * 
+     *
      * @param archiveDateRepository the specified archive date repository
      */
     public void setArchiveDateRepository(final ArchiveDateRepository archiveDateRepository) {

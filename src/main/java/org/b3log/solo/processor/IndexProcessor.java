@@ -26,24 +26,20 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
-import org.b3log.latke.servlet.URIPatternMode;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
-import org.b3log.latke.servlet.renderer.DoNothingRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.Paginator;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
@@ -56,7 +52,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.4.8, Sep 26, 2018
+ * @version 1.2.4.11, Dec 2, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -94,43 +90,37 @@ public class IndexProcessor {
     /**
      * Shows index with the specified context.
      *
-     * @param context  the specified context
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
+     * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"/\\d*", ""}, uriPatternsMode = URIPatternMode.REGEX, method = HTTPRequestMethod.GET)
-    public void showIndex(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+    @RequestProcessing(value = {"", "/"}, method = HttpMethod.GET)
+    public void showIndex(final RequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final String requestURI = request.getRequestURI();
-
         try {
-            final int currentPageNum = getCurrentPageNum(requestURI);
+            final int currentPageNum = Paginator.getPage(request);
             final JSONObject preference = preferenceQueryService.getPreference();
 
             // https://github.com/b3log/solo/issues/12060
-            String specifiedSkin = Skins.getSkinDirName(request);
-            if (null != specifiedSkin) {
-                if ("default".equals(specifiedSkin)) {
-                    specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
-
-                    final Cookie cookie = new Cookie(Skin.SKIN, null);
-                    cookie.setMaxAge(60 * 60); // 1 hour
-                    cookie.setPath("/");
-                    response.addCookie(cookie);
-                }
-            } else {
+            String specifiedSkin = Skins.getSkinDirName(context);
+            if (StringUtils.isBlank(specifiedSkin)) {
                 specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
             }
+            request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
 
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
+            cookie.setMaxAge(60 * 60); // 1 hour
+            cookie.setPath("/");
+            response.addCookie(cookie);
 
-            dataModelService.fillIndexArticles(request, dataModel, currentPageNum, preference);
-            dataModelService.fillCommon(request, response, dataModel, preference);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+
+            dataModelService.fillIndexArticles(context, dataModel, currentPageNum, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final int previousPageNum = currentPageNum > 1 ? currentPageNum - 1 : 0;
@@ -139,37 +129,26 @@ public class IndexProcessor {
             final Integer pageCount = (Integer) dataModel.get(Pagination.PAGINATION_PAGE_COUNT);
             final int nextPageNum = currentPageNum + 1 > pageCount ? pageCount : currentPageNum + 1;
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, nextPageNum);
-
             dataModel.put(Common.PATH, "");
 
-            statisticMgmtService.incBlogViewCount(request, response);
-
-            // https://github.com/b3log/solo/issues/12060
-            if (!preference.optString(Skin.SKIN_DIR_NAME).equals(specifiedSkin) && !Solos.isMobile(request)) {
-                final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
-                cookie.setMaxAge(60 * 60); // 1 hour
-                cookie.setPath("/");
-                response.addCookie(cookie);
-            }
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
     /**
      * Shows kill browser page with the specified context.
      *
-     * @param context  the specified context
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @throws Exception exception
+     * @param context the specified context
      */
-    @RequestProcessing(value = "/kill-browser", method = HTTPRequestMethod.GET)
-    public void showKillBrowser(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+    @RequestProcessing(value = "/kill-browser", method = HttpMethod.GET)
+    public void showKillBrowser(final RequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("kill-browser.ftl");
 
@@ -178,29 +157,27 @@ public class IndexProcessor {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
-            dataModelService.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
             Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
             dataModelService.fillMinified(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
     /**
      * Show register page.
      *
-     * @param context  the specified context
-     * @param request  the specified HTTP servlet request
-     * @param response the specified HTTP servlet response
-     * @throws Exception exception
+     * @param context the specified context
      */
-    @RequestProcessing(value = "/register", method = HTTPRequestMethod.GET)
-    public void register(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response)
-            throws Exception {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+    @RequestProcessing(value = "/register", method = HttpMethod.GET)
+    public void showRegister(final RequestContext context) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("register.ftl");
 
@@ -209,36 +186,12 @@ public class IndexProcessor {
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
-            dataModelService.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillMinified(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
-    }
-
-    /**
-     * Online visitor count refresher.
-     *
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/console/stat/onlineVisitorRefresh", method = HTTPRequestMethod.GET)
-    public void onlineVisitorCountRefresher(final HTTPRequestContext context) {
-        context.setRenderer(new DoNothingRenderer());
-
-        StatisticMgmtService.removeExpiredOnlineVisitor();
-    }
-
-    /**
-     * Gets the request page number from the specified request URI.
-     *
-     * @param requestURI the specified request URI
-     * @return page number, returns {@code -1} if the specified request URI can not convert to an number
-     */
-    private static int getCurrentPageNum(final String requestURI) {
-        final String pageNumString = StringUtils.substringAfterLast(requestURI, "/");
-
-        return Requests.getCurrentPageNum(pageNumString);
     }
 }

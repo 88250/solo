@@ -22,20 +22,16 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.service.TagMgmtService;
 import org.b3log.solo.service.TagQueryService;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +39,7 @@ import java.util.List;
  * Tag console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 25, 2018
+ * @version 1.0.0.3, Dec 11, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -87,14 +83,11 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/tags", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = ConsoleAuthAdvice.class)
-    public void getTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @Before(ConsoleAuthAdvice.class)
+    public void getTags(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -124,19 +117,16 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/tag/unused", method = HTTPRequestMethod.GET)
-    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void getUnusedTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @Before(ConsoleAdminAuthAdvice.class)
+    public void getUnusedTags(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
 
-        final List<JSONObject> unusedTags = new ArrayList<JSONObject>();
+        final List<JSONObject> unusedTags = new ArrayList<>();
 
         try {
             jsonObject.put(Common.UNUSED_TAGS, unusedTags);
@@ -170,14 +160,11 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/tag/unused", method = HTTPRequestMethod.DELETE)
-    @Before(adviceClass = ConsoleAdminAuthAdvice.class)
-    public void removeUnusedTags(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    @Before(ConsoleAdminAuthAdvice.class)
+    public void removeUnusedTags(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject jsonObject = new JSONObject();
         renderer.setJSONObject(jsonObject);
@@ -185,6 +172,7 @@ public class TagConsole {
         try {
             tagMgmtService.removeUnusedTags();
 
+            jsonObject.put(Keys.STATUS_CODE, true);
             jsonObject.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Removes unused tags failed", e);

@@ -28,8 +28,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.jdbc.JdbcRepository;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.CollectionUtils;
@@ -56,7 +56,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Sep 21, 2018
+ * @version 1.0.0.2, Dec 3, 2018
  * @since 2.9.5
  */
 @RequestProcessor
@@ -116,46 +116,46 @@ public class OAuthGitHubProcessor {
     /**
      * Redirects to GitHub auth page.
      *
-     * @param response the specified response
+     * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/oauth/github/redirect", method = HTTPRequestMethod.GET)
-    public void redirectGitHub(final HttpServletResponse response) throws Exception {
+    @RequestProcessing(value = "/oauth/github/redirect", method = HttpMethod.GET)
+    public void redirectGitHub(final RequestContext context) {
         final String state = Latkes.getServePath() + ":::" + RandomStringUtils.randomAlphanumeric(16);
         STATES.put(state, URLs.encode(state));
 
         final String path = "https://github.com/login/oauth/authorize" + "?client_id=" + CLIENT_ID + "&state=" + state
                 + "&scope=public_repo,user";
 
-        response.sendRedirect(path);
+        context.sendRedirect(path);
     }
 
     /**
      * Shows GitHub callback page.
      *
-     * @param request  the specified request
-     * @param response the specified response
-     * @throws Exception exception
+     * @param context the specified context
      */
-    @RequestProcessing(value = "/oauth/github", method = HTTPRequestMethod.GET)
-    public synchronized void showGitHubCallback(final HttpServletRequest request, final HttpServletResponse response) throws Exception {
-        final String state = request.getParameter("state");
+    @RequestProcessing(value = "/oauth/github", method = HttpMethod.GET)
+    public synchronized void showGitHubCallback(final RequestContext context) {
+        final String state = context.param("state");
         String referer = STATES.get(state);
         if (StringUtils.isBlank(referer)) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
         STATES.remove(state);
 
-        final String accessToken = request.getParameter("ak");
+        final String accessToken = context.param("ak");
         final JSONObject userInfo = getGitHubUserInfo(accessToken);
         if (null == userInfo) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
 
+        final HttpServletResponse response = context.getResponse();
+        final HttpServletRequest request = context.getRequest();
         final String openId = userInfo.optString("openId");
         final String userName = userInfo.optString(User.USER_NAME);
         final String userEmail = userInfo.optString(User.USER_EMAIL);
@@ -183,11 +183,16 @@ public class OAuthGitHubProcessor {
                 initReq.put(User.USER_EMAIL, userEmail);
                 initReq.put(User.USER_PASSWORD, RandomStringUtils.randomAlphanumeric(8));
                 initReq.put(UserExt.USER_AVATAR, userAvatar);
-                initService.init(initReq);
+
+                try {
+                    initService.init(initReq);
+                } catch (final Exception e) {
+                    // ignored
+                }
             } else {
                 final JSONObject preference = preferenceQueryService.getPreference();
                 if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                    context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                     return;
                 }
@@ -203,8 +208,11 @@ public class OAuthGitHubProcessor {
                     addUserReq.put(User.USER_PASSWORD, RandomStringUtils.randomAlphanumeric(8));
                     addUserReq.put(UserExt.USER_AVATAR, userAvatar);
                     addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
-                    userMgmtService.addUser(addUserReq);
-                    JdbcRepository.dispose();
+                    try {
+                        userMgmtService.addUser(addUserReq);
+                    } catch (final Exception e) {
+                        // ignored
+                    }
                 }
             }
 
@@ -216,10 +224,14 @@ public class OAuthGitHubProcessor {
             githubAuths.add(openId + splitChar + userId);
             value = new JSONArray(githubAuths).toString();
             oauthGitHubOpt.put(Option.OPTION_VALUE, value);
-            optionMgmtService.addOrUpdateOption(oauthGitHubOpt);
+            try {
+                optionMgmtService.addOrUpdateOption(oauthGitHubOpt);
+            } catch (final Exception e) {
+                // ignored
+            }
 
             Solos.login(user, response);
-            response.sendRedirect(Latkes.getServePath());
+            context.sendRedirect(Latkes.getServePath());
             LOGGER.log(Level.INFO, "Logged in [email={0}, remoteAddr={1}] with GitHub oauth", userEmail, Requests.getRemoteAddr(request));
 
             return;
@@ -229,14 +241,14 @@ public class OAuthGitHubProcessor {
         final String userId = openIdUserId[1];
         final JSONObject userResult = userQueryService.getUser(userId);
         if (null == userResult) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
 
         final JSONObject user = userResult.optJSONObject(User.USER);
         Solos.login(user, response);
-        response.sendRedirect(Latkes.getServePath());
+        context.sendRedirect(Latkes.getServePath());
         LOGGER.log(Level.INFO, "Logged in [email={0}, remoteAddr={1}] with GitHub oauth", userEmail, Requests.getRemoteAddr(request));
     }
 

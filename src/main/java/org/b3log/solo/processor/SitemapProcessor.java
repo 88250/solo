@@ -28,11 +28,11 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.HttpMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.TextXMLRenderer;
+import org.b3log.latke.servlet.renderer.TextXmlRenderer;
 import org.b3log.latke.util.XMLs;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
@@ -55,7 +55,7 @@ import java.net.URLEncoder;
  * Sitemap processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.4, Sep 26, 2018
+ * @version 1.0.2.5, Dec 3, 2018
  * @since 0.3.1
  */
 @RequestProcessor
@@ -100,23 +100,19 @@ public class SitemapProcessor {
      * Returns the sitemap.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
-    @RequestProcessing(value = "/sitemap.xml", method = HTTPRequestMethod.GET)
-    public void sitemap(final HTTPRequestContext context) throws Exception {
-        final TextXMLRenderer renderer = new TextXMLRenderer();
-
+    @RequestProcessing(value = "/sitemap.xml", method = HttpMethod.GET)
+    public void sitemap(final RequestContext context) {
+        final TextXmlRenderer renderer = new TextXmlRenderer();
         context.setRenderer(renderer);
 
-        final Sitemap sitemap = new Sitemap();
-
         try {
+            final Sitemap sitemap = new Sitemap();
             addArticles(sitemap);
             addNavigations(sitemap);
             addTags(sitemap);
             addArchives(sitemap);
 
-            LOGGER.log(Level.INFO, "Generating sitemap....");
             String content = sitemap.toString();
             content = XMLs.format(content);
             LOGGER.log(Level.INFO, "Generated sitemap");
@@ -124,7 +120,7 @@ public class SitemapProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates sitemap failed", e);
 
-            context.getResponse().sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            context.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         }
     }
 

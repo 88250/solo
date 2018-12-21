@@ -22,17 +22,14 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HTTPRequestContext;
-import org.b3log.latke.servlet.HTTPRequestMethod;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JSONRenderer;
-import org.b3log.latke.util.Requests;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -55,11 +52,11 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Oct 5, 2018
+ * @version 1.1.1.6, Dec 10, 2018
  * @since 0.4.0
  */
-@RequestProcessor
-@Before(adviceClass = ConsoleAuthAdvice.class)
+@Singleton
+@Before(ConsoleAuthAdvice.class)
 public class ArticleConsole {
 
     /**
@@ -108,19 +105,16 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/thumbs", method = HTTPRequestMethod.GET)
-    public void getArticleThumbs(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getArticleThumbs(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
-
-        String strN = request.getParameter("n");
+        final HttpServletRequest request = context.getRequest();
+        String strN = context.param("n");
         if (!Strings.isNumeric(strN)) {
             strN = "6";
         }
@@ -141,22 +135,16 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request, for example,
-     *                 {
-     *                 "markdownText": ""
-     *                 }
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/markdown/2html", method = HTTPRequestMethod.POST)
-    public void markdown2HTML(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void markdown2HTML(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
-
-        final String markdownText = request.getParameter("markdownText");
+        final HttpServletRequest request = context.getRequest();
+        final String markdownText = context.param("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             result.put("html", "");
 
@@ -166,7 +154,6 @@ public class ArticleConsole {
         try {
             String html = Emotions.convert(markdownText);
             html = Markdowns.toHTML(html);
-
             result.put("html", html);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -203,18 +190,13 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/*", method = HTTPRequestMethod.GET)
-    public void getArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/").length());
-
+            final String articleId = context.pathVar("id");
             final JSONObject result = articleQueryService.getArticle(articleId);
             result.put(Keys.STATUS_CODE, true);
             renderer.setJSONObject(result);
@@ -257,22 +239,17 @@ public class ArticleConsole {
      * </pre>, order by article update date and sticky(put top).
      * </p>
      *
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
-     * @param context  the specified http request context
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/articles/status/*/*/*/*"/* Requests.PAGINATION_PATH_PATTERN */,
-            method = HTTPRequestMethod.GET)
-    public void getArticles(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void getArticles(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
-
         try {
-            String path = request.getRequestURI().substring((Latkes.getContextPath() + "/console/articles/status/").length());
+            String path = context.requestURI().substring((Latkes.getContextPath() + "/console/articles/status/").length());
             final String status = StringUtils.substringBefore(path, "/");
 
             path = path.substring((status + "/").length());
-            final JSONObject requestJSONObject = Requests.buildPaginationRequest(path);
+            final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final boolean published = "published".equals(status);
             requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, published);
 
@@ -286,7 +263,7 @@ public class ArticleConsole {
             excludes.put(Article.ARTICLE_RANDOM_DOUBLE);
             requestJSONObject.put(Keys.EXCLUDES, excludes);
 
-            final String keyword = StringUtils.trim(request.getParameter("k"));
+            final String keyword = StringUtils.trim(context.param("k"));
             if (StringUtils.isNotBlank(keyword)) {
                 requestJSONObject.put(Common.KEYWORD, keyword);
             }
@@ -323,20 +300,17 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context   the specified http request context
-     * @param request   the specified http servlet request
-     * @param response  the specified http servlet response
-     * @param articleId the specified article id
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/{articleId}", method = HTTPRequestMethod.DELETE)
-    public void removeArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final String articleId) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void removeArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-
-        final JSONObject currentUser = Solos.getCurrentUser(request, response);
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+        final String articleId = context.pathVar("id");
+        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
 
         try {
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
@@ -372,21 +346,19 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/unpublish/*", method = HTTPRequestMethod.PUT)
-    public void cancelPublishArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void cancelPublishArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/unpublish/").length());
-
-            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            final String articleId = context.pathVar("id");
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
@@ -420,18 +392,16 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/canceltop/*", method = HTTPRequestMethod.PUT)
-    public void cancelTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void cancelTopArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-
-        if (!Solos.isAdminLoggedIn(request, response)) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+        if (!Solos.isAdminLoggedIn(context)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
 
@@ -439,7 +409,7 @@ public class ArticleConsole {
         }
 
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/canceltop/").length());
+            final String articleId = context.pathVar("id");
             articleMgmtService.topArticle(articleId, false);
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("cancelTopSuccLabel"));
@@ -465,17 +435,16 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context  the specified http request context
-     * @param request  the specified http servlet request
-     * @param response the specified http servlet response
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/puttop/*", method = HTTPRequestMethod.PUT)
-    public void putTopArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response) {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void putTopArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-        if (!Solos.isAdminLoggedIn(request, response)) {
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
+        if (!Solos.isAdminLoggedIn(context)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
 
@@ -483,7 +452,7 @@ public class ArticleConsole {
         }
 
         try {
-            final String articleId = request.getRequestURI().substring((Latkes.getContextPath() + "/console/article/puttop/").length());
+            final String articleId = context.pathVar("id");
             articleMgmtService.topArticle(articleId, true);
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("putTopSuccLabel"));
@@ -500,6 +469,26 @@ public class ArticleConsole {
     /**
      * Updates an article by the specified request json object.
      * <p>
+     * The specified request json object, for example,
+     * <pre>
+     * {
+     *     "article": {
+     *         "oId": "",
+     *         "articleTitle": "",
+     *         "articleAbstract": "",
+     *         "articleContent": "",
+     *         "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
+     *         "articlePermalink": "", // optional
+     *         "articleIsPublished": boolean,
+     *         "articleSignId": "" // optional
+     *         "articleCommentable": boolean,
+     *         "articleViewPwd": "",
+     *         "postToCommunity": boolean
+     *     }
+     *  }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -509,40 +498,21 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context           the specified http request context
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param requestJSONObject the specified request json object, for example,
-     *                          {
-     *                          "article": {
-     *                          "oId": "",
-     *                          "articleTitle": "",
-     *                          "articleAbstract": "",
-     *                          "articleContent": "",
-     *                          "articleTags": "tag1,tag2,tag3",
-     *                          "articlePermalink": "", // optional
-     *                          "articleIsPublished": boolean,
-     *                          "articleSignId": "" // optional
-     *                          "articleCommentable": boolean,
-     *                          "articleViewPwd": "",
-     *                          "postToCommunity": boolean
-     *                          }
-     *                          }
-     * @throws Exception exception
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.PUT)
-    public void updateArticle(final HTTPRequestContext context, final HttpServletRequest request, final HttpServletResponse response,
-                              final JSONObject requestJSONObject) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void updateArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         try {
+            final JSONObject requestJSONObject = context.requestJSON();
             final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
             final String articleId = article.getString(Keys.OBJECT_ID);
             renderer.setJSONObject(ret);
 
-            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
                 ret.put(Keys.STATUS_CODE, false);
@@ -554,7 +524,7 @@ public class ArticleConsole {
 
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
             ret.put(Keys.STATUS_CODE, true);
-        } catch (final ServiceException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
@@ -566,6 +536,25 @@ public class ArticleConsole {
     /**
      * Adds an article with the specified request.
      * <p>
+     * The specified request json object, for example,
+     * <pre>
+     * {
+     *     "article": {
+     *         "articleTitle": "",
+     *         "articleAbstract": "",
+     *         "articleContent": "",
+     *         "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
+     *         "articlePermalink": "", // optional
+     *         "articleIsPublished": boolean,
+     *         "postToCommunity": boolean,
+     *         "articleSignId": "" // optional
+     *         "articleCommentable": boolean,
+     *         "articleViewPwd": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
@@ -576,35 +565,17 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param request           the specified http servlet request
-     * @param response          the specified http servlet response
-     * @param context           the specified http request context
-     * @param requestJSONObject the specified request json object, for example,
-     *                          {
-     *                          "article": {
-     *                          "articleTitle": "",
-     *                          "articleAbstract": "",
-     *                          "articleContent": "",
-     *                          "articleTags": "tag1,tag2,tag3",
-     *                          "articlePermalink": "", // optional
-     *                          "articleIsPublished": boolean,
-     *                          "postToCommunity": boolean,
-     *                          "articleSignId": "" // optional
-     *                          "articleCommentable": boolean,
-     *                          "articleViewPwd": ""
-     *                          }
-     *                          }
-     * @throws Exception exception
+     * @param context the specified http request context
      */
-    @RequestProcessing(value = "/console/article/", method = HTTPRequestMethod.POST)
-    public void addArticle(final HttpServletRequest request, final HttpServletResponse response, final HTTPRequestContext context,
-                           final JSONObject requestJSONObject) throws Exception {
-        final JSONRenderer renderer = new JSONRenderer();
+    public void addArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-
+        final HttpServletRequest request = context.getRequest();
+        final HttpServletResponse response = context.getResponse();
         try {
-            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            final JSONObject requestJSONObject = context.requestJSON();
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
 
             final String articleId = articleMgmtService.addArticle(requestJSONObject);

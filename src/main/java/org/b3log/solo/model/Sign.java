@@ -43,5 +43,6 @@ public final class Sign {
     /**
      * Private constructor.
      */
-    private Sign() {}
+    private Sign() {
+    }
 }
