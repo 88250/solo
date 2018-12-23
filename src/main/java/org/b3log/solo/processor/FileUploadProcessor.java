@@ -17,21 +17,11 @@
  */
 package org.b3log.solo.processor;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import jodd.io.FileUtil;
+import jodd.io.upload.FileUpload;
+import jodd.io.upload.MultipartStreamParser;
+import jodd.io.upload.impl.MemoryFileUploadFactory;
+import jodd.net.MimeTypes;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.ArrayUtils;
@@ -49,22 +39,22 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.service.oss.CloudStorgeService;
+import org.b3log.solo.service.oss.CloudStorageService;
 import org.b3log.solo.service.oss.OssService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import jodd.io.FileUtil;
-import jodd.io.upload.FileUpload;
-import jodd.io.upload.MultipartStreamParser;
-import jodd.io.upload.impl.MemoryFileUploadFactory;
-import jodd.net.MimeTypes;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.util.*;
 
 /**
  * File upload processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.2, Dec 7, 2018
+ * @author <a href="https://github.com/hzchendou">hzchendou</a>
+ * @version 1.0.2.3, Dec 23, 2018
  * @since 2.8.0
  */
 @RequestProcessor
@@ -76,7 +66,7 @@ public class FileUploadProcessor {
     private static final Logger LOGGER = Logger.getLogger(FileUploadProcessor.class);
 
     /**
-     * Qiniu enabled.
+     * Cloud OSS (Aliyun/Qiniu) enabled.
      */
     private static final Boolean OSS_ENABLED = StringUtils.isBlank(Solos.UPLOAD_DIR_PATH);
 
@@ -98,7 +88,7 @@ public class FileUploadProcessor {
     }
 
     @Inject
-    private CloudStorgeService cloudStorgeService;
+    private CloudStorageService cloudStorageService;
 
     /**
      * Gets file by the specified URL.
@@ -125,7 +115,7 @@ public class FileUploadProcessor {
             return;
         }
 
-        byte[] data = null;
+        byte[] data;
         try {
             data = IOUtils.toByteArray(new FileInputStream(path));
         } catch (final Exception e) {
@@ -183,8 +173,7 @@ public class FileUploadProcessor {
         }
 
         final int maxSize = 1024 * 1024 * 100;
-        final MultipartStreamParser parser =
-                new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
+        final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
         try {
             parser.parseRequestStream(request.getInputStream(), "UTF-8");
         } catch (final Exception e) {
@@ -203,7 +192,7 @@ public class FileUploadProcessor {
         final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM");
         if (OSS_ENABLED) {
             try {
-                ossService = cloudStorgeService.createStorge();
+                ossService = cloudStorageService.createStorage();
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, e.getMessage());
                 context.renderMsg(e.getMessage());
@@ -241,7 +230,7 @@ public class FileUploadProcessor {
                     succMap.put(originalName, fileLink);
                 } else {
                     try (final OutputStream output = new FileOutputStream(Solos.UPLOAD_DIR_PATH + fileName);
-                            final InputStream input = file.getFileInputStream()) {
+                         final InputStream input = file.getFileInputStream()) {
                         IOUtils.copy(input, output);
                     }
                     succMap.put(originalName, Latkes.getServePath() + "/upload/" + fileName);

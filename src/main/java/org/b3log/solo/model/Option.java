@@ -29,7 +29,8 @@ import java.util.Set;
  * This class defines option model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Dec 10, 2018
+ * @author <a href="https://github.com/hzchendou">hzchendou</a>
+ * @version 1.5.0.0, Dec 23, 2018
  * @since 0.6.0
  */
 public final class Option {
@@ -66,9 +67,9 @@ public final class Option {
     public static final String ID_C_BROADCAST_CHANCE_EXPIRATION_TIME = "broadcastChanceExpirationTime";
 
     /**
-     * key of cloud storge service(云存储服务商)
+     * Key of cloud object storage service (公有云对象存储服务提供商).
      */
-    public static final String ID_C_CLOUD_STORGE_KEY = "ossServer";
+    public static final String ID_C_CLOUD_STORAGE_KEY = "ossServer";
 
     /**
      * Key of Qiniu access key.
@@ -90,24 +91,23 @@ public final class Option {
      */
     public static final String ID_C_QINIU_BUCKET = "qiniuBucket";
 
-    //Aliyun 配置OOS配置
     /**
-     * key of aliyun access key
+     * key of Aliyun access key
      */
     public static final String ID_C_ALIYUN_ACCESS_KEY = "aliyunAccessKey";
 
     /**
-     * Key of aliyun secret key.
+     * Key of Aliyun secret key.
      */
     public static final String ID_C_ALIYUN_SECRET_KEY = "aliyunSecretKey";
 
     /**
-     * key of aliyun OOS domain
+     * key of Aliyun domain
      */
     public static final String ID_C_ALIYUN_DOMAIN = "aliyunDomain";
 
     /**
-     * key of aliyun bucket
+     * key of Aliyun bucket
      */
     public static final String ID_C_ALIYUN_BUCKET = "aliyunBucket";
 
@@ -356,14 +356,14 @@ public final class Option {
     public static final String CATEGORY_C_QINIU = "qiniu";
 
     /**
-     * aliyun
+     * Aliyun
      */
     public static final String CATEGORY_C_ALIYUN = "aliyun";
 
     /**
-     * Cloud Storge
+     * Cloud object storage
      */
-    public static final String CATEGORY_C_CLOU_STORGE = "cloudStorge";
+    public static final String CATEGORY_C_CLOU_STORAGE = "cloudStorage";
 
     /**
      * Preference.

@@ -17,25 +17,6 @@
  */
 package org.b3log.solo.processor.console;
 
-import static org.b3log.solo.model.Option.CATEGORY_C_ALIYUN;
-import static org.b3log.solo.model.Option.CATEGORY_C_CLOU_STORGE;
-import static org.b3log.solo.model.Option.CATEGORY_C_QINIU;
-import static org.b3log.solo.model.Option.ID_C_ALIYUN_ACCESS_KEY;
-import static org.b3log.solo.model.Option.ID_C_ALIYUN_BUCKET;
-import static org.b3log.solo.model.Option.ID_C_ALIYUN_DOMAIN;
-import static org.b3log.solo.model.Option.ID_C_ALIYUN_SECRET_KEY;
-import static org.b3log.solo.model.Option.ID_C_CLOUD_STORGE_KEY;
-import static org.b3log.solo.model.Option.ID_C_QINIU_ACCESS_KEY;
-import static org.b3log.solo.model.Option.ID_C_QINIU_BUCKET;
-import static org.b3log.solo.model.Option.ID_C_QINIU_DOMAIN;
-import static org.b3log.solo.model.Option.ID_C_QINIU_SECRET_KEY;
-import static org.b3log.solo.util.TernaryExpressionUtils.expressionSelectOptions;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-
-import java.util.Arrays;
-
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
@@ -57,11 +38,18 @@ import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+
+import static org.b3log.solo.model.Option.*;
+
 /**
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.17, Dec 11, 2018
+ * @author <a href="https://github.com/hzchendou">hzchendou</a>
+ * @version 1.2.0.18, Dec 23, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -413,15 +401,15 @@ public class PreferenceConsole {
 
         try {
             String ossServerVal = CATEGORY_C_QINIU;
-            //获取请求参数：ossServer(前端服务商切换)
-            String ossServerTemp = context.param(ID_C_CLOUD_STORGE_KEY);
+            // 获取请求参数：ossServer(前端服务商切换)
+            String ossServerTemp = context.param(ID_C_CLOUD_STORAGE_KEY);
             if (ossServerTemp != null && ossServerTemp.length() > 0) {
                 ossServerVal = ossServerTemp;
             } else {
-                //1.获取服务提供商信息
-                final JSONObject ossServer = optionQueryService.getOptions(CATEGORY_C_CLOU_STORGE);
+                // 1.获取服务提供商信息
+                final JSONObject ossServer = optionQueryService.getOptions(CATEGORY_C_CLOU_STORAGE);
                 if (ossServer != null) {
-                    ossServerVal = ossServer.getString(ID_C_CLOUD_STORGE_KEY);
+                    ossServerVal = ossServer.getString(ID_C_CLOUD_STORAGE_KEY);
                 }
             }
             final JSONObject oss = optionQueryService.getOptions(ossServerVal);
@@ -443,16 +431,16 @@ public class PreferenceConsole {
     }
 
     /**
-     * Updates the Qiniu preference by the specified request.
-     * <p>
+     * Updates the Oss preference by the specified request.
+     *
      * <p>
      * Request json:
      * <pre>
      * {
-     *     "qiniuAccessKey": "",
-     *     "qiniuSecretKey": "",
-     *     "qiniuDomain": "",
-     *     "qiniuBucket": ""
+     *     "ossAccessKey": "",
+     *     "ossSecretKey": "",
+     *     "ossDomain": "",
+     *     "ossBucket": ""
      * }
      * </pre>
      * </p>
@@ -466,7 +454,7 @@ public class PreferenceConsole {
         renderer.setJSONObject(ret);
         try {
             final JSONObject requestJSONObject = context.requestJSON();
-            final String ossServer = requestJSONObject.optString(ID_C_CLOUD_STORGE_KEY).trim();
+            final String ossServer = requestJSONObject.optString(ID_C_CLOUD_STORAGE_KEY).trim();
             final String accessKey = requestJSONObject.optString("ossAccessKey").trim();
             final String secretKey = requestJSONObject.optString("ossSecretKey").trim();
             String domain = requestJSONObject.optString("ossDomain").trim();
@@ -475,34 +463,32 @@ public class PreferenceConsole {
             if (StringUtils.isNotBlank(domain) && !StringUtils.endsWith(domain, "/")) {
                 domain += "/";
             }
-            if (StringUtils.isNotBlank(domain) && !StringUtils.startsWithAny(domain, new String[] {"http", "https"})) {
+            if (StringUtils.isNotBlank(domain) && !StringUtils.startsWithAny(domain, new String[]{"http", "https"})) {
                 domain = "http://" + domain;
             }
-            //让七牛占点便宜，主要是为了之前用户兼容
+
             boolean isAliyunOp = StringUtils.endsWithIgnoreCase(ossServer, CATEGORY_C_ALIYUN);
 
-            //存放使用的云服务厂商信息
+            // 存放使用的云服务厂商信息
             final JSONObject ossServerKeyOpt = new JSONObject();
-            ossServerKeyOpt.put(Keys.OBJECT_ID, ID_C_CLOUD_STORGE_KEY);
-            ossServerKeyOpt.put(Option.OPTION_CATEGORY, CATEGORY_C_CLOU_STORGE);
+            ossServerKeyOpt.put(Keys.OBJECT_ID, ID_C_CLOUD_STORAGE_KEY);
+            ossServerKeyOpt.put(Option.OPTION_CATEGORY, CATEGORY_C_CLOU_STORAGE);
             ossServerKeyOpt.put(Option.OPTION_VALUE, ossServer);
 
             final JSONObject accessKeyOpt = new JSONObject();
-            accessKeyOpt.put(Keys.OBJECT_ID,
-                    expressionSelectOptions(isAliyunOp, ID_C_ALIYUN_ACCESS_KEY, ID_C_QINIU_ACCESS_KEY));
+            accessKeyOpt.put(Keys.OBJECT_ID, isAliyunOp ? ID_C_ALIYUN_ACCESS_KEY : ID_C_QINIU_ACCESS_KEY);
             accessKeyOpt.put(Option.OPTION_CATEGORY, ossServer);
             accessKeyOpt.put(Option.OPTION_VALUE, accessKey);
             final JSONObject secretKeyOpt = new JSONObject();
-            secretKeyOpt.put(Keys.OBJECT_ID,
-                    expressionSelectOptions(isAliyunOp, ID_C_ALIYUN_SECRET_KEY, ID_C_QINIU_SECRET_KEY));
+            secretKeyOpt.put(Keys.OBJECT_ID, isAliyunOp ? ID_C_ALIYUN_SECRET_KEY : ID_C_QINIU_SECRET_KEY);
             secretKeyOpt.put(Option.OPTION_CATEGORY, ossServer);
             secretKeyOpt.put(Option.OPTION_VALUE, secretKey);
             final JSONObject domainOpt = new JSONObject();
-            domainOpt.put(Keys.OBJECT_ID, expressionSelectOptions(isAliyunOp, ID_C_ALIYUN_DOMAIN, ID_C_QINIU_DOMAIN));
+            domainOpt.put(Keys.OBJECT_ID, isAliyunOp ? ID_C_ALIYUN_DOMAIN : ID_C_QINIU_DOMAIN);
             domainOpt.put(Option.OPTION_CATEGORY, ossServer);
             domainOpt.put(Option.OPTION_VALUE, domain);
             final JSONObject bucketOpt = new JSONObject();
-            bucketOpt.put(Keys.OBJECT_ID, expressionSelectOptions(isAliyunOp, ID_C_ALIYUN_BUCKET, ID_C_QINIU_BUCKET));
+            bucketOpt.put(Keys.OBJECT_ID, isAliyunOp ? ID_C_ALIYUN_BUCKET : ID_C_QINIU_BUCKET);
             bucketOpt.put(Option.OPTION_CATEGORY, ossServer);
             bucketOpt.put(Option.OPTION_VALUE, bucket);
 
@@ -648,28 +634,29 @@ public class PreferenceConsole {
     }
 
     /**
-     * 转换成通用OSS格式
+     * 转换成通用 OSS 格式.
      *
-     * @param ossServer
-     * @param oss
-     * @return
+     * @param ossServer the specified oss server
+     * @param oss       the specified oss
+     * @return converted oss
      */
-    private JSONObject convertOssOpts(String ossServer, JSONObject oss) {
-        JSONObject ossJson = new JSONObject();
-        ossJson.put("ossServer", ossServer);
+    private static JSONObject convertOssOpts(final String ossServer, final JSONObject oss) {
+        JSONObject ret = new JSONObject();
+        ret.put("ossServer", ossServer);
         boolean isAliyunOp = StringUtils.endsWithIgnoreCase(ossServer, CATEGORY_C_ALIYUN);
         boolean isQiniuOp = StringUtils.endsWithIgnoreCase(ossServer, CATEGORY_C_QINIU);
         if (isAliyunOp) {
-            ossJson.put("ossAccessKey", oss.getString(ID_C_ALIYUN_ACCESS_KEY));
-            ossJson.put("ossSecretKey", oss.getString(ID_C_ALIYUN_SECRET_KEY));
-            ossJson.put("ossDomain", oss.getString(ID_C_ALIYUN_DOMAIN));
-            ossJson.put("ossBucket", oss.getString(ID_C_ALIYUN_BUCKET));
+            ret.put("ossAccessKey", oss.getString(ID_C_ALIYUN_ACCESS_KEY));
+            ret.put("ossSecretKey", oss.getString(ID_C_ALIYUN_SECRET_KEY));
+            ret.put("ossDomain", oss.getString(ID_C_ALIYUN_DOMAIN));
+            ret.put("ossBucket", oss.getString(ID_C_ALIYUN_BUCKET));
         } else if (isQiniuOp) {
-            ossJson.put("ossAccessKey", oss.getString(ID_C_QINIU_ACCESS_KEY));
-            ossJson.put("ossSecretKey", oss.getString(ID_C_QINIU_SECRET_KEY));
-            ossJson.put("ossDomain", oss.getString(ID_C_QINIU_DOMAIN));
-            ossJson.put("ossBucket", oss.getString(ID_C_QINIU_BUCKET));
+            ret.put("ossAccessKey", oss.getString(ID_C_QINIU_ACCESS_KEY));
+            ret.put("ossSecretKey", oss.getString(ID_C_QINIU_SECRET_KEY));
+            ret.put("ossDomain", oss.getString(ID_C_QINIU_DOMAIN));
+            ret.put("ossBucket", oss.getString(ID_C_QINIU_BUCKET));
         }
-        return ossJson;
+
+        return ret;
     }
 }
