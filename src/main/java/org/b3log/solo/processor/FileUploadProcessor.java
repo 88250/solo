@@ -236,7 +236,7 @@ public class FileUploadProcessor {
                     succMap.put(originalName, Latkes.getServePath() + "/upload/" + fileName);
                 }
             } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Uploads file failed", e);
+                LOGGER.log(Level.WARN, "Uploads file failed: " + e.getMessage());
 
                 errFiles.add(originalName);
             }

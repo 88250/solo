@@ -19,9 +19,9 @@ public interface OssService {
      *
      * @param file     the specified file
      * @param fileName the specified filename
-     * @return
+     * @return 文件外链地址
      */
-    String upload(final FileUpload file, final String fileName) throws IOException;
+    String upload(final FileUpload file, final String fileName) throws Exception;
 
     /**
      * 销毁.

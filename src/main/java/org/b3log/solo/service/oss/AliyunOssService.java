@@ -9,7 +9,6 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.service.OptionQueryService;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -72,8 +71,14 @@ public class AliyunOssService implements OssService {
     }
 
     @Override
-    public String upload(final FileUpload file, final String fileName) throws IOException {
-        ossClient.putObject(aliyun.optString(Option.ID_C_ALIYUN_BUCKET), fileName, file.getFileInputStream());
+    public String upload(final FileUpload file, final String fileName) throws Exception {
+        try {
+            ossClient.putObject(aliyun.optString(Option.ID_C_ALIYUN_BUCKET), fileName, file.getFileInputStream());
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Uploads file to Aliyun OSS failed", e);
+
+            throw new Exception(ERR_MSG);
+        }
 
         return OSS_FILE_PATH_PREFIX + fileName;
     }

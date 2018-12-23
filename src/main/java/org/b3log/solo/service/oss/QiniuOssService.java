@@ -70,9 +70,15 @@ public class QiniuOssService implements OssService {
     }
 
     @Override
-    public String upload(final FileUpload file, final String fileName) throws IOException {
-        final String contentType = file.getHeader().getContentType();
-        uploadManager.put(file.getFileInputStream(), fileName, uploadToken, null, contentType);
+    public String upload(final FileUpload file, final String fileName) throws Exception {
+        try {
+            final String contentType = file.getHeader().getContentType();
+            uploadManager.put(file.getFileInputStream(), fileName, uploadToken, null, contentType);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Uploads file to Qiniu OSS failed", e);
+
+            throw new Exception(ERR_MSG);
+        }
 
         return qiniu.optString(Option.ID_C_QINIU_DOMAIN) + "/" + fileName;
     }
