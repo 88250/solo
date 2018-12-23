@@ -66,13 +66,10 @@ public class PluginQueryService {
      * Gets plugins by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
-     *                          <pre>
-     *                          {
-     *                              "paginationCurrentPageNum": 1,
-     *                              "paginationPageSize": 20,
-     *                              "paginationWindowSize": 10,
-     *                          }, see {@link Pagination} for more details
-     *                          </pre>
+     *                          "paginationCurrentPageNum": 1,
+     *                          "paginationPageSize": 20,
+     *                          "paginationWindowSize": 10,
+     *                          see {@link Pagination} for more details
      * @return for example,
      * <pre>
      * {

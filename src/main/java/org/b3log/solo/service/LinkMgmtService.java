@@ -77,15 +77,12 @@ public class LinkMgmtService {
      * Updates a link by the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
-     *                          <pre>
-     *                          {
-     *                              "link": {
-     *                                  "oId": "",
-     *                                  "linkTitle": "",
-     *                                  "linkAddress": ""
-     *                              }
-     *                          }, see {@link Link} for more details
-     *                          </pre>
+     *                          "link": {
+     *                          "oId": "",
+     *                          "linkTitle": "",
+     *                          "linkAddress": ""
+     *                          }
+     *                          see {@link Link} for more details
      * @throws ServiceException service exception
      */
     public void updateLink(final JSONObject requestJSONObject)
@@ -170,14 +167,14 @@ public class LinkMgmtService {
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          <pre>
-     *                          {
-     *                              "link": {
-     *                                  "linkTitle": "",
-     *                                  "linkAddress": "",
-     *                                  "linkDescription": "" // optional
-     *                              }
-     *                          }, see {@link Link} for more details
-     *                          </pre>
+     *                                                                                                     {
+     *                                                                                                         "link": {
+     *                                                                                                             "linkTitle": "",
+     *                                                                                                             "linkAddress": "",
+     *                                                                                                             "linkDescription": "" // optional
+     *                                                                                                         }
+     *                                                                                                     }, see {@link Link} for more details
+     *                                                                                                     </pre>
      * @return generated link id
      * @throws ServiceException service exception
      */
