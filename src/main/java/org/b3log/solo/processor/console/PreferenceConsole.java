@@ -456,7 +456,10 @@ public class PreferenceConsole {
         renderer.setJSONObject(ret);
         try {
             final JSONObject requestJSONObject = context.requestJSON();
-            final String ossServer = requestJSONObject.optString(ID_C_CLOUD_STORAGE_KEY).trim();
+            String ossServer = requestJSONObject.optString(ID_C_CLOUD_STORAGE_KEY).trim();
+            if (StringUtils.isBlank(ossServer)) {
+                ossServer = CATEGORY_C_QINIU;
+            }
             final String accessKey = requestJSONObject.optString("ossAccessKey").trim();
             final String secretKey = requestJSONObject.optString("ossSecretKey").trim();
             String domain = requestJSONObject.optString("ossDomain").trim();

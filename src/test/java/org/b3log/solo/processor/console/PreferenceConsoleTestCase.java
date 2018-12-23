@@ -33,7 +33,7 @@ import java.io.StringReader;
  * {@link PreferenceConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 11, 2018
+ * @version 1.0.0.1, Dec 23, 2018
  * @since 2.9.8
  */
 @Test(suiteName = "processor")
@@ -159,20 +159,21 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * updateQiniu.
+     * updateOss.
      *
      * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void updateQiniu() throws Exception {
+    public void updateOss() throws Exception {
         final JSONObject p = new JSONObject();
+        p.put(Option.ID_C_CLOUD_STORAGE_KEY, Option.CATEGORY_C_QINIU);
         p.put(Option.ID_C_QINIU_ACCESS_KEY, "1");
         p.put(Option.ID_C_QINIU_SECRET_KEY, "1");
         p.put(Option.ID_C_QINIU_DOMAIN, "1");
         p.put(Option.ID_C_QINIU_BUCKET, "1");
 
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/preference/qiniu");
+        request.setRequestURI("/console/preference/oss");
         request.setMethod("PUT");
         final BufferedReader reader = new BufferedReader(new StringReader(p.toString()));
         request.setReader(reader);
@@ -187,15 +188,15 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * getQiniuPreference.
+     * getOssPreference.
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "updateQiniu")
-    public void getQiniuPreference() throws Exception {
+    @Test(dependsOnMethods = "updateOss")
+    public void getOssPreference() throws Exception {
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/preference/qiniu");
-
+        request.setRequestURI("/console/preference/oss");
+        request.putParameter(Option.ID_C_CLOUD_STORAGE_KEY, Option.CATEGORY_C_QINIU);
         mockAdminLogin(request);
 
         final MockHttpServletResponse response = mockResponse();
