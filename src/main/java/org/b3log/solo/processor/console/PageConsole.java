@@ -38,8 +38,6 @@ import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * Plugin console request processing.
  *

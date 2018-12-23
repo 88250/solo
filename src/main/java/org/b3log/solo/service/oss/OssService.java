@@ -2,8 +2,6 @@ package org.b3log.solo.service.oss;
 
 import jodd.io.upload.FileUpload;
 
-import java.io.IOException;
-
 /**
  * 对象存储服务.
  *

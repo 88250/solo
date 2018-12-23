@@ -87,7 +87,7 @@ public class ErrorProcessor {
     public void showErrorPage(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final String statusCode = context.pathVar("statusCode");
-        if (StringUtils.equals("GET",context.method())) {
+        if (StringUtils.equals("GET", context.method())) {
             final String requestURI = context.requestURI();
             final String templateName = statusCode + ".ftl";
             LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]",

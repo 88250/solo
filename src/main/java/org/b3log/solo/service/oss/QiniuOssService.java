@@ -11,8 +11,6 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.service.OptionQueryService;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 /**
  * 七牛云对象存储服务.
  *

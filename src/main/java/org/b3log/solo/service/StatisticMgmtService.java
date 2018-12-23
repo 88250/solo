@@ -134,7 +134,7 @@ public class StatisticMgmtService {
      * Sees this issue (https://github.com/b3log/solo/issues/44) for more details.
      * </p>
      *
-     * @param context the specified request context
+     * @param context  the specified request context
      * @param response the specified response
      * @return {@code true} if the specified request has been served, returns {@code false} otherwise
      */

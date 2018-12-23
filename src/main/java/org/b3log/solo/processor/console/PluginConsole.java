@@ -33,7 +33,6 @@ import org.b3log.solo.service.PluginQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
