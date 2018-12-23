@@ -86,15 +86,14 @@ public class ErrorProcessor {
     @RequestProcessing(value = "/error/{statusCode}", method = HttpMethod.GET)
     public void showErrorPage(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         final String statusCode = context.pathVar("statusCode");
-        if (StringUtils.equals("GET", request.getMethod())) {
-            final String requestURI = request.getRequestURI();
+        if (StringUtils.equals("GET",context.method())) {
+            final String requestURI = context.requestURI();
             final String templateName = statusCode + ".ftl";
             LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]",
                     requestURI, templateName);
 
-            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
             context.setRenderer(renderer);
             renderer.setTemplateName("error/" + templateName);
 
@@ -103,7 +102,7 @@ public class ErrorProcessor {
                 final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
                 dataModel.putAll(langs);
                 final JSONObject preference = preferenceQueryService.getPreference();
-                dataModelService.fillCommon(request, response, dataModel, preference);
+                dataModelService.fillCommon(context, dataModel, preference);
                 dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);

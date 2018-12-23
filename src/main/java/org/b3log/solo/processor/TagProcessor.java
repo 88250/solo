@@ -107,7 +107,7 @@ public class TagProcessor {
      */
     @RequestProcessing(value = "/tags/{tagTitle}", method = HttpMethod.GET)
     public void showTagArticles(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -129,7 +129,7 @@ public class TagProcessor {
             final String tagId = tag.getString(Keys.OBJECT_ID);
 
             final JSONObject preference = preferenceQueryService.getPreference();
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
@@ -140,7 +140,7 @@ public class TagProcessor {
                 return;
             }
 
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
@@ -152,8 +152,8 @@ public class TagProcessor {
             dataModel.put(Common.PATH, "/tags/" + URLEncoder.encode(tagTitle, "UTF-8"));
             dataModel.put(Keys.OBJECT_ID, tagId);
             dataModel.put(Tag.TAG, tag);
-            dataModelService.fillCommon(request, response, dataModel, preference);
-            statisticMgmtService.incBlogViewCount(request, response);
+            dataModelService.fillCommon(context, dataModel, preference);
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

@@ -131,7 +131,7 @@ public class CommentProcessor {
         final JSONObject requestJSONObject = context.requestJSON();
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
-        fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
+        fillCommenter(requestJSONObject, context);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
         final JsonRenderer renderer = new JsonRenderer();
@@ -143,7 +143,7 @@ public class CommentProcessor {
             return;
         }
 
-        if (!Solos.isLoggedIn(httpServletRequest, httpServletResponse)) {
+        if (!Solos.isLoggedIn(context)) {
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
             if (CaptchaProcessor.invalidCaptcha(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
@@ -166,8 +166,8 @@ public class CommentProcessor {
 
             // 添加评论优化 https://github.com/b3log/solo/issues/12246
             try {
-                final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
-                final Template template = Skins.getSkinTemplate(httpServletRequest, "common-comment.ftl");
+                final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
+                final Template template = Skins.getSkinTemplate(context, "common-comment.ftl");
                 final JSONObject preference = preferenceQueryService.getPreference();
                 Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
                 Keys.fillServer(dataModel);
@@ -234,7 +234,7 @@ public class CommentProcessor {
         final JSONObject requestJSONObject = context.requestJSON();
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
-        fillCommenter(requestJSONObject, httpServletRequest, httpServletResponse);
+        fillCommenter(requestJSONObject, context);
 
         final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
         final JsonRenderer renderer = new JsonRenderer();
@@ -246,7 +246,7 @@ public class CommentProcessor {
             return;
         }
 
-        if (!Solos.isLoggedIn(httpServletRequest, httpServletResponse)) {
+        if (!Solos.isLoggedIn(context)) {
             final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
             if (CaptchaProcessor.invalidCaptcha(captcha)) {
                 jsonObject.put(Keys.STATUS_CODE, false);
@@ -268,8 +268,8 @@ public class CommentProcessor {
 
             // 添加评论优化 https://github.com/b3log/solo/issues/12246
             try {
-                final String skinDirName = (String) httpServletRequest.getAttribute(Keys.TEMAPLTE_DIR_NAME);
-                final Template template = Skins.getSkinTemplate(httpServletRequest, "common-comment.ftl");
+                final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
+                final Template template = Skins.getSkinTemplate(context, "common-comment.ftl");
                 final JSONObject preference = preferenceQueryService.getPreference();
                 Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
                 Keys.fillServer(dataModel);
@@ -298,11 +298,10 @@ public class CommentProcessor {
      * Fills commenter info if logged in.
      *
      * @param requestJSONObject the specified request json object
-     * @param request           the specified HTTP servlet request
-     * @param request           the specified HTTP servlet response
+     * @param context           the specified HTTP servlet request context
      */
-    private void fillCommenter(final JSONObject requestJSONObject, final HttpServletRequest request, final HttpServletResponse response) {
-        final JSONObject currentUser = Solos.getCurrentUser(request, response);
+    private void fillCommenter(final JSONObject requestJSONObject, final RequestContext context) {
+        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         if (null == currentUser) {
             return;
         }

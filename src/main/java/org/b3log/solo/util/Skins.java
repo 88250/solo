@@ -28,6 +28,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.SoloServletListener;
@@ -101,12 +102,12 @@ public final class Skins {
     /**
      * Gets a skins template with the specified request and template name.
      *
-     * @param request      the specified request
+     * @param context      the specified request context
      * @param templateName the specified template name
      * @return template, returns {@code null} if not found
      */
-    public static Template getSkinTemplate(final HttpServletRequest request, final String templateName) {
-        String templateDirName = (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME);
+    public static Template getSkinTemplate(final RequestContext context, final String templateName) {
+        String templateDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
         if (StringUtils.isBlank(templateDirName)) {
             templateDirName = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
         }
@@ -211,16 +212,16 @@ public final class Skins {
      * Gets skin directory name from the specified request. Refers to https://github.com/b3log/solo/issues/12060 for
      * more details.
      *
-     * @param request the specified request
+     * @param context the specified request context
      * @return directory name, or {@code null} if not found
      */
-    public static String getSkinDirName(final HttpServletRequest request) {
-        if (Solos.isMobile(request)) {
+    public static String getSkinDirName(final RequestContext context) {
+        if (Solos.isMobile(context.getRequest())) {
             return Solos.MOBILE_SKIN;
         }
 
         // 1. Get skin from query
-        final String specifiedSkin = request.getParameter(Skin.SKIN);
+        final String specifiedSkin = context.param(Skin.SKIN);
         if (StringUtils.isNotBlank(specifiedSkin)) {
             final Set<String> skinDirNames = Skins.getSkinDirNames();
             if (skinDirNames.contains(specifiedSkin)) {
@@ -231,7 +232,7 @@ public final class Skins {
         }
 
         // 2. Get skin from cookie
-        return getSkinDirNameFromCookie(request);
+        return getSkinDirNameFromCookie(context.getRequest());
     }
 
     /**

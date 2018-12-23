@@ -147,7 +147,7 @@ public class ArticleProcessor {
     public void showArticlePwdForm(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final String articleId = request.getParameter("articleId");
+        final String articleId = context.param("articleId");
         if (StringUtils.isBlank(articleId)) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -170,7 +170,7 @@ public class ArticleProcessor {
         dataModel.put("articlePermalink", article.optString(Article.ARTICLE_PERMALINK));
         dataModel.put("articleTitle", article.optString(Article.ARTICLE_TITLE));
         dataModel.put("articleAbstract", article.optString(Article.ARTICLE_ABSTRACT));
-        final String msg = request.getParameter(Keys.MSG);
+        final String msg = context.param(Keys.MSG);
 
         if (StringUtils.isNotBlank(msg)) {
             dataModel.put(Keys.MSG, langPropsService.get("passwordNotMatchLabel"));
@@ -198,8 +198,8 @@ public class ArticleProcessor {
     public void onArticlePwdForm(final RequestContext context) {
         try {
             final HttpServletRequest request = context.getRequest();
-            final String articleId = request.getParameter("articleId");
-            final String pwdTyped = request.getParameter("pwdTyped");
+            final String articleId = context.param("articleId");
+            final String pwdTyped = context.param("pwdTyped");
 
             final JSONObject article = articleQueryService.getArticleById(articleId);
 
@@ -285,8 +285,6 @@ public class ArticleProcessor {
 
         final HttpServletRequest request = context.getRequest();
         Stopwatchs.start("Get Relevant Articles");
-        final String requestURI = request.getRequestURI();
-
         final String articleId = context.pathVar("id");
         if (StringUtils.isBlank(articleId)) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -329,7 +327,7 @@ public class ArticleProcessor {
 
         String content;
         try {
-            content = articleQueryService.getArticleContent(request, articleId);
+            content = articleQueryService.getArticleContent(context, articleId);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, "Can not get article content", e);
             return;
@@ -369,7 +367,7 @@ public class ArticleProcessor {
             requestJSONObject.put(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, preference.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT));
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
             final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             jsonObject.put(Keys.RESULTS, result);
         } catch (final Exception e) {
@@ -414,7 +412,7 @@ public class ArticleProcessor {
 
             final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
@@ -466,7 +464,7 @@ public class ArticleProcessor {
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
@@ -516,7 +514,7 @@ public class ArticleProcessor {
             final JSONObject author = authorRet.getJSONObject(User.USER);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
@@ -547,7 +545,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/authors/{author}", method = HttpMethod.GET)
     public void showAuthorArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("author-articles.ftl");
 
@@ -581,7 +579,7 @@ public class ArticleProcessor {
                 return;
             }
 
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
@@ -590,10 +588,10 @@ public class ArticleProcessor {
             final Map<String, Object> dataModel = renderer.getDataModel();
             prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author);
             final HttpServletResponse response = context.getResponse();
-            dataModelService.fillCommon(request, response, dataModel, preference);
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            dataModelService.fillCommon(context, dataModel, preference);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            statisticMgmtService.incBlogViewCount(request, response);
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -609,7 +607,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/archives/{yyyy}/{MM}", method = HttpMethod.GET)
     public void showArchiveArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("archive-articles.ftl");
 
@@ -641,15 +639,15 @@ public class ArticleProcessor {
                 return;
             }
 
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
             prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount, archiveDateString, archiveDate);
             final HttpServletResponse response = context.getResponse();
-            dataModelService.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
 
-            statisticMgmtService.incBlogViewCount(request, response);
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -675,7 +673,7 @@ public class ArticleProcessor {
         LOGGER.log(Level.DEBUG, "Article [id={0}]", articleId);
 
         final HttpServletRequest request = context.getRequest();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("article.ftl");
 
@@ -726,14 +724,14 @@ public class ArticleProcessor {
             prepareShowArticle(preference, dataModel, article);
 
             final HttpServletResponse response = context.getResponse();
-            dataModelService.fillCommon(request, response, dataModel, preference);
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            dataModelService.fillCommon(context, dataModel, preference);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            if (!StatisticMgmtService.hasBeenServed(request, response)) {
+            if (!StatisticMgmtService.hasBeenServed(context, response)) {
                 articleMgmtService.incViewCount(articleId);
             }
 
-            statisticMgmtService.incBlogViewCount(request, response);
+            statisticMgmtService.incBlogViewCount(context, response);
 
             // Fire [Before Render Article] event
             final JSONObject eventData = new JSONObject();

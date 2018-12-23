@@ -95,7 +95,7 @@ public class CommentConsole {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
             final String commentId = context.pathVar("id");
-            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
@@ -139,7 +139,7 @@ public class CommentConsole {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
             final String commentId = context.pathVar("id");
-            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
@@ -197,8 +197,7 @@ public class CommentConsole {
         context.setRenderer(renderer);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
+            final String requestURI = context.requestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/comments/").length());
 
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);

@@ -97,18 +97,16 @@ public class IndexProcessor {
     public void showIndex(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final String requestURI = request.getRequestURI();
-
         try {
             final int currentPageNum = Paginator.getPage(request);
             final JSONObject preference = preferenceQueryService.getPreference();
 
             // https://github.com/b3log/solo/issues/12060
-            String specifiedSkin = Skins.getSkinDirName(request);
+            String specifiedSkin = Skins.getSkinDirName(context);
             if (StringUtils.isBlank(specifiedSkin)) {
                 specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
             }
@@ -119,10 +117,10 @@ public class IndexProcessor {
             cookie.setPath("/");
             response.addCookie(cookie);
 
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            dataModelService.fillIndexArticles(request, dataModel, currentPageNum, preference);
-            dataModelService.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillIndexArticles(context, dataModel, currentPageNum, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final int previousPageNum = currentPageNum > 1 ? currentPageNum - 1 : 0;
@@ -133,7 +131,7 @@ public class IndexProcessor {
             dataModel.put(Pagination.PAGINATION_NEXT_PAGE_NUM, nextPageNum);
             dataModel.put(Common.PATH, "");
 
-            statisticMgmtService.incBlogViewCount(request, response);
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -150,7 +148,7 @@ public class IndexProcessor {
     public void showKillBrowser(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("kill-browser.ftl");
 
@@ -159,7 +157,7 @@ public class IndexProcessor {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
-            dataModelService.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
             Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
             dataModelService.fillMinified(dataModel);
@@ -179,7 +177,7 @@ public class IndexProcessor {
     public void showRegister(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("register.ftl");
 
@@ -188,7 +186,7 @@ public class IndexProcessor {
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
-            dataModelService.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillMinified(dataModel);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

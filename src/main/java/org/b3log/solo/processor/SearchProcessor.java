@@ -128,7 +128,7 @@ public class SearchProcessor {
     @RequestProcessing(value = "/search", method = HttpMethod.GET)
     public void search(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("search.ftl");
 
@@ -137,7 +137,7 @@ public class SearchProcessor {
         dataModel.putAll(langs);
 
         final int pageNum = Paginator.getPage(request);
-        String keyword = request.getParameter(Common.KEYWORD);
+        String keyword = context.param(Common.KEYWORD);
         if (StringUtils.isBlank(keyword)) {
             keyword = "";
         }
@@ -150,8 +150,8 @@ public class SearchProcessor {
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            dataModelService.fillCommon(request, context.getResponse(), dataModel, preference);
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             dataModel.put(Article.ARTICLES, articles);
             final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);

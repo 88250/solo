@@ -96,12 +96,12 @@ public class UserTemplateProcessor {
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(request);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName(templateName);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
-        final Template template = Skins.getSkinTemplate(request, templateName);
+        final Template template = Skins.getSkinTemplate(context, templateName);
         if (null == template) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -112,10 +112,10 @@ public class UserTemplateProcessor {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
             final JSONObject preference = preferenceQueryService.getPreference();
-            dataModelService.fillCommon(request, response, dataModel, preference);
-            dataModelService.fillUserTemplate(request, template, dataModel, preference);
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
-            statisticMgmtService.incBlogViewCount(request, response);
+            dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillUserTemplate(context, template, dataModel, preference);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

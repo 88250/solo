@@ -97,7 +97,7 @@ public class PageProcessor {
      */
     @RequestProcessing(value = "/page", method = HttpMethod.GET)
     public void showPage(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("page.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -113,10 +113,10 @@ public class PageProcessor {
                 return;
             }
 
-            Skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            Skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             // See PermalinkFilter#dispatchToArticleOrPageProcessor()
-            final JSONObject page = (JSONObject) request.getAttribute(Page.PAGE);
+            final JSONObject page = (JSONObject) context.attr(Page.PAGE);
             if (null == page) {
                 context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
@@ -143,8 +143,8 @@ public class PageProcessor {
                 Stopwatchs.end();
             }
 
-            dataModelService.fillCommon(request, response, dataModel, preference);
-            statisticMgmtService.incBlogViewCount(request, response);
+            dataModelService.fillCommon(context, dataModel, preference);
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

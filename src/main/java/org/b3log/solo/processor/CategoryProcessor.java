@@ -110,7 +110,7 @@ public class CategoryProcessor {
      */
     @RequestProcessing(value = "/category/{categoryURI}", method = HttpMethod.GET)
     public void showCategoryArticles(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context.getRequest());
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
         context.setRenderer(renderer);
         renderer.setTemplateName("category-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
@@ -146,16 +146,16 @@ public class CategoryProcessor {
                 return;
             }
 
-            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) request.getAttribute(Keys.TEMAPLTE_DIR_NAME), dataModel);
-            dataModelService.setArticlesExProperties(request, articles, preference);
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+            dataModelService.setArticlesExProperties(context, articles, preference);
 
             final List<Integer> pageNums = (List) result.optJSONObject(Pagination.PAGINATION).opt(Pagination.PAGINATION_PAGE_NUMS);
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
             dataModel.put(Common.PATH, "/category/" + URLs.encode(categoryURI));
 
-            dataModelService.fillCommon(request, response, dataModel, preference);
+            dataModelService.fillCommon(context, dataModel, preference);
 
-            statisticMgmtService.incBlogViewCount(request, response);
+            statisticMgmtService.incBlogViewCount(context, response);
         } catch (final ServiceException | JSONException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

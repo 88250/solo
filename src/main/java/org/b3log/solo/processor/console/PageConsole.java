@@ -347,8 +347,7 @@ public class PageConsole {
         context.setRenderer(renderer);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
+            final String requestURI = context.requestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/pages/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = pageQueryService.getPages(requestJSONObject);

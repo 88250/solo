@@ -513,7 +513,7 @@ public class CategoryConsole {
 
         try {
             final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
+            final String requestURI = context.requestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/categories/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = categoryQueryService.getCategoris(requestJSONObject);

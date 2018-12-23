@@ -169,14 +169,13 @@ public class FileUploadProcessor {
     public void uploadFile(final RequestContext context) {
         context.renderJSON();
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        if (!Solos.isLoggedIn(request, response)) {
+        if (!Solos.isLoggedIn(context)) {
             context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
 
-        final JSONObject currentUser = Solos.getCurrentUser(request, response);
+        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         if (Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE))) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -194,7 +193,7 @@ public class FileUploadProcessor {
 
             return;
         }
-        final List<String> errFiles = new ArrayList();
+        final List<String> errFiles = new ArrayList<>();
         final Map<String, String> succMap = new LinkedHashMap<>();
         final FileUpload[] files = parser.getFiles("file[]");
         final String[] names = parser.getParameterValues("name[]");

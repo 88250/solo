@@ -114,7 +114,7 @@ public class ArticleConsole {
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
         final HttpServletRequest request = context.getRequest();
-        String strN = request.getParameter("n");
+        String strN = context.param("n");
         if (!Strings.isNumeric(strN)) {
             strN = "6";
         }
@@ -144,7 +144,7 @@ public class ArticleConsole {
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
         final HttpServletRequest request = context.getRequest();
-        final String markdownText = request.getParameter("markdownText");
+        final String markdownText = context.param("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             result.put("html", "");
 
@@ -245,8 +245,7 @@ public class ArticleConsole {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         try {
-            final HttpServletRequest request = context.getRequest();
-            String path = request.getRequestURI().substring((Latkes.getContextPath() + "/console/articles/status/").length());
+            String path = context.requestURI().substring((Latkes.getContextPath() + "/console/articles/status/").length());
             final String status = StringUtils.substringBefore(path, "/");
 
             path = path.substring((status + "/").length());
@@ -264,7 +263,7 @@ public class ArticleConsole {
             excludes.put(Article.ARTICLE_RANDOM_DOUBLE);
             requestJSONObject.put(Keys.EXCLUDES, excludes);
 
-            final String keyword = StringUtils.trim(request.getParameter("k"));
+            final String keyword = StringUtils.trim(context.param("k"));
             if (StringUtils.isNotBlank(keyword)) {
                 requestJSONObject.put(Common.KEYWORD, keyword);
             }
@@ -311,7 +310,7 @@ public class ArticleConsole {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         final String articleId = context.pathVar("id");
-        final JSONObject currentUser = Solos.getCurrentUser(request, response);
+        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
 
         try {
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
@@ -359,7 +358,7 @@ public class ArticleConsole {
         final HttpServletResponse response = context.getResponse();
         try {
             final String articleId = context.pathVar("id");
-            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.STATUS_CODE, false);
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
@@ -402,7 +401,7 @@ public class ArticleConsole {
         renderer.setJSONObject(ret);
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        if (!Solos.isAdminLoggedIn(request, response)) {
+        if (!Solos.isAdminLoggedIn(context)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
 
@@ -445,7 +444,7 @@ public class ArticleConsole {
         renderer.setJSONObject(ret);
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        if (!Solos.isAdminLoggedIn(request, response)) {
+        if (!Solos.isAdminLoggedIn(context)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
 
@@ -513,7 +512,7 @@ public class ArticleConsole {
             final String articleId = article.getString(Keys.OBJECT_ID);
             renderer.setJSONObject(ret);
 
-            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (!articleQueryService.canAccessArticle(articleId, currentUser)) {
                 ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
                 ret.put(Keys.STATUS_CODE, false);
@@ -576,7 +575,7 @@ public class ArticleConsole {
         final HttpServletResponse response = context.getResponse();
         try {
             final JSONObject requestJSONObject = context.requestJSON();
-            final JSONObject currentUser = Solos.getCurrentUser(request, response);
+            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
 
             final String articleId = articleMgmtService.addArticle(requestJSONObject);

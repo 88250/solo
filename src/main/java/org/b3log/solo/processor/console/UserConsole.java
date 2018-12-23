@@ -173,7 +173,7 @@ public class UserConsole {
             final HttpServletRequest request = context.getRequest();
             final HttpServletResponse response = context.getResponse();
             final JSONObject requestJSONObject = context.requestJSON();
-            if (Solos.isAdminLoggedIn(request, response)) { // if the administrator register a new user, treats the new user as a normal user
+            if (Solos.isAdminLoggedIn(context)) { // if the administrator register a new user, treats the new user as a normal user
                 // (defaultRole) who could post article
                 requestJSONObject.put(User.USER_ROLE, Role.DEFAULT_ROLE);
             } else {
@@ -272,8 +272,7 @@ public class UserConsole {
         context.setRenderer(renderer);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final String requestURI = request.getRequestURI();
+            final String requestURI = context.requestURI();
             final String path = requestURI.substring((Latkes.getContextPath() + "/console/users/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
             final JSONObject result = userQueryService.getUsers(requestJSONObject);

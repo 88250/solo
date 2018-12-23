@@ -28,6 +28,7 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.Strings;
@@ -271,24 +272,22 @@ public final class Solos {
      * Checks whether the current request is made by a logged in user
      * (including default user and administrator lists in <i>users</i>).
      *
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified request context
      * @return {@code true} if the current request is made by logged in user, returns {@code false} otherwise
      */
-    public static boolean isLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
-        return null != Solos.getCurrentUser(request, response);
+    public static boolean isLoggedIn(final RequestContext context) {
+        return null != Solos.getCurrentUser(context.getRequest(), context.getResponse());
     }
 
     /**
      * Checks whether the current request is made by logged in administrator.
      *
-     * @param request  the specified request
-     * @param response the specified response
+     * @param context the specified request context
      * @return {@code true} if the current request is made by logged in
      * administrator, returns {@code false} otherwise
      */
-    public static boolean isAdminLoggedIn(final HttpServletRequest request, final HttpServletResponse response) {
-        final JSONObject user = getCurrentUser(request, response);
+    public static boolean isAdminLoggedIn(final RequestContext context) {
+        final JSONObject user = getCurrentUser(context.getRequest(), context.getResponse());
         if (null == user) {
             return false;
         }
@@ -305,11 +304,12 @@ public final class Solos {
      * The blogger itself dose not need view password never.
      * </p>
      *
-     * @param request the specified request
-     * @param article the specified article
+     * @param request  the specified request
+     * @param response the specified response
+     * @param article  the specified article
      * @return {@code true} if need, returns {@code false} otherwise
      */
-    public static boolean needViewPwd(final HttpServletRequest request, final JSONObject article) {
+    public static boolean needViewPwd(final HttpServletRequest request, final HttpServletResponse response, final JSONObject article) {
         final String articleViewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
 
         if (StringUtils.isBlank(articleViewPwd)) {
@@ -332,7 +332,7 @@ public final class Solos {
             }
         }
 
-        final JSONObject currentUser = getCurrentUser(request, null);
+        final JSONObject currentUser = getCurrentUser(request, response);
 
         return !(null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE)));
     }
@@ -358,7 +358,6 @@ public final class Solos {
      *
      * @param request the specified request
      * @return {@code true} if it is, returns {@code false} otherwise
-     * @see SoloServletListener#fillBotAttrs(HttpServletRequest)
      */
     public static boolean isMobile(final HttpServletRequest request) {
         final Object val = request.getAttribute(Keys.HttpRequest.IS_MOBILE_BOT);
@@ -374,7 +373,6 @@ public final class Solos {
      *
      * @param request the specified request
      * @return {@code true} if it is, returns {@code false} otherwise
-     * @see SoloServletListener#fillBotAttrs(HttpServletRequest)
      */
     public static boolean isBot(final HttpServletRequest request) {
         final Object val = request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
