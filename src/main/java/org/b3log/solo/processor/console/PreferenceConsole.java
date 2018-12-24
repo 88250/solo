@@ -49,7 +49,7 @@ import static org.b3log.solo.model.Option.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.2.0.18, Dec 23, 2018
+ * @version 1.2.0.19, Dec 24, 2018
  * @since 0.4.0
  */
 @RequestProcessor
@@ -398,12 +398,14 @@ public class PreferenceConsole {
     public void getOssPreference(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
+        final JSONObject ret = new JSONObject();
+        renderer.setJSONObject(ret);
 
         try {
             String ossServerVal = CATEGORY_C_QINIU;
             // 前端服务商切换 ossServer
             String ossServerTemp = context.param(ID_C_CLOUD_STORAGE_KEY);
-            if (ossServerTemp != null && ossServerTemp.length() > 0) {
+            if (StringUtils.isNotBlank(ossServerTemp)) {
                 ossServerVal = ossServerTemp;
             } else {
                 final JSONObject ossServer = optionQueryService.getOptions(CATEGORY_C_CLOU_STORAGE);
@@ -412,15 +414,11 @@ public class PreferenceConsole {
                 }
             }
 
-            final JSONObject oss = optionQueryService.getOptions(ossServerVal);
+            JSONObject oss = optionQueryService.getOptions(ossServerVal);
             if (null == oss) {
-                renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
-
-                return;
+                oss = new JSONObject();
             }
 
-            final JSONObject ret = new JSONObject();
-            renderer.setJSONObject(ret);
             ret.put("oss", convertOssOpts(ossServerVal, oss));
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
@@ -652,15 +650,15 @@ public class PreferenceConsole {
         boolean isAliyunServer = StringUtils.endsWithIgnoreCase(ossServer, CATEGORY_C_ALIYUN);
         boolean isQiniuServer = StringUtils.endsWithIgnoreCase(ossServer, CATEGORY_C_QINIU);
         if (isAliyunServer) {
-            ret.put("ossAccessKey", oss.getString(ID_C_ALIYUN_ACCESS_KEY));
-            ret.put("ossSecretKey", oss.getString(ID_C_ALIYUN_SECRET_KEY));
-            ret.put("ossDomain", oss.getString(ID_C_ALIYUN_DOMAIN));
-            ret.put("ossBucket", oss.getString(ID_C_ALIYUN_BUCKET));
+            ret.put("ossAccessKey", oss.optString(ID_C_ALIYUN_ACCESS_KEY));
+            ret.put("ossSecretKey", oss.optString(ID_C_ALIYUN_SECRET_KEY));
+            ret.put("ossDomain", oss.optString(ID_C_ALIYUN_DOMAIN));
+            ret.put("ossBucket", oss.optString(ID_C_ALIYUN_BUCKET));
         } else if (isQiniuServer) {
-            ret.put("ossAccessKey", oss.getString(ID_C_QINIU_ACCESS_KEY));
-            ret.put("ossSecretKey", oss.getString(ID_C_QINIU_SECRET_KEY));
-            ret.put("ossDomain", oss.getString(ID_C_QINIU_DOMAIN));
-            ret.put("ossBucket", oss.getString(ID_C_QINIU_BUCKET));
+            ret.put("ossAccessKey", oss.optString(ID_C_QINIU_ACCESS_KEY));
+            ret.put("ossSecretKey", oss.optString(ID_C_QINIU_SECRET_KEY));
+            ret.put("ossDomain", oss.optString(ID_C_QINIU_DOMAIN));
+            ret.put("ossBucket", oss.optString(ID_C_QINIU_BUCKET));
         } else {
             final String msg = "Unknown OSS server [" + ossServer + "]";
             LOGGER.log(Level.ERROR, msg);
