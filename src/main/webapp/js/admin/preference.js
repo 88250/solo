@@ -290,14 +290,14 @@ admin.preference = {
         });
     },
 
-    //服务商radio change事件
+    // 服务商radio change事件
     ossServerChange: function () {
         var ossServer = $('input[name=ossServer]:checked').val()
         $.ajax({
             url: latkeConfig.servePath + "/console/preference/oss?ossServer=" + ossServer,
             type: "GET",
             cache: false,
-            success: function (result,) {
+            success: function (result) {
                 if (!result.sc) {
                     $("#loadMsg").text("");
                     $("#tipMsg").text(result.msg);
