@@ -179,11 +179,12 @@
             <button onclick="admin.preference.updateOss()">${updateLabel}</button>
         </span>
         <span class="clear"></span>
-        <span class="fn__flex">
+        <span class="fn__flex-inline">
             <label class="fn__flex-inline">
             ${qiniuOssLabel}
                 <input name="ossServer" type="radio" value="qiniu" onclick="admin.preference.ossServerChange()"/>
             </label>
+            <span>&nbsp; &nbsp; &nbsp;</span>
             <label class="fn__flex-inline">
             ${aliyunOssLabel}
                 <input name="ossServer" type="radio" value="aliyun" onclick="admin.preference.ossServerChange()"/>
