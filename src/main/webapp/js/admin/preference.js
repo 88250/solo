@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.12, Dec 10, 2018
+ * @version 1.2.1.13, Dec 24, 2018
  */
 
 /* preference 相关操作 */
@@ -117,17 +117,14 @@ admin.preference = {
             url: latkeConfig.servePath + "/console/preference/oss",
             type: "GET",
             cache: false,
-            success: function (result, textStatus) {
-                $("#tipMsg").text(result.msg);
+            success: function (result) {
                 if (!result.sc) {
+                    $("#tipMsg").text(result.msg);
                     $("#loadMsg").text("");
                     return;
                 }
                 //设置服务商信息
-                var ossServer = result.oss.ossServer;
-                if (ossServer) {
-                    $('input[name=ossServer][value=' + ossServer + ']')[0].checked = true
-                }
+                $('input[name=ossServer][value=' + result.oss.ossServer + ']')[0].checked = true
                 $("#ossAccessKey").val(result.oss.ossAccessKey);
                 $("#ossSecretKey").val(result.oss.ossSecretKey);
                 $("#ossDomain").val(result.oss.ossDomain);
@@ -273,17 +270,8 @@ admin.preference = {
         $("#tipMsg").text("");
         $("#loadMsg").text(Label.loadingLabel);
 
-        var ossServers = document.getElementsByName("ossServer");
-        var ossServer = "qiniu";
-        for (var i in ossServers) {
-            if (ossServers[i].checked) {
-                ossServer = ossServers[i].value;
-                break;
-            }
-        }
-
         var requestJSONObject = {
-            "ossServer": ossServer,
+            "ossServer": $('input[name=ossServer]:checked').val(),
             "ossAccessKey": $("#ossAccessKey").val(),
             "ossSecretKey": $("#ossSecretKey").val(),
             "ossDomain": $("#ossDomain").val(),
@@ -295,7 +283,7 @@ admin.preference = {
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),
-            success: function (result, textStatus) {
+            success: function (result) {
                 $("#tipMsg").html(result.msg);
                 $("#loadMsg").text("");
             }
@@ -304,28 +292,16 @@ admin.preference = {
 
     //服务商radio change事件
     ossServerChange: function () {
-        var ossServers = document.getElementsByName("ossServer");
-        var ossServer = "qiniu";
-        for (var i in ossServers) {
-            if (ossServers[i].checked) {
-                ossServer = ossServers[i].value;
-                break;
-            }
-        }
+        var ossServer = $('input[name=ossServer]:checked').val()
         $.ajax({
             url: latkeConfig.servePath + "/console/preference/oss?ossServer=" + ossServer,
             type: "GET",
             cache: false,
-            success: function (result, textStatus) {
-                $("#tipMsg").text(result.msg);
+            success: function (result,) {
                 if (!result.sc) {
                     $("#loadMsg").text("");
+                    $("#tipMsg").text(result.msg);
                     return;
-                }
-                //设置服务商信息
-                var ossServer = result.oss.ossServer;
-                if (ossServer) {
-                    $('input[name=ossServer][value=' + ossServer + ']')[0].checked = true
                 }
                 $("#ossAccessKey").val(result.oss.ossAccessKey);
                 $("#ossSecretKey").val(result.oss.ossSecretKey);
@@ -335,7 +311,6 @@ admin.preference = {
         });
     }
 }
-;
 
 /*
  * 注册到 admin 进行管理 

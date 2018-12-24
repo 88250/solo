@@ -19,7 +19,7 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.5.0.1, Oct 24, 2018
+* @version 2.5.0.2, Dec 24, 2018
 */
 
 /* start resset */
@@ -954,7 +954,9 @@ a[class*=" icon-"]:hover {
     height: auto;
 }
 
-.form input[type='text']:focus, .form input[type='password']:focus, .form textarea:focus {
+.form input[type='text']:focus,
+.form input[type='radio']:focus,
+.form input[type='password']:focus, .form textarea:focus {
     box-shadow: none;
     border-color: #1fb5ad;
 }

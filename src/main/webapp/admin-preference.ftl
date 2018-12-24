@@ -178,13 +178,19 @@
             &nbsp;
             <button onclick="admin.preference.updateOss()">${updateLabel}</button>
         </span>
+        <span class="clear"></span>
+        <span class="fn__flex">
+            <label class="fn__flex-inline">
             ${qiniuOssLabel}
-        <input name="ossServer" id= "qiniuOss" type="radio" value="qiniu" onclick="admin.preference.ossServerChange()"/>
+                <input name="ossServer" type="radio" value="qiniu" onclick="admin.preference.ossServerChange()"/>
+            </label>
+            <label class="fn__flex-inline">
             ${aliyunOssLabel}
-        <input name="ossServer" id= "aliyunOss" type="radio" value="aliyun" onclick="admin.preference.ossServerChange()"/>
-        <div class="clear"></div>
+                <input name="ossServer" type="radio" value="aliyun" onclick="admin.preference.ossServerChange()"/>
+            </label>
+        </span>
         <label for="osSAccessKey">${accessKey1Label}</label>
-        <input id="ossAccessKey" type="text"/>
+        <input id="ossAccessKey" type="text" />
         <label for="ossSecretKey">${secretKey1Label}</label>
         <input id="ossSecretKey" type="text"/>
         <label for="ossDomain">${domain1Label}</label>
