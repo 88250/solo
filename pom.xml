@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.39, Dec 23, 2018
+    Version: 3.18.3.40, Dec 26, 2018
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -316,6 +316,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${maven-surefire-plugin.version}</version>
                 <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
                     <skipTests>false</skipTests>
                 </configuration>
             </plugin>
