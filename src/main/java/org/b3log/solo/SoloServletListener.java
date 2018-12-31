@@ -75,7 +75,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
-        Latkes.USER_AGENT = Solos.USER_AGENT;
         Latkes.setScanPath("org.b3log.solo");
         super.contextInitialized(servletContextEvent);
         beanManager = BeanManager.getInstance();
