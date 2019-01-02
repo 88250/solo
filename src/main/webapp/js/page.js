@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.3, Dec 7, 2018
+ * @version 1.4.1.4, Jan 2, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = "";
@@ -370,12 +370,12 @@ $.extend(Page.prototype, {
     // otherelse use highlight
     // load css
     if (document.createStyleSheet) {
-      document.createStyleSheet(latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/styles/default.css");
+      document.createStyleSheet(latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/styles/default.css");
     } else {
-      $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/styles/" + ((obj && obj.theme) || 'github') + ".css'>"));
+      $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/styles/" + ((obj && obj.theme) || 'github') + ".css'>"));
     }
     $.ajax({
-      url: latkeConfig.staticServePath + "/js/lib/highlight.js-9.6.0/highlight.pack.js",
+      url: latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/highlight.pack.js",
       dataType: "script",
       cache: true,
       success: function () {

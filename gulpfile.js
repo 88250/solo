@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.0, Oct 2, 2018
+ * @version 1.7.0.1, Jan 2, 2019
  */
 
 'use strict'
@@ -60,7 +60,7 @@ function miniAdmin () {
     './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
     './src/main/webapp/js/lib/CodeMirrorEditor/editor.js',
     './src/main/webapp/js/lib/to-markdown.js',
-    './src/main/webapp/js/lib/highlight.js-9.6.0/highlight.pack.js']
+    './src/main/webapp/js/lib/highlight-9.13.1/highlight.pack.js']
   return gulp.src(jsJqueryUpload).
     pipe(uglify({output: {ascii_only: true}})).
     // https://github.com/b3log/solo/issues/12522
