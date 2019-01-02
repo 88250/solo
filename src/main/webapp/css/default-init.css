@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 1.2.0.0, Sep 21, 2018
+* @version 1.2.0.1, Jan 2, 2019
 */
 html,body {
     margin: 0;
@@ -307,26 +307,35 @@ button:active {
 }
 /* end init */
 
-/* start search */
+/* start content-reset */
 .content-reset {
-    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
     word-wrap: break-word;
     overflow: auto;
-    line-height: 1.5;
-    font-size: 13px;
-    word-break: break-all;
-    color: #545454;
+    line-height: 1.65;
+    font-size: 16px;
+    word-break: break-word;
 }
 
 .content-reset ul,
 .content-reset ol {
     padding-left: 2em;
     margin-top: 0;
-    margin-bottom: 16px
+    margin-bottom: 16px;
 }
+
 .content-reset li {
-    margin-top: 0.25em
+    margin-top: 0.25em;
 }
+
+.content-reset img {
+    cursor: zoom-in;
+}
+
+.content-reset img.emoji {
+    cursor: auto;
+    max-width: 18px;
+}
+
 .content-reset h1,
 .content-reset h2,
 .content-reset h3,
@@ -336,97 +345,127 @@ button:active {
     margin-top: 24px;
     margin-bottom: 16px;
     font-weight: 600;
-    line-height: 1.25
+    line-height: 1.25;
 }
+
 .content-reset h1 {
     padding-bottom: 0.3em;
-    font-size: 2em;
-    border-bottom: 1px solid #eee
+    font-size: 1.7em;
+    border-bottom: 1px solid #eee;
 }
+
 .content-reset h2 {
     padding-bottom: 0.3em;
     font-size: 1.5em;
-    border-bottom: 1px solid #eee
+    border-bottom: 1px solid #eee;
 }
+
 .content-reset h3 {
-    font-size: 1.25em
+    font-size: 1.25em;
 }
+
 .content-reset h4 {
-    font-size: 1em
+    font-size: 1em;
 }
+
 .content-reset h5 {
-    font-size: 0.875em
+    font-size: 0.875em;
 }
+
 .content-reset h6 {
-    font-size: 0.85em
+    font-size: 0.85em;
 }
+
 .content-reset hr {
-    height: 2px;
+    height: 0.15em;
     padding: 0;
-    margin: 5px 0;
+    margin: 24px 0;
     background-color: #e7e7e7;
-    border: 0
+    border: 0;
 }
+
 .content-reset p {
     margin-top: 0;
-    margin-bottom: 0;
+    margin-bottom: 16px;
 }
+
 .content-reset blockquote {
     padding: 0 1em;
     color: #777;
     border-left: 0.25em solid #ddd;
-    margin-bottom: 16px
+    margin-bottom: 16px;
 }
+
 .content-reset blockquote p {
-    margin: 0
+    margin: 0;
 }
+
+.content-reset ins > iframe {
+    border: 0;
+}
+
 .content-reset iframe {
-    border: 1px solid #ccc
+    border: 1px solid rgba(0, 0, 0, 0.38);
 }
+
 .content-reset table {
     width: 100%;
     border: 1px solid #dedede;
     margin: 15px auto;
     border-collapse: collapse;
-    empty-cells: show
+    empty-cells: show;
 }
+
 .content-reset thead {
-    text-align: center
+    text-align: center;
 }
+
 .content-reset td,
 .content-reset th {
     height: 35px;
     border: 1px solid #dedede;
-    padding: 0 10px
+    padding: 0 10px;
 }
+
 .content-reset th {
     font-weight: bold;
     text-align: center !important;
-    background: rgba(158, 188, 226, 0.2)
+    background: rgba(158, 188, 226, 0.2);
 }
+
 .content-reset tbody tr:nth-child(2n) {
-    background: rgba(158, 188, 226, 0.12)
+    background: rgba(158, 188, 226, 0.12);
 }
+
 .content-reset tr:hover {
-    background: #efefef
+    background: #efefef;
 }
+
 .content-reset code {
     padding: 0.2em 0.4em;
     margin: 0;
     font-size: 85%;
     background-color: rgba(252, 41, 41, 0.12);
     border-radius: 3px;
-    color: #d23f31;
-    font-family: mononoki, Consolas, "Liberation Mono", Menlo, Courier, monospace
+    word-break: break-word;
 }
-.content-reset pre>code {
+
+.content-reset pre {
+    position: relative;
+}
+
+.content-reset pre textarea {
+    position: absolute;
+    top: -100000px;
+}
+
+.content-reset pre > code {
     padding: 0.5em;
-    border-radius: 0;
-    color: #333;
     background-color: rgba(0, 0, 0, 0.04);
     background-size: 20px 20px;
-    border-radius: 5px
+    border-radius: 5px;
 }
+
 .content-reset kbd {
     display: inline-block;
     padding: 3px 5px;
@@ -435,12 +474,20 @@ button:active {
     color: #555;
     vertical-align: middle;
     background-color: #fcfcfc;
-    border: solid 1px #ccc;
+    border: solid 1px rgba(0, 0, 0, 0.38);
     border-bottom-color: #bbb;
     border-radius: 3px;
-    box-shadow: inset 0 -1px 0 #bbb
+    box-shadow: inset 0 -1px 0 #bbb;
 }
 
+.content-reset__task,
+.content-reset .task-list-item {
+    list-style: none;
+    margin-left: -1em;
+}
+/* end content-reset */
+
+/* start search */
 .search {
     border-top: 5px solid #e6e5d9;
     background-color: #f3f1e5;
