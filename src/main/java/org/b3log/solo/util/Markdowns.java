@@ -46,12 +46,12 @@ import java.util.concurrent.*;
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  * <p>
- * Uses the <a href="https://github.com/chjj/marked">marked</a> as the processor, if not found this command, try
+ * Uses the <a href="https://github.com/markedjs/marked">marked</a> as the processor, if not found this command, try
  * built-in <a href="https://github.com/vsch/flexmark-java">flexmark</a> instead.
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.3, Dec 30, 2018
+ * @version 2.3.1.4, Jan 2, 2019
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -107,7 +107,7 @@ public final class Markdowns {
             conn.setDoOutput(true);
 
             try (final OutputStream outputStream = conn.getOutputStream()) {
-                IOUtils.write("Solo 大法好", outputStream, "UTF-8");
+                IOUtils.write("昔日舞曲", outputStream, "UTF-8");
             }
 
             String html;
@@ -117,7 +117,7 @@ public final class Markdowns {
 
             conn.disconnect();
 
-            MARKED_AVAILABLE = StringUtils.contains(html, "<p>Solo 大法好</p>");
+            MARKED_AVAILABLE = StringUtils.contains(html, "<p>昔日舞曲</p>");
 
             if (MARKED_AVAILABLE) {
                 LOGGER.log(Level.DEBUG, "[marked] is available, uses it for markdown processing");
