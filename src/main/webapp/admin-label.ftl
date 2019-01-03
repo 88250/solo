@@ -25,6 +25,7 @@
     };
     
     var Label = {
+        "markedAvailable": ${markedAvailable?c},
         "skinDirName": "${skinDirName}",
         "editorType": "${editorType}",
         "userRole": "${userRole}",

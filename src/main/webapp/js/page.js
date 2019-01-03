@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.4, Jan 2, 2019
+ * @version 1.5.0.0, Jan 4, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = "";
@@ -330,7 +330,8 @@ $.extend(Page.prototype, {
    */
   parseLanguage: function (obj) {
     var isPrettify = false,
-      isSH = false;
+      isSH = false,
+      isHljs = false;
     $(".article-body pre, .code-highlight pre").each(function () {
       if (this.className.indexOf("brush") > -1) {
         isSH = true;
@@ -339,6 +340,8 @@ $.extend(Page.prototype, {
       if (this.className.indexOf("prettyprint") > -1) {
         isPrettify = true;
       }
+
+      isHljs = true
     });
 
     if (isSH) {
@@ -367,22 +370,24 @@ $.extend(Page.prototype, {
     }
 
 
-    // otherelse use highlight
-    // load css
-    if (document.createStyleSheet) {
-      document.createStyleSheet(latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/styles/default.css");
-    } else {
-      $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/styles/" + ((obj && obj.theme) || 'github') + ".css'>"));
-    }
-    $.ajax({
-      url: latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/highlight.pack.js",
-      dataType: "script",
-      cache: true,
-      success: function () {
-        hljs.initHighlighting.called = false;
-        hljs.initHighlighting();
+    if (isHljs && !Label.markedAvailable) {
+      // otherelse use highlight
+      // load css
+      if (document.createStyleSheet) {
+        document.createStyleSheet(latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/styles/default.css");
+      } else {
+        $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/styles/" + ((obj && obj.theme) || 'github') + ".css'>"));
       }
-    });
+      $.ajax({
+        url: latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/highlight.pack.js",
+        dataType: "script",
+        cache: true,
+        success: function () {
+          hljs.initHighlighting.called = false;
+          hljs.initHighlighting();
+        }
+      });
+    }
   },
   /*
    * @description 文章/自定义页面加载
