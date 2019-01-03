@@ -46,11 +46,11 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.*;
+import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,7 +65,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.9, Dec 2, 2018
+ * @version 1.7.0.10, Jan 4, 2019
  * @since 0.4.1
  */
 @Singleton
@@ -131,8 +131,6 @@ public class AdminConsole {
      * @param context the specified context
      */
     public void showAdminIndex(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
         final String templateName = "admin-index.ftl";
@@ -169,6 +167,8 @@ public class AdminConsole {
             dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
             Keys.fillRuntime(dataModel);
             dataModelService.fillMinified(dataModel);
+            // 使用 Marked 时代码高亮问题 https://github.com/b3log/solo/issues/12614
+            dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKED_AVAILABLE);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Admin index render failed", e);
         }
@@ -182,7 +182,6 @@ public class AdminConsole {
      * @param context the specified context
      */
     public void showAdminFunctions(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
         context.setRenderer(renderer);
         final String requestURI = context.requestURI();
@@ -247,7 +246,6 @@ public class AdminConsole {
      * @param context the specified HTTP request context
      */
     public void exportSQL(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
         if (!Solos.isAdminLoggedIn(context)) {
@@ -361,7 +359,6 @@ public class AdminConsole {
      * @param context the specified HTTP request context
      */
     public void exportJSON(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(context)) {
             context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -412,7 +409,6 @@ public class AdminConsole {
      * @param context the specified HTTP request context
      */
     public void exportHexo(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(context)) {
             context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
