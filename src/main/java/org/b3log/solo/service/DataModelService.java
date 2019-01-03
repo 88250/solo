@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.1, Dec 10, 2018
+ * @version 1.7.0.2, Jan 3, 2019
  * @since 0.3.1
  */
 @Service
@@ -580,6 +580,9 @@ public class DataModelService {
             }
         }
         dataModel.put("customVars", customVars);
+
+        // 使用 Marked 时代码高亮问题 https://github.com/b3log/solo/issues/12614
+        dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKED_AVAILABLE);
     }
 
     /**
