@@ -332,7 +332,7 @@ $.extend(Page.prototype, {
     var isPrettify = false,
       isSH = false,
       isHljs = false;
-    $(".article-body pre, .code-highlight pre").each(function () {
+    $(".article-body pre, .content-reset pre, .code-highlight pre").each(function () {
       if (this.className.indexOf("brush") > -1) {
         isSH = true;
       }
