@@ -8,7 +8,7 @@
  * Article reset style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</ta>
- * @version 0.2.0.3, Jan 2, 2019
+ * @version 0.2.1.0, Jan 4, 2019
  */
 
 .content-reset {
@@ -165,6 +165,7 @@
     background-color: rgba(0, 0, 0, 0.04);
     background-size: 20px 20px;
     border-radius: 5px;
+    display: block;
   }
 
   kbd {

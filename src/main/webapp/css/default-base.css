@@ -19,7 +19,7 @@
  * base style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.1, Jan 2, 2019
+ * @version 1.2.1.0, Jan 4, 2019
 */
 
 html, body, div, ul, li, h1, h2, h3, h4, h5, h6, p, dd, dl, ol {
@@ -519,6 +519,7 @@ button:hover,.button:hover {
     background-color: rgba(0, 0, 0, 0.04);
     background-size: 20px 20px;
     border-radius: 5px;
+    display: block;
 }
 
 .article-body kbd {

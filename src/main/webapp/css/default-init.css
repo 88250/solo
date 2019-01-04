@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 1.2.0.1, Jan 2, 2019
+* @version 1.2.1.0, Jan 4, 2019
 */
 html,body {
     margin: 0;
@@ -464,6 +464,7 @@ button:active {
     background-color: rgba(0, 0, 0, 0.04);
     background-size: 20px 20px;
     border-radius: 5px;
+    display: block;
 }
 
 .content-reset kbd {
