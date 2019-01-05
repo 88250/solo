@@ -33,7 +33,7 @@ import java.util.Map;
  * Skin renderer.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Nov 28, 2018
+ * @version 1.0.0.3, Jan 5, 2019
  * @since 2.9.1
  */
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
@@ -44,12 +44,15 @@ public final class SkinRenderer extends AbstractFreeMarkerRenderer {
     private final RequestContext context;
 
     /**
-     * Constructs a skin renderer with the specified HTTP servlet request.
+     * Constructs a skin renderer with the specified request context and template name.
      *
-     * @param context the specified HTTP servlet request context
+     * @param context      the specified request context
+     * @param templateName the specified template name
      */
-    public SkinRenderer(final RequestContext context) {
+    public SkinRenderer(final RequestContext context, final String templateName) {
         this.context = context;
+        this.context.setRenderer(this);
+        setTemplateName(templateName);
     }
 
     @Override

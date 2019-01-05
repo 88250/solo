@@ -49,7 +49,7 @@ import java.util.Map;
  * Category processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Sep 21, 2018
+ * @version 1.0.1.6, Jan 5, 2019
  * @since 2.0.0
  */
 @RequestProcessor
@@ -109,9 +109,7 @@ public class CategoryProcessor {
      */
     @RequestProcessing(value = "/category/{categoryURI}", method = HttpMethod.GET)
     public void showCategoryArticles(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("category-articles.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "category-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();

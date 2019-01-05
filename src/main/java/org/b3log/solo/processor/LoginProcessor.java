@@ -62,7 +62,7 @@ import java.util.Map;
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.1.16, Dec 3, 2018
+ * @version 1.1.1.17, Jan 5, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -415,10 +415,7 @@ public class LoginProcessor {
      */
     private void renderPage(final RequestContext context, final String pageTemplate, final String destinationURL,
                             final HttpServletRequest request) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        renderer.setTemplateName(pageTemplate);
-        context.setRenderer(renderer);
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, pageTemplate);
         final Map<String, Object> dataModel = renderer.getDataModel();
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final JSONObject preference = preferenceQueryService.getPreference();

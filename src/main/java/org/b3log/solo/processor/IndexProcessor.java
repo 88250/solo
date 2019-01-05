@@ -52,7 +52,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.4.11, Dec 2, 2018
+ * @version 1.2.4.12, Jan 5, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -97,9 +97,7 @@ public class IndexProcessor {
     public void showIndex(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("index.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "index.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         try {
             final int currentPageNum = Paginator.getPage(request);
@@ -147,11 +145,7 @@ public class IndexProcessor {
     @RequestProcessing(value = "/kill-browser", method = HttpMethod.GET)
     public void showKillBrowser(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("kill-browser.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "kill-browser.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
@@ -175,12 +169,7 @@ public class IndexProcessor {
      */
     @RequestProcessing(value = "/register", method = HttpMethod.GET)
     public void showRegister(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("register.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "register.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         try {
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
