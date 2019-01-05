@@ -61,7 +61,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.5.1, Dec 3, 2018
+ * @version 1.4.5.2, Jan 5, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -545,9 +545,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/authors/{author}", method = HttpMethod.GET)
     public void showAuthorArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("author-articles.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "author-articles.ftl");
 
         try {
             final String authorId = context.pathVar("author");
@@ -607,9 +605,7 @@ public class ArticleProcessor {
     @RequestProcessing(value = "/archives/{yyyy}/{MM}", method = HttpMethod.GET)
     public void showArchiveArticles(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("archive-articles.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "archive-articles.ftl");
 
         try {
             final int currentPageNum = Paginator.getPage(request);
@@ -672,10 +668,7 @@ public class ArticleProcessor {
         final String articleId = article.optString(Keys.OBJECT_ID);
         LOGGER.log(Level.DEBUG, "Article [id={0}]", articleId);
 
-        final HttpServletRequest request = context.getRequest();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("article.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "article.ftl");
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();

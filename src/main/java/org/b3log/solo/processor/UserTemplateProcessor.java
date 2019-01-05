@@ -48,7 +48,7 @@ import java.util.Map;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, Dec 3, 2018
+ * @version 1.0.0.10, Jan 5, 2019
  * @since 0.4.5
  */
 @RequestProcessor
@@ -96,9 +96,7 @@ public class UserTemplateProcessor {
 
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName(templateName);
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, templateName);
 
         final Map<String, Object> dataModel = renderer.getDataModel();
         final Template template = Skins.getSkinTemplate(context, templateName);
