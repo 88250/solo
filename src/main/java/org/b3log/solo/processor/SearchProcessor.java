@@ -55,7 +55,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.1.1, Nov 28, 2018
+ * @version 1.1.1.2, Jan 5, 2019
  * @since 2.4.0
  */
 @RequestProcessor
@@ -128,10 +128,7 @@ public class SearchProcessor {
     @RequestProcessing(value = "/search", method = HttpMethod.GET)
     public void search(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("search.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "search.ftl");
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.putAll(langs);

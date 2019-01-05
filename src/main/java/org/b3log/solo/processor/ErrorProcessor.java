@@ -93,10 +93,7 @@ public class ErrorProcessor {
             LOGGER.log(Level.TRACE, "Shows error page[requestURI={0}, templateName={1}]",
                     requestURI, templateName);
 
-            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-            context.setRenderer(renderer);
-            renderer.setTemplateName("error/" + templateName);
-
+            final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "error/" + templateName);
             final Map<String, Object> dataModel = renderer.getDataModel();
             try {
                 final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));

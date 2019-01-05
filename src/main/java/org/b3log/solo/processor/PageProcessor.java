@@ -49,7 +49,7 @@ import java.util.Map;
  * Page processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.8, Dec 3, 2018
+ * @version 1.1.0.9, Jan 5, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -97,9 +97,7 @@ public class PageProcessor {
      */
     @RequestProcessing(value = "/page", method = HttpMethod.GET)
     public void showPage(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("page.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "page.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
         final HttpServletRequest request = context.getRequest();

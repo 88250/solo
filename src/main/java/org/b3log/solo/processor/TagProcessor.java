@@ -47,7 +47,7 @@ import java.util.Map;
  * Tag processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.7, Dec 3, 2018
+ * @version 1.1.1.8, Jan 5, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -107,9 +107,7 @@ public class TagProcessor {
      */
     @RequestProcessing(value = "/tags/{tagTitle}", method = HttpMethod.GET)
     public void showTagArticles(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context);
-        context.setRenderer(renderer);
-        renderer.setTemplateName("tag-articles.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "tag-articles.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
