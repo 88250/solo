@@ -39,15 +39,12 @@ import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * User console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.1.4, Dec 11, 2018
+ * @version 1.2.1.5, Jan 10, 2019
  * @since 0.4.0
  */
 @RequestProcessor
@@ -162,7 +159,6 @@ public class UserConsole {
      *
      * @param context the specified http request context
      */
-    @Before(ConsoleAdminAuthAdvice.class)
     public void addUser(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -170,8 +166,6 @@ public class UserConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final HttpServletResponse response = context.getResponse();
             final JSONObject requestJSONObject = context.requestJSON();
             if (Solos.isAdminLoggedIn(context)) { // if the administrator register a new user, treats the new user as a normal user
                 // (defaultRole) who could post article
