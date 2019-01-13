@@ -72,16 +72,15 @@
             <button id="articleSign0">${noSignLabel}</button>
         </span>
         <div class="right article-commentable__panel">
-            <label>
+            <label class="checkbox">
                 <input type="checkbox" id="articleCommentable" checked />
                 ${allowCommentLabel}
             </label>
             &nbsp;
             <span id="postToCommunityPanel">
-                <label>
+                <label class="checkbox">
                     <input id="postToCommunity" type="checkbox" />
-                    ${syncToCommunity}
-                    (<a class="no-underline" href="https://hacpai.com/article/1546941897596" target="_blank">?</a>)
+                    <a href="https://hacpai.com/article/1546941897596" target="_blank">${syncToCommunity}</a>
                 </label>
             </span>
         </div>

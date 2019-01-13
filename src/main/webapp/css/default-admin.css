@@ -966,6 +966,12 @@ a[class*=" icon-"]:hover {
     display: inline-block;
 }
 
+.form label.checkbox {
+    display: inline-flex;
+    align-items: center;
+    margin: 6px 0;
+}
+
 .form input[type='text'], .form input[type='password'], .form textarea,
 .form select {
     font-size: 14px;
