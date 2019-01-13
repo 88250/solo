@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.1.1, Oct 27, 2018
+ * @version 1.5.0.0, Jan 13, 2019
  */
 
 /**
@@ -318,10 +318,19 @@ var Util = {
    * @description 页面初始化执行的函数
    */
   init: function () {
-  //window.onerror = Util.error;
+    //window.onerror = Util.error;
     Util.killIE();
     Util.setTopBar();
     Util.parseMarkdown();
+    Util.initSW();
+  },
+  /**
+   * @description 注册 Service Work
+   */
+  initSW: function () {
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.register('/sw.js',  {scope: '/'});
+    }
   },
   /**
    * @description 替换侧边栏表情为图片

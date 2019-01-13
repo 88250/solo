@@ -20,8 +20,9 @@
 -->
 <!--
     Description: Static resources definition.
-    Version: 2.7.6.6, Dec 10, 2016
+    Version: 2.8.0.60, Jan 13, 2019
     Author: Liang Ding
+    Author: Liyuan Li
 -->
 <static-files>
     <!-- Uses the STANDARD Ant Path Pattern to configure these paths!  -->
@@ -29,6 +30,7 @@
     <include path="/favicon.ico"/>
     <include path="/favicon.png"/>
     <include path="/robots.txt"/>
+    <include path="/sw.js"/>
     <include path="/manifest.json"/>
 
     <include path="/js/**.js"/>
