@@ -44,7 +44,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +51,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.6, Dec 10, 2018
+ * @version 1.1.1.7, Jan 13, 2019
  * @since 0.4.0
  */
 @Singleton
@@ -143,7 +142,6 @@ public class ArticleConsole {
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
-        final HttpServletRequest request = context.getRequest();
         final String markdownText = context.param("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             result.put("html", "");
@@ -307,8 +305,6 @@ public class ArticleConsole {
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         final String articleId = context.pathVar("id");
         final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
 
@@ -354,8 +350,6 @@ public class ArticleConsole {
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
 
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         try {
             final String articleId = context.pathVar("id");
             final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
@@ -399,8 +393,6 @@ public class ArticleConsole {
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(context)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
@@ -442,8 +434,6 @@ public class ArticleConsole {
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
         renderer.setJSONObject(ret);
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         if (!Solos.isAdminLoggedIn(context)) {
             ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
             ret.put(Keys.STATUS_CODE, false);
@@ -504,8 +494,6 @@ public class ArticleConsole {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         try {
             final JSONObject requestJSONObject = context.requestJSON();
             final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
@@ -571,8 +559,6 @@ public class ArticleConsole {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-        final HttpServletRequest request = context.getRequest();
-        final HttpServletResponse response = context.getResponse();
         try {
             final JSONObject requestJSONObject = context.requestJSON();
             final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
