@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.1, Dec 10, 2018
+ * @version 1.5.1.2, Jan 13, 2019
  */
 admin.article = {
     currentEditorType: '',
@@ -343,15 +343,13 @@ admin.article = {
             if (this.status.articleHadBeenPublished) {
                 $("#postToCommunityPanel").hide();
             } else {
-                // 1.0.0 开始默认会发布到社区
-                // $("#postToCommunityPanel").show();
+                $("#postToCommunityPanel").show();
             }
         } else {
             $("#submitArticle").show();
             $("#unSubmitArticle").hide();
             $("#saveArticle").show();
-            // 1.0.0 开始默认会发布到社区
-            // $("#postToCommunityPanel").show();
+            $("#postToCommunityPanel").show();
         }
 
         $("#postToCommunity").attr("checked", "checked");
