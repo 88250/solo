@@ -131,7 +131,7 @@ public class SitemapProcessor {
      * @throws Exception exception
      */
     private void addArticles(final Sitemap sitemap) throws Exception {
-        final Query query = new Query().setCurrentPageNum(1).
+        final Query query = new Query().setPage(1, Integer.MAX_VALUE).
                 setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
                 addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).
                 select(Article.ARTICLE_PERMALINK, Article.ARTICLE_UPDATED);
