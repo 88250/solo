@@ -36,7 +36,7 @@ import java.util.List;
  * Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.11, Sep 30, 2018
+ * @version 1.1.1.12, Jan 15, 2019
  * @since 0.3.1
  */
 @Repository
@@ -270,9 +270,7 @@ public class ArticleRepository extends AbstractRepository {
                         new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
                 addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).
                 setCurrentPageNum(1).setPageSize(1).setPageCount(1).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_ABSTRACT, String.class);
+                select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_ABSTRACT);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
@@ -319,9 +317,7 @@ public class ArticleRepository extends AbstractRepository {
                         new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
                 addSort(Article.ARTICLE_CREATED, SortDirection.ASCENDING).
                 setCurrentPageNum(1).setPageSize(1).setPageCount(1).
-                addProjection(Article.ARTICLE_TITLE, String.class).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_ABSTRACT, String.class);
+                select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_ABSTRACT);
 
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);

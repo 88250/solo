@@ -55,7 +55,7 @@ import java.net.URLEncoder;
  * Sitemap processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.5, Dec 3, 2018
+ * @version 1.0.2.6, Jan 15, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -134,8 +134,7 @@ public class SitemapProcessor {
         final Query query = new Query().setCurrentPageNum(1).
                 setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
                 addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).
-                addProjection(Article.ARTICLE_PERMALINK, String.class).
-                addProjection(Article.ARTICLE_UPDATED, Long.class);
+                select(Article.ARTICLE_PERMALINK, Article.ARTICLE_UPDATED);
         final JSONObject articleResult = articleRepository.get(query);
         final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
 

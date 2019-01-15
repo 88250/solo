@@ -56,7 +56,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.32, Dec 11, 2018
+ * @version 1.2.0.33, Jan 15, 2019
  * @since 1.2.0
  */
 @Service
@@ -265,10 +265,7 @@ public class UpgradeService {
 
     private void upgradeArticles() throws Exception {
         final List<JSONObject> articles = articleRepository.getList(new Query().
-                addProjection(Keys.OBJECT_ID, String.class).
-                addProjection(Article.ARTICLE_T_CREATE_DATE, Date.class).
-                addProjection(Article.ARTICLE_T_UPDATE_DATE, Date.class).
-                addProjection(Article.ARTICLE_T_AUTHOR_EMAIL, String.class));
+                select(Keys.OBJECT_ID, Article.ARTICLE_T_CREATE_DATE, Article.ARTICLE_T_UPDATE_DATE, Article.ARTICLE_T_AUTHOR_EMAIL));
         if (articles.isEmpty()) {
             LOGGER.log(Level.TRACE, "No articles");
 

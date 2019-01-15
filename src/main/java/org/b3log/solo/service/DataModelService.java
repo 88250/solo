@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.2, Jan 3, 2019
+ * @version 1.7.0.3, Jan 15, 2019
  * @since 0.3.1
  */
 @Service
@@ -213,8 +213,6 @@ public class DataModelService {
                         query.addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING);
                     }
                 }
-
-            query.index(Article.ARTICLE_PERMALINK);
 
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
             if (0 != pageNums.size()) {
