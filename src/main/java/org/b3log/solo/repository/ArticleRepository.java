@@ -206,7 +206,7 @@ public class ArticleRepository extends AbstractRepository {
         final Query query = new Query().
                 setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).
-                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+                setPage(1, fetchSize).setPageCount(1);
 
         return getList(query);
     }
@@ -223,7 +223,7 @@ public class ArticleRepository extends AbstractRepository {
                 addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).
                 setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
-                setCurrentPageNum(1).setPageSize(num).setPageCount(1);
+                setPage(1, num).setPageCount(1);
 
         return getList(query);
     }
@@ -240,7 +240,7 @@ public class ArticleRepository extends AbstractRepository {
                 addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).
                 setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
-                setCurrentPageNum(1).setPageSize(num).setPageCount(1);
+                setPage(1, num).setPageCount(1);
 
         return getList(query);
     }
@@ -269,7 +269,7 @@ public class ArticleRepository extends AbstractRepository {
                         new PropertyFilter(Article.ARTICLE_CREATED, FilterOperator.LESS_THAN, currentArticleCreated),
                         new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
                 addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).
-                setCurrentPageNum(1).setPageSize(1).setPageCount(1).
+                setPage(1, 1).setPageCount(1).
                 select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_ABSTRACT);
 
         final JSONObject result = get(query);
@@ -316,7 +316,7 @@ public class ArticleRepository extends AbstractRepository {
                         new PropertyFilter(Article.ARTICLE_CREATED, FilterOperator.GREATER_THAN, currentArticleCreated),
                         new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
                 addSort(Article.ARTICLE_CREATED, SortDirection.ASCENDING).
-                setCurrentPageNum(1).setPageSize(1).setPageCount(1).
+                setPage(1, 1).setPageCount(1).
                 select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_ABSTRACT);
 
         final JSONObject result = get(query);

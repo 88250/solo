@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Archive date-Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Sep 30, 2018
+ * @version 1.0.0.4, Jan 15, 2019
  * @since 0.3.1
  */
 @Repository
@@ -66,7 +66,7 @@ public class ArchiveDateArticleRepository extends AbstractRepository {
     public JSONObject getByArchiveDateId(final String archiveDateId, final int currentPageNum, final int pageSize) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, archiveDateId)).
                 addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
+                setPage(currentPageNum, pageSize).setPageCount(1);
 
         return get(query);
     }
