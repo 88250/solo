@@ -34,7 +34,7 @@ import java.util.List;
  * Tag repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 30, 2018
+ * @version 1.0.0.3, Jan 15, 2019
  * @since 0.3.1
  */
 @Repository
@@ -103,7 +103,7 @@ public class TagRepository extends AbstractRepository {
      */
     public List<JSONObject> getMostUsedTags(final int num) throws RepositoryException {
         final Query query = new Query().addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING).
-                setCurrentPageNum(1).setPageSize(num).setPageCount(1);
+                setPage(1, num).setPageCount(1);
         final List<JSONObject> tagJoList = getList(query);
         Collections.sort(tagJoList, (o1, o2) -> Collator.getInstance(java.util.Locale.CHINA).compare(o1.optString(Tag.TAG_TITLE), o2.optString(Tag.TAG_TITLE)));
 

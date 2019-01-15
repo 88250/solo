@@ -113,7 +113,7 @@ public class ArticleRepository extends AbstractRepository {
                 new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
                 new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
                 new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
-                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+                setPage(1, fetchSize).setPageCount(1);
 
         final List<JSONObject> list1 = getList(query);
         ret.addAll(list1);
@@ -126,7 +126,7 @@ public class ArticleRepository extends AbstractRepository {
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
                             new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
-                    setCurrentPageNum(1).setPageSize(reminingSize).setPageCount(1);
+                    setPage(1, reminingSize).setPageCount(1);
 
             final List<JSONObject> list2 = getList(query);
 
@@ -161,7 +161,7 @@ public class ArticleRepository extends AbstractRepository {
                         new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, authorId),
                         new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).
-                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
+                setPage(currentPageNum, pageSize).setPageCount(1);
 
         return get(query);
     }

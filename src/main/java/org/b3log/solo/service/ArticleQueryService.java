@@ -147,7 +147,7 @@ public class ArticleQueryService {
                             CompositeFilterOperator.or(
                                     new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
                                     new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%")))).
-                    addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).setCurrentPageNum(currentPageNum).setPageSize(pageSize);
+                    addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).setPage(currentPageNum, pageSize);
 
             final JSONObject result = articleRepository.get(query);
 
@@ -200,7 +200,7 @@ public class ArticleQueryService {
 
             Query query = new Query().setFilter(
                     new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.IN, tagIds)).
-                    setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+                    setPage(currentPageNum, pageSize).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
             JSONObject result = tagArticleRepository.get(query);
             final JSONArray tagArticles = result.optJSONArray(Keys.RESULTS);
@@ -552,7 +552,7 @@ public class ArticleQueryService {
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
             final boolean articleIsPublished = requestJSONObject.optBoolean(ARTICLE_IS_PUBLISHED, true);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+            final Query query = new Query().setPage(currentPageNum, pageSize).
                     addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING);
             if (requestJSONObject.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
                 query.addSort(ARTICLE_UPDATED, SortDirection.DESCENDING);

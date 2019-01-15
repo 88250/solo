@@ -114,7 +114,7 @@ public class FeedProcessor {
             final List<Filter> filters = new ArrayList<>();
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
-            final Query query = new Query().setCurrentPageNum(1).setPageSize(outputCnt).
+            final Query query = new Query().setPage(1, outputCnt).
                     setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                     addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).setPageCount(1);
             final JSONObject articleResult = articleRepository.get(query);
@@ -201,7 +201,7 @@ public class FeedProcessor {
 
             filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
-            final Query query = new Query().setPageCount(1).setCurrentPageNum(1).setPageSize(outputCnt).
+            final Query query = new Query().setPageCount(1).setPage(1, outputCnt).
                     setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                     addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING);
 

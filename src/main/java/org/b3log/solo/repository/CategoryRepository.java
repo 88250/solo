@@ -113,7 +113,7 @@ public class CategoryRepository extends AbstractRepository {
         }
 
         final Query query = new Query().setFilter(new PropertyFilter(Category.CATEGORY_ORDER, FilterOperator.LESS_THAN, category.optInt(Category.CATEGORY_ORDER))).
-                addSort(Category.CATEGORY_ORDER, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(1);
+                addSort(Category.CATEGORY_ORDER, SortDirection.DESCENDING).setPage(1, 1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
         if (1 != array.length()) {
@@ -137,7 +137,7 @@ public class CategoryRepository extends AbstractRepository {
         }
 
         final Query query = new Query().setFilter(new PropertyFilter(Category.CATEGORY_ORDER, FilterOperator.GREATER_THAN, category.optInt(Category.CATEGORY_ORDER))).
-                addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(1);
+                addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).setPage(1, 1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
         if (1 != array.length()) {
@@ -174,7 +174,7 @@ public class CategoryRepository extends AbstractRepository {
      */
     public List<JSONObject> getMostUsedCategories(final int num) throws RepositoryException {
         final Query query = new Query().addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).
-                setCurrentPageNum(1).setPageSize(num).setPageCount(1);
+                setPage(1, num).setPageCount(1);
         final List<JSONObject> ret = getList(query);
         Collections.sort(ret, (o1, o2) -> Collator.getInstance(java.util.Locale.CHINA).compare(o1.optString(Tag.TAG_TITLE), o2.optString(Tag.TAG_TITLE)));
 

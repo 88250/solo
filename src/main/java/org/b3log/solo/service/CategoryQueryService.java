@@ -43,7 +43,7 @@ import java.util.List;
  * Category query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Aug 27, 2018
+ * @version 1.0.1.3, Jan 15, 2019
  * @since 2.0.0
  */
 @Service
@@ -199,7 +199,7 @@ public class CategoryQueryService {
         final int currentPageNum = requestJSONObject.optInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
         final int pageSize = requestJSONObject.optInt(Pagination.PAGINATION_PAGE_SIZE);
         final int windowSize = requestJSONObject.optInt(Pagination.PAGINATION_WINDOW_SIZE);
-        final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+        final Query query = new Query().setPage(currentPageNum, pageSize).
                 addSort(Category.CATEGORY_ORDER, SortDirection.ASCENDING).
                 addSort(Category.CATEGORY_TAG_CNT, SortDirection.DESCENDING).
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);

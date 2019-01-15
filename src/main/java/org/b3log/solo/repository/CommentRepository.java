@@ -35,7 +35,7 @@ import java.util.List;
  * Comment repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Sep 30, 2018
+ * @version 1.0.0.6, Jan 15, 2019
  * @since 0.3.1
  */
 @Repository
@@ -107,7 +107,7 @@ public class CommentRepository extends AbstractRepository {
     public List<JSONObject> getRecentComments(final int fetchSize) throws RepositoryException {
         final Query query = new Query().
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setCurrentPageNum(1).setPageSize(fetchSize).setPageCount(1);
+                setPage(1, fetchSize).setPageCount(1);
         final List<JSONObject> ret = getList(query);
         // Removes unpublished article related comments
         removeForUnpublishedArticles(ret);
@@ -129,7 +129,7 @@ public class CommentRepository extends AbstractRepository {
         final Query query = new Query().
                 addSort(Keys.OBJECT_ID, SortDirection.DESCENDING).
                 setFilter(new PropertyFilter(Comment.COMMENT_ON_ID, FilterOperator.EQUAL, onId)).
-                setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(1);
+                setPage(currentPageNum, pageSize).setPageCount(1);
 
         return getList(query);
     }

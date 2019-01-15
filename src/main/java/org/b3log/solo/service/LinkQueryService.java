@@ -89,8 +89,7 @@ public class LinkQueryService {
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(Link.LINK_ORDER,
-                    SortDirection.ASCENDING);
+            final Query query = new Query().setPage(currentPageNum, pageSize).addSort(Link.LINK_ORDER, SortDirection.ASCENDING);
             final JSONObject result = linkRepository.get(query);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
 

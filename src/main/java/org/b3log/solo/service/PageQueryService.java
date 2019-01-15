@@ -135,8 +135,7 @@ public class PageQueryService {
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).setPageCount(
-                    1);
+            final Query query = new Query().setPage(currentPageNum, pageSize).addSort(Page.PAGE_ORDER, SortDirection.ASCENDING).setPageCount(1);
             final JSONObject result = pageRepository.get(query);
             final int pageCount = result.getJSONObject(Pagination.PAGINATION).getInt(Pagination.PAGINATION_PAGE_COUNT);
 

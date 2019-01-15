@@ -28,7 +28,7 @@ import org.json.JSONObject;
  * Link repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Sep 30, 2018
+ * @version 1.0.0.5, Jan 15, 2019
  * @since 0.3.1
  */
 @Repository
@@ -90,7 +90,7 @@ public class LinkRepository extends AbstractRepository {
         }
 
         final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.LESS_THAN, link.optInt(Link.LINK_ORDER))).
-                addSort(Link.LINK_ORDER, SortDirection.DESCENDING).setCurrentPageNum(1).setPageSize(1);
+                addSort(Link.LINK_ORDER, SortDirection.DESCENDING).setPage(1, 1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
         if (1 != array.length()) {
@@ -114,7 +114,7 @@ public class LinkRepository extends AbstractRepository {
         }
 
         final Query query = new Query().setFilter(new PropertyFilter(Link.LINK_ORDER, FilterOperator.GREATER_THAN, link.optInt(Link.LINK_ORDER))).
-                addSort(Link.LINK_ORDER, SortDirection.ASCENDING).setCurrentPageNum(1).setPageSize(1);
+                addSort(Link.LINK_ORDER, SortDirection.ASCENDING).setPage(1, 1);
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
         if (1 != array.length()) {

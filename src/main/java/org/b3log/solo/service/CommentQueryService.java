@@ -53,7 +53,7 @@ import java.util.List;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.3, Oct 7, 2018
+ * @version 1.3.2.4, Jan 15, 2019
  * @since 0.3.5
  */
 @Service
@@ -166,7 +166,7 @@ public class CommentQueryService {
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).
+            final Query query = new Query().setPage(currentPageNum, pageSize).
                     addSort(Comment.COMMENT_CREATED, SortDirection.DESCENDING);
             final JSONObject result = commentRepository.get(query);
             final JSONArray comments = result.getJSONArray(Keys.RESULTS);

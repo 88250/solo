@@ -192,7 +192,7 @@ public class DataModelService {
             final int publishedArticleCnt = statistic.getInt(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
             final int pageCount = (int) Math.ceil((double) publishedArticleCnt / (double) pageSize);
 
-            final Query query = new Query().setCurrentPageNum(currentPageNum).setPageSize(pageSize).setPageCount(pageCount).setFilter(
+            final Query query = new Query().setPage(currentPageNum, pageSize).setPageCount(pageCount).setFilter(
                     new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED));
 
             final Template template = Skins.getSkinTemplate(context, "index.ftl");
