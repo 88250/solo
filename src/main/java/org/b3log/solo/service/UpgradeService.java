@@ -80,7 +80,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "2.9.6";
+    private static final String FROM_VER = "2.9.7";
 
     /**
      * New version.
@@ -190,12 +190,6 @@ public class UpgradeService {
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
-
-            final JSONObject customVarsOpt = new JSONObject();
-            customVarsOpt.put(Keys.OBJECT_ID, Option.ID_C_CUSTOM_VARS);
-            customVarsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-            customVarsOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_CUSTOM_VARS);
-            optionRepository.add(customVarsOpt);
 
             transaction.commit();
 
