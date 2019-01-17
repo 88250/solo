@@ -74,6 +74,7 @@
         "pluginNameLabel": "${pluginNameLabel}",
         "statusLabel": "${statusLabel}",
         "versionLabel": "${versionLabel}",
+        "userNameLabel": "${userNameLabel}",
         "commentNameLabel": "${commentNameLabel}",
         "commentEmailLabel": "${commentEmailLabel}",
         "roleLabel": "${roleLabel}", 

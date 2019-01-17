@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.2, Oct 24, 2018
+ * @version 1.1.2.3, Jan 17, 2019
  */
 
 /* user-list 相关操作 */
@@ -41,7 +41,7 @@ admin.userList = {
     init: function(page) {
         this.tablePagination.buildTable([{
                 style: "padding-left: 12px;",
-                text: Label.commentNameLabel,
+                text: Label.userNameLabel,
                 index: "userName",
                 width: 230
             }, {
