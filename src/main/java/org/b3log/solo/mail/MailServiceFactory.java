@@ -32,8 +32,7 @@ public final class MailServiceFactory {
 
     static {
         try {
-            final Class<MailService> mailServiceClass = (Class<MailService>) Class.forName(
-                    "org.b3log.solo.mail.local.LocalMailService");
+            final Class<MailService> mailServiceClass = (Class<MailService>) Class.forName("org.b3log.solo.mail.local.LocalMailService");
             MAIL_SERVICE = mailServiceClass.newInstance();
         } catch (final Exception e) {
             throw new RuntimeException("Can not initialize mail service!", e);

@@ -18,6 +18,8 @@
 package org.b3log.solo.mail.local;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.solo.mail.MailService.Message;
 
 import javax.mail.*;
@@ -34,9 +36,14 @@ import java.util.Set;
  *
  * @author <a href="https://hacpai.com/member/jiangzezhou">zezhou jiang</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.4, Feb 25, 2015
+ * @version 1.0.2.5, Jan 18, 2019
  */
 final class MailSender {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(MailSender.class);
 
     /**
      * Mail configurations.
@@ -54,7 +61,7 @@ final class MailSender {
      * <li>mail.smtp.socketFactory.port</li>
      * </ul>
      */
-    private final ResourceBundle mailProperties = ResourceBundle.getBundle("mail");
+    private static final ResourceBundle mailProperties = ResourceBundle.getBundle("mail");
 
     /**
      * Create session based on the mail properties.
@@ -89,8 +96,7 @@ final class MailSender {
     }
 
     /**
-     * Converts the specified message into a {@link javax.mail.Message
-     * javax.mail.Message}.
+     * Converts the specified message into a {@link javax.mail.Message javax.mail.Message}.
      *
      * @param message the specified message
      * @return a {@link javax.mail.internet.MimeMessage}
@@ -152,10 +158,13 @@ final class MailSender {
      * @param message the specified message
      * @throws Exception message exception
      */
-    void sendMail(final Message message) throws Exception {
-        final javax.mail.Message msg = convert2JavaMailMsg(message);
-
-        Transport.send(msg);
+    void sendMail(final Message message) {
+        try {
+            final javax.mail.Message msg = convert2JavaMailMsg(message);
+            Transport.send(msg);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Sends mail failed", e);
+        }
     }
 
     /**

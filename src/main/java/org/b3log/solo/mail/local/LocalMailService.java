@@ -17,27 +17,19 @@
  */
 package org.b3log.solo.mail.local;
 
-import org.b3log.latke.logging.Level;
-import org.b3log.latke.logging.Logger;
 import org.b3log.solo.mail.MailService;
 
 /**
- * Implementation of the {@link MailService} interface.
+ * JavaMail implementation of the {@link MailService} interface.
  *
  * @author <a href="https://hacpai.com/member/jiangzezhou">zezhou jiang</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Dec 2, 2018
+ * @version 1.0.0.5, Jan 18, 2019
  */
 public final class LocalMailService implements MailService {
 
     @Override
     public void send(final Message message) {
-        new Thread(() -> {
-            try {
-                new MailSender().sendMail(message);
-            } catch (final Exception e) {
-                Logger.getLogger(LocalMailService.class).log(Level.ERROR, "Sends mail failed", e);
-            }
-        }).start();
+        new Thread(() -> new MailSender().sendMail(message)).start();
     }
 }
