@@ -11,7 +11,7 @@
 * [子兮子兮](https://zixizixi.cn)
 * [铅笔的个人博客](https://pencilso.cn)
 * [洗澡狂魔的技术阵地](https://blog.washmoretech.com)
-* [刘美胜奇](http://www.liumapp.com)
+* [liumapp 的个人博客](http://www.liumapp.com)
 * [水星的随笔](https://note.abeffect.com)
 * [1992 社区](https://1992.cool)
 * [何遇](http://littleq.cn)
