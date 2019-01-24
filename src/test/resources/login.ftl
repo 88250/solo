@@ -20,72 +20,19 @@
 <#include "macro-common-page.ftl">
 
 <@commonPage "${loginLabel}">
-    <h2>
-        ${loginLabel}
-    </h2>
-    <div id="github">
-        <div class="github__icon"
-             onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">
-            <img src="${staticServePath}/images/github-init.gif"/>
-        </div>
-        <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">${useGitHubAccountLoginLabel}</button>
-        <br>
+<h2>
+${loginLabel}
+</h2>
+<div id="github">
+    <div class="github__icon"
+        onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">
+        <img src="${staticServePath}/images/github-init.gif"/>
     </div>
-
-    <div class="form none">
-        <label for="userEmail">
-            ${userLabel}
-        </label>
-        <input id="userEmail" tabindex="1" />
-        <label for="userPassword">
-            ${userPasswordLabel} <a href="${servePath}/forgot">(${forgotLabel})</a>
-        </label>
-        <input type="password" id="userPassword" tabindex="2" />
-        <button onclick='login();'>${loginLabel}</button>
-    </div>
-    <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
-    <script type="text/javascript">
-      (function() {
-        $("#userEmail").focus();
-
-        $("#userPassword, #userEmail").keypress(function(event) {
-          if (13 === event.keyCode) { // Enter pressed
-            login();
-          }
-        });
-      })();
-
-      var login = function() {
-        if ($("#userPassword").val() === "") {
-          $("#tip").text("${passwordEmptyLabel}");
-          $("#userPassword").focus();
-          return;
-        }
-
-        var requestJSONObject = {
-          "userEmail": $("#userEmail").val(),
-          "userPassword": $("#userPassword").val()
-        };
-
-        $("#tip").html("<img src='${staticServePath}/images/loading.gif'/> loading...")
-
-        $.ajax({
-          url: "${servePath}/login",
-          type: "POST",
-          contentType: "application/json",
-          data: JSON.stringify(requestJSONObject),
-          error: function() {
-            // alert("Login error!");
-          },
-          success: function(data, textStatus) {
-            if (!data.isLoggedIn) {
-              $("#tip").text(data.msg);
-              return;
-            }
-
-            window.location.href = data.to;
-          }
-        });
-      };
-    </script>
+    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">${useGitHubAccountLoginLabel}</button>
+    <br>
+</div>
+<script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
+<script type="text/javascript">
+    $('.wrap').css('padding', ($(window).height() - 450) / 2 + 'px 0')
+</script>
 </@commonPage>

@@ -25,6 +25,7 @@
     };
     
     var Label = {
+        "markedAvailable": ${markedAvailable?c},
         "skinDirName": "${skinDirName}",
         "editorType": "${editorType}",
         "userRole": "${userRole}",
@@ -73,6 +74,7 @@
         "pluginNameLabel": "${pluginNameLabel}",
         "statusLabel": "${statusLabel}",
         "versionLabel": "${versionLabel}",
+        "userNameLabel": "${userNameLabel}",
         "commentNameLabel": "${commentNameLabel}",
         "commentEmailLabel": "${commentEmailLabel}",
         "roleLabel": "${roleLabel}", 
