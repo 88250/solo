@@ -18,6 +18,7 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -29,8 +30,10 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
@@ -98,6 +101,7 @@ public class LoginProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         final JSONObject preference = preferenceQueryService.getPreference();
         try {
+            Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
             dataModelService.fillCommon(context, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

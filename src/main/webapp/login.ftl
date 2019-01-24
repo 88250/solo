@@ -42,7 +42,6 @@ ${loginLabel}
     </label>
     <input type="password" id="userPassword" tabindex="2" />
     <button onclick='login();'>${loginLabel}</button>
-    <span id="tip">${resetMsg}</span>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript">
