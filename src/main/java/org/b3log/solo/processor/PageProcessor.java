@@ -100,7 +100,6 @@ public class PageProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "page.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
 
-        final HttpServletRequest request = context.getRequest();
         final HttpServletResponse response = context.getResponse();
 
         try {

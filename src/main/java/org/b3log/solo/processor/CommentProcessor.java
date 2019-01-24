@@ -39,8 +39,6 @@ import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,8 +124,6 @@ public class CommentProcessor {
      */
     @RequestProcessing(value = "/page/comments", method = HttpMethod.POST)
     public void addPageComment(final RequestContext context) {
-        final HttpServletRequest httpServletRequest = context.getRequest();
-        final HttpServletResponse httpServletResponse = context.getResponse();
         final JSONObject requestJSONObject = context.requestJSON();
         requestJSONObject.put(Common.TYPE, Page.PAGE);
 
@@ -229,8 +225,6 @@ public class CommentProcessor {
      */
     @RequestProcessing(value = "/article/comments", method = HttpMethod.POST)
     public void addArticleComment(final RequestContext context) {
-        final HttpServletRequest httpServletRequest = context.getRequest();
-        final HttpServletResponse httpServletResponse = context.getResponse();
         final JSONObject requestJSONObject = context.requestJSON();
         requestJSONObject.put(Common.TYPE, Article.ARTICLE);
 
