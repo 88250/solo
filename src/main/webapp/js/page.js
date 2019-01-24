@@ -424,16 +424,6 @@ $.extend(Page.prototype, {
       $("#commentURL").val(Cookie.readCookie("commentURL"));
       $("#commentName").val(Cookie.readCookie("commentName"));
     }
-    // if no JSON, add it.
-    try {
-      JSON
-    } catch (e) {
-      $.ajax({
-        url: latkeConfig.staticServePath + "/js/lib/json2.js",
-        dataType: "script",
-        cache: true
-      });
-    }
   },
   /*
    * @description 加载随机文章

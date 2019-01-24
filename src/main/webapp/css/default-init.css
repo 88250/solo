@@ -241,38 +241,6 @@ button:active {
 /* end kill */
 
 /* start init */
-#init {
-    position: absolute;
-    width: 470px;
-}
-
-#init input,
-.register input {
-    margin: 5px 0;
-    padding: 5px 8px;
-}
-
-.register {
-    height: 400px;
-}
-
-#sys p {
-    height: 206px;
-}
-
-#sys {
-    padding: 0 20px;
-}
-
-#initButton {
-    margin-right: 10px;
-}
-
-#tip  {
-    color: #21759B;
-    font-weight: bold;
-    margin-left: 10px;
-}
 #github {
     position: relative;
     text-align: center;
