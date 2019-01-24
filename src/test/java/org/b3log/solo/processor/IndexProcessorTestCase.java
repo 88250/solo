@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link IndexProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, May 29, 2018
+ * @version 1.0.1.2, Jan 24, 2019
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -84,5 +84,18 @@ public class IndexProcessorTestCase extends AbstractTestCase {
 
         final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 注册 Solo 用户!</title>"));
+    }
+
+    /**
+     * showInit.
+     */
+    public void showInit() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/init");
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用!</title>"));
     }
 }
