@@ -36,7 +36,6 @@
         <button class="hover"
                 onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">${useGitHubAccountLoginLabel}</button>
         <br>
-        <span onclick="$('#github').hide();$('#user').show()">${useLocalAccountLabel}</span>
     </div>
     <div id="user" class="form none">
         <label for="userEmail">
