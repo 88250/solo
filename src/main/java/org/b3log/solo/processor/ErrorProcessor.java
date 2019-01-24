@@ -18,6 +18,8 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -28,21 +30,22 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
-import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
 import java.util.Map;
 
 /**
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Nov 28, 2018
+ * @version 1.0.1.6, Jan 24, 2019
  * @since 0.4.5
  */
 @RequestProcessor
@@ -98,9 +101,12 @@ public class ErrorProcessor {
             try {
                 final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
                 dataModel.putAll(langs);
-                final JSONObject preference = preferenceQueryService.getPreference();
-                dataModelService.fillCommon(context, dataModel, preference);
                 dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
+                dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+                dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+                dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+                Keys.fillRuntime(dataModel);
+                dataModelService.fillMinified(dataModel);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
 

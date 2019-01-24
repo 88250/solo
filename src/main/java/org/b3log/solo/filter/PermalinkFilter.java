@@ -31,6 +31,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.PermalinkQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -44,7 +45,7 @@ import java.io.IOException;
  * Article/Page permalink filter.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.8, Oct 5, 2018
+ * @version 1.0.1.9, Jan 24, 2019
  * @see org.b3log.solo.processor.ArticleProcessor#showArticle(org.b3log.latke.servlet.RequestContext)
  * @see org.b3log.solo.processor.PageProcessor#showPage(org.b3log.latke.servlet.RequestContext)
  * @since 0.3.1
@@ -76,8 +77,6 @@ public final class PermalinkFilter implements Filter {
         final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
         final String requestURI = httpServletRequest.getRequestURI();
-        LOGGER.log(Level.DEBUG, "Request URI [{0}]", requestURI);
-
         final String contextPath = Latkes.getContextPath();
         final String permalink = StringUtils.substringAfter(requestURI, contextPath);
         if (PermalinkQueryService.invalidPermalinkFormat(permalink)) {
@@ -93,6 +92,13 @@ public final class PermalinkFilter implements Filter {
         final BeanManager beanManager = BeanManager.getInstance();
 
         try {
+            final InitService initService = beanManager.getReference(InitService.class);
+            if (!initService.isInited()) {
+                chain.doFilter(request, response);
+
+                return;
+            }
+
             final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
             article = articleRepository.getByPermalink(permalink);
             if (null == article) {

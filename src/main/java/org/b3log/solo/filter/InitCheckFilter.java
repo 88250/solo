@@ -35,7 +35,7 @@ import java.io.IOException;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/TsLenMo">TsLenMo</a>
- * @version 1.1.1.4, Oct 14, 2018
+ * @version 1.1.1.5, Jan 24, 2019
  * @since 0.3.1
  */
 public final class InitCheckFilter implements Filter {
@@ -87,9 +87,7 @@ public final class InitCheckFilter implements Filter {
             return;
         }
 
-        if ("POST".equalsIgnoreCase(httpServletRequest.getMethod())
-                && (Latkes.getContextPath() + "/init").equals(requestURI) ||
-                StringUtils.startsWith(requestURI, Latkes.getContextPath() + "/oauth/github")) {
+        if (StringUtils.startsWith(requestURI, Latkes.getContextPath() + "/oauth/github")) {
             // Do initialization
             chain.doFilter(request, response);
 
