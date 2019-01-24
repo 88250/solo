@@ -35,11 +35,25 @@ import org.testng.annotations.Test;
 public class IndexProcessorTestCase extends AbstractTestCase {
 
     /**
+     * showInit.
+     */
+    @Test
+    public void showInit() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/init");
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final String content = response.body();
+        Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用!</title>"));
+    }
+
+    /**
      * Init.
      *
      * @throws Exception exception
      */
-    @Test
+    @Test(dependsOnMethods = "showInit")
     public void init() throws Exception {
         super.init();
     }
@@ -84,18 +98,5 @@ public class IndexProcessorTestCase extends AbstractTestCase {
 
         final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 注册 Solo 用户!</title>"));
-    }
-
-    /**
-     * showInit.
-     */
-    public void showInit() {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/init");
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用!</title>"));
     }
 }
