@@ -19,7 +19,7 @@
 -->
 <#include "macro-common-page.ftl">
 
-<@commonPage "${welcomeToSoloLabel}!">
+<@commonPage "${loginLabel}">
 <h2>
 ${loginLabel}
 </h2>
@@ -54,13 +54,6 @@ ${loginLabel}
                 login();
             }
         });
-
-        // if no JSON, add it.
-        try {
-            JSON
-        } catch (e) {
-            document.write("<script src=\"${staticServePath}/js/lib/json2.js\"><\/script>");
-        }
     })();
 
     var login = function() {
