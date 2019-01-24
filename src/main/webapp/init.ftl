@@ -58,7 +58,6 @@
         <span id="tip"></span>
     </div>
     <div id="sys" class="none">
-        ${initIntroLabel}
         <button onclick='returnTo();'>${previousStepLabel}</button>
         <button onclick='initSys();' id="initButton">${initLabel}</button>
         <span id="tipInit"></span>
