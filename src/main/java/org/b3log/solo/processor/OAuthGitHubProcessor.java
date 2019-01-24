@@ -190,18 +190,18 @@ public class OAuthGitHubProcessor {
                     // ignored
                 }
             } else {
-                final JSONObject preference = preferenceQueryService.getPreference();
-                if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
-                    context.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-                    return;
-                }
-
                 JSONObject user = userQueryService.getUserByEmailOrUserName(userName);
                 if (null == user) {
                     user = userQueryService.getUserByEmailOrUserName(userEmail);
                 }
                 if (null == user) {
+                    final JSONObject preference = preferenceQueryService.getPreference();
+                    if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
+                        context.sendError(HttpServletResponse.SC_FORBIDDEN);
+
+                        return;
+                    }
+
                     final JSONObject addUserReq = new JSONObject();
                     addUserReq.put(User.USER_NAME, userName);
                     addUserReq.put(User.USER_EMAIL, userEmail);

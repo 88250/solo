@@ -33,10 +33,13 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Paginator;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.DataModelService;
+import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
@@ -45,6 +48,7 @@ import org.json.JSONObject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Calendar;
 import java.util.Map;
 
 /**
@@ -52,7 +56,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.4.12, Jan 5, 2019
+ * @version 1.2.4.13, Jan 24, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -86,6 +90,12 @@ public class IndexProcessor {
      */
     @Inject
     private StatisticMgmtService statisticMgmtService;
+
+    /**
+     * Initialization service.
+     */
+    @Inject
+    private InitService initService;
 
     /**
      * Shows index with the specified context.
@@ -182,5 +192,32 @@ public class IndexProcessor {
 
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
+    }
+
+    /**
+     * Shows initialization page.
+     *
+     * @param context the specified http request context
+     */
+    @RequestProcessing(value = "/init", method = HttpMethod.GET)
+    public void showInit(final RequestContext context) {
+        if (initService.isInited()) {
+            context.sendRedirect("/");
+
+            return;
+        }
+
+        final HttpServletRequest request = context.getRequest();
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+        renderer.setTemplateName("init.ftl");
+        context.setRenderer(renderer);
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+        dataModel.putAll(langs);
+        dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+        dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        Keys.fillRuntime(dataModel);
+        dataModelService.fillMinified(dataModel);
     }
 }
