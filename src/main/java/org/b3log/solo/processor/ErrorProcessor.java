@@ -35,6 +35,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserQueryService;
+import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -101,12 +102,9 @@ public class ErrorProcessor {
             try {
                 final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
                 dataModel.putAll(langs);
+                final JSONObject preference = preferenceQueryService.getPreference();
+                dataModelService.fillCommon(context, dataModel, preference);
                 dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
-                dataModel.put(Common.VERSION, SoloServletListener.VERSION);
-                dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-                dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-                Keys.fillRuntime(dataModel);
-                dataModelService.fillMinified(dataModel);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
 

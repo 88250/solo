@@ -48,7 +48,7 @@ import java.util.*;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.3, Oct 28, 2018
+ * @version 1.1.6.4, Jan 24, 2019
  * @since 0.3.1
  */
 public final class Skins {
@@ -128,11 +128,14 @@ public final class Skins {
      * @param dataModel          the specified data model
      * @throws ServiceException service exception
      */
-    public static void fillLangs(final String localeString, final String currentSkinDirName, final Map<String, Object> dataModel)
+    public static void fillLangs(final String localeString, String currentSkinDirName, final Map<String, Object> dataModel)
             throws ServiceException {
         Stopwatchs.start("Fill Skin Langs");
 
         try {
+            if (StringUtils.isBlank(currentSkinDirName)) {
+                currentSkinDirName = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
+            }
             final String langName = currentSkinDirName + "." + localeString;
             Map<String, String> langs = LANG_MAP.get(langName);
             if (null == langs) {

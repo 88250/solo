@@ -18,27 +18,21 @@
 package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
-import org.b3log.latke.model.User;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.util.Solos;
-import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import javax.servlet.http.Cookie;
-import java.io.BufferedReader;
-import java.io.StringReader;
 import java.util.List;
 
 /**
  * {@link LoginProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Feb 18, 2017
+ * @version 1.0.1.1, Jan 24, 2019
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -65,30 +59,7 @@ public class LoginProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 欢迎使用!</title>"));
-    }
-
-    /**
-     * login.
-     */
-    @Test(dependsOnMethods = "init")
-    public void login() {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/login");
-        request.setMethod("POST");
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-
-        final JSONObject requestJSON = new JSONObject();
-        requestJSON.put(User.USER_EMAIL, "test@gmail.com");
-        requestJSON.put(User.USER_PASSWORD, "pass");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
-
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "isLoggedIn\":true"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 登录</title>"));
     }
 
     /**
@@ -107,39 +78,4 @@ public class LoginProcessorTestCase extends AbstractTestCase {
         Assert.assertNull(cookies.get(0).getValue());
     }
 
-    /**
-     * showForgot.
-     */
-    @Test(dependsOnMethods = "init")
-    public void showForgot() {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/forgot");
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, " <title>Admin 的个人博客 - 忘记密码!</title>"));
-    }
-
-    /**
-     * forgot.
-     */
-    @Test(dependsOnMethods = "init")
-    public void forgot() {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/forgot");
-        request.setMethod("POST");
-        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-
-        final JSONObject requestJSON = new JSONObject();
-        requestJSON.put(User.USER_EMAIL, "test@gmail.com");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
-
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "succeed\":true"));
-    }
 }

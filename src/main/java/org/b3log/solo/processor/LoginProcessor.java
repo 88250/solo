@@ -102,6 +102,7 @@ public class LoginProcessor {
         final JSONObject preference = preferenceQueryService.getPreference();
         try {
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
+
             dataModelService.fillCommon(context, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
