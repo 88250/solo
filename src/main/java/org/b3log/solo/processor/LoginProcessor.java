@@ -48,7 +48,7 @@ import java.util.Map;
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.1.18, Jan 24, 2019
+ * @version 1.1.1.19, Jan 25, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -88,7 +88,7 @@ public class LoginProcessor {
         if (StringUtils.isBlank(destinationURL)) {
             destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
         } else if (!isInternalLinks(destinationURL)) {
-            destinationURL = "/";
+            destinationURL = Latkes.getServePath();
         }
 
         if (null != Solos.getCurrentUser(context.getRequest(), context.getResponse())) {
@@ -125,7 +125,7 @@ public class LoginProcessor {
 
         String destinationURL = context.param(Common.GOTO);
         if (StringUtils.isBlank(destinationURL) || !isInternalLinks(destinationURL)) {
-            destinationURL = "/";
+            destinationURL = Latkes.getServePath();
         }
 
         context.sendRedirect(destinationURL);
