@@ -102,13 +102,14 @@ public class LoginProcessor {
         final JSONObject preference = preferenceQueryService.getPreference();
         try {
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
-
             dataModelService.fillCommon(context, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
+
+        Solos.addGoogleNoIndex(context);
     }
 
     /**
@@ -128,6 +129,7 @@ public class LoginProcessor {
         }
 
         context.sendRedirect(destinationURL);
+        Solos.addGoogleNoIndex(context);
     }
 
     /**

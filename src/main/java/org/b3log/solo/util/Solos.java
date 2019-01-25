@@ -52,7 +52,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.1, Oct 16, 2018
+ * @version 1.6.0.0, Jan 25, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -163,6 +163,18 @@ public final class Solos {
         COOKIE_SECRET = cookieSecret;
 
         COOKIE_HTTP_ONLY = Boolean.valueOf(Latkes.getLocalProperty("cookieHttpOnly"));
+    }
+
+    /**
+     * Adds noindex header for Google. https://github.com/b3log/solo/issues/12631
+     * <p>
+     * 使用“noindex”阻止搜索引擎将您的网页编入索引 https://support.google.com/webmasters/answer/93710?hl=zh-Hans
+     * </p>
+     *
+     * @param context the specified context
+     */
+    public static void addGoogleNoIndex(final RequestContext context) {
+        context.setHeader("X-Robots-Tag", "noindex");
     }
 
     /**
