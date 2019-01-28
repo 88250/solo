@@ -470,8 +470,6 @@ public class ArticleMgmtService {
 
             addTagArticleRelation(tags, article);
 
-            statisticMgmtService.incBlogArticleCount();
-
             archiveDate(article);
 
             final String permalink = getPermalinkForAddArticle(article);
@@ -543,8 +541,6 @@ public class ArticleMgmtService {
             final JSONObject article = articleRepository.get(articleId);
 
             articleRepository.remove(articleId);
-
-            statisticMgmtService.decBlogArticleCount();
 
             final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
             author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) - 1);

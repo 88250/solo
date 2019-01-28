@@ -254,36 +254,6 @@ public class StatisticMgmtService {
     }
 
     /**
-     * Blog statistic article count +1.
-     *
-     * @throws RepositoryException repository exception
-     */
-    public void incBlogArticleCount() throws RepositoryException {
-        final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-
-        statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
-        updateStatistic(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT, statistic);
-    }
-
-    /**
-     * Blog statistic article count -1.
-     *
-     * @throws RepositoryException repository exception
-     */
-    public void decBlogArticleCount() throws RepositoryException {
-        final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-
-        statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) - 1);
-        updateStatistic(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT, statistic);
-    }
-
-    /**
      * Blog statistic comment count +1.
      *
      * @throws RepositoryException repository exception

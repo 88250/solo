@@ -312,7 +312,6 @@ public class InitService {
             // Step 3: Inc blog article and comment count statictis
             statisticMgmtService.incBlogCommentCount();
             statisticMgmtService.incPublishedBlogCommentCount();
-            statisticMgmtService.incBlogArticleCount();
 
             // Step 4: Add archive date-article relations
             archiveDate(article);
@@ -479,12 +478,6 @@ public class InitService {
      */
     private void initStatistic() throws RepositoryException, JSONException {
         LOGGER.debug("Initializing statistic....");
-
-        final JSONObject statisticBlogArticleCountOpt = new JSONObject();
-        statisticBlogArticleCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT);
-        statisticBlogArticleCountOpt.put(Option.OPTION_VALUE, "0");
-        statisticBlogArticleCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
-        optionRepository.add(statisticBlogArticleCountOpt);
 
         final JSONObject statisticBlogCommentCountOpt = new JSONObject();
         statisticBlogCommentCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT);
