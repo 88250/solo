@@ -166,15 +166,13 @@ public class LinkMgmtService {
      * Adds a link with the specified request json object.
      *
      * @param requestJSONObject the specified request json object, for example,
-     *                          <pre>
-     *                                                                                                     {
-     *                                                                                                         "link": {
-     *                                                                                                             "linkTitle": "",
-     *                                                                                                             "linkAddress": "",
-     *                                                                                                             "linkDescription": "" // optional
-     *                                                                                                         }
-     *                                                                                                     }, see {@link Link} for more details
-     *                                                                                                     </pre>
+     *                          {
+     *                          "link": {
+     *                          "linkTitle": "",
+     *                          "linkAddress": "",
+     *                          "linkDescription": "" // optional
+     *                          }
+     *                          }, see {@link Link} for more details
      * @return generated link id
      * @throws ServiceException service exception
      */
