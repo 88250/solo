@@ -445,13 +445,10 @@ public class CommentMgmtService {
             }
             setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL, comment.getString(Comment.COMMENT_THUMBNAIL_URL));
-            // Sets comment on page....
             comment.put(Comment.COMMENT_ON_ID, pageId);
             comment.put(Comment.COMMENT_ON_TYPE, Page.PAGE);
             final String commentId = Ids.genTimeMillisId();
-
             ret.put(Keys.OBJECT_ID, commentId);
-            // Save comment sharp URL
             final String commentSharpURL = Comment.getCommentSharpURLForPage(page, commentId);
             ret.put(Comment.COMMENT_NAME, commentName);
             ret.put(Comment.COMMENT_CONTENT, commentContent);
@@ -461,19 +458,14 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             comment.put(Keys.OBJECT_ID, commentId);
             commentRepository.add(comment);
-            // Step 2: Update page comment count
             incPageCommentCount(pageId);
-            // Step 3: Update blog statistic comment count
-            statisticMgmtService.incPublishedBlogCommentCount();
-            // Step 4: Send an email to admin
             try {
                 sendNotificationMail(page, comment, originalComment, preference);
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Send mail failed", e);
             }
-            // Step 5: Fire add comment event
-            final JSONObject eventData = new JSONObject();
 
+            final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Page.PAGE, page);
             eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_COMMENT_TO_PAGE, eventData));
@@ -586,7 +578,6 @@ public class CommentMgmtService {
             }
             setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL, comment.getString(Comment.COMMENT_THUMBNAIL_URL));
-            // Sets comment on article....
             comment.put(Comment.COMMENT_ON_ID, articleId);
             comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
             final String commentId = Ids.genTimeMillisId();
@@ -598,19 +589,15 @@ public class CommentMgmtService {
             ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
             commentRepository.add(comment);
-            // Step 2: Update article comment count
             articleMgmtService.incArticleCommentCount(articleId);
-            // Step 3: Update blog statistic comment count
-            statisticMgmtService.incPublishedBlogCommentCount();
-            // Step 4: Send an email to admin
+
             try {
                 sendNotificationMail(article, comment, originalComment, preference);
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Send mail failed", e);
             }
-            // Step 5: Fire add comment event
-            final JSONObject eventData = new JSONObject();
 
+            final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);
             eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_COMMENT_TO_ARTICLE, eventData));
@@ -639,13 +626,8 @@ public class CommentMgmtService {
         try {
             final JSONObject comment = commentRepository.get(commentId);
             final String pageId = comment.getString(Comment.COMMENT_ON_ID);
-
-            // Step 1: Remove comment
             commentRepository.remove(commentId);
-            // Step 2: Update page comment count
             decPageCommentCount(pageId);
-            // Step 3: Update blog statistic comment count
-            statisticMgmtService.decPublishedBlogCommentCount();
 
             transaction.commit();
         } catch (final Exception e) {
@@ -671,13 +653,8 @@ public class CommentMgmtService {
         try {
             final JSONObject comment = commentRepository.get(commentId);
             final String articleId = comment.getString(Comment.COMMENT_ON_ID);
-
-            // Step 1: Remove comment
             commentRepository.remove(commentId);
-            // Step 2: Update article comment count
             decArticleCommentCount(articleId);
-            // Step 3: Update blog statistic comment count
-            statisticMgmtService.decPublishedBlogCommentCount();
 
             transaction.commit();
         } catch (final Exception e) {

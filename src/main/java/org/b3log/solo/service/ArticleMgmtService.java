@@ -202,11 +202,6 @@ public class ArticleMgmtService {
             decArchiveDatePublishedRefCount(articleId);
 
             articleRepository.update(articleId, article);
-            final int blogCmtCnt = statisticQueryService.getPublishedBlogCommentCount();
-            final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
-
-            statisticMgmtService.setPublishedBlogCommentCount(blogCmtCnt - articleCmtCnt);
-
             final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
             author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) - 1);
             userRepository.update(author.optString(Keys.OBJECT_ID), author);
@@ -339,11 +334,6 @@ public class ArticleMgmtService {
 
             // Set statistic
             if (publishNewArticle) {
-                // This article is updated from unpublished to published
-                final int blogCmtCnt = statisticQueryService.getPublishedBlogCommentCount();
-                final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
-                statisticMgmtService.setPublishedBlogCommentCount(blogCmtCnt + articleCmtCnt);
-
                 final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
                 author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) + 1);
                 userRepository.update(author.optString(Keys.OBJECT_ID), author);
@@ -536,7 +526,6 @@ public class ArticleMgmtService {
             decTagRefCount(articleId);
             unArchiveDate(articleId);
             removeTagArticleRelations(articleId);
-            removeArticleComments(articleId);
 
             final JSONObject article = articleRepository.get(articleId);
 
@@ -953,26 +942,6 @@ public class ArticleMgmtService {
         }
 
         return ret;
-    }
-
-    /**
-     * Removes article comments by the specified article id.
-     * <p>
-     * Removes related comments, sets article/blog comment statistic count.
-     * </p>
-     *
-     * @param articleId the specified article id
-     * @throws Exception exception
-     */
-    private void removeArticleComments(final String articleId) throws Exception {
-        final int removedCnt = commentRepository.removeComments(articleId);
-        final JSONObject article = articleRepository.get(articleId);
-        if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            int publishedBlogCommentCount = statisticQueryService.getPublishedBlogCommentCount();
-
-            publishedBlogCommentCount -= removedCnt;
-            statisticMgmtService.setPublishedBlogCommentCount(publishedBlogCommentCount);
-        }
     }
 
     /**

@@ -113,8 +113,9 @@ public class BlogProcessor {
         final JSONObject statistic = statisticQueryService.getStatistic();
 
 
-        // TODO: 重构数据统计计数 #12633 jsonObject.put("articleCount", statistic.getLong(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT));
-        jsonObject.put("commentCount", statistic.getLong(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
+        // TODO: 重构数据统计计数 #12633
+        // jsonObject.put("articleCount", statistic.getLong(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT));
+        // jsonObject.put("commentCount", statistic.getLong(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
         jsonObject.put("tagCount", tagQueryService.getTagCount());
         jsonObject.put("servePath", Latkes.getServePath());
         jsonObject.put("staticServePath", Latkes.getStaticServePath());

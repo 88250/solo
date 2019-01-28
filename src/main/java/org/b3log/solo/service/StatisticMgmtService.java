@@ -254,51 +254,6 @@ public class StatisticMgmtService {
     }
 
     /**
-     * Blog statistic comment(published article) count +1.
-     *
-     * @throws RepositoryException repository exception
-     */
-    public void incPublishedBlogCommentCount() throws RepositoryException {
-        final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-        statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
-        updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
-    }
-
-    /**
-     * Blog statistic comment(published article) count -1.
-     *
-     * @throws RepositoryException repository exception
-     */
-    public void decPublishedBlogCommentCount() throws RepositoryException {
-        final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-
-        statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) - 1);
-        updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
-    }
-
-    /**
-     * Sets blog comment(published article) count with the specified count.
-     *
-     * @param count the specified count
-     * @throws RepositoryException repository exception
-     */
-    public void setPublishedBlogCommentCount(final int count) throws RepositoryException {
-        final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-
-        statistic.put(Option.OPTION_VALUE, count);
-        updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
-    }
-
-    /**
      * Refreshes online visitor count for the specified request.
      *
      * @param request the specified request

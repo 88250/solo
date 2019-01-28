@@ -302,23 +302,14 @@ public class InitService {
         try {
             article.put(Keys.OBJECT_ID, ret);
 
-            // Step 1: Add tags
             final String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
             final String[] tagTitles = tagsString.split(",");
             final JSONArray tags = tag(tagTitles, article);
-
-            // Step 2: Add tag-article relations
             addTagArticleRelation(tags, article);
-            // Step 3: Inc blog article and comment count statictis
-            statisticMgmtService.incPublishedBlogCommentCount();
-
-            // Step 4: Add archive date-article relations
             archiveDate(article);
-            // Step 5: Add article
             articleRepository.add(article);
-            // Step 6: Update admin user for article statistic
-            final JSONObject admin = userRepository.getAdmin();
 
+            final JSONObject admin = userRepository.getAdmin();
             admin.put(UserExt.USER_ARTICLE_COUNT, 1);
             admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 1);
             userRepository.update(admin.optString(Keys.OBJECT_ID), admin);
@@ -483,12 +474,6 @@ public class InitService {
         statisticBlogViewCountOpt.put(Option.OPTION_VALUE, "0");
         statisticBlogViewCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
         optionRepository.add(statisticBlogViewCountOpt);
-
-        final JSONObject statisticPublishedBlogCommentCountOpt = new JSONObject();
-        statisticPublishedBlogCommentCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
-        statisticPublishedBlogCommentCountOpt.put(Option.OPTION_VALUE, "0");
-        statisticPublishedBlogCommentCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
-        optionRepository.add(statisticPublishedBlogCommentCountOpt);
 
         LOGGER.debug("Initialized statistic");
     }

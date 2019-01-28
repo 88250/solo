@@ -320,11 +320,6 @@ public final class Option {
     public static final String ID_C_STATISTIC_BLOG_VIEW_COUNT = "statisticBlogViewCount";
 
     /**
-     * Key of statistic blog comment(published article) count.
-     */
-    public static final String ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT = "statisticPublishedBlogCommentCount";
-
-    /**
      * Key of oauth GitHub.
      */
     public static final String ID_C_OAUTH_GITHUB = "oauthGitHub";

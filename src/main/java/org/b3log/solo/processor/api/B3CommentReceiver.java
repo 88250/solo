@@ -52,7 +52,7 @@ import java.util.Date;
  * Receiving comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.19, Nov 6, 2018
+ * @version 1.1.1.20, Jan 28, 2019
  * @since 0.5.5
  */
 @RequestProcessor
@@ -224,26 +224,20 @@ public class B3CommentReceiver {
             }
 
             ret.put(Comment.COMMENT_THUMBNAIL_URL, comment.getString(Comment.COMMENT_THUMBNAIL_URL));
-            // Sets comment on article....
             comment.put(Comment.COMMENT_ON_ID, articleId);
             comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
             final String commentSharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
             commentRepository.add(comment);
-            // Step 2: Update article comment count
             articleMgmtService.incArticleCommentCount(articleId);
-            // Step 3: Update blog statistic comment count
-            statisticMgmtService.incPublishedBlogCommentCount();
-            // Step 4: Send an email to admin
             try {
                 commentMgmtService.sendNotificationMail(article, comment, originalComment, preference);
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Send mail failed", e);
             }
-            // Step 5: Fire add comment event
-            final JSONObject eventData = new JSONObject();
 
+            final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);
             eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY, eventData));
