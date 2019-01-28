@@ -22,22 +22,20 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
-import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Tag;
+import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Aug 27, 2018
+ * @version 1.1.0.5, Jan 28, 2019
  * @since 0.4.0
  */
 @Service
@@ -53,6 +51,22 @@ public class TagQueryService {
      */
     @Inject
     private TagRepository tagRepository;
+
+    /**
+     * Tag-Article repository.
+     */
+    @Inject
+    private TagArticleRepository tagArticleRepository;
+
+    /**
+     * Gets article count of a tag specified by the given tag id.
+     *
+     * @param tagId the given tag id
+     * @return article count, returns {@code -1} if occurred an exception
+     */
+    public int getArticleCount(final String tagId) {
+        return tagArticleRepository.getArticleCount(tagId);
+    }
 
     /**
      * Gets a tag by the specified tag title.
@@ -122,56 +136,6 @@ public class TagQueryService {
             return tagRepository.getList(query);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tags failed", e);
-
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * Gets top (reference count descending) tags.
-     *
-     * @param fetchSize the specified fetch size
-     * @return for example,      <pre>
-     * [
-     *     {"tagTitle": "", "tagReferenceCount": int, ....},
-     *     ....
-     * ]
-     * </pre>, returns an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getTopTags(final int fetchSize) throws ServiceException {
-        try {
-            final Query query = new Query().setPageCount(1).setPageSize(fetchSize).
-                    addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING);
-
-            return tagRepository.getList(query);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets top tags failed", e);
-
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * Gets bottom (reference count ascending) tags.
-     *
-     * @param fetchSize the specified fetch size
-     * @return for example,      <pre>
-     * [
-     *     {"tagTitle": "", "tagReferenceCount": int, ....},
-     *     ....
-     * ]
-     * </pre>, returns an empty list if not found
-     * @throws ServiceException service exception
-     */
-    public List<JSONObject> getBottomTags(final int fetchSize) throws ServiceException {
-        try {
-            final Query query = new Query().setPageCount(1).setPageSize(fetchSize).
-                    addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.ASCENDING);
-
-            return tagRepository.getList(query);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets bottom tags failed", e);
 
             throw new ServiceException(e);
         }

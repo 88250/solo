@@ -272,7 +272,6 @@ public class DataModelService {
         Stopwatchs.start("Fill Tags");
         try {
             final List<JSONObject> tags = tagQueryService.getTags();
-            Collections.sort(tags, Comparator.comparingInt(t -> -t.optInt(Tag.TAG_REFERENCE_COUNT)));
             dataModel.put(Tag.TAGS, tags);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fills tags failed", e);

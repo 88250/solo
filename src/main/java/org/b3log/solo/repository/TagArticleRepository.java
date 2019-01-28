@@ -18,6 +18,8 @@
 package org.b3log.solo.repository;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Article;
@@ -37,10 +39,32 @@ import java.util.List;
 public class TagArticleRepository extends AbstractRepository {
 
     /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(TagArticleRepository.class);
+
+    /**
      * Public constructor.
      */
     public TagArticleRepository() {
         super(Tag.TAG + "_" + Article.ARTICLE);
+    }
+
+    /**
+     * Gets article count of a tag specified by the given tag id.
+     *
+     * @param tagId the given tag id
+     * @return article count, returns {@code -1} if occurred an exception
+     */
+    public int getArticleCount(final String tagId) {
+        final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId));
+        try {
+            return (int) count(query);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets tag [" + tagId + "]'s article count failed", e);
+
+            return -1;
+        }
     }
 
     /**

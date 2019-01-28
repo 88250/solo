@@ -31,7 +31,7 @@ import java.util.List;
  * {@link ArticleQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Oct 15, 2018
+ * @version 1.1.0.2, Jan 28, 2019
  */
 @Test(suiteName = "service")
 public class ArticleQueryServiceTestCase extends AbstractTestCase {
@@ -152,8 +152,9 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
         final String tagId = tag.getString(Keys.OBJECT_ID);
 
         final ArticleQueryService articleQueryService = getArticleQueryService();
-        final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, 1, Integer.MAX_VALUE);
-        Assert.assertNotNull(articles);
+        final JSONObject articlesResult = articleQueryService.getArticlesByTag(tagId, 1, Integer.MAX_VALUE);
+        Assert.assertNotNull(articlesResult);
+        final List<JSONObject> articles = (List<JSONObject>) articlesResult.opt(Keys.RESULTS);
         Assert.assertEquals(articles.size(), 1);
     }
 

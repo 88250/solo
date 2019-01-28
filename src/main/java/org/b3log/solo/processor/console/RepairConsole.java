@@ -17,21 +17,16 @@
  */
 package org.b3log.solo.processor.console;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHtmlRenderer;
 import org.b3log.solo.mail.MailService;
 import org.b3log.solo.mail.MailServiceFactory;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
@@ -39,16 +34,13 @@ import org.b3log.solo.service.PreferenceMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.service.StatisticQueryService;
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * Provides patches on some special issues.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.19, Dec 11, 2018
+ * @version 1.2.0.20, Jan 28, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -126,57 +118,6 @@ public class RepairConsole {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             renderer.setContent("Restores signs failed, error msg [" + e.getMessage() + "]");
-        }
-    }
-
-    /**
-     * Repairs tag article counter.
-     *
-     * @param context the specified context
-     */
-    public void repairTagArticleCounter(final RequestContext context) {
-        final TextHtmlRenderer renderer = new TextHtmlRenderer();
-        context.setRenderer(renderer);
-
-        final Transaction transaction = tagRepository.beginTransaction();
-        try {
-            final List<JSONObject> tags = tagRepository.getList(new Query());
-            for (final JSONObject tag : tags) {
-                final String tagId = tag.getString(Keys.OBJECT_ID);
-                final JSONObject tagArticleResult = tagArticleRepository.getByTagId(tagId, 1, Integer.MAX_VALUE);
-                final JSONArray tagArticles = tagArticleResult.getJSONArray(Keys.RESULTS);
-                final int tagRefCnt = tagArticles.length();
-                int publishedTagRefCnt = 0;
-
-                for (int i = 0; i < tagRefCnt; i++) {
-                    final JSONObject tagArticle = tagArticles.getJSONObject(i);
-                    final String articleId = tagArticle.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
-                    final JSONObject article = articleRepository.get(articleId);
-                    if (null == article) {
-                        tagArticleRepository.remove(tagArticle.optString(Keys.OBJECT_ID));
-
-                        continue;
-                    }
-
-                    if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                        publishedTagRefCnt++;
-                    }
-                }
-
-                tag.put(Tag.TAG_REFERENCE_COUNT, tagRefCnt);
-                tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedTagRefCnt);
-
-                tagRepository.update(tagId, tag);
-
-                LOGGER.log(Level.INFO, "Repaired tag[title={0}, refCnt={1}, publishedTagRefCnt={2}]",
-                        tag.getString(Tag.TAG_TITLE), tagRefCnt, publishedTagRefCnt);
-            }
-            transaction.commit();
-
-            renderer.setContent("Repair successfully!");
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-            renderer.setContent("Repairs failed, error msg [" + e.getMessage() + "]");
         }
     }
 }

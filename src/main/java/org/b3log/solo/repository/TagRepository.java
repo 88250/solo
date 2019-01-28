@@ -25,16 +25,14 @@ import org.b3log.solo.model.Tag;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Tag repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Jan 15, 2019
+ * @version 1.0.0.4, Jan 28, 2019
  * @since 0.3.1
  */
 @Repository
@@ -102,11 +100,23 @@ public class TagRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public List<JSONObject> getMostUsedTags(final int num) throws RepositoryException {
-        final Query query = new Query().addSort(Tag.TAG_PUBLISHED_REFERENCE_COUNT, SortDirection.DESCENDING).
-                setPage(1, num).setPageCount(1);
-        final List<JSONObject> tagJoList = getList(query);
-        Collections.sort(tagJoList, (o1, o2) -> Collator.getInstance(java.util.Locale.CHINA).compare(o1.optString(Tag.TAG_TITLE), o2.optString(Tag.TAG_TITLE)));
+        final List<JSONObject> records = select("SELECT\n" +
+                "\t`tag_oId`,\n" +
+                "\tcount(*) AS cnt\n" +
+                "FROM\n" +
+                getName() + "\t`tag_article`\n" +
+                "GROUP BY\n" +
+                "\ttag_oId\n" +
+                "ORDER BY\n" +
+                "\tcnt DESC\n" +
+                "LIMIT ?", num);
+        final List<JSONObject> ret = new ArrayList<>();
+        for (final JSONObject record : records) {
+            final String tagId = record.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
+            final JSONObject tag = get(tagId);
+            ret.add(tag);
+        }
 
-        return tagJoList;
+        return ret;
     }
 }

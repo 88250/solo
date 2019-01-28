@@ -389,7 +389,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final RepairConsole repairConsole = beanManager.getReference(RepairConsole.class);
         DispatcherServlet.get("/fix/restore-signs", repairConsole::restoreSigns);
-        DispatcherServlet.get("/fix/tag-article-counter-repair", repairConsole::repairTagArticleCounter);
 
         final TagConsole tagConsole = beanManager.getReference(TagConsole.class);
         DispatcherServlet.get("/console/tags", tagConsole::getTags);

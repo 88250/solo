@@ -21,14 +21,12 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.solo.model.Tag;
 import org.b3log.solo.repository.CategoryTagRepository;
+import org.b3log.solo.repository.TagArticleRepository;
 import org.b3log.solo.repository.TagRepository;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
@@ -37,7 +35,7 @@ import java.util.List;
  * Tag management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Mar 31, 2017
+ * @version 1.0.0.3, Jan 28, 2019
  * @since 0.4.0
  */
 @Service
@@ -67,27 +65,10 @@ public class TagMgmtService {
     private CategoryTagRepository categoryTagRepository;
 
     /**
-     * Decrements reference count of every tag of an published article specified
-     * by the given article id.
-     *
-     * @param articleId the given article id
-     * @throws JSONException       json exception
-     * @throws RepositoryException repository exception
+     * Tag-Article repository.
      */
-    public void decTagPublishedRefCount(final String articleId) throws JSONException, RepositoryException {
-        final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
-
-        for (final JSONObject tag : tags) {
-            final String tagId = tag.getString(Keys.OBJECT_ID);
-            final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
-
-            tag.put(Tag.TAG_REFERENCE_COUNT, refCnt);
-            final int publishedRefCnt = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
-
-            tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
-            tagRepository.update(tagId, tag);
-        }
-    }
+    @Inject
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Removes all unused tags.
@@ -99,14 +80,11 @@ public class TagMgmtService {
 
         try {
             final List<JSONObject> tags = tagQueryService.getTags();
-
             for (int i = 0; i < tags.size(); i++) {
                 final JSONObject tag = tags.get(i);
-                final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
-
-                if (0 == tagRefCnt) {
-                    final String tagId = tag.getString(Keys.OBJECT_ID);
-
+                final String tagId = tag.optString(Keys.OBJECT_ID);
+                final int articleCount = tagArticleRepository.getArticleCount(tagId);
+                if (1 > articleCount) {
                     categoryTagRepository.removeByTagId(tagId);
                     tagRepository.remove(tagId);
                 }

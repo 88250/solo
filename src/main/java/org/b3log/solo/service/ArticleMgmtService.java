@@ -497,7 +497,6 @@ public class ArticleMgmtService {
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
-            decTagRefCount(articleId);
             unArchiveDate(articleId);
             removeTagArticleRelations(articleId);
 
@@ -585,43 +584,6 @@ public class ArticleMgmtService {
 
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Decrements reference count of every tag of an article specified by the
-     * given article id.
-     *
-     * @param articleId the given article id
-     * @throws ServiceException service exception
-     */
-    private void decTagRefCount(final String articleId) throws ServiceException {
-        try {
-            final List<JSONObject> tags = tagRepository.getByArticleId(articleId);
-            final JSONObject article = articleRepository.get(articleId);
-
-            for (final JSONObject tag : tags) {
-                final String tagId = tag.getString(Keys.OBJECT_ID);
-                final int refCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
-
-                tag.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
-                final int publishedRefCnt = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
-
-                if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
-                } else {
-                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
-                }
-                tagRepository.update(tagId, tag);
-                LOGGER.log(Level.TRACE, "Deced tag[title={0}, refCnt={1}, publishedRefCnt={2}] of article[id={3}]",
-                        tag.getString(Tag.TAG_TITLE), tag.getInt(Tag.TAG_REFERENCE_COUNT), tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT),
-                        articleId);
-            }
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Decs tag references count of article[id" + articleId + "] failed", e);
-            throw new ServiceException(e);
-        }
-
-        LOGGER.log(Level.DEBUG, "Deced all tag reference count of article[id={0}]", articleId);
     }
 
     /**
@@ -728,48 +690,12 @@ public class ArticleMgmtService {
             }
         }
 
-        LOGGER.log(Level.DEBUG, "Tags unchanged[{0}]", tagsUnchanged);
-        for (final JSONObject tagUnchanged : tagsUnchanged) {
-            final String tagId = tagUnchanged.optString(Keys.OBJECT_ID);
-
-            if (null == tagId) {
-                continue; // Unchanged tag always exist id
-            }
-            final int publishedRefCnt = tagUnchanged.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
-
-            if (oldArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                if (!newArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                    tagUnchanged.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
-                    tagRepository.update(tagId, tagUnchanged);
-                }
-            } else {
-                if (newArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                    tagUnchanged.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt + 1);
-                    tagRepository.update(tagId, tagUnchanged);
-                }
-            }
-        }
-
-        for (final JSONObject tagDropped : tagsDropped) {
-            final String tagId = tagDropped.getString(Keys.OBJECT_ID);
-            final int refCnt = tagDropped.getInt(Tag.TAG_REFERENCE_COUNT);
-
-            tagDropped.put(Tag.TAG_REFERENCE_COUNT, refCnt - 1);
-            final int publishedRefCnt = tagDropped.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
-
-            if (oldArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                tagDropped.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt - 1);
-            }
-
-            tagRepository.update(tagId, tagDropped);
-        }
+        LOGGER.log(Level.DEBUG, "Tags unchanged [{0}]", tagsUnchanged);
 
         final String[] tagIdsDropped = new String[tagsDropped.size()];
-
         for (int i = 0; i < tagIdsDropped.length; i++) {
             final JSONObject tag = tagsDropped.get(i);
             final String id = tag.getString(Keys.OBJECT_ID);
-
             tagIdsDropped[i] = id;
         }
 
@@ -779,7 +705,6 @@ public class ArticleMgmtService {
         for (int i = 0; i < tagStrings.length; i++) {
             final JSONObject tag = tagsNeedToAdd.get(i);
             final String tagTitle = tag.getString(Tag.TAG_TITLE);
-
             tagStrings[i] = tagTitle;
         }
         final JSONArray tags = tag(tagStrings, newArticle);
@@ -859,13 +784,6 @@ public class ArticleMgmtService {
                         tagTitle, article.optString(Article.ARTICLE_TITLE));
                 tag = new JSONObject();
                 tag.put(Tag.TAG_TITLE, tagTitle);
-                tag.put(Tag.TAG_REFERENCE_COUNT, 1);
-                if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) { // Publish article directly
-                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
-                } else { // Save as draft
-                    tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 0);
-                }
-
                 tagId = tagRepository.add(tag);
                 tag.put(Keys.OBJECT_ID, tagId);
             } else {
@@ -873,18 +791,8 @@ public class ArticleMgmtService {
                 LOGGER.log(Level.TRACE, "Found a existing tag[title={0}, id={1}] in article[title={2}]",
                         tag.optString(Tag.TAG_TITLE), tag.optString(Keys.OBJECT_ID), article.optString(Article.ARTICLE_TITLE));
                 final JSONObject tagTmp = new JSONObject();
-
                 tagTmp.put(Keys.OBJECT_ID, tagId);
                 tagTmp.put(Tag.TAG_TITLE, tagTitle);
-                final int refCnt = tag.optInt(Tag.TAG_REFERENCE_COUNT);
-                final int publishedRefCnt = tag.optInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
-
-                tagTmp.put(Tag.TAG_REFERENCE_COUNT, refCnt + 1);
-                if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                    tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt + 1);
-                } else {
-                    tagTmp.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, publishedRefCnt);
-                }
                 tagRepository.update(tagId, tagTmp);
             }
 
