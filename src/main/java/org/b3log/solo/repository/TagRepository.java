@@ -103,8 +103,7 @@ public class TagRepository extends AbstractRepository {
         final List<JSONObject> records = select("SELECT\n" +
                 "\t`tag_oId`,\n" +
                 "\tcount(*) AS cnt\n" +
-                "FROM\n" +
-                getName() + "\t`tag_article`\n" +
+                "FROM `" + getName() + "`\n" +
                 "GROUP BY\n" +
                 "\ttag_oId\n" +
                 "ORDER BY\n" +

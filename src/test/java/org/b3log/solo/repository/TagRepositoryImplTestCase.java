@@ -32,7 +32,7 @@ import java.util.List;
  * {@link TagRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 30, 2011
+ * @version 1.0.0.1, Jan 28, 2019
  */
 @Test(suiteName = "repository")
 public class TagRepositoryImplTestCase extends AbstractTestCase {
@@ -47,10 +47,7 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
         final TagRepository tagRepository = getTagRepository();
 
         final JSONObject tag = new JSONObject();
-
         tag.put(Tag.TAG_TITLE, "tag title1");
-        tag.put(Tag.TAG_REFERENCE_COUNT, 1);
-        tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 0);
 
         final Transaction transaction = tagRepository.beginTransaction();
         tagRepository.add(tag);
@@ -67,11 +64,8 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
         final TagRepository tagRepository = getTagRepository();
 
         final JSONObject found = tagRepository.getByTitle("tag title1");
-
         Assert.assertNotNull(found);
         Assert.assertEquals(found.getString(Tag.TAG_TITLE), "tag title1");
-        Assert.assertEquals(0, found.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT));
-        Assert.assertEquals(1, found.getInt(Tag.TAG_REFERENCE_COUNT));
 
         final JSONObject notFound = tagRepository.getByTitle("");
         Assert.assertNull(notFound);
@@ -87,10 +81,7 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
         final TagRepository tagRepository = getTagRepository();
 
         final JSONObject tag = new JSONObject();
-
         tag.put(Tag.TAG_TITLE, "tag title2");
-        tag.put(Tag.TAG_REFERENCE_COUNT, 3);
-        tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 3);
 
         final Transaction transaction = tagRepository.beginTransaction();
         tagRepository.add(tag);
@@ -103,7 +94,6 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
         mostUsedTags = tagRepository.getMostUsedTags(1);
         Assert.assertNotNull(mostUsedTags);
         Assert.assertEquals(1, mostUsedTags.size());
-        Assert.assertEquals(3, mostUsedTags.get(0).getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT));
     }
 
     /**

@@ -196,7 +196,6 @@ public class ArticleMgmtService {
         try {
             final JSONObject article = articleRepository.get(articleId);
             article.put(ARTICLE_IS_PUBLISHED, false);
-            tagMgmtService.decTagPublishedRefCount(articleId);
             articleRepository.update(articleId, article);
 
             transaction.commit();
@@ -522,8 +521,7 @@ public class ArticleMgmtService {
      * @param updateCnt the specified update count
      * @throws ServiceException service exception
      */
-    public void updateArticlesRandomValue(final int updateCnt)
-            throws ServiceException {
+    public void updateArticlesRandomValue(final int updateCnt) throws ServiceException {
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {

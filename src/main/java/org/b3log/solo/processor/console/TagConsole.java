@@ -134,9 +134,9 @@ public class TagConsole {
             final List<JSONObject> tags = tagQueryService.getTags();
             for (int i = 0; i < tags.size(); i++) {
                 final JSONObject tag = tags.get(i);
-                final int tagRefCnt = tag.getInt(Tag.TAG_REFERENCE_COUNT);
-
-                if (0 == tagRefCnt) {
+                final String tagId = tag.optString(Keys.OBJECT_ID);
+                final int articleCount = tagQueryService.getArticleCount(tagId);
+                if (1 > articleCount) {
                     unusedTags.add(tag);
                 }
             }
