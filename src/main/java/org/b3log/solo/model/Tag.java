@@ -47,6 +47,12 @@ public final class Tag {
      */
     public static final String TAG_TITLE = "tagTitle";
 
+    //// Transient ////
+    /**
+     * Key of tag reference (published article) count.
+     */
+    public static final String TAG_T_PUBLISHED_REFERENCE_COUNT = "tagPublishedRefCount";
+
     /**
      * Tag title pattern string.
      */

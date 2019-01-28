@@ -17,14 +17,11 @@
  */
 package org.b3log.solo.repository;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.Tag;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -85,12 +82,15 @@ public class TagRepository extends AbstractRepository {
     public JSONObject getByTitle(final String tagTitle) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG_TITLE, FilterOperator.EQUAL, tagTitle)).setPageCount(1);
 
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
+        final JSONObject ret = getFirst(query);
+        if (null == ret) {
             return null;
         }
 
-        return array.optJSONObject(0);
+        final String tagId = ret.optString(Keys.OBJECT_ID);
+        final int articleCount = tagArticleRepository.getArticleCount(tagId);
+        ret.put(Tag.TAG_T_PUBLISHED_REFERENCE_COUNT, articleCount);
+
+        return ret;
     }
 }

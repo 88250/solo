@@ -17,9 +17,8 @@
  */
 package org.b3log.solo.repository;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
@@ -61,23 +60,22 @@ public class TagArticleRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public List<JSONObject> getMostUsedTags(final int num) throws RepositoryException {
-        final String tableNamePrefix = StringUtils.isNotBlank(Latkes.getLocalProperty("jdbc.tablePrefix"))
-                ? Latkes.getLocalProperty("jdbc.tablePrefix") + "_"
-                : "";
-        setDebug(true);
         final List<JSONObject> records = select("SELECT\n" +
                 "\t`tag_oId`,\n" +
                 "\tcount(*) AS cnt\n" +
-                "FROM `" + tableNamePrefix + "tag_article`\n" +
+                "FROM `" + getName() + "`\n" +
                 "GROUP BY\n" +
                 "\t`tag_oId`\n" +
                 "ORDER BY\n" +
                 "\tcnt DESC\n" +
                 "LIMIT ?", num);
         final List<JSONObject> ret = new ArrayList<>();
+        final TagRepository tagRepository = BeanManager.getInstance().getReference(TagRepository.class);
         for (final JSONObject record : records) {
             final String tagId = record.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
-            final JSONObject tag = get(tagId);
+            final JSONObject tag = tagRepository.get(tagId);
+            final int articleCount = getArticleCount(tagId);
+            tag.put(Tag.TAG_T_PUBLISHED_REFERENCE_COUNT, articleCount);
             ret.add(tag);
         }
 
