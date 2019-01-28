@@ -727,11 +727,18 @@ public class ArticleMgmtService {
             if (tagIdList.isEmpty()) { // Removes all if un-specified
                 relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
                 tagArticleRepository.remove(relationId);
+
             } else {
                 if (tagIdList.contains(tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID))) {
                     relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
                     tagArticleRepository.remove(relationId);
                 }
+            }
+
+            final String tagId = tagArticleRelation.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
+            final int articleCount = tagArticleRepository.getArticleCount(tagId);
+            if (1 > articleCount) {
+                tagRepository.remove(tagId);
             }
         }
     }

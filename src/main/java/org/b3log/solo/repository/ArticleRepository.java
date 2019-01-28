@@ -262,6 +262,10 @@ public class ArticleRepository extends AbstractRepository {
      */
     public JSONObject getPreviousArticle(final String articleId) throws RepositoryException {
         final JSONObject currentArticle = get(articleId);
+        if (null == currentArticle) {
+            return null;
+        }
+
         final long currentArticleCreated = currentArticle.optLong(Article.ARTICLE_CREATED);
 
         final Query query = new Query().
@@ -309,6 +313,10 @@ public class ArticleRepository extends AbstractRepository {
      */
     public JSONObject getNextArticle(final String articleId) throws RepositoryException {
         final JSONObject currentArticle = get(articleId);
+        if (null == currentArticle) {
+            return null;
+        }
+
         final long currentArticleCreated = currentArticle.optLong(Article.ARTICLE_CREATED);
 
         final Query query = new Query().
