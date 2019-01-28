@@ -74,8 +74,10 @@ public class TagArticleRepository extends AbstractRepository {
         for (final JSONObject record : records) {
             final String tagId = record.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
             final JSONObject tag = tagRepository.get(tagId);
-            final int articleCount = getArticleCount(tagId);
-            tag.put(Tag.TAG_T_PUBLISHED_REFERENCE_COUNT, articleCount);
+            if (null != tag) {
+                final int articleCount = getArticleCount(tagId);
+                tag.put(Tag.TAG_T_PUBLISHED_REFERENCE_COUNT, articleCount);
+            }
             ret.add(tag);
         }
 
