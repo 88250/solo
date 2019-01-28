@@ -33,8 +33,6 @@ import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -92,8 +90,6 @@ public class CommentConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final HttpServletResponse response = context.getResponse();
             final String commentId = context.pathVar("id");
             final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
@@ -136,8 +132,6 @@ public class CommentConsole {
         renderer.setJSONObject(ret);
 
         try {
-            final HttpServletRequest request = context.getRequest();
-            final HttpServletResponse response = context.getResponse();
             final String commentId = context.pathVar("id");
             final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (!commentQueryService.canAccessComment(commentId, currentUser)) {
