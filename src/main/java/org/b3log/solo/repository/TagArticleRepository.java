@@ -17,7 +17,9 @@
  */
 package org.b3log.solo.repository;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
@@ -26,6 +28,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Tag;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,6 +51,37 @@ public class TagArticleRepository extends AbstractRepository {
      */
     public TagArticleRepository() {
         super(Tag.TAG + "_" + Article.ARTICLE);
+    }
+
+    /**
+     * Gets most used tags with the specified number.
+     *
+     * @param num the specified number
+     * @return a list of most used tags, returns an empty list if not found
+     * @throws RepositoryException repository exception
+     */
+    public List<JSONObject> getMostUsedTags(final int num) throws RepositoryException {
+        final String tableNamePrefix = StringUtils.isNotBlank(Latkes.getLocalProperty("jdbc.tablePrefix"))
+                ? Latkes.getLocalProperty("jdbc.tablePrefix") + "_"
+                : "";
+        setDebug(true);
+        final List<JSONObject> records = select("SELECT\n" +
+                "\t`tag_oId`,\n" +
+                "\tcount(*) AS cnt\n" +
+                "FROM `" + tableNamePrefix + "tag_article`\n" +
+                "GROUP BY\n" +
+                "\t`tag_oId`\n" +
+                "ORDER BY\n" +
+                "\tcnt DESC\n" +
+                "LIMIT ?", num);
+        final List<JSONObject> ret = new ArrayList<>();
+        for (final JSONObject record : records) {
+            final String tagId = record.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
+            final JSONObject tag = get(tagId);
+            ret.add(tag);
+        }
+
+        return ret;
     }
 
     /**

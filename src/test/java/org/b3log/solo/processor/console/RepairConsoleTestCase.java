@@ -62,23 +62,4 @@ public class RepairConsoleTestCase extends AbstractTestCase {
         final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "Restore signs succeeded."));
     }
-
-    /**
-     * repairTagArticleCounter.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "init")
-    public void repairTagArticleCounter() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/fix/tag-article-counter-repair");
-
-        mockAdminLogin(request);
-
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "Repair successfully!"));
-    }
 }

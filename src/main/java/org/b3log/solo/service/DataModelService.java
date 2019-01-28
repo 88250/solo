@@ -100,10 +100,10 @@ public class DataModelService {
     private CategoryRepository categoryRepository;
 
     /**
-     * Tag repository.
+     * Tag-Article repository.
      */
     @Inject
-    private TagRepository tagRepository;
+    private TagArticleRepository tagArticleRepository;
 
     /**
      * Link repository.
@@ -343,7 +343,7 @@ public class DataModelService {
         try {
             LOGGER.debug("Filling most used tags....");
             final int mostUsedTagDisplayCnt = preference.getInt(Option.ID_C_MOST_USED_TAG_DISPLAY_CNT);
-            final List<JSONObject> tags = tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
+            final List<JSONObject> tags = tagArticleRepository.getMostUsedTags(mostUsedTagDisplayCnt);
             dataModel.put(Common.MOST_USED_TAGS, tags);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fills most used tags failed", e);

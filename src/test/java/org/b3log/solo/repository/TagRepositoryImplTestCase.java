@@ -72,31 +72,6 @@ public class TagRepositoryImplTestCase extends AbstractTestCase {
     }
 
     /**
-     * Get Most Used Tags.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "add")
-    public void getMostUsedTags() throws Exception {
-        final TagRepository tagRepository = getTagRepository();
-
-        final JSONObject tag = new JSONObject();
-        tag.put(Tag.TAG_TITLE, "tag title2");
-
-        final Transaction transaction = tagRepository.beginTransaction();
-        tagRepository.add(tag);
-        transaction.commit();
-
-        List<JSONObject> mostUsedTags = tagRepository.getMostUsedTags(3);
-        Assert.assertNotNull(mostUsedTags);
-        Assert.assertEquals(2, mostUsedTags.size());
-
-        mostUsedTags = tagRepository.getMostUsedTags(1);
-        Assert.assertNotNull(mostUsedTags);
-        Assert.assertEquals(1, mostUsedTags.size());
-    }
-
-    /**
      * Get By ArticleId.
      *
      * @throws Exception exception

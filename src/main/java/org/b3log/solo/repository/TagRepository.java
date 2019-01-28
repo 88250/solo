@@ -17,7 +17,9 @@
  */
 package org.b3log.solo.repository;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
@@ -90,32 +92,5 @@ public class TagRepository extends AbstractRepository {
         }
 
         return array.optJSONObject(0);
-    }
-
-    /**
-     * Gets most used tags with the specified number.
-     *
-     * @param num the specified number
-     * @return a list of most used tags, returns an empty list if not found
-     * @throws RepositoryException repository exception
-     */
-    public List<JSONObject> getMostUsedTags(final int num) throws RepositoryException {
-        final List<JSONObject> records = select("SELECT\n" +
-                "\t`tag_oId`,\n" +
-                "\tcount(*) AS cnt\n" +
-                "FROM `" + getName() + "`\n" +
-                "GROUP BY\n" +
-                "\ttag_oId\n" +
-                "ORDER BY\n" +
-                "\tcnt DESC\n" +
-                "LIMIT ?", num);
-        final List<JSONObject> ret = new ArrayList<>();
-        for (final JSONObject record : records) {
-            final String tagId = record.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
-            final JSONObject tag = get(tagId);
-            ret.add(tag);
-        }
-
-        return ret;
     }
 }

@@ -33,7 +33,7 @@ import java.util.List;
  * {@link TagArticleRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 30, 2011
+ * @version 1.1.0.0, Jan 28, 2019
  */
 @Test(suiteName = "repository")
 public class TagArticleRepositoryImplTestCase extends AbstractTestCase {
@@ -48,7 +48,6 @@ public class TagArticleRepositoryImplTestCase extends AbstractTestCase {
         final TagArticleRepository tagArticleRepository = getTagArticleRepository();
 
         final JSONObject tagArticle = new JSONObject();
-
         tagArticle.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, "article1 id");
         tagArticle.put(Tag.TAG + "_" + Keys.OBJECT_ID, "tag1 id");
 
@@ -64,11 +63,9 @@ public class TagArticleRepositoryImplTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "add")
     public void getByArticleId() throws Exception {
-        final TagArticleRepository tagArticleRepository
-                = getTagArticleRepository();
+        final TagArticleRepository tagArticleRepository = getTagArticleRepository();
 
-        final List<JSONObject> tagArticle
-                = tagArticleRepository.getByArticleId("article1 id");
+        final List<JSONObject> tagArticle = tagArticleRepository.getByArticleId("article1 id");
         Assert.assertNotNull(tagArticle);
 
         Assert.assertEquals(0, tagArticleRepository.getByArticleId("").size());
@@ -81,12 +78,23 @@ public class TagArticleRepositoryImplTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "add")
     public void getByTagId() throws Exception {
-        final TagArticleRepository tagArticleRepository
-                = getTagArticleRepository();
+        final TagArticleRepository tagArticleRepository = getTagArticleRepository();
 
-        final JSONArray results
-                = tagArticleRepository.getByTagId("tag1 id", 1, Integer.MAX_VALUE).
-                getJSONArray(Keys.RESULTS);
+        final JSONArray results = tagArticleRepository.getByTagId("tag1 id", 1, Integer.MAX_VALUE).getJSONArray(Keys.RESULTS);
         Assert.assertEquals(1, results.length());
+    }
+
+    /**
+     * Get Most Used Tags.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "add")
+    public void getMostUsedTags() throws Exception {
+        final TagArticleRepository tagArticleRepository = getTagArticleRepository();
+
+        final List<JSONObject> mostUsedTags = tagArticleRepository.getMostUsedTags(3);
+        Assert.assertNotNull(mostUsedTags);
+        Assert.assertEquals(1, mostUsedTags.size());
     }
 }
