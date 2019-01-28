@@ -202,9 +202,6 @@ public class ArticleMgmtService {
             decArchiveDatePublishedRefCount(articleId);
 
             articleRepository.update(articleId, article);
-            final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
-            author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) - 1);
-            userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
             transaction.commit();
         } catch (final Exception e) {
@@ -331,13 +328,6 @@ public class ArticleMgmtService {
             }
 
             final boolean publishNewArticle = !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED) && article.getBoolean(ARTICLE_IS_PUBLISHED);
-
-            // Set statistic
-            if (publishNewArticle) {
-                final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
-                author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) + 1);
-                userRepository.update(author.optString(Keys.OBJECT_ID), author);
-            }
 
             if (publishNewArticle) {
                 incArchiveDatePublishedRefCount(articleId);
@@ -479,14 +469,6 @@ public class ArticleMgmtService {
             final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
             article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
 
-            final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
-            final int userArticleCnt = author.optInt(UserExt.USER_ARTICLE_COUNT);
-            author.put(UserExt.USER_ARTICLE_COUNT, userArticleCnt + 1);
-            if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) + 1);
-            }
-            userRepository.update(author.optString(Keys.OBJECT_ID), author);
-
             if (!article.has(Article.ARTICLE_EDITOR_TYPE)) {
                 article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
             }
@@ -527,14 +509,7 @@ public class ArticleMgmtService {
             unArchiveDate(articleId);
             removeTagArticleRelations(articleId);
 
-            final JSONObject article = articleRepository.get(articleId);
-
             articleRepository.remove(articleId);
-
-            final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
-            author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) - 1);
-            author.put(UserExt.USER_ARTICLE_COUNT, author.optInt(UserExt.USER_ARTICLE_COUNT) - 1);
-            userRepository.update(author.optString(Keys.OBJECT_ID), author);
 
             transaction.commit();
         } catch (final Exception e) {

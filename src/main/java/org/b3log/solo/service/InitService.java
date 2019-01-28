@@ -308,11 +308,6 @@ public class InitService {
             addTagArticleRelation(tags, article);
             archiveDate(article);
             articleRepository.add(article);
-
-            final JSONObject admin = userRepository.getAdmin();
-            admin.put(UserExt.USER_ARTICLE_COUNT, 1);
-            admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 1);
-            userRepository.update(admin.optString(Keys.OBJECT_ID), admin);
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Adds an article failed", e);
 
@@ -429,8 +424,6 @@ public class InitService {
         admin.put(User.USER_URL, Latkes.getServePath());
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
         admin.put(User.USER_PASSWORD, DigestUtils.md5Hex(requestJSONObject.getString(User.USER_PASSWORD)));
-        admin.put(UserExt.USER_ARTICLE_COUNT, 0);
-        admin.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
         String avatar = requestJSONObject.optString(UserExt.USER_AVATAR);
         if (StringUtils.isBlank(avatar)) {
             avatar = Solos.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128");

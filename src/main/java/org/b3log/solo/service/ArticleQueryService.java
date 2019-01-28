@@ -926,29 +926,24 @@ public class ArticleQueryService {
      * @param authorId       the specified author id
      * @param currentPageNum the specified current page number
      * @param pageSize       the specified page size
-     * @return a list of articles, returns an empty list if not found
+     * @return result
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getArticlesByAuthorId(final String authorId, final int currentPageNum, final int pageSize)
+    public JSONObject getArticlesByAuthorId(final String authorId, final int currentPageNum, final int pageSize)
             throws ServiceException {
         try {
-            final JSONObject result = articleRepository.getByAuthorId(authorId, currentPageNum, pageSize);
-            final JSONArray articles = result.getJSONArray(Keys.RESULTS);
-            final List<JSONObject> ret = new ArrayList<>();
-
+            final JSONObject ret = articleRepository.getByAuthorId(authorId, currentPageNum, pageSize);
+            final JSONArray articles = ret.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
                 article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
                 article.put(ARTICLE_T_CREATE_DATE, new Date(article.optLong(ARTICLE_CREATED)));
                 article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(ARTICLE_UPDATED)));
-
-                ret.add(article);
             }
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets articles by author email failed [authorId=" + authorId +
-                    ", currentPageNum=" + currentPageNum + ", pageSize=" + pageSize + "]", e);
+            LOGGER.log(Level.ERROR, "Gets articles by author id failed [authorId=" + authorId + ", currentPageNum=" + currentPageNum + ", pageSize=" + pageSize + "]", e);
 
             throw new ServiceException(e);
         }

@@ -161,7 +161,7 @@ public class ArticleRepository extends AbstractRepository {
                         new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, authorId),
                         new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).
-                setPage(currentPageNum, pageSize).setPageCount(1);
+                setPage(currentPageNum, pageSize);
 
         return get(query);
     }

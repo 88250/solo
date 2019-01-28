@@ -37,10 +37,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.servlet.renderer.TextHtmlRenderer;
-import org.b3log.latke.util.Dates;
-import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Paginator;
-import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.*;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
@@ -61,7 +58,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.5.2, Jan 5, 2019
+ * @version 1.4.5.3, Jan 28, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -509,13 +506,10 @@ public class ArticleProcessor {
                 return;
             }
 
-            final JSONObject author = authorRet.getJSONObject(User.USER);
-
-            final List<JSONObject> articles = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
+            final JSONObject articlesResult = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
+            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articlesResult.optJSONArray(Keys.OBJECT_ID));
             dataModelService.setArticlesExProperties(context, articles, preference);
-
-            final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
-            final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
+            final int pageCount = articlesResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
 
             final JSONObject result = new JSONObject();
             final JSONObject pagination = new JSONObject();
@@ -567,21 +561,20 @@ public class ArticleProcessor {
                 return;
             }
 
-            final JSONObject author = result.getJSONObject(User.USER);
-            final List<JSONObject> articles = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
-            if (articles.isEmpty()) {
+            final JSONObject articlesResult = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
+            if (null == articlesResult) {
                 context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;
             }
 
+            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articlesResult.optJSONArray(Keys.OBJECT_ID));
             dataModelService.setArticlesExProperties(context, articles, preference);
-
-            final int articleCount = author.getInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT);
-            final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
+            final int pageCount = articlesResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
+            final JSONObject author = result.getJSONObject(User.USER);
             prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author);
             final HttpServletResponse response = context.getResponse();
             dataModelService.fillCommon(context, dataModel, preference);

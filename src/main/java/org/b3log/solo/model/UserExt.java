@@ -23,21 +23,11 @@ import org.apache.commons.lang.StringUtils;
  * This class defines ext of user model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, May 25, 2017
+ * @version 1.2.0.1, Jan 28, 2019
  * @see org.b3log.latke.model.User
  * @since 0.4.1
  */
 public final class UserExt {
-
-    /**
-     * Key of user article count.
-     */
-    public static final String USER_ARTICLE_COUNT = "userArticleCount";
-
-    /**
-     * Key of user article count.
-     */
-    public static final String USER_PUBLISHED_ARTICLE_COUNT = "userPublishedArticleCount";
 
     /**
      * Key of user avatar.

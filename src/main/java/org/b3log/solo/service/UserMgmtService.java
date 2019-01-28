@@ -268,9 +268,6 @@ public class UserMgmtService {
             final String roleName = requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE);
             user.put(User.USER_ROLE, roleName);
 
-            user.put(UserExt.USER_ARTICLE_COUNT, 0);
-            user.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, 0);
-
             String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
             if (StringUtils.isBlank(userAvatar)) {
                 userAvatar = Solos.getGravatarURL(userEmail, "128");
