@@ -336,9 +336,7 @@ public class InitService {
 
         try {
             archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate(createDateString, new String[]{"yyyy/MM"}).getTime());
-            archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 1);
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 1);
-
             archiveDateRepository.add(archiveDate);
         } catch (final ParseException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -346,10 +344,8 @@ public class InitService {
         }
 
         final JSONObject archiveDateArticleRelation = new JSONObject();
-
         archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, archiveDate.optString(Keys.OBJECT_ID));
         archiveDateArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
-
         archiveDateArticleRepository.add(archiveDateArticleRelation);
     }
 
@@ -364,10 +360,8 @@ public class InitService {
         for (int i = 0; i < tags.length(); i++) {
             final JSONObject tag = tags.optJSONObject(i);
             final JSONObject tagArticleRelation = new JSONObject();
-
             tagArticleRelation.put(Tag.TAG + "_" + Keys.OBJECT_ID, tag.optString(Keys.OBJECT_ID));
             tagArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
-
             tagArticleRepository.add(tagArticleRelation);
         }
     }
@@ -387,16 +381,12 @@ public class InitService {
             final String tagTitle = tagTitles[i].trim();
             final JSONObject tag = new JSONObject();
 
-            LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]",
-                    tagTitle, article.optString(Article.ARTICLE_TITLE));
+            LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]", tagTitle, article.optString(Article.ARTICLE_TITLE));
             tag.put(Tag.TAG_TITLE, tagTitle);
             tag.put(Tag.TAG_REFERENCE_COUNT, 1);
             tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
-
             final String tagId = tagRepository.add(tag);
-
             tag.put(Keys.OBJECT_ID, tagId);
-
             ret.put(tag);
         }
 
@@ -429,7 +419,6 @@ public class InitService {
             avatar = Solos.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128");
         }
         admin.put(UserExt.USER_AVATAR, avatar);
-
         userRepository.add(admin);
 
         LOGGER.debug("Initialized admin");
@@ -446,9 +435,7 @@ public class InitService {
         link.put(Link.LINK_TITLE, "黑客派");
         link.put(Link.LINK_ADDRESS, "https://hacpai.com");
         link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
-
         final int maxOrder = linkRepository.getMaxOrder();
-
         link.put(Link.LINK_ORDER, maxOrder + 1);
         final String ret = linkRepository.add(link);
     }
@@ -480,7 +467,6 @@ public class InitService {
         LOGGER.debug("Initializing reply notification template");
 
         final JSONObject replyNotificationTemplate = new JSONObject(DefaultPreference.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
-
         replyNotificationTemplate.put(Keys.OBJECT_ID, "replyNotificationTemplate");
 
         final JSONObject subjectOpt = new JSONObject();

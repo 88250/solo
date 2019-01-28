@@ -643,9 +643,7 @@ public class ArticleMgmtService {
             final JSONObject archiveDateArticleRelation = archiveDateArticleRepository.getByArticleId(articleId);
             final String archiveDateId = archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
             final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
-            int archiveDateArticleCnt = archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT);
 
-            --archiveDateArticleCnt;
             int archiveDatePublishedArticleCnt = archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
             final JSONObject article = articleRepository.get(articleId);
 
@@ -653,13 +651,10 @@ public class ArticleMgmtService {
                 --archiveDatePublishedArticleCnt;
             }
 
-            if (0 == archiveDateArticleCnt) {
+            if (0 == archiveDatePublishedArticleCnt) {
                 archiveDateRepository.remove(archiveDateId);
             } else {
-                final JSONObject newArchiveDate = new JSONObject(archiveDate,
-                        CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
-
-                newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, archiveDateArticleCnt);
+                final JSONObject newArchiveDate = new JSONObject(archiveDate, CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
                 newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, archiveDatePublishedArticleCnt);
                 archiveDateRepository.update(archiveDateId, newArchiveDate);
             }
@@ -939,7 +934,6 @@ public class ArticleMgmtService {
             archiveDate = new JSONObject();
             try {
                 archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate(createDateString, new String[]{"yyyy/MM"}).getTime());
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, 0);
                 archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 0);
                 archiveDateRepository.add(archiveDate);
             } catch (final ParseException e) {
@@ -949,10 +943,8 @@ public class ArticleMgmtService {
         }
 
         final JSONObject newArchiveDate = new JSONObject(archiveDate, CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
-        newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT, archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_ARTICLE_COUNT) + 1);
         if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                    archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
+            newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
         }
         archiveDateRepository.update(archiveDate.optString(Keys.OBJECT_ID), newArchiveDate);
 

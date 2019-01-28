@@ -21,7 +21,7 @@ package org.b3log.solo.model;
  * This class defines all archive date model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jan 18, 2013
+ * @version 1.0.0.5, Jan 28, 2019
  */
 public final class ArchiveDate {
 
@@ -39,11 +39,6 @@ public final class ArchiveDate {
      * Archive time.
      */
     public static final String ARCHIVE_TIME = "archiveTime";
-
-    /**
-     * Key of archive date article count.
-     */
-    public static final String ARCHIVE_DATE_ARTICLE_COUNT = "archiveDateArticleCount";
 
     /**
      * Key of archive date article count.
