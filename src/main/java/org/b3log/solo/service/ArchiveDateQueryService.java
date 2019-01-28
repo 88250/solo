@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -108,6 +109,8 @@ public class ArchiveDateQueryService {
                 return null;
             }
 
+            final int articleCount = archiveDateArticleRepository.getArticleCount(archiveDate.optString(Keys.OBJECT_ID));
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_T_PUBLISHED_ARTICLE_COUNT, articleCount);
             ret.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
 
             return ret;

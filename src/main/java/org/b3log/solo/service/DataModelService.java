@@ -373,10 +373,8 @@ public class DataModelService {
         try {
             LOGGER.debug("Filling archive dates....");
             final List<JSONObject> archiveDates = archiveDateRepository.getArchiveDates();
-            final List<JSONObject> archiveDates2 = new ArrayList<JSONObject>();
-
+            final List<JSONObject> archiveDates2 = new ArrayList<>();
             dataModel.put(ArchiveDate.ARCHIVE_DATES, archiveDates2);
-
             if (archiveDates.isEmpty()) {
                 return;
             }

@@ -19,6 +19,7 @@ package org.b3log.solo.repository;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
@@ -45,6 +46,11 @@ public class ArchiveDateRepository extends AbstractRepository {
      */
     private static final Logger LOGGER = Logger.getLogger(ArchiveDateRepository.class);
 
+    /**
+     * Archive date-Article repository.
+     */
+    @Inject
+    private ArchiveDateArticleRepository archiveDateArticleRepository;
 
     /**
      * Public constructor.
@@ -104,7 +110,14 @@ public class ArchiveDateRepository extends AbstractRepository {
      */
     public List<JSONObject> getArchiveDates() throws RepositoryException {
         final Query query = new Query().addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).setPageCount(1);
+        // TODO: Performance issue
+        final List<JSONObject> ret = getList(query);
+        for (final JSONObject archiveDate : ret) {
+            final String archiveDateId = archiveDate.optString(Keys.OBJECT_ID);
+            final int articleCount = archiveDateArticleRepository.getArticleCount(archiveDateId);
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_T_PUBLISHED_ARTICLE_COUNT, articleCount);
+        }
 
-        return getList(query);
+        return ret;
     }
 }
