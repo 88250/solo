@@ -199,7 +199,6 @@ public class DataModelService {
                 if (Templates.hasExpression(template, "<#list articles1 as article>")) {
                     isArticles1 = true;
                     query.addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING);
-
                     LOGGER.trace("Query ${articles1} in index.ftl");
                 } else { // <#list articles as article>
                     query.addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
@@ -220,10 +219,8 @@ public class DataModelService {
                 dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
                 dataModel.put(Pagination.PAGINATION_LAST_PAGE_NUM, pageNums.get(pageNums.size() - 1));
             }
-
             dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
-
 
             if (!isArticles1) {
                 dataModel.put(Article.ARTICLES, articles);

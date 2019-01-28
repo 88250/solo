@@ -507,7 +507,7 @@ public class ArticleProcessor {
             }
 
             final JSONObject articlesResult = articleQueryService.getArticlesByAuthorId(authorId, currentPageNum, pageSize);
-            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articlesResult.optJSONArray(Keys.OBJECT_ID));
+            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articlesResult.optJSONArray(Keys.RESULTS));
             dataModelService.setArticlesExProperties(context, articles, preference);
             final int pageCount = articlesResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
 
@@ -568,7 +568,7 @@ public class ArticleProcessor {
                 return;
             }
 
-            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articlesResult.optJSONArray(Keys.OBJECT_ID));
+            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articlesResult.optJSONArray(Keys.RESULTS));
             dataModelService.setArticlesExProperties(context, articles, preference);
             final int pageCount = articlesResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
