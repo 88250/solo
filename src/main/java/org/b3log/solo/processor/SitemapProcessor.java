@@ -33,6 +33,7 @@ import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextXmlRenderer;
+import org.b3log.latke.util.URLs;
 import org.b3log.latke.util.XMLs;
 import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
@@ -49,7 +50,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLEncoder;
 
 /**
  * Sitemap processor.
@@ -192,7 +192,7 @@ public class SitemapProcessor {
 
         for (int i = 0; i < tags.length(); i++) {
             final JSONObject tag = tags.getJSONObject(i);
-            final String link = URLEncoder.encode(tag.getString(Tag.TAG_TITLE), "UTF-8");
+            final String link = URLs.encode(tag.getString(Tag.TAG_TITLE));
 
             final URL url = new URL();
 
