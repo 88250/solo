@@ -47,7 +47,6 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
 
         final JSONObject archiveDate = new JSONObject();
         archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate("2011/12", new String[]{"yyyy/MM"}).getTime());
-        archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 1);
 
         final Transaction transaction = archiveDateRepository.beginTransaction();
         archiveDateRepository.add(archiveDate);
@@ -69,7 +68,5 @@ public class ArchiveDateRepositoryImplTestCase extends AbstractTestCase {
 
         final JSONObject archiveDate = archiveDateRepository.getByArchiveDate("2011/12");
         Assert.assertNotNull(archiveDate);
-        Assert.assertEquals(archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT), 1);
-        //System.out.println(archiveDate.toString(SoloServletListener.JSON_PRINT_INDENT_FACTOR));
     }
 }

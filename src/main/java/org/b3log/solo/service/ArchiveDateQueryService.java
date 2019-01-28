@@ -24,6 +24,7 @@ import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.ArchiveDate;
+import org.b3log.solo.repository.ArchiveDateArticleRepository;
 import org.b3log.solo.repository.ArchiveDateRepository;
 import org.json.JSONObject;
 
@@ -33,7 +34,7 @@ import java.util.List;
  * Archive date query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Feb 7, 2012
+ * @version 1.1.0.0, Jan 28, 2019
  * @since 0.4.0
  */
 @Service
@@ -49,6 +50,22 @@ public class ArchiveDateQueryService {
      */
     @Inject
     private ArchiveDateRepository archiveDateRepository;
+
+    /**
+     * Archive date-Article repository.
+     */
+    @Inject
+    private ArchiveDateArticleRepository archiveDateArticleRepository;
+
+    /**
+     * Gets article count of an archive date specified by the given archive date id.
+     *
+     * @param archiveDateId the given archive date id
+     * @return article count, returns {@code -1} if occurred an exception
+     */
+    public int getArchiveDateArticleCount(final String archiveDateId) {
+        return archiveDateArticleRepository.getArticleCount(archiveDateId);
+    }
 
     /**
      * Gets all archive dates.

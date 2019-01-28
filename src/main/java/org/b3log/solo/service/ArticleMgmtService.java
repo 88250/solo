@@ -31,7 +31,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Ids;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
@@ -196,11 +195,8 @@ public class ArticleMgmtService {
 
         try {
             final JSONObject article = articleRepository.get(articleId);
-
             article.put(ARTICLE_IS_PUBLISHED, false);
             tagMgmtService.decTagPublishedRefCount(articleId);
-            decArchiveDatePublishedRefCount(articleId);
-
             articleRepository.update(articleId, article);
 
             transaction.commit();
@@ -328,10 +324,6 @@ public class ArticleMgmtService {
             }
 
             final boolean publishNewArticle = !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED) && article.getBoolean(ARTICLE_IS_PUBLISHED);
-
-            if (publishNewArticle) {
-                incArchiveDatePublishedRefCount(articleId);
-            }
 
             // Update
             final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
@@ -642,21 +634,9 @@ public class ArticleMgmtService {
         try {
             final JSONObject archiveDateArticleRelation = archiveDateArticleRepository.getByArticleId(articleId);
             final String archiveDateId = archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
-            final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
-
-            int archiveDatePublishedArticleCnt = archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
-            final JSONObject article = articleRepository.get(articleId);
-
-            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                --archiveDatePublishedArticleCnt;
-            }
-
-            if (0 == archiveDatePublishedArticleCnt) {
+            final int articleCount = archiveDateArticleRepository.getArticleCount(archiveDateId);
+            if (1 > articleCount) {
                 archiveDateRepository.remove(archiveDateId);
-            } else {
-                final JSONObject newArchiveDate = new JSONObject(archiveDate, CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
-                newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, archiveDatePublishedArticleCnt);
-                archiveDateRepository.update(archiveDateId, newArchiveDate);
             }
 
             archiveDateArticleRepository.remove(archiveDateArticleRelation.getString(Keys.OBJECT_ID));
@@ -934,19 +914,12 @@ public class ArticleMgmtService {
             archiveDate = new JSONObject();
             try {
                 archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate(createDateString, new String[]{"yyyy/MM"}).getTime());
-                archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 0);
                 archiveDateRepository.add(archiveDate);
             } catch (final ParseException e) {
                 LOGGER.log(Level.ERROR, e.getMessage(), e);
                 throw new RepositoryException(e);
             }
         }
-
-        final JSONObject newArchiveDate = new JSONObject(archiveDate, CollectionUtils.jsonArrayToArray(archiveDate.names(), String[].class));
-        if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-            newArchiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
-        }
-        archiveDateRepository.update(archiveDate.optString(Keys.OBJECT_ID), newArchiveDate);
 
         final JSONObject archiveDateArticleRelation = new JSONObject();
         archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, archiveDate.optString(Keys.OBJECT_ID));
@@ -1044,42 +1017,6 @@ public class ArticleMgmtService {
         }
 
         return ret.replaceAll(" ", "-");
-    }
-
-    /**
-     * Decrements reference count of archive date of an published article specified by the given article id.
-     *
-     * @param articleId the given article id
-     * @throws JSONException       json exception
-     * @throws RepositoryException repository exception
-     */
-    private void decArchiveDatePublishedRefCount(final String articleId)
-            throws JSONException, RepositoryException {
-        final JSONObject archiveDateArticleRelation = archiveDateArticleRepository.getByArticleId(articleId);
-        final String archiveDateId = archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
-        final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
-
-        archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) - 1);
-        archiveDateRepository.update(archiveDateId, archiveDate);
-    }
-
-    /**
-     * Increments reference count of archive date of an published article specified by the given article id.
-     *
-     * @param articleId the given article id
-     * @throws JSONException       json exception
-     * @throws RepositoryException repository exception
-     */
-    private void incArchiveDatePublishedRefCount(final String articleId)
-            throws JSONException, RepositoryException {
-        final JSONObject archiveDateArticleRelation = archiveDateArticleRepository.getByArticleId(articleId);
-        final String archiveDateId = archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
-        final JSONObject archiveDate = archiveDateRepository.get(archiveDateId);
-
-        archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT,
-                archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT) + 1);
-        archiveDateRepository.update(archiveDateId, archiveDate);
     }
 
     /**

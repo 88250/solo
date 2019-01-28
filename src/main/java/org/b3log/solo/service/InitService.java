@@ -336,7 +336,6 @@ public class InitService {
 
         try {
             archiveDate.put(ArchiveDate.ARCHIVE_TIME, DateUtils.parseDate(createDateString, new String[]{"yyyy/MM"}).getTime());
-            archiveDate.put(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT, 1);
             archiveDateRepository.add(archiveDate);
         } catch (final ParseException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

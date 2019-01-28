@@ -18,6 +18,8 @@
 package org.b3log.solo.repository;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.model.ArchiveDate;
@@ -36,10 +38,33 @@ import org.json.JSONObject;
 public class ArchiveDateArticleRepository extends AbstractRepository {
 
     /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(ArchiveDateArticleRepository.class);
+
+    /**
      * Public constructor.
      */
     public ArchiveDateArticleRepository() {
         super((ArchiveDate.ARCHIVE_DATE + "_" + Article.ARTICLE).toLowerCase());
+    }
+
+    /**
+     * Gets article count of an archive date specified by the given archive date id.
+     *
+     * @param archiveDateId the given archive date id
+     * @return article count, returns {@code -1} if occurred an exception
+     */
+    public int getArticleCount(final String archiveDateId) {
+        final Query query = new Query().setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, archiveDateId));
+
+        try {
+            return (int) count(query);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets archivedate [" + archiveDateId + "]'s article count failed", e);
+
+            return -1;
+        }
     }
 
     /**

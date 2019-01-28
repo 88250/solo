@@ -40,10 +40,11 @@ public final class ArchiveDate {
      */
     public static final String ARCHIVE_TIME = "archiveTime";
 
+    //// Transient ////
     /**
      * Key of archive date article count.
      */
-    public static final String ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT = "archiveDatePublishedArticleCount";
+    public static final String ARCHIVE_DATE_T_PUBLISHED_ARTICLE_COUNT = "archiveDatePublishedArticleCount";
 
     /**
      * Archive date year.

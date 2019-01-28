@@ -455,7 +455,7 @@ public class ArticleProcessor {
             final JSONObject archiveDate = archiveQueryResult.getJSONObject(ArchiveDate.ARCHIVE_DATE);
             final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
 
-            final int articleCount = archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
+            final int articleCount = archiveDateQueryService.getArchiveDateArticleCount(archiveDateId);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
@@ -616,7 +616,7 @@ public class ArticleProcessor {
             final JSONObject preference = preferenceQueryService.getPreference();
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
-            final int articleCount = archiveDate.getInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT);
+            final int articleCount = archiveDateQueryService.getArchiveDateArticleCount(archiveDateId);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
@@ -810,7 +810,6 @@ public class ArticleProcessor {
      * @param archiveDateString the specified archive data string
      * @param archiveDate       the specified archive date
      * @return page title for caching
-     * @throws Exception exception
      */
     private String prepareShowArchiveArticles(final JSONObject preference,
                                               final Map<String, Object> dataModel,
@@ -818,7 +817,7 @@ public class ArticleProcessor {
                                               final int currentPageNum,
                                               final int pageCount,
                                               final String archiveDateString,
-                                              final JSONObject archiveDate) throws Exception {
+                                              final JSONObject archiveDate) {
         final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
         final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 

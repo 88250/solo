@@ -28,14 +28,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.text.ParseException;
-import java.util.Iterator;
 import java.util.List;
 
 /**
  * Archive date repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Sep 30, 2018
+ * @version 1.0.0.4, Jan 28, 2019
  * @since 0.3.1
  */
 @Repository
@@ -105,25 +104,7 @@ public class ArchiveDateRepository extends AbstractRepository {
      */
     public List<JSONObject> getArchiveDates() throws RepositoryException {
         final Query query = new Query().addSort(ArchiveDate.ARCHIVE_TIME, SortDirection.DESCENDING).setPageCount(1);
-        final List<JSONObject> ret = getList(query);
-        removeForUnpublishedArticles(ret);
 
-        return ret;
-    }
-
-    /**
-     * Removes archive dates of unpublished articles from the specified archive
-     * dates.
-     *
-     * @param archiveDates the specified archive dates
-     */
-    private void removeForUnpublishedArticles(final List<JSONObject> archiveDates) {
-        final Iterator<JSONObject> iterator = archiveDates.iterator();
-        while (iterator.hasNext()) {
-            final JSONObject archiveDate = iterator.next();
-            if (0 == archiveDate.optInt(ArchiveDate.ARCHIVE_DATE_PUBLISHED_ARTICLE_COUNT)) {
-                iterator.remove();
-            }
-        }
+        return getList(query);
     }
 }
