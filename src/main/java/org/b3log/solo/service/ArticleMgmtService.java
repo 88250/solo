@@ -51,7 +51,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.14, Dec 10, 2018
+ * @version 1.2.2.15, Jan 28, 2019
  * @since 0.3.5
  */
 @Service
@@ -202,7 +202,6 @@ public class ArticleMgmtService {
             decArchiveDatePublishedRefCount(articleId);
 
             articleRepository.update(articleId, article);
-            statisticMgmtService.decPublishedBlogArticleCount();
             final int blogCmtCnt = statisticQueryService.getPublishedBlogCommentCount();
             final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
 
@@ -341,7 +340,6 @@ public class ArticleMgmtService {
             // Set statistic
             if (publishNewArticle) {
                 // This article is updated from unpublished to published
-                statisticMgmtService.incPublishedBlogArticleCount();
                 final int blogCmtCnt = statisticQueryService.getPublishedBlogCommentCount();
                 final int articleCmtCnt = article.getInt(ARTICLE_COMMENT_COUNT);
                 statisticMgmtService.setPublishedBlogCommentCount(blogCmtCnt + articleCmtCnt);
@@ -473,9 +471,6 @@ public class ArticleMgmtService {
             addTagArticleRelation(tags, article);
 
             statisticMgmtService.incBlogArticleCount();
-            if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                statisticMgmtService.incPublishedBlogArticleCount();
-            }
 
             archiveDate(article);
 
@@ -550,9 +545,6 @@ public class ArticleMgmtService {
             articleRepository.remove(articleId);
 
             statisticMgmtService.decBlogArticleCount();
-            if (article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                statisticMgmtService.decPublishedBlogArticleCount();
-            }
 
             final JSONObject author = userRepository.get(article.optString(Article.ARTICLE_AUTHOR_ID));
             author.put(UserExt.USER_PUBLISHED_ARTICLE_COUNT, author.optInt(UserExt.USER_PUBLISHED_ARTICLE_COUNT) - 1);

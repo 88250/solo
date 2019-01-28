@@ -30,7 +30,7 @@ import java.util.Set;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.5.0.0, Dec 23, 2018
+ * @version 1.5.0.1, Jan 28, 2019
  * @since 0.6.0
  */
 public final class Option {
@@ -333,11 +333,6 @@ public final class Option {
      * Key of statistic blog article count.
      */
     public static final String ID_C_STATISTIC_BLOG_ARTICLE_COUNT = "statisticBlogArticleCount";
-
-    /**
-     * Key of statistic blog published article count.
-     */
-    public static final String ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT = "statisticPublishedBlogArticleCount";
 
     /**
      * Key of oauth GitHub.

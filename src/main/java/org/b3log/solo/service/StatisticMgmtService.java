@@ -48,7 +48,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Statistic management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.2, Oct 15, 2018
+ * @version 2.0.1.3, Jan 28, 2019
  * @since 0.5.0
  */
 @Service
@@ -269,21 +269,6 @@ public class StatisticMgmtService {
     }
 
     /**
-     * Blog statistic published article count +1.
-     *
-     * @throws RepositoryException repository exception
-     */
-    public void incPublishedBlogArticleCount() throws RepositoryException {
-        final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-
-        statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
-        updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT, statistic);
-    }
-
-    /**
      * Blog statistic article count -1.
      *
      * @throws RepositoryException repository exception
@@ -296,21 +281,6 @@ public class StatisticMgmtService {
 
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) - 1);
         updateStatistic(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT, statistic);
-    }
-
-    /**
-     * Blog statistic published article count -1.
-     *
-     * @throws RepositoryException repository exception
-     */
-    public void decPublishedBlogArticleCount() throws RepositoryException {
-        final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-
-        statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) - 1);
-        updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT, statistic);
     }
 
     /**

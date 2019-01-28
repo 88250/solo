@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.3, Jan 15, 2019
+ * @version 1.7.0.4, Jan 28, 2019
  * @since 0.3.1
  */
 @Service
@@ -188,12 +188,8 @@ public class DataModelService {
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
             final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
-            final JSONObject statistic = statisticQueryService.getStatistic();
-            final int publishedArticleCnt = statistic.getInt(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
-            final int pageCount = (int) Math.ceil((double) publishedArticleCnt / (double) pageSize);
-
-            final Query query = new Query().setPage(currentPageNum, pageSize).setPageCount(pageCount).setFilter(
-                    new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED));
+            final Query query = new Query().setPage(currentPageNum, pageSize).
+                    setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED));
 
             final Template template = Skins.getSkinTemplate(context, "index.ftl");
             boolean isArticles1 = false;
@@ -214,6 +210,11 @@ public class DataModelService {
                     }
                 }
 
+            final JSONObject articlesResult = articleRepository.get(query);
+            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(articlesResult.optJSONArray(Keys.RESULTS));
+            final int pageCount = articlesResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+            setArticlesExProperties(context, articles, preference);
+
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
             if (0 != pageNums.size()) {
                 dataModel.put(Pagination.PAGINATION_FIRST_PAGE_NUM, pageNums.get(0));
@@ -223,8 +224,6 @@ public class DataModelService {
             dataModel.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             dataModel.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
-            final List<JSONObject> articles = articleRepository.getList(query);
-            setArticlesExProperties(context, articles, preference);
 
             if (!isArticles1) {
                 dataModel.put(Article.ARTICLES, articles);

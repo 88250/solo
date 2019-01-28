@@ -29,7 +29,7 @@ import org.json.JSONObject;
  * Statistic query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.1, Sep 19, 2018
+ * @version 2.0.0.2, Jan 28, 2019
  * @since 0.5.0
  */
 @Service
@@ -78,21 +78,6 @@ public class StatisticQueryService {
      */
     public int getPublishedBlogCommentCount() throws ServiceException {
         final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
-        if (null == opt) {
-            throw new ServiceException("Not found statistic");
-        }
-
-        return opt.optInt(Option.OPTION_VALUE);
-    }
-
-    /**
-     * Gets blog statistic published article count.
-     *
-     * @return published blog article count
-     * @throws ServiceException service exception
-     */
-    public int getPublishedBlogArticleCount() throws ServiceException {
-        final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
         if (null == opt) {
             throw new ServiceException("Not found statistic");
         }

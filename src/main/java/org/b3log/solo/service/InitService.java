@@ -61,7 +61,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.26, Dec 10, 2018
+ * @version 1.5.2.27, Jan 28, 2019
  * @since 0.4.0
  */
 @Service
@@ -367,7 +367,6 @@ public class InitService {
             statisticMgmtService.incBlogCommentCount();
             statisticMgmtService.incPublishedBlogCommentCount();
             statisticMgmtService.incBlogArticleCount();
-            statisticMgmtService.incPublishedBlogArticleCount();
 
             // Step 4: Add archive date-article relations
             archiveDate(article);
@@ -552,12 +551,6 @@ public class InitService {
         statisticBlogViewCountOpt.put(Option.OPTION_VALUE, "0");
         statisticBlogViewCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
         optionRepository.add(statisticBlogViewCountOpt);
-
-        final JSONObject statisticPublishedBlogArticleCountOpt = new JSONObject();
-        statisticPublishedBlogArticleCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT);
-        statisticPublishedBlogArticleCountOpt.put(Option.OPTION_VALUE, "0");
-        statisticPublishedBlogArticleCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
-        optionRepository.add(statisticPublishedBlogArticleCountOpt);
 
         final JSONObject statisticPublishedBlogCommentCountOpt = new JSONObject();
         statisticPublishedBlogCommentCountOpt.put(Keys.OBJECT_ID, Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT);
