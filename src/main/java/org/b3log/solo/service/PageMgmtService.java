@@ -201,7 +201,6 @@ public class PageMgmtService {
 
         try {
             LOGGER.log(Level.DEBUG, "Removing a page[id={0}]", pageId);
-            removePageComments(pageId);
             pageRepository.remove(pageId);
 
             transaction.commit();
@@ -353,23 +352,6 @@ public class PageMgmtService {
 
             throw new ServiceException(e);
         }
-    }
-
-    /**
-     * Removes page comments by the specified page id.
-     * <p>
-     * Removes related comments, sets page/blog comment statistic count.
-     * </p>
-     *
-     * @param pageId the specified page id
-     * @throws JSONException json exception
-     * @throws Exception     exception
-     */
-    private void removePageComments(final String pageId) throws Exception {
-        final int removedCnt = commentRepository.removeComments(pageId);
-        int publishedBlogCommentCount = statisticQueryService.getPublishedBlogCommentCount();
-        publishedBlogCommentCount -= removedCnt;
-        statisticMgmtService.setPublishedBlogCommentCount(publishedBlogCommentCount);
     }
 
     /**
