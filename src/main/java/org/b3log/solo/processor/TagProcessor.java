@@ -141,12 +141,8 @@ public class TagProcessor {
             final List<JSONObject> articles = (List<JSONObject>) tagArticleResult.opt(Keys.RESULTS);
             dataModelService.setArticlesExProperties(context, articles, preference);
 
-            final int tagArticleCount = tagArticleResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-            final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
-            LOGGER.log(Level.TRACE, "Paginate tag-articles [currentPageNum={0}, pageSize={1}, pageCount={2}, windowSize={3}]",
-                    currentPageNum, pageSize, pageCount, windowSize);
+            final int pageCount = tagArticleResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-            LOGGER.log(Level.TRACE, "tag-articles [pageNums={0}]", pageNums);
             fillPagination(dataModel, pageCount, currentPageNum, articles, pageNums);
             dataModel.put(Common.PATH, "/tags/" + URLs.encode(tagTitle));
             dataModel.put(Keys.OBJECT_ID, tagId);

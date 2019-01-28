@@ -409,8 +409,7 @@ public class ArticleProcessor {
             }
 
             final List<JSONObject> articles = (List<JSONObject>) tagArticleResult.opt(Keys.RESULTS);
-            final int tagArticleCount = tagArticleResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-            final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
+            final int pageCount = tagArticleResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             dataModelService.setArticlesExProperties(context, articles, preference);
 
             final JSONObject result = new JSONObject();

@@ -93,8 +93,7 @@ public class ArchiveDateQueryService {
      *     "archiveDate": {
      *         "oId": "",
      *         "archiveTime": "",
-     *         "archiveDatePublishedArticleCount": int,
-     *         "archiveDateArticleCount": int
+     *         "archiveDatePublishedArticleCount": int
      *     }
      * }
      * </pre>, returns {@code null} if not found

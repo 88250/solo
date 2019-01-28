@@ -76,7 +76,7 @@ public class TagConsole {
      * {
      *     "sc": boolean,
      *     "tags": [
-     *         {"tagTitle": "", tagReferenceCount": int, ....},
+     *         {"tagTitle": "", ....},
      *         ....
      *     ]
      * }
@@ -110,7 +110,7 @@ public class TagConsole {
      * {
      *     "sc": boolean,
      *     "unusedTags": [
-     *         {"tagTitle": "", tagReferenceCount": int, ....},
+     *         {"tagTitle": "", ....},
      *         ....
      *     ]
      * }

@@ -77,7 +77,6 @@ public class TagQueryService {
      *     "tag": {
      *         "oId": "",
      *         "tagTitle": "",
-     *         "tagReferenceCount": int,
      *         "tagPublishedRefCount": int
      *     }
      * }
@@ -86,15 +85,13 @@ public class TagQueryService {
      */
     public JSONObject getTagByTitle(final String tagTitle) throws ServiceException {
         try {
-            final JSONObject ret = new JSONObject();
-
             final JSONObject tag = tagRepository.getByTitle(tagTitle);
             if (null == tag) {
                 return null;
             }
 
+            final JSONObject ret = new JSONObject();
             ret.put(Tag.TAG, tag);
-            LOGGER.log(Level.DEBUG, "Got an tag[title={0}]", tagTitle);
 
             return ret;
         } catch (final RepositoryException e) {
@@ -123,7 +120,7 @@ public class TagQueryService {
      *
      * @return for example,      <pre>
      * [
-     *     {"tagTitle": "", "tagReferenceCount": int, ....},
+     *     {"tagTitle": "", ....},
      *     ....
      * ]
      * </pre>, returns an empty list if not found

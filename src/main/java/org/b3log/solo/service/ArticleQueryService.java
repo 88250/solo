@@ -630,6 +630,7 @@ public class ArticleQueryService {
             if (0 == tagArticleRelations.length()) {
                 return null;
             }
+            final JSONObject pagination = result.optJSONObject(Pagination.PAGINATION);
 
             final Set<String> articleIds = new HashSet<>();
             for (int i = 0; i < tagArticleRelations.length(); i++) {
@@ -656,7 +657,7 @@ public class ArticleQueryService {
                 retArticles.add(article);
             }
             final JSONObject ret = new JSONObject();
-            ret.put(Pagination.PAGINATION, result.optJSONObject(Pagination.PAGINATION));
+            ret.put(Pagination.PAGINATION, pagination);
             ret.put(Keys.RESULTS, (Object) retArticles);
 
             return ret;
