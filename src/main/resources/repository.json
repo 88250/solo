@@ -81,16 +81,6 @@
           "length": 19
         },
         {
-          "name": "archiveDateArticleCount",
-          "description": "存档日期文章计数，即某个月的文章总数",
-          "type": "int"
-        },
-        {
-          "name": "archiveDatePublishedArticleCount",
-          "description": "存档日期已发布的文章计数，即某个月的已发布文章总数",
-          "type": "int"
-        },
-        {
           "name": "archiveTime",
           "description": "存档日期时间，该月份第一天的时间戳",
           "type": "long"
@@ -439,16 +429,6 @@
           "description": "用户角色，管理员：adminRole，普通用户：defaultRole，访客用户：visitorRole",
           "type": "String",
           "length": 255
-        },
-        {
-          "name": "userArticleCount",
-          "description": "用户文章计数",
-          "type": "int"
-        },
-        {
-          "name": "userPublishedArticleCount",
-          "description": "用户已发布文章计数",
-          "type": "int"
         },
         {
           "name": "userAvatar",
