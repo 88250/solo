@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-import jodd.http.HttpRequest;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -71,11 +70,6 @@ public class InitService {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(InitService.class);
-
-    /**
-     * Maximum count of initialization.
-     */
-    private static final int MAX_RETRIES_CNT = 3;
 
     /**
      * Option repository.
@@ -189,20 +183,6 @@ public class InitService {
 
     /**
      * Initializes Solo.
-     * <p>
-     * Initializes the followings in sequence:
-     * <ol>
-     * <li>Statistic</li>
-     * <li>Preference</li>
-     * <li>Administrator</li>
-     * </ol>
-     * </p>
-     * <p>
-     * We will try to initialize Solo 3 times at most.
-     * </p>
-     * <p>
-     * Posts "Hello World!" article and its comment while Solo initialized.
-     * </p>
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          {
@@ -233,57 +213,23 @@ public class InitService {
                     createTableResult.getName(), createTableResult.isSuccess());
         }
 
-        int retries = MAX_RETRIES_CNT;
-
-        while (true) {
-            final Transaction transaction = userRepository.beginTransaction();
-
-            try {
-                final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_BLOG_ARTICLE_COUNT);
-                if (null == statistic) {
-                    initStatistic();
-                    initPreference(requestJSONObject);
-                    initReplyNotificationTemplate();
-                    initAdmin(requestJSONObject);
-                    initLink();
-                }
-
-                transaction.commit();
-
-                break;
-            } catch (final Exception e) {
-                if (0 == retries) {
-                    LOGGER.log(Level.ERROR, "Initialize Solo error", e);
-                    throw new ServiceException("Initialize Solo error: " + e.getMessage());
-                }
-
-                // Allow retry to occur
-                --retries;
-                LOGGER.log(Level.WARN, "Retrying to init Solo [retries={0}]", retries);
-            } finally {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-            }
-        }
-
         final Transaction transaction = userRepository.beginTransaction();
-
         try {
+            initStatistic();
+            initPreference(requestJSONObject);
+            initReplyNotificationTemplate();
+            initAdmin(requestJSONObject);
+            initLink();
             helloWorld();
+
             transaction.commit();
         } catch (final Exception e) {
+
+            throw new ServiceException("Initializes Solo failed: " + e.getMessage());
+        } finally {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-
-            LOGGER.log(Level.ERROR, "Hello World error?!", e);
-        }
-
-        try {
-            HttpRequest.get(Latkes.getServePath() + "/blog/symphony/user").header("User-Agent", Solos.USER_AGENT).sendAsync();
-        } catch (final Exception e) {
-            LOGGER.log(Level.TRACE, "Sync account failed");
         }
 
         pluginManager.load();
