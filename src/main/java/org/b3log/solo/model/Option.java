@@ -360,6 +360,24 @@ public final class Option {
      */
     public static final String CATEGORY_C_OAUTH = "oauth";
 
+    //// Transient ////
+    /**
+     * Key of statistic blog published article count.
+     */
+    public static final String ID_T_STATISTIC_PUBLISHED_ARTICLE_COUNT = "statisticPublishedBlogArticleCount";
+
+    /**
+     * Key of statistic blog comment(published article) count.
+     */
+    public static final String ID_T_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT = "statisticPublishedBlogCommentCount";
+
+    /**
+     * Gets oauth pair str from the specified oauth pairs with the specified open id.
+     *
+     * @param oauthPairs     the specified oauth pairs
+     * @param openIdOrUserId the specified open id
+     * @return oauth pair str, returns {@code null} if not found
+     */
     public static String getOAuthPair(final Set<String> oauthPairs, final String openIdOrUserId) {
         for (final String pair : oauthPairs) {
             if (StringUtils.containsIgnoreCase(pair, openIdOrUserId)) {

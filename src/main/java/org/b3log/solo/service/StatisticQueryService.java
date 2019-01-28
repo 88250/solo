@@ -20,8 +20,14 @@ package org.b3log.solo.service;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.repository.ArticleRepository;
+import org.b3log.solo.repository.CommentRepository;
 import org.json.JSONObject;
 
 /**
@@ -46,6 +52,18 @@ public class StatisticQueryService {
     private OptionQueryService optionQueryService;
 
     /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * Comment repository.
+     */
+    @Inject
+    private CommentRepository commentRepository;
+
+    /**
      * Gets the online visitor count.
      *
      * @return online visitor count
@@ -61,7 +79,13 @@ public class StatisticQueryService {
      */
     public JSONObject getStatistic() {
         try {
-            return optionQueryService.getOptions(Option.CATEGORY_C_STATISTIC);
+            final JSONObject ret = optionQueryService.getOptions(Option.CATEGORY_C_STATISTIC);
+            final long publishedArticleCount = articleRepository.count(new Query().setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)));
+            ret.put(Option.ID_T_STATISTIC_PUBLISHED_ARTICLE_COUNT, publishedArticleCount);
+            final long commentCount = commentRepository.count(new Query());
+            ret.put(Option.ID_T_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, commentCount);
+
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets statistic failed", e);
 
