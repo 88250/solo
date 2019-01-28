@@ -58,7 +58,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.3, Oct 7, 2018
+ * @version 1.3.3.4, Jan 28, 2019
  * @since 0.3.5
  */
 @Service
@@ -464,7 +464,6 @@ public class CommentMgmtService {
             // Step 2: Update page comment count
             incPageCommentCount(pageId);
             // Step 3: Update blog statistic comment count
-            statisticMgmtService.incBlogCommentCount();
             statisticMgmtService.incPublishedBlogCommentCount();
             // Step 4: Send an email to admin
             try {
@@ -602,7 +601,6 @@ public class CommentMgmtService {
             // Step 2: Update article comment count
             articleMgmtService.incArticleCommentCount(articleId);
             // Step 3: Update blog statistic comment count
-            statisticMgmtService.incBlogCommentCount();
             statisticMgmtService.incPublishedBlogCommentCount();
             // Step 4: Send an email to admin
             try {
@@ -647,7 +645,6 @@ public class CommentMgmtService {
             // Step 2: Update page comment count
             decPageCommentCount(pageId);
             // Step 3: Update blog statistic comment count
-            statisticMgmtService.decBlogCommentCount();
             statisticMgmtService.decPublishedBlogCommentCount();
 
             transaction.commit();
@@ -680,7 +677,6 @@ public class CommentMgmtService {
             // Step 2: Update article comment count
             decArticleCommentCount(articleId);
             // Step 3: Update blog statistic comment count
-            statisticMgmtService.decBlogCommentCount();
             statisticMgmtService.decPublishedBlogCommentCount();
 
             transaction.commit();

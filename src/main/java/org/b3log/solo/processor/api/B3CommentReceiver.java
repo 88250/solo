@@ -234,7 +234,6 @@ public class B3CommentReceiver {
             // Step 2: Update article comment count
             articleMgmtService.incArticleCommentCount(articleId);
             // Step 3: Update blog statistic comment count
-            statisticMgmtService.incBlogCommentCount();
             statisticMgmtService.incPublishedBlogCommentCount();
             // Step 4: Send an email to admin
             try {

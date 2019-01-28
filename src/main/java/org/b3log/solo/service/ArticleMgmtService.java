@@ -966,13 +966,7 @@ public class ArticleMgmtService {
      */
     private void removeArticleComments(final String articleId) throws Exception {
         final int removedCnt = commentRepository.removeComments(articleId);
-        int blogCommentCount = statisticQueryService.getBlogCommentCount();
-
-        blogCommentCount -= removedCnt;
-        statisticMgmtService.setBlogCommentCount(blogCommentCount);
-
         final JSONObject article = articleRepository.get(articleId);
-
         if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
             int publishedBlogCommentCount = statisticQueryService.getPublishedBlogCommentCount();
 

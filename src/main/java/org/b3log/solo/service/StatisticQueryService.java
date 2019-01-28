@@ -56,21 +56,6 @@ public class StatisticQueryService {
     }
 
     /**
-     * Get blog comment count.
-     *
-     * @return blog comment count
-     * @throws ServiceException service exception
-     */
-    public int getBlogCommentCount() throws ServiceException {
-        final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT);
-        if (null == opt) {
-            throw new ServiceException("Not found statistic");
-        }
-
-        return opt.optInt(Option.OPTION_VALUE);
-    }
-
-    /**
      * Get blog comment(published article) count.
      *
      * @return blog comment count

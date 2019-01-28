@@ -254,20 +254,6 @@ public class StatisticMgmtService {
     }
 
     /**
-     * Blog statistic comment count +1.
-     *
-     * @throws RepositoryException repository exception
-     */
-    public void incBlogCommentCount() throws RepositoryException {
-        final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-        statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
-        updateStatistic(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT, statistic);
-    }
-
-    /**
      * Blog statistic comment(published article) count +1.
      *
      * @throws RepositoryException repository exception
@@ -279,21 +265,6 @@ public class StatisticMgmtService {
         }
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
         updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
-    }
-
-    /**
-     * Blog statistic comment count -1.
-     *
-     * @throws RepositoryException repository exception
-     */
-    public void decBlogCommentCount() throws RepositoryException {
-        final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-
-        statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) - 1);
-        updateStatistic(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT, statistic);
     }
 
     /**
@@ -309,22 +280,6 @@ public class StatisticMgmtService {
 
         statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) - 1);
         updateStatistic(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, statistic);
-    }
-
-    /**
-     * Sets blog comment count with the specified count.
-     *
-     * @param count the specified count
-     * @throws RepositoryException repository exception
-     */
-    public void setBlogCommentCount(final int count) throws RepositoryException {
-        final JSONObject statistic = optionRepository.get(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT);
-        if (null == statistic) {
-            throw new RepositoryException("Not found statistic");
-        }
-
-        statistic.put(Option.OPTION_VALUE, count);
-        updateStatistic(Option.ID_C_STATISTIC_BLOG_COMMENT_COUNT, statistic);
     }
 
     /**

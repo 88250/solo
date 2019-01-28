@@ -367,14 +367,7 @@ public class PageMgmtService {
      */
     private void removePageComments(final String pageId) throws Exception {
         final int removedCnt = commentRepository.removeComments(pageId);
-
-        int blogCommentCount = statisticQueryService.getBlogCommentCount();
-
-        blogCommentCount -= removedCnt;
-        statisticMgmtService.setBlogCommentCount(blogCommentCount);
-
         int publishedBlogCommentCount = statisticQueryService.getPublishedBlogCommentCount();
-
         publishedBlogCommentCount -= removedCnt;
         statisticMgmtService.setPublishedBlogCommentCount(publishedBlogCommentCount);
     }
