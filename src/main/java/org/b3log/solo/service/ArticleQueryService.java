@@ -616,29 +616,29 @@ public class ArticleQueryService {
      * @param tagId          the specified tag id
      * @param currentPageNum the specified current page number
      * @param pageSize       the specified page size
-     * @return a list of articles, returns an empty list if not found
+     * @return result, returns {@code null} if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getArticlesByTag(final String tagId, final int currentPageNum, final int pageSize)
+    public JSONObject getArticlesByTag(final String tagId, final int currentPageNum, final int pageSize)
             throws ServiceException {
         try {
             JSONObject result = tagArticleRepository.getByTagId(tagId, currentPageNum, pageSize);
+            if (null == result) {
+                return null;
+            }
             final JSONArray tagArticleRelations = result.getJSONArray(Keys.RESULTS);
-
             if (0 == tagArticleRelations.length()) {
-                return Collections.emptyList();
+                return null;
             }
 
             final Set<String> articleIds = new HashSet<>();
-
             for (int i = 0; i < tagArticleRelations.length(); i++) {
                 final JSONObject tagArticleRelation = tagArticleRelations.getJSONObject(i);
                 final String articleId = tagArticleRelation.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
-
                 articleIds.add(articleId);
             }
 
-            final List<JSONObject> ret = new ArrayList<>();
+            final List<JSONObject> retArticles = new ArrayList<>();
 
             final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).setPageCount(1);
             result = articleRepository.get(query);
@@ -653,13 +653,15 @@ public class ArticleQueryService {
                 article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
                 article.put(ARTICLE_T_CREATE_DATE, new Date(article.getLong(ARTICLE_CREATED)));
                 article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(ARTICLE_UPDATED)));
-
-                ret.add(article);
+                retArticles.add(article);
             }
+            final JSONObject ret = new JSONObject();
+            ret.put(Pagination.PAGINATION, result.optJSONObject(Pagination.PAGINATION));
+            ret.put(Keys.RESULTS, (Object) retArticles);
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets articles by tag[id=" + tagId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets articles by tag [id=" + tagId + "] failed", e);
             throw new ServiceException(e);
         }
     }

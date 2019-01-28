@@ -30,7 +30,7 @@ import java.util.List;
  * Tag-Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Jan 15, 2019
+ * @version 1.0.0.6, Jan 28, 2019
  * @since 0.3.1
  */
 @Repository
@@ -90,7 +90,7 @@ public class TagArticleRepository extends AbstractRepository {
     public JSONObject getByTagId(final String tagId, final int currentPageNum, final int pageSize) throws RepositoryException {
         final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).
                 addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setPage(currentPageNum, pageSize).setPageCount(1);
+                setPage(currentPageNum, pageSize);
 
         return get(query);
     }

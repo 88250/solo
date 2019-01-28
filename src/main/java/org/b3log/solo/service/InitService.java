@@ -382,8 +382,6 @@ public class InitService {
 
             LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]", tagTitle, article.optString(Article.ARTICLE_TITLE));
             tag.put(Tag.TAG_TITLE, tagTitle);
-            tag.put(Tag.TAG_REFERENCE_COUNT, 1);
-            tag.put(Tag.TAG_PUBLISHED_REFERENCE_COUNT, 1);
             final String tagId = tagRepository.add(tag);
             tag.put(Keys.OBJECT_ID, tagId);
             ret.put(tag);

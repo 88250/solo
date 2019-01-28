@@ -272,7 +272,6 @@ public class DataModelService {
         Stopwatchs.start("Fill Tags");
         try {
             final List<JSONObject> tags = tagQueryService.getTags();
-            tagQueryService.removeForUnpublishedArticles(tags);
             Collections.sort(tags, Comparator.comparingInt(t -> -t.optInt(Tag.TAG_REFERENCE_COUNT)));
             dataModel.put(Tag.TAGS, tags);
         } catch (final Exception e) {
@@ -345,11 +344,7 @@ public class DataModelService {
         try {
             LOGGER.debug("Filling most used tags....");
             final int mostUsedTagDisplayCnt = preference.getInt(Option.ID_C_MOST_USED_TAG_DISPLAY_CNT);
-
             final List<JSONObject> tags = tagRepository.getMostUsedTags(mostUsedTagDisplayCnt);
-
-            tagQueryService.removeForUnpublishedArticles(tags);
-
             dataModel.put(Common.MOST_USED_TAGS, tags);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fills most used tags failed", e);

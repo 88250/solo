@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "3.2.1.1, Sep 16, 2018",
+  "version": "3.2.1.2, Jan 28, 2019",
   "authors": [
     "Liang Ding"
   ],
@@ -347,16 +347,6 @@
           "description": "主键",
           "type": "String",
           "length": 19
-        },
-        {
-          "name": "tagPublishedRefCount",
-          "description": "标签关联的已发布文章计数",
-          "type": "int"
-        },
-        {
-          "name": "tagReferenceCount",
-          "description": "标签关联的文章计数",
-          "type": "int"
         },
         {
           "name": "tagTitle",

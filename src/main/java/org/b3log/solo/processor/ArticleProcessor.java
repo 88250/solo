@@ -403,9 +403,13 @@ public class ArticleProcessor {
 
             final JSONObject tag = tagQueryResult.getJSONObject(Tag.TAG);
             final String tagId = tag.getString(Keys.OBJECT_ID);
-            final List<JSONObject> articles = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
+            final JSONObject tagArticleResult = articleQueryService.getArticlesByTag(tagId, currentPageNum, pageSize);
+            if (null == tagArticleResult) {
+                throw new Exception("Can not found tag [title=" + tagTitle + "]'s articles");
+            }
 
-            final int tagArticleCount = tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT);
+            final List<JSONObject> articles = (List<JSONObject>) tagArticleResult.opt(Keys.RESULTS);
+            final int tagArticleCount = tagArticleResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             final int pageCount = (int) Math.ceil((double) tagArticleCount / (double) pageSize);
             dataModelService.setArticlesExProperties(context, articles, preference);
 

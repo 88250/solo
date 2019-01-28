@@ -27,6 +27,7 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Requests;
+import org.b3log.latke.util.URLs;
 import org.b3log.solo.cache.StatisticCache;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArticleRepository;
@@ -38,8 +39,6 @@ import org.json.JSONObject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -158,7 +157,7 @@ public class StatisticMgmtService {
                     continue;
                 }
 
-                final String value = URLDecoder.decode(cookie.getValue(), "UTF-8");
+                final String value = URLs.decode(cookie.getValue());
                 cookieJSONArray = new JSONArray(value);
                 if (null == cookieJSONArray || 0 == cookieJSONArray.length()) {
                     return false;
@@ -178,14 +177,14 @@ public class StatisticMgmtService {
 
             if (needToCreate) {
                 final StringBuilder builder = new StringBuilder("[").append("\"").append(request.getRequestURI()).append("\"]");
-                final Cookie c = new Cookie("visited", URLEncoder.encode(builder.toString(), "UTF-8"));
+                final Cookie c = new Cookie("visited", URLs.encode(builder.toString()));
                 c.setMaxAge(COOKIE_EXPIRY);
                 c.setPath("/");
                 response.addCookie(c);
             } else if (needToAppend) {
                 cookieJSONArray.put(request.getRequestURI());
 
-                final Cookie c = new Cookie("visited", URLEncoder.encode(cookieJSONArray.toString(), "UTF-8"));
+                final Cookie c = new Cookie("visited", URLs.encode(cookieJSONArray.toString()));
                 c.setMaxAge(COOKIE_EXPIRY);
                 c.setPath("/");
                 response.addCookie(c);

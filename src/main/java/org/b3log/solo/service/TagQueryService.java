@@ -178,24 +178,6 @@ public class TagQueryService {
     }
 
     /**
-     * Removes tags of unpublished articles from the specified tags.
-     *
-     * @param tags the specified tags
-     * @throws JSONException       json exception
-     * @throws RepositoryException repository exception
-     */
-    public void removeForUnpublishedArticles(final List<JSONObject> tags) throws JSONException, RepositoryException {
-        final Iterator<JSONObject> iterator = tags.iterator();
-        while (iterator.hasNext()) {
-            final JSONObject tag = iterator.next();
-
-            if (0 == tag.getInt(Tag.TAG_PUBLISHED_REFERENCE_COUNT)) {
-                iterator.remove();
-            }
-        }
-    }
-
-    /**
      * Sets the tag repository with the specified tag repository.
      *
      * @param tagRepository the specified tag repository

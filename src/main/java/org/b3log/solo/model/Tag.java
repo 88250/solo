@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * This class defines all tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Aug 27, 2018
+ * @version 1.1.0.1, Jan 28, 2019
  */
 public final class Tag {
 
@@ -46,16 +46,6 @@ public final class Tag {
      * Key of title.
      */
     public static final String TAG_TITLE = "tagTitle";
-
-    /**
-     * Key of tag reference count.
-     */
-    public static final String TAG_REFERENCE_COUNT = "tagReferenceCount";
-
-    /**
-     * Key of tag reference(published article) count.
-     */
-    public static final String TAG_PUBLISHED_REFERENCE_COUNT = "tagPublishedRefCount";
 
     /**
      * Tag title pattern string.
