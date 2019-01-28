@@ -491,16 +491,12 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public void removeArticle(final String articleId) throws ServiceException {
-        LOGGER.log(Level.DEBUG, "Removing an article[id={0}]", articleId);
-
         final Transaction transaction = articleRepository.beginTransaction();
-
         try {
             unArchiveDate(articleId);
             removeTagArticleRelations(articleId);
-
             articleRepository.remove(articleId);
-
+            commentRepository.removeComments(articleId);
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
@@ -510,8 +506,6 @@ public class ArticleMgmtService {
             LOGGER.log(Level.ERROR, "Removes an article[id=" + articleId + "] failed", e);
             throw new ServiceException(e);
         }
-
-        LOGGER.log(Level.DEBUG, "Removed an article[id={0}]", articleId);
     }
 
     /**

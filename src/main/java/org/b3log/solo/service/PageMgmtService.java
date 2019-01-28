@@ -42,7 +42,7 @@ import java.util.List;
  * Page management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, Sep 21, 2017
+ * @version 1.1.0.10, Jan 28, 2019
  * @since 0.4.0
  */
 @Service
@@ -198,13 +198,10 @@ public class PageMgmtService {
      */
     public void removePage(final String pageId) throws ServiceException {
         final Transaction transaction = pageRepository.beginTransaction();
-
         try {
-            LOGGER.log(Level.DEBUG, "Removing a page[id={0}]", pageId);
             pageRepository.remove(pageId);
-
+            commentRepository.removeComments(pageId);
             transaction.commit();
-
         } catch (final Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
