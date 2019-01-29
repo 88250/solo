@@ -62,11 +62,6 @@ public final class Option {
     public static final String ID_C_CUSTOM_VARS = "customVars";
 
     /**
-     * Key of broadcast chance expiration time.
-     */
-    public static final String ID_C_BROADCAST_CHANCE_EXPIRATION_TIME = "broadcastChanceExpirationTime";
-
-    /**
      * Key of cloud object storage service (公有云对象存储服务提供商).
      */
     public static final String ID_C_CLOUD_STORAGE_KEY = "ossServer";
@@ -325,11 +320,6 @@ public final class Option {
     public static final String ID_C_OAUTH_GITHUB = "oauthGitHub";
 
     // Category constants
-    /**
-     * Broadcast.
-     */
-    public static final String CATEGORY_C_BROADCAST = "broadcast";
-
     /**
      * Qiniu.
      */
