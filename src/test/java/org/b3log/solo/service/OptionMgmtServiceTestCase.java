@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link OptionMgmtService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Apr 19, 2013
+ * @version 1.0.0.1, Jan 29, 2019
  * @since 0.6.0
  */
 @Test(suiteName = "service")
@@ -44,15 +44,15 @@ public class OptionMgmtServiceTestCase extends AbstractTestCase {
         final OptionMgmtService optionMgmtService = getOptionMgmtService();
 
         final JSONObject option = new JSONObject();
-        option.put(Keys.OBJECT_ID, Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
-        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_BROADCAST);
+        option.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
+        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         option.put(Option.OPTION_VALUE, 0L);
 
         final String id = optionMgmtService.addOrUpdateOption(option);
         //System.out.println(id);
         Assert.assertNotNull(id);
 
-        final JSONObject opt = getOptionQueryService().getOptionById(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
+        final JSONObject opt = getOptionQueryService().getOptionById(Option.ID_C_BLOG_TITLE);
         Assert.assertEquals(opt.getInt(Option.OPTION_VALUE), 0L);
     }
 
@@ -66,8 +66,8 @@ public class OptionMgmtServiceTestCase extends AbstractTestCase {
         final OptionMgmtService optionMgmtService = getOptionMgmtService();
 
         JSONObject option = new JSONObject();
-        option.put(Keys.OBJECT_ID, Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
-        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_BROADCAST);
+        option.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
+        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         option.put(Option.OPTION_VALUE, 0L);
 
         final String id = optionMgmtService.addOrUpdateOption(option); // Add
@@ -75,13 +75,13 @@ public class OptionMgmtServiceTestCase extends AbstractTestCase {
         Assert.assertNotNull(id);
 
         option = new JSONObject();
-        option.put(Keys.OBJECT_ID, Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
-        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_BROADCAST);
+        option.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
+        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         option.put(Option.OPTION_VALUE, 1L);
 
         optionMgmtService.addOrUpdateOption(option); // Update
 
-        final JSONObject opt = getOptionQueryService().getOptionById(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
+        final JSONObject opt = getOptionQueryService().getOptionById(Option.ID_C_BLOG_TITLE);
         Assert.assertEquals(opt.getInt(Option.OPTION_VALUE), 1L);
     }
 
@@ -95,8 +95,8 @@ public class OptionMgmtServiceTestCase extends AbstractTestCase {
         final OptionMgmtService optionMgmtService = getOptionMgmtService();
 
         final JSONObject option = new JSONObject();
-        option.put(Keys.OBJECT_ID, Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
-        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_BROADCAST);
+        option.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
+        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         option.put(Option.OPTION_VALUE, 0L);
 
         final String id = optionMgmtService.addOrUpdateOption(option);

@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link OptionQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jul 16, 2017
+ * @version 1.0.0.2, Jan 29, 2019
  * @since 0.6.0
  */
 @Test(suiteName = "service")
@@ -44,15 +44,15 @@ public class OptionQueryServiceTestCase extends AbstractTestCase {
         // Check
         final OptionQueryService optionQueryService = getOptionQueryService();
 
-        JSONObject options = optionQueryService.getOptions(Option.CATEGORY_C_BROADCAST);
+        JSONObject options = optionQueryService.getOptions(Option.CATEGORY_C_PREFERENCE);
         Assert.assertNull(options);
 
         // Add one
         final OptionMgmtService optionMgmtService = getOptionMgmtService();
 
         JSONObject option = new JSONObject();
-        option.put(Keys.OBJECT_ID, Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
-        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_BROADCAST);
+        option.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
+        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         option.put(Option.OPTION_VALUE, 5L);
 
         final String id = optionMgmtService.addOrUpdateOption(option);
@@ -60,11 +60,11 @@ public class OptionQueryServiceTestCase extends AbstractTestCase {
 
         // Check again
 
-        option = optionQueryService.getOptionById(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME);
+        option = optionQueryService.getOptionById(Option.ID_C_BLOG_TITLE);
         Assert.assertNotNull(option);
 
-        options = optionQueryService.getOptions(Option.CATEGORY_C_BROADCAST);
+        options = optionQueryService.getOptions(Option.CATEGORY_C_PREFERENCE);
         Assert.assertNotNull(options);
-        Assert.assertEquals(options.optLong(Option.ID_C_BROADCAST_CHANCE_EXPIRATION_TIME), 5L);
+        Assert.assertEquals(options.optLong(Option.ID_C_BLOG_TITLE), 5L);
     }
 }
