@@ -17,6 +17,8 @@
  */
 package org.b3log.solo.util;
 
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -36,23 +38,22 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.0, Jan 25, 2019
+ * @version 1.6.0.1, Jan 29, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -163,6 +164,80 @@ public final class Solos {
         COOKIE_SECRET = cookieSecret;
 
         COOKIE_HTTP_ONLY = Boolean.valueOf(Latkes.getLocalProperty("cookieHttpOnly"));
+    }
+
+    /**
+     * Gets GitHub repos.
+     *
+     * @param githubUserId the specified GitHub user id
+     * @return GitHub repos, returns an empty list if not found
+     */
+    public static List<JSONObject> getGitHubRepos(final String githubUserId) {
+        try {
+            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/repos?id=" + githubUserId).
+                    connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
+            if (HttpServletResponse.SC_OK != res.statusCode()) {
+                return null;
+            }
+            res.charset("UTF-8");
+            final JSONObject result = new JSONObject(res.bodyText());
+            if (0 != result.optInt(Keys.STATUS_CODE)) {
+                return Collections.emptyList();
+            }
+            final JSONObject data = result.optJSONObject(Common.DATA);
+            final JSONArray repos = data.optJSONArray("githubrepos");
+
+            return CollectionUtils.jsonArrayToList(repos);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets GitHub repos failed", e);
+
+            return Collections.emptyList();
+        }
+    }
+
+    /**
+     * Gets GitHub user info.
+     *
+     * @param accessToken the specified access token
+     * @return GitHub user info, for example, <pre>
+     * {
+     *   "openId": "",
+     *   "userName": "D",
+     *   "userEmail": "d@b3log.org", // may be empty
+     *   "userAvatar": "https://avatars3.githubusercontent.com/u/873584?v=4"
+     * }
+     * </pre>, returns {@code null} if not found QQ user info
+     */
+    public static JSONObject getGitHubUserInfo(final String accessToken) {
+        try {
+            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/user?ak=" + accessToken).
+                    connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
+            if (HttpServletResponse.SC_OK != res.statusCode()) {
+                return null;
+            }
+            res.charset("UTF-8");
+            final JSONObject result = new JSONObject(res.bodyText());
+            if (0 != result.optInt(Keys.STATUS_CODE)) {
+                return null;
+            }
+            final JSONObject data = result.optJSONObject(Common.DATA);
+            final String userName = StringUtils.trim(data.optString("userName"));
+            final String email = data.optString("userEmail");
+            final String openId = data.optString("userId");
+            final String avatarUrl = data.optString("userAvatarURL");
+
+            final JSONObject ret = new JSONObject();
+            ret.put("openId", openId);
+            ret.put(User.USER_NAME, userName);
+            ret.put(User.USER_EMAIL, email);
+            ret.put(UserExt.USER_AVATAR, avatarUrl);
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets GitHub user info failed", e);
+
+            return null;
+        }
     }
 
     /**

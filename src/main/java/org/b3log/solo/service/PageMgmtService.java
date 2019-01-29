@@ -31,8 +31,11 @@ import org.b3log.latke.util.Ids;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
+import org.b3log.solo.processor.OAuthGitHubProcessor;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
+import org.b3log.solo.util.Solos;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -94,6 +97,39 @@ public class PageMgmtService {
      */
     @Inject
     private StatisticQueryService statisticQueryService;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
+     * Refreshes GitHub repos.
+     * 同步 GitHub 仓库 https://github.com/b3log/solo/issues/12514
+     */
+    public void refreshGitHub() {
+        final JSONObject oauthGitHubOpt = optionQueryService.getOptionById(Option.ID_C_OAUTH_GITHUB);
+        if (null == oauthGitHubOpt) {
+            return;
+        }
+
+        String value = oauthGitHubOpt.optString(Option.OPTION_VALUE);
+        if (StringUtils.isBlank(value)) {
+            return;
+        }
+
+        final JSONArray github = new JSONArray(value);
+        final String githubPair = github.optString(0);// Just refresh the first account
+        final String githubUserId = githubPair.split(OAuthGitHubProcessor.GITHUB_SPLIT)[0];
+        final List<JSONObject> gitHubRepos = Solos.getGitHubRepos(githubUserId);
+        if (null == gitHubRepos || gitHubRepos.isEmpty()) {
+            return;
+        }
+        final String userId =  githubPair.split(OAuthGitHubProcessor.GITHUB_SPLIT)[1];
+
+        System.out.println(userId + ": " + gitHubRepos);
+    }
 
     /**
      * Updates a page by the specified request json object.

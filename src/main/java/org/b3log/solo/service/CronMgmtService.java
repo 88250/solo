@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  * Cron management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Jan 24, 2019
+ * @version 1.0.0.2, Jan 29, 2019
  * @since 2.9.7
  */
 @Service
@@ -60,6 +60,18 @@ public class CronMgmtService {
     private UserQueryService userQueryService;
 
     /**
+     * Page management service.
+     */
+    @Inject
+    private PageMgmtService pageMgmtService;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
      * Start all cron tasks.
      */
     public void start() {
@@ -68,6 +80,17 @@ public class CronMgmtService {
         SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
             try {
                 StatisticMgmtService.removeExpiredOnlineVisitor();
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Executes cron failed", e);
+            } finally {
+                Stopwatchs.release();
+            }
+        }, delay, 1000 * 60 * 10, TimeUnit.MILLISECONDS);
+        delay += 2000;
+
+        SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
+            try {
+                pageMgmtService.refreshGitHub();
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Executes cron failed", e);
             } finally {

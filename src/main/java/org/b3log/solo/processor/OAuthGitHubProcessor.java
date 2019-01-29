@@ -17,8 +17,6 @@
  */
 package org.b3log.solo.processor;
 
-import jodd.http.HttpRequest;
-import jodd.http.HttpResponse;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -35,7 +33,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
-import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.*;
@@ -115,6 +112,11 @@ public class OAuthGitHubProcessor {
     private InitService initService;
 
     /**
+     * GitHub split.
+     */
+    public static final String GITHUB_SPLIT = ":@:";
+
+    /**
      * Redirects to GitHub auth page.
      *
      * @param context the specified context
@@ -148,7 +150,7 @@ public class OAuthGitHubProcessor {
         STATES.remove(state);
 
         final String accessToken = context.param("ak");
-        final JSONObject userInfo = getGitHubUserInfo(accessToken);
+        final JSONObject userInfo = Solos.getGitHubUserInfo(accessToken);
         if (null == userInfo) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
@@ -175,7 +177,6 @@ public class OAuthGitHubProcessor {
         }
         final JSONArray github = new JSONArray(value);
         final Set<String> githubAuths = CollectionUtils.jsonArrayToSet(github);
-        final String splitChar = ":@:";
         final String oAuthPair = Option.getOAuthPair(githubAuths, openId); // openId:@:userId
         if (StringUtils.isBlank(oAuthPair)) {
             if (!initService.isInited()) {
@@ -222,7 +223,7 @@ public class OAuthGitHubProcessor {
                 user = userQueryService.getUserByEmailOrUserName(userEmail);
             }
             final String userId = user.optString(Keys.OBJECT_ID);
-            githubAuths.add(openId + splitChar + userId);
+            githubAuths.add(openId + GITHUB_SPLIT + userId);
             value = new JSONArray(githubAuths).toString();
             oauthGitHubOpt.put(Option.OPTION_VALUE, value);
             try {
@@ -238,7 +239,7 @@ public class OAuthGitHubProcessor {
             return;
         }
 
-        final String[] openIdUserId = oAuthPair.split(splitChar);
+        final String[] openIdUserId = oAuthPair.split(GITHUB_SPLIT);
         final String userId = openIdUserId[1];
         final JSONObject userResult = userQueryService.getUser(userId);
         if (null == userResult) {
@@ -251,50 +252,5 @@ public class OAuthGitHubProcessor {
         Solos.login(user, response);
         context.sendRedirect(Latkes.getServePath());
         LOGGER.log(Level.INFO, "Logged in [email={0}, remoteAddr={1}] with GitHub oauth", userEmail, Requests.getRemoteAddr(request));
-    }
-
-    /**
-     * Gets GitHub user info.
-     *
-     * @param accessToken the specified access token
-     * @return GitHub user info, for example, <pre>
-     * {
-     *   "openId": "",
-     *   "userName": "D",
-     *   "userEmail": "d@b3log.org", // may be empty
-     *   "userAvatar": "https://avatars3.githubusercontent.com/u/873584?v=4"
-     * }
-     * </pre>, returns {@code null} if not found QQ user info
-     */
-    private JSONObject getGitHubUserInfo(final String accessToken) {
-        try {
-            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/user?ak=" + accessToken).
-                    connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
-            if (HttpServletResponse.SC_OK != res.statusCode()) {
-                return null;
-            }
-            res.charset("UTF-8");
-            final JSONObject result = new JSONObject(res.bodyText());
-            if (0 != result.optInt(Keys.STATUS_CODE)) {
-                return null;
-            }
-            final JSONObject data = result.optJSONObject(Common.DATA);
-            final String userName = StringUtils.trim(data.optString("userName"));
-            final String email = data.optString("userEmail");
-            final String openId = data.optString("userId");
-            final String avatarUrl = data.optString("userAvatarURL");
-
-            final JSONObject ret = new JSONObject();
-            ret.put("openId", openId);
-            ret.put(User.USER_NAME, userName);
-            ret.put(User.USER_EMAIL, email);
-            ret.put(UserExt.USER_AVATAR, avatarUrl);
-
-            return ret;
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets GitHub user info failed", e);
-
-            return null;
-        }
     }
 }
