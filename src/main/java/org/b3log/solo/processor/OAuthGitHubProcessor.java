@@ -35,6 +35,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.*;
@@ -56,7 +57,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Dec 3, 2018
+ * @version 1.0.0.3, Jan 29, 2019
  * @since 2.9.5
  */
 @RequestProcessor
@@ -267,27 +268,27 @@ public class OAuthGitHubProcessor {
      */
     private JSONObject getGitHubUserInfo(final String accessToken) {
         try {
-            final HttpResponse res = HttpRequest.get("https://api.github.com/user?access_token=" + accessToken).
-                    connectionTimeout(7000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
+            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/user?ak=" + accessToken).
+                    connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             if (HttpServletResponse.SC_OK != res.statusCode()) {
                 return null;
             }
-
             res.charset("UTF-8");
-            final JSONObject userInfo = new JSONObject(res.bodyText());
-            String userName = StringUtils.trim(userInfo.optString("login"));
-            userName = StringUtils.replace(userName, "-", "");
-            String email = userInfo.optString("email");
-            if (StringUtils.isBlank(email)) {
-                email = userName + "@solo.b3log.org";
+            final JSONObject result = new JSONObject(res.bodyText());
+            if (0 != result.optInt(Keys.STATUS_CODE)) {
+                return null;
             }
-            final String openId = userInfo.optString("id");
+            final JSONObject data = result.optJSONObject(Common.DATA);
+            final String userName = StringUtils.trim(data.optString("userName"));
+            final String email = data.optString("userEmail");
+            final String openId = data.optString("userId");
+            final String avatarUrl = data.optString("userAvatarURL");
 
             final JSONObject ret = new JSONObject();
             ret.put("openId", openId);
             ret.put(User.USER_NAME, userName);
             ret.put(User.USER_EMAIL, email);
-            ret.put(UserExt.USER_AVATAR, userInfo.optString("avatar_url"));
+            ret.put(UserExt.USER_AVATAR, avatarUrl);
 
             return ret;
         } catch (final Exception e) {
