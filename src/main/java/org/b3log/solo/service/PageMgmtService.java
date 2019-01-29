@@ -146,6 +146,63 @@ public class PageMgmtService {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates github repos option failed", e);
         }
+
+        final StringBuilder contentBuilder = new StringBuilder();
+        contentBuilder.append("<!-- 该页面会被定时任务自动覆盖，所以请勿手工更新 -->\n");
+        contentBuilder.append("<!-- 如果你有更漂亮的排版方式，请发 issue 告诉我们 -->\n\n");
+        for (int i = 0; i < gitHubRepos.length(); i++) {
+            final JSONObject repo = gitHubRepos.optJSONObject(i);
+            final String url = repo.optString("githubrepoHTMLURL");
+            final String desc = repo.optString("githubrepoDescription");
+            final String name = repo.optString("githubrepoName");
+            final int stars = repo.optInt("githubrepoStargazersCount");
+            final int watchers = repo.optInt("githubrepoWatchersCount");
+            final int forks = repo.optInt("githubrepoForksCount");
+            final String lang = repo.optString("githubrepoLanguage");
+            final String hp = repo.optString("githubrepoHomepage");
+            contentBuilder.append("### [" + name + "](" + url + ")\n\n" + desc + "\n" + watchers + " 个关注者，" + stars + " 颗星，" + forks + " 个分叉。\n" +
+                    "该项目主要使用 " + lang + " 编写");
+            if (StringUtils.isNotBlank(hp)) {
+                contentBuilder.append("，项目主页：[" + hp + "](" + hp + ")");
+            } else {
+                contentBuilder.append("。");
+            }
+            contentBuilder.append("\n\n---\n\n");
+        }
+        final String content = contentBuilder.toString();
+
+        final Transaction transaction = pageRepository.beginTransaction();
+        try {
+            final String permalink = "/my-github-repos";
+            JSONObject page = pageRepository.getByPermalink(permalink);
+            if (null == page) {
+                page = new JSONObject();
+                page.put(Page.PAGE_COMMENT_COUNT, 0);
+                final int maxOrder = pageRepository.getMaxOrder();
+                page.put(Page.PAGE_ORDER, maxOrder + 1);
+                page.put(Page.PAGE_TITLE, "我的开源");
+                page.put(Page.PAGE_OPEN_TARGET, "_blank");
+                page.put(Page.PAGE_COMMENTABLE, true);
+                page.put(Page.PAGE_TYPE, "page");
+                page.put(Page.PAGE_PERMALINK, permalink);
+                final JSONObject preference = preferenceQueryService.getPreference();
+                page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
+                page.put(Page.PAGE_ICON, "https://static.hacpai.com/images/tags/github2.png");
+                page.put(Page.PAGE_CONTENT, content);
+                pageRepository.add(page);
+            } else {
+                page.put(Page.PAGE_CONTENT, content);
+                pageRepository.update(page.optString(Keys.OBJECT_ID), page);
+            }
+
+            transaction.commit();
+        } catch (final Exception e) {
+            if (!transaction.isActive()) {
+                transaction.rollback();
+            }
+
+            LOGGER.log(Level.ERROR, "Updates github repos page failed", e);
+        }
     }
 
     /**
