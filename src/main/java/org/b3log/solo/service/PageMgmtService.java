@@ -42,7 +42,7 @@ import java.util.List;
  * Page management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.10, Jan 28, 2019
+ * @version 1.1.0.11, Jan 29, 2019
  * @since 0.4.0
  */
 @Service
@@ -117,21 +117,17 @@ public class PageMgmtService {
      * @throws ServiceException service exception
      */
     public void updatePage(final JSONObject requestJSONObject) throws ServiceException {
-
         final Transaction transaction = pageRepository.beginTransaction();
-
         try {
             final JSONObject page = requestJSONObject.getJSONObject(Page.PAGE);
             final String pageId = page.getString(Keys.OBJECT_ID);
             final JSONObject oldPage = pageRepository.get(pageId);
             final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
-
             newPage.put(Page.PAGE_ORDER, oldPage.getInt(Page.PAGE_ORDER));
             newPage.put(Page.PAGE_COMMENT_COUNT, oldPage.getInt(Page.PAGE_COMMENT_COUNT));
             String permalink = page.optString(Page.PAGE_PERMALINK).trim();
 
             final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
-
             if (!oldPermalink.equals(permalink)) {
                 if (StringUtils.isBlank(permalink)) {
                     permalink = "/pages/" + pageId + ".html";
@@ -176,7 +172,6 @@ public class PageMgmtService {
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
 
             pageRepository.update(pageId, newPage);
-
             transaction.commit();
 
             LOGGER.log(Level.DEBUG, "Updated a page[id={0}]", pageId);
@@ -277,9 +272,7 @@ public class PageMgmtService {
             }
 
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
-
             final String ret = pageRepository.add(page);
-
             transaction.commit();
 
             return ret;
@@ -308,15 +301,12 @@ public class PageMgmtService {
      * @throws ServiceException service exception
      */
     public void changeOrder(final String pageId, final String direction) throws ServiceException {
-
         final Transaction transaction = pageRepository.beginTransaction();
-
         try {
             final JSONObject srcPage = pageRepository.get(pageId);
             final int srcPageOrder = srcPage.getInt(Page.PAGE_ORDER);
 
             JSONObject targetPage;
-
             if ("up".equals(direction)) {
                 targetPage = pageRepository.getUpper(pageId);
             } else { // Down
@@ -335,10 +325,8 @@ public class PageMgmtService {
             // Swaps
             srcPage.put(Page.PAGE_ORDER, targetPage.getInt(Page.PAGE_ORDER));
             targetPage.put(Page.PAGE_ORDER, srcPageOrder);
-
             pageRepository.update(srcPage.getString(Keys.OBJECT_ID), srcPage);
             pageRepository.update(targetPage.getString(Keys.OBJECT_ID), targetPage);
-
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
