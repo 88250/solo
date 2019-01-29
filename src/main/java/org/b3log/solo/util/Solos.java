@@ -47,7 +47,10 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
  * Solo utilities.
@@ -170,9 +173,9 @@ public final class Solos {
      * Gets GitHub repos.
      *
      * @param githubUserId the specified GitHub user id
-     * @return GitHub repos, returns an empty list if not found
+     * @return GitHub repos, returns {@code null} if not found
      */
-    public static List<JSONObject> getGitHubRepos(final String githubUserId) {
+    public static JSONArray getGitHubRepos(final String githubUserId) {
         try {
             final HttpResponse res = HttpRequest.get("https://hacpai.com/github/repos?id=" + githubUserId).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
@@ -182,16 +185,16 @@ public final class Solos {
             res.charset("UTF-8");
             final JSONObject result = new JSONObject(res.bodyText());
             if (0 != result.optInt(Keys.STATUS_CODE)) {
-                return Collections.emptyList();
+                return null;
             }
             final JSONObject data = result.optJSONObject(Common.DATA);
-            final JSONArray repos = data.optJSONArray("githubrepos");
+            final JSONArray ret = data.optJSONArray("githubrepos");
 
-            return CollectionUtils.jsonArrayToList(repos);
+            return ret;
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets GitHub repos failed", e);
 
-            return Collections.emptyList();
+            return null;
         }
     }
 

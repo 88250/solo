@@ -319,36 +319,46 @@ public final class Option {
      */
     public static final String ID_C_OAUTH_GITHUB = "oauthGitHub";
 
+    /**
+     * Key of GitHub repos.
+     */
+    public static final String ID_C_GITHUB_REPOS = "githubRepos";
+
     // Category constants
     /**
-     * Qiniu.
+     * Category - Qiniu.
      */
     public static final String CATEGORY_C_QINIU = "qiniu";
 
     /**
-     * Aliyun
+     * Category - Aliyun
      */
     public static final String CATEGORY_C_ALIYUN = "aliyun";
 
     /**
-     * Cloud object storage
+     * Category - Cloud object storage
      */
     public static final String CATEGORY_C_CLOU_STORAGE = "cloudStorage";
 
     /**
-     * Preference.
+     * Category - Preference.
      */
     public static final String CATEGORY_C_PREFERENCE = "preference";
 
     /**
-     * Statistic.
+     * Category - Statistic.
      */
     public static final String CATEGORY_C_STATISTIC = "statistic";
 
     /**
-     * OAuth.
+     * Category - OAuth.
      */
     public static final String CATEGORY_C_OAUTH = "oauth";
+
+    /**
+     * Category - GitHub.
+     */
+    public static final String CATEGORY_C_GITHUB = "github";
 
     //// Transient ////
     /**

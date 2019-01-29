@@ -105,6 +105,12 @@ public class PageMgmtService {
     private OptionQueryService optionQueryService;
 
     /**
+     * Option management service.
+     */
+    @Inject
+    private OptionMgmtService optionMgmtService;
+
+    /**
      * Refreshes GitHub repos.
      * 同步 GitHub 仓库 https://github.com/b3log/solo/issues/12514
      */
@@ -122,13 +128,24 @@ public class PageMgmtService {
         final JSONArray github = new JSONArray(value);
         final String githubPair = github.optString(0);// Just refresh the first account
         final String githubUserId = githubPair.split(OAuthGitHubProcessor.GITHUB_SPLIT)[0];
-        final List<JSONObject> gitHubRepos = Solos.getGitHubRepos(githubUserId);
+        final JSONArray gitHubRepos = Solos.getGitHubRepos(githubUserId);
         if (null == gitHubRepos || gitHubRepos.isEmpty()) {
             return;
         }
-        final String userId =  githubPair.split(OAuthGitHubProcessor.GITHUB_SPLIT)[1];
 
-        System.out.println(userId + ": " + gitHubRepos);
+        JSONObject githubReposOpt = optionQueryService.getOptionById(Option.ID_C_GITHUB_REPOS);
+        if (null == githubReposOpt) {
+            githubReposOpt = new JSONObject();
+            githubReposOpt.put(Keys.OBJECT_ID, Option.ID_C_GITHUB_REPOS);
+            githubReposOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_GITHUB);
+        }
+        githubReposOpt.put(Option.OPTION_VALUE, gitHubRepos.toString());
+
+        try {
+            optionMgmtService.addOrUpdateOption(githubReposOpt);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Updates github repos option failed", e);
+        }
     }
 
     /**
