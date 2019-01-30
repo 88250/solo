@@ -56,7 +56,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
- * @version 1.2.0.33, Jan 15, 2019
+ * @version 1.2.0.34, Jan 30, 2019
  * @since 1.2.0
  */
 @Service
@@ -80,7 +80,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "2.9.7";
+    private static final String FROM_VER = "2.9.8";
 
     /**
      * New version.
@@ -185,16 +185,24 @@ public class UpgradeService {
     private void perform() throws Exception {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
+        final Transaction transaction = optionRepository.beginTransaction();
         try {
-            final Transaction transaction = optionRepository.beginTransaction();
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
-
+            optionRepository.remove("statisticBlogArticleCount");
+            optionRepository.remove("statisticBlogCommentCount");
+            optionRepository.remove("statisticPublishedBlogArticleCount");
+            optionRepository.remove("statisticPublishedBlogCommentCount");
             transaction.commit();
+            dropColumns();
 
             LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
         } catch (final Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+
             LOGGER.log(Level.ERROR, "Upgrade failed!", e);
 
             throw new Exception("Upgrade failed from version [" + FROM_VER + "] to version [" + TO_VER + ']');
@@ -224,10 +232,12 @@ public class UpgradeService {
         final Statement statement = connection.createStatement();
 
         final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleAuthorEmail`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleCreateDate`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleUpdateDate`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentDate`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` DROP COLUMN `userArticleCount`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` DROP COLUMN `userPublishedArticleCount`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archivedate` DROP COLUMN `archiveDateArticleCount`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archivedate` DROP COLUMN `archiveDatePublishedArticleCount`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "tag` DROP COLUMN `tagPublishedRefCount`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "tag` DROP COLUMN `tagReferenceCount`");
         statement.close();
         connection.commit();
         connection.close();

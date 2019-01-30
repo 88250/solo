@@ -1,6 +1,6 @@
 {
   "name": "Solo",
-  "version": "2.9.8",
+  "version": "2.9.9",
   "description": "A blogging system written in Java, feel free to create your or your team own blog. 一个用 Java 实现的博客系统，为你或你的团队创建个博客吧！",
   "homepage": "https://github.com/b3log/solo",
   "repository": {
@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/b3log/solo/issues"
   },
-  "license": "GPLv3",
+  "license": "AGPLv3",
   "private": true,
   "scripts": {
     "dev": "gulp watch",
