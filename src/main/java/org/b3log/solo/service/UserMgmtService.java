@@ -327,22 +327,4 @@ public class UserMgmtService {
             }
         }
     }
-
-    /**
-     * Sets the user repository with the specified user repository.
-     *
-     * @param userRepository the specified user repository
-     */
-    public void setUserRepository(final UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    /**
-     * Sets the language service with the specified language service.
-     *
-     * @param langPropsService the specified language service
-     */
-    public void setLangPropsService(final LangPropsService langPropsService) {
-        this.langPropsService = langPropsService;
-    }
 }

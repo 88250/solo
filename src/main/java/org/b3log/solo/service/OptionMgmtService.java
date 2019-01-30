@@ -104,13 +104,4 @@ public class OptionMgmtService {
             throw new ServiceException(e);
         }
     }
-
-    /**
-     * Sets the option repository with the specified option repository.
-     *
-     * @param optionRepository the specified option repository
-     */
-    public void setOptionRepository(final OptionRepository optionRepository) {
-        this.optionRepository = optionRepository;
-    }
 }

@@ -118,13 +118,4 @@ public class ArchiveDateQueryService {
             throw new ServiceException("Gets archive date[string=" + archiveDateString + "] failed");
         }
     }
-
-    /**
-     * Sets archive date repository with the specified archive date repository.
-     *
-     * @param archiveDateRepository the specified archive date repository
-     */
-    public void setArchiveDateRepository(final ArchiveDateRepository archiveDateRepository) {
-        this.archiveDateRepository = archiveDateRepository;
-    }
 }

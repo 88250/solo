@@ -215,22 +215,4 @@ public class UserQueryService {
 
         return Latkes.getContextPath() + "/login?goto=" + to;
     }
-
-    /**
-     * Sets the user management service with the specified user management service.
-     *
-     * @param userMgmtService the specified user management service
-     */
-    public void setUserMgmtService(final UserMgmtService userMgmtService) {
-        this.userMgmtService = userMgmtService;
-    }
-
-    /**
-     * Sets the user repository with the specified user repository.
-     *
-     * @param userRepository the specified user repository
-     */
-    public void setUserRepository(final UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 }
