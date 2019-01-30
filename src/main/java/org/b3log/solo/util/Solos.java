@@ -56,7 +56,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.1, Jan 29, 2019
+ * @version 1.6.0.2, Jan 30, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -177,7 +177,7 @@ public final class Solos {
      */
     public static JSONArray getGitHubRepos(final String githubUserId) {
         try {
-            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/repos?id=" + githubUserId).
+            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/repos?id=" + githubUserId).trustAllCerts(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             if (HttpServletResponse.SC_OK != res.statusCode()) {
                 return null;
