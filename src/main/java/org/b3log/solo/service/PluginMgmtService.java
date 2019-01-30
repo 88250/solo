@@ -250,22 +250,4 @@ public class PluginMgmtService {
         return ret;
 
     }
-
-    /**
-     * Sets the plugin repository with the specified plugin repository.
-     *
-     * @param pluginRepository the specified plugin repository
-     */
-    public void setPluginRepository(final PluginRepository pluginRepository) {
-        this.pluginRepository = pluginRepository;
-    }
-
-    /**
-     * Sets the language service with the specified language service.
-     *
-     * @param langPropsService the specified language service
-     */
-    public void setLangPropsService(final LangPropsService langPropsService) {
-        this.langPropsService = langPropsService;
-    }
 }

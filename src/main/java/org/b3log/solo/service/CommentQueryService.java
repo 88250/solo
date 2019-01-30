@@ -278,31 +278,4 @@ public class CommentQueryService {
             throw new ServiceException(e);
         }
     }
-
-    /**
-     * Sets the article repository with the specified article repository.
-     *
-     * @param articleRepository the specified article repository
-     */
-    public void setArticleRepository(final ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
-
-    /**
-     * Set the page repository with the specified page repository.
-     *
-     * @param pageRepository the specified page repository
-     */
-    public void setPageRepository(final PageRepository pageRepository) {
-        this.pageRepository = pageRepository;
-    }
-
-    /**
-     * Sets the comment repository with the specified comment repository.
-     *
-     * @param commentRepository the specified comment repository
-     */
-    public void setCommentRepository(final CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-    }
 }

@@ -38,7 +38,7 @@
         </div>
         <div>
             <textarea id="articleContent" name="articleContent"
-                  style="height: 500px;width:100%;"></textarea>
+                      style="height: 500px;width:100%;"></textarea>
         </div>
     </div>
     <div>
@@ -80,7 +80,7 @@
             <span id="postToCommunityPanel">
                 <label class="checkbox">
                     <input id="postToCommunity" type="checkbox" />
-                    <a href="https://hacpai.com/article/1546941897596" target="_blank">${syncToCommunity}</a>
+                    <a href="https://hacpai.com/article/1546941897596" target="_blank">${syncToCommunityLabel}</a>
                 </label>
             </span>
         </div>

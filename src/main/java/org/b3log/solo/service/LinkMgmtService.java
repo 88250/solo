@@ -199,13 +199,4 @@ public class LinkMgmtService {
             throw new ServiceException(e);
         }
     }
-
-    /**
-     * Sets the link repository with the specified link repository.
-     *
-     * @param linkRepository the specified link repository
-     */
-    public void setLinkRepository(final LinkRepository linkRepository) {
-        this.linkRepository = linkRepository;
-    }
 }

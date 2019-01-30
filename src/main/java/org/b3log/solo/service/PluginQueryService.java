@@ -156,13 +156,4 @@ public class PluginQueryService {
 
         return ret.optString(Plugin.PLUGIN_SETTING);
     }
-
-    /**
-     * Sets the plugin repository with the specified plugin repository.
-     *
-     * @param pluginRepository the specified plugin repository
-     */
-    public void setPluginRepository(final PluginRepository pluginRepository) {
-        this.pluginRepository = pluginRepository;
-    }
 }

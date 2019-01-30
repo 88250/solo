@@ -217,22 +217,4 @@ public class PermalinkQueryService {
             return true;
         }
     }
-
-    /**
-     * Sets the article repository with the specified article repository.
-     *
-     * @param articleRepository the specified article repository
-     */
-    public void setArticleRepository(final ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
-
-    /**
-     * Set the page repository with the specified page repository.
-     *
-     * @param pageRepository the specified page repository
-     */
-    public void setPageRepository(final PageRepository pageRepository) {
-        this.pageRepository = pageRepository;
-    }
 }

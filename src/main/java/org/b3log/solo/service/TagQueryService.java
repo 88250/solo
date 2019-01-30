@@ -137,13 +137,4 @@ public class TagQueryService {
             throw new ServiceException(e);
         }
     }
-
-    /**
-     * Sets the tag repository with the specified tag repository.
-     *
-     * @param tagRepository the specified tag repository
-     */
-    public void setTagRepository(final TagRepository tagRepository) {
-        this.tagRepository = tagRepository;
-    }
 }

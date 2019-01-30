@@ -279,31 +279,4 @@ public class StatisticMgmtService {
         optionRepository.update(id, statistic);
         statisticCache.clear();
     }
-
-    /**
-     * Sets the article repository with the specified article repository.
-     *
-     * @param articleRepository the specified article repository
-     */
-    public void setArticleRepository(final ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
-
-    /**
-     * Sets the option repository with the specified option repository.
-     *
-     * @param optionRepository the specified option repository
-     */
-    public void setOptionRepository(final OptionRepository optionRepository) {
-        this.optionRepository = optionRepository;
-    }
-
-    /**
-     * Sets the language service with the specified language service.
-     *
-     * @param langPropsService the specified language service
-     */
-    public void setLangPropsService(final LangPropsService langPropsService) {
-        this.langPropsService = langPropsService;
-    }
 }

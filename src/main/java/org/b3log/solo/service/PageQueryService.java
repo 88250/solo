@@ -163,13 +163,4 @@ public class PageQueryService {
             throw new ServiceException(e);
         }
     }
-
-    /**
-     * Set the page repository with the specified page repository.
-     *
-     * @param pageRepository the specified page repository
-     */
-    public void setPageRepository(final PageRepository pageRepository) {
-        this.pageRepository = pageRepository;
-    }
 }

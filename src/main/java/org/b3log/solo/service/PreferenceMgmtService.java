@@ -373,13 +373,4 @@ public class PreferenceMgmtService {
 
         LOGGER.log(Level.DEBUG, "Updates preference successfully");
     }
-
-    /**
-     * Sets the language service with the specified language service.
-     *
-     * @param langPropsService the specified language service
-     */
-    public void setLangPropsService(final LangPropsService langPropsService) {
-        this.langPropsService = langPropsService;
-    }
 }

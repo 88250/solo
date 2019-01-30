@@ -92,13 +92,4 @@ public class StatisticQueryService {
             return null;
         }
     }
-
-    /**
-     * Sets the option query service with the specified option query service.
-     *
-     * @param optionQueryService the specified option query service
-     */
-    public void setOptionQueryService(final OptionQueryService optionQueryService) {
-        this.optionQueryService = optionQueryService;
-    }
 }
