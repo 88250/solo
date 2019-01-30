@@ -26,7 +26,7 @@
 * [聚合分类](https://github.com/b3log/solo/issues/12256) / 标签
 * 自定义导航（页面、链接）
 * 草稿夹
-* 评论/回复邮件提醒
+* 评论 / 回复邮件提醒
 * 随机文章 / 相关文章 / 置顶 / 更新提醒
 * 自定义文章永久链接
 * 自定义站点 SEO 参数
@@ -41,8 +41,7 @@
 * [Hexo/Jekyll 导入](https://hacpai.com/article/1498490209748)
 * SQL / JSON / Markdown 导出
 * 插件系统
-* Atom / RSS 订阅
-* Sitemap
+* Atom / RSS / Sitemap
 * MetaWeblog API
 * CDN 静态资源分离
 * [GitHub 集成](https://github.com/b3log/solo/issues/12514)
