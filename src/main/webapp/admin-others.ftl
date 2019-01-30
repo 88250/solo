@@ -25,8 +25,13 @@
             </div>
         </li>
         <li>
-            <div id="tabOthers_other">
-                <a href="#tools/others/other">${othersLabel}</a>
+            <div id="tabOthers_tag">
+                <a href="#tools/others/tag">${clearTagLabel}</a>
+            </div>
+        </li>
+        <li>
+            <div id="tabOthers_data">
+                <a href="#tools/others/data">${exportDataLabel}</a>
             </div>
         </li>
     </ul>
@@ -43,8 +48,10 @@
         ${replayEmailExplanationLabel}
         </div>
     </div>
-    <div id="tabOthersPanel_other" class="none">
+    <div id="tabOthersPanel_tag" class="none">
         <button class="margin12" onclick="admin.others.removeUnusedTags();">${removeUnusedTagsLabel}</button>
+    </div>
+    <div id="tabOthersPanel_data" class="none">
         <#if supportExport>
         <button class="margin12" onclick="admin.others.exportSQL();">${exportSQLLabel}</button>
         </#if>
