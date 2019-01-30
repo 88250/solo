@@ -213,7 +213,7 @@ public final class Solos {
      */
     public static JSONObject getGitHubUserInfo(final String accessToken) {
         try {
-            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/user?ak=" + accessToken).
+            final HttpResponse res = HttpRequest.get("https://hacpai.com/github/user?ak=" + accessToken).trustAllCerts(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             if (HttpServletResponse.SC_OK != res.statusCode()) {
                 return null;
