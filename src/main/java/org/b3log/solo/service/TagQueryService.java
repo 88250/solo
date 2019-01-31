@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -35,7 +36,7 @@ import java.util.List;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Jan 28, 2019
+ * @version 1.1.0.6, Jan 31, 2019
  * @since 0.4.0
  */
 @Service
@@ -130,7 +131,14 @@ public class TagQueryService {
         try {
             final Query query = new Query().setPageCount(1);
 
-            return tagRepository.getList(query);
+            final List<JSONObject> ret = tagRepository.getList(query);
+            for (final JSONObject tag : ret) {
+                final String tagId = tag.optString(Keys.OBJECT_ID);
+                final int articleCount = tagArticleRepository.getArticleCount(tagId);
+                tag.put(Tag.TAG_T_PUBLISHED_REFERENCE_COUNT, articleCount);
+            }
+
+            return ret;
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets tags failed", e);
 
