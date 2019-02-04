@@ -190,6 +190,7 @@ public class InitService {
      *                          "userEmail": "",
      *                          "userPassword": "", // Unhashed
      *                          "userAvatar": "" // optional
+     *                          "userB3Key": "" // optional
      *                          }
      * @throws ServiceException service exception
      */
@@ -655,7 +656,7 @@ public class InitService {
         final JSONObject keyOfSoloOpt = new JSONObject();
         keyOfSoloOpt.put(Keys.OBJECT_ID, Option.ID_C_KEY_OF_SOLO);
         keyOfSoloOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        keyOfSoloOpt.put(Option.OPTION_VALUE, Ids.genTimeMillisId());
+        keyOfSoloOpt.put(Option.OPTION_VALUE, requestJSONObject.optString(UserExt.USER_T_B3_KEY));
         optionRepository.add(keyOfSoloOpt);
 
         final JSONObject feedOutputModeOpt = new JSONObject();

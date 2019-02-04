@@ -185,7 +185,7 @@ public class OAuthGitHubProcessor {
                 initReq.put(User.USER_EMAIL, userEmail);
                 initReq.put(User.USER_PASSWORD, RandomStringUtils.randomAlphanumeric(8));
                 initReq.put(UserExt.USER_AVATAR, userAvatar);
-
+                initReq.put(UserExt.USER_T_B3_KEY, openId);
                 try {
                     initService.init(initReq);
                 } catch (final Exception e) {
