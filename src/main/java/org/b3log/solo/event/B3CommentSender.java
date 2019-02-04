@@ -30,6 +30,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -94,7 +95,7 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put("clientName", "Solo");
             requestJSONObject.put("clientHost", Latkes.getServePath());
             requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
-            requestJSONObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
+            requestJSONObject.put(UserExt.USER_T_B3_KEY, preference.optString(Option.ID_C_KEY_OF_SOLO));
 
             HttpRequest.post(ADD_COMMENT_URL).bodyText(requestJSONObject.toString()).
                     header("User-Agent", Solos.USER_AGENT).contentTypeJson().sendAsync();

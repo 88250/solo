@@ -33,6 +33,7 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Solos;
@@ -119,7 +120,7 @@ public class B3ArticleUpdater extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Common.BLOG, "Solo");
             requestJSONObject.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
             requestJSONObject.put("blogHost", Latkes.getServePath());
-            requestJSONObject.put("userB3Key", preference.optString(Option.ID_C_KEY_OF_SOLO));
+            requestJSONObject.put(UserExt.USER_T_B3_KEY, preference.optString(Option.ID_C_KEY_OF_SOLO));
             requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", "LOCAL");
 

@@ -35,6 +35,7 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.service.ArticleMgmtService;
@@ -150,7 +151,7 @@ public class B3CommentReceiver {
             final JSONObject symphonyCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
             final JSONObject preference = preferenceQueryService.getPreference();
             final String keyOfSolo = preference.optString(Option.ID_C_KEY_OF_SOLO);
-            final String key = symphonyCmt.optString("userB3Key");
+            final String key = symphonyCmt.optString(UserExt.USER_T_B3_KEY);
 
             if (StringUtils.isBlank(keyOfSolo) || !keyOfSolo.equals(key)) {
                 ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);

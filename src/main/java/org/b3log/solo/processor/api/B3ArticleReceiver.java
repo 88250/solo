@@ -30,6 +30,7 @@ import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -114,7 +115,7 @@ public class B3ArticleReceiver {
 
         try {
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
-            final String userB3Key = article.optString("userB3Key");
+            final String userB3Key = article.optString(UserExt.USER_T_B3_KEY);
             final JSONObject preference = preferenceQueryService.getPreference();
 
             if (!userB3Key.equals(preference.optString(Option.ID_C_KEY_OF_SOLO))) {
@@ -122,7 +123,7 @@ public class B3ArticleReceiver {
 
                 return;
             }
-            article.remove("userB3Key");
+            article.remove(UserExt.USER_T_B3_KEY);
 
             final JSONObject admin = userQueryService.getAdmin();
 
@@ -192,7 +193,7 @@ public class B3ArticleReceiver {
 
         try {
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
-            final String userB3Key = article.optString("userB3Key");
+            final String userB3Key = article.optString(UserExt.USER_T_B3_KEY);
             final JSONObject preference = preferenceQueryService.getPreference();
 
             if (!userB3Key.equals(preference.optString(Option.ID_C_KEY_OF_SOLO))) {
@@ -200,7 +201,7 @@ public class B3ArticleReceiver {
 
                 return;
             }
-            article.remove("userB3Key");
+            article.remove(UserExt.USER_T_B3_KEY);
 
             final String articleId = article.getString(Keys.OBJECT_ID);
 
