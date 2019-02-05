@@ -16,7 +16,6 @@
 * [1992 社区](https://1992.cool)
 * [何遇](http://littleq.cn)
 * [Relyn](http://relyn.cn)
-* [Neverland](https://muz1.xyz)
 * [思干豆](http://sigandou.com)
 * [DevHyxo](https://blog.devhyxo.top)
 
