@@ -48,17 +48,25 @@
 
 ## 界面
 
+### 初始化
+
+![init](https://user-images.githubusercontent.com/873584/52255268-d5a31980-294c-11e9-9d16-708b9748ebe7.png)
+
+### 后台首页
+
+![console-index](https://user-images.githubusercontent.com/873584/52255442-85788700-294d-11e9-8c8e-38bdcba6736c.png)
+
 ### 编辑文章
 
-![5f7258675e0143c79e15ddffabf02147-article.png](https://img.hacpai.com/file/2017/8/5f7258675e0143c79e15ddffabf02147-article.png) 
+![article](https://user-images.githubusercontent.com/873584/52255441-85788700-294d-11e9-8fb4-f72e353a76de.png)
 
 ### 选择皮肤
 
-![ac9a044c18ec4dd4a9356caf698d7fe8-skin.png](https://img.hacpai.com/file/2017/8/ac9a044c18ec4dd4a9356caf698d7fe8-skin.png) 
+![skin](https://user-images.githubusercontent.com/873584/52255444-85788700-294d-11e9-9c21-8758bad2c3b4.png)
 
 ### 前台界面
 
-* [预览及下载](https://hacpai.com/article/1493814851007#toc_h2_12)
+![index](https://user-images.githubusercontent.com/873584/52255333-19961e80-294d-11e9-85c4-92bc508864a4.png)
 
 ## 安装
 
