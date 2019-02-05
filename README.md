@@ -101,7 +101,6 @@ Solo 使用 [GNU Affero General Public License, Version 3](https://www.gnu.org/l
 ## 鸣谢
 
 * [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
-* [CodeMirror](https://github.com/codemirror/CodeMirror)：前端 Markdown 编辑器内核
 * [Highlight.js](https://github.com/isagalaev/highlight.js)：前端代码高亮库
 * [pjax](https://github.com/defunkt/jquery-pjax)：pushState + ajax = pjax
 * [jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器
