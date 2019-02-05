@@ -97,7 +97,7 @@
 
 ## 授权
 
-Solo 使用 [GNU Affero General Public License, Version 3](https://www.gnu.org/licenses/agpl-3.0.txt) 作为开源协议，请务必遵循该开源协议相关约定。
+Solo 使用 [GNU Affero General Public License, Version 3](https://www.gnu.org/licenses/agpl-3.0.txt) 开源协议。
 
 ## 鸣谢
 
