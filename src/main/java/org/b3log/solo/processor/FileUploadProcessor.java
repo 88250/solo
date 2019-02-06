@@ -164,7 +164,6 @@ public class FileUploadProcessor {
         result.put(Keys.CODE, -1);
         result.put(Keys.MSG, "");
 
-
         final HttpServletRequest request = context.getRequest();
         if (!Solos.isLoggedIn(context)) {
             context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -195,7 +194,6 @@ public class FileUploadProcessor {
         final FileUpload[] files = parser.getFiles("file[]");
 
         OssService ossService = null;
-        final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM");
         if (OSS_ENABLED) {
             try {
                 ossService = cloudStorageService.createStorage();

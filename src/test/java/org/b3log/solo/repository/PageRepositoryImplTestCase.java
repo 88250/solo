@@ -57,7 +57,6 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
-        page.put(Page.PAGE_EDITOR_TYPE, "");
         page.put(Page.PAGE_ICON, "");
 
         final Transaction transaction = pageRepository.beginTransaction();
@@ -104,7 +103,6 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
-        page.put(Page.PAGE_EDITOR_TYPE, "");
         page.put(Page.PAGE_ICON, "");
 
         final Transaction transaction = pageRepository.beginTransaction();
@@ -134,7 +132,6 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
-        page.put(Page.PAGE_EDITOR_TYPE, "");
         page.put(Page.PAGE_ICON, "");
 
         final Transaction transaction = pageRepository.beginTransaction();
