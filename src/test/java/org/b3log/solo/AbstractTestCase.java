@@ -28,6 +28,7 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Crypts;
 import org.b3log.solo.cache.*;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.processor.MockDispatcherServlet;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.service.*;
@@ -123,6 +124,7 @@ public abstract class AbstractTestCase {
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
         requestJSONObject.put(User.USER_NAME, "Admin");
+        requestJSONObject.put(UserExt.USER_T_B3_KEY, "pass");
         initService.init(requestJSONObject);
         final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
