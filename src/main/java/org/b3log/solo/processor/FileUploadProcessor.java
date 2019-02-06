@@ -24,9 +24,9 @@ import jodd.io.upload.impl.MemoryFileUploadFactory;
 import jodd.net.MimeTypes;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -47,6 +47,8 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -54,7 +56,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.0.2.3, Dec 23, 2018
+ * @version 1.0.2.4, Feb 6, 2019
  * @since 2.8.0
  */
 @RequestProcessor
@@ -95,7 +97,7 @@ public class FileUploadProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/upload/{file}", method = HttpMethod.GET)
+    @RequestProcessing(value = "/upload/{yyyy}/{MM}/{file}", method = HttpMethod.GET)
     public void getFile(final RequestContext context) {
         if (OSS_ENABLED) {
             return;
@@ -157,7 +159,12 @@ public class FileUploadProcessor {
      */
     @RequestProcessing(value = "/upload", method = HttpMethod.POST)
     public void uploadFile(final RequestContext context) {
-        context.renderJSON();
+        final JSONObject result = new JSONObject();
+        context.renderJSONPretty(result);
+        result.put(Keys.CODE, -1);
+        result.put(Keys.MSG, "");
+
+
         final HttpServletRequest request = context.getRequest();
         if (!Solos.isLoggedIn(context)) {
             context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
@@ -172,7 +179,7 @@ public class FileUploadProcessor {
             return;
         }
 
-        final int maxSize = 1024 * 1024 * 100;
+        final int maxSize = 1024 * 1024 * 10;
         final MultipartStreamParser parser = new MultipartStreamParser(new MemoryFileUploadFactory().setMaxFileSize(maxSize));
         try {
             parser.parseRequestStream(request.getInputStream(), "UTF-8");
@@ -182,11 +189,10 @@ public class FileUploadProcessor {
 
             return;
         }
+
         final List<String> errFiles = new ArrayList<>();
         final Map<String, String> succMap = new LinkedHashMap<>();
         final FileUpload[] files = parser.getFiles("file[]");
-        final String[] names = parser.getParameterValues("name[]");
-        String fileName;
 
         OssService ossService = null;
         final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM");
@@ -202,10 +208,9 @@ public class FileUploadProcessor {
 
         for (int i = 0; i < files.length; i++) {
             final FileUpload file = files[i];
-            String originalName = fileName = file.getHeader().getFileName();
-            originalName = originalName.replaceAll("\\W", "");
+            final String originalName = Solos.sanitizeFilename(file.getHeader().getFileName());
             try {
-                String suffix = StringUtils.substringAfterLast(fileName, ".");
+                String suffix = StringUtils.substringAfterLast(originalName, ".");
                 final String contentType = file.getHeader().getContentType();
                 if (StringUtils.isBlank(suffix)) {
                     String[] exts = MimeTypes.findExtensionsByMimeTypes(contentType, false);
@@ -216,19 +221,17 @@ public class FileUploadProcessor {
                     }
                 }
 
-                final String name = StringUtils.substringBeforeLast(fileName, ".");
-                final String processName = name.replaceAll("\\W", "");
-                final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-                fileName = uuid + '_' + processName + "." + suffix;
+                final String name = StringUtils.substringBeforeLast(originalName, ".");
+                final String uuid = StringUtils.substring(UUID.randomUUID().toString().replaceAll("-", ""), 0, 8);
+                String fileName = name + '-' + uuid + "." + suffix;
+                fileName = genFilePath(fileName);
 
                 if (OSS_ENABLED) {
-                    fileName = "file/" + date + "/" + fileName;
-                    if (!ArrayUtils.isEmpty(names)) {
-                        fileName = names[i];
-                    }
                     String fileLink = ossService.upload(file, fileName);
                     succMap.put(originalName, fileLink);
                 } else {
+                    final Path path = Paths.get(Solos.UPLOAD_DIR_PATH, fileName);
+                    path.getParent().toFile().mkdirs();
                     try (final OutputStream output = new FileOutputStream(Solos.UPLOAD_DIR_PATH + fileName);
                          final InputStream input = file.getFileInputStream()) {
                         IOUtils.copy(input, output);
@@ -245,6 +248,20 @@ public class FileUploadProcessor {
         final JSONObject data = new JSONObject();
         data.put("errFiles", errFiles);
         data.put("succMap", succMap);
-        context.renderJSONValue("data", data).renderTrueResult();
+        result.put("data", data);
+        result.put(Keys.CODE, 0);
+        result.put(Keys.MSG, "");
+    }
+
+    /**
+     * Generates upload file path for the specified file name.
+     *
+     * @param fileName the specified file name
+     * @return "yyyy/MM/fileName"
+     */
+    private static String genFilePath(final String fileName) {
+        final String date = DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM");
+
+        return "file/" + date + "/" + fileName;
     }
 }

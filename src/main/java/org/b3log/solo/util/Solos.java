@@ -56,7 +56,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.2, Jan 30, 2019
+ * @version 1.6.0.3, Feb 6, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -167,6 +167,18 @@ public final class Solos {
         COOKIE_SECRET = cookieSecret;
 
         COOKIE_HTTP_ONLY = Boolean.valueOf(Latkes.getLocalProperty("cookieHttpOnly"));
+    }
+
+    /**
+     * Sanitizes the specified file name.
+     *
+     * @param unsanitized the specified file name
+     * @return sanitized file name
+     */
+    public static String sanitizeFilename(final String unsanitized) {
+        return unsanitized.
+                replaceAll("[\\?\\\\/:|<>\\*]", " "). // filter out ? \ / : | < > *
+                replaceAll("\\s+", "_");              // white space as underscores
     }
 
     /**

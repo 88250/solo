@@ -65,7 +65,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.10, Jan 4, 2019
+ * @version 1.7.0.11, Feb 6, 2019
  * @since 0.4.1
  */
 @Singleton
@@ -119,12 +119,6 @@ public class AdminConsole {
     @Inject
     private EventManager eventManager;
 
-    private static String sanitizeFilename(final String unsanitized) {
-        return unsanitized.
-                replaceAll("[\\?\\\\/:|<>\\*]", " "). // filter out ? \ / : | < > *
-                replaceAll("\\s+", "_");              // white space as underscores
-    }
-
     /**
      * Shows administrator index with the specified context.
      *
@@ -163,7 +157,6 @@ public class AdminConsole {
             dataModel.put(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT));
             dataModel.put(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
-            dataModel.put(Option.ID_C_EDITOR_TYPE, preference.getString(Option.ID_C_EDITOR_TYPE));
             dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
             Keys.fillRuntime(dataModel);
             dataModelService.fillMinified(dataModel);
@@ -492,7 +485,7 @@ public class AdminConsole {
 
     private void exportHexoMd(final List<JSONObject> articles, final String dirPath) {
         articles.forEach(article -> {
-            final String filename = sanitizeFilename(article.optString("title")) + ".md";
+            final String filename = Solos.sanitizeFilename(article.optString("title")) + ".md";
             final String text = article.optString("front") + "---" + Strings.LINE_SEPARATOR + article.optString("content");
 
             try {
