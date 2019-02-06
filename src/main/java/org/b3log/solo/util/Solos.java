@@ -40,6 +40,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -302,10 +303,13 @@ public final class Solos {
                     break;
                 }
 
-                final String userPassword = user.optString(User.USER_PASSWORD);
-                final String token = cookieJSONObject.optString(Keys.TOKEN);
-                final String hashPassword = StringUtils.substringBeforeLast(token, ":");
-                if (userPassword.equals(hashPassword)) {
+                final PreferenceQueryService preferenceQueryService = BeanManager.getInstance().getReference(PreferenceQueryService.class);
+                final JSONObject preference = preferenceQueryService.getPreference();
+                final String b3Key = preference.optString(Option.ID_C_KEY_OF_SOLO);
+
+                final String tokenVal = cookieJSONObject.optString(Keys.TOKEN);
+                final String token = StringUtils.substringBeforeLast(tokenVal, ":");
+                if (StringUtils.equals(b3Key, token)) {
                     login(user, response);
 
                     return user;
@@ -327,22 +331,18 @@ public final class Solos {
      * Logins the specified user from the specified request.
      *
      * @param response the specified response
-     * @param user     the specified user, for example,
-     *                 {
-     *                 "userEmail": "",
-     *                 "userPassword": ""
-     *                 }
+     * @param user     the specified user
      */
     public static void login(final JSONObject user, final HttpServletResponse response) {
         try {
             final String userId = user.optString(Keys.OBJECT_ID);
             final JSONObject cookieJSONObject = new JSONObject();
             cookieJSONObject.put(Keys.OBJECT_ID, userId);
-            cookieJSONObject.put(User.USER_PASSWORD, user.optString(User.USER_PASSWORD));
-
-            final String random = RandomStringUtils.randomAlphanumeric(16);
-            cookieJSONObject.put(Keys.TOKEN, user.optString(User.USER_PASSWORD) + ":" + random);
-
+            final PreferenceQueryService preferenceQueryService = BeanManager.getInstance().getReference(PreferenceQueryService.class);
+            final JSONObject preference = preferenceQueryService.getPreference();
+            final String b3Key = preference.optString(Option.ID_C_KEY_OF_SOLO);
+            final String random = RandomStringUtils.randomAlphanumeric(8);
+            cookieJSONObject.put(Keys.TOKEN, b3Key + ":" + random);
             final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), COOKIE_SECRET);
             final Cookie cookie = new Cookie(COOKIE_NAME, cookieValue);
             cookie.setPath("/");

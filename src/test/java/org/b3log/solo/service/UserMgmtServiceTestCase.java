@@ -18,7 +18,6 @@
 package org.b3log.solo.service;
 
 import junit.framework.Assert;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
@@ -50,7 +49,6 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
 
         requestJSONObject.put(User.USER_NAME, "user1name");
         requestJSONObject.put(User.USER_EMAIL, "test1@gmail.com");
-        requestJSONObject.put(User.USER_PASSWORD, "pass1");
 
         final String id = userMgmtService.addUser(requestJSONObject);
         Assert.assertNotNull(id);
@@ -68,7 +66,6 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
         JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_NAME, "user2name");
         requestJSONObject.put(User.USER_EMAIL, "test2@gmail.com");
-        requestJSONObject.put(User.USER_PASSWORD, "pass2");
         requestJSONObject.put(User.USER_ROLE, Role.ADMIN_ROLE);
 
         final String id = userMgmtService.addUser(requestJSONObject);
@@ -81,17 +78,6 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
 
         Assert.assertEquals(getUserQueryService().getUser(id).getJSONObject(
                 User.USER).getString(User.USER_NAME), "user2newname");
-
-        // Do not update password
-        requestJSONObject.put(Keys.OBJECT_ID, id);
-        requestJSONObject.put(User.USER_NAME, "user2name");
-        requestJSONObject.put(User.USER_EMAIL, "test2@gmail.com");
-        requestJSONObject.put(User.USER_PASSWORD, "pass2");
-
-        userMgmtService.updateUser(requestJSONObject);
-
-        Assert.assertEquals(getUserQueryService().getUser(id).getJSONObject(
-                User.USER).getString(User.USER_PASSWORD), DigestUtils.md5Hex("pass2"));
     }
 
     /**
@@ -106,7 +92,6 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_NAME, "user1 name");
         requestJSONObject.put(User.USER_EMAIL, "test1@gmail.com");
-        requestJSONObject.put(User.USER_PASSWORD, "pass1");
 
         try {
             final String id = userMgmtService.addUser(requestJSONObject);

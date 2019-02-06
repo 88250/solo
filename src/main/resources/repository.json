@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "3.2.1.3, Feb 6, 2019",
+  "version": "3.2.1.4, Feb 7, 2019",
   "authors": [
     "Liang Ding"
   ],
@@ -125,7 +125,7 @@
           "name": "commentContent",
           "description": "评论内容",
           "type": "String",
-          "length": 2000
+          "length": 2048
         },
         {
           "name": "commentCreated",
@@ -398,12 +398,6 @@
         {
           "name": "userURL",
           "description": "用户链接地址",
-          "type": "String",
-          "length": 255
-        },
-        {
-          "name": "userPassword",
-          "description": "用户密码，MD5",
           "type": "String",
           "length": 255
         },

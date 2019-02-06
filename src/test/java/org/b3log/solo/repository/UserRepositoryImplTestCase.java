@@ -52,7 +52,6 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         final JSONObject another = new JSONObject();
         another.put(User.USER_NAME, "test1");
         another.put(User.USER_EMAIL, "test1@gmail.com");
-        another.put(User.USER_PASSWORD, "pass1");
         another.put(User.USER_URL, "https://b3log.org");
         another.put(User.USER_ROLE, Role.DEFAULT_ROLE);
         another.put(UserExt.USER_AVATAR, "");
@@ -66,7 +65,6 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         JSONObject admin = new JSONObject();
         admin.put(User.USER_NAME, "test");
         admin.put(User.USER_EMAIL, "test@gmail.com");
-        admin.put(User.USER_PASSWORD, "pass");
         admin.put(User.USER_URL, "https://b3log.org");
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
         admin.put(UserExt.USER_AVATAR, "");
@@ -92,6 +90,6 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
 
         final JSONObject found = userRepository.getByEmail("test1@gmail.com");
         Assert.assertNotNull(found);
-        Assert.assertEquals(found.getString(User.USER_PASSWORD), "pass1");
+        Assert.assertEquals(found.getString(User.USER_EMAIL), "test1@gmail.com");
     }
 }

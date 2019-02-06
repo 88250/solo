@@ -48,7 +48,6 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
 
         requestJSONObject.put(User.USER_NAME, "user1name");
         requestJSONObject.put(User.USER_EMAIL, "test1@gmail.com");
-        requestJSONObject.put(User.USER_PASSWORD, "pass1");
 
         final String id = userMgmtService.addUser(requestJSONObject);
         Assert.assertNotNull(id);

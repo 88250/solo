@@ -183,7 +183,6 @@ public class OAuthGitHubProcessor {
                 final JSONObject initReq = new JSONObject();
                 initReq.put(User.USER_NAME, userName);
                 initReq.put(User.USER_EMAIL, userEmail);
-                initReq.put(User.USER_PASSWORD, RandomStringUtils.randomAlphanumeric(8));
                 initReq.put(UserExt.USER_AVATAR, userAvatar);
                 initReq.put(UserExt.USER_T_B3_KEY, openId);
                 try {
@@ -207,7 +206,6 @@ public class OAuthGitHubProcessor {
                     final JSONObject addUserReq = new JSONObject();
                     addUserReq.put(User.USER_NAME, userName);
                     addUserReq.put(User.USER_EMAIL, userEmail);
-                    addUserReq.put(User.USER_PASSWORD, RandomStringUtils.randomAlphanumeric(8));
                     addUserReq.put(UserExt.USER_AVATAR, userAvatar);
                     addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
                     try {

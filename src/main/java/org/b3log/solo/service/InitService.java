@@ -397,7 +397,6 @@ public class InitService {
      *                          {
      *                          "userName": "",
      *                          "userEmail": "",
-     *                          "userPassowrd": "", // Unhashed
      *                          "userAvatar": "" // optional
      *                          }
      * @throws Exception exception
@@ -410,7 +409,6 @@ public class InitService {
         admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
         admin.put(User.USER_URL, Latkes.getServePath());
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-        admin.put(User.USER_PASSWORD, DigestUtils.md5Hex(requestJSONObject.getString(User.USER_PASSWORD)));
         String avatar = requestJSONObject.optString(UserExt.USER_AVATAR);
         if (StringUtils.isBlank(avatar)) {
             avatar = Solos.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128");

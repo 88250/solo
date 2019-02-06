@@ -64,7 +64,6 @@ public class UserConsoleTestCase extends AbstractTestCase {
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(User.USER_NAME, "D");
         requestJSON.put(User.USER_EMAIL, "d@b3log.org");
-        requestJSON.put(User.USER_PASSWORD, "password");
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
 

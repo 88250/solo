@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -36,13 +35,11 @@ import org.b3log.solo.service.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.7, Jan 28, 2019
+ * @version 1.3.1.8, Feb 7, 2019
  * @since 0.4.6
  */
 @RequestProcessor
@@ -111,11 +108,8 @@ public class BlogProcessor {
 
         jsonObject.put("recentArticleTime", articleQueryService.getRecentArticleTime());
         final JSONObject statistic = statisticQueryService.getStatistic();
-
-
-        // TODO: 重构数据统计计数 #12633
-        // jsonObject.put("articleCount", statistic.getLong(Option.ID_C_STATISTIC_PUBLISHED_ARTICLE_COUNT));
-        // jsonObject.put("commentCount", statistic.getLong(Option.ID_C_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
+        jsonObject.put("articleCount", statistic.getLong(Option.ID_T_STATISTIC_PUBLISHED_ARTICLE_COUNT));
+        jsonObject.put("commentCount", statistic.getLong(Option.ID_T_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT));
         jsonObject.put("tagCount", tagQueryService.getTagCount());
         jsonObject.put("servePath", Latkes.getServePath());
         jsonObject.put("staticServePath", Latkes.getStaticServePath());
@@ -157,24 +151,6 @@ public class BlogProcessor {
      */
     @RequestProcessing(value = "/blog/articles-tags", method = HttpMethod.GET)
     public void getArticlesTags(final RequestContext context) {
-        final String pwd = context.param("pwd");
-        if (StringUtils.isBlank(pwd)) {
-            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-            return;
-        }
-
-        try {
-            final JSONObject admin = userQueryService.getAdmin();
-            if (!DigestUtils.md5Hex(pwd).equals(admin.getString(User.USER_PASSWORD))) {
-                context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-
-                return;
-            }
-        } catch (final Exception e) {
-            // ignored
-        }
-
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, 1);
         requestJSONObject.put(Pagination.PAGINATION_PAGE_SIZE, Integer.MAX_VALUE);

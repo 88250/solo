@@ -50,7 +50,6 @@
 * SQL / JSON / Markdown 导出
 * 插件系统
 * Atom / RSS / Sitemap
-* MetaWeblog API
 * CDN 静态资源分离
 * [GitHub 集成](https://github.com/b3log/solo/issues/12514)
 

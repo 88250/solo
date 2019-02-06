@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -95,7 +94,6 @@ public class UserMgmtService {
      *                          "oId": "",
      *                          "userName": "",
      *                          "userEmail": "",
-     *                          "userPassword": "", // Unhashed
      *                          "userRole": "", // optional
      *                          "userURL": "", // optional
      * @throws ServiceException service exception
@@ -128,14 +126,6 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("userNameInvalidLabel"));
             }
             oldUser.put(User.USER_NAME, userName);
-
-            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-            final boolean maybeHashed = HASHED_PASSWORD_LENGTH == userPassword.length();
-            final String newHashedPassword = DigestUtils.md5Hex(userPassword);
-            final String oldHashedPassword = oldUser.optString(User.USER_PASSWORD);
-            if (!maybeHashed || (!oldHashedPassword.equals(userPassword) && !oldHashedPassword.equals(newHashedPassword))) {
-                oldUser.put(User.USER_PASSWORD, newHashedPassword);
-            }
 
             final String userRole = requestJSONObject.optString(User.USER_ROLE);
             if (StringUtils.isNotBlank(userRole)) {
@@ -208,7 +198,6 @@ public class UserMgmtService {
      * @param requestJSONObject the specified request json object, for example,
      *                          "userName": "",
      *                          "userEmail": "",
-     *                          "userPassword": "", // Unhashed
      *                          "userURL": "", // optional, uses 'servePath' instead if not specified
      *                          "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not specified
      *                          "userAvatar": "" // optional, users generated gravatar url instead if not specified
@@ -250,9 +239,6 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedUserNameLabel"));
             }
             user.put(User.USER_NAME, userName);
-
-            final String userPassword = requestJSONObject.optString(User.USER_PASSWORD);
-            user.put(User.USER_PASSWORD, DigestUtils.md5Hex(userPassword));
 
             String userURL = requestJSONObject.optString(User.USER_URL);
             if (StringUtils.isBlank(userURL)) {

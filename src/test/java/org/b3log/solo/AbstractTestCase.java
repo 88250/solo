@@ -27,7 +27,6 @@ import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Crypts;
-import org.b3log.solo.processor.api.MetaWeblogAPI;
 import org.b3log.solo.cache.*;
 import org.b3log.solo.processor.MockDispatcherServlet;
 import org.b3log.solo.repository.*;
@@ -52,7 +51,7 @@ import java.util.Locale;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.0, Dec 5, 2018
+ * @version 3.0.0.1, Feb 7, 2019
  * @since 2.9.7
  */
 public abstract class AbstractTestCase {
@@ -124,7 +123,6 @@ public abstract class AbstractTestCase {
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_EMAIL, "test@gmail.com");
         requestJSONObject.put(User.USER_NAME, "Admin");
-        requestJSONObject.put(User.USER_PASSWORD, "pass");
         initService.init(requestJSONObject);
         final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
@@ -141,9 +139,8 @@ public abstract class AbstractTestCase {
         final String userId = adminUser.optString(Keys.OBJECT_ID);
         final JSONObject cookieJSONObject = new JSONObject();
         cookieJSONObject.put(Keys.OBJECT_ID, userId);
-        cookieJSONObject.put(User.USER_PASSWORD, adminUser.optString(User.USER_PASSWORD));
         final String random = RandomStringUtils.randomAlphanumeric(16);
-        cookieJSONObject.put(Keys.TOKEN, adminUser.optString(User.USER_PASSWORD) + ":" + random);
+        cookieJSONObject.put(Keys.TOKEN, "pass:" + random);
         final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), Solos.COOKIE_SECRET);
         final Cookie cookie = new Cookie(Solos.COOKIE_NAME, cookieValue);
         request.setCookies(new Cookie[]{cookie});
@@ -486,10 +483,5 @@ public abstract class AbstractTestCase {
      */
     public OptionQueryService getOptionQueryService() {
         return beanManager.getReference(OptionQueryService.class);
-    }
-
-
-    public MetaWeblogAPI getMetaWeblogAPI() {
-        return beanManager.getReference(MetaWeblogAPI.class);
     }
 }
