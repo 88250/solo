@@ -188,7 +188,6 @@ public class InitService {
      *                          {
      *                          "userName": "",
      *                          "userEmail": "",
-     *                          "userPassword": "", // Unhashed
      *                          "userAvatar": "" // optional
      *                          "userB3Key": "" // optional
      *                          }

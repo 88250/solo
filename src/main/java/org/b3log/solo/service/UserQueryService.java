@@ -117,7 +117,6 @@ public class UserQueryService {
      *         "oId": "",
      *         "userName": "",
      *         "userEmail": "",
-     *         "userPassword": "",
      *         "roleName": ""
      *      }, ....]
      * }
@@ -164,8 +163,7 @@ public class UserQueryService {
      *     "user": {
      *         "oId": "",
      *         "userName": "",
-     *         "userEmail": "",
-     *         "userPassword": ""
+     *         "userEmail": ""
      *     }
      * }
      * </pre>, returns {@code null} if not found

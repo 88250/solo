@@ -30,8 +30,6 @@ ${addUserLabel}
     <input id="userEmail" type="text"/>
     <label for="userURL">${userURL1Label}</label>
     <input id="userURL" type="text"/>
-    <label for="userPassword">${userPassword1Label}</label>
-    <input id="userPassword" type="password" autocomplete="new-password"/>
     <label for="userAvatar">${userAvatar1Label}</label>
     <input id="userAvatar" type="text"/><br><br>
     <button onclick="admin.userList.add();" class="right">${saveLabel}</button>
@@ -44,8 +42,6 @@ ${addUserLabel}
     <input id="userEmailUpdate" type="text"/>
     <label for="userURLUpdate">${userURL1Label}</label>
     <input id="userURLUpdate" type="text"/>
-    <label for="userPasswordUpdate">${userPassword1Label}</label>
-    <input id="userPasswordUpdate" type="password"/>
     <label for="userAvatarUpdate">${userAvatar1Label}</label>
     <input id="userAvatarUpdate" type="text"/> <br><br>
     <button onclick="admin.userList.update();" class="right">${updateLabel}</button>

@@ -89,7 +89,6 @@ public class UserConsole {
      *     "oId": "",
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassword": "", // Unhashed
      *     "userRole": "", // optional
      *     "userURL": "", // optional
      *     "userAvatar": "" // optional
@@ -139,7 +138,6 @@ public class UserConsole {
      * {
      *     "userName": "",
      *     "userEmail": "",
-     *     "userPassword": "",
      *     "userURL": "", // optional, uses 'servePath' instead if not specified
      *     "userRole": "", // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not specified
      *     "userAvatar": "" // optional
@@ -250,7 +248,6 @@ public class UserConsole {
      *         "oId": "",
      *         "userName": "",
      *         "userEmail": "",
-     *         "userPassword": "",
      *         "roleName": ""
      *      }, ....]
      *     "sc": true
@@ -300,7 +297,6 @@ public class UserConsole {
      *         "oId": "",
      *         "userName": "",
      *         "userEmail": "",
-     *         "userPassword": "",
      *         "userAvatar": ""
      *     }
      * }
