@@ -26,7 +26,6 @@
 /* preference 相关操作 */
 admin.preference = {
     locale: "",
-    editorType: "",
     /*
      * 初始化
      */
@@ -73,7 +72,6 @@ admin.preference = {
                 "true" === preference.commentable ? $("#commentable").attr("checked", "checked") : $("commentable").removeAttr("checked");
 
                 admin.preference.locale = preference.localeString;
-                admin.preference.editorType = preference.editorType;
 
                 // skin
                 $("#skinMain").data("skinDirName", preference.skinDirName);
@@ -105,7 +103,6 @@ admin.preference = {
                 }
 
                 $("#articleListDisplay").val(preference.articleListStyle);
-                $("#editorType").val(preference.editorType);
                 $("#feedOutputMode").val(preference.feedOutputMode);
                 $("#feedOutputCnt").val(preference.feedOutputCnt);
 
@@ -225,7 +222,6 @@ admin.preference = {
                 "keyOfSolo": $("#keyOfSolo").val(),
                 "allowVisitDraftViaPermalink": $("#allowVisitDraftViaPermalink").prop("checked"),
                 "articleListStyle": $("#articleListDisplay").val(),
-                "editorType": $("#editorType").val(),
                 "feedOutputMode": $("#feedOutputMode").val(),
                 "feedOutputCnt": $("#feedOutputCnt").val(),
                 "commentable": $("#commentable").prop("checked"),
@@ -246,8 +242,7 @@ admin.preference = {
                     return;
                 }
 
-                if ($("#localeString").val() !== admin.preference.locale ||
-                    $("#editorType").val() !== admin.preference.editorType) {
+                if ($("#localeString").val() !== admin.preference.locale) {
                     window.location.reload();
                 }
 

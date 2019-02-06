@@ -1478,6 +1478,23 @@ button#submitArticle:hover {
     border-radius: 0 4px 4px 0;
 }
 
+.vditor-toolbar label {
+    margin-bottom: 0;
+}
+
+.vditor .vditor-textarea {
+    border: 0;
+    resize: none;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #fafbfc;
+    outline: 0 none;
+    font-size: 16px;
+    line-height: 22px;
+    color: #24292e;
+    border-radius: 0 0 3px 3px;
+}
+
 @media (max-width: 768px) {
     #top > a {
         display: none;
@@ -1512,11 +1529,6 @@ button#submitArticle:hover {
         margin: 12px;
         float: left;
         display: block;
-    }
-
-    .editor-toolbar {
-        height: auto !important;
-        overflow: hidden;
     }
 
     .fn__flex {

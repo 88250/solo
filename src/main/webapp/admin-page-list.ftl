@@ -50,7 +50,7 @@
         <button data-type="page" class="fn-type">${pageLabel}</button>
     </div>
     <div id="pagePagePanel" class="none">
-        <textarea id="pageContent" style="height: 430px;width: 100%;" name="pageContent"></textarea>
+        <div id="pageContent" style="height: 430px;width: 100%;" name="pageContent"></div>
         <label>${allowComment1Label}</label>
         <input type="checkbox" id="pageCommentable" checked="checked" />
     </div>

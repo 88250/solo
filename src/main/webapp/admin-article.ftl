@@ -37,8 +37,8 @@
             <button id="articleThumbnailBtn">${chageLabel}</button>
         </div>
         <div>
-            <textarea id="articleContent" name="articleContent"
-                  style="height: 500px;width:100%;"></textarea>
+            <div id="articleContent" name="articleContent"
+                  style="height: 500px;width:100%;"></div>
         </div>
     </div>
     <div>
@@ -50,7 +50,7 @@
     <div class="comment-content">
         <label>${abstract1Label}</label>
         <div>
-            <textarea id="abstract" style="height: 200px;width: 100%;" name="abstract"></textarea>
+            <div id="abstract" style="height: 200px;width: 100%;" name="abstract"></div>
         </div>
     </div>
     <div class="fn__flex">
