@@ -27,7 +27,6 @@
     var Label = {
         "markedAvailable": ${markedAvailable?c},
         "skinDirName": "${skinDirName}",
-        "editorType": "${editorType}",
         "userRole": "${userRole}",
         "PAGE_SIZE": "${articleListDisplayCount}",
         "WINDOW_SIZE": "${articleListPaginationWindowSize}",

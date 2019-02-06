@@ -23,7 +23,6 @@
  * @version 1.5.1.2, Jan 13, 2019
  */
 admin.article = {
-    currentEditorType: '',
     // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
     isConfirm: true,
     status: {
@@ -66,16 +65,6 @@ admin.article = {
                 // set default value for article.
                 $("#title").val(result.article.articleTitle);
                 admin.article.status.articleHadBeenPublished = result.article.articleHadBeenPublished;
-
-                if (admin.article.currentEditorType !== result.article.articleEditorType) {
-                    admin.editors.articleEditor.remove();
-                    admin.editors.abstractEditor.remove();
-
-                    admin.article.currentEditorType = result.article.articleEditorType;
-                    admin.editors.articleEditor.init(result.article.articleEditorType);
-                    admin.editors.abstractEditor.init(result.article.articleEditorType);
-                }
-
                 admin.editors.articleEditor.setContent(result.article.articleContent);
                 admin.editors.abstractEditor.setContent(result.article.articleAbstract);
                 admin.article.content = admin.editors.articleEditor.getContent();
@@ -256,7 +245,6 @@ admin.article = {
                     "articleCommentable": $("#articleCommentable").prop("checked"),
                     "articleViewPwd": $("#viewPwd").val(),
                     "postToCommunity": $("#postToCommunity").prop("checked"),
-                    "articleEditorType": admin.article.currentEditorType
                 }
             };
 
@@ -394,11 +382,9 @@ admin.article = {
     },
     /**
      * @description 初始化发布文章页面
-     * @param {Function} fun 切面函数
      */
     init: function (fun) {
-        this.currentEditorType = Label.editorType;
-
+        console.log(fun)
         // Inits Signs.
         $(".signs button").click(function (i) {
             $(".signs button").removeClass('selected');
@@ -456,14 +442,11 @@ admin.article = {
         // editor
         admin.editors.articleEditor = new SoloEditor({
             id: "articleContent",
-            kind: "all",
-            fun: fun,
             height: 500
         });
 
         admin.editors.abstractEditor = new SoloEditor({
             id: "abstract",
-            kind: "simple",
             height: 200
         });
 
@@ -606,15 +589,6 @@ admin.article = {
         }
         $("#tipMsg").text("");
         $("#loadMsg").text("");
-
-        if (admin.article.currentEditorType !== Label.editorType) {
-            admin.editors.articleEditor.remove();
-            admin.editors.abstractEditor.remove();
-
-            admin.article.currentEditorType = Label.editorType;
-            admin.editors.articleEditor.init(Label.editorType);
-            admin.editors.abstractEditor.init(Label.editorType);
-        }
     },
     /**
      * @description: 仿重复提交，点击一次后，按钮设置为 disabled

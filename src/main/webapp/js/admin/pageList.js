@@ -25,7 +25,6 @@
 
 /* page-list 相关操作 */
 admin.pageList = {
-    currentEditorType: '',
     tablePagination: new TablePaginate("page"),
     pageInfo: {
         currentCount: 1,
@@ -73,15 +72,7 @@ admin.pageList = {
         this.tablePagination.initCommentsDialog();
         this.getList(page);
 
-        var language = Label.localeString.substring(0, 2);
-        if (language === "zh") {
-            language = "zh-cn";
-        }
-
-        admin.pageList.currentEditorType = Label.editorType;
         admin.editors.pageEditor = new SoloEditor({
-            language: language,
-            kind: "all",
             id: "pageContent"
         });
 
@@ -203,13 +194,6 @@ admin.pageList = {
                     $($(".fn-type").get(0)).click();
                 }
                 $("#pageCommentable").prop("checked", result.page.pageCommentable);
-
-                if (admin.pageList.currentEditorType !== result.page.pageEditorType) {
-                    admin.editors.pageEditor.remove();
-
-                    admin.pageList.currentEditorType = result.page.pageEditorType;
-                    admin.editors.pageEditor.init(result.page.pageEditorType);
-                }
 
                 admin.editors.pageEditor.setContent(result.page.pageContent);
 
@@ -347,7 +331,6 @@ admin.pageList = {
                     "pageCommentable": $("#pageCommentable").prop("checked"),
                     "pageType": admin.pageList.type,
                     "pageOpenTarget": $("#pageTarget").val(),
-                    "pageEditorType": admin.pageList.currentEditorType,
                     "pageIcon": $("#pageIcon").val()
                 }
             };
@@ -404,13 +387,6 @@ admin.pageList = {
             this.update();
         } else {
             this.add();
-        }
-
-        if (admin.pageList.currentEditorType !== Label.editorType) {
-            admin.editors.pageEditor.remove();
-
-            admin.pageList.currentEditorType = Label.editorType;
-            admin.editors.pageEditor.init(Label.editorType);
         }
     },
     /*

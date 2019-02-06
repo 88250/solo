@@ -22,72 +22,81 @@
  * @version 1.1.0.5, Nov 8, 2016
  */
 
-admin.editors = {};
+admin.editors = {}
 
 /*
  * @description Create SoloEditor can use all editor.
  * @constructor
  * @param conf 编辑器初始化参数
- * @param conf.kind 编辑器类型 simple/all
  * @param conf.id 编辑器渲染元素 id
- * @param conf.language 编辑器使用语言
- * @param conf.type 编辑器种类
+ * @param conf.height 编辑器种类
  */
 var SoloEditor = function (conf) {
-    this._defaults = {
-        type: "vditor",
-        kind: "",
-        id: "",
-        language: ""
-    };
-    conf.type = Label.editorType;
-    this.conf = conf;
-    this._init();
-};
+  this.conf = conf
+  return this.init()
+}
 
 $.extend(SoloEditor.prototype, {
-    /*
-     * @description 初始化
-     */
-    _init: function () {
-        this.init();
-    },
-    /*
-     * @description 初始化编辑器
-     */
-    init: function (type) {
-        var conf = this.conf;
-        if (type) {
-            conf.type = type;
-        }
+  /*
+   * @description 初始化编辑器
+   */
+  init: function () {
+    this.editor = new Vditor(this.conf.id, {
+      cache: true,
+      preview: {
+        delay: 500,
+        show: false,
+        url: `${latkeConfig.servePath}/console/markdown/2html`,
+        parse: (element) => {
+          if (element.style.display === 'none') {
+            return
+          }
 
-        admin.editors[conf.type].init(conf);
-    },
-    /*
-     * @description 获取编辑器值
-     * @returns {string} 编辑器值
-     */
-    getContent: function () {
-        var conf = this.conf;
-        return admin.editors[conf.type].getContent(conf.id);
-    },
-    /*
-     * @description 设置编辑器值
-     * @param {string} content 编辑器回填内容 
-     */
-    setContent: function (content) {
-        var conf = this.conf;
-        admin.editors[conf.type].setContent(conf.id, content);
-    },
-    /*
-     * @description 移除编辑器值
-     */
-    remove: function () {
-        var conf = this.conf;
-        admin.editors[conf.type].remove(conf.id);
-    }
-});
+          Util.parseMarkdown('content-reset');
+          if (!Label.markedAvailable) {
+            hljs.initHighlighting.called = false;
+            hljs.initHighlighting();
+          }
+        },
+      },
+      upload: {
+        max: 10 * 1024 * 1024,
+        url: `${latkeConfig.servePath}/upload`,
+      },
+      height: this.conf.height,
+      counter: 102400,
+      resize: {
+        enable: false,
+      },
+      lang: Label.localeString,
+      classes: {
+        preview: 'content-reset',
+      },
+    })
+    return this.editor
+  },
+  /*
+   * @description 获取编辑器值
+   * @returns {string} 编辑器值
+   */
+  getContent: function () {
+    return this.editor.getValue()
+  },
+  /*
+   * @description 设置编辑器值
+   * @param {string} content 编辑器回填内容
+   */
+  setContent: function (content) {
+    this.editor.setValue(content)
+  },
+  /*
+   * @description 移除编辑器值
+   */
+  remove: function () {
+    document.getElementById(this.editor.vditor.id).outerHTML = ''
+  },
+})
 
-admin.editors.articleEditor = {};
-admin.editors.abstractEditor = {};
-admin.editors.pageEditor = {};
+admin.editors.articleEditor = {}
+admin.editors.abstractEditor = {}
+admin.editors.pageEditor = {}
