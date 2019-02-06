@@ -32,7 +32,6 @@ admin.editors = {};
  * @param conf.id 编辑器渲染元素 id
  * @param conf.language 编辑器使用语言
  * @param conf.type 编辑器种类
- * @param conf.codeMirrorLanguage codeMirror 编辑器当前解析语言
  */
 var SoloEditor = function (conf) {
     this._defaults = {
@@ -60,12 +59,6 @@ $.extend(SoloEditor.prototype, {
         var conf = this.conf;
         if (type) {
             conf.type = type;
-        }
-        
-        var types = conf.type.split("-");
-        if (types.length === 2) {
-            conf.codeMirrorLanguage = types[1];
-            conf.type = types[0];
         }
 
         admin.editors[conf.type].init(conf);

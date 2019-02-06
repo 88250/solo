@@ -99,12 +99,6 @@ admin.pageList = {
 
             if (admin.pageList.type === "page") {
                 $("#pagePagePanel").slideDown();
-
-                // 使用 CodeMirror 编辑器时，当编辑器初始之前，元素为 display:none 时，行号显示不正常
-                if (Label.editorType === "CodeMirror-Markdown"
-                        && admin.editors.pageEditor.getContent() === "") {
-                    admin.editors.pageEditor.setContent("");
-                }
             } else {
                 $("#pagePagePanel").slideUp();
             }
