@@ -53,7 +53,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.8, Jan 15, 2019
+ * @version 1.3.2.9, Feb 6, 2019
  * @since 0.3.5
  */
 @Service
@@ -443,7 +443,6 @@ public class ArticleQueryService {
      *         }, ....],
      *         "articleSignId": "",
      *         "articleViewPwd": "",
-     *         "articleEditorType": "",
      *         "signs": [{
      *             "oId": "",
      *             "signHTML": ""
@@ -536,7 +535,6 @@ public class ArticleQueryService {
      *         "articlePutTop": boolean,
      *         "articleSignId": "",
      *         "articleViewPwd": "",
-     *         "articleEditorType": "",
      *         .... // Specified by the "excludes"
      *      }, ....]
      * }
@@ -976,9 +974,8 @@ public class ArticleQueryService {
 
             if (null != context && Solos.needViewPwd(context.getRequest(), context.getResponse(), article)) {
                 final String content = langPropsService.get("articleContentPwd");
-
                 article.put(ARTICLE_CONTENT, content);
-            } else if ("CodeMirror-Markdown".equals(article.optString(ARTICLE_EDITOR_TYPE))) {
+            } else {
                 // Markdown to HTML for content and abstract
                 Stopwatchs.start("Get Article Content [Markdown]");
                 String content = article.optString(ARTICLE_CONTENT);
@@ -1000,9 +997,8 @@ public class ArticleQueryService {
      * Converts the content and abstract for each of the specified articles to HTML if that is saved by Markdown editor.
      *
      * @param articles the specified articles
-     * @throws Exception exception
      */
-    public void markdowns(final List<JSONObject> articles) throws Exception {
+    public void markdowns(final List<JSONObject> articles) {
         for (final JSONObject article : articles) {
             markdown(article);
         }
@@ -1012,31 +1008,25 @@ public class ArticleQueryService {
      * Converts the content and abstract for the specified article to HTML if it is saved by Markdown editor.
      *
      * @param article the specified article
-     * @throws Exception exception
      */
-    public void markdown(final JSONObject article) throws Exception {
-        if ("CodeMirror-Markdown".equals(article.optString(ARTICLE_EDITOR_TYPE))) {
-            Stopwatchs.start("Markdown Article[id=" + article.optString(Keys.OBJECT_ID) + "]");
+    public void markdown(final JSONObject article) {
+        Stopwatchs.start("Markdown Article [id=" + article.optString(Keys.OBJECT_ID) + "]");
 
-            Stopwatchs.start("Content");
-            String content = article.optString(ARTICLE_CONTENT);
-            content = Emotions.convert(content);
-            content = Markdowns.toHTML(content);
-            article.put(ARTICLE_CONTENT, content);
-            Stopwatchs.end();
+        String content = article.optString(ARTICLE_CONTENT);
+        content = Emotions.convert(content);
+        content = Markdowns.toHTML(content);
+        article.put(ARTICLE_CONTENT, content);
 
-            String abstractContent = article.optString(ARTICLE_ABSTRACT);
-
-            if (StringUtils.isNotBlank(abstractContent)) {
-                Stopwatchs.start("Abstract");
-                abstractContent = Emotions.convert(abstractContent);
-                abstractContent = Markdowns.toHTML(abstractContent);
-                article.put(ARTICLE_ABSTRACT, abstractContent);
-                Stopwatchs.end();
-            }
-
+        String abstractContent = article.optString(ARTICLE_ABSTRACT);
+        if (StringUtils.isNotBlank(abstractContent)) {
+            Stopwatchs.start("Abstract");
+            abstractContent = Emotions.convert(abstractContent);
+            abstractContent = Markdowns.toHTML(abstractContent);
+            article.put(ARTICLE_ABSTRACT, abstractContent);
             Stopwatchs.end();
         }
+
+        Stopwatchs.end();
     }
 
     /**

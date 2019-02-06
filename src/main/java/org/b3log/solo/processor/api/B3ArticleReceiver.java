@@ -41,7 +41,7 @@ import org.json.JSONObject;
  * Receiving articles from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.4.3, Sep 25, 2018
+ * @version 1.0.4.4, Feb 6, 2019
  * @since 0.5.5
  */
 @RequestProcessor
@@ -87,8 +87,7 @@ public class B3ArticleReceiver {
      *          "articleTitle": "",
      *          "articleContent": "",
      *          "articleTags": "tag1,tag2,tag3",
-     *          "userB3Key": "",
-     *          "articleEditorType": ""
+     *          "userB3Key": ""
      *     }
      * }
      * </pre>
@@ -165,8 +164,7 @@ public class B3ArticleReceiver {
      *          "articleTitle": "",
      *          "articleContent": "",
      *          "articleTags": "tag1,tag2,tag3",
-     *          "userB3Key": "",
-     *          "articleEditorType": ""
+     *          "userB3Key": ""
      *     }
      * }
      * </pre>

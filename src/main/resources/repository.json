@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "3.2.1.2, Jan 28, 2019",
+  "version": "3.2.1.3, Feb 6, 2019",
   "authors": [
     "Liang Ding"
   ],
@@ -281,13 +281,6 @@
           "length": 255
         },
         {
-          "name": "pageEditorType",
-          "description": "页面编辑器类型，目前仅支持 CodeMirror-Markdown",
-          "type": "String",
-          "length": 20,
-          "nullable": true
-        },
-        {
           "name": "pageIcon",
           "description": "页面展示用小图标",
           "type": "String",
@@ -530,13 +523,6 @@
           "description": "文章浏览密码，留空为不设置访问密码",
           "type": "String",
           "legnth": 255
-        },
-        {
-          "name": "articleEditorType",
-          "description": "文章编辑器类型，目前仅支持 CodeMirror-Markdown",
-          "type": "String",
-          "length": 20,
-          "nullable": true
         }
       ]
     },
