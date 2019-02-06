@@ -1,4 +1,12 @@
-# <img src="https://cloud.githubusercontent.com/assets/873584/26024695/4defcb5e-3809-11e7-9755-fa4d22c45718.png"> [Solo](https://github.com/b3log/solo) [![Build Status](https://img.shields.io/travis/b3log/solo.svg?style=flat)](https://travis-ci.org/b3log/solo) [![Coverage Status](https://img.shields.io/coveralls/b3log/solo.svg?style=flat)](https://coveralls.io/github/b3log/solo?branch=master)  [![AGPLv3](http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat)](https://www.gnu.org/licenses/agpl-3.0.txt)
+<p align = "center">
+<img alt="Solo" src="https://user-images.githubusercontent.com/873584/52320401-2593e600-2a0a-11e9-9ba1-db79ee71d1af.png">
+<br><br>
+小而美博客系统
+<br>
+<a href="https://travis-ci.org/b3log/solo"><img alt="Build Status" src="https://img.shields.io/travis/b3log/solo.svg?style=flat"></a>
+<a href="https://coveralls.io/github/b3log/solo?branch=master"><img alt="Coverage Status" src="https://img.shields.io/coveralls/b3log/solo.svg?style=flat"></a>
+<a href="https://www.gnu.org/licenses/agpl-3.0.txt"><img alt="AGPLv3" src="http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat"></a>
+</p>
 
 ## 简介
 
@@ -108,12 +116,3 @@ Solo 使用 [GNU Affero General Public License, Version 3](https://www.gnu.org/l
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
 * [Latke](https://github.com/b3log/latke)：一款以 JSON 为主的 Java Web 框架
 * [Vditor](https://github.com/b3log/vditor)： 一款浏览器端的 Markdown 编辑器，使用 TypeScript 实现
-
-----
-
-<p align = "center">
-<strong>小而美博客系统</strong>
-<br><br>
-<img src="https://cloud.githubusercontent.com/assets/873584/26024667/c031e40a-3808-11e7-9176-f2c9af01bd64.png">
-</p>
-
