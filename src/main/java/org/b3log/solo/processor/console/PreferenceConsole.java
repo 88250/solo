@@ -49,7 +49,7 @@ import static org.b3log.solo.model.Option.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.2.0.19, Dec 24, 2018
+ * @version 1.2.0.20, Feb 6, 2019
  * @since 0.4.0
  */
 @RequestProcessor
@@ -331,7 +331,6 @@ public class PreferenceConsole {
      *         "allowVisitDraftViaPermalink": boolean,
      *         "allowRegister": boolean,
      *         "articleListStyle": "",
-     *         "editorType": "",
      *         "commentable": boolean,
      *         "feedOutputMode: "",
      *         "feedOutputCnt": int,

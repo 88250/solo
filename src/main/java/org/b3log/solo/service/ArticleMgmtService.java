@@ -50,7 +50,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.15, Jan 28, 2019
+ * @version 1.2.2.16, Feb 6, 2019
  * @since 0.3.5
  */
 @Service
@@ -252,8 +252,7 @@ public class ArticleMgmtService {
      *                          "articleIsPublished": boolean,
      *                          "articleSignId": "", // optional
      *                          "articleCommentable": boolean,
-     *                          "articleViewPwd": "",
-     *                          "articleEditorType": "" // optional, preference specified if not exists this key
+     *                          "articleViewPwd": ""
      *                          }
      *                          }
      * @throws ServiceException service exception
@@ -289,7 +288,6 @@ public class ArticleMgmtService {
             fillAutoProperties(oldArticle, article);
             // Set date
             article.put(ARTICLE_UPDATED, oldArticle.getLong(ARTICLE_UPDATED));
-            final JSONObject preference = preferenceQueryService.getPreference();
             final long now = System.currentTimeMillis();
 
             // The article to update has no sign
@@ -376,7 +374,6 @@ public class ArticleMgmtService {
      *                          "articleSignId": "" // optional, default is "0",
      *                          "articleCommentable": boolean,
      *                          "articleViewPwd": "",
-     *                          "articleEditorType": "", // optional
      *                          "oId": "" // optional, generate it if not exists this key
      *                          }
      *                          }
@@ -427,7 +424,6 @@ public class ArticleMgmtService {
 
             article.put(Article.ARTICLE_COMMENT_COUNT, 0);
             article.put(Article.ARTICLE_VIEW_COUNT, 0);
-            final JSONObject preference = preferenceQueryService.getPreference();
             if (!article.has(Article.ARTICLE_CREATED)) {
                 article.put(Article.ARTICLE_CREATED, System.currentTimeMillis());
             }

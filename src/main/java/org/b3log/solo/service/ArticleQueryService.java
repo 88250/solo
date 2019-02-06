@@ -443,7 +443,6 @@ public class ArticleQueryService {
      *         }, ....],
      *         "articleSignId": "",
      *         "articleViewPwd": "",
-     *         "articleEditorType": "",
      *         "signs": [{
      *             "oId": "",
      *             "signHTML": ""
@@ -536,7 +535,6 @@ public class ArticleQueryService {
      *         "articlePutTop": boolean,
      *         "articleSignId": "",
      *         "articleViewPwd": "",
-     *         "articleEditorType": "",
      *         .... // Specified by the "excludes"
      *      }, ....]
      * }

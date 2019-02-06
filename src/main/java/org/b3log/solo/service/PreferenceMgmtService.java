@@ -45,7 +45,7 @@ import static org.b3log.solo.util.Skins.getSkinDirNames;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.17, Dec 10, 2018
+ * @version 1.3.2.18, Feb 6, 2019
  * @since 0.4.0
  */
 @Service
@@ -254,12 +254,6 @@ public class PreferenceMgmtService {
             final JSONObject commentableOpt = optionRepository.get(Option.ID_C_COMMENTABLE);
             commentableOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_COMMENTABLE));
             optionRepository.update(Option.ID_C_COMMENTABLE, commentableOpt);
-
-            final JSONObject editorTypeOpt = optionRepository.get(Option.ID_C_EDITOR_TYPE);
-            // https://github.com/b3log/solo/issues/12285
-            // editorTypeOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_EDITOR_TYPE));
-            editorTypeOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_EDITOR_TYPE);
-            optionRepository.update(Option.ID_C_EDITOR_TYPE, editorTypeOpt);
 
             final JSONObject enableArticleUpdateHintOpt = optionRepository.get(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT);
             enableArticleUpdateHintOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT));

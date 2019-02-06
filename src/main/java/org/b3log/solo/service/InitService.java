@@ -60,7 +60,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.27, Jan 28, 2019
+ * @version 1.5.2.28, Feb 6, 2019
  * @since 0.4.0
  */
 @Service
@@ -266,7 +266,6 @@ public class InitService {
         article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
         article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
-        article.put(Article.ARTICLE_EDITOR_TYPE, DefaultPreference.DEFAULT_EDITOR_TYPE);
 
         final String articleId = addHelloWorldArticle(article);
 
@@ -377,8 +376,8 @@ public class InitService {
     private JSONArray tag(final String[] tagTitles, final JSONObject article) throws RepositoryException {
         final JSONArray ret = new JSONArray();
 
-        for (int i = 0; i < tagTitles.length; i++) {
-            final String tagTitle = tagTitles[i].trim();
+        for (String tagTitle1 : tagTitles) {
+            final String tagTitle = tagTitle1.trim();
             final JSONObject tag = new JSONObject();
 
             LOGGER.log(Level.TRACE, "Found a new tag[title={0}] in article[title={1}]", tagTitle, article.optString(Article.ARTICLE_TITLE));
@@ -671,12 +670,6 @@ public class InitService {
         feedOutputCntOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_FEED_OUTPUT_CNT);
         optionRepository.add(feedOutputCntOpt);
 
-        final JSONObject editorTypeOpt = new JSONObject();
-        editorTypeOpt.put(Keys.OBJECT_ID, Option.ID_C_EDITOR_TYPE);
-        editorTypeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        editorTypeOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_EDITOR_TYPE);
-        optionRepository.add(editorTypeOpt);
-
         final JSONObject footerContentOpt = new JSONObject();
         footerContentOpt.put(Keys.OBJECT_ID, Option.ID_C_FOOTER_CONTENT);
         footerContentOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
@@ -715,86 +708,5 @@ public class InitService {
         optionRepository.add(skinsOpt);
 
         LOGGER.debug("Initialized preference");
-    }
-
-    /**
-     * Sets archive date article repository with the specified archive date article repository.
-     *
-     * @param archiveDateArticleRepository the specified archive date article repository
-     */
-    public void setArchiveDateArticleRepository(final ArchiveDateArticleRepository archiveDateArticleRepository) {
-        this.archiveDateArticleRepository = archiveDateArticleRepository;
-    }
-
-    /**
-     * Sets archive date repository with the specified archive date repository.
-     *
-     * @param archiveDateRepository the specified archive date repository
-     */
-    public void setArchiveDateRepository(final ArchiveDateRepository archiveDateRepository) {
-        this.archiveDateRepository = archiveDateRepository;
-    }
-
-    /**
-     * Sets the article repository with the specified article repository.
-     *
-     * @param articleRepository the specified article repository
-     */
-    public void setArticleRepository(final ArticleRepository articleRepository) {
-        this.articleRepository = articleRepository;
-    }
-
-    /**
-     * Sets the user repository with the specified user repository.
-     *
-     * @param userRepository the specified user repository
-     */
-    public void setUserRepository(final UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    /**
-     * Sets the tag repository with the specified tag repository.
-     *
-     * @param tagRepository the specified tag repository
-     */
-    public void setTagRepository(final TagRepository tagRepository) {
-        this.tagRepository = tagRepository;
-    }
-
-    /**
-     * Sets the tag article repository with the specified tag article repository.
-     *
-     * @param tagArticleRepository the specified tag article repository
-     */
-    public void setTagArticleRepository(final TagArticleRepository tagArticleRepository) {
-        this.tagArticleRepository = tagArticleRepository;
-    }
-
-    /**
-     * Sets the comment repository with the specified comment repository.
-     *
-     * @param commentRepository the specified comment repository
-     */
-    public void setCommentRepository(final CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
-    }
-
-    /**
-     * Sets the language service with the specified language service.
-     *
-     * @param langPropsService the specified language service
-     */
-    public void setLangPropsService(final LangPropsService langPropsService) {
-        this.langPropsService = langPropsService;
-    }
-
-    /**
-     * Sets the plugin manager with the specified plugin manager.
-     *
-     * @param pluginManager the specified plugin manager
-     */
-    public void setPluginManager(final PluginManager pluginManager) {
-        this.pluginManager = pluginManager;
     }
 }

@@ -45,7 +45,7 @@ import java.util.List;
  * Page management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.11, Jan 29, 2019
+ * @version 1.1.0.12, Feb 6, 2019
  * @since 0.4.0
  */
 @Service
@@ -186,7 +186,6 @@ public class PageMgmtService {
                 page.put(Page.PAGE_TYPE, "page");
                 page.put(Page.PAGE_PERMALINK, permalink);
                 final JSONObject preference = preferenceQueryService.getPreference();
-                page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
                 page.put(Page.PAGE_ICON, "https://static.hacpai.com/images/tags/github2.png");
                 page.put(Page.PAGE_CONTENT, content);
                 pageRepository.add(page);
@@ -220,7 +219,6 @@ public class PageMgmtService {
      *                          "pageCommentable": boolean,
      *                          "pageType": "",
      *                          "pageOpenTarget": "",
-     *                          "pageEditorType": "", // optional, preference specified if not exists this key
      *                          "pageIcon": "" // optional
      *                          }
      *                          }, see {@link Page} for more details
@@ -271,12 +269,6 @@ public class PageMgmtService {
             if (!oldPage.getString(Page.PAGE_PERMALINK).equals(permalink)) { // The permalink has been updated
                 // Updates related comments' links
                 processCommentsForPageUpdate(newPage);
-            }
-
-            // Set editor type
-            if (!newPage.has(Page.PAGE_EDITOR_TYPE)) {
-                final JSONObject preference = preferenceQueryService.getPreference();
-                newPage.put(Page.PAGE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
             }
 
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
@@ -330,7 +322,6 @@ public class PageMgmtService {
      *                          "pageCommentable": boolean,
      *                          "pageType": "",
      *                          "pagePermalink": "", // optional
-     *                          "pageEditorType": "", // optional, preference specified if not exists this key
      *                          "pageIcon": "" // optional
      *                          }
      *                          }, see {@link Page} for more details
@@ -374,12 +365,6 @@ public class PageMgmtService {
             }
 
             page.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));
-
-            // Set editor type
-            if (!page.has(Page.PAGE_EDITOR_TYPE)) {
-                final JSONObject preference = preferenceQueryService.getPreference();
-                page.put(Page.PAGE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
-            }
 
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
             final String ret = pageRepository.add(page);
