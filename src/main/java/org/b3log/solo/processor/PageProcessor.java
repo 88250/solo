@@ -48,7 +48,7 @@ import java.util.Map;
  * Page processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.9, Jan 5, 2019
+ * @version 1.1.0.10, Feb 6, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -128,16 +128,12 @@ public class PageProcessor {
             dataModel.put(Page.PAGE_COMMENTS_REF, comments);
 
             // Markdown
-            if ("CodeMirror-Markdown".equals(page.optString(Page.PAGE_EDITOR_TYPE))) {
-                Stopwatchs.start("Markdown Page[id=" + page.optString(Keys.OBJECT_ID) + "]");
-
-                String content = page.optString(Page.PAGE_CONTENT);
-                content = Emotions.convert(content);
-                content = Markdowns.toHTML(content);
-                page.put(Page.PAGE_CONTENT, content);
-
-                Stopwatchs.end();
-            }
+            Stopwatchs.start("Markdown Page [id=" + page.optString(Keys.OBJECT_ID) + "]");
+            String content = page.optString(Page.PAGE_CONTENT);
+            content = Emotions.convert(content);
+            content = Markdowns.toHTML(content);
+            page.put(Page.PAGE_CONTENT, content);
+            Stopwatchs.end();
 
             dataModelService.fillCommon(context, dataModel, preference);
             statisticMgmtService.incBlogViewCount(context, response);

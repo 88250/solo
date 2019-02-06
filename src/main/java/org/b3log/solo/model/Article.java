@@ -25,7 +25,7 @@ import org.jsoup.safety.Whitelist;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.0, Sep 16, 2018
+ * @version 1.2.0.1, Feb 6, 2019
  * @since 0.3.1
  */
 public final class Article {
@@ -154,11 +154,6 @@ public final class Article {
      * Key of view password.
      */
     public static final String ARTICLE_VIEW_PWD = "articleViewPwd";
-
-    /**
-     * Key of article editor type.
-     */
-    public static final String ARTICLE_EDITOR_TYPE = "articleEditorType";
 
     //// constants
 

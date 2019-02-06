@@ -317,11 +317,6 @@ public class ArticleMgmtService {
                 }
             }
 
-            // Set editor type
-            if (!article.has(Article.ARTICLE_EDITOR_TYPE)) {
-                article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
-            }
-
             final boolean publishNewArticle = !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED) && article.getBoolean(ARTICLE_IS_PUBLISHED);
 
             // Update
@@ -381,7 +376,7 @@ public class ArticleMgmtService {
      *                          "articleSignId": "" // optional, default is "0",
      *                          "articleCommentable": boolean,
      *                          "articleViewPwd": "",
-     *                          "articleEditorType": "", // optional, preference specified if not exists this key
+     *                          "articleEditorType": "", // optional
      *                          "oId": "" // optional, generate it if not exists this key
      *                          }
      *                          }
@@ -459,10 +454,6 @@ public class ArticleMgmtService {
 
             final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
             article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
-
-            if (!article.has(Article.ARTICLE_EDITOR_TYPE)) {
-                article.put(Article.ARTICLE_EDITOR_TYPE, preference.optString(Option.ID_C_EDITOR_TYPE));
-            }
 
             articleRepository.add(article);
 

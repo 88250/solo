@@ -30,7 +30,7 @@ import java.util.Set;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.5.0.1, Jan 28, 2019
+ * @version 1.5.0.2, Feb 6, 2019
  * @since 0.6.0
  */
 public final class Option {
@@ -265,19 +265,6 @@ public final class Option {
      * Key of feed (Atom/RSS) output entry count.
      */
     public static final String ID_C_FEED_OUTPUT_CNT = "feedOutputCnt";
-
-    /**
-     * Key of editor type.
-     * <p>
-     * Optional values:
-     * <ul>
-     * <li>"tinyMCE"</li>
-     * <li>"CodeMirror-Markdown"</li>
-     * <li>"KindEditor"</li>
-     * </ul>
-     * </p>
-     */
-    public static final String ID_C_EDITOR_TYPE = "editorType";
 
     /**
      * Key of skins.
@@ -554,16 +541,6 @@ public final class Option {
          * Default feed output entry count.
          */
         public static final int DEFAULT_FEED_OUTPUT_CNT = 10;
-
-        /**
-         * Default editor type.
-         */
-        public static final String DEFAULT_EDITOR_TYPE = "CodeMirror-Markdown";
-
-        /**
-         * Logger.
-         */
-        private static final Logger LOGGER = Logger.getLogger(DefaultPreference.class);
 
         static {
             final JSONArray signs = new JSONArray();
