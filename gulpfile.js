@@ -54,12 +54,6 @@ function miniAdmin () {
     './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js',
     './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js',
     './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
-    // codemirror
-    './src/main/webapp/js/lib/CodeMirrorEditor/codemirror.js',
-    './src/main/webapp/js/lib/CodeMirrorEditor/placeholder.js',
-    './src/main/webapp/js/overwrite/codemirror/addon/hint/show-hint.js',
-    './src/main/webapp/js/lib/CodeMirrorEditor/editor.js',
-    './src/main/webapp/js/lib/to-markdown.js',
     './src/main/webapp/js/lib/highlight-9.13.1/highlight.pack.js']
   return gulp.src(jsJqueryUpload).
     pipe(uglify({output: {ascii_only: true}})).

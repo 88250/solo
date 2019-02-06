@@ -25,8 +25,7 @@
 admin.editors = {};
 
 /*
- * @description Create SoloEditor can use all editor. 
- *                e.g: TinyMCE, wnd 
+ * @description Create SoloEditor can use all editor.
  * @constructor
  * @param conf 编辑器初始化参数
  * @param conf.kind 编辑器类型 simple/all
@@ -37,7 +36,7 @@ admin.editors = {};
  */
 var SoloEditor = function (conf) {
     this._defaults = {
-        type: "tinyMCE",
+        type: "vditor",
         kind: "",
         id: "",
         language: ""
