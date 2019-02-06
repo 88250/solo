@@ -3,9 +3,9 @@
 <br><br>
 小而美博客系统，为未来而构建
 <br><br>
-<a href="https://travis-ci.org/b3log/solo"><img alt="Build Status" src="https://img.shields.io/travis/b3log/solo.svg?style=flat"></a>
-<a href="https://coveralls.io/github/b3log/solo?branch=master"><img alt="Coverage Status" src="https://img.shields.io/coveralls/b3log/solo.svg?style=flat"></a>
-<a href="https://www.gnu.org/licenses/agpl-3.0.txt"><img alt="AGPLv3" src="http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat"></a>
+<a title="Build Status" target="_blank" href="https://travis-ci.org/b3log/solo"><img src="https://img.shields.io/travis/b3log/solo.svg?style=flat"></a>
+<a title="Coverage Status" target="_blank" href="https://coveralls.io/github/b3log/solo?branch=master"><img src="https://img.shields.io/coveralls/b3log/solo.svg?style=flat"></a>
+<a title="AGPLv3" target="_blank" href="https://www.gnu.org/licenses/agpl-3.0.txt"><img src="http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat"></a>
 </p>
 
 ## 简介
