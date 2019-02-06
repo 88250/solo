@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.2.6, Apr 5, 2018
+ * @version 1.1.0.0, Feb 6, 2019
  */
 
 /* article-list 相关操作 */

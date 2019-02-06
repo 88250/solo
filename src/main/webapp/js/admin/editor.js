@@ -19,7 +19,7 @@
  * @fileoverview editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.1.0.5, Nov 8, 2016
+ * @version 1.2.0.0, Feb 6, 2019
  */
 
 admin.editors = {}
@@ -33,7 +33,7 @@ admin.editors = {}
  */
 var SoloEditor = function (conf) {
   this.conf = conf
-  return this.init()
+  this.init()
 }
 
 $.extend(SoloEditor.prototype, {
@@ -52,10 +52,10 @@ $.extend(SoloEditor.prototype, {
             return
           }
 
-          Util.parseMarkdown('content-reset');
+          Util.parseMarkdown('content-reset')
           if (!Label.markedAvailable) {
-            hljs.initHighlighting.called = false;
-            hljs.initHighlighting();
+            hljs.initHighlighting.called = false
+            hljs.initHighlighting()
           }
         },
       },
@@ -73,7 +73,10 @@ $.extend(SoloEditor.prototype, {
         preview: 'content-reset',
       },
     })
-    return this.editor
+
+    if (typeof this.conf.fun === 'function') {
+      this.conf.fun()
+    }
   },
   /*
    * @description 获取编辑器值
