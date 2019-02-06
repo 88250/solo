@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.7, Jan 13, 2019
+ * @version 1.1.1.8, Feb 6, 2019
  * @since 0.4.0
  */
 @Singleton
@@ -142,7 +142,7 @@ public class ArticleConsole {
         final JSONObject result = new JSONObject();
         renderer.setJSONObject(result);
         result.put(Keys.STATUS_CODE, true);
-        final String markdownText = context.param("markdownText");
+        final String markdownText = context.requestJSON().optString("markdownText");
         if (StringUtils.isBlank(markdownText)) {
             result.put("html", "");
 

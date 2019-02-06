@@ -97,7 +97,7 @@ public class FileUploadProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/upload/{yyyy}/{MM}/{file}", method = HttpMethod.GET)
+    @RequestProcessing(value = "/upload/file/{yyyy}/{MM}/{file}", method = HttpMethod.GET)
     public void getFile(final RequestContext context) {
         if (OSS_ENABLED) {
             return;
@@ -111,7 +111,16 @@ public class FileUploadProcessor {
         String path = Solos.UPLOAD_DIR_PATH + key;
         path = URLs.decode(path);
 
-        if (!FileUtil.isExistingFile(new File(path))) {
+        try {
+            if (!FileUtil.isExistingFile(new File(path)) ||
+                    !FileUtil.isExistingFolder(new File(Solos.UPLOAD_DIR_PATH)) ||
+                    !new File(path).getCanonicalPath().startsWith(new File(Solos.UPLOAD_DIR_PATH).getCanonicalPath())) {
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Checks path [" + path + "] failed", e);
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
