@@ -1,7 +1,7 @@
 <p align = "center">
 <img alt="Solo" src="https://user-images.githubusercontent.com/873584/52320401-2593e600-2a0a-11e9-9ba1-db79ee71d1af.png">
 <br><br>
-小而美博客系统
+小而美博客系统，为未来而构建
 <br><br>
 <a href="https://travis-ci.org/b3log/solo"><img alt="Build Status" src="https://img.shields.io/travis/b3log/solo.svg?style=flat"></a>
 <a href="https://coveralls.io/github/b3log/solo?branch=master"><img alt="Coverage Status" src="https://img.shields.io/coveralls/b3log/solo.svg?style=flat"></a>
