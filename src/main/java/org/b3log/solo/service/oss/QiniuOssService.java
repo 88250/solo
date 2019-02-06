@@ -33,7 +33,7 @@ import org.json.JSONObject;
  *
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Dec 23, 2018
+ * @version 1.0.1.0, Feb 6, 2019
  * @since 2.9.8
  */
 public class QiniuOssService implements OssService {
@@ -95,6 +95,6 @@ public class QiniuOssService implements OssService {
             throw new Exception(ERR_MSG);
         }
 
-        return qiniu.optString(Option.ID_C_QINIU_DOMAIN) + "/" + fileName;
+        return qiniu.optString(Option.ID_C_QINIU_DOMAIN) + fileName;
     }
 }
