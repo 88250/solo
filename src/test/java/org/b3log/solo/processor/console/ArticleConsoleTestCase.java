@@ -24,7 +24,6 @@ import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Category;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -36,7 +35,7 @@ import java.io.StringReader;
  * {@link ArticleConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 7, 2018
+ * @version 1.0.0.1, Feb 6, 2019
  * @since 2.9.7
  */
 @Test(suiteName = "processor")
@@ -79,8 +78,12 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
     public void markdown2HTML() throws Exception {
         final MockHttpServletRequest request = mockRequest();
         request.setRequestURI("/console/markdown/2html");
-        request.putParameter("markdownText", "**Solo**");
         request.setMethod("POST");
+        final JSONObject requestJSON = new JSONObject();
+        requestJSON.put("markdownText", "**Solo**");
+        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
+        request.setReader(reader);
+
         mockAdminLogin(request);
         final MockHttpServletResponse response = mockResponse();
 
