@@ -156,10 +156,7 @@ public class ArticleProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-        context.setRenderer(renderer);
-        renderer.setTemplateName("article-pwd.ftl");
-
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer(context, "article-pwd.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.put("articleId", articleId);
         dataModel.put("articlePermalink", article.optString(Article.ARTICLE_PERMALINK));

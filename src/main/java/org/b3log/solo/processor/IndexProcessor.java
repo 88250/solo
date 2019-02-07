@@ -193,11 +193,9 @@ public class IndexProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer(context, "start.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final HttpServletRequest request = context.getRequest();
-        renderer.setTemplateName("start.ftl");
-        context.setRenderer(renderer);
         final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
         dataModel.putAll(langs);
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);

@@ -125,10 +125,8 @@ public class AdminConsole {
      * @param context the specified context
      */
     public void showAdminIndex(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-        context.setRenderer(renderer);
         final String templateName = "admin-index.ftl";
-        renderer.setTemplateName(templateName);
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer(context, templateName);
         final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
         final Map<String, Object> dataModel = renderer.getDataModel();
         dataModel.putAll(langs);
@@ -175,13 +173,9 @@ public class AdminConsole {
      * @param context the specified context
      */
     public void showAdminFunctions(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-        context.setRenderer(renderer);
         final String requestURI = context.requestURI();
         final String templateName = StringUtils.substringBetween(requestURI, Latkes.getContextPath() + '/', ".") + ".ftl";
-
-        LOGGER.log(Level.TRACE, "Admin function[templateName={0}]", templateName);
-        renderer.setTemplateName(templateName);
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer(context, templateName);
 
         final Locale locale = Latkes.getLocale();
         final Map<String, String> langs = langPropsService.getAll(locale);
@@ -202,10 +196,8 @@ public class AdminConsole {
      * @param context the specified context
      */
     public void showAdminPreferenceFunction(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-        context.setRenderer(renderer);
         final String templateName = "admin-preference.ftl";
-        renderer.setTemplateName(templateName);
+        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer(context, templateName);
 
         final Locale locale = Latkes.getLocale();
         final Map<String, String> langs = langPropsService.getAll(locale);
