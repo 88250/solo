@@ -93,11 +93,6 @@ public final class Solos {
     public static final String GRAVATAR;
 
     /**
-     * Local file upload dir path.
-     */
-    public static final String UPLOAD_DIR_PATH;
-
-    /**
      * Mobile skin.
      */
     public static final String MOBILE_SKIN;
@@ -139,12 +134,6 @@ public final class Solos {
         B3LOG_SYMPHONY_SERVE_PATH = solo.getString("symphony.servePath");
         FAVICON_API = solo.getString("faviconAPI");
         GRAVATAR = solo.getString("gravatar");
-        String dir = solo.getString("uploadDir");
-        if (StringUtils.isNotBlank(dir) && !StringUtils.endsWith(dir, "/")) {
-            dir += "/";
-        }
-        UPLOAD_DIR_PATH = dir;
-
         String mobileSkin = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
         try {
             mobileSkin = solo.getString("mobile.skin");
