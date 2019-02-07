@@ -23,13 +23,17 @@
 <h2>
 ${articleTitle}
 </h2>
-    <#if msg??>
-    <div>${msg}</div>
-    </#if>
+<br><br><br>
 <form class="form" method="POST" action="${servePath}/console/article-pwd">
-    <label for="pwdTyped">访问密码：</label>
+    <label for="pwdTyped">访问密码</label>
     <input type="password" id="pwdTyped" name="pwdTyped" />
     <input type="hidden" name="articleId" value="${articleId}" />
-    <button id="confirm" type="submit">${confirmLabel}</button>
+    <div style="text-align: right">
+         <#if msg??>
+            <span class="error">${msg}</span>
+         </#if>
+        <button id="confirm" type="submit">${confirmLabel}</button>
+    </div>
 </form>
+<br><br><br>
 </@commonPage>

@@ -24,7 +24,7 @@
 */
 
 /* reset */
-html,body {
+html, body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -39,26 +39,27 @@ body {
 
 button {
     background-size: 110% 110%;
-    border: 1px solid rgba(27,31,35,.2);
-    font-size:13px;
-    font-weight:700;
-    text-shadow:0 1px 0 rgba(255,255,255,0.9);
-    white-space:nowrap;
+    border: 1px solid rgba(27, 31, 35, .2);
+    font-size: 13px;
+    font-weight: 700;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.9);
+    white-space: nowrap;
     background-color: #eff3f6;
-    background-image: linear-gradient(-180deg,#fafbfc,#eff3f6 90%);
+    background-image: linear-gradient(-180deg, #fafbfc, #eff3f6 90%);
     color: #24292e;
-    border-radius:3px;
-    box-shadow:0 1px 3px rgba(0,0,0,0.075);
-    outline:none;
-    padding:7px 15px;
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.075);
+    outline: none;
+    padding: 7px 15px;
     margin-top: 10px;
     cursor: pointer;
 }
+
 button:hover {
     background-color: #e6ebf1;
-    background-image: linear-gradient(-180deg,#f0f3f6,#e6ebf1 90%);
+    background-image: linear-gradient(-180deg, #f0f3f6, #e6ebf1 90%);
     background-position: -.5em;
-    border-color: rgba(27,31,35,.35);
+    border-color: rgba(27, 31, 35, .35);
 }
 
 a {
@@ -72,6 +73,29 @@ h2 {
     font-size: 16px;
     margin: 0;
     padding: 10px 20px;
+}
+
+input[type=password],
+input[type=text] {
+    border: 1px solid #d1d5da;
+    background-color: #FAFAFA;
+    border-radius: 3px;
+    box-shadow: inset 0 1px 2px rgba(27, 31, 35, 0.075);
+    padding: 7px 8px;
+    width: 100%;
+    line-height: 17px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    outline: none;
+    margin-top: 10px;
+}
+
+input[type=password]:focus,
+input[type=text]:focus {
+    background-color: #FFF;
+    box-shadow: inset 0 1px 2px rgba(27, 31, 35, 0.075), 0 0 0 0.2em #dbedff;
+    border: 1px solid #4285f4;
 }
 
 /* common */
@@ -139,6 +163,7 @@ h2 {
     padding: 0;
     display: block;
 }
+
 /* end 403/404/500 */
 
 /* start kill */
@@ -159,6 +184,7 @@ h2 {
 .kill span {
     margin-left: 20px;
 }
+
 /* end kill */
 
 /* start */
@@ -166,6 +192,7 @@ h2 {
     position: relative;
     text-align: center;
 }
+
 #github.github--loading:after {
     content: "Loading...";
     position: absolute;
@@ -182,6 +209,7 @@ h2 {
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
 }
+
 #github .github__icon {
     height: 300px;
     width: 400px;
@@ -190,12 +218,15 @@ h2 {
     background-size: contain;
     cursor: pointer;
 }
+
 #github .github__icon:hover {
     background-image: url("../images/github.gif");
 }
+
 #github img {
-   display: none;
+    display: none;
 }
+
 #github span {
     cursor: pointer;
     font-size: 12px;
@@ -223,11 +254,10 @@ h2 {
 }
 
 .content-reset img {
-    cursor: zoom-in;
+    max-width: 100%;
 }
 
 .content-reset img.emoji {
-    cursor: auto;
     max-width: 18px;
 }
 
@@ -381,6 +411,7 @@ h2 {
     list-style: none;
     margin-left: -1em;
 }
+
 /* end content-reset */
 
 /* start search */
@@ -389,29 +420,37 @@ h2 {
     background-color: #f3f1e5;
     padding: 20px 0 20px 84px;
     min-height: 480px;
+    flex: 1;
+}
+
+.search__body {
+    display: flex;
+    flex-direction: column;
 }
 
 .search__header {
     margin: 20px;
+    display: flex;
 }
 
 .search__header a {
     line-height: 44px;
 }
 
+.search__input {
+    flex: 1;
+}
+
 .search__input input {
     margin: 0 10px 0 20px;
-    height: 32px;
-    line-height: 32px;
-    float: left;
-    font-size: 16px;
-    padding: 5px 10px;
+    width: 523px;
+    height: 44px;
+    line-height: 44px;
 }
 
 .search__input button {
     height: 44px;
     margin: 0;
-    float: left;
 }
 
 .search__articles {
@@ -457,6 +496,7 @@ h2 {
 .search__pagination span {
     margin-right: 5px;
 }
+
 /* end search */
 
 /* start responsive */
@@ -526,4 +566,5 @@ h2 {
         width: auto;
     }
 }
+
 /* end responsive */
