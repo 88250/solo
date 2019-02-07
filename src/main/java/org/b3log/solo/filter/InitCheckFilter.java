@@ -55,7 +55,7 @@ public final class InitCheckFilter implements Filter {
     }
 
     /**
-     * If Solo has not been initialized, so redirects to /init.
+     * If Solo has not been initialized, so redirects to /start.
      *
      * @param request  the specified request
      * @param response the specified response
@@ -95,11 +95,11 @@ public final class InitCheckFilter implements Filter {
         }
 
         if (!initReported) {
-            LOGGER.log(Level.DEBUG, "Solo has not been initialized, so redirects to /init");
+            LOGGER.log(Level.DEBUG, "Solo has not been initialized, so redirects to /start");
             initReported = true;
         }
 
-        request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/init");
+        request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/start");
         chain.doFilter(request, response);
     }
 
