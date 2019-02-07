@@ -42,7 +42,6 @@ public class ConsoleAuthAdvice extends ProcessAdvice {
 
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        final HttpServletRequest request = context.getRequest();
         if (!Solos.isLoggedIn(context)) {
             final JSONObject exception401 = new JSONObject();
             exception401.put(Keys.MSG, "Unauthorized to request [" + context.requestURI() + "]");
