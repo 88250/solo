@@ -191,7 +191,7 @@
         <script src="${staticServePath}/js/admin/main.js"></script>
         <script src="${staticServePath}/js/admin/about.js"></script>
         <#else>
-        <script src="${staticServePath}/js/admin/latkeAdmin${miniPostfix}.js?${staticResourceVersion}"></script>
+        <script src="${staticServePath}/js/admin/admin.min.js?${staticResourceVersion}"></script>
         </#if>
         <#include "admin-label.ftl">
         ${plugins}

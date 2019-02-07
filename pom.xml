@@ -96,7 +96,6 @@
         <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
         <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
         <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
-        <maven-min-plugin.version>1.0.4</maven-min-plugin.version>
         <testng.version>6.1.1</testng.version>
         <mysql-connector-java.version>8.0.12</mysql-connector-java.version>
 
@@ -311,7 +310,6 @@
                     <includes>
                         <include>**/src/*/java/**/*.java</include>
                         <include>**/src/*/webapp/js/*.js</include>
-                        <include>**/src/*/webapp/js/marked/*.js</include>
                         <include>**/src/*/webapp/css/*.css</include>
                         <include>**/src/*/webapp/**/*.ftl</include>
                         <include>**/src/*/webapp/skins/*/js/*.js</include>
@@ -348,52 +346,6 @@
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>format</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.b3log</groupId>
-                <artifactId>maven-min-plugin</artifactId>
-                <version>${maven-min-plugin.version}</version>
-                <inherited>false</inherited>
-
-                <configuration>
-                    <suffix>.min</suffix>
-                    <!-- Common#MINI_POSTFIX_VALUE -->
-                    <adminJSs>
-                        <param>admin.js</param>
-                        <param>editor.js</param>
-                        <param>tablePaginate.js</param>
-                        <param>article.js</param>
-                        <param>comment.js</param>
-                        <param>articleList.js</param>
-                        <param>draftList.js</param>
-                        <param>pageList.js</param>
-                        <param>others.js</param>
-                        <param>linkList.js</param>
-                        <param>preference.js</param>
-                        <param>pluginList.js</param>
-                        <param>userList.js</param>
-                        <param>categoryList.js</param>
-                        <param>commentList.js</param>
-                        <param>plugin.js</param>
-                        <param>main.js</param>
-                        <param>about.js</param>
-                    </adminJSs>
-
-                    <cssSourceDir>src/main/webapp/css</cssSourceDir>
-                    <cssTargetDir>src/main/webapp/css</cssTargetDir>
-
-                    <jsSourceDir>src/main/webapp/js</jsSourceDir>
-                    <jsTargetDir>src/main/webapp/js</jsTargetDir>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>min</goal>
                         </goals>
                     </execution>
                 </executions>
