@@ -53,7 +53,7 @@ public class IndexProcessorTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "showInit")
+    @Test(dependsOnMethods = "showStart")
     public void init() throws Exception {
         super.init();
     }
