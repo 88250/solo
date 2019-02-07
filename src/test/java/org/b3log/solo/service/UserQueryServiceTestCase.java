@@ -102,7 +102,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
         final UserQueryService userQueryService = getUserQueryService();
         final String loginURL = userQueryService.getLoginURL("redirectURL");
 
-        Assert.assertEquals(loginURL, "/login?goto=http%3A%2F%2Flocalhost%3A8080redirectURL");
+        Assert.assertEquals(loginURL, "/start?goto=http%3A%2F%2Flocalhost%3A8080redirectURL");
     }
 
     /**

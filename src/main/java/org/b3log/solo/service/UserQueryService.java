@@ -211,6 +211,6 @@ public class UserQueryService {
         String to = Latkes.getServePath();
         to = URLs.encode(to + redirectURL);
 
-        return Latkes.getContextPath() + "/login?goto=" + to;
+        return Latkes.getContextPath() + "/start?goto=" + to;
     }
 }
