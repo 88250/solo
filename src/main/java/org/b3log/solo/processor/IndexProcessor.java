@@ -193,7 +193,7 @@ public class IndexProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer(context, "start.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "start.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final HttpServletRequest request = context.getRequest();
         final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
