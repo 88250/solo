@@ -96,8 +96,7 @@
             </#if>
             <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
         <#else>
-            <a href="${loginURL}" title="${loginLabel}">${loginLabel}</a>
-            <a href="${servePath}/register" title="${registerLabel}">${registerLabel}</a>
+            <a href="${servePath}/start" title="${startToUseLabel}">${startToUseLabel}</a>
             </#if>
             <#if isMobileRequest>
             <a href="javascript:void(0)" onclick="Util.switchMobile('mobile');" title="${mobileLabel}">${mobileLabel}</a>
