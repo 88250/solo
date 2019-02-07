@@ -27,14 +27,13 @@ import org.b3log.latke.servlet.advice.RequestProcessAdviceException;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * The common auth check before advice for admin console.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Oct 5, 2018
+ * @version 1.0.1.3, Feb 7, 2019
  * @since 2.9.5
  */
 @Singleton
@@ -42,7 +41,8 @@ public class ConsoleAuthAdvice extends ProcessAdvice {
 
     @Override
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
-        if (!Solos.isLoggedIn(context)) {
+        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
+        if (null == currentUser) {
             final JSONObject exception401 = new JSONObject();
             exception401.put(Keys.MSG, "Unauthorized to request [" + context.requestURI() + "]");
             exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);
@@ -50,8 +50,6 @@ public class ConsoleAuthAdvice extends ProcessAdvice {
             throw new RequestProcessAdviceException(exception401);
         }
 
-
-        final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
         final String userRole = currentUser.optString(User.USER_ROLE);
         if (Role.VISITOR_ROLE.equals(userRole)) {
             final JSONObject exception403 = new JSONObject();
