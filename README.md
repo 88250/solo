@@ -43,15 +43,15 @@
 * 代码高亮 / 数学公式 / 流程图
 * [多皮肤，多端适配](https://github.com/b3log/solo-skins/tree/master/skin-preview) / [社区皮肤](https://github.com/b3log/solo-third-skins/tree/master/skin-preview)
 * 多语言 / 国际化
-* 上传本地 / 七牛云 / 阿里云 OSS
 * 友情链接管理
 * 多用户写作，团队博客
-* [Hexo/Jekyll 导入](https://hacpai.com/article/1498490209748)
+* [Hexo / Jekyll / Markdown 导入](https://hacpai.com/article/1498490209748)
 * SQL / JSON / Markdown 导出
 * 插件系统
 * Atom / RSS / Sitemap
 * CDN 静态资源分离
 * [GitHub 集成](https://github.com/b3log/solo/issues/12514)
+* [内置 HTTPS+CDN 文件存储](https://github.com/b3log/solo/issues/12556)
 
 ## 界面
 
