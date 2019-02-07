@@ -234,7 +234,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
     /**
      * Resolve skin (template) for the specified HTTP servlet request.
-     * https://github.com/b3log/solo/issues/12060
+     * 前台皮肤切换 https://github.com/b3log/solo/issues/12060
      *
      * @param httpServletRequest the specified HTTP servlet request
      */

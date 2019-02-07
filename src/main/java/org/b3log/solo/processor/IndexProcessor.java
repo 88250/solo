@@ -114,7 +114,7 @@ public class IndexProcessor {
             final int currentPageNum = Paginator.getPage(request);
             final JSONObject preference = preferenceQueryService.getPreference();
 
-            // https://github.com/b3log/solo/issues/12060
+            // 前台皮肤切换 https://github.com/b3log/solo/issues/12060
             String specifiedSkin = Skins.getSkinDirName(context);
             if (StringUtils.isBlank(specifiedSkin)) {
                 specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);

@@ -212,8 +212,8 @@ public final class Skins {
     }
 
     /**
-     * Gets skin directory name from the specified request. Refers to https://github.com/b3log/solo/issues/12060 for
-     * more details.
+     * Gets skin directory name from the specified request.
+     * Refers to <a href="https://github.com/b3log/solo/issues/12060">前台皮肤切换</a> for more details.
      *
      * @param context the specified request context
      * @return directory name, or {@code null} if not found
