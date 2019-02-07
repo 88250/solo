@@ -33,21 +33,22 @@
 </head>
 <body>
 <div class="wrap">
-    <div class="content">
-        <div class="logo">
-            <a href="https://b3log.org" target="_blank">
-                <img width="128" border="0" alt="Solo" title="Solo" src="${staticServePath}/images/logo.png"/>
-            </a>
+    <div class="content-wrap">
+        <div class="content">
+            <div class="logo">
+                <a href="https://b3log.org" target="_blank">
+                    <img width="128" border="0" alt="Solo" title="Solo" src="${staticServePath}/images/logo.png"/>
+                </a>
+            </div>
+            <div class="main">
+            <#nested>
+            </div>
         </div>
-        <div class="main">
-            <#nested >
-        </div>
-        <span class="clear"></span>
     </div>
-</div>
-<div class="footerWrapper">
-    <div class="footer">
-        Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> • <a href="https://hacpai.com/tag/solo" target="_blank">Solo</a> ${version}
+    <div class="footerWrapper">
+        <div class="footer">
+            Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> • <a href="https://hacpai.com/tag/solo" target="_blank">Solo</a> ${version}
+        </div>
     </div>
 </div>
 </body>

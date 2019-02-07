@@ -179,7 +179,7 @@ public class IndexProcessor {
      */
     @RequestProcessing(value = "/register", method = HttpMethod.GET)
     public void showRegister(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "register.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "start.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         try {
             final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
@@ -209,7 +209,7 @@ public class IndexProcessor {
 
         final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
-        renderer.setTemplateName("init.ftl");
+        renderer.setTemplateName("start.ftl");
         context.setRenderer(renderer);
         final Map<String, Object> dataModel = renderer.getDataModel();
         final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));

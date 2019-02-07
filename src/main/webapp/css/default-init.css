@@ -22,164 +22,103 @@
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
 * @version 1.2.1.0, Jan 4, 2019
 */
+
+/* reset */
 html,body {
     margin: 0;
     padding: 0;
+    min-height: 100vh;
 }
 
 body {
     background-color: #fff;
-    color: #333;
+    color: #3b3e43;
     font-family: \5fae\8f6f\96c5\9ed1;
     font-size: small;
-    height: 100%;
 }
 
-h2 {  
+button {
+    background-size: 110% 110%;
+    border: 1px solid rgba(27,31,35,.2);
+    font-size:13px;
+    font-weight:700;
+    text-shadow:0 1px 0 rgba(255,255,255,0.9);
+    white-space:nowrap;
+    background-color: #eff3f6;
+    background-image: linear-gradient(-180deg,#fafbfc,#eff3f6 90%);
+    color: #24292e;
+    border-radius:3px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.075);
+    outline:none;
+    padding:7px 15px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #e6ebf1;
+    background-image: linear-gradient(-180deg,#f0f3f6,#e6ebf1 90%);
+    background-position: -.5em;
+    border-color: rgba(27,31,35,.35);
+}
+
+a {
+    color: #4285f4;
+    text-decoration: none;
+}
+
+h2 {
     background-color: #F3F1E5;
     border-radius: 4px 4px 0 0;
     font-size: 16px;
     margin: 0;
     padding: 10px 20px;
-    text-shadow: 0 -1px 0 rgba(255, 255, 255, 0.5);
 }
 
-input {
-    border: 1px solid #CCCCCC;
-    border-radius: 3px 3px 3px 3px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset;
-    font-size: 13px;
-    margin: 15px 0;
-    padding: 7px 8px;
-    vertical-align: middle;
-    width: 410px;
-    font-family: \5fae\8f6f\96c5\9ed1;
-    font-size: small;
-}
-
-input:focus {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.075) inset, 0 0 5px rgbargba(200, 200, 200, 0.9);
-    border: 1px solid #E6E5D9;
-}
-
-.form {
-    padding: 20px;
-}
-
-label {
-    font-size: 13px;
-}
-
-button {
-    position:relative;
-    display:inline-block;
-    font-size:13px;
-    font-weight:700;
-    color:#333;
-    text-shadow:0 1px 0 rgba(255,255,255,0.9);
-    white-space:nowrap;
-    background-color:#eaeaea;
-    background-image:linear-gradient(#fafafa,#eaeaea);
-    background-repeat:repeat-x;
-    border-radius:3px;
-    border:1px solid #ddd;
-    border-bottom-color:#c5c5c5;
-    box-shadow:0 1px 3px rgba(0,0,0,0.075);
-    vertical-align:baseline;
-    cursor:pointer;
-    -webkit-touch-callout:none;
-    -webkit-user-select:none;
-    -khtml-user-select:none;
-    -moz-user-select:none;
-    -ms-user-select:none;
-    user-select:none;
-    -webkit-appearance:none;
-    outline:none;
-    padding:7px 15px;
-    margin-top: 10px;
-}
-
-button.hover,
-button:hover,
-button:active {
-    color:#fff;
-    text-decoration:none;
-    text-shadow:0 -1px 0 rgba(0,0,0,0.25);
-    background-color: #3072b3;
-    background-image:linear-gradient(#599bcd,#3072b3);
-    background-repeat:repeat-x;
-}
-
-.clear {
-    background-color: transparent;
-    border: 0px;
-    clear: both;
-    display: block;
-    font-size: 0px;
-    height: 0px;
-    line-height: 0px;
-    overflow: hidden;
-}
-
-.fn-clear:before,
-.fn-clear:after {
-    display: table;
-    content: ""
-}
-.fn-clear:after {
-    clear: both
-}
-.fn-left {
-    float: left
-}
-
-.fn-right {
-    float: right;
-}
-
-.none {
-    display: none;
-}
-
-.solo {
-    color: orangered;
+/* common */
+.error {
+    color: #d23f31;
     font-weight: bold;
 }
 
-.logo {
-    float: left;
-    padding: 142px 12px 0;
-    width: 217px;
-    text-align: center;
-}
-
+/* framework */
 .wrap {
     border-top: 5px solid #E6E5D9;
-    padding: 110px 0;
     background-color: #F3F1E5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.content-wrap {
+    flex: 1;
+    display: flex;
 }
 
 .content {
     background-color: #fff;
     margin: 0 auto;
     width: 760px;
+    align-self: center;
+    display: flex;
 }
 
 .main {
     border-left: 1px solid #E6E5D9;
-    float: right;
     font-size: 15px;
     padding: 20px;
-    width: 470px;
-    min-height: 360px;
+    flex: 1;
 }
 
-.main a {
-    text-decoration: none;
+.logo {
+    width: 217px;
+    text-align: center;
+    align-self: center;
 }
 
-.main li {
-    margin: 6px 0 6px 16px;
+.logo img {
+    height: 128px;
+    width: 128px;
 }
 
 .footerWrapper {
@@ -188,24 +127,6 @@ button:active {
     padding: 12px 0;
     text-align: center;
 }
-
-.footerWrapper a {
-    text-decoration: none;
-}
-
-/* start article-pwd */
-.article-pwd > div,
-.article-pwd > form {
-    margin: 0 20px;
-}
-
-.article-pwd > div {
-    margin-bottom: 10px;
-    max-height: 264px;
-    overflow: auto;
-    word-wrap: break-word;
-}
-/* end article-pwd */
 
 /* start 403/404/500 */
 .a-error {
@@ -240,7 +161,7 @@ button:active {
 }
 /* end kill */
 
-/* start init */
+/* start */
 #github {
     position: relative;
     text-align: center;
@@ -262,18 +183,24 @@ button:active {
     box-sizing: border-box;
 }
 #github .github__icon {
-    display: block;
+    height: 300px;
+    width: 400px;
+    background-image: url("../images/github.png");
+    margin: 0 auto;
+    background-size: contain;
+    cursor: pointer;
+}
+#github .github__icon:hover {
+    background-image: url("../images/github.gif");
 }
 #github img {
-    height: 222px;
-    margin-top: 10px;
+   display: none;
 }
 #github span {
     cursor: pointer;
     font-size: 12px;
     color: #999;
 }
-/* end init */
 
 /* start content-reset */
 .content-reset {

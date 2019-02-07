@@ -97,7 +97,7 @@ public class LoginProcessor {
             return;
         }
 
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "login.ftl");
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "start.ftl");
         final Map<String, Object> dataModel = renderer.getDataModel();
         final JSONObject preference = preferenceQueryService.getPreference();
         try {

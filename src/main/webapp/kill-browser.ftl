@@ -22,8 +22,10 @@
 <@commonPage "403 Forbidden!">
 ${killBrowserLabel}
 <br/>
-&nbsp; &nbsp;&nbsp; <button onclick="closeIframe();">${closeLabel}</button> &nbsp; &nbsp;
-<button onclick="closeIframeForever();">${closeForeverLabel}</button>
+<div style="text-align: right">
+    <button onclick="closeIframe();">${closeLabel}</button> &nbsp;
+    <button onclick="closeIframeForever();">${closeForeverLabel}</button>
+</div>
 <img src='${staticServePath}/images/kill-browser.png' title='Kill IE6' style="float: right;
     margin: -171px 0 0 0;" alt='Kill IE6'/>
 <script>
