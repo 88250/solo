@@ -187,7 +187,7 @@ public class IndexProcessor {
             destinationURL = Latkes.getServePath();
         }
 
-        if (null != Solos.getCurrentUser(context.getRequest(), context.getResponse())) {
+        if (initService.isInited() && null != Solos.getCurrentUser(context.getRequest(), context.getResponse())) {
             context.sendRedirect(destinationURL);
 
             return;

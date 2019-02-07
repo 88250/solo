@@ -45,7 +45,7 @@ import java.util.List;
  * Page management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.12, Feb 6, 2019
+ * @version 1.1.0.13, Feb 7, 2019
  * @since 0.4.0
  */
 @Service
@@ -111,10 +111,20 @@ public class PageMgmtService {
     private OptionMgmtService optionMgmtService;
 
     /**
+     * Init service.
+     */
+    @Inject
+    private InitService initService;
+
+    /**
      * Refreshes GitHub repos.
      * 同步 GitHub 仓库 https://github.com/b3log/solo/issues/12514
      */
     public void refreshGitHub() {
+        if (!initService.isInited()) {
+            return;
+        }
+
         final JSONObject oauthGitHubOpt = optionQueryService.getOptionById(Option.ID_C_OAUTH_GITHUB);
         if (null == oauthGitHubOpt) {
             return;
