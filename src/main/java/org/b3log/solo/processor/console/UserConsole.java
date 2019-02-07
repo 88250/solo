@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * User console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="mailto:385321165@qq.com">DASHU</a>
+ * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @version 1.2.1.5, Jan 10, 2019
  * @since 0.4.0
  */

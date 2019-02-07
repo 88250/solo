@@ -45,7 +45,7 @@ import java.util.Set;
  * User management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="mailto:385321165@qq.com">DASHU</a>
+ * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
  * @version 1.1.0.15, Oct 19, 2018
  * @since 0.4.0

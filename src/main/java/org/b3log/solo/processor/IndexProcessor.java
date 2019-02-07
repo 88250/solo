@@ -43,6 +43,7 @@ import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
+import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
@@ -55,8 +56,8 @@ import java.util.Map;
  * Index processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="mailto:385321165@qq.com">DASHU</a>
- * @version 1.2.4.13, Jan 24, 2019
+ * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
+ * @version 1.2.4.14, Feb 7, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -173,45 +174,30 @@ public class IndexProcessor {
     }
 
     /**
-     * Show register page.
+     * Shows start page.
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/register", method = HttpMethod.GET)
-    public void showRegister(final RequestContext context) {
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "start.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-        try {
-            final Map<String, String> langs = langPropsService.getAll(Latkes.getLocale());
-            dataModel.putAll(langs);
-            final JSONObject preference = preferenceQueryService.getPreference();
-            dataModelService.fillCommon(context, dataModel, preference);
-            dataModelService.fillMinified(dataModel);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+    @RequestProcessing(value = "/start", method = HttpMethod.GET)
+    public void showStart(final RequestContext context) {
+        String destinationURL = context.param(Common.GOTO);
+        if (StringUtils.isBlank(destinationURL)) {
+            destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
+        } else if (!isInternalLinks(destinationURL)) {
+            destinationURL = Latkes.getServePath();
         }
-    }
 
-    /**
-     * Shows initialization page.
-     *
-     * @param context the specified http request context
-     */
-    @RequestProcessing(value = "/init", method = HttpMethod.GET)
-    public void showInit(final RequestContext context) {
-        if (initService.isInited()) {
-            context.sendRedirect("/");
+        if (null != Solos.getCurrentUser(context.getRequest(), context.getResponse())) {
+            context.sendRedirect(destinationURL);
 
             return;
         }
 
-        final HttpServletRequest request = context.getRequest();
         final AbstractFreeMarkerRenderer renderer = new ConsoleRenderer();
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        final HttpServletRequest request = context.getRequest();
         renderer.setTemplateName("start.ftl");
         context.setRenderer(renderer);
-        final Map<String, Object> dataModel = renderer.getDataModel();
         final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
         dataModel.putAll(langs);
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
@@ -219,5 +205,38 @@ public class IndexProcessor {
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
         Keys.fillRuntime(dataModel);
         dataModelService.fillMinified(dataModel);
+
+        Solos.addGoogleNoIndex(context);
+    }
+
+    /**
+     * Logout.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = "/logout", method = HttpMethod.GET)
+    public void logout(final RequestContext context) {
+        final HttpServletRequest httpServletRequest = context.getRequest();
+
+        Solos.logout(httpServletRequest, context.getResponse());
+
+        String destinationURL = context.param(Common.GOTO);
+        if (StringUtils.isBlank(destinationURL) || !isInternalLinks(destinationURL)) {
+            destinationURL = Latkes.getServePath();
+        }
+
+        context.sendRedirect(destinationURL);
+        Solos.addGoogleNoIndex(context);
+    }
+
+    /**
+     * Preventing unvalidated redirects and forwards. See more at:
+     * <a href="https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet">https://www.owasp.org/index.php/
+     * Unvalidated_Redirects_and_Forwards_Cheat_Sheet</a>.
+     *
+     * @return whether the destinationURL is an internal link
+     */
+    private boolean isInternalLinks(String destinationURL) {
+        return destinationURL.startsWith(Latkes.getServePath());
     }
 }
