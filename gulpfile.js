@@ -137,7 +137,7 @@ function minSkinCSS () {
 function cleanProcess () {
   return del([
     './src/main/webapp/css/*.min.css',
-    './src/main/webapp/js/*.min.css',
+    './src/main/webapp/js/*.min.js',
     './src/main/webapp/skins/*/css/*.min.css',
     './src/main/webapp/skins/*/js/*.min.js'])
 }
