@@ -19,20 +19,30 @@
 -->
 <#include "macro-common-page.ftl">
 
-<@commonPage "${loginLabel}">
+<@commonPage "${welcomeToSoloLabel}!">
 <h2>
-${loginLabel}
+    <span>${welcomeToSoloLabel}</span>
+    <a target="_blank" href="https://b3log.org">
+        <span class="error">&nbsp;Solo</span>
+    </a>
 </h2>
+
 <div id="github">
     <div class="github__icon"
-        onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">
-        <img src="${staticServePath}/images/github-init.gif"/>
+         onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">
+        <img src="${staticServePath}/images/github.png"/>
     </div>
-    <button class="hover" onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">${useGitHubAccountLoginLabel}</button>
-    <br>
+    <button class="hover"
+            onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">${useGitHubAccountLoginLabel}</button>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript">
-    $('.wrap').css('padding', ($(window).height() - 450) / 2 + 'px 0')
+    (function () {
+        try {
+          $('.wrap')
+        } catch (e) {
+            document.querySelector('.main').innerHTML = "${staticErrorLabel}"
+        }
+    })()
 </script>
 </@commonPage>

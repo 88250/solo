@@ -28,19 +28,19 @@ import org.testng.annotations.Test;
  * {@link IndexProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Jan 24, 2019
+ * @version 1.0.1.3, Feb 7, 2019
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
 public class IndexProcessorTestCase extends AbstractTestCase {
 
     /**
-     * showInit.
+     * showStart.
      */
     @Test
-    public void showInit() {
+    public void showStart() {
         final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/init");
+        request.setRequestURI("/start");
         final MockHttpServletResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
@@ -84,19 +84,5 @@ public class IndexProcessorTestCase extends AbstractTestCase {
 
         final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 403 Forbidden!</title>"));
-    }
-
-    /**
-     * showRegister.
-     */
-    @Test(dependsOnMethods = "init")
-    public void showRegister() {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/register");
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 注册 Solo 用户!</title>"));
     }
 }
