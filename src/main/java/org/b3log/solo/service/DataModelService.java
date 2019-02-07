@@ -1004,6 +1004,7 @@ public class DataModelService {
                 topBarModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));
                 topBarModel.put("loginLabel", langPropsService.get("loginLabel"));
                 topBarModel.put("registerLabel", langPropsService.get("registerLabel"));
+                topBarModel.put("startToUseLabel", langPropsService.get("startToUseLabel"));
                 topBarTemplate.process(topBarModel, stringWriter);
 
                 return stringWriter.toString();
