@@ -57,7 +57,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.3, Feb 6, 2019
+ * @version 1.7.0.0, Feb 7, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -168,6 +168,24 @@ public final class Solos {
         COOKIE_SECRET = cookieSecret;
 
         COOKIE_HTTP_ONLY = Boolean.valueOf(Latkes.getLocalProperty("cookieHttpOnly"));
+    }
+
+    /**
+     * Constructs a successful result.
+     *
+     * @return result
+     */
+    public static JSONObject newSucc() {
+        return new JSONObject().put(Keys.CODE, 0).put(Keys.MSG, "");
+    }
+
+    /**
+     * Constructs a failed result.
+     *
+     * @return result
+     */
+    public static JSONObject newFail() {
+        return new JSONObject().put(Keys.CODE, -1).put(Keys.MSG, "System is abnormal, please try again later");
     }
 
     /**

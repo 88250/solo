@@ -137,14 +137,12 @@ public class ArticleConsole {
      * @param context the specified http request context
      */
     public void markdown2HTML(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject result = new JSONObject();
-        renderer.setJSONObject(result);
-        result.put(Keys.STATUS_CODE, true);
+        final JSONObject result = Solos.newSucc();
+        context.renderJSON(result);
+
         final String markdownText = context.requestJSON().optString("markdownText");
         if (StringUtils.isBlank(markdownText)) {
-            result.put("html", "");
+            result.put(Common.DATA, "");
 
             return;
         }
@@ -152,13 +150,11 @@ public class ArticleConsole {
         try {
             String html = Emotions.convert(markdownText);
             html = Markdowns.toHTML(html);
-            result.put("html", html);
+            result.put(Common.DATA, html);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
+            context.renderJSONValue(Keys.CODE, -1);
+            context.renderJSONValue(Keys.MSG, langPropsService.get("getFailLabel"));
         }
     }
 
