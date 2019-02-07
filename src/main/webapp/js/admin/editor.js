@@ -61,7 +61,7 @@ $.extend(SoloEditor.prototype, {
       },
       upload: {
         max: 10 * 1024 * 1024,
-        url: `${latkeConfig.servePath}/upload`,
+        url: 'https://hacpai.com/upload/editor',
       },
       height: this.conf.height,
       counter: 102400,

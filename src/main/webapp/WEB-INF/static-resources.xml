@@ -33,10 +33,6 @@
     <include path="/sw.js"/>
     <include path="/manifest.json"/>
 
-    <include path="/dist/vditor/**.png"/>
-    <include path="/dist/vditor/**.js"/>
-    <include path="/dist/vditor/**.css"/>
-
     <include path="/js/**.js"/>
     <include path="/js/**/*.js"/>
     <include path="/js/**.css"/>
