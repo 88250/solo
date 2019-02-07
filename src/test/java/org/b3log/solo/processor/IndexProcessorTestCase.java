@@ -21,8 +21,12 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.MockHttpServletRequest;
 import org.b3log.solo.MockHttpServletResponse;
+import org.b3log.solo.util.Solos;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import javax.servlet.http.Cookie;
+import java.util.List;
 
 /**
  * {@link IndexProcessor} test case.
@@ -84,5 +88,21 @@ public class IndexProcessorTestCase extends AbstractTestCase {
 
         final String content = response.body();
         Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 403 Forbidden!</title>"));
+    }
+
+    /**
+     * logout.
+     */
+    @Test(dependsOnMethods = "init")
+    public void logout() {
+        final MockHttpServletRequest request = mockRequest();
+        request.setRequestURI("/logout");
+        final MockHttpServletResponse response = mockResponse();
+        mockDispatcherServletService(request, response);
+
+        final List<Cookie> cookies = response.cookies();
+        Assert.assertEquals(cookies.size(), 1);
+        Assert.assertEquals(cookies.get(0).getName(), Solos.COOKIE_NAME);
+        Assert.assertNull(cookies.get(0).getValue());
     }
 }
