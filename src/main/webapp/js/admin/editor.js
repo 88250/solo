@@ -46,8 +46,8 @@ $.extend(SoloEditor.prototype, {
       preview: {
         delay: 500,
         show: false,
-        url: `${latkeConfig.servePath}/console/markdown/2html`,
-        parse: (element) => {
+        url: latkeConfig.servePath + '/console/markdown/2html',
+        parse: function (element) {
           if (element.style.display === 'none') {
             return
           }

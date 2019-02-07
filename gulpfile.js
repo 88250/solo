@@ -45,8 +45,51 @@ function sassProcessWatch () {
 
 gulp.task('watch', gulp.series(sassProcessWatch))
 
+function minCSS () {
+  // minify css
+  return gulp.src('./src/main/webapp/css/*.css').
+    pipe(rename({suffix: '.min'})).
+    pipe(minifycss()).
+    pipe(gulp.dest('./src/main/webapp/css/'))
+}
+
+function minJS () {
+  // minify js
+  return gulp.src('./src/main/webapp/js/*.js').
+    pipe(rename({suffix: '.min'})).
+    pipe(uglify()).
+    pipe(gulp.dest('./src/main/webapp/js/'))
+}
 
 function miniAdmin () {
+  // concat js
+  const jsJqueryUpload = [
+    './src/main/webapp/js/admin/admin.js',
+    './src/main/webapp/js/admin/editor.js',
+    './src/main/webapp/js/admin/tablePaginate.js',
+    './src/main/webapp/js/admin/article.js',
+    './src/main/webapp/js/admin/comment.js',
+    './src/main/webapp/js/admin/articleList.js',
+    './src/main/webapp/js/admin/draftList.js',
+    './src/main/webapp/js/admin/pageList.js',
+    './src/main/webapp/js/admin/others.js',
+    './src/main/webapp/js/admin/linkList.js',
+    './src/main/webapp/js/admin/preference.js',
+    './src/main/webapp/js/admin/pluginList.js',
+    './src/main/webapp/js/admin/userList.js',
+    './src/main/webapp/js/admin/categoryList.js',
+    './src/main/webapp/js/admin/commentList.js',
+    './src/main/webapp/js/admin/plugin.js',
+    './src/main/webapp/js/admin/main.js',
+    './src/main/webapp/js/admin/about.js']
+  return gulp.src(jsJqueryUpload).
+    pipe(uglify({output: {ascii_only: true}})).
+    pipe(concat('admin.min.js')).
+    pipe(gulp.dest('./src/main/webapp/js/admin'))
+
+}
+
+function miniAdminLibs () {
   // concat js
   const jsJqueryUpload = [
     './src/main/webapp/js/lib/jquery/jquery.min.js',
@@ -63,7 +106,7 @@ function miniAdmin () {
 
 }
 
-function miniPjax (){
+function miniPjax () {
   // concat js
   const jsPjax = [
     './src/main/webapp/js/lib/jquery/jquery-3.1.0.min.js',
@@ -75,7 +118,7 @@ function miniPjax (){
     pipe(gulp.dest('./src/main/webapp/js/lib/compress/'))
 }
 
-function scripts () {
+function minSkinJS () {
   // minify js
   return gulp.src('./src/main/webapp/skins/*/js/*.js').
     pipe(rename({suffix: '.min'})).
@@ -83,8 +126,8 @@ function scripts () {
     pipe(gulp.dest('./src/main/webapp/skins/'))
 }
 
-function styles () {
-  // minify css
+function minSkinCSS () {
+  // minify skin css
   return gulp.src('./src/main/webapp/skins/*/css/*.css').
     pipe(rename({suffix: '.min'})).
     pipe(minifycss()).
@@ -93,10 +136,12 @@ function styles () {
 
 function cleanProcess () {
   return del([
+    './src/main/webapp/css/*.min.css',
+    './src/main/webapp/js/*.min.js',
     './src/main/webapp/skins/*/css/*.min.css',
     './src/main/webapp/skins/*/js/*.min.js'])
 }
 
 gulp.task('default',
-  gulp.series(cleanProcess, sassProcess, gulp.parallel(scripts, styles),
-    gulp.parallel(miniPjax, miniAdmin)))
+  gulp.series(cleanProcess, sassProcess, gulp.parallel(minSkinJS, minJS, minSkinCSS, minCSS),
+    gulp.parallel(miniPjax, miniAdmin, miniAdminLibs)))

@@ -61,7 +61,7 @@ admin.articleList = {
         this.tablePagination.initCommentsDialog();
         this.getList(page);
 
-        const that = this
+        var that = this
         $('#articleListBtn').click(function () {
           that.getList(page);
         });
