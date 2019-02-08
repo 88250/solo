@@ -93,9 +93,6 @@ function miniAdminLibs () {
   // concat js
   const jsJqueryUpload = [
     './src/main/webapp/js/lib/jquery/jquery.min.js',
-    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/vendor/jquery.ui.widget.js',
-    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.iframe-transport.js',
-    './src/main/webapp/js/lib/jquery/file-upload-9.10.1/jquery.fileupload.js',
     './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
     './src/main/webapp/js/lib/highlight-9.13.1/highlight.pack.js']
   return gulp.src(jsJqueryUpload).
