@@ -46,8 +46,8 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author ArmstrongCN
- * @version 1.0.2.15, Sep 25, 2018
+ * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
+ * @version 1.0.2.16, Feb 8, 2019
  * @since 0.3.1
  */
 @Singleton
@@ -122,8 +122,8 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Common.BLOG, "Solo");
             requestJSONObject.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
             requestJSONObject.put("blogHost", Latkes.getServePath());
-            requestJSONObject.put(UserExt.USER_B3_KEY, preference.optString(Option.ID_C_KEY_OF_SOLO));
-            requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
+            requestJSONObject.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
+            requestJSONObject.put("clientAdminEmail", author.optString(User.USER_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", "LOCAL");
 
             HttpRequest.post(ADD_ARTICLE_URL).bodyText(requestJSONObject.toString()).

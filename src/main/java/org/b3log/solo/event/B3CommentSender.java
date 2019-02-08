@@ -26,11 +26,12 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -39,7 +40,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending comment to B3log Symphony. Sees <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Sep 25, 2018
+ * @version 1.0.1.4, Feb 8, 2019
  * @since 0.5.5
  */
 @Singleton
@@ -89,13 +90,16 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
             comment.put(Comment.COMMENT_CONTENT, originalComment.getString(Comment.COMMENT_CONTENT));
             comment.put("articleId", originalComment.getString(Comment.COMMENT_ON_ID));
 
+            final UserRepository userRepository = beanManager.getReference(UserRepository.class);
+            final JSONObject admin = userRepository.getAdmin();
+
             requestJSONObject.put(Comment.COMMENT, comment);
             requestJSONObject.put("clientVersion", SoloServletListener.VERSION);
             requestJSONObject.put("clientRuntimeEnv", "LOCAL");
             requestJSONObject.put("clientName", "Solo");
             requestJSONObject.put("clientHost", Latkes.getServePath());
-            requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
-            requestJSONObject.put(UserExt.USER_T_B3_KEY, preference.optString(Option.ID_C_KEY_OF_SOLO));
+            requestJSONObject.put("clientAdminEmail", admin.optString(User.USER_EMAIL));
+            requestJSONObject.put(UserExt.USER_B3_KEY, admin.optString(UserExt.USER_B3_KEY));
 
             HttpRequest.post(ADD_COMMENT_URL).bodyText(requestJSONObject.toString()).
                     header("User-Agent", Solos.USER_AGENT).contentTypeJson().sendAsync();

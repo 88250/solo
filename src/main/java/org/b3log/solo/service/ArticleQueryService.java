@@ -50,7 +50,7 @@ import static org.b3log.solo.model.Article.*;
  * Article query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="http://blog.sweelia.com">ArmstrongCN</a>
+ * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @version 1.3.2.9, Feb 6, 2019

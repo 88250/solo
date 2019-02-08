@@ -30,16 +30,11 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Solos;
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.Set;
 
 /**
  * User management service.
@@ -282,7 +277,6 @@ public class UserMgmtService {
      */
     public void removeUser(final String userId) throws ServiceException {
         final Transaction transaction = userRepository.beginTransaction();
-
         try {
             userRepository.remove(userId);
 
@@ -294,23 +288,6 @@ public class UserMgmtService {
 
             LOGGER.log(Level.ERROR, "Removes a user [id=" + userId + "] failed", e);
             throw new ServiceException(e);
-        }
-
-        final JSONObject oauthGitHubOpt = optionQueryService.getOptionById(Option.ID_C_OAUTH_GITHUB);
-        if (null != oauthGitHubOpt) {
-            String value = oauthGitHubOpt.optString(Option.OPTION_VALUE);
-            try {
-                final Set<String> githubs = CollectionUtils.jsonArrayToSet(new JSONArray(value));
-                final String oAuthPair = Option.getOAuthPair(githubs, userId);
-                if (StringUtils.isNotBlank(oAuthPair)) {
-                    githubs.remove(oAuthPair);
-                    value = new JSONArray(githubs).toString();
-                    oauthGitHubOpt.put(Option.OPTION_VALUE, value);
-                    optionMgmtService.addOrUpdateOption(oauthGitHubOpt);
-                }
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Remove oauth GitHub data for user [id=" + userId + "] failed", e);
-            }
         }
     }
 }

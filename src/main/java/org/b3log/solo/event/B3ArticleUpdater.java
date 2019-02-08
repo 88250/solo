@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Sep 25, 2018
+ * @version 1.0.1.6, Feb 8, 2019
  * @since 0.6.0
  */
 @Singleton
@@ -120,8 +120,8 @@ public class B3ArticleUpdater extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Common.BLOG, "Solo");
             requestJSONObject.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
             requestJSONObject.put("blogHost", Latkes.getServePath());
-            requestJSONObject.put(UserExt.USER_T_B3_KEY, preference.optString(Option.ID_C_KEY_OF_SOLO));
-            requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
+            requestJSONObject.put(UserExt.USER_B3_KEY, author.optString(UserExt.USER_B3_KEY));
+            requestJSONObject.put("clientAdminEmail", author.optString(User.USER_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", "LOCAL");
 
             HttpRequest.put(UPDATE_ARTICLE_URL).bodyText(requestJSONObject.toString()).

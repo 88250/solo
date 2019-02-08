@@ -47,7 +47,7 @@ import java.util.Map;
  * Comment processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author ArmstrongCN
+ * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @version 1.3.3.5, Dec 3, 2018
  * @since 0.3.1
  */

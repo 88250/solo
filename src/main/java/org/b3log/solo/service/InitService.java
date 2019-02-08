@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
@@ -648,12 +647,6 @@ public class InitService {
         articleListStyleOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         articleListStyleOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_ARTICLE_LIST_STYLE);
         optionRepository.add(articleListStyleOpt);
-
-        final JSONObject keyOfSoloOpt = new JSONObject();
-        keyOfSoloOpt.put(Keys.OBJECT_ID, Option.ID_C_KEY_OF_SOLO);
-        keyOfSoloOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        keyOfSoloOpt.put(Option.OPTION_VALUE, requestJSONObject.optString(UserExt.USER_T_B3_KEY));
-        optionRepository.add(keyOfSoloOpt);
 
         final JSONObject feedOutputModeOpt = new JSONObject();
         feedOutputModeOpt.put(Keys.OBJECT_ID, Option.ID_C_FEED_OUTPUT_MODE);

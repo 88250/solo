@@ -58,7 +58,7 @@ import java.util.Set;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.2.0.34, Jan 30, 2019
+ * @version 1.2.0.35, Feb 8, 2019
  * @since 1.2.0
  */
 @Service
@@ -214,6 +214,17 @@ public class UpgradeService {
             userRepository.update(admin.optString(Keys.OBJECT_ID), admin);
             optionRepository.remove("keyOfSolo");
 
+            optionRepository.remove("qiniuAccessKey");
+            optionRepository.remove("qiniuBucket");
+            optionRepository.remove("qiniuDomain");
+            optionRepository.remove("qiniuSecretKey");
+            optionRepository.remove("ossServer");
+            optionRepository.remove("aliyunAccessKey");
+            optionRepository.remove("aliyunSecretKey");
+            optionRepository.remove("aliyunDomain");
+            optionRepository.remove("aliyunBucket");
+            optionRepository.remove("editorType");
+
             transaction.commit();
             dropColumns();
 
@@ -252,12 +263,8 @@ public class UpgradeService {
         final Statement statement = connection.createStatement();
 
         final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` DROP COLUMN `userArticleCount`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` DROP COLUMN `userPublishedArticleCount`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archivedate` DROP COLUMN `archiveDateArticleCount`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "archivedate` DROP COLUMN `archiveDatePublishedArticleCount`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "tag` DROP COLUMN `tagPublishedRefCount`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "tag` DROP COLUMN `tagReferenceCount`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleEditorType`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageEditorType`");
         statement.close();
         connection.commit();
         connection.close();
