@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.3, Jan 17, 2019
+ * @version 1.1.2.4, Feb 8, 2019
  */
 
 /* user-list 相关操作 */
@@ -125,53 +125,6 @@ admin.userList = {
                 }
             }
         });
-    },
-    /*
-     * 添加用户
-     */
-    add: function() {
-        if (this.validate()) {
-            $("#loadMsg").text(Label.loadingLabel);
-            $("#tipMsg").text("");
-
-            var requestJSONObject = {
-                "userName": $("#userName").val(),
-                "userEmail": $("#userEmail").val(),
-                "userURL": $("#userURL").val(),
-                "userAvatar": $("#userAvatar").val()
-            };
-
-            $.ajax({
-                url: latkeConfig.servePath + "/console/user/",
-                type: "POST",
-                cache: false,
-                data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus) {
-                    $("#tipMsg").text(result.msg);
-                    if (!result.sc) {
-                        $("#loadMsg").text("");
-                        return;
-                    }
-
-                    $("#userName").val("");
-                    $("#userEmail").val("");
-                    $("#userURL").val("");
-                    $("#userAvatar").val("");
-                    if (admin.userList.pageInfo.currentCount === Label.PAGE_SIZE &&
-                            admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
-                        admin.userList.pageInfo.pageCount++;
-                    }
-                    var hashList = window.location.hash.split("/");
-                    if (admin.userList.pageInfo.pageCount !== parseInt(hashList[hashList.length - 1])) {
-                        admin.setHashByPage(admin.userList.pageInfo.pageCount);
-                    }
-
-                    admin.userList.getList(admin.userList.pageInfo.pageCount);
-
-                    $("#loadMsg").text("");
-                }
-            });
-        }
     },
     /*
      * 获取用户

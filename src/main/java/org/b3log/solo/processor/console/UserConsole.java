@@ -23,7 +23,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
@@ -31,7 +30,6 @@ import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
@@ -44,7 +42,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
- * @version 1.2.1.5, Jan 10, 2019
+ * @version 1.2.1.6, Feb 8, 2019
  * @since 0.4.0
  */
 @RequestProcessor
@@ -120,73 +118,6 @@ public class UserConsole {
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
             renderer.setJSONObject(ret);
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, e.getMessage());
-        }
-    }
-
-    /**
-     * Adds a user with the specified request.
-     *
-     * <p>
-     * Request json:
-     * <pre>
-     * {
-     *     "userName": "",
-     *     "userEmail": "",
-     *     "userURL": "", // optional, uses 'servePath' instead if not specified
-     *     "userRole": "", // optional, uses {@value org.b3log.latke.model.Role#DEFAULT_ROLE} instead if not specified
-     *     "userAvatar": "" // optional
-     * }
-     * </pre>
-     * </p>
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "oId": "", // Generated user id
-     *     "msg": ""
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     */
-    public void addUser(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
-
-        try {
-            final JSONObject requestJSONObject = context.requestJSON();
-            if (Solos.isAdminLoggedIn(context)) { // if the administrator register a new user, treats the new user as a normal user
-                // (defaultRole) who could post article
-                requestJSONObject.put(User.USER_ROLE, Role.DEFAULT_ROLE);
-            } else {
-                final JSONObject preference = preferenceQueryService.getPreference();
-                if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
-                    ret.put(Keys.STATUS_CODE, false);
-                    ret.put(Keys.MSG, langPropsService.get("notAllowRegisterLabel"));
-
-                    return;
-                }
-
-                // if a normal user or a visitor register a new user, treats the new user as a visitor
-                // (visitorRole) who couldn't post article
-                requestJSONObject.put(User.USER_ROLE, Role.VISITOR_ROLE);
-            }
-
-            final String userId = userMgmtService.addUser(requestJSONObject);
-
-            ret.put(Keys.OBJECT_ID, userId);
-            ret.put(Keys.MSG, langPropsService.get("addSuccLabel"));
-            ret.put(Keys.STATUS_CODE, true);
         } catch (final ServiceException e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 

@@ -23,18 +23,6 @@
 </div>
 <div class="clear"></div>
 <div class="form form__no-table">
-${addUserLabel}
-    <label for="userName">${userName1Label}</label>
-    <input id="userName" type="text"/>
-    <label for="userEmail">${commentEmail1Label}</label>
-    <input id="userEmail" type="text"/>
-    <label for="userURL">${userURL1Label}</label>
-    <input id="userURL" type="text"/>
-    <label for="userAvatar">${userAvatar1Label}</label>
-    <input id="userAvatar" type="text"/><br><br>
-    <button onclick="admin.userList.add();" class="right">${saveLabel}</button>
-    <div class="clear"></div>
-</div>
 <div id="userUpdate" class="none form form__no-table">
     <label for="userNameUpdate">${userName1Label}</label>
     <input id="userNameUpdate" type="text"/>
