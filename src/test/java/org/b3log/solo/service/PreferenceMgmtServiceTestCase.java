@@ -53,7 +53,7 @@ public class PreferenceMgmtServiceTestCase extends AbstractTestCase {
         final PreferenceQueryService preferenceQueryService = getPreferenceQueryService();
         JSONObject preference = preferenceQueryService.getPreference();
 
-        Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), "Admin 的个人博客");
+        Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), "Solo 的个人博客");
 
         preference.put(Option.ID_C_BLOG_TITLE, "updated blog title");
         preferenceMgmtService.updatePreference(preference);

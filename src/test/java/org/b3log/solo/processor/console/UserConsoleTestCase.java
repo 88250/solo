@@ -35,7 +35,7 @@ import java.io.StringReader;
  * {@link UserConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 11, 2018
+ * @version 1.0.0.1, Feb 8, 2019
  * @since 2.9.8
  */
 @Test(suiteName = "processor")
@@ -52,38 +52,13 @@ public class UserConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * addUser.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "init")
-    public void addUser() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/user/");
-        request.setMethod("POST");
-        final JSONObject requestJSON = new JSONObject();
-        requestJSON.put(User.USER_NAME, "D");
-        requestJSON.put(User.USER_EMAIL, "d@b3log.org");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
-
-        mockAdminLogin(request);
-
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
-    }
-
-    /**
      * updateUser.
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = "addUser")
+    @Test(dependsOnMethods = "init")
     public void updateUser() throws Exception {
-        final JSONObject u = getUserRepository().getList(new Query()).get(1);
+        final JSONObject u = getUserRepository().getFirst(new Query());
 
         final MockHttpServletRequest request = mockRequest();
         request.setRequestURI("/console/user/");
@@ -107,7 +82,7 @@ public class UserConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "updateUser")
     public void getUser() throws Exception {
-        final JSONObject u = getUserRepository().getList(new Query()).get(1);
+        final JSONObject u = getUserRepository().getFirst(new Query());
         final String userId = u.optString(Keys.OBJECT_ID);
 
         final MockHttpServletRequest request = mockRequest();
@@ -148,7 +123,7 @@ public class UserConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "getUsers")
     public void changeUserRole() throws Exception {
-        final JSONObject u = getUserRepository().getList(new Query()).get(1);
+        final JSONObject u = getUserRepository().getFirst(new Query());
         final String userId = u.optString(Keys.OBJECT_ID);
 
         final MockHttpServletRequest request = mockRequest();
@@ -170,7 +145,7 @@ public class UserConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "changeUserRole")
     public void removeUser() throws Exception {
-        final JSONObject u = getUserRepository().getList(new Query()).get(1);
+        final JSONObject u = getUserRepository().getFirst(new Query());
         final String userId = u.optString(Keys.OBJECT_ID);
 
         final MockHttpServletRequest request = mockRequest();

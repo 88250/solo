@@ -182,7 +182,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "Admin 的个人博客</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "Solo 的个人博客</title>"));
     }
 
     /**
@@ -202,7 +202,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "Admin 的个人博客</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "Solo 的个人博客</title>"));
     }
 
     /**
@@ -223,7 +223,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Admin 的个人博客 - 访问密码</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>Solo 的个人博客 - 访问密码</title>"));
     }
 
     /**

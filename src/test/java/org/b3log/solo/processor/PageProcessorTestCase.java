@@ -67,7 +67,7 @@ public class PageProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "page1 title - Admin 的个人博客"));
+        Assert.assertTrue(StringUtils.contains(content, "page1 title - Solo 的个人博客"));
     }
 
     private JSONObject addPage() throws Exception {

@@ -71,6 +71,6 @@ public class SearchProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "Admin 的个人博客搜索"));
+        Assert.assertTrue(StringUtils.contains(content, "Solo 的个人博客搜索"));
     }
 }

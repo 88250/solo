@@ -82,6 +82,6 @@ public class CategoryProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>分类1 - Admin 的个人博客</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>分类1 - Solo 的个人博客</title>"));
     }
 }
