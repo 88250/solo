@@ -379,9 +379,6 @@ admin.article = {
       }
     })
 
-    $('.editor-preview-active').html('').removeClass('editor-preview-active')
-    $('#uploadContent').remove()
-
     if ($('#articleThumbnail').prop('checked')) {
       $('#articleThumbnail').click()
     }
