@@ -87,9 +87,10 @@ public class UserConsole {
      *     "oId": "",
      *     "userName": "",
      *     "userEmail": "",
-     *     "userRole": "", // optional
-     *     "userURL": "", // optional
-     *     "userAvatar": "" // optional
+     *     "userRole": "",
+     *     "userURL": "",
+     *     "userAvatar": "",
+     *     "userB3Key": ""
      * }
      * </pre>
      * </p>

@@ -89,8 +89,9 @@ public class UserMgmtService {
      *                          "oId": "",
      *                          "userName": "",
      *                          "userEmail": "",
-     *                          "userRole": "", // optional
-     *                          "userURL": "", // optional
+     *                          "userRole": "",
+     *                          "userURL": "",
+     *                          "userB3Key": ""
      * @throws ServiceException service exception
      */
     public void updateUser(final JSONObject requestJSONObject) throws ServiceException {
@@ -99,7 +100,6 @@ public class UserMgmtService {
         try {
             final String oldUserId = requestJSONObject.optString(Keys.OBJECT_ID);
             final JSONObject oldUser = userRepository.get(oldUserId);
-
             if (null == oldUser) {
                 throw new ServiceException(langPropsService.get("updateFailLabel"));
             }
@@ -107,7 +107,6 @@ public class UserMgmtService {
             final String userNewEmail = requestJSONObject.optString(User.USER_EMAIL).toLowerCase().trim();
             // Check email is whether duplicated
             final JSONObject mayBeAnother = userRepository.getByEmail(userNewEmail);
-
             if (null != mayBeAnother && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
                 // Exists someone else has the save email as requested
                 throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
@@ -115,7 +114,6 @@ public class UserMgmtService {
 
             oldUser.put(User.USER_EMAIL, userNewEmail);
 
-            // Update
             final String userName = requestJSONObject.optString(User.USER_NAME);
             if (UserExt.invalidUserName(userName)) {
                 throw new ServiceException(langPropsService.get("userNameInvalidLabel"));
@@ -123,19 +121,16 @@ public class UserMgmtService {
             oldUser.put(User.USER_NAME, userName);
 
             final String userRole = requestJSONObject.optString(User.USER_ROLE);
-            if (StringUtils.isNotBlank(userRole)) {
-                oldUser.put(User.USER_ROLE, userRole);
-            }
+            oldUser.put(User.USER_ROLE, userRole);
 
             final String userURL = requestJSONObject.optString(User.USER_URL);
-            if (StringUtils.isNotBlank(userURL)) {
-                oldUser.put(User.USER_URL, userURL);
-            }
+            oldUser.put(User.USER_URL, userURL);
 
             final String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
-            if (!StringUtils.equals(userAvatar, oldUser.optString(UserExt.USER_AVATAR))) {
-                oldUser.put(UserExt.USER_AVATAR, userAvatar);
-            }
+            oldUser.put(UserExt.USER_AVATAR, userAvatar);
+
+            final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
+            oldUser.put(UserExt.USER_B3_KEY, userB3Key);
 
             userRepository.update(oldUserId, oldUser);
             transaction.commit();

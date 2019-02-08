@@ -154,6 +154,7 @@ admin.userList = {
                 $userEmailUpdate.val(result.user.userEmail);
                 $("#userURLUpdate").val(result.user.userURL);
                 $("#userAvatarUpdate").val(result.user.userAvatar);
+                $("#userB3KeyUpdate").val(result.user.userB3Key);
 
                 $("#loadMsg").text("");
             }
@@ -174,7 +175,8 @@ admin.userList = {
                 "userEmail": $("#userEmailUpdate").val(),
                 "userURL": $("#userURLUpdate").val(),
                 "userRole": userInfo.userRole,
-                "userAvatar": $("#userAvatarUpdate").val()
+                "userAvatar": $("#userAvatarUpdate").val(),
+                "userB3Key": $("#userB3KeyUpdate").val()
             };
 
             $.ajax({
