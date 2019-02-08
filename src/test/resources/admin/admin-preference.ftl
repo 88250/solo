@@ -69,13 +69,6 @@
         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
         <div class="clear"></div>
     </div>
-    <div id="tabPreferencePanel_solo" class="none form">
-        <button class="right" onclick="admin.preference.update()">${updateLabel}</button>
-        <div class="clear"></div>
-        <label for="keyOfSolo">${keyOfSolo1Label}</label>
-        <input id="keyOfSolo" class="normalInput" type="text" /><br><br>
-        <a href="https://hacpai.com/article/1457158841475" target="_blank">${APILabel}</a>
-    </div>
     <div id="tabPreferencePanel_setting" class="none form">
         <button class="right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="clear"></div>

@@ -39,11 +39,6 @@
                 <a href="#tools/preference/setting">${paramSettingsLabel}</a>
             </div>
         </li>
-        <li>
-            <div id="tabPreference_solo">
-                <a href="#tools/preference/solo">B3log</a>
-            </div>
-        </li>
     </ul>
 </div>
 <div id="tabPreferencePanel" class="sub-tabs-main">
@@ -68,13 +63,6 @@
         <textarea rows="2" id="footerContent"></textarea><br><br>
         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
         <div class="clear"></div>
-    </div>
-    <div id="tabPreferencePanel_solo" class="none form">
-        <button class="right" onclick="admin.preference.update()">${updateLabel}</button>
-        <div class="clear"></div>
-        <label for="keyOfSolo">${keyOfSolo1Label}</label>
-        <input id="keyOfSolo" class="normalInput" type="text" /><br><br>
-        <a href="https://hacpai.com/article/1457158841475" target="_blank">${APILabel}</a>
     </div>
     <div id="tabPreferencePanel_setting" class="none form">
         <button class="right" onclick="admin.preference.update()">${updateLabel}</button>

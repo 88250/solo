@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.13, Dec 24, 2018
+ * @version 1.2.1.14, Feb 8, 2019
  */
 
 /* preference 相关操作 */
@@ -63,7 +63,6 @@ admin.preference = {
                 $("#externalRelevantArticlesDisplayCount").val(preference.externalRelevantArticlesDisplayCount);
                 $("#relevantArticlesDisplayCount").val(preference.relevantArticlesDisplayCount);
                 $("#randomArticlesDisplayCount").val(preference.randomArticlesDisplayCount);
-                $("#keyOfSolo").val(preference.keyOfSolo);
                 $("#customVars").val(preference.customVars);
 
                 "true" === preference.enableArticleUpdateHint ? $("#enableArticleUpdateHint").attr("checked", "checked") : $("#enableArticleUpdateHint").removeAttr("checked");
@@ -200,7 +199,6 @@ admin.preference = {
                 "randomArticlesDisplayCount": $("#randomArticlesDisplayCount").val(),
                 "enableArticleUpdateHint": $("#enableArticleUpdateHint").prop("checked"),
                 "signs": signs,
-                "keyOfSolo": $("#keyOfSolo").val(),
                 "allowVisitDraftViaPermalink": $("#allowVisitDraftViaPermalink").prop("checked"),
                 "articleListStyle": $("#articleListDisplay").val(),
                 "feedOutputMode": $("#feedOutputMode").val(),
