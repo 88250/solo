@@ -211,8 +211,8 @@ input[type=text]:focus {
 }
 
 #github .github__icon {
-    height: 300px;
-    width: 400px;
+    height: 200px;
+    width: 266px;
     background-image: url("../images/github.png");
     margin: 0 auto;
     background-size: contain;
