@@ -17,12 +17,14 @@
  */
 package org.b3log.solo.processor.api;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
@@ -33,6 +35,7 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
@@ -125,6 +128,10 @@ public class B3CommentReceiver {
      *         "authorAvatarURL": "",
      *         "isArticleAuthor": true,
      *         "time": 1457784330398
+     *     },
+     *     "client": {
+     *         "userName": "88250",
+     *         "userB3Key": ""
      *     }
      * }
      * </pre>
@@ -149,6 +156,25 @@ public class B3CommentReceiver {
         final Transaction transaction = commentRepository.beginTransaction();
         try {
             final JSONObject symCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
+            final JSONObject symClient = requestJSONObject.optJSONObject("client");
+            final String articleAuthorName = symClient.optString(User.USER_NAME);
+            final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
+            if (null == articleAuthor) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.MSG, "No found user [" + articleAuthorName + "]");
+
+                return;
+            }
+
+            final String b3Key = symClient.optString(UserExt.USER_B3_KEY);
+            final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
+            if (!StringUtils.equals(key, b3Key)) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.MSG, "Wrong key");
+
+                return;
+            }
+
             final String articleId = symCmt.getString("articleId");
             final JSONObject article = articleRepository.get(articleId);
             if (null == article) {
