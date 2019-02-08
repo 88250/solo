@@ -1243,7 +1243,6 @@ button#submitArticle:hover {
 
 #tabPreferencePanel label,
 #tabPreferencePanel_setting label,
-#tabPreferencePanel_qiniu label,
 .form__no-table label {
     width: 100%;
     margin-top: 10px;

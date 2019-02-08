@@ -384,8 +384,6 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/signs/", preferenceConsole::getSigns);
         DispatcherServlet.get("/console/preference/", preferenceConsole::getPreference);
         DispatcherServlet.put("/console/preference/", preferenceConsole::updatePreference);
-        DispatcherServlet.get("/console/preference/oss", preferenceConsole::getOssPreference);
-        DispatcherServlet.put("/console/preference/oss", preferenceConsole::updateOss);
 
         final RepairConsole repairConsole = beanManager.getReference(RepairConsole.class);
         DispatcherServlet.get("/fix/restore-signs", repairConsole::restoreSigns);

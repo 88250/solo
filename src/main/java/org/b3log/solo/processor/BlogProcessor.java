@@ -124,13 +124,6 @@ public class BlogProcessor {
             // ignored
         }
         jsonObject.put("userName", userName);
-        jsonObject.put("qiniuDomain", "");
-        jsonObject.put("qiniuBucket", "");
-        final JSONObject qiniu = optionQueryService.getOptions(Option.CATEGORY_C_QINIU);
-        if (null != qiniu) {
-            jsonObject.put("qiniuDomain", qiniu.optString(Option.ID_C_QINIU_DOMAIN));
-            jsonObject.put("qiniuBucket", qiniu.optString(Option.ID_C_QINIU_BUCKET));
-        }
     }
 
     /**

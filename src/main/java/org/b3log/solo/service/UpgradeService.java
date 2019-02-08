@@ -29,6 +29,7 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.cache.ArticleCache;
 import org.b3log.solo.cache.CommentCache;
@@ -50,6 +51,7 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Upgrade service.
@@ -190,10 +192,28 @@ public class UpgradeService {
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
-            optionRepository.remove("statisticBlogArticleCount");
-            optionRepository.remove("statisticBlogCommentCount");
-            optionRepository.remove("statisticPublishedBlogArticleCount");
-            optionRepository.remove("statisticPublishedBlogCommentCount");
+
+            final JSONObject oauthGitHubOpt = optionRepository.get("oauthGitHub");
+            if (null != oauthGitHubOpt) {
+                String value = oauthGitHubOpt.optString(Option.OPTION_VALUE);
+                final Set<String> githubs = CollectionUtils.jsonArrayToSet(new JSONArray(value));
+                for (final String pair : githubs) {
+                    final String githubId = pair.split(":@:")[0];
+                    final String userId = pair.split(":@:")[1];
+                    final JSONObject user = userRepository.get(userId);
+                    user.put(UserExt.USER_GITHUB_ID, githubId);
+                    user.put(UserExt.USER_B3_KEY, githubId);
+                    userRepository.update(userId, user);
+                }
+            }
+            optionRepository.remove("oauthGitHub");
+
+            final JSONObject b3Key = optionRepository.get("keyOfSolo");
+            final JSONObject admin = userRepository.getAdmin();
+            admin.put(UserExt.USER_B3_KEY, b3Key);
+            userRepository.update(admin.optString(Keys.OBJECT_ID), admin);
+            optionRepository.remove("keyOfSolo");
+
             transaction.commit();
             dropColumns();
 

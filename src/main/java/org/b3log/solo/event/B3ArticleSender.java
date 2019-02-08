@@ -122,7 +122,7 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             requestJSONObject.put(Common.BLOG, "Solo");
             requestJSONObject.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
             requestJSONObject.put("blogHost", Latkes.getServePath());
-            requestJSONObject.put(UserExt.USER_T_B3_KEY, preference.optString(Option.ID_C_KEY_OF_SOLO));
+            requestJSONObject.put(UserExt.USER_B3_KEY, preference.optString(Option.ID_C_KEY_OF_SOLO));
             requestJSONObject.put("clientAdminEmail", preference.optString(Option.ID_C_ADMIN_EMAIL));
             requestJSONObject.put("clientRuntimeEnv", "LOCAL");
 

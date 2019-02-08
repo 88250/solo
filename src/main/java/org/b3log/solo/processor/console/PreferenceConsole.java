@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor.console;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -40,16 +39,13 @@ import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-
-import static org.b3log.solo.model.Option.*;
 
 /**
  * Preference console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.2.0.20, Feb 6, 2019
+ * @version 1.2.0.21, Feb 8, 2019
  * @since 0.4.0
  */
 @RequestProcessor
@@ -375,147 +371,6 @@ public class PreferenceConsole {
     }
 
     /**
-     * Gets Oss preference.
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     oss: {
-     *         "ossServer":"",
-     *         "ossAccessKey": "",
-     *         "ossSecretKey": "",
-     *         "ossDomain": "",
-     *         "ossBucket": ""
-     *     }
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     */
-    public void getOssPreference(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
-
-        try {
-            String ossServerVal = CATEGORY_C_QINIU;
-            // 前端服务商切换 ossServer
-            String ossServerTemp = context.param(ID_C_CLOUD_STORAGE_KEY);
-            if (StringUtils.isNotBlank(ossServerTemp)) {
-                ossServerVal = ossServerTemp;
-            } else {
-                final JSONObject ossServer = optionQueryService.getOptions(CATEGORY_C_CLOU_STORAGE);
-                if (ossServer != null) {
-                    ossServerVal = ossServer.getString(ID_C_CLOUD_STORAGE_KEY);
-                }
-            }
-
-            JSONObject oss = optionQueryService.getOptions(ossServerVal);
-            if (null == oss) {
-                oss = new JSONObject();
-            }
-
-            ret.put("oss", convertOssOpts(ossServerVal, oss));
-            ret.put(Keys.STATUS_CODE, true);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
-        }
-    }
-
-    /**
-     * Updates the Oss preference by the specified request.
-     *
-     * <p>
-     * Request json:
-     * <pre>
-     * {
-     *     "ossAccessKey": "",
-     *     "ossSecretKey": "",
-     *     "ossDomain": "",
-     *     "ossBucket": ""
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     */
-    public void updateOss(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
-        try {
-            final JSONObject requestJSONObject = context.requestJSON();
-            String ossServer = requestJSONObject.optString(ID_C_CLOUD_STORAGE_KEY).trim();
-            if (StringUtils.isBlank(ossServer)) {
-                ossServer = CATEGORY_C_QINIU;
-            }
-            final String accessKey = requestJSONObject.optString("ossAccessKey").trim();
-            final String secretKey = requestJSONObject.optString("ossSecretKey").trim();
-            String domain = requestJSONObject.optString("ossDomain").trim();
-            domain = StringUtils.lowerCase(domain);
-            final String bucket = requestJSONObject.optString("ossBucket").trim();
-            if (StringUtils.isNotBlank(domain) && !StringUtils.endsWith(domain, "/")) {
-                domain += "/";
-            }
-            if (StringUtils.isNotBlank(domain) && !StringUtils.startsWithAny(domain, new String[]{"http", "https"})) {
-                domain = "http://" + domain;
-            }
-
-            boolean isAliyunServer = StringUtils.endsWithIgnoreCase(ossServer, CATEGORY_C_ALIYUN);
-
-            final JSONObject ossServerKeyOpt = new JSONObject();
-            ossServerKeyOpt.put(Keys.OBJECT_ID, ID_C_CLOUD_STORAGE_KEY);
-            ossServerKeyOpt.put(Option.OPTION_CATEGORY, CATEGORY_C_CLOU_STORAGE);
-            ossServerKeyOpt.put(Option.OPTION_VALUE, ossServer);
-            optionMgmtService.addOrUpdateOption(ossServerKeyOpt);
-
-            final JSONObject accessKeyOpt = new JSONObject();
-            accessKeyOpt.put(Keys.OBJECT_ID, isAliyunServer ? ID_C_ALIYUN_ACCESS_KEY : ID_C_QINIU_ACCESS_KEY);
-            accessKeyOpt.put(Option.OPTION_CATEGORY, ossServer);
-            accessKeyOpt.put(Option.OPTION_VALUE, accessKey);
-            optionMgmtService.addOrUpdateOption(accessKeyOpt);
-
-            final JSONObject secretKeyOpt = new JSONObject();
-            secretKeyOpt.put(Keys.OBJECT_ID, isAliyunServer ? ID_C_ALIYUN_SECRET_KEY : ID_C_QINIU_SECRET_KEY);
-            secretKeyOpt.put(Option.OPTION_CATEGORY, ossServer);
-            secretKeyOpt.put(Option.OPTION_VALUE, secretKey);
-            optionMgmtService.addOrUpdateOption(secretKeyOpt);
-
-            final JSONObject domainOpt = new JSONObject();
-            domainOpt.put(Keys.OBJECT_ID, isAliyunServer ? ID_C_ALIYUN_DOMAIN : ID_C_QINIU_DOMAIN);
-            domainOpt.put(Option.OPTION_CATEGORY, ossServer);
-            domainOpt.put(Option.OPTION_VALUE, domain);
-            optionMgmtService.addOrUpdateOption(domainOpt);
-
-            final JSONObject bucketOpt = new JSONObject();
-            bucketOpt.put(Keys.OBJECT_ID, isAliyunServer ? ID_C_ALIYUN_BUCKET : ID_C_QINIU_BUCKET);
-            bucketOpt.put(Option.OPTION_CATEGORY, ossServer);
-            bucketOpt.put(Option.OPTION_VALUE, bucket);
-            optionMgmtService.addOrUpdateOption(bucketOpt);
-
-            ret.put(Keys.STATUS_CODE, true);
-            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
-            if (isQiniuTestDomain(domain)) {
-                ret.put(Keys.MSG, langPropsService.get("donotUseQiniuTestDoaminLabel"));
-            }
-        } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, e.getMessage());
-        }
-    }
-
-    /**
      * Checks whether the specified preference is invalid and sets the specified response object.
      *
      * @param preference     the specified preference
@@ -623,48 +478,5 @@ public class PreferenceConsole {
         } catch (final Exception e) {
             return false;
         }
-    }
-
-    /**
-     * Checks whether the specified domain is a qiniu test domain.
-     *
-     * @param domain the specified domain
-     * @return {@code true} if it is, returns {@code false} otherwise
-     */
-    private boolean isQiniuTestDomain(final String domain) {
-        return Arrays.asList("clouddn.com", "qiniucdn.com", "qiniudn.com", "qnssl.com", "qbox.me").stream().
-                anyMatch(testDomain -> StringUtils.containsIgnoreCase(domain, testDomain));
-    }
-
-    /**
-     * 转换成通用 OSS 格式.
-     *
-     * @param ossServer the specified oss server
-     * @param oss       the specified oss
-     * @return converted oss
-     */
-    private static JSONObject convertOssOpts(final String ossServer, final JSONObject oss) {
-        JSONObject ret = new JSONObject();
-        ret.put("ossServer", ossServer);
-        boolean isAliyunServer = StringUtils.endsWithIgnoreCase(ossServer, CATEGORY_C_ALIYUN);
-        boolean isQiniuServer = StringUtils.endsWithIgnoreCase(ossServer, CATEGORY_C_QINIU);
-        if (isAliyunServer) {
-            ret.put("ossAccessKey", oss.optString(ID_C_ALIYUN_ACCESS_KEY));
-            ret.put("ossSecretKey", oss.optString(ID_C_ALIYUN_SECRET_KEY));
-            ret.put("ossDomain", oss.optString(ID_C_ALIYUN_DOMAIN));
-            ret.put("ossBucket", oss.optString(ID_C_ALIYUN_BUCKET));
-        } else if (isQiniuServer) {
-            ret.put("ossAccessKey", oss.optString(ID_C_QINIU_ACCESS_KEY));
-            ret.put("ossSecretKey", oss.optString(ID_C_QINIU_SECRET_KEY));
-            ret.put("ossDomain", oss.optString(ID_C_QINIU_DOMAIN));
-            ret.put("ossBucket", oss.optString(ID_C_QINIU_BUCKET));
-        } else {
-            final String msg = "Unknown OSS server [" + ossServer + "]";
-            LOGGER.log(Level.ERROR, msg);
-
-            throw new IllegalStateException(msg);
-        }
-
-        return ret;
     }
 }

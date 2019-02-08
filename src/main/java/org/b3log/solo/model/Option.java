@@ -19,7 +19,6 @@ package org.b3log.solo.model;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,7 +29,7 @@ import java.util.Set;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.5.0.2, Feb 6, 2019
+ * @version 1.5.0.3, Feb 8, 2019
  * @since 0.6.0
  */
 public final class Option {
@@ -60,51 +59,6 @@ public final class Option {
      * Key of custom vars.
      */
     public static final String ID_C_CUSTOM_VARS = "customVars";
-
-    /**
-     * Key of cloud object storage service (公有云对象存储服务提供商).
-     */
-    public static final String ID_C_CLOUD_STORAGE_KEY = "ossServer";
-
-    /**
-     * Key of Qiniu access key.
-     */
-    public static final String ID_C_QINIU_ACCESS_KEY = "qiniuAccessKey";
-
-    /**
-     * Key of Qiniu secret key.
-     */
-    public static final String ID_C_QINIU_SECRET_KEY = "qiniuSecretKey";
-
-    /**
-     * Key of Qiniu domain.
-     */
-    public static final String ID_C_QINIU_DOMAIN = "qiniuDomain";
-
-    /**
-     * Key of Qiniu bucket.
-     */
-    public static final String ID_C_QINIU_BUCKET = "qiniuBucket";
-
-    /**
-     * key of Aliyun access key
-     */
-    public static final String ID_C_ALIYUN_ACCESS_KEY = "aliyunAccessKey";
-
-    /**
-     * Key of Aliyun secret key.
-     */
-    public static final String ID_C_ALIYUN_SECRET_KEY = "aliyunSecretKey";
-
-    /**
-     * key of Aliyun domain
-     */
-    public static final String ID_C_ALIYUN_DOMAIN = "aliyunDomain";
-
-    /**
-     * key of Aliyun bucket
-     */
-    public static final String ID_C_ALIYUN_BUCKET = "aliyunBucket";
 
     /**
      * Key of blog title.
@@ -212,11 +166,6 @@ public final class Option {
     public static final String ID_C_SIGNS = "signs";
 
     /**
-     * Key of key of Solo.
-     */
-    public static final String ID_C_KEY_OF_SOLO = "keyOfSolo";
-
-    /**
      * Key of allow visit draft via permalink.
      */
     public static final String ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK = "allowVisitDraftViaPermalink";
@@ -302,31 +251,11 @@ public final class Option {
     public static final String ID_C_STATISTIC_BLOG_VIEW_COUNT = "statisticBlogViewCount";
 
     /**
-     * Key of oauth GitHub.
-     */
-    public static final String ID_C_OAUTH_GITHUB = "oauthGitHub";
-
-    /**
      * Key of GitHub repos.
      */
     public static final String ID_C_GITHUB_REPOS = "githubRepos";
 
     // Category constants
-    /**
-     * Category - Qiniu.
-     */
-    public static final String CATEGORY_C_QINIU = "qiniu";
-
-    /**
-     * Category - Aliyun
-     */
-    public static final String CATEGORY_C_ALIYUN = "aliyun";
-
-    /**
-     * Category - Cloud object storage
-     */
-    public static final String CATEGORY_C_CLOU_STORAGE = "cloudStorage";
-
     /**
      * Category - Preference.
      */
@@ -336,11 +265,6 @@ public final class Option {
      * Category - Statistic.
      */
     public static final String CATEGORY_C_STATISTIC = "statistic";
-
-    /**
-     * Category - OAuth.
-     */
-    public static final String CATEGORY_C_OAUTH = "oauth";
 
     /**
      * Category - GitHub.

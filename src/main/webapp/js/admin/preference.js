@@ -109,25 +109,6 @@ admin.preference = {
                 $("#loadMsg").text("");
             }
         });
-
-        $.ajax({
-            url: latkeConfig.servePath + "/console/preference/oss",
-            type: "GET",
-            cache: false,
-            success: function (result) {
-                if (!result.sc) {
-                    $("#tipMsg").text(result.msg);
-                    $("#loadMsg").text("");
-                    return;
-                }
-                //设置服务商信息
-                $('input[name=ossServer][value=' + result.oss.ossServer + ']')[0].checked = true
-                $("#ossAccessKey").val(result.oss.ossAccessKey);
-                $("#ossSecretKey").val(result.oss.ossSecretKey);
-                $("#ossDomain").val(result.oss.ossDomain);
-                $("#ossBucket").val(result.oss.ossBucket);
-            }
-        });
     },
     /*
      * @description 参数校验
@@ -255,53 +236,6 @@ admin.preference = {
                 }
 
                 $("#loadMsg").text("");
-            }
-        });
-    },
-    /*
-     * @description 更新 Oss 参数
-     */
-    updateOss: function () {
-        $("#tipMsg").text("");
-        $("#loadMsg").text(Label.loadingLabel);
-
-        var requestJSONObject = {
-            "ossServer": $('input[name=ossServer]:checked').val(),
-            "ossAccessKey": $("#ossAccessKey").val(),
-            "ossSecretKey": $("#ossSecretKey").val(),
-            "ossDomain": $("#ossDomain").val(),
-            "ossBucket": $("#ossBucket").val()
-        };
-
-        $.ajax({
-            url: latkeConfig.servePath + "/console/preference/oss",
-            type: "PUT",
-            cache: false,
-            data: JSON.stringify(requestJSONObject),
-            success: function (result) {
-                $("#tipMsg").html(result.msg);
-                $("#loadMsg").text("");
-            }
-        });
-    },
-
-    // 服务商radio change事件
-    ossServerChange: function () {
-        var ossServer = $('input[name=ossServer]:checked').val()
-        $.ajax({
-            url: latkeConfig.servePath + "/console/preference/oss?ossServer=" + ossServer,
-            type: "GET",
-            cache: false,
-            success: function (result) {
-                if (!result.sc) {
-                    $("#loadMsg").text("");
-                    $("#tipMsg").text(result.msg);
-                    return;
-                }
-                $("#ossAccessKey").val(result.oss.ossAccessKey);
-                $("#ossSecretKey").val(result.oss.ossSecretKey);
-                $("#ossDomain").val(result.oss.ossDomain);
-                $("#ossBucket").val(result.oss.ossBucket);
             }
         });
     }

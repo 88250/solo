@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "3.2.1.4, Feb 7, 2019",
+  "version": "3.2.1.5, Feb 8, 2019",
   "authors": [
     "Liang Ding"
   ],
@@ -412,6 +412,12 @@
           "description": "用户头像图片链接地址",
           "type": "String",
           "length": 255
+        },
+        {
+          "name": "userB3Key",
+          "description": "B3log Key",
+          "type": "String",
+          "length": "64"
         }
       ]
     },
