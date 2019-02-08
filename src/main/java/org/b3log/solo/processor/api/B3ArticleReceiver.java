@@ -17,12 +17,12 @@
  */
 package org.b3log.solo.processor.api;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -31,17 +31,19 @@ import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.UserExt;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Receiving articles from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.4.4, Feb 6, 2019
+ * @version 1.0.4.5, Feb 9, 2019
  * @since 0.5.5
  */
 @RequestProcessor
@@ -51,6 +53,12 @@ public class B3ArticleReceiver {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(B3ArticleReceiver.class);
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Preference query service.
@@ -71,23 +79,21 @@ public class B3ArticleReceiver {
     private ArticleQueryService articleQueryService;
 
     /**
-     * User query service.
-     */
-    @Inject
-    private UserQueryService userQueryService;
-
-    /**
      * Adds an article with the specified request.
      * <p>
      * Request json:
      * <pre>
      * {
      *     "article": {
-     *          "oId": "",
-     *          "articleTitle": "",
-     *          "articleContent": "",
-     *          "articleTags": "tag1,tag2,tag3",
-     *          "userB3Key": ""
+     *         "id": "",
+     *          "title": "",
+     *          "content": "",
+     *          "contentHTML": "",
+     *          "tags": "tag1,tag2,tag3"
+     *     },
+     *     "client": {
+     *         "userName": "",
+     *         "userB3Key": ""
      *     }
      * }
      * </pre>
@@ -113,17 +119,32 @@ public class B3ArticleReceiver {
         final JSONObject requestJSONObject = context.requestJSON();
 
         try {
-            final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
-            final String userB3Key = article.optString(UserExt.USER_B3_KEY);
-            final JSONObject admin = userQueryService.getAdmin();
-            if (!userB3Key.equals(admin.optString(UserExt.USER_B3_KEY))) {
-                LOGGER.log(Level.WARN, "B3 key not match, ignored add article");
+            final JSONObject client = requestJSONObject.optJSONObject("client");
+            final String articleAuthorName = client.optString(User.USER_NAME);
+            final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
+            if (null == articleAuthor) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.MSG, "No found user [" + articleAuthorName + "]");
 
                 return;
             }
-            article.remove(UserExt.USER_B3_KEY);
 
-            article.put(Article.ARTICLE_AUTHOR_ID, admin.getString(Keys.OBJECT_ID));
+            final String b3Key = client.optString(UserExt.USER_B3_KEY);
+            final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
+            if (!StringUtils.equals(key, b3Key)) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.MSG, "Wrong key");
+
+                return;
+            }
+
+            final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
+            final JSONObject article = new JSONObject().
+                    put(Keys.OBJECT_ID, symArticle.optString("id")).
+                    put(Article.ARTICLE_TITLE, symArticle.optString("title")).
+                    put(Article.ARTICLE_CONTENT, symArticle.optString("content")).
+                    put(Article.ARTICLE_TAGS_REF, symArticle.optString("tags"));
+            article.put(Article.ARTICLE_AUTHOR_ID, articleAuthor.getString(Keys.OBJECT_ID));
             final String articleContent = article.optString(Article.ARTICLE_CONTENT);
             article.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(articleContent));
             article.put(Article.ARTICLE_IS_PUBLISHED, true);
@@ -141,7 +162,7 @@ public class B3ArticleReceiver {
             ret.put(Keys.STATUS_CODE, true);
 
             renderer.setJSONObject(ret);
-        } catch (final ServiceException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
@@ -157,11 +178,15 @@ public class B3ArticleReceiver {
      * <pre>
      * {
      *     "article": {
-     *         "oId": "", // Symphony Article#clientArticleId
-     *          "articleTitle": "",
-     *          "articleContent": "",
-     *          "articleTags": "tag1,tag2,tag3",
-     *          "userB3Key": ""
+     *         "id": "", // Symphony Article#clientArticleId
+     *          "title": "",
+     *          "content": "",
+     *          "contentHTML": "",
+     *          "tags": "tag1,tag2,tag3"
+     *     },
+     *     "client": {
+     *         "userName": "",
+     *         "userB3Key": ""
      *     }
      * }
      * </pre>
@@ -187,11 +212,27 @@ public class B3ArticleReceiver {
         final JSONObject requestJSONObject = context.requestJSON();
 
         try {
-            final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
-            final String userB3Key = article.optString(UserExt.USER_B3_KEY);
-            article.remove(UserExt.USER_B3_KEY);
+            final JSONObject client = requestJSONObject.optJSONObject("client");
+            final String articleAuthorName = client.optString(User.USER_NAME);
+            final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
+            if (null == articleAuthor) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.MSG, "No found user [" + articleAuthorName + "]");
 
-            final String articleId = article.getString(Keys.OBJECT_ID);
+                return;
+            }
+
+            final String b3Key = client.optString(UserExt.USER_B3_KEY);
+            final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
+            if (!StringUtils.equals(key, b3Key)) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.MSG, "Wrong key");
+
+                return;
+            }
+
+            final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
+            final String articleId = symArticle.getString(Keys.OBJECT_ID);
             final JSONObject oldArticle = articleQueryService.getArticleById(articleId);
             if (null == oldArticle) {
                 ret.put(Keys.MSG, "No found article [oId=" + articleId + "] to update");
@@ -200,36 +241,19 @@ public class B3ArticleReceiver {
                 return;
             }
 
-            final String authorId = oldArticle.optString(Article.ARTICLE_AUTHOR_ID);
-            final JSONObject userResult = userQueryService.getUser(authorId);
-            if (null == userResult) {
-                ret.put(Keys.MSG, "No found article [oId=" + articleId + "]'s author");
-                ret.put(Keys.STATUS_CODE, false);
+            final String articleContent = symArticle.optString("content");
+            oldArticle.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(articleContent));
+            oldArticle.put(Article.ARTICLE_CONTENT, articleContent);
+            oldArticle.put(Article.ARTICLE_TITLE, symArticle.optString("title"));
+            oldArticle.put(Article.ARTICLE_TAGS_REF, symArticle.optString("tags"));
+            oldArticle.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
 
-                return;
-            }
-            final JSONObject author = userResult.optJSONObject(User.USER);
-            if (!userB3Key.equals(author.optString(UserExt.USER_B3_KEY))) {
-                LOGGER.log(Level.WARN, "B3 key not match, ignored update article");
-
-                return;
-            }
-
-            final String articleContent = article.optString(Article.ARTICLE_CONTENT);
-            article.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(articleContent));
-            article.put(Article.ARTICLE_IS_PUBLISHED, true);
-            article.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
-            article.put(Article.ARTICLE_COMMENTABLE, true);
-            article.put(Article.ARTICLE_VIEW_PWD, "");
-            final String content = article.getString(Article.ARTICLE_CONTENT);
-            article.put(Article.ARTICLE_CONTENT, content);
-            article.put(Article.ARTICLE_SIGN_ID, "1");
-
-            articleMgmtService.updateArticle(requestJSONObject);
+            final JSONObject updateRequest = new JSONObject().put(Article.ARTICLE, oldArticle);
+            articleMgmtService.updateArticle(updateRequest);
 
             ret.put(Keys.MSG, "update article succ");
             ret.put(Keys.STATUS_CODE, true);
-        } catch (final ServiceException e) {
+        } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
