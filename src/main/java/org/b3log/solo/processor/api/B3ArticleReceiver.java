@@ -21,6 +21,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
@@ -188,19 +189,28 @@ public class B3ArticleReceiver {
         try {
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
             final String userB3Key = article.optString(UserExt.USER_B3_KEY);
-            final JSONObject admin = userQueryService.getAdmin();
-            if (!userB3Key.equals(admin.optString(UserExt.USER_B3_KEY))) {
-                LOGGER.log(Level.WARN, "B3 key not match, ignored update article");
-
-                return;
-            }
             article.remove(UserExt.USER_B3_KEY);
 
             final String articleId = article.getString(Keys.OBJECT_ID);
-
-            if (null == articleQueryService.getArticleById(articleId)) {
-                ret.put(Keys.MSG, "No found article[oId=" + articleId + "] to update");
+            final JSONObject oldArticle = articleQueryService.getArticleById(articleId);
+            if (null == oldArticle) {
+                ret.put(Keys.MSG, "No found article [oId=" + articleId + "] to update");
                 ret.put(Keys.STATUS_CODE, false);
+
+                return;
+            }
+
+            final String authorId = oldArticle.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject userResult = userQueryService.getUser(authorId);
+            if (null == userResult) {
+                ret.put(Keys.MSG, "No found article [oId=" + articleId + "]'s author");
+                ret.put(Keys.STATUS_CODE, false);
+
+                return;
+            }
+            final JSONObject author = userResult.optJSONObject(User.USER);
+            if (!userB3Key.equals(author.optString(UserExt.USER_B3_KEY))) {
+                LOGGER.log(Level.WARN, "B3 key not match, ignored update article");
 
                 return;
             }

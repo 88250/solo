@@ -191,10 +191,6 @@ public class B3CommentReceiver {
 
             final String commentId = symphonyCmt.optString(Keys.OBJECT_ID);
             String commentContent = symphonyCmt.getString(Comment.COMMENT_CONTENT);
-
-//            commentContent += "<p class='cmtFromSym'><i>该评论同步自 <a href='" + SoloServletListener.B3LOG_SYMPHONY_SERVE_PATH
-//                    + "/article/" + symphonyCmt.optString("commentSymphonyArticleId") + "#" + commentId
-//                    + "' target='_blank'>黑客派</a></i></p>";
             final String originalCommentId = symphonyCmt.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();

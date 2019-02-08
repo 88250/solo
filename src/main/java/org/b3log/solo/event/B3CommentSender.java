@@ -23,6 +23,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.ioc.BeanManager;
+import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -30,6 +31,7 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -52,9 +54,16 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
     private static final Logger LOGGER = Logger.getLogger(B3CommentSender.class);
 
     /**
-     * URL of adding comment to Symphony.
+     * Preference query service.
      */
-    private static final String ADD_COMMENT_URL = Solos.B3LOG_SYMPHONY_SERVE_PATH + "/solo/comment";
+    @Inject
+    private PreferenceQueryService preferenceQueryService;
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
 
     @Override
     public void action(final Event<JSONObject> event) {
@@ -64,9 +73,6 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
                 event.getType(), data, B3ArticleSender.class.getName());
         try {
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
-
-            final BeanManager beanManager = BeanManager.getInstance();
-            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
 
             final JSONObject preference = preferenceQueryService.getPreference();
             if (null == preference) {
@@ -81,33 +87,32 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
-            final JSONObject requestJSONObject = new JSONObject();
-            final JSONObject comment = new JSONObject();
+            final JSONObject comment = new JSONObject().
+                    put("id", originalComment.optString(Keys.OBJECT_ID)).
+                    put("articleId", originalComment.getString(Comment.COMMENT_ON_ID)).
+                    put("content", originalComment.getString(Comment.COMMENT_CONTENT));
+            final JSONObject author = userRepository.getByUserName(comment.optString(Comment.COMMENT_NAME));
+            if (null == author) {
+                return;
+            }
 
-            comment.put("commentId", originalComment.optString(Keys.OBJECT_ID));
-            comment.put("commentAuthorName", originalComment.getString(Comment.COMMENT_NAME));
-            comment.put("commentAuthorEmail", originalComment.getString(Comment.COMMENT_EMAIL));
-            comment.put(Comment.COMMENT_CONTENT, originalComment.getString(Comment.COMMENT_CONTENT));
-            comment.put("articleId", originalComment.getString(Comment.COMMENT_ON_ID));
+            final JSONObject client = new JSONObject().
+                    put("title", preference.getString(Option.ID_C_BLOG_TITLE)).
+                    put("host", Latkes.getServePath()).
+                    put("name", "Solo").
+                    put("ver", SoloServletListener.VERSION).
+                    put("userName", author.optString(User.USER_NAME)).
+                    put("userB3Key", author.optString(UserExt.USER_B3_KEY));
+            final JSONObject requestJSONObject = new JSONObject().
+                    put("comment", comment).
+                    put("client", client);
 
-            final UserRepository userRepository = beanManager.getReference(UserRepository.class);
-            final JSONObject admin = userRepository.getAdmin();
-
-            requestJSONObject.put(Comment.COMMENT, comment);
-            requestJSONObject.put("clientVersion", SoloServletListener.VERSION);
-            requestJSONObject.put("clientRuntimeEnv", "LOCAL");
-            requestJSONObject.put("clientName", "Solo");
-            requestJSONObject.put("clientHost", Latkes.getServePath());
-            requestJSONObject.put("clientAdminEmail", admin.optString(User.USER_EMAIL));
-            requestJSONObject.put(UserExt.USER_B3_KEY, admin.optString(UserExt.USER_B3_KEY));
-
-            HttpRequest.post(ADD_COMMENT_URL).bodyText(requestJSONObject.toString()).
+            HttpRequest.post("https://rhythm.b3log.org/api/comment").bodyText(requestJSONObject.toString()).
                     header("User-Agent", Solos.USER_AGENT).contentTypeJson().sendAsync();
+            LOGGER.log(Level.DEBUG, "Pushed a comment to Sym");
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Sends a comment to Symphony error: {0}", e.getMessage());
+            LOGGER.log(Level.ERROR, "Pushes a comment to Sym failed: " + e.getMessage());
         }
-
-        LOGGER.log(Level.DEBUG, "Sent a comment to Symphony");
     }
 
     /**

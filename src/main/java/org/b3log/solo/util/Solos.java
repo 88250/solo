@@ -71,16 +71,6 @@ public final class Solos {
     private static final ResourceBundle mailConf = ResourceBundle.getBundle("mail");
 
     /**
-     * B3log Rhythm address.
-     */
-    public static final String B3LOG_RHYTHM_SERVE_PATH;
-
-    /**
-     * B3log Symphony address.
-     */
-    public static final String B3LOG_SYMPHONY_SERVE_PATH;
-
-    /**
      * Favicon API.
      */
     public static final String FAVICON_API;
@@ -128,8 +118,6 @@ public final class Solos {
             solo = ResourceBundle.getBundle("b3log"); // 2.8.0 向后兼容
         }
 
-        B3LOG_RHYTHM_SERVE_PATH = solo.getString("rhythm.servePath");
-        B3LOG_SYMPHONY_SERVE_PATH = solo.getString("symphony.servePath");
         FAVICON_API = solo.getString("faviconAPI");
         GRAVATAR = solo.getString("gravatar");
         String mobileSkin = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
