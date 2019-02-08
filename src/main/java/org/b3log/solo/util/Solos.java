@@ -175,6 +175,10 @@ public final class Solos {
         return new JSONObject().put(Keys.CODE, -1).put(Keys.MSG, "System is abnormal, please try again later");
     }
 
+    private static long uploadTokenTime;
+    private static String uploadToken;
+    private static String uploadURL;
+
     /**
      * Gets upload token.
      *
@@ -194,6 +198,13 @@ public final class Solos {
                 return null;
             }
 
+            final long now = System.currentTimeMillis();
+            if (3600000 >= now - uploadTokenTime) {
+                return new JSONObject().
+                        put(Common.UPLOAD_TOKEN, uploadToken).
+                        put(Common.UPLOAD_URL, uploadURL);
+            }
+
             final JSONObject requestJSON = new JSONObject().put(User.USER_NAME, userName).put(UserExt.USER_B3_KEY, userB3Key);
             final HttpResponse res = HttpRequest.post("https://hacpai.com/apis/upload/token").trustAllCerts(true).
                     body(requestJSON.toString()).connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
@@ -203,14 +214,19 @@ public final class Solos {
             res.charset("UTF-8");
             final JSONObject result = new JSONObject(res.bodyText());
             if (0 != result.optInt(Keys.CODE)) {
+                LOGGER.log(Level.ERROR, result.optString(Keys.MSG));
+
                 return null;
             }
 
             final JSONObject data = result.optJSONObject(Common.DATA);
+            uploadTokenTime = now;
+            uploadToken = data.optString("token");
+            uploadURL = data.optString("uploadURL");
 
             return new JSONObject().
-                    put(Common.UPLOAD_TOKEN, data.optString("token")).
-                    put(Common.UPLOAD_URL, data.optString("uploadURL"));
+                    put(Common.UPLOAD_TOKEN, uploadToken).
+                    put(Common.UPLOAD_URL, uploadURL);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets upload token failed", e);
 
