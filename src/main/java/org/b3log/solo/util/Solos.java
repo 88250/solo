@@ -202,7 +202,7 @@ public final class Solos {
             }
             res.charset("UTF-8");
             final JSONObject result = new JSONObject(res.bodyText());
-            if (0 != result.optInt(Keys.STATUS_CODE)) {
+            if (0 != result.optInt(Keys.CODE)) {
                 return null;
             }
 

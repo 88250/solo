@@ -418,6 +418,12 @@
           "description": "B3log Key",
           "type": "String",
           "length": "64"
+        },
+        {
+          "name": "userGitHubId",
+          "description": "用户 GitHub Open Id",
+          "type": "String",
+          "length": 32
         }
       ]
     },
