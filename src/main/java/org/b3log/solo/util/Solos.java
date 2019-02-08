@@ -229,7 +229,7 @@ public final class Solos {
 
             final JSONObject data = result.optJSONObject(Common.DATA);
             uploadTokenTime = now;
-            uploadToken = data.optString("token");
+            uploadToken = data.optString("uploadToken");
             uploadURL = data.optString("uploadURL");
 
             return new JSONObject().
