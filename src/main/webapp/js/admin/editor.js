@@ -61,7 +61,8 @@ $.extend(SoloEditor.prototype, {
       },
       upload: {
         max: 10 * 1024 * 1024,
-        url: 'https://hacpai.com/upload/editor',
+        url: Label.uploadURL,
+        token: Label.uploadToken,
       },
       height: this.conf.height,
       counter: 102400,
