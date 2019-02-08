@@ -19,7 +19,8 @@
 * admin style
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
-* @version 2.6.0.0, Jan 13, 2019
+* @author <a href="http://88250.b3log.org">Liang Ding</a>
+* @version 2.6.0.1, Feb 8, 2019
 */
 
 /* start resset */
@@ -871,7 +872,7 @@ table.form th {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50%;
-    height: 180px;
+    height: 648px;
     width: 100%;
 }
 

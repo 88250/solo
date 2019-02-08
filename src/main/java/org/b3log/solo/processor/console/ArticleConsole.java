@@ -120,7 +120,7 @@ public class ArticleConsole {
 
         final int n = Integer.valueOf(strN);
         final List<String> urls = Images.randomImages(n);
-        result.put("data", urls.stream().map(url -> url += "?imageView2/1/w/960/h/520/interlace/1/q/100").collect(Collectors.toList()));
+        result.put("data", urls.stream().map(url -> url += "?imageView2/1/w/1152/h/648/interlace/1/q/100").collect(Collectors.toList()));
     }
 
     /**
