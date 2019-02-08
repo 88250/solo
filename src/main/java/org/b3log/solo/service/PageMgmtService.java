@@ -34,7 +34,7 @@ import org.b3log.solo.model.Page;
 import org.b3log.solo.processor.OAuthGitHubProcessor;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
-import org.b3log.solo.util.Solos;
+import org.b3log.solo.util.GitHubs;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -138,7 +138,7 @@ public class PageMgmtService {
         final JSONArray github = new JSONArray(value);
         final String githubPair = github.optString(0);// Just refresh the first account
         final String githubUserId = githubPair.split(OAuthGitHubProcessor.GITHUB_SPLIT)[0];
-        final JSONArray gitHubRepos = Solos.getGitHubRepos(githubUserId);
+        final JSONArray gitHubRepos = GitHubs.getGitHubRepos(githubUserId);
         if (null == gitHubRepos || gitHubRepos.isEmpty()) {
             return;
         }

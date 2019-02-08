@@ -36,6 +36,7 @@ import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.*;
+import org.b3log.solo.util.GitHubs;
 import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -150,7 +151,7 @@ public class OAuthGitHubProcessor {
         STATES.remove(state);
 
         final String accessToken = context.param("ak");
-        final JSONObject userInfo = Solos.getGitHubUserInfo(accessToken);
+        final JSONObject userInfo = GitHubs.getGitHubUserInfo(accessToken);
         if (null == userInfo) {
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
