@@ -179,9 +179,9 @@ public final class Solos {
      * Gets upload token.
      *
      * @param context the specified context
-     * @return upload token, returns {@code null} if not found
+     * @return upload token and URL, returns {@code null} if not found
      */
-    public static String getUploadToken(final RequestContext context) {
+    public static JSONObject getUploadToken(final RequestContext context) {
         try {
             final JSONObject currentUser = getCurrentUser(context.getRequest(), context.getResponse());
             if (null == currentUser) {
@@ -207,7 +207,10 @@ public final class Solos {
             }
 
             final JSONObject data = result.optJSONObject(Common.DATA);
-            return data.optString("token");
+
+            return new JSONObject().
+                    put(Common.UPLOAD_TOKEN, data.optString("token")).
+                    put(Common.UPLOAD_URL, data.optString("uploadURL"));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets upload token failed", e);
 

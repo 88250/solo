@@ -28,6 +28,11 @@ package org.b3log.solo.model;
 public final class Common {
 
     /**
+     * Key of upload URL.
+     */
+    public static final String UPLOAD_URL = "uploadURL";
+
+    /**
      * Key of upload token.
      */
     public static final String UPLOAD_TOKEN = "uploadToken";
