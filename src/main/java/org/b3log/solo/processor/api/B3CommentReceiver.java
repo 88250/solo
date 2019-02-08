@@ -18,19 +18,20 @@
 package org.b3log.solo.processor.api;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JsonRenderer;
+import org.b3log.latke.util.Ids;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -45,8 +46,6 @@ import org.b3log.solo.service.StatisticMgmtService;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -119,16 +118,20 @@ public class B3CommentReceiver {
      * <pre>
      * {
      *     "comment": {
-     *         "userB3Key": "",
-     *         "oId": "",
-     *         "commentSymphonyArticleId": "",
-     *         "commentOnArticleId": "",
-     *         "commentAuthorName": "",
-     *         "commentAuthorEmail": "",
-     *         "commentAuthorURL": "",
-     *         "commentAuthorThumbnailURL": "",
-     *         "commentContent": "",
-     *         "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
+     *         "articleId": "",
+     *         "content": "",
+     *         "contentHTML": "",
+     *         "ua": "",
+     *         "ip": "",
+     *         "authorName": "",
+     *         "authorURL": "",
+     *         "authorAvatarURL": "",
+     *         "isArticleAuthor": true,
+     *         "time": 1457784330398
+     *     },
+     *     "client": {
+     *         "userName": "88250",
+     *         "userB3Key": ""
      *     }
      * }
      * </pre>
@@ -146,18 +149,25 @@ public class B3CommentReceiver {
      */
     @RequestProcessing(value = "/apis/symphony/comment", method = HttpMethod.PUT)
     public void addComment(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
         final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
+        context.renderJSON(ret);
 
         final JSONObject requestJSONObject = context.requestJSON();
         final Transaction transaction = commentRepository.beginTransaction();
         try {
-            final JSONObject symphonyCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
-            final JSONObject admin = userRepository.getAdmin();
-            final String b3Key = admin.optString(UserExt.USER_B3_KEY);
-            final String key = symphonyCmt.optString(UserExt.USER_B3_KEY);
+            final JSONObject symCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
+            final JSONObject symClient = requestJSONObject.optJSONObject("client");
+            final String articleAuthorName = symClient.optString(User.USER_NAME);
+            final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
+            if (null == articleAuthor) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.MSG, "No found user [" + articleAuthorName + "]");
+
+                return;
+            }
+
+            final String b3Key = symClient.optString(UserExt.USER_B3_KEY);
+            final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
             if (!StringUtils.equals(key, b3Key)) {
                 ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
                 ret.put(Keys.MSG, "Wrong key");
@@ -165,101 +175,61 @@ public class B3CommentReceiver {
                 return;
             }
 
-            final String articleId = symphonyCmt.getString("commentOnArticleId");
+            final String articleId = symCmt.getString("articleId");
             final JSONObject article = articleRepository.get(articleId);
-
             if (null == article) {
                 ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
-                ret.put(Keys.MSG, "Not found the specified article[id=" + articleId + "]");
+                ret.put(Keys.MSG, "Not found the specified article [id=" + articleId + "]");
 
                 return;
             }
 
-            final String commentName = symphonyCmt.getString("commentAuthorName");
-            final String commentEmail = symphonyCmt.getString("commentAuthorEmail").trim().toLowerCase();
-            String commentURL = symphonyCmt.optString("commentAuthorURL");
-            if (!commentURL.contains("://")) {
-                commentURL = "http://" + commentURL;
-            }
-            try {
-                new URL(commentURL);
-            } catch (final MalformedURLException e) {
-                LOGGER.log(Level.WARN, "The comment URL is invalid [{0}]", commentURL);
+            final String commentName = symCmt.getString("authorName");
+            String commentURL = symCmt.optString("authorURL");
+            if (!Strings.isURL(commentURL)) {
                 commentURL = "";
             }
-            final String commentThumbnailURL = symphonyCmt.getString("commentAuthorThumbnailURL");
+            final String commentThumbnailURL = symCmt.getString("authorAvatarURL");
+            String commentContent = symCmt.getString("content"); // Markdown
 
-            final String commentId = symphonyCmt.optString(Keys.OBJECT_ID);
-            String commentContent = symphonyCmt.getString(Comment.COMMENT_CONTENT);
-            final String originalCommentId = symphonyCmt.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             // Step 1: Add comment
             final JSONObject comment = new JSONObject();
-            JSONObject originalComment = null;
-
+            final String commentId = Ids.genTimeMillisId();
             comment.put(Keys.OBJECT_ID, commentId);
             comment.put(Comment.COMMENT_NAME, commentName);
-            comment.put(Comment.COMMENT_EMAIL, commentEmail);
+            comment.put(Comment.COMMENT_EMAIL, "");
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_THUMBNAIL_URL, commentThumbnailURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             final Date date = new Date();
-
             comment.put(Comment.COMMENT_CREATED, date.getTime());
-            ret.put(Comment.COMMENT_T_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
-            if (StringUtils.isNotBlank(originalCommentId)) {
-                originalComment = commentRepository.get(originalCommentId);
-                if (null != originalComment) {
-                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);
-                    final String originalCommentName = originalComment.getString(Comment.COMMENT_NAME);
-
-                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
-                    ret.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, originalCommentName);
-                } else {
-                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
-                    comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-                    LOGGER.log(Level.WARN, "Not found orginal comment[id={0}] of reply[name={1}, content={2}]",
-                            originalCommentId, commentName, commentContent);
-                }
-            } else {
-                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
-                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-            }
-
-            ret.put(Comment.COMMENT_THUMBNAIL_URL, comment.getString(Comment.COMMENT_THUMBNAIL_URL));
+            comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
+            comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             comment.put(Comment.COMMENT_ON_ID, articleId);
             comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
             final String commentSharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
-
             commentRepository.add(comment);
             articleMgmtService.incArticleCommentCount(articleId);
             try {
                 final JSONObject preference = preferenceQueryService.getPreference();
-                commentMgmtService.sendNotificationMail(article, comment, originalComment, preference);
+                commentMgmtService.sendNotificationMail(article, comment, null, preference);
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Send mail failed", e);
             }
+            transaction.commit();
+
+            ret.put(Keys.STATUS_CODE, true);
 
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);
-            eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY, eventData));
-
-            transaction.commit();
-            ret.put(Keys.STATUS_CODE, true);
-            ret.put(Keys.OBJECT_ID, commentId);
-
-            ret.put(Keys.OBJECT_ID, articleId);
-            ret.put(Keys.MSG, "add a comment to an article from symphony succ");
-            ret.put(Keys.STATUS_CODE, true);
-
-            renderer.setJSONObject(ret);
+            eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY, eventData));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, e.getMessage());
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false).put(Keys.MSG, e.getMessage());
+            context.renderJSON(jsonObject);
         }
     }
 }
