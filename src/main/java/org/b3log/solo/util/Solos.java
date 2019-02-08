@@ -39,9 +39,7 @@ import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
-import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
@@ -191,18 +189,12 @@ public final class Solos {
             }
 
             final String userName = currentUser.optString(User.USER_NAME);
-            final OptionRepository optionRepository = BeanManager.getInstance().getReference(OptionRepository.class);
-            final JSONObject b3KeyOpt = optionRepository.get(Option.ID_C_KEY_OF_SOLO);
-            if (null == b3KeyOpt) {
-                return null;
-            }
-
-            String userB3Key = b3KeyOpt.optString(Option.OPTION_VALUE);
+            final String userB3Key = currentUser.optString(UserExt.USER_B3_KEY);
             if (StringUtils.isBlank(userB3Key)) {
                 return null;
             }
 
-            final JSONObject requestJSON = new JSONObject().put(User.USER_NAME, userName).put(UserExt.USER_T_B3_KEY, userB3Key);
+            final JSONObject requestJSON = new JSONObject().put(User.USER_NAME, userName).put(UserExt.USER_B3_KEY, userB3Key);
             final HttpResponse res = HttpRequest.post("https://hacpai.com/apis/upload/token").trustAllCerts(true).
                     body(requestJSON.toString()).connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             if (HttpServletResponse.SC_OK != res.statusCode()) {
@@ -282,10 +274,7 @@ public final class Solos {
                     break;
                 }
 
-                final PreferenceQueryService preferenceQueryService = BeanManager.getInstance().getReference(PreferenceQueryService.class);
-                final JSONObject preference = preferenceQueryService.getPreference();
-                final String b3Key = preference.optString(Option.ID_C_KEY_OF_SOLO);
-
+                final String b3Key = user.optString(UserExt.USER_B3_KEY);
                 final String tokenVal = cookieJSONObject.optString(Keys.TOKEN);
                 final String token = StringUtils.substringBeforeLast(tokenVal, ":");
                 if (StringUtils.equals(b3Key, token)) {
@@ -317,9 +306,7 @@ public final class Solos {
             final String userId = user.optString(Keys.OBJECT_ID);
             final JSONObject cookieJSONObject = new JSONObject();
             cookieJSONObject.put(Keys.OBJECT_ID, userId);
-            final PreferenceQueryService preferenceQueryService = BeanManager.getInstance().getReference(PreferenceQueryService.class);
-            final JSONObject preference = preferenceQueryService.getPreference();
-            final String b3Key = preference.optString(Option.ID_C_KEY_OF_SOLO);
+            final String b3Key = user.optString(UserExt.USER_B3_KEY);
             final String random = RandomStringUtils.randomAlphanumeric(8);
             cookieJSONObject.put(Keys.TOKEN, b3Key + ":" + random);
             final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), COOKIE_SECRET);

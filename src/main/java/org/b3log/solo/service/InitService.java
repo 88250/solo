@@ -187,8 +187,9 @@ public class InitService {
      *                          {
      *                          "userName": "",
      *                          "userEmail": "",
-     *                          "userAvatar": "" // optional
-     *                          "userB3Key": "" // optional
+     *                          "userAvatar": "", // optional
+     *                          "userB3Key": "", // optional
+     *                          "userGitHubId": "" // optional
      *                          }
      * @throws ServiceException service exception
      */
@@ -395,7 +396,9 @@ public class InitService {
      *                          {
      *                          "userName": "",
      *                          "userEmail": "",
-     *                          "userAvatar": "" // optional
+     *                          "userAvatar": "", // optional
+     *                          "userB3Key": "", // optional
+     *                          "userGitHubId": "" // optional
      *                          }
      * @throws Exception exception
      */
@@ -412,6 +415,8 @@ public class InitService {
             avatar = Solos.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128");
         }
         admin.put(UserExt.USER_AVATAR, avatar);
+        admin.put(UserExt.USER_B3_KEY, requestJSONObject.optString(UserExt.USER_B3_KEY));
+        admin.put(UserExt.USER_GITHUB_ID, requestJSONObject.optString(UserExt.USER_GITHUB_ID));
         userRepository.add(admin);
 
         LOGGER.debug("Initialized admin");

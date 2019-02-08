@@ -31,7 +31,7 @@ import org.b3log.latke.util.Ids;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
-import org.b3log.solo.processor.OAuthGitHubProcessor;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.GitHubs;
@@ -67,6 +67,12 @@ public class PageMgmtService {
      */
     @Inject
     private CommentRepository commentRepository;
+
+    /**
+     * User query service.
+     */
+    @Inject
+    private UserQueryService userQueryService;
 
     /**
      * Language service.
@@ -125,20 +131,15 @@ public class PageMgmtService {
             return;
         }
 
-        final JSONObject oauthGitHubOpt = optionQueryService.getOptionById(Option.ID_C_OAUTH_GITHUB);
-        if (null == oauthGitHubOpt) {
+        JSONObject admin;
+        try {
+            admin = userQueryService.getAdmin();
+        } catch (final Exception e) {
             return;
         }
 
-        String value = oauthGitHubOpt.optString(Option.OPTION_VALUE);
-        if (StringUtils.isBlank(value)) {
-            return;
-        }
-
-        final JSONArray github = new JSONArray(value);
-        final String githubPair = github.optString(0);// Just refresh the first account
-        final String githubUserId = githubPair.split(OAuthGitHubProcessor.GITHUB_SPLIT)[0];
-        final JSONArray gitHubRepos = GitHubs.getGitHubRepos(githubUserId);
+        final String githubId = admin.optString(UserExt.USER_GITHUB_ID);
+        final JSONArray gitHubRepos = GitHubs.getGitHubRepos(githubId);
         if (null == gitHubRepos || gitHubRepos.isEmpty()) {
             return;
         }

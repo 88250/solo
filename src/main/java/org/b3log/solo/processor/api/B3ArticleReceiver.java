@@ -29,7 +29,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
@@ -114,17 +113,14 @@ public class B3ArticleReceiver {
 
         try {
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
-            final String userB3Key = article.optString(UserExt.USER_T_B3_KEY);
-            final JSONObject preference = preferenceQueryService.getPreference();
-
-            if (!userB3Key.equals(preference.optString(Option.ID_C_KEY_OF_SOLO))) {
+            final String userB3Key = article.optString(UserExt.USER_B3_KEY);
+            final JSONObject admin = userQueryService.getAdmin();
+            if (!userB3Key.equals(admin.optString(UserExt.USER_B3_KEY))) {
                 LOGGER.log(Level.WARN, "B3 key not match, ignored add article");
 
                 return;
             }
-            article.remove(UserExt.USER_T_B3_KEY);
-
-            final JSONObject admin = userQueryService.getAdmin();
+            article.remove(UserExt.USER_B3_KEY);
 
             article.put(Article.ARTICLE_AUTHOR_ID, admin.getString(Keys.OBJECT_ID));
             final String articleContent = article.optString(Article.ARTICLE_CONTENT);
@@ -191,15 +187,14 @@ public class B3ArticleReceiver {
 
         try {
             final JSONObject article = requestJSONObject.optJSONObject(Article.ARTICLE);
-            final String userB3Key = article.optString(UserExt.USER_T_B3_KEY);
-            final JSONObject preference = preferenceQueryService.getPreference();
-
-            if (!userB3Key.equals(preference.optString(Option.ID_C_KEY_OF_SOLO))) {
+            final String userB3Key = article.optString(UserExt.USER_B3_KEY);
+            final JSONObject admin = userQueryService.getAdmin();
+            if (!userB3Key.equals(admin.optString(UserExt.USER_B3_KEY))) {
                 LOGGER.log(Level.WARN, "B3 key not match, ignored update article");
 
                 return;
             }
-            article.remove(UserExt.USER_T_B3_KEY);
+            article.remove(UserExt.USER_B3_KEY);
 
             final String articleId = article.getString(Keys.OBJECT_ID);
 

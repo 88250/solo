@@ -17,12 +17,9 @@
  */
 package org.b3log.solo.model;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.Set;
 
 /**
  * This class defines option model relevant keys.
@@ -281,23 +278,6 @@ public final class Option {
      * Key of statistic blog comment(published article) count.
      */
     public static final String ID_T_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT = "statisticPublishedBlogCommentCount";
-
-    /**
-     * Gets oauth pair str from the specified oauth pairs with the specified open id.
-     *
-     * @param oauthPairs     the specified oauth pairs
-     * @param openIdOrUserId the specified open id
-     * @return oauth pair str, returns {@code null} if not found
-     */
-    public static String getOAuthPair(final Set<String> oauthPairs, final String openIdOrUserId) {
-        for (final String pair : oauthPairs) {
-            if (StringUtils.containsIgnoreCase(pair, openIdOrUserId)) {
-                return pair;
-            }
-        }
-
-        return null;
-    }
 
     /**
      * Private constructor.

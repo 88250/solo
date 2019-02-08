@@ -279,10 +279,6 @@ public class PreferenceMgmtService {
             htmlHeadOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_HTML_HEAD));
             optionRepository.update(Option.ID_C_HTML_HEAD, htmlHeadOpt);
 
-            final JSONObject keyOfSoloOpt = optionRepository.get(Option.ID_C_KEY_OF_SOLO);
-            keyOfSoloOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_KEY_OF_SOLO));
-            optionRepository.update(Option.ID_C_KEY_OF_SOLO, keyOfSoloOpt);
-
             final JSONObject localeStringOpt = optionRepository.get(Option.ID_C_LOCALE_STRING);
             localeStringOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_LOCALE_STRING));
             optionRepository.update(Option.ID_C_LOCALE_STRING, localeStringOpt);

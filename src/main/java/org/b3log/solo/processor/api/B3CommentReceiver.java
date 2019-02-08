@@ -34,10 +34,10 @@ import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
+import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
@@ -53,7 +53,7 @@ import java.util.Date;
  * Receiving comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.20, Jan 28, 2019
+ * @version 1.1.1.21, Feb 8, 2019
  * @since 0.5.5
  */
 @RequestProcessor
@@ -93,6 +93,12 @@ public class B3CommentReceiver {
      */
     @Inject
     private ArticleRepository articleRepository;
+
+    /**
+     * User repository.
+     */
+    @Inject
+    private UserRepository userRepository;
 
     /**
      * Event manager.
@@ -149,11 +155,10 @@ public class B3CommentReceiver {
         final Transaction transaction = commentRepository.beginTransaction();
         try {
             final JSONObject symphonyCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
-            final JSONObject preference = preferenceQueryService.getPreference();
-            final String keyOfSolo = preference.optString(Option.ID_C_KEY_OF_SOLO);
-            final String key = symphonyCmt.optString(UserExt.USER_T_B3_KEY);
-
-            if (StringUtils.isBlank(keyOfSolo) || !keyOfSolo.equals(key)) {
+            final JSONObject admin = userRepository.getAdmin();
+            final String b3Key = admin.optString(UserExt.USER_B3_KEY);
+            final String key = symphonyCmt.optString(UserExt.USER_B3_KEY);
+            if (!StringUtils.equals(key, b3Key)) {
                 ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
                 ret.put(Keys.MSG, "Wrong key");
 
@@ -233,6 +238,7 @@ public class B3CommentReceiver {
             commentRepository.add(comment);
             articleMgmtService.incArticleCommentCount(articleId);
             try {
+                final JSONObject preference = preferenceQueryService.getPreference();
                 commentMgmtService.sendNotificationMail(article, comment, originalComment, preference);
             } catch (final Exception e) {
                 LOGGER.log(Level.WARN, "Send mail failed", e);
