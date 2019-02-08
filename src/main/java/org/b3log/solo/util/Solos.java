@@ -17,6 +17,8 @@
  */
 package org.b3log.solo.util;
 
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
@@ -36,6 +38,8 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.UserExt;
+import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
@@ -171,6 +175,52 @@ public final class Solos {
      */
     public static JSONObject newFail() {
         return new JSONObject().put(Keys.CODE, -1).put(Keys.MSG, "System is abnormal, please try again later");
+    }
+
+    /**
+     * Gets upload token.
+     *
+     * @param context the specified context
+     * @return upload token, returns {@code null} if not found
+     */
+    public static String getUploadToken(final RequestContext context) {
+        try {
+            final JSONObject currentUser = getCurrentUser(context.getRequest(), context.getResponse());
+            if (null == currentUser) {
+                return null;
+            }
+
+            final String userName = currentUser.optString(User.USER_NAME);
+            final OptionRepository optionRepository = BeanManager.getInstance().getReference(OptionRepository.class);
+            final JSONObject b3KeyOpt = optionRepository.get(Option.ID_C_KEY_OF_SOLO);
+            if (null == b3KeyOpt) {
+                return null;
+            }
+
+            String userB3Key = b3KeyOpt.optString(Option.OPTION_VALUE);
+            if (StringUtils.isBlank(userB3Key)) {
+                return null;
+            }
+
+            final JSONObject requestJSON = new JSONObject().put(User.USER_NAME, userName).put(UserExt.USER_T_B3_KEY, userB3Key);
+            final HttpResponse res = HttpRequest.post("https://hacpai.com/apis/upload/token").trustAllCerts(true).
+                    body(requestJSON.toString()).connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
+            if (HttpServletResponse.SC_OK != res.statusCode()) {
+                return null;
+            }
+            res.charset("UTF-8");
+            final JSONObject result = new JSONObject(res.bodyText());
+            if (0 != result.optInt(Keys.STATUS_CODE)) {
+                return null;
+            }
+
+            final JSONObject data = result.optJSONObject(Common.DATA);
+            return data.optString("token");
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets upload token failed", e);
+
+            return null;
+        }
     }
 
     /**

@@ -55,7 +55,7 @@ import java.util.List;
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="mailto:dongxu.wang@acm.org">Dongxu Wang</a>
+ * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
  * @version 1.2.0.34, Jan 30, 2019
  * @since 1.2.0
  */
