@@ -395,7 +395,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final UserConsole userConsole = beanManager.getReference(UserConsole.class);
         DispatcherServlet.put("/console/user/", userConsole::updateUser);
-        DispatcherServlet.post("/console/user/", userConsole::addUser);
         DispatcherServlet.delete("/console/user/{id}", userConsole::removeUser);
         DispatcherServlet.get("/console/users/{page}/{pageSize}/{windowSize}", userConsole::getUsers);
         DispatcherServlet.get("/console/user/{id}", userConsole::getUser);
