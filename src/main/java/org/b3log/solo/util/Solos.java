@@ -175,9 +175,10 @@ public final class Solos {
         return new JSONObject().put(Keys.CODE, -1).put(Keys.MSG, "System is abnormal, please try again later");
     }
 
+    private static long uploadTokenCheckTime;
     private static long uploadTokenTime;
-    private static String uploadToken;
-    private static String uploadURL;
+    private static String uploadToken = "";
+    private static String uploadURL = "https://hacpai.com/upload/client";
 
     /**
      * Gets upload token.
@@ -205,9 +206,16 @@ public final class Solos {
                         put(Common.UPLOAD_URL, uploadURL);
             }
 
+            if (15000 >= now - uploadTokenCheckTime) {
+                return new JSONObject().
+                        put(Common.UPLOAD_TOKEN, uploadToken).
+                        put(Common.UPLOAD_URL, uploadURL);
+            }
+
             final JSONObject requestJSON = new JSONObject().put(User.USER_NAME, userName).put(UserExt.USER_B3_KEY, userB3Key);
             final HttpResponse res = HttpRequest.post("https://hacpai.com/apis/upload/token").trustAllCerts(true).
                     body(requestJSON.toString()).connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
+            uploadTokenCheckTime = now;
             if (HttpServletResponse.SC_OK != res.statusCode()) {
                 return null;
             }
