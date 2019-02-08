@@ -58,6 +58,6 @@ public class UserTemplateProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>友情链接 - Admin 的个人博客</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>友情链接 - Solo 的个人博客</title>"));
     }
 }

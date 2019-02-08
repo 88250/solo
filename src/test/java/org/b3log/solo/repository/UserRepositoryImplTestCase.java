@@ -35,7 +35,7 @@ import org.testng.annotations.Test;
  * {@link UserRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Oct 17, 2015
+ * @version 1.1.0.3, Feb 8, 2019
  */
 @Test(suiteName = "repository")
 public final class UserRepositoryImplTestCase extends AbstractTestCase {
@@ -55,6 +55,8 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         another.put(User.USER_URL, "https://b3log.org");
         another.put(User.USER_ROLE, Role.DEFAULT_ROLE);
         another.put(UserExt.USER_AVATAR, "");
+        another.put(UserExt.USER_GITHUB_ID, "");
+        another.put(UserExt.USER_B3_KEY, "");
 
         Transaction transaction = userRepository.beginTransaction();
         userRepository.add(another);
@@ -68,6 +70,8 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         admin.put(User.USER_URL, "https://b3log.org");
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
         admin.put(UserExt.USER_AVATAR, "");
+        admin.put(UserExt.USER_GITHUB_ID, "");
+        admin.put(UserExt.USER_B3_KEY, "");
 
         transaction = userRepository.beginTransaction();
         userRepository.add(admin);

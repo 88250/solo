@@ -59,7 +59,7 @@ public class AdminConsoleTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "后台管理 - Admin 的个人博客"));
+        Assert.assertTrue(StringUtils.contains(content, "后台管理 - Solo 的个人博客"));
     }
 
     /**
