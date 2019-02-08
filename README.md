@@ -32,14 +32,11 @@
 
 * Markdown / Emoji
 * [聚合分类](https://github.com/b3log/solo/issues/12256) / 标签
-* 自定义导航（页面、链接）
-* 草稿夹
+* 自定义导航页面 / 链接
 * 评论 / 回复邮件提醒
 * 随机文章 / 相关文章 / 置顶 / 更新提醒
-* 自定义文章永久链接
-* 自定义站点 SEO 参数
-* 自定义公告 / 页脚
-* 多个签名档
+* 自定义文章永久链接 / 签名档
+* 配置站点 SEO 参数 / 公告 / 页脚
 * 代码高亮 / 数学公式 / 流程图
 * [多皮肤，多端适配](https://github.com/b3log/solo-skins/tree/master/skin-preview) / [社区皮肤](https://github.com/b3log/solo-third-skins/tree/master/skin-preview)
 * 多语言 / 国际化
@@ -47,7 +44,6 @@
 * 多用户写作，团队博客
 * [Hexo / Jekyll / Markdown 导入](https://hacpai.com/article/1498490209748)
 * SQL / JSON / Markdown 导出
-* 插件系统
 * Atom / RSS / Sitemap
 * CDN 静态资源分离
 * [GitHub 集成](https://github.com/b3log/solo/issues/12514)
