@@ -180,7 +180,8 @@ public class UserConsole {
      *         "oId": "",
      *         "userName": "",
      *         "userEmail": "",
-     *         "roleName": ""
+     *         "roleName": "",
+     *         ....
      *      }, ....]
      *     "sc": true
      * }

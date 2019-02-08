@@ -42,7 +42,7 @@ import org.json.JSONObject;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.0.15, Oct 19, 2018
+ * @version 1.1.0.16, Feb 8, 2019
  * @since 0.4.0
  */
 @Service
@@ -105,10 +105,8 @@ public class UserMgmtService {
             }
 
             final String userNewEmail = requestJSONObject.optString(User.USER_EMAIL).toLowerCase().trim();
-            // Check email is whether duplicated
-            final JSONObject mayBeAnother = userRepository.getByEmail(userNewEmail);
+            JSONObject mayBeAnother = userRepository.getByEmail(userNewEmail);
             if (null != mayBeAnother && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
-                // Exists someone else has the save email as requested
                 throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
             }
 
@@ -117,6 +115,10 @@ public class UserMgmtService {
             final String userName = requestJSONObject.optString(User.USER_NAME);
             if (UserExt.invalidUserName(userName)) {
                 throw new ServiceException(langPropsService.get("userNameInvalidLabel"));
+            }
+            mayBeAnother = userRepository.getByUserName(userName);
+            if (null != mayBeAnother && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
+                throw new ServiceException(langPropsService.get("duplicatedUserNameLabel"));
             }
             oldUser.put(User.USER_NAME, userName);
 
@@ -190,8 +192,9 @@ public class UserMgmtService {
      *                          "userEmail": "",
      *                          "userURL": "", // optional, uses 'servePath' instead if not specified
      *                          "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not specified
-     *                          "userAvatar": "" // optional, users generated gravatar url instead if not specified
-     *                          ,see {@link User} for more details
+     *                          "userAvatar": "", // optional, users generated gravatar url instead if not specified
+     *                          "userGitHubId": "",
+     *                          "userB3Key": ""
      * @return generated user id
      * @throws ServiceException service exception
      */
@@ -249,6 +252,12 @@ public class UserMgmtService {
                 userAvatar = Solos.getGravatarURL(userEmail, "128");
             }
             user.put(UserExt.USER_AVATAR, userAvatar);
+
+            final String userGitHubId = requestJSONObject.optString(UserExt.USER_GITHUB_ID);
+            user.put(UserExt.USER_GITHUB_ID, userGitHubId);
+
+            final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
+            user.put(UserExt.USER_B3_KEY, userB3Key);
 
             userRepository.add(user);
             transaction.commit();
