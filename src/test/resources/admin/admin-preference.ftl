@@ -40,11 +40,6 @@
             </div>
         </li>
         <li>
-            <div id="tabPreference_oss">
-                <a href="#toos/preference/oss">${ossServerLabel}</a>
-            </div>
-        </li>
-        <li>
             <div id="tabPreference_solo">
                 <a href="#tools/preference/solo">B3log</a>
             </div>
@@ -75,8 +70,10 @@
         <div class="clear"></div>
     </div>
     <div id="tabPreferencePanel_solo" class="none form">
+        <button class="right" onclick="admin.preference.update()">${updateLabel}</button>
+        <div class="clear"></div>
         <label for="keyOfSolo">${keyOfSolo1Label}</label>
-        <input id="keyOfSolo" class="normalInput" type="text" readonly="readonly"/><br><br>
+        <input id="keyOfSolo" class="normalInput" type="text" /><br><br>
         <a href="https://hacpai.com/article/1457158841475" target="_blank">${APILabel}</a>
     </div>
     <div id="tabPreferencePanel_setting" class="none form">
@@ -89,7 +86,7 @@
         </select>
         <label for="timeZoneId">${timeZoneId1Label}</label>
         <select id="timeZoneId">
-        ${timeZoneIdOptions}
+            ${timeZoneIdOptions}
         </select>
         <label for="articleListDisplay">${articleListDisplay1Label}</label>
         <select id="articleListDisplay">
@@ -171,33 +168,6 @@
         <textarea rows="8" id="preferenceSign3"></textarea><br><br>
         <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
         <div class="clear"></div>
-    </div>
-    <div id="tabPreferencePanel_oss" class="none form">
-         <span class="right">
-            <a href="https://hacpai.com/article/1442418791213" target="_blank">${howConfigLabel}</a>
-            &nbsp;
-            <button onclick="admin.preference.updateOss()">${updateLabel}</button>
-        </span>
-        <span class="clear"></span>
-        <span class="fn__flex-inline">
-            <label class="fn__flex-inline">
-            ${qiniuOssLabel}
-                <input name="ossServer" type="radio" value="qiniu" onclick="admin.preference.ossServerChange()"/>
-            </label>
-            <span>&nbsp; &nbsp; &nbsp;</span>
-            <label class="fn__flex-inline">
-            ${aliyunOssLabel}
-                <input name="ossServer" type="radio" value="aliyun" onclick="admin.preference.ossServerChange()"/>
-            </label>
-        </span>
-        <label for="osSAccessKey">${accessKey1Label}</label>
-        <input id="ossAccessKey" type="text" />
-        <label for="ossSecretKey">${secretKey1Label}</label>
-        <input id="ossSecretKey" type="text"/>
-        <label for="ossDomain">${domain1Label}</label>
-        <input id="ossDomain" type="text"/>
-        <label for="ossBucket">${bucket1Label}</label>
-        <input id="ossBucket" type="text"/>
     </div>
 </div>
 ${plugins}

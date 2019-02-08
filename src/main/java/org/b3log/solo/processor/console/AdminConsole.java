@@ -160,7 +160,7 @@ public class AdminConsole {
             dataModelService.fillMinified(dataModel);
             // 使用 Marked 时代码高亮问题 https://github.com/b3log/solo/issues/12614
             dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKED_AVAILABLE);
-
+            // 内置 HTTPS+CDN 文件存储 https://github.com/b3log/solo/issues/12556
             final String uploadToken = Solos.getUploadToken(context);
             dataModel.put(Common.UPLOAD_TOKEN, uploadToken);
         } catch (final Exception e) {
