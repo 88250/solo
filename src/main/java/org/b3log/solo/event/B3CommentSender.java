@@ -22,7 +22,6 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
@@ -30,9 +29,11 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
+import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.b3log.solo.util.Solos;
@@ -42,7 +43,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending comment to B3log Symphony. Sees <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Feb 8, 2019
+ * @version 1.0.1.5, Feb 9, 2019
  * @since 0.5.5
  */
 @Singleton
@@ -64,6 +65,12 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
 
     @Override
     public void action(final Event<JSONObject> event) {
@@ -87,22 +94,23 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
+            final String articleId = originalComment.getString(Comment.COMMENT_ON_ID);
+            final JSONObject article = articleRepository.get(articleId);
+            final String articleAuthorId = article.optString(Article.ARTICLE_AUTHOR_ID);
+            final JSONObject articleAuthor = userRepository.get(articleAuthorId);
+
             final JSONObject comment = new JSONObject().
                     put("id", originalComment.optString(Keys.OBJECT_ID)).
-                    put("articleId", originalComment.getString(Comment.COMMENT_ON_ID)).
-                    put("content", originalComment.getString(Comment.COMMENT_CONTENT));
-            final JSONObject author = userRepository.getByUserName(comment.optString(Comment.COMMENT_NAME));
-            if (null == author) {
-                return;
-            }
-
+                    put("articleId", articleId).
+                    put("content", originalComment.getString(Comment.COMMENT_CONTENT)).
+                    put("authorName", originalComment.optString(Comment.COMMENT_NAME));
             final JSONObject client = new JSONObject().
                     put("title", preference.getString(Option.ID_C_BLOG_TITLE)).
                     put("host", Latkes.getServePath()).
                     put("name", "Solo").
                     put("ver", SoloServletListener.VERSION).
-                    put("userName", author.optString(User.USER_NAME)).
-                    put("userB3Key", author.optString(UserExt.USER_B3_KEY));
+                    put("userName", articleAuthor.optString(User.USER_NAME)).
+                    put("userB3Key", articleAuthor.optString(UserExt.USER_B3_KEY));
             final JSONObject requestJSONObject = new JSONObject().
                     put("comment", comment).
                     put("client", client);
