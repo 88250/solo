@@ -138,105 +138,31 @@ public class B3ArticleReceiver {
                 return;
             }
 
-            final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
-            final JSONObject article = new JSONObject().
-                    put(Keys.OBJECT_ID, symArticle.optString("id")).
-                    put(Article.ARTICLE_TITLE, symArticle.optString("title")).
-                    put(Article.ARTICLE_CONTENT, symArticle.optString("content")).
-                    put(Article.ARTICLE_TAGS_REF, symArticle.optString("tags"));
-            article.put(Article.ARTICLE_AUTHOR_ID, articleAuthor.getString(Keys.OBJECT_ID));
-            final String articleContent = article.optString(Article.ARTICLE_CONTENT);
-            article.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(articleContent));
-            article.put(Article.ARTICLE_IS_PUBLISHED, true);
-            article.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
-            article.put(Article.ARTICLE_COMMENTABLE, true);
-            article.put(Article.ARTICLE_VIEW_PWD, "");
-            final String content = article.getString(Article.ARTICLE_CONTENT);
-            final String articleId = article.getString(Keys.OBJECT_ID);
-            article.put(Article.ARTICLE_CONTENT, content);
-
-            articleMgmtService.addArticle(requestJSONObject);
-
-            ret.put(Keys.OBJECT_ID, articleId);
             ret.put(Keys.MSG, "add article succ");
             ret.put(Keys.STATUS_CODE, true);
-
             renderer.setJSONObject(ret);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, e.getMessage());
-        }
-    }
-
-    /**
-     * Updates an article with the specified request.
-     * <p>
-     * Request json:
-     * <pre>
-     * {
-     *     "article": {
-     *         "id": "", // Symphony Article#clientArticleId
-     *          "title": "",
-     *          "content": "",
-     *          "contentHTML": "",
-     *          "tags": "tag1,tag2,tag3"
-     *     },
-     *     "client": {
-     *         "userName": "",
-     *         "userB3Key": ""
-     *     }
-     * }
-     * </pre>
-     * </p>
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "msg": ""
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     */
-    @RequestProcessing(value = "/apis/symphony/article", method = HttpMethod.PUT)
-    public void updateArticle(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
-        final JSONObject requestJSONObject = context.requestJSON();
-
-        try {
-            final JSONObject client = requestJSONObject.optJSONObject("client");
-            final String articleAuthorName = client.optString(User.USER_NAME);
-            final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
-            if (null == articleAuthor) {
-                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
-                ret.put(Keys.MSG, "No found user [" + articleAuthorName + "]");
-
-                return;
-            }
-
-            final String b3Key = client.optString(UserExt.USER_B3_KEY);
-            final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
-            if (!StringUtils.equals(key, b3Key)) {
-                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
-                ret.put(Keys.MSG, "Wrong key");
-
-                return;
-            }
 
             final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
             final String articleId = symArticle.getString(Keys.OBJECT_ID);
             final JSONObject oldArticle = articleQueryService.getArticleById(articleId);
+            String localId = articleId;
             if (null == oldArticle) {
-                ret.put(Keys.MSG, "No found article [oId=" + articleId + "] to update");
-                ret.put(Keys.STATUS_CODE, false);
+                final JSONObject article = new JSONObject().
+                        put(Keys.OBJECT_ID, symArticle.optString("id")).
+                        put(Article.ARTICLE_TITLE, symArticle.optString("title")).
+                        put(Article.ARTICLE_CONTENT, symArticle.optString("content")).
+                        put(Article.ARTICLE_TAGS_REF, symArticle.optString("tags"));
+                article.put(Article.ARTICLE_AUTHOR_ID, articleAuthor.getString(Keys.OBJECT_ID));
+                final String articleContent = article.optString(Article.ARTICLE_CONTENT);
+                article.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(articleContent));
+                article.put(Article.ARTICLE_IS_PUBLISHED, true);
+                article.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
+                article.put(Article.ARTICLE_COMMENTABLE, true);
+                article.put(Article.ARTICLE_VIEW_PWD, "");
+                final String content = article.getString(Article.ARTICLE_CONTENT);
+                article.put(Article.ARTICLE_CONTENT, content);
+                localId = articleMgmtService.addArticle(requestJSONObject);
+                ret.put(Keys.OBJECT_ID, localId);
 
                 return;
             }
@@ -247,12 +173,10 @@ public class B3ArticleReceiver {
             oldArticle.put(Article.ARTICLE_TITLE, symArticle.optString("title"));
             oldArticle.put(Article.ARTICLE_TAGS_REF, symArticle.optString("tags"));
             oldArticle.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
-
             final JSONObject updateRequest = new JSONObject().put(Article.ARTICLE, oldArticle);
             articleMgmtService.updateArticle(updateRequest);
-
-            ret.put(Keys.MSG, "update article succ");
-            ret.put(Keys.STATUS_CODE, true);
+            localId = oldArticle.optString(Keys.OBJECT_ID);
+            ret.put(Keys.OBJECT_ID, localId);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
