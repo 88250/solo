@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.processor.api;
+package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
