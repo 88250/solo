@@ -334,19 +334,12 @@ admin.article = {
         $('#unSubmitArticle').hide()
         $('#saveArticle').show()
       }
-      if (this.status.articleHadBeenPublished) {
-        $('#postToCommunityPanel').hide()
-      } else {
-        $('#postToCommunityPanel').show()
-      }
     } else {
       $('#submitArticle').show()
       $('#unSubmitArticle').hide()
       $('#saveArticle').show()
       $('#postToCommunityPanel').show()
     }
-
-    $('#postToCommunity').attr('checked', 'checked')
   },
   /**
    * @description 清除发布文章页面的输入框的内容
