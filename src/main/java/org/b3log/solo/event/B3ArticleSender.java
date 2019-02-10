@@ -67,22 +67,11 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
         pushArticleToRhy(data);
     }
 
-    static void pushArticleToRhy(JSONObject data) {
+    static void pushArticleToRhy(final JSONObject data) {
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 LOGGER.log(Level.DEBUG, "Ignored push an article [title={0}] to Rhy", originalArticle.getString(Article.ARTICLE_TITLE));
-
-                return;
-            }
-
-            final BeanManager beanManager = BeanManager.getInstance();
-            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
-            final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
-
-            final JSONObject preference = preferenceQueryService.getPreference();
-            if (null == preference) {
-                LOGGER.log(Level.ERROR, "Not found preference");
 
                 return;
             }
@@ -100,6 +89,11 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
                         originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE));
                 return;
             }
+
+            final BeanManager beanManager = BeanManager.getInstance();
+            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+            final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
+            final JSONObject preference = preferenceQueryService.getPreference();
 
             final JSONObject article = new JSONObject().
                     put(Keys.OBJECT_ID, originalArticle.getString(Keys.OBJECT_ID)).
