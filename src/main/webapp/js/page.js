@@ -113,21 +113,21 @@ $.extend(Page.prototype, {
         dataType: 'script',
         cache: true,
         async: false,
-        success: () => {
+        success: function () {
           window.vditor = new Vditor('soloEditorComment', {
             placeholder: that.tips.commentContentCannotEmptyLabel,
             height: 180,
-            esc: () => {
+            esc: function () {
               $('#soloEditorCancel').click()
             },
-            ctrlEnter: () => {
+            ctrlEnter: function () {
               $('#soloEditorAdd').click()
             },
             preview: {
               delay: 500,
               show: false,
               url: latkeConfig.servePath + '/console/markdown/2html',
-              parse: (element) => {
+              parse: function (element) {
                 if (element.style.display === 'none') {
                   return
                 }
