@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.0, Feb 6, 2019
+ * @version 1.6.0.1, Feb 10, 2019
  */
 admin.article = {
   // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -235,7 +235,7 @@ admin.article = {
         articleAbstract = admin.editors.abstractEditor.getContent()
       if ($('#articleThumbnail').prop('checked')) {
         var bgImage = $('.thumbnail__img').css('background-image')
-        articleContent = '![](' + bgImage.substring(5, bgImage.length - 2) +
+        articleContent = '![](' + bgImage.substring(5, bgImage.length - 2).replace('w/768', 'w/960').replace('h/432', 'h/540') +
           ') \n\n' + articleContent
       }
       var requestJSONObject = {
@@ -461,7 +461,7 @@ admin.article = {
     // thumbnail
     $('#articleThumbnailBtn').click(function () {
       $.ajax({// Gets all tags
-        url: latkeConfig.servePath + '/console/thumbs?n=1',
+        url: latkeConfig.servePath + '/console/thumbs?n=1&w=768&h=432',
         type: 'GET',
         cache: false,
         success: function (result, textStatus) {
