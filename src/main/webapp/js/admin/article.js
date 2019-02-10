@@ -156,7 +156,7 @@ admin.article = {
 
       if ($('#articleThumbnail').prop('checked')) {
         var bgImage = $('.thumbnail__img').css('background-image')
-        articleContent = '![](' + bgImage.substring(5, bgImage.length - 2) +
+        articleContent = '![](' + bgImage.substring(5, bgImage.length - 2).replace('w/768', 'w/960').replace('h/432', 'h/540') +
           ')\n\n' + articleContent
       }
 
@@ -393,6 +393,8 @@ admin.article = {
       $(this).addClass('selected')
     })
 
+    $('#tipMsg').text(Label.uploadMsg)
+
     // For tag auto-completion
     $.ajax({// Gets all tags
       url: latkeConfig.servePath + '/console/tags',
@@ -623,7 +625,7 @@ admin.register.article = {
     admin.editors.abstractEditor.setContent('')
     admin.editors.articleEditor.setContent('')
     $('#loadMsg').text('')
-    $('#tipMsg').text('')
+    $('#tipMsg').text(Label.uploadMsg)
   },
 }
 

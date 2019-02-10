@@ -20,287 +20,302 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.4, Feb 8, 2019
+ * @version 1.1.2.5, Feb 10, 2019
  */
 
 /* user-list 相关操作 */
 admin.userList = {
-    tablePagination: new TablePaginate("user"),
-    pageInfo: {
-        currentCount: 1,
-        pageCount: 1,
-        currentPage: 1
-    },
-    userInfo: {
-        'oId': "",
-        "userRole": ""
-    },
-    /* 
-     * 初始化 table, pagination
-     */
-    init: function(page) {
-        this.tablePagination.buildTable([{
-                style: "padding-left: 12px;",
-                text: Label.userNameLabel,
-                index: "userName",
-                width: 230
-            }, {
-                style: "padding-left: 12px;",
-                text: Label.commentEmailLabel,
-                index: "userEmail",
-                minWidth: 180
-            }, {
-                style: "padding-left: 12px;",
-                text: Label.roleLabel,
-                index: "isAdmin",
-                width: 120
-            }]);
+  tablePagination: new TablePaginate('user'),
+  pageInfo: {
+    currentCount: 1,
+    pageCount: 1,
+    currentPage: 1,
+  },
+  userInfo: {
+    'oId': '',
+    'userRole': '',
+  },
+  /*
+   * 初始化 table, pagination
+   */
+  init: function (page) {
+    this.tablePagination.buildTable([
+      {
+        style: 'padding-left: 12px;',
+        text: Label.userNameLabel,
+        index: 'userName',
+        width: 230,
+      }, {
+        style: 'padding-left: 12px;',
+        text: Label.commentEmailLabel,
+        index: 'userEmail',
+        minWidth: 180,
+      }, {
+        style: 'padding-left: 12px;',
+        text: Label.roleLabel,
+        index: 'isAdmin',
+        width: 120,
+      }])
 
-        this.tablePagination.initPagination();
-        this.getList(page);
+    this.tablePagination.initPagination()
+    this.getList(page)
 
-        $("#userUpdate").dialog({
-            width: 700,
-            height: 450,
-            "modal": true,
-            "hideFooter": true
-        });
-    },
-    /* 
-     * 根据当前页码获取列表
-     * @pagNum 当前页码
-     */
-    getList: function(pageNum) {
-        $("#loadMsg").text(Label.loadingLabel);
-        $("#tipMsg").text("");
-        this.pageInfo.currentPage = pageNum;
-        var that = this;
+    $('#userUpdate').dialog({
+      width: 700,
+      height: 450,
+      'modal': true,
+      'hideFooter': true,
+    })
+  },
+  /*
+   * 根据当前页码获取列表
+   * @pagNum 当前页码
+   */
+  getList: function (pageNum) {
+    $('#loadMsg').text(Label.loadingLabel)
+    $('#tipMsg').text('')
+    this.pageInfo.currentPage = pageNum
+    var that = this
 
-        $.ajax({
-            url: latkeConfig.servePath + "/console/users/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
-            type: "GET",
-            cache: false,
-            success: function(result, textStatus) {
-                $("#tipMsg").text(result.msg);
-                if (!result.sc) {
-                    $("#loadMsg").text("");
-                    return;
-                }
+    $.ajax({
+      url: latkeConfig.servePath + '/console/users/' + pageNum + '/' +
+      Label.PAGE_SIZE + '/' + Label.WINDOW_SIZE,
+      type: 'GET',
+      cache: false,
+      success: function (result, textStatus) {
+        $('#tipMsg').text(result.msg)
+        if (!result.sc) {
+          $('#loadMsg').text('')
+          return
+        }
 
-                var users = result.users;
-                var userData = [];
-                admin.userList.pageInfo.currentCount = users.length;
-                admin.userList.pageInfo.pageCount = result.pagination.paginationPageCount;
-                if (users.length < 1) {
-                    $("#tipMsg").text("No user  " + Label.reportIssueLabel);
-                    $("#loadMsg").text("");
-                    return;
-                }
+        var users = result.users
+        var userData = []
+        admin.userList.pageInfo.currentCount = users.length
+        admin.userList.pageInfo.pageCount = result.pagination.paginationPageCount
+        if (users.length < 1) {
+          $('#tipMsg').text('No user  ' + Label.reportIssueLabel)
+          $('#loadMsg').text('')
+          return
+        }
+        $('#tipMsg').text(Label.uploadMsg)
 
-                for (var i = 0; i < users.length; i++) {
-                    userData[i] = {};
-                    userData[i].userName = users[i].userName;
-                    userData[i].userEmail = users[i].userEmail;
+        for (var i = 0; i < users.length; i++) {
+          userData[i] = {}
+          userData[i].userName = users[i].userName
+          userData[i].userEmail = users[i].userEmail
 
-                    if ("adminRole" === users[i].userRole) {
-                        userData[i].isAdmin = "&nbsp;" + Label.administratorLabel;
-                        userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" +
-                                users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>";
-                    } else {
-                        userData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.userList.get('" +
-                                users[i].oId + "', '" + users[i].userRole + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.userList.del('" + users[i].oId + "', '" + encodeURIComponent(users[i].userName) + "')\">" + Label.removeLabel + "</a> " +
-                                "<a href='javascript:void(0)' onclick=\"admin.userList.changeRole('" + users[i].oId + "')\">" + Label.changeRoleLabel + "</a>";
-                        if ("defaultRole" === users[i].userRole) {
-                            userData[i].isAdmin = Label.commonUserLabel;
-                        }
-                        else {
-                            userData[i].isAdmin = Label.visitorUserLabel;
-                        }
-                    }
-
-                    that.tablePagination.updateTablePagination(userData, pageNum, result.pagination);
-
-                    $("#loadMsg").text("");
-                }
+          if ('adminRole' === users[i].userRole) {
+            userData[i].isAdmin = '&nbsp;' + Label.administratorLabel
+            userData[i].expendRow = '<a href=\'javascript:void(0)\' onclick="admin.userList.get(\'' +
+              users[i].oId + '\', \'' + users[i].userRole + '\')">' +
+              Label.updateLabel + '</a>'
+          } else {
+            userData[i].expendRow = '<a href=\'javascript:void(0)\' onclick="admin.userList.get(\'' +
+              users[i].oId + '\', \'' + users[i].userRole + '\')">' +
+              Label.updateLabel + '</a>\
+                                <a href=\'javascript:void(0)\' onclick="admin.userList.del(\'' +
+              users[i].oId + '\', \'' + encodeURIComponent(users[i].userName) +
+              '\')">' + Label.removeLabel + '</a> ' +
+              '<a href=\'javascript:void(0)\' onclick="admin.userList.changeRole(\'' +
+              users[i].oId + '\')">' + Label.changeRoleLabel + '</a>'
+            if ('defaultRole' === users[i].userRole) {
+              userData[i].isAdmin = Label.commonUserLabel
             }
-        });
-    },
-    /*
-     * 获取用户
-     * @id 用户 id
-     */
-    get: function(id, userRole) {
-        $("#loadMsg").text(Label.loadingLabel);
-        $("#tipMsg").text("");
-        $("#userUpdate").dialog("open");
-
-        $.ajax({
-            url: latkeConfig.servePath + "/console/user/" + id,
-            type: "GET",
-            cache: false,
-            success: function(result, textStatus) {
-                $("#tipMsg").text(result.msg);
-                if (!result.sc) {
-                    $("#loadMsg").text("");
-                    return;
-                }
-
-                var $userEmailUpdate = $("#userEmailUpdate");
-                $("#userNameUpdate").val(result.user.userName).data("userInfo", {
-                    'oId': id,
-                    "userRole": userRole
-                });
-                $userEmailUpdate.val(result.user.userEmail);
-                $("#userURLUpdate").val(result.user.userURL);
-                $("#userAvatarUpdate").val(result.user.userAvatar);
-                $("#userB3KeyUpdate").val(result.user.userB3Key);
-
-                $("#loadMsg").text("");
+            else {
+              userData[i].isAdmin = Label.visitorUserLabel
             }
-        });
-    },
-    /*
-     * 更新用户
-     */
-    update: function() {
-        if (this.validate("Update")) {
-            $("#loadMsg").text(Label.loadingLabel);
-            $("#tipMsg").text("");
+          }
 
-            var userInfo = $("#userNameUpdate").data("userInfo");
-            var requestJSONObject = {
-                "userName": $("#userNameUpdate").val(),
-                "oId": userInfo.oId,
-                "userEmail": $("#userEmailUpdate").val(),
-                "userURL": $("#userURLUpdate").val(),
-                "userRole": userInfo.userRole,
-                "userAvatar": $("#userAvatarUpdate").val(),
-                "userB3Key": $("#userB3KeyUpdate").val()
-            };
+          that.tablePagination.updateTablePagination(userData, pageNum,
+            result.pagination)
 
-            $.ajax({
-                url: latkeConfig.servePath + "/console/user/",
-                type: "PUT",
-                cache: false,
-                data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus) {
-                    $("#userUpdate").dialog("close");
-                    $("#tipMsg").text(result.msg);
-                    if (!result.sc) {
-                        $("#loadMsg").text("");
-                        return;
-                    }
-
-                    admin.userList.getList(admin.userList.pageInfo.currentPage);
-
-                    $("#loadMsg").text("");
-                }
-            });
         }
-    },
-    /*
-     * 删除用户
-     * @id 用户 id
-     * @userName 用户名称
-     */
-    del: function(id, userName) {
-        var isDelete = confirm(Label.confirmRemoveLabel + Label.userLabel + '"' + Util.htmlDecode(userName) + '"?');
-        if (isDelete) {
-            $("#loadMsg").text(Label.loadingLabel);
-            $("#tipMsg").text("");
+        $('#loadMsg').text('')
+      },
+    })
+  },
+  /*
+   * 获取用户
+   * @id 用户 id
+   */
+  get: function (id, userRole) {
+    $('#loadMsg').text(Label.loadingLabel)
+    $('#tipMsg').text('')
+    $('#userUpdate').dialog('open')
 
-            $.ajax({
-                url: latkeConfig.servePath + "/console/user/" + id,
-                type: "DELETE",
-                cache: false,
-                success: function(result, textStatus) {
-                    $("#tipMsg").text(result.msg);
-                    if (!result.sc) {
-                        $("#loadMsg").text("");
-                        return;
-                    }
-
-                    var pageNum = admin.userList.pageInfo.currentPage;
-                    if (admin.userList.pageInfo.currentCount === 1 && admin.userList.pageInfo.pageCount !== 1 &&
-                            admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
-                        admin.userList.pageInfo.pageCount--;
-                        pageNum = admin.userList.pageInfo.pageCount;
-                    }
-                    var hashList = window.location.hash.split("/");
-                    if (pageNum !== parseInt(hashList[hashList.length - 1])) {
-                        admin.setHashByPage(pageNum);
-                    }
-                    admin.userList.getList(pageNum);
-
-                    $("#loadMsg").text("");
-                }
-            });
+    $.ajax({
+      url: latkeConfig.servePath + '/console/user/' + id,
+      type: 'GET',
+      cache: false,
+      success: function (result, textStatus) {
+        $('#tipMsg').text(result.msg)
+        if (!result.sc) {
+          $('#loadMsg').text('')
+          return
         }
-    },
-    /**
-     * 修改角色
-     * @param id
-     */
-    changeRole: function(id) {
-        $("#tipMsg").text("");
-        $.ajax({
-            url: latkeConfig.servePath + "/console/changeRole/" + id,
-            type: "GET",
-            cache: false,
-            success: function(result, textStatus) {
-                $("#tipMsg").text(result.msg);
-                if (!result.sc) {
-                    $("#loadMsg").text("");
-                    return;
-                }
 
-                var pageNum = admin.userList.pageInfo.currentPage;
-                if (admin.userList.pageInfo.currentCount === 1 && admin.userList.pageInfo.pageCount !== 1 &&
-                        admin.userList.pageInfo.currentPage === admin.userList.pageInfo.pageCount) {
-                    admin.userList.pageInfo.pageCount--;
-                    pageNum = admin.userList.pageInfo.pageCount;
-                }
-                var hashList = window.location.hash.split("/");
-                if (pageNum !== parseInt(hashList[hashList.length - 1])) {
-                    admin.setHashByPage(pageNum);
-                }
-                admin.userList.getList(pageNum);
+        var $userEmailUpdate = $('#userEmailUpdate')
+        $('#userNameUpdate').val(result.user.userName).data('userInfo', {
+          'oId': id,
+          'userRole': userRole,
+        })
+        $userEmailUpdate.val(result.user.userEmail)
+        $('#userURLUpdate').val(result.user.userURL)
+        $('#userAvatarUpdate').val(result.user.userAvatar)
+        $('#userB3KeyUpdate').val(result.user.userB3Key)
 
-                $("#loadMsg").text("");
-            }
-        });
-    },
-    /*
-     * 验证字段
-     * @status 更新或者添加时进行验证
-     */
-    validate: function(status) {
-        if (!status) {
-            status = "";
-        }
-        var userName = $("#userName" + status).val().replace(/(^\s*)|(\s*$)/g, "");
-        if (2 > userName.length || userName.length > 20) {
-            $("#tipMsg").text(Label.nameTooLongLabel);
-            $("#userName" + status).focus();
-        } else if ($("#userEmail" + status).val().replace(/\s/g, "") === "") {
-            $("#tipMsg").text(Label.mailCannotEmptyLabel);
-            $("#userEmail" + status).focus();
-        } else if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#userEmail" + status).val())) {
-            $("#tipMsg").text(Label.mailInvalidLabel);
-            $("#userEmail" + status).focus();
-        } else {
-            return true;
-        }
-        return false;
+        $('#loadMsg').text('')
+      },
+    })
+  },
+  /*
+   * 更新用户
+   */
+  update: function () {
+    if (this.validate('Update')) {
+      $('#loadMsg').text(Label.loadingLabel)
+      $('#tipMsg').text('')
+
+      var userInfo = $('#userNameUpdate').data('userInfo')
+      var requestJSONObject = {
+        'userName': $('#userNameUpdate').val(),
+        'oId': userInfo.oId,
+        'userEmail': $('#userEmailUpdate').val(),
+        'userURL': $('#userURLUpdate').val(),
+        'userRole': userInfo.userRole,
+        'userAvatar': $('#userAvatarUpdate').val(),
+        'userB3Key': $('#userB3KeyUpdate').val(),
+      }
+
+      $.ajax({
+        url: latkeConfig.servePath + '/console/user/',
+        type: 'PUT',
+        cache: false,
+        data: JSON.stringify(requestJSONObject),
+        success: function (result, textStatus) {
+          $('#userUpdate').dialog('close')
+          $('#tipMsg').text(result.msg)
+          if (!result.sc) {
+            $('#loadMsg').text('')
+            return
+          }
+
+          admin.userList.getList(admin.userList.pageInfo.currentPage)
+
+          $('#loadMsg').text('')
+        },
+      })
     }
-};
+  },
+  /*
+   * 删除用户
+   * @id 用户 id
+   * @userName 用户名称
+   */
+  del: function (id, userName) {
+    var isDelete = confirm(Label.confirmRemoveLabel + Label.userLabel + '"' +
+      Util.htmlDecode(userName) + '"?')
+    if (isDelete) {
+      $('#loadMsg').text(Label.loadingLabel)
+      $('#tipMsg').text('')
+
+      $.ajax({
+        url: latkeConfig.servePath + '/console/user/' + id,
+        type: 'DELETE',
+        cache: false,
+        success: function (result, textStatus) {
+          $('#tipMsg').text(result.msg)
+          if (!result.sc) {
+            $('#loadMsg').text('')
+            return
+          }
+
+          var pageNum = admin.userList.pageInfo.currentPage
+          if (admin.userList.pageInfo.currentCount === 1 &&
+            admin.userList.pageInfo.pageCount !== 1 &&
+            admin.userList.pageInfo.currentPage ===
+            admin.userList.pageInfo.pageCount) {
+            admin.userList.pageInfo.pageCount--
+            pageNum = admin.userList.pageInfo.pageCount
+          }
+          var hashList = window.location.hash.split('/')
+          if (pageNum !== parseInt(hashList[hashList.length - 1])) {
+            admin.setHashByPage(pageNum)
+          }
+          admin.userList.getList(pageNum)
+
+          $('#loadMsg').text('')
+        },
+      })
+    }
+  },
+  /**
+   * 修改角色
+   * @param id
+   */
+  changeRole: function (id) {
+    $('#tipMsg').text('')
+    $.ajax({
+      url: latkeConfig.servePath + '/console/changeRole/' + id,
+      type: 'GET',
+      cache: false,
+      success: function (result, textStatus) {
+        $('#tipMsg').text(result.msg)
+        if (!result.sc) {
+          $('#loadMsg').text('')
+          return
+        }
+
+        var pageNum = admin.userList.pageInfo.currentPage
+        if (admin.userList.pageInfo.currentCount === 1 &&
+          admin.userList.pageInfo.pageCount !== 1 &&
+          admin.userList.pageInfo.currentPage ===
+          admin.userList.pageInfo.pageCount) {
+          admin.userList.pageInfo.pageCount--
+          pageNum = admin.userList.pageInfo.pageCount
+        }
+        var hashList = window.location.hash.split('/')
+        if (pageNum !== parseInt(hashList[hashList.length - 1])) {
+          admin.setHashByPage(pageNum)
+        }
+        admin.userList.getList(pageNum)
+
+        $('#loadMsg').text('')
+      },
+    })
+  },
+  /*
+   * 验证字段
+   * @status 更新或者添加时进行验证
+   */
+  validate: function (status) {
+    if (!status) {
+      status = ''
+    }
+    var userName = $('#userName' + status).val().replace(/(^\s*)|(\s*$)/g, '')
+    if (2 > userName.length || userName.length > 20) {
+      $('#tipMsg').text(Label.nameTooLongLabel)
+      $('#userName' + status).focus()
+    } else if ($('#userEmail' + status).val().replace(/\s/g, '') === '') {
+      $('#tipMsg').text(Label.mailCannotEmptyLabel)
+      $('#userEmail' + status).focus()
+    } else if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(
+      $('#userEmail' + status).val())) {
+      $('#tipMsg').text(Label.mailInvalidLabel)
+      $('#userEmail' + status).focus()
+    } else {
+      return true
+    }
+    return false
+  },
+}
 
 /*
  * 注册到 admin 进行管理 
  */
-admin.register["user-list"] = {
-    "obj": admin.userList,
-    "init": admin.userList.init,
-    "refresh": admin.userList.getList
+admin.register['user-list'] = {
+  'obj': admin.userList,
+  'init': admin.userList.init,
+  'refresh': admin.userList.getList,
 }
