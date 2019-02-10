@@ -215,9 +215,9 @@ public class UserQueryService {
      */
     public String getLogoutURL() {
         String to = Latkes.getServePath();
-        to = URLs.encode(to + "/");
+        to = URLs.encode(to);
 
-        return Latkes.getContextPath() + "/logout?goto=" + to;
+        return Latkes.getContextPath() + "/logout?referer=" + to;
     }
 
     /**
@@ -230,6 +230,6 @@ public class UserQueryService {
         String to = Latkes.getServePath();
         to = URLs.encode(to + redirectURL);
 
-        return Latkes.getContextPath() + "/start?goto=" + to;
+        return Latkes.getContextPath() + "/start?referer=" + to;
     }
 }

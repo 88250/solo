@@ -29,11 +29,11 @@
 
 <div id="github">
     <div class="github__icon"
-         onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">
+         onclick="window.location.href = '${servePath}/oauth/github/redirect?referer=${referer}';$('#github').addClass('github--loading')">
         <img src="${staticServePath}/images/github.png"/>
     </div>
     <button class="hover"
-            onclick="window.location.href = '${servePath}/oauth/github/redirect';$('#github').addClass('github--loading')">${useGitHubAccountLoginLabel}</button>
+            onclick="window.location.href = '${servePath}/oauth/github/redirect?referer=${referer}';$('#github').addClass('github--loading')">${useGitHubAccountLoginLabel}</button>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript">

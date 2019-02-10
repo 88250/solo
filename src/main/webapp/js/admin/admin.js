@@ -36,7 +36,7 @@ $.extend(Admin.prototype, {
      * @description  登出
      */
     logout: function () {
-        window.location.href = latkeConfig.servePath + "/logout?goto=" + latkeConfig.servePath;
+        window.location.href = latkeConfig.servePath + "/logout";
     },
     toggleMenu: function () {
       if ($('#tabs').css('left') === '-240px') {

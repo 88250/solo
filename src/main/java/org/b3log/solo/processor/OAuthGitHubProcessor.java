@@ -121,7 +121,7 @@ public class OAuthGitHubProcessor {
      */
     @RequestProcessing(value = "/oauth/github/redirect", method = HttpMethod.GET)
     public void redirectGitHub(final RequestContext context) {
-        String referer = context.header("referer");
+        String referer = context.param("referer");
         if (StringUtils.isBlank(referer)) {
             referer = Latkes.getServePath();
         }
