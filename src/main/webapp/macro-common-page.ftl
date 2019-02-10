@@ -36,7 +36,7 @@
     <div class="content-wrap">
         <div class="content">
             <div class="logo">
-                <a href="https://b3log.org" target="_blank">
+                <a href="https://solo.b3log.org" target="_blank">
                     <img width="128" border="0" alt="Solo" title="Solo" src="${staticServePath}/images/logo.png"/>
                 </a>
             </div>
