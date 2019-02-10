@@ -173,7 +173,6 @@ public class B3Receiver {
             final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
             final String articleId = symArticle.getString(Keys.OBJECT_ID);
             final JSONObject oldArticle = articleQueryService.getArticleById(articleId);
-            String localId;
             if (null == oldArticle) {
                 final JSONObject article = new JSONObject().
                         put(Keys.OBJECT_ID, symArticle.optString("id")).
@@ -189,8 +188,7 @@ public class B3Receiver {
                 article.put(Article.ARTICLE_VIEW_PWD, "");
                 final String content = article.getString(Article.ARTICLE_CONTENT);
                 article.put(Article.ARTICLE_CONTENT, content);
-                localId = articleMgmtService.addArticle(requestJSONObject);
-                ret.put(Keys.OBJECT_ID, localId);
+                articleMgmtService.addArticle(requestJSONObject);
 
                 return;
             }
@@ -203,8 +201,6 @@ public class B3Receiver {
             oldArticle.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
             final JSONObject updateRequest = new JSONObject().put(Article.ARTICLE, oldArticle);
             articleMgmtService.updateArticle(updateRequest);
-            localId = oldArticle.optString(Keys.OBJECT_ID);
-            ret.put(Keys.OBJECT_ID, localId);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
