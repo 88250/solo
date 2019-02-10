@@ -167,6 +167,7 @@ public final class Solos {
     private static long uploadTokenTime;
     private static String uploadToken = "";
     private static String uploadURL = "https://hacpai.com/upload/client";
+    private static String uploadMsg = "";
 
     /**
      * Gets upload token.
@@ -191,13 +192,15 @@ public final class Solos {
             if (3600000 >= now - uploadTokenTime) {
                 return new JSONObject().
                         put(Common.UPLOAD_TOKEN, uploadToken).
-                        put(Common.UPLOAD_URL, uploadURL);
+                        put(Common.UPLOAD_URL, uploadURL).
+                        put(Common.UPLOAD_MSG, uploadMsg);
             }
 
             if (15000 >= now - uploadTokenCheckTime) {
                 return new JSONObject().
                         put(Common.UPLOAD_TOKEN, uploadToken).
-                        put(Common.UPLOAD_URL, uploadURL);
+                        put(Common.UPLOAD_URL, uploadURL).
+                        put(Common.UPLOAD_MSG, uploadMsg);
             }
 
             final JSONObject requestJSON = new JSONObject().put(User.USER_NAME, userName).put(UserExt.USER_B3_KEY, userB3Key);
@@ -210,7 +213,8 @@ public final class Solos {
             res.charset("UTF-8");
             final JSONObject result = new JSONObject(res.bodyText());
             if (0 != result.optInt(Keys.CODE)) {
-                LOGGER.log(Level.ERROR, result.optString(Keys.MSG));
+                uploadMsg = result.optString(Keys.MSG);
+                LOGGER.log(Level.ERROR, uploadMsg);
 
                 return null;
             }
@@ -219,10 +223,12 @@ public final class Solos {
             uploadTokenTime = now;
             uploadToken = data.optString("uploadToken");
             uploadURL = data.optString("uploadURL");
+            uploadMsg = "";
 
             return new JSONObject().
                     put(Common.UPLOAD_TOKEN, uploadToken).
-                    put(Common.UPLOAD_URL, uploadURL);
+                    put(Common.UPLOAD_URL, uploadURL).
+                    put(Common.UPLOAD_MSG, uploadMsg);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets upload token failed", e);
 

@@ -28,6 +28,11 @@ package org.b3log.solo.model;
 public final class Common {
 
     /**
+     * Key of upload msg.
+     */
+    public static final String UPLOAD_MSG = "uploadMsg";
+
+    /**
      * Key of upload URL.
      */
     public static final String UPLOAD_URL = "uploadURL";

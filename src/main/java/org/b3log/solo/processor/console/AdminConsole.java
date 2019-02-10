@@ -163,10 +163,12 @@ public class AdminConsole {
             // 内置 HTTPS+CDN 文件存储 https://github.com/b3log/solo/issues/12556
             dataModel.put(Common.UPLOAD_TOKEN, "");
             dataModel.put(Common.UPLOAD_URL, "");
+            dataModel.put(Common.UPLOAD_MSG, "");
             final JSONObject upload = Solos.getUploadToken(context);
             if (null != upload) {
                 dataModel.put(Common.UPLOAD_TOKEN, upload.optString(Common.UPLOAD_TOKEN));
                 dataModel.put(Common.UPLOAD_URL, upload.optString(Common.UPLOAD_URL));
+                dataModel.put(Common.UPLOAD_MSG, upload.optString(Common.UPLOAD_MSG));
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Admin index render failed", e);
