@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.46, Feb 7, 2019
+    Version: 3.18.3.46, Feb 10, 2019
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -363,18 +363,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>${maven-war-plugin.version}</version>
-                <configuration>
-                    <webResources>
-                        <resource>
-                            <directory>${project.basedir}/src/main/resources/lib/net/pusuo</directory>
-                            <targetPath>WEB-INF/lib</targetPath>
-                            <filtering>false</filtering>
-                            <includes>
-                                <include>**/*.jar</include>
-                            </includes>
-                        </resource>
-                    </webResources>
-                </configuration>
             </plugin>
 
         </plugins>
