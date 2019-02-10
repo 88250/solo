@@ -32,6 +32,7 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
+import org.b3log.solo.event.B3ArticleSender;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
@@ -50,7 +51,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.2.16, Feb 6, 2019
+ * @version 1.3.0.0, Feb 10, 2019
  * @since 0.3.5
  */
 @Service
@@ -152,21 +153,24 @@ public class ArticleMgmtService {
     private TagMgmtService tagMgmtService;
 
     /**
-     * Determines whether the specified tag title exists in the specified tags.
+     * Pushes an article specified by the given article id to community.
      *
-     * @param tagTitle the specified tag title
-     * @param tags     the specified tags
-     * @return {@code true} if it exists, {@code false} otherwise
-     * @throws JSONException json exception
+     * @param articleId the given article id
      */
-    private static boolean tagExists(final String tagTitle, final List<JSONObject> tags) throws JSONException {
-        for (final JSONObject tag : tags) {
-            if (tag.getString(Tag.TAG_TITLE).equals(tagTitle)) {
-                return true;
+    public void pushArticleToCommunity(final String articleId) {
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            if (null == article) {
+                return;
             }
-        }
 
-        return false;
+            article.put(Common.POST_TO_COMMUNITY, true);
+
+            final JSONObject data = new JSONObject().put(ARTICLE, article);
+            B3ArticleSender.pushArticleToRhy(data);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Pushes an article [id=" + articleId + "] to community failed", e);
+        }
     }
 
     /**
@@ -327,14 +331,12 @@ public class ArticleMgmtService {
                 // Fire add article event
                 final JSONObject eventData = new JSONObject();
                 eventData.put(ARTICLE, article);
-                eventData.put(Keys.RESULTS, ret);
-                eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
             } else {
                 // Fire update article event
                 final JSONObject eventData = new JSONObject();
                 eventData.put(ARTICLE, article);
-                eventData.put(Keys.RESULTS, ret);
-                eventManager.fireEventSynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
             }
 
             transaction.commit();
@@ -458,7 +460,7 @@ public class ArticleMgmtService {
             if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
                 final JSONObject eventData = new JSONObject();
                 eventData.put(Article.ARTICLE, article);
-                eventManager.fireEventSynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
+                eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
             }
 
             article.remove(Common.POST_TO_COMMUNITY);
@@ -911,5 +913,23 @@ public class ArticleMgmtService {
         }
 
         return ret.replaceAll(" ", "-");
+    }
+
+    /**
+     * Determines whether the specified tag title exists in the specified tags.
+     *
+     * @param tagTitle the specified tag title
+     * @param tags     the specified tags
+     * @return {@code true} if it exists, {@code false} otherwise
+     * @throws JSONException json exception
+     */
+    private static boolean tagExists(final String tagTitle, final List<JSONObject> tags) throws JSONException {
+        for (final JSONObject tag : tags) {
+            if (tag.getString(Tag.TAG_TITLE).equals(tagTitle)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

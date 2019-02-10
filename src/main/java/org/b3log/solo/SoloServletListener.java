@@ -53,7 +53,7 @@ import javax.servlet.http.HttpSessionEvent;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.8, Jan 16, 2019
+ * @version 1.10.0.9, Feb 10, 2019
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -330,6 +330,7 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/export/hexo", adminConsole::exportHexo);
 
         final ArticleConsole articleConsole = beanManager.getReference(ArticleConsole.class);
+        DispatcherServlet.get("/console/article/push2rhy", articleConsole::pushArticleToCommunity);
         DispatcherServlet.get("/console/thumbs", articleConsole::getArticleThumbs);
         DispatcherServlet.post("/console/markdown/2html", articleConsole::markdown2HTML);
         DispatcherServlet.get("/console/article/{id}", articleConsole::getArticle);

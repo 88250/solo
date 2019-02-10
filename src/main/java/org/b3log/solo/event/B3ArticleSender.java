@@ -47,7 +47,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.0.2.16, Feb 8, 2019
+ * @version 1.0.2.17, Feb 10, 2019
  * @since 0.3.1
  */
 @Singleton
@@ -67,7 +67,12 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
         pushArticleToRhy(data);
     }
 
-    static void pushArticleToRhy(final JSONObject data) {
+    /**
+     * Pushes the specified article data to B3log Rhythm.
+     *
+     * @param data the specified article data
+     */
+    public static void pushArticleToRhy(final JSONObject data) {
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {

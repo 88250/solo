@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.9, Feb 10, 2019
+ * @version 1.2.0.0, Feb 10, 2019
  * @since 0.4.0
  */
 @Singleton
@@ -86,6 +86,18 @@ public class ArticleConsole {
      */
     @Inject
     private LangPropsService langPropsService;
+
+    /**
+     * Pushes an article to community.
+     *
+     * @param context the specified request context
+     */
+    public void pushArticleToCommunity(final RequestContext context) {
+        final JSONObject result = new JSONObject().put(Keys.CODE, 0);
+        context.renderJSON(result);
+        final String articleId = context.param("id");
+        articleMgmtService.pushArticleToCommunity(articleId);
+    }
 
     /**
      * Gets article thumbs.
