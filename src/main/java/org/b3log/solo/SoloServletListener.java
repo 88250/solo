@@ -332,7 +332,6 @@ public final class SoloServletListener extends AbstractServletListener {
         final ArticleConsole articleConsole = beanManager.getReference(ArticleConsole.class);
         DispatcherServlet.get("/console/article/push2rhy", articleConsole::pushArticleToCommunity);
         DispatcherServlet.get("/console/thumbs", articleConsole::getArticleThumbs);
-        DispatcherServlet.post("/console/markdown/2html", articleConsole::markdown2HTML);
         DispatcherServlet.get("/console/article/{id}", articleConsole::getArticle);
         DispatcherServlet.get("/console/articles/status/{status}/{page}/{pageSize}/{windowSize}", articleConsole::getArticles);
         DispatcherServlet.delete("/console/article/{id}", articleConsole::removeArticle);

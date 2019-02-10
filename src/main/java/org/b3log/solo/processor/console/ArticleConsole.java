@@ -36,9 +36,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Images;
-import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -149,41 +147,6 @@ public class ArticleConsole {
         final int height = h;
 
         result.put("data", urls.stream().map(url -> Images.imageSize(url, width, height)).collect(Collectors.toList()));
-    }
-
-    /**
-     * Markdowns.
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "html": ""
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     */
-    public void markdown2HTML(final RequestContext context) {
-        final JSONObject result = Solos.newSucc();
-        context.renderJSON(result);
-
-        final String markdownText = context.requestJSON().optString("markdownText");
-        if (StringUtils.isBlank(markdownText)) {
-            result.put(Common.DATA, "");
-
-            return;
-        }
-
-        try {
-            String html = Emotions.convert(markdownText);
-            html = Markdowns.toHTML(html);
-            result.put(Common.DATA, html);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-            context.renderJSONValue(Keys.CODE, -1);
-            context.renderJSONValue(Keys.MSG, langPropsService.get("getFailLabel"));
-        }
     }
 
     /**

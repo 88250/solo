@@ -40,7 +40,7 @@ import java.io.StringReader;
  * {@link CommentProcessorTestCase} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Sep 20, 2018
+ * @version 1.0.0.5, Feb 10, 2019
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -68,10 +68,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         request.setMethod("POST");
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
-        CaptchaProcessor.CAPTCHA_ON = false;
-
         final JSONObject requestJSON = new JSONObject();
-        requestJSON.put("captcha", "captcha123456");
         requestJSON.put("oId", addPage());
         requestJSON.put("commentName", "88250");
         requestJSON.put("commentEmail", "d@hacpai.com");
@@ -80,6 +77,8 @@ public class CommentProcessorTestCase extends AbstractTestCase {
 
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
+
+        mockAdminLogin(request);
 
         final MockHttpServletResponse response = mockResponse();
         mockDispatcherServletService(request, response);
@@ -100,10 +99,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         request.setMethod("POST");
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
-        CaptchaProcessor.CAPTCHA_ON = false;
-
         final JSONObject requestJSON = new JSONObject();
-        requestJSON.put("captcha", "captcha123456");
         requestJSON.put("oId", addArticle());
         requestJSON.put("commentName", "88250");
         requestJSON.put("commentEmail", "d@hacpai.com");
@@ -112,6 +108,8 @@ public class CommentProcessorTestCase extends AbstractTestCase {
 
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
+
+        mockAdminLogin(request);
 
         final MockHttpServletResponse response = mockResponse();
         mockDispatcherServletService(request, response);

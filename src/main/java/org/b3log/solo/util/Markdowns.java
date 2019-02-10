@@ -197,6 +197,7 @@ public final class Markdowns {
 
             String ret = doc.select("body").html();
             ret = StringUtils.trim(ret);
+            ret = Images.qiniuImgProcessing(ret);
 
             // cache it
             putHTML(markdownText, ret);

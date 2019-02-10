@@ -43,6 +43,8 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.*;
+import org.b3log.solo.util.Emotions;
+import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -134,6 +136,49 @@ public class ArticleProcessor {
      */
     @Inject
     private EventManager eventManager;
+
+    /**
+     * Markdowns.
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "html": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified http request context
+     */
+    @RequestProcessing(value = "/console/markdown/2html", method = HttpMethod.POST)
+    public void markdown2HTML(final RequestContext context) {
+        final JSONObject result = Solos.newSucc();
+        context.renderJSON(result);
+
+        final String markdownText = context.requestJSON().optString("markdownText");
+        if (StringUtils.isBlank(markdownText)) {
+            result.put(Common.DATA, "");
+
+            return;
+        }
+
+        if (!Solos.isLoggedIn(context)) {
+            result.put(Keys.CODE, -1);
+            result.put(Keys.MSG, langPropsService.get("getFailLabel"));
+
+            return;
+        }
+
+        try {
+            String html = Emotions.convert(markdownText);
+            html = Markdowns.toHTML(html);
+            result.put(Common.DATA, html);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+            result.put(Keys.CODE, -1);
+            result.put(Keys.MSG, langPropsService.get("getFailLabel"));
+        }
+    }
 
     /**
      * Shows the article view password form.

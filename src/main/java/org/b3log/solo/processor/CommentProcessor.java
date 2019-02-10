@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.3.3.5, Dec 3, 2018
+ * @version 1.3.3.6, Feb 10, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -140,13 +140,10 @@ public class CommentProcessor {
         }
 
         if (!Solos.isLoggedIn(context)) {
-            final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-            if (CaptchaProcessor.invalidCaptcha(captcha)) {
-                jsonObject.put(Keys.STATUS_CODE, false);
-                jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, "Need login");
 
-                return;
-            }
+            return;
         }
 
         try {
@@ -241,13 +238,10 @@ public class CommentProcessor {
         }
 
         if (!Solos.isLoggedIn(context)) {
-            final String captcha = requestJSONObject.optString(CaptchaProcessor.CAPTCHA);
-            if (CaptchaProcessor.invalidCaptcha(captcha)) {
-                jsonObject.put(Keys.STATUS_CODE, false);
-                jsonObject.put(Keys.MSG, langPropsService.get("captchaErrorLabel"));
+            jsonObject.put(Keys.STATUS_CODE, false);
+            jsonObject.put(Keys.MSG, "Need login");
 
-                return;
-            }
+            return;
         }
 
         try {
