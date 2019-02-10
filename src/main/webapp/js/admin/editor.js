@@ -19,7 +19,7 @@
  * @fileoverview editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.0, Feb 6, 2019
+ * @version 1.2.0.1, Feb 10, 2019
  */
 
 admin.editors = {}
@@ -45,7 +45,7 @@ $.extend(SoloEditor.prototype, {
       cache: true,
       preview: {
         delay: 500,
-        show: false,
+        show: this.conf.previewShow,
         url: latkeConfig.servePath + '/console/markdown/2html',
         parse: function (element) {
           if (element.style.display === 'none') {

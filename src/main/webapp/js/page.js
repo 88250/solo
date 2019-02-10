@@ -20,113 +20,23 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.1.0, Jan 4, 2019
+ * @version 2.0.0.0, Feb 10, 2019
  */
 var Page = function (tips) {
-  this.currentCommentId = "";
-  this.tips = tips;
-};
+  this.currentCommentId = ''
+  this.tips = tips
+}
+
 $.extend(Page.prototype, {
-  /*
-   * @description 评论时点击表情，在评论内容中插入相关代码
-   * @param {String} name 用于区别回复评论还是对文章的评论
-   */
-  insertEmotions: function (name) {
-    var _it = this;
-    if (name === undefined) {
-      name = "";
-    }
-
-    $("#emotions" + name + " span").click(function () {
-      var $comment = $("#comment" + name);
-      var endPosition = _it._getCursorEndPosition($comment[0]);
-      var key = this.title + ' ',
-        textValue = $comment[0].value;
-      textValue = textValue.substring(0, endPosition) + key + textValue.substring(endPosition, textValue.length);
-      $("#comment" + name).val(textValue);
-      if (!!window.ActiveXObject || "ActiveXObject" in window) {
-        endPosition -= textValue.split('\n').length - 1;
-        var oR = $comment[0].createTextRange();
-        oR.collapse(true);
-        oR.moveStart('character', endPosition + key.length);
-        oR.select();
-      } else {
-        $comment[0].setSelectionRange(endPosition + key.length, endPosition + key.length);
-      }
-    });
-  },
-  /**
-   * @description 获取当前光标最后位置
-   * @param {Dom} textarea 评论框对象
-   * @returns {Num} 光标位置
-   */
-  _getCursorEndPosition: function (textarea) {
-    textarea.focus();
-    if (textarea.setSelectionRange) { // W3C
-      return textarea.selectionEnd;
-    } else if (document.selection) { // IE
-      var i = 0,
-        oS = document.selection.createRange(),
-        oR = document.body.createTextRange();
-      oR.moveToElementText(textarea);
-      oS.getBookmark();
-      for (i = 0; oR.compareEndPoints('StartToStart', oS) < 0 && oS.moveStart("character", -1) !== 0; i++) {
-        if (textarea.value.charAt(i) === '\n') {
-          i++;
-        }
-      }
-      return i;
-    }
-  },
-  /*
-   * @description 评论校验
-   * @param {String} state 用于区别回复评论还是对文章的评论
-   */
-  validateComment: function (state) {
-    if (Util.isLoggedIn()) {
-      var commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
-      if (2 > commenterContent.length || commenterContent.length > 500) {
-        $("#commentErrorTip" + state).html(this.tips.commentContentCannotEmptyLabel);
-        $("#comment" + state).focus();
-      } else {
-        return true;
-      }
-      $("#commentErrorTip" + state).show();
-      return false;
-    }
-
-    var commentName = $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
-      commenterContent = $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "");
-    if (2 > commentName.length || commentName.length > 20) {
-      $("#commentErrorTip" + state).html(this.tips.nameTooLongLabel);
-      $("#commentName" + state).focus();
-    } else if ($("#commentEmail" + state).val().replace(/\s/g, "") === "") {
-      $("#commentErrorTip" + state).html(this.tips.mailCannotEmptyLabel);
-      $("#commentEmail" + state).focus();
-    } else if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test($("#commentEmail" + state).val())) {
-      $("#commentErrorTip" + state).html(this.tips.mailInvalidLabel);
-      $("#commentEmail" + state).focus();
-    } else if (2 > commenterContent.length || commenterContent.length > 500) {
-      $("#commentErrorTip" + state).html(this.tips.commentContentCannotEmptyLabel);
-      $("#comment" + state).focus();
-    } else if ($("#commentValidate" + state).val().replace(/\s/g, "") === "") {
-      $("#commentErrorTip" + state).html(this.tips.captchaCannotEmptyLabel);
-      $("#commentValidate" + state).focus();
-    } else {
-      return true;
-    }
-    $("#commentErrorTip" + state).show();
-    return false;
-  },
   /*
    * @description 把评论中的标识替换为图片
    * @param {Dom} selector
    */
   replaceCommentsEm: function (selector) {
-    var $commentContents = $(selector);
+    var $commentContents = $(selector)
     for (var i = 0; i < $commentContents.length; i++) {
-      var str = $commentContents[i].innerHTML;
-      $commentContents[i].innerHTML = Util.replaceEmString(str);
+      var str = $commentContents[i].innerHTML
+      $commentContents[i].innerHTML = Util.replaceEmString(str)
     }
   },
   /*
@@ -134,64 +44,161 @@ $.extend(Page.prototype, {
    * @param {Obj} obj 语法高亮配置参数
    */
   parseLanguage: function (obj) {
-    var isHljs = false;
-    $(".article-body pre, .content-reset pre, .code-highlight pre").each(function () {
-      isHljs = true
-    });
+    var isHljs = false
+    $('.article-body pre, .content-reset pre, .code-highlight pre').
+      each(function () {
+        isHljs = true
+      })
 
     if (isHljs) {
       // otherelse use highlight
       // load css
       if (document.createStyleSheet) {
-        document.createStyleSheet(latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/styles/" + ((obj && obj.theme) || 'github') + ".css");
+        document.createStyleSheet(latkeConfig.staticServePath +
+          '/js/lib/highlight-9.13.1/styles/' +
+          ((obj && obj.theme) || 'github') + '.css')
       } else {
-        $("head").append($("<link rel='stylesheet' href='" + latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/styles/" + ((obj && obj.theme) || 'github') + ".css'>"));
+        $('head').
+          append(
+            $('<link rel=\'stylesheet\' href=\'' + latkeConfig.staticServePath +
+              '/js/lib/highlight-9.13.1/styles/' +
+              ((obj && obj.theme) || 'github') + '.css\'>'))
       }
       if (!Label.markedAvailable) {
         $.ajax({
-          url: latkeConfig.staticServePath + "/js/lib/highlight-9.13.1/highlight.pack.js",
-          dataType: "script",
+          url: latkeConfig.staticServePath +
+          '/js/lib/highlight-9.13.1/highlight.pack.js',
+          dataType: 'script',
           cache: true,
           success: function () {
-            hljs.initHighlighting.called = false;
-            hljs.initHighlighting();
-          }
-        });
+            hljs.initHighlighting.called = false
+            hljs.initHighlighting()
+          },
+        })
       }
     }
   },
   /*
    * @description 文章/自定义页面加载
    * @param {Obj} obj 配置设定
-   * @param {Obj} obj.language 代码高亮配置
+   * @param {Obj} obj.theme 代码高亮配置
    */
   load: function (obj) {
-    var that = this;
-    // emotions
-    that.insertEmotions();
+    var that = this
     // language
-    that.parseLanguage(obj ? (obj.language ? obj.language : undefined) : undefined);
-    // submit comment
-    $("#commentValidate").keypress(function (event) {
-      if (event.keyCode === 13) {
-        that.submitComment();
-      }
-    });
+    that.parseLanguage(obj)
+    // comment
+    $('#comment').click(function () {
+      that.toggleEditor()
+    }).attr('readonly', 'readonly')
 
-    $("#comment").keypress(function (event) {
-      if (event.keyCode === 13 && event.ctrlKey) {
-        that.submitComment();
+    $('#soloEditorCancel').click(function () {
+      that.toggleEditor()
+    })
+    $('#soloEditorAdd').click(function () {
+      that.submitComment()
+    })
+  },
+  toggleEditor: function (commentId, name) {
+    var that = this
+
+    if (typeof Vditor === 'undefined') {
+      $('head').
+        append(
+          $('<link rel=\'stylesheet\' href=\'https://vditor.b3log.org/0.1.7/index.classic.css\'>'))
+
+      $.ajax({
+        method: 'GET',
+        url: 'https://vditor.b3log.org/0.1.7/index.min.js',
+        dataType: 'script',
+        cache: true,
+        async: false,
+        success: () => {
+          window.vditor = new Vditor('soloEditorComment', {
+            placeholder: that.tips.commentContentCannotEmptyLabel,
+            height: 180,
+            esc: () => {
+              $('#soloEditorCancel').click()
+            },
+            ctrlEnter: () => {
+              $('#soloEditorAdd').click()
+            },
+            preview: {
+              delay: 500,
+              show: false,
+              url: latkeConfig.servePath + '/console/markdown/2html',
+              parse: (element) => {
+                if (element.style.display === 'none') {
+                  return
+                }
+                Util.parseMarkdown('content-reset')
+                if (!Label.markedAvailable) {
+                  hljs.initHighlighting.called = false
+                  hljs.initHighlighting()
+                }
+              },
+            },
+            counter: 500,
+            resize: {
+              enable: true,
+              position: 'top',
+            },
+            lang: that.tips.langLabel,
+            toolbar: [
+              'emoji',
+              'headings',
+              'bold',
+              'italic',
+              'strike',
+              '|',
+              'line',
+              'quote',
+              '|',
+              'list',
+              'ordered-list',
+              'check',
+              '|',
+              'code',
+              'inline-code',
+              '|',
+              'undo',
+              'redo',
+              '|',
+              'link',
+              'table',
+              '|',
+              'preview',
+              'fullscreen',
+              'info',
+              'help',
+            ],
+            classes: {
+              preview: 'content__reset',
+            },
+          })
+          vditor.focus()
+        },
+      })
+    }
+
+    var $editor = $('#soloEditor')
+    if ($editor.length === 0) {
+      location.href = latkeConfig.servePath + '/start'
+      return
+    }
+
+    if ($('body').css('padding-bottom') === '0px' || commentId) {
+      $('#soloEditorError').text('')
+      $editor.css({'bottom': '0', 'opacity': 1})
+      $('body').css('padding-bottom', '238px')
+      this.currentCommentId = commentId
+      $('#soloEditorReplyTarget').text(name ? '@' + name : '')
+      if (typeof vditor !== 'undefined') {
+        vditor.focus()
       }
-    });
-    // captcha
-    $("#captcha").click(function () {
-      $(this).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
-    });
-    // cookie
-    if (!Util.isLoggedIn()) {
-      $("#commentEmail").val(Cookie.readCookie("commentEmail"));
-      $("#commentURL").val(Cookie.readCookie("commentURL"));
-      $("#commentName").val(Cookie.readCookie("commentName"));
+    } else {
+      $editor.css({'bottom': '-300px', 'opacity': 0})
+      $('body').css('padding-bottom', 0)
     }
   },
   /*
@@ -199,32 +206,35 @@ $.extend(Page.prototype, {
    * @param {String} headTitle 随机文章标题
    */
   loadRandomArticles: function (headTitle) {
-    var randomArticles1Label = this.tips.randomArticles1Label;
+    var randomArticles1Label = this.tips.randomArticles1Label
     // getRandomArticles
     $.ajax({
-      url: latkeConfig.servePath + "/articles/random",
-      type: "POST",
+      url: latkeConfig.servePath + '/articles/random',
+      type: 'POST',
       success: function (result, textStatus) {
-        var randomArticles = result.randomArticles;
+        var randomArticles = result.randomArticles
         if (!randomArticles || 0 === randomArticles.length) {
-          $("#randomArticles").remove();
-          return;
+          $('#randomArticles').remove()
+          return
         }
 
-        var listHtml = "";
+        var listHtml = ''
         for (var i = 0; i < randomArticles.length; i++) {
-          var article = randomArticles[i];
-          var title = article.articleTitle;
-          var randomArticleLiHtml = "<li>" + "<a rel='nofollow' title='" + title + "' href='" + latkeConfig.servePath +
-            article.articlePermalink + "'>" + title + "</a></li>";
-          listHtml += randomArticleLiHtml;
+          var article = randomArticles[i]
+          var title = article.articleTitle
+          var randomArticleLiHtml = '<li>' + '<a rel=\'nofollow\' title=\'' +
+            title + '\' href=\'' + latkeConfig.servePath +
+            article.articlePermalink + '\'>' + title + '</a></li>'
+          listHtml += randomArticleLiHtml
         }
 
-        var titleHTML = headTitle ? headTitle : "<h4>" + randomArticles1Label + "</h4>";
-        var randomArticleListHtml = titleHTML + "<ul class='marginLeft12'>" + listHtml + "</ul>";
-        $("#randomArticles").append(randomArticleListHtml);
-      }
-    });
+        var titleHTML = headTitle ? headTitle : '<h4>' + randomArticles1Label +
+          '</h4>'
+        var randomArticleListHtml = titleHTML + '<ul class=\'marginLeft12\'>' +
+          listHtml + '</ul>'
+        $('#randomArticles').append(randomArticleListHtml)
+      },
+    })
   },
   /*
    * @description 加载相关文章
@@ -233,33 +243,34 @@ $.extend(Page.prototype, {
    */
   loadRelevantArticles: function (id, headTitle) {
     $.ajax({
-      url: latkeConfig.servePath + "/article/id/" + id + "/relevant/articles",
-      type: "GET",
+      url: latkeConfig.servePath + '/article/id/' + id + '/relevant/articles',
+      type: 'GET',
       success: function (data, textStatus) {
-        var articles = data.relevantArticles;
+        var articles = data.relevantArticles
         if (!articles || 0 === articles.length) {
-          $("#relevantArticles").remove();
-          return;
+          $('#relevantArticles').remove()
+          return
         }
-        var listHtml = "";
+        var listHtml = ''
         for (var i = 0; i < articles.length; i++) {
-          var article = articles[i];
-          var title = article.articleTitle;
-          var articleLiHtml = "<li>"
-            + "<a rel='nofollow' title='" + title + "' href='" + latkeConfig.servePath + article.articlePermalink + "'>"
-            + title + "</a></li>"
+          var article = articles[i]
+          var title = article.articleTitle
+          var articleLiHtml = '<li>'
+            + '<a rel=\'nofollow\' title=\'' + title + '\' href=\'' +
+            latkeConfig.servePath + article.articlePermalink + '\'>'
+            + title + '</a></li>'
           listHtml += articleLiHtml
         }
 
         var relevantArticleListHtml = headTitle
-          + "<ul class='marginLeft12'>"
-          + listHtml + "</ul>";
-        $("#relevantArticles").append(relevantArticleListHtml);
+          + '<ul class=\'marginLeft12\'>'
+          + listHtml + '</ul>'
+        $('#relevantArticles').append(relevantArticleListHtml)
       },
       error: function () {
-        $("#relevantArticles").remove();
-      }
-    });
+        $('#relevantArticles').remove()
+      },
+    })
   },
   /*
    * @description 加载站外相关文章
@@ -267,40 +278,43 @@ $.extend(Page.prototype, {
    * @param {String} headTitle 站外相关文章标题
    */
   loadExternalRelevantArticles: function (tags, headTitle) {
-    var tips = this.tips;
+    var tips = this.tips
     try {
       $.ajax({
-        url: "https://rhythm.b3log.org/get-articles-by-tags.do?tags=" + tags
-        + "&blogHost=" + tips.blogHost + "&paginationPageSize=" + tips.externalRelevantArticlesDisplayCount,
-        type: "GET",
+        url: 'https://rhythm.b3log.org/get-articles-by-tags.do?tags=' + tags
+        + '&blogHost=' + tips.blogHost + '&paginationPageSize=' +
+        tips.externalRelevantArticlesDisplayCount,
+        type: 'GET',
         cache: true,
-        dataType: "jsonp",
+        dataType: 'jsonp',
         error: function () {
-          $("#externalRelevantArticles").remove();
+          $('#externalRelevantArticles').remove()
         },
         success: function (data, textStatus) {
-          var articles = data.articles;
+          var articles = data.articles
           if (!articles || 0 === articles.length) {
-            $("#externalRelevantArticles").remove();
-            return;
+            $('#externalRelevantArticles').remove()
+            return
           }
-          var listHtml = "";
+          var listHtml = ''
           for (var i = 0; i < articles.length; i++) {
-            var article = articles[i];
-            var title = article.articleTitle;
-            var articleLiHtml = "<li>"
-              + "<a rel='nofollow' title='" + title + "' target='_blank' href='" + article.articlePermalink + "'>"
-              + title + "</a></li>"
+            var article = articles[i]
+            var title = article.articleTitle
+            var articleLiHtml = '<li>'
+              + '<a rel=\'nofollow\' title=\'' + title +
+              '\' target=\'_blank\' href=\'' + article.articlePermalink + '\'>'
+              + title + '</a></li>'
             listHtml += articleLiHtml
           }
 
-          var titleHTML = headTitle ? headTitle : "<h4>" + tips.externalRelevantArticles1Label + "</h4>";
+          var titleHTML = headTitle ? headTitle : '<h4>' +
+            tips.externalRelevantArticles1Label + '</h4>'
           var randomArticleListHtml = titleHTML
-            + "<ul class='marginLeft12'>"
-            + listHtml + "</ul>";
-          $("#externalRelevantArticles").append(randomArticleListHtml);
-        }
-      });
+            + '<ul class=\'marginLeft12\'>'
+            + listHtml + '</ul>'
+          $('#externalRelevantArticles').append(randomArticleListHtml)
+        },
+      })
     } catch (e) {
       // 忽略相关文章加载异常：load script error
     }
@@ -308,165 +322,63 @@ $.extend(Page.prototype, {
   /*
    * @description 提交评论
    * @param {String} commentId 回复评论时的评论 id
-   * @param {String} state 区分回复文章还是回复评论的标识
    */
-  submitComment: function (commentId, state) {
-    if (!state) {
-      state = '';
-    }
+  submitComment: function () {
     var that = this,
       tips = this.tips,
-      type = "article";
+      type = 'article'
     if (tips.externalRelevantArticlesDisplayCount === undefined) {
-      type = "page";
+      type = 'page'
     }
 
-    if (this.validateComment(state)) {
-      $("#submitCommentButton" + state).attr("disabled", "disabled");
-      $("#commentErrorTip" + state).show().html(this.tips.loadingLabel);
+    if (vditor.getValue().length > 2 && vditor.getValue().length < 500) {
+      $('#soloEditorAdd').attr('disabled', 'disabled')
       var requestJSONObject = {
-        "oId": tips.oId,
-        "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, "")
-      };
-
-      if (!Util.isLoggedIn()) {
-        requestJSONObject = {
-          "oId": tips.oId,
-          "commentContent": $("#comment" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
-          "commentEmail": $("#commentEmail" + state).val(),
-          "commentURL": Util.proessURL($("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, "")),
-          "commentName": $("#commentName" + state).val().replace(/(^\s*)|(\s*$)/g, ""),
-          "captcha": $("#commentValidate" + state).val()
-        };
-        Cookie.createCookie("commentName", requestJSONObject.commentName, 365);
-        Cookie.createCookie("commentEmail", requestJSONObject.commentEmail, 365);
-        Cookie.createCookie("commentURL", $("#commentURL" + state).val().replace(/(^\s*)|(\s*$)/g, ""), 365);
+        'oId': tips.oId,
+        'commentContent': vditor.getValue(),
       }
 
-      if (state === "Reply") {
-        requestJSONObject.commentOriginalCommentId = commentId;
+      if (this.currentCommentId) {
+        requestJSONObject.commentOriginalCommentId = this.currentCommentId
       }
 
       $.ajax({
-        type: "POST",
-        url: latkeConfig.servePath + "/" + type + "/comments",
+        type: 'POST',
+        url: latkeConfig.servePath + '/' + type + '/comments',
         cache: false,
-        contentType: "application/json",
+        contentType: 'application/json',
         data: JSON.stringify(requestJSONObject),
         success: function (result) {
-          $("#submitCommentButton" + state).removeAttr("disabled");
+          $('#soloEditorAdd').removeAttr('disabled')
           if (!result.sc) {
-            $("#commentErrorTip" + state).html(result.msg);
-            $("#commentValidate" + state).val('');
-            $("#captcha" + state).click();
-            if (!Util.isLoggedIn()) {
-              $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
-            }
-
-            return;
+            $('#soloEditorError').html(result.msg)
+            return
           }
 
-          $("#comment" + state).val(result.commentContent); // Server processed XSS
-          $("#commentName" + state).val(result.commentName); // Server processed XSS
-
-          result.replyNameHTML = "";
-          if (!Util.isLoggedIn()) {
-            $("#captcha" + state).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
-            if ($("#commentURL" + state).val().replace(/\s/g, "") === "") {
-              result.replyNameHTML = '<a>' + $("#commentName" + state).val() + '</a>';
-            } else {
-              result.replyNameHTML = '<a href="' + Util.proessURL($("#commentURL" + state).val()) +
-                '" target="_blank">' + $("#commentName" + state).val() + '</a>';
-            }
-            result.userName = result.commentName;
-          } else {
-            result.replyNameHTML = '<a href="' + window.location.host +
-              '" target="_blank">' + Util.getUserName() + '</a>';
-            result.userName = Util.getUserName();
-          }
-
-          that.addCommentAjax(Util.replaceEmString(result.cmtTpl), state);
-        }
-      });
+          that.toggleEditor()
+          vditor.setValue('')
+          that.addCommentAjax(Util.replaceEmString(result.cmtTpl))
+        },
+      })
+    } else {
+      $('#soloEditorError').text(that.tips.commentContentCannotEmptyLabel)
     }
   },
   /*
    * @description 添加回复评论表单
    * @param {String} id 被回复的评论 id
-   * @param {String} commentFormHTML 评论表单HTML
-   * @param {String} endHTML 判断该表单使用 table 还是 div 标签，然后进行构造
    */
-  addReplyForm: function (id, commentFormHTML, endHTML) {
-    var that = this;
-    if (id === this.currentCommentId) {
-      if ($("#commentNameReply").val() === "") {
-        $("#commentNameReply").focus();
-      } else if ($("#commentEmailReply").val() === "") {
-        $("#commentEmailReply").focus();
-      } else {
-        $("#commentReply").focus();
-      }
-      return;
-    }
-    $("#replyForm").remove();
-    endHTML = endHTML ? endHTML : "";
-    if (endHTML === "</div>") {
-      $("#" + id).append(commentFormHTML + $("#commentForm").html() + endHTML);
-    } else {
-      $("#" + id).append(commentFormHTML + $("#commentForm").html() + "</table>" + endHTML);
-    }
-
-    // change id, bind event and set value
-    $("#replyForm input, #replyForm textarea").each(function () {
-      this.id = this.id + "Reply";
-    });
-    $("#commentNameReply").val(Cookie.readCookie("commentName"));
-    $("#commentEmailReply").val(Cookie.readCookie("commentEmail"));
-    var $label = $("#replyForm #commentURLLabel");
-    if ($label.length === 1) {
-      $label.attr("id", "commentURLLabelReply");
-    }
-
-    $("#commentURLReply").val(Cookie.readCookie("commentURL"));
-    $("#replyForm #emotions").attr("id", "emotionsReply");
-    this.insertEmotions("Reply");
-    $("#commentReply").unbind().keypress(function (event) {
-      if (event.keyCode === 13 && event.ctrlKey) {
-        that.submitComment(id, 'Reply');
-        event.preventDefault();
-      }
-    });
-    $("#commentValidateReply").unbind().keypress(function (event) {
-      if (event.keyCode === 13) {
-        that.submitComment(id, 'Reply');
-        event.preventDefault();
-      }
-    });
-    $("#replyForm #captcha").attr("id", "captchaReply").attr("src", latkeConfig.servePath + "/captcha?" + new Date().getTime()).click(function () {
-      $(this).attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
-    });
-    $("#replyForm #commentErrorTip").attr("id", "commentErrorTipReply").html("").hide();
-    $("#replyForm #submitCommentButton").attr("id", "submitCommentButtonReply");
-    $("#replyForm #submitCommentButtonReply").unbind("click").removeAttr("onclick").click(function () {
-      that.submitComment(id, 'Reply');
-    });
-    $('#replyForm #cancelCommentButton').show()
-    if ($("#commentNameReply").val() === "") {
-      $("#commentNameReply").focus();
-    } else if ($("#commentEmailReply").val() === "") {
-      $("#commentEmailReply").focus();
-    } else {
-      $("#commentReply").focus();
-    }
-
-    this.currentCommentId = id;
+  addReplyForm: function (id, name) {
+    var that = this
+    that.currentCommentId = id
+    this.toggleEditor(id, name)
   },
   /*
    * @description 隐藏回复评论的浮出层
    * @parma {String} id 被回复的评论 id
    */
   hideComment: function (id) {
-    $("#commentRef" + id).hide();
+    $('#commentRef' + id).hide()
   },
   /*
    * @description 显示回复评论的浮出层
@@ -476,41 +388,31 @@ $.extend(Page.prototype, {
    * @param {String} [parentTag] it 如果嵌入在 position 为 relative 的元素 A 中时，需取到 A 元素
    */
   showComment: function (it, id, top, parentTag) {
-    var positionTop = parseInt($(it).position().top);
+    var positionTop = parseInt($(it).position().top)
     if (parentTag) {
-      positionTop = parseInt($(it).parents(parentTag).position().top);
+      positionTop = parseInt($(it).parents(parentTag).position().top)
     }
-    if ($("#commentRef" + id).length > 0) {
+    if ($('#commentRef' + id).length > 0) {
       // 此处重复设置 top 是由于评论为异步，原有回复评论的显示位置应往下移动
-      $("#commentRef" + id).show().css("top", (positionTop + top) + "px");
+      $('#commentRef' + id).show().css('top', (positionTop + top) + 'px')
     } else {
-      var $refComment = $("#" + id).clone();
-      $refComment.addClass("comment-body-ref").attr("id", "commentRef" + id);
-      $refComment.find("#replyForm").remove();
-      $("#comments").append($refComment);
-      $("#commentRef" + id).css("top", (positionTop + top) + "px");
+      var $refComment = $('#' + id).clone()
+      $refComment.addClass('comment-body-ref').attr('id', 'commentRef' + id)
+      $refComment.find('#replyForm').remove()
+      $('#comments').append($refComment)
+      $('#commentRef' + id).css('top', (positionTop + top) + 'px')
     }
   },
   /*
    * @description 回复不刷新，将回复内容异步添加到评论列表中
    * @parma {String} commentHTML 回复内容 HTML
-   * @param {String} state 用于区分评论文章还是回复评论
    */
-  addCommentAjax: function (commentHTML, state) {
-    if ($("#comments").children().length > 0) {
-      $($("#comments").children()[0]).before(commentHTML);
+  addCommentAjax: function (commentHTML) {
+    if ($('#comments').children().length > 0) {
+      $($('#comments').children()[0]).before(commentHTML)
     } else {
-      $("#comments").html(commentHTML);
+      $('#comments').html(commentHTML)
     }
-
-    if (state === "") {
-      $("#commentErrorTip").html("").hide();
-      $("#comment").val("");
-      $("#commentValidate").val("");
-      $("#captcha").attr("src", latkeConfig.servePath + "/captcha?code=" + Math.random());
-    } else {
-      $("#replyForm").remove();
-    }
-    window.location.hash = "#comments";
-  }
-});
+    window.location.hash = '#comments'
+  },
+})
