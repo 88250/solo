@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 2.6.0.1, Feb 8, 2019
+* @version 2.6.0.2, Feb 10, 2019
 */
 
 /* start resset */
@@ -872,8 +872,9 @@ table.form th {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50%;
-    height: 648px;
-    width: 100%;
+    height: 432px;
+    width: 768px;
+    margin: 0 auto;
 }
 
 .article__thumbnail button {
