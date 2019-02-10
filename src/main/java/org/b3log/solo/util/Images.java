@@ -42,6 +42,32 @@ public final class Images {
     private static final Logger LOGGER = Logger.getLogger(Images.class);
 
     /**
+     * Qiniu image processing.
+     *
+     * @param html the specified content HTML
+     * @return processed content
+     */
+    public static String qiniuImgProcessing(final String html) {
+        String ret = html;
+        final String qiniuDomain = "https://img.hacpai.com";
+        final String[] imgSrcs = StringUtils.substringsBetween(html, "<img src=\"", "\"");
+        if (null == imgSrcs) {
+            return ret;
+        }
+
+        for (final String imgSrc : imgSrcs) {
+            if (!StringUtils.startsWith(imgSrc, qiniuDomain) || StringUtils.contains(imgSrc, ".gif")
+                    || StringUtils.containsIgnoreCase(imgSrc, "?imageView2")) {
+                continue;
+            }
+
+            ret = StringUtils.replace(ret, imgSrc, imgSrc + "?imageView2/2/w/768/format/webp/interlace/1");
+        }
+
+        return ret;
+    }
+
+    /**
      * Returns image URL of Qiniu image processing style with the specified width and height.
      *
      * @param imageURL the specified image URL
