@@ -25,6 +25,8 @@
     };
 
     var Label = {
+        "pushSuccLabel": '${pushSuccLabel}',
+        "pushToHacpaiLabel": '${pushToHacpaiLabel}',
         "uploadMsg": '${uploadMsg}',
         "uploadToken": "${uploadToken}",
         "uploadURL": "${uploadURL}",
