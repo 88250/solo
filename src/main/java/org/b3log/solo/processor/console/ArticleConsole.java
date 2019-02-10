@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.8, Feb 6, 2019
+ * @version 1.1.1.9, Feb 10, 2019
  * @since 0.4.0
  */
 @Singleton
@@ -95,10 +95,10 @@ public class ArticleConsole {
      * {
      *     "sc": true,
      *     "data": [
-     *         "https://img.hacpai.com/bing/20171226.jpg?imageView2/1/w/960/h/510/interlace/1/q/100",
-     *         "https://img.hacpai.com/bing/20171105.jpg?imageView2/1/w/960/h/510/interlace/1/q/100",
-     *         "https://img.hacpai.com/bing/20180105.jpg?imageView2/1/w/960/h/510/interlace/1/q/100",
-     *         "https://img.hacpai.com/bing/20171114.jpg?imageView2/1/w/960/h/510/interlace/1/q/100"
+     *         "https://img.hacpai.com/bing/20171226.jpg?imageView2/1/w/960/h/540/interlace/1/q/100",
+     *         "https://img.hacpai.com/bing/20171105.jpg?imageView2/1/w/960/h/540/interlace/1/q/100",
+     *         "https://img.hacpai.com/bing/20180105.jpg?imageView2/1/w/960/h/540/interlace/1/q/100",
+     *         "https://img.hacpai.com/bing/20171114.jpg?imageView2/1/w/960/h/540/interlace/1/q/100"
      *     ]
      * }
      * </pre>
@@ -120,7 +120,23 @@ public class ArticleConsole {
 
         final int n = Integer.valueOf(strN);
         final List<String> urls = Images.randomImages(n);
-        result.put("data", urls.stream().map(url -> url += "?imageView2/1/w/960/h/510/interlace/1/q/100").collect(Collectors.toList()));
+
+        // original: 1920*1080
+
+        final String wStr = context.param("w");
+        int w = 960;
+        if (Strings.isNumeric(wStr)) {
+            w = Integer.valueOf(wStr);
+        }
+        final int width = w;
+        final String hStr = context.param("h");
+        int h = 540;
+        if (Strings.isNumeric(hStr)) {
+            h = Integer.valueOf(hStr);
+        }
+        final int height = h;
+
+        result.put("data", urls.stream().map(url -> Images.imageSize(url, width, height)).collect(Collectors.toList()));
     }
 
     /**

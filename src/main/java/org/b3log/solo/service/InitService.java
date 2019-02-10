@@ -59,7 +59,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.28, Feb 6, 2019
+ * @version 1.5.2.29, Feb 10, 2019
  * @since 0.4.0
  */
 @Service
@@ -244,7 +244,7 @@ public class InitService {
         final JSONObject article = new JSONObject();
 
         article.put(Article.ARTICLE_TITLE, langPropsService.get("helloWorld.title"));
-        final String content = "![](" + Images.randImage() + "?imageView2/1/w/960/h/510/interlace/1/q/100) \n\n" +
+        final String content = "![](" + Images.imageSize(Images.randImage(), 960, 540) + ") \n\n" +
                 langPropsService.get("helloWorld.content");
 
         article.put(Article.ARTICLE_ABSTRACT, content);
