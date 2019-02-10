@@ -40,7 +40,7 @@ import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 /**
- * This listener is responsible for sending comment to B3log Symphony. Sees <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
+ * This listener is responsible for sending comment to B3log Rhythm. Sees <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.1.5, Feb 9, 2019
