@@ -28,7 +28,6 @@ import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
@@ -44,7 +43,6 @@ import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 /**
@@ -139,11 +137,10 @@ public class B3Receiver {
      */
     @RequestProcessing(value = "/apis/symphony/article", method = HttpMethod.POST)
     public void addArticle(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject ret = new JSONObject();
-        final JSONObject requestJSONObject = context.requestJSON();
+        final JSONObject ret = new JSONObject().put(Keys.CODE, 0);
+        context.renderJSON(ret);
 
+        final JSONObject requestJSONObject = context.requestJSON();
         LOGGER.log(Level.INFO, "Adds an article from Sym [" + requestJSONObject.toString() + "]");
 
         try {
@@ -151,7 +148,7 @@ public class B3Receiver {
             final String articleAuthorName = client.optString(User.USER_NAME);
             final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
             if (null == articleAuthor) {
-                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.CODE, 1);
                 ret.put(Keys.MSG, "No found user [" + articleAuthorName + "]");
 
                 return;
@@ -160,15 +157,11 @@ public class B3Receiver {
             final String b3Key = client.optString(UserExt.USER_B3_KEY);
             final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
             if (!StringUtils.equals(key, b3Key)) {
-                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.CODE, 1);
                 ret.put(Keys.MSG, "Wrong key");
 
                 return;
             }
-
-            ret.put(Keys.MSG, "add article succ");
-            ret.put(Keys.STATUS_CODE, true);
-            renderer.setJSONObject(ret);
 
             final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
             final String articleId = symArticle.getString(Keys.OBJECT_ID);
@@ -203,10 +196,7 @@ public class B3Receiver {
             articleMgmtService.updateArticle(updateRequest);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, e.getMessage());
+            ret.put(Keys.CODE, 1).put(Keys.MSG, e.getMessage());
         }
     }
 
@@ -248,7 +238,7 @@ public class B3Receiver {
      */
     @RequestProcessing(value = "/apis/symphony/comment", method = HttpMethod.PUT)
     public void addComment(final RequestContext context) {
-        final JSONObject ret = new JSONObject();
+        final JSONObject ret = new JSONObject().put(Keys.CODE, 0);
         context.renderJSON(ret);
 
         final JSONObject requestJSONObject = context.requestJSON();
@@ -262,7 +252,7 @@ public class B3Receiver {
             final String articleAuthorName = symClient.optString(User.USER_NAME);
             final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
             if (null == articleAuthor) {
-                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.CODE, 1);
                 ret.put(Keys.MSG, "No found user [" + articleAuthorName + "]");
 
                 return;
@@ -271,7 +261,7 @@ public class B3Receiver {
             final String b3Key = symClient.optString(UserExt.USER_B3_KEY);
             final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
             if (!StringUtils.equals(key, b3Key)) {
-                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.CODE, 1);
                 ret.put(Keys.MSG, "Wrong key");
 
                 return;
@@ -280,7 +270,7 @@ public class B3Receiver {
             final String articleId = symCmt.getString("articleId");
             final JSONObject article = articleRepository.get(articleId);
             if (null == article) {
-                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_NOT_FOUND);
+                ret.put(Keys.CODE, 1);
                 ret.put(Keys.MSG, "Not found the specified article [id=" + articleId + "]");
 
                 return;
@@ -320,13 +310,9 @@ public class B3Receiver {
                 LOGGER.log(Level.WARN, "Send mail failed", e);
             }
             transaction.commit();
-
-            ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false).put(Keys.MSG, e.getMessage());
-            context.renderJSON(jsonObject);
+            ret.put(Keys.CODE, 1).put(Keys.MSG, e.getMessage());
         }
     }
 }
