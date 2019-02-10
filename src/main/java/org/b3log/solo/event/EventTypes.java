@@ -21,7 +21,7 @@ package org.b3log.solo.event;
  * Event types.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, May 30, 2014
+ * @version 1.1.0.8, Feb 10, 2019
  * @since 0.3.1
  */
 public final class EventTypes {
@@ -50,11 +50,6 @@ public final class EventTypes {
      * Indicates an add comment to article event.
      */
     public static final String ADD_COMMENT_TO_ARTICLE = "Add Comment To Article";
-
-    /**
-     * Indicates an add comment (from symphony) to article event.
-     */
-    public static final String ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY = "Add Comment To Article From Symphony";
 
     /**
      * Indicates an add comment to page event.

@@ -19,8 +19,6 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.event.Event;
-import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -30,50 +28,63 @@ import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.ArticleMgmtService;
+import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.PreferenceQueryService;
-import org.b3log.solo.service.StatisticMgmtService;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 /**
- * Receiving comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
+ * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.21, Feb 8, 2019
+ * @version 2.0.0.0, Feb 10, 2019
  * @since 0.5.5
  */
 @RequestProcessor
-public class B3CommentReceiver {
+public class B3Receiver {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(B3CommentReceiver.class);
+    private static final Logger LOGGER = Logger.getLogger(B3Receiver.class);
 
     /**
-     * Comment management service.
+     * User repository.
      */
     @Inject
-    private CommentMgmtService commentMgmtService;
+    private UserRepository userRepository;
 
     /**
      * Comment repository.
      */
     @Inject
     private static CommentRepository commentRepository;
+
+    /**
+     * Article repository.
+     */
+    @Inject
+    private ArticleRepository articleRepository;
+
+    /**
+     * Comment management service.
+     */
+    @Inject
+    private CommentMgmtService commentMgmtService;
 
     /**
      * Preference query service.
@@ -88,28 +99,120 @@ public class B3CommentReceiver {
     private ArticleMgmtService articleMgmtService;
 
     /**
-     * Article repository.
+     * Article query service.
      */
     @Inject
-    private ArticleRepository articleRepository;
+    private ArticleQueryService articleQueryService;
 
     /**
-     * User repository.
+     * Adds an article with the specified request.
+     * <p>
+     * Request json:
+     * <pre>
+     * {
+     *     "article": {
+     *         "id": "",
+     *          "title": "",
+     *          "content": "",
+     *          "contentHTML": "",
+     *          "tags": "tag1,tag2,tag3"
+     *     },
+     *     "client": {
+     *         "userName": "",
+     *         "userB3Key": ""
+     *     }
+     * }
+     * </pre>
+     * </p>
+     * <p>
+     * Renders the response with a json object, for example,
+     * <pre>
+     * {
+     *     "sc": boolean,
+     *     "oId": "", // Generated article id
+     *     "msg": ""
+     * }
+     * </pre>
+     * </p>
+     *
+     * @param context the specified http request context
      */
-    @Inject
-    private UserRepository userRepository;
+    @RequestProcessing(value = "/apis/symphony/article", method = HttpMethod.POST)
+    public void addArticle(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
+        context.setRenderer(renderer);
+        final JSONObject ret = new JSONObject();
+        final JSONObject requestJSONObject = context.requestJSON();
 
-    /**
-     * Event manager.
-     */
-    @Inject
-    private static EventManager eventManager;
+        LOGGER.log(Level.INFO, "Adds an article from Sym [" + requestJSONObject.toString() + "]");
 
-    /**
-     * Statistic management service.
-     */
-    @Inject
-    private StatisticMgmtService statisticMgmtService;
+        try {
+            final JSONObject client = requestJSONObject.optJSONObject("client");
+            final String articleAuthorName = client.optString(User.USER_NAME);
+            final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
+            if (null == articleAuthor) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.MSG, "No found user [" + articleAuthorName + "]");
+
+                return;
+            }
+
+            final String b3Key = client.optString(UserExt.USER_B3_KEY);
+            final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
+            if (!StringUtils.equals(key, b3Key)) {
+                ret.put(Keys.STATUS_CODE, HttpServletResponse.SC_FORBIDDEN);
+                ret.put(Keys.MSG, "Wrong key");
+
+                return;
+            }
+
+            ret.put(Keys.MSG, "add article succ");
+            ret.put(Keys.STATUS_CODE, true);
+            renderer.setJSONObject(ret);
+
+            final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
+            final String articleId = symArticle.getString(Keys.OBJECT_ID);
+            final JSONObject oldArticle = articleQueryService.getArticleById(articleId);
+            String localId;
+            if (null == oldArticle) {
+                final JSONObject article = new JSONObject().
+                        put(Keys.OBJECT_ID, symArticle.optString("id")).
+                        put(Article.ARTICLE_TITLE, symArticle.optString("title")).
+                        put(Article.ARTICLE_CONTENT, symArticle.optString("content")).
+                        put(Article.ARTICLE_TAGS_REF, symArticle.optString("tags"));
+                article.put(Article.ARTICLE_AUTHOR_ID, articleAuthor.getString(Keys.OBJECT_ID));
+                final String articleContent = article.optString(Article.ARTICLE_CONTENT);
+                article.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(articleContent));
+                article.put(Article.ARTICLE_IS_PUBLISHED, true);
+                article.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
+                article.put(Article.ARTICLE_COMMENTABLE, true);
+                article.put(Article.ARTICLE_VIEW_PWD, "");
+                final String content = article.getString(Article.ARTICLE_CONTENT);
+                article.put(Article.ARTICLE_CONTENT, content);
+                localId = articleMgmtService.addArticle(requestJSONObject);
+                ret.put(Keys.OBJECT_ID, localId);
+
+                return;
+            }
+
+            final String articleContent = symArticle.optString("content");
+            oldArticle.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(articleContent));
+            oldArticle.put(Article.ARTICLE_CONTENT, articleContent);
+            oldArticle.put(Article.ARTICLE_TITLE, symArticle.optString("title"));
+            oldArticle.put(Article.ARTICLE_TAGS_REF, symArticle.optString("tags"));
+            oldArticle.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
+            final JSONObject updateRequest = new JSONObject().put(Article.ARTICLE, oldArticle);
+            articleMgmtService.updateArticle(updateRequest);
+            localId = oldArticle.optString(Keys.OBJECT_ID);
+            ret.put(Keys.OBJECT_ID, localId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, e.getMessage(), e);
+
+            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
+            renderer.setJSONObject(jsonObject);
+            jsonObject.put(Keys.MSG, e.getMessage());
+        }
+    }
 
     /**
      * Adds a comment with the specified request.
@@ -153,6 +256,9 @@ public class B3CommentReceiver {
         context.renderJSON(ret);
 
         final JSONObject requestJSONObject = context.requestJSON();
+
+        LOGGER.log(Level.INFO, "Adds a comment from Sym [" + requestJSONObject.toString() + "]");
+
         final Transaction transaction = commentRepository.beginTransaction();
         try {
             final JSONObject symCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
@@ -220,11 +326,6 @@ public class B3CommentReceiver {
             transaction.commit();
 
             ret.put(Keys.STATUS_CODE, true);
-
-            final JSONObject eventData = new JSONObject();
-            eventData.put(Comment.COMMENT, comment);
-            eventData.put(Article.ARTICLE, article);
-            eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_COMMENT_TO_ARTICLE_FROM_SYMPHONY, eventData));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
