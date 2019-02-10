@@ -37,7 +37,6 @@ import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
-import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.PreferenceQueryService;
