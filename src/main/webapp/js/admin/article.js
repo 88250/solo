@@ -156,7 +156,7 @@ admin.article = {
 
       if ($('#articleThumbnail').prop('checked')) {
         var bgImage = $('.thumbnail__img').css('background-image')
-        articleContent = '![](' + bgImage.substring(5, bgImage.length - 2) +
+        articleContent = '![](' + bgImage.substring(5, bgImage.length - 2).replace('w/768', 'w/960').replace('h/432', 'h/540') +
           ')\n\n' + articleContent
       }
 
@@ -334,19 +334,12 @@ admin.article = {
         $('#unSubmitArticle').hide()
         $('#saveArticle').show()
       }
-      if (this.status.articleHadBeenPublished) {
-        $('#postToCommunityPanel').hide()
-      } else {
-        $('#postToCommunityPanel').show()
-      }
     } else {
       $('#submitArticle').show()
       $('#unSubmitArticle').hide()
       $('#saveArticle').show()
       $('#postToCommunityPanel').show()
     }
-
-    $('#postToCommunity').attr('checked', 'checked')
   },
   /**
    * @description 清除发布文章页面的输入框的内容
@@ -392,6 +385,8 @@ admin.article = {
       $('.signs button').removeClass('selected')
       $(this).addClass('selected')
     })
+
+    $('#tipMsg').text(Label.uploadMsg)
 
     // For tag auto-completion
     $.ajax({// Gets all tags
@@ -623,7 +618,7 @@ admin.register.article = {
     admin.editors.abstractEditor.setContent('')
     admin.editors.articleEditor.setContent('')
     $('#loadMsg').text('')
-    $('#tipMsg').text('')
+    $('#tipMsg').text(Label.uploadMsg)
   },
 }
 

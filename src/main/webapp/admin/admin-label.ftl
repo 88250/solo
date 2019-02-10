@@ -25,6 +25,7 @@
     };
 
     var Label = {
+        "uploadMsg": '${uploadMsg}',
         "uploadToken": "${uploadToken}",
         "uploadURL": "${uploadURL}",
         "markedAvailable": ${markedAvailable?c},
