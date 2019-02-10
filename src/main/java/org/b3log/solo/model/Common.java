@@ -22,10 +22,15 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.7.0.1, Feb 8, 2019
+ * @version 1.7.0.2, Feb 11, 2019
  * @since 0.3.1
  */
 public final class Common {
+
+    /**
+     * Key of referer.
+     */
+    public static final String REFERER = "referer";
 
     /**
      * Key of upload msg.
@@ -306,11 +311,6 @@ public final class Common {
      * Key of unused tags.
      */
     public static final String UNUSED_TAGS = "unusedTags";
-
-    /**
-     * Key of go to.
-     */
-    public static final String GOTO = "goto";
 
     /**
      * Key of online visitor count.

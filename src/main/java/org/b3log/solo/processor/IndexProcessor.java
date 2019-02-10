@@ -56,7 +56,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
- * @version 1.2.4.14, Feb 7, 2019
+ * @version 1.2.4.15, Feb 11, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -148,6 +148,59 @@ public class IndexProcessor {
     }
 
     /**
+     * Shows start page.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = "/start", method = HttpMethod.GET)
+    public void showStart(final RequestContext context) {
+        if (initService.isInited() && null != Solos.getCurrentUser(context.getRequest(), context.getResponse())) {
+            context.sendRedirect(Latkes.getServePath());
+
+            return;
+        }
+
+        String referer = context.header("referer");
+        if (StringUtils.isBlank(referer) || !isInternalLinks(referer)) {
+            referer = Latkes.getServePath();
+        }
+
+        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "start.ftl");
+        final Map<String, Object> dataModel = renderer.getDataModel();
+        final HttpServletRequest request = context.getRequest();
+        final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
+        dataModel.putAll(langs);
+        dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
+        dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        dataModel.put(Common.REFERER, referer);
+        Keys.fillRuntime(dataModel);
+        dataModelService.fillMinified(dataModel);
+
+        Solos.addGoogleNoIndex(context);
+    }
+
+    /**
+     * Logout.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = "/logout", method = HttpMethod.GET)
+    public void logout(final RequestContext context) {
+        final HttpServletRequest httpServletRequest = context.getRequest();
+
+        Solos.logout(httpServletRequest, context.getResponse());
+
+        String referer = context.header("referer");
+        if (StringUtils.isBlank(referer) || !isInternalLinks(referer)) {
+            referer = Latkes.getServePath();
+        }
+
+        Solos.addGoogleNoIndex(context);
+        context.sendRedirect(referer);
+    }
+
+    /**
      * Shows kill browser page with the specified context.
      *
      * @param context the specified context
@@ -173,67 +226,13 @@ public class IndexProcessor {
     }
 
     /**
-     * Shows start page.
-     *
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/start", method = HttpMethod.GET)
-    public void showStart(final RequestContext context) {
-        String destinationURL = context.param(Common.GOTO);
-        if (StringUtils.isBlank(destinationURL)) {
-            destinationURL = Latkes.getServePath() + Common.ADMIN_INDEX_URI;
-        } else if (!isInternalLinks(destinationURL)) {
-            destinationURL = Latkes.getServePath();
-        }
-
-        if (initService.isInited() && null != Solos.getCurrentUser(context.getRequest(), context.getResponse())) {
-            context.sendRedirect(destinationURL);
-
-            return;
-        }
-
-        final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "start.ftl");
-        final Map<String, Object> dataModel = renderer.getDataModel();
-        final HttpServletRequest request = context.getRequest();
-        final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
-        dataModel.putAll(langs);
-        dataModel.put(Common.VERSION, SoloServletListener.VERSION);
-        dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
-        dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        Keys.fillRuntime(dataModel);
-        dataModelService.fillMinified(dataModel);
-
-        Solos.addGoogleNoIndex(context);
-    }
-
-    /**
-     * Logout.
-     *
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/logout", method = HttpMethod.GET)
-    public void logout(final RequestContext context) {
-        final HttpServletRequest httpServletRequest = context.getRequest();
-
-        Solos.logout(httpServletRequest, context.getResponse());
-
-        String destinationURL = context.param(Common.GOTO);
-        if (StringUtils.isBlank(destinationURL) || !isInternalLinks(destinationURL)) {
-            destinationURL = Latkes.getServePath();
-        }
-
-        context.sendRedirect(destinationURL);
-        Solos.addGoogleNoIndex(context);
-    }
-
-    /**
      * Preventing unvalidated redirects and forwards. See more at:
      * <a href="https://www.owasp.org/index.php/Unvalidated_Redirects_and_Forwards_Cheat_Sheet">https://www.owasp.org/index.php/
      * Unvalidated_Redirects_and_Forwards_Cheat_Sheet</a>.
      *
      * @return whether the destinationURL is an internal link
      */
-    private boolean isInternalLinks(String destinationURL) {
+    private boolean isInternalLinks(final String destinationURL) {
         return destinationURL.startsWith(Latkes.getServePath());
     }
 }
