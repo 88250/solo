@@ -69,7 +69,6 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         final JSONObject requestJSON = new JSONObject();
-        requestJSON.put("captcha", "captcha123456");
         requestJSON.put("oId", addPage());
         requestJSON.put("commentName", "88250");
         requestJSON.put("commentEmail", "d@hacpai.com");
@@ -78,6 +77,8 @@ public class CommentProcessorTestCase extends AbstractTestCase {
 
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
+
+        mockAdminLogin(request);
 
         final MockHttpServletResponse response = mockResponse();
         mockDispatcherServletService(request, response);
@@ -99,7 +100,6 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
 
         final JSONObject requestJSON = new JSONObject();
-        requestJSON.put("captcha", "captcha123456");
         requestJSON.put("oId", addArticle());
         requestJSON.put("commentName", "88250");
         requestJSON.put("commentEmail", "d@hacpai.com");
@@ -108,6 +108,8 @@ public class CommentProcessorTestCase extends AbstractTestCase {
 
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
+
+        mockAdminLogin(request);
 
         final MockHttpServletResponse response = mockResponse();
         mockDispatcherServletService(request, response);
