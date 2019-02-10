@@ -191,13 +191,8 @@ public class IndexProcessor {
 
         Solos.logout(httpServletRequest, context.getResponse());
 
-        String referer = context.header("referer");
-        if (StringUtils.isBlank(referer) || !isInternalLinks(referer)) {
-            referer = Latkes.getServePath();
-        }
-
         Solos.addGoogleNoIndex(context);
-        context.sendRedirect(referer);
+        context.sendRedirect(Latkes.getServePath());
     }
 
     /**
