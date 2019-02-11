@@ -23,8 +23,13 @@
       "servePath": "${servePath}",
       "isLoggedIn": "true"
     };
-    
+
     var Label = {
+        "pushSuccLabel": '${pushSuccLabel}',
+        "pushToHacpaiLabel": '${pushToHacpaiLabel}',
+        "uploadMsg": '${uploadMsg}',
+        "uploadToken": "${uploadToken}",
+        "uploadURL": "${uploadURL}",
         "markedAvailable": ${markedAvailable?c},
         "skinDirName": "${skinDirName}",
         "userRole": "${userRole}",
@@ -74,9 +79,8 @@
         "statusLabel": "${statusLabel}",
         "versionLabel": "${versionLabel}",
         "userNameLabel": "${userNameLabel}",
-        "commentNameLabel": "${commentNameLabel}",
         "commentEmailLabel": "${commentEmailLabel}",
-        "roleLabel": "${roleLabel}", 
+        "roleLabel": "${roleLabel}",
         "administratorLabel": "${administratorLabel}",
         "duplicatedEmailLabel": "${duplicatedEmailLabel}",
         "mailInvalidLabel": "${mailInvalidLabel}",
@@ -153,7 +157,7 @@
         "helpLabel": '${helpLabel}',
         "fullscreenLabel": '${fullscreenLabel}',
         "uploadFilesLabel": '${uploadFilesLabel}'
-    };    
-    
+    };
+
     admin.init();
 </script>

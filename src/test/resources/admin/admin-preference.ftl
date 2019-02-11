@@ -39,11 +39,6 @@
                 <a href="#tools/preference/setting">${paramSettingsLabel}</a>
             </div>
         </li>
-        <li>
-            <div id="tabPreference_solo">
-                <a href="#tools/preference/solo">B3log</a>
-            </div>
-        </li>
     </ul>
 </div>
 <div id="tabPreferencePanel" class="sub-tabs-main">
@@ -79,7 +74,7 @@
         </select>
         <label for="timeZoneId">${timeZoneId1Label}</label>
         <select id="timeZoneId">
-            ${timeZoneIdOptions}
+        ${timeZoneIdOptions}
         </select>
         <label for="articleListDisplay">${articleListDisplay1Label}</label>
         <select id="articleListDisplay">

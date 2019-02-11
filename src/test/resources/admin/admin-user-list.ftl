@@ -31,7 +31,10 @@
     <label for="userURLUpdate">${userURL1Label}</label>
     <input id="userURLUpdate" type="text"/>
     <label for="userAvatarUpdate">${userAvatar1Label}</label>
-    <input id="userAvatarUpdate" type="text"/> <br><br>
+    <input id="userAvatarUpdate" type="text"/>
+    <label for="userB3KeyUpdate">B3 Key</label>
+    <input id="userB3KeyUpdate" type="text"/>
+    <br><br>
     <button onclick="admin.userList.update();" class="right">${updateLabel}</button>
     <div class="clear"></div>
 </div>
