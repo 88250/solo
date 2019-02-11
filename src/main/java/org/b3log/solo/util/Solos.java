@@ -244,8 +244,8 @@ public final class Solos {
      */
     public static String sanitizeFilename(final String unsanitized) {
         return unsanitized.
-                replaceAll("[\\?\\\\/:|<>\\*]", " "). // filter out ? \ / : | < > *
-                replaceAll("\\s+", "_");              // white space as underscores
+                replaceAll("[\\?\\\\/:|<>\\*\\[\\]]", "-"). // ? \ / : | < > * [ ] to -
+                replaceAll("\\s+", "-");              // white space to -
     }
 
     /**
