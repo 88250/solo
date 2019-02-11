@@ -3,6 +3,6 @@ jdk:
   - oraclejdk8
 
 install:
-  - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -Pci
+  - mvn install -DskipTests -Dmaven.javadoc.skip=true -B -V -Pci
 after_success:
   - mvn clean test jacoco:report coveralls:report -Pci
