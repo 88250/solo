@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.0.0.2, Aug 14, 2017
+ * @version 1.0.0.3, Feb 11, 2019
  */
 @Test(suiteName = "service")
 public class UserQueryServiceTestCase extends AbstractTestCase {
@@ -102,7 +102,7 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
         final UserQueryService userQueryService = getUserQueryService();
         final String loginURL = userQueryService.getLoginURL("redirectURL");
 
-        Assert.assertEquals(loginURL, "/start?goto=http%3A%2F%2Flocalhost%3A8080redirectURL");
+        Assert.assertEquals(loginURL, "/start?referer=http%3A%2F%2Flocalhost%3A8080redirectURL");
     }
 
     /**
@@ -112,6 +112,6 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
         final UserQueryService userQueryService = getUserQueryService();
         final String logoutURL = userQueryService.getLogoutURL();
 
-        Assert.assertEquals(logoutURL, "/logout?goto=http%3A%2F%2Flocalhost%3A8080%2F");
+        Assert.assertEquals(logoutURL, "/logout?referer=http%3A%2F%2Flocalhost%3A8080");
     }
 }

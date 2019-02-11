@@ -17,25 +17,18 @@
  */
 package org.b3log.solo.util;
 
-import org.apache.commons.io.IOUtils;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.util.Stopwatchs;
-import org.b3log.latke.util.Strings;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.io.FileInputStream;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.List;
 import java.util.Locale;
 
 /**
  * {@link org.b3log.solo.util.Markdowns} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Dec 16, 2017
+ * @version 1.0.1.5, Feb 11, 2019
  * @since 0.4.5
  */
 public final class MarkdownsTestCase {
@@ -58,36 +51,9 @@ public final class MarkdownsTestCase {
 
         Assert.assertEquals(html, "");
 
-        markdownText = "# Solo Markdown Editor";
+        markdownText = "Solo Markdown";
         html = Markdowns.toHTML(markdownText);
 
-        final URL testFile = MarkdownsTestCase.class.getResource("/markdown_syntax.text");
-        final String path = URLDecoder.decode(testFile.getPath(), "UTF-8");
-        //System.out.println(path);
-
-        final StringBuilder markdownTextBuilder = new StringBuilder();
-        final List<String> lines = IOUtils.readLines(new FileInputStream(path), "UTF-8");
-
-        for (final String line : lines) {
-            markdownTextBuilder.append(line).append(Strings.LINE_SEPARATOR);
-        }
-
-        markdownText = markdownTextBuilder.toString();
-        //System.out.println(markdownText);
-
-        Stopwatchs.start("Markdowning");
-        html = Markdowns.toHTML(markdownText);
-        Stopwatchs.end();
-
-        //System.out.println(html);
-
-        //System.out.println("Stopwatch: ");
-        //System.out.println(Stopwatchs.getTimingStat());
-
-        // HTML entity test
-        markdownText = "The first: &#39; <br/> The second: &AElig;";
-        html = Markdowns.toHTML(markdownText);
-
-        Assert.assertEquals(html, "<p>The first: ' <br> The second: Æ</p>");
+        Assert.assertEquals(html, "<p>Solo Markdown</p>");
     }
 }

@@ -38,18 +38,21 @@ public class MockHttpServletRequest implements HttpServletRequest {
      * Header.
      */
     private Map<String, String> headers = new HashMap<>();
+
     /**
      * Request URI.
      */
     private String requestURI = "/";
+
     /**
      * Context path.
      */
     private String contextPath = "";
+
     /**
      * Attributes.
      */
-    private Map<String, Object> attributes = new HashMap<String, Object>();
+    private Map<String, Object> attributes = new HashMap<>();
 
     @Override
     public String getAuthType() {
