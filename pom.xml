@@ -285,7 +285,6 @@
                 <configuration>
                     <additionalClasspathElements>src/main/webapp</additionalClasspathElements>
                     <useSystemClassLoader>false</useSystemClassLoader>
-                    <skipTests>false</skipTests>
                 </configuration>
             </plugin>
 
