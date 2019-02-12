@@ -248,16 +248,6 @@ public final class Common {
     public static final String URI = "URI";
 
     /**
-     * Key of blog.
-     */
-    public static final String BLOG = "blog";
-
-    /**
-     * Key of blog version.
-     */
-    public static final String BLOG_VERSION = "blogVersion";
-
-    /**
      * Key of post to community.
      */
     public static final String POST_TO_COMMUNITY = "postToCommunity";
