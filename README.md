@@ -4,8 +4,10 @@
 小而美的博客系统，为未来而构建
 <br><br>
 <a title="Build Status" target="_blank" href="https://travis-ci.org/b3log/solo"><img src="https://img.shields.io/travis/b3log/solo.svg?style=flat-square"></a>
-<a title="Coverage Status" target="_blank" href="https://coveralls.io/github/b3log/solo?branch=master"><img src="https://img.shields.io/coveralls/github/b3log/solo.svg?style=flat-square"></a>
+<a title="Coverage Status" target="_blank" href="https://coveralls.io/github/b3log/solo"><img src="https://img.shields.io/coveralls/github/b3log/solo.svg?style=flat-square"></a>
+<a title="Code Size" target="_blank" href="https://github.com/b3log/solo"><img src="https://img.shields.io/github/languages/code-size/b3log/solo.svg?style=flat-square"></a>
 <a title="AGPLv3" target="_blank" href="https://www.gnu.org/licenses/agpl-3.0.txt"><img src="http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat-square"></a>
+<a title="Releases" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/release/b3log/solo.svg?style=flat-square"></a>
 <a title="Downloads" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/downloads/b3log/solo/total.svg?style=flat-square"></a>
 </p>
 
