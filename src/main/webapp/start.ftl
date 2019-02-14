@@ -28,18 +28,26 @@
 </h2>
 
 <div id="github">
-    <div class="github__icon"
-         onclick="window.location.href = '${servePath}/oauth/github/redirect?referer=${referer}';$('#github').addClass('github--loading')">
+    <div class="github__icon startAction">
         <img src="${staticServePath}/images/github.png"/>
     </div>
-    <button class="hover"
-            onclick="window.location.href = '${servePath}/oauth/github/redirect?referer=${referer}';$('#github').addClass('github--loading')">${useGitHubAccountLoginLabel}</button>
+    <br>
+    <label>
+        <input type="checkbox" checked id="isAgreenCheck">
+        是否愿意在 GitHub 上收藏该项目并关注<a href="https://github.com/88250" target="_blank">开发者</a>
+    </label>
+    <br><br>
+    <button class="hover startAction">${useGitHubAccountLoginLabel}</button>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript">
     (function () {
         try {
-          $('.wrap')
+          $('.startAction').click(function () {
+              var isAgreen = $('#isAgreenCheck').prop('checked') ? '0' : '1'
+              window.location.href = '${servePath}/oauth/github/redirect?referer=${referer}__' + isAgreen;
+              $('#github').addClass('github--loading')
+          })
         } catch (e) {
             document.querySelector('.main').innerHTML = "${staticErrorLabel}"
         }
