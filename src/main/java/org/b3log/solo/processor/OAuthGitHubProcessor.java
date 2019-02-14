@@ -150,8 +150,7 @@ public class OAuthGitHubProcessor {
         }
         STATES.remove(state);
         referer = URLs.decode(referer);
-        referer = StringUtils.substringBeforeLast(referer, ":::");
-
+        referer = StringUtils.substringBeforeLast(referer, "__");
         final String accessToken = context.param("ak");
         final JSONObject userInfo = GitHubs.getGitHubUserInfo(accessToken);
         if (null == userInfo) {
