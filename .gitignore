@@ -1,6 +1,7 @@
 src/main/webapp/markdowns/*
 !src/main/webapp/markdowns/README.md
 
+solo_h2_test/
 target/
 node_modules/
 **/.DS_store
