@@ -227,10 +227,26 @@ input[type=text]:focus {
     display: none;
 }
 
-#github span {
+.github__text {
     cursor: pointer;
     font-size: 12px;
     color: #999;
+}
+
+.github__text ul {
+    display: none;
+    text-align: left;
+    margin: 5px auto 0;
+    width: 280px;
+    padding-left: 24px;
+    box-sizing: border-box;
+}
+
+.github__link {
+    font-size: 12px;
+    text-decoration: underline;
+    margin-top: 10px;
+    display: block;
 }
 
 /* start content-reset */

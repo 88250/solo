@@ -32,22 +32,31 @@
         <img src="${staticServePath}/images/github.png"/>
     </div>
     <br>
-    <label>
+    <label class="github__text">
         <input type="checkbox" checked id="isAgreenCheck">
-        是否愿意在 GitHub 上收藏该项目并关注<a href="https://github.com/88250" target="_blank">开发者</a>
+        是否愿意在 GitHub 上收藏该项目、关注<a href="https://github.com/88250" target="_blank">开发者</a>并加入
+            <a href="https://github.com/b3log" target="_blank">B3log</a> 开源组织
     </label>
-    <br><br>
-    <button class="hover startAction">${useGitHubAccountLoginLabel}</button>
+    <br>
+    <button class="startAction">${useGitHubAccountLoginLabel}</button><br>
+    <a class="github__link" href="javascript:$('ul').slideToggle()">查看 GitHub 数据使用说明</a>
+    <div class="github__text">
+        <ul>
+            <li>获取用户名、昵称、头像、邮箱用于账号初始化</li>
+            <li>获取公开仓库信息用于展示</li>
+            <li>我们不会对你的数据进行任何写入操作</li>
+        </ul>
+    </div>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript">
     (function () {
         try {
-          $('.startAction').click(function () {
-              var isAgreen = $('#isAgreenCheck').prop('checked') ? '0' : '1'
-              window.location.href = '${servePath}/oauth/github/redirect?referer=${referer}__' + isAgreen;
-              $('#github').addClass('github--loading')
-          })
+            $('.startAction').click(function () {
+                var isAgreen = $('#isAgreenCheck').prop('checked') ? '0' : '1'
+                window.location.href = '${servePath}/oauth/github/redirect?referer=${referer}__' + isAgreen
+                $('#github').addClass('github--loading')
+            })
         } catch (e) {
             document.querySelector('.main').innerHTML = "${staticErrorLabel}"
         }
