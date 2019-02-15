@@ -142,6 +142,9 @@ $.extend(Page.prototype, {
             resize: {
               enable: true,
               position: 'top',
+              after: function () {
+                $('body').css('padding-bottom', $('#soloEditor').outerHeight())
+              }
             },
             lang: that.tips.langLabel,
             toolbar: [
