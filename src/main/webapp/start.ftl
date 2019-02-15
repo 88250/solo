@@ -34,8 +34,7 @@
     <br>
     <label class="github__text">
         <input type="checkbox" checked id="isAgreenCheck">
-        是否愿意在 GitHub 上收藏该项目、关注<a href="https://github.com/88250" target="_blank">开发者</a>并加入
-            <a href="https://github.com/b3log" target="_blank">B3log</a> 开源组织
+        是否愿意在 GitHub 上收藏该<a href="https://github.com/b3log/solo" target="_blank">项目</a>并关注<a href="https://github.com/88250" target="_blank">开发者</a>
     </label>
     <br>
     <button class="startAction">${useGitHubAccountLoginLabel}</button><br>

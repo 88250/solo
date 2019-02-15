@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 10, 2019
+ * @version 2.0.0.1, Feb 15, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -105,11 +105,11 @@ $.extend(Page.prototype, {
     if (typeof Vditor === 'undefined') {
       $('head').
         append(
-          $('<link rel=\'stylesheet\' href=\'https://vditor.b3log.org/0.1.7/index.classic.css\'>'))
+          $('<link rel=\'stylesheet\' href=\'https://vditor.b3log.org/0.1.8/index.classic.css\'>'))
 
       $.ajax({
         method: 'GET',
-        url: 'https://vditor.b3log.org/0.1.7/index.min.js',
+        url: 'https://vditor.b3log.org/0.1.8/index.min.js',
         dataType: 'script',
         cache: true,
         async: false,
