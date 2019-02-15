@@ -146,7 +146,7 @@ public class OAuthGitHubProcessor {
         STATES.put(state, URLs.encode(state));
 
         final String path = "https://github.com/login/oauth/authorize" + "?client_id=" + clientId + "&state=" + state
-                + "&scope=public_repo,user";
+                + "&scope=public_repo,read:user,user:email,user:follow";
 
         context.sendRedirect(path);
     }
