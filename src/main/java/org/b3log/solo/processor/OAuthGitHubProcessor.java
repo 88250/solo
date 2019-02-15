@@ -17,8 +17,11 @@
  */
 package org.b3log.solo.processor;
 
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -31,6 +34,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.*;
@@ -51,7 +55,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Jan 29, 2019
+ * @version 1.0.0.4, Feb 15, 2019
  * @since 2.9.5
  */
 @RequestProcessor
@@ -61,11 +65,6 @@ public class OAuthGitHubProcessor {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(OAuthGitHubProcessor.class);
-
-    /**
-     * Client id.
-     */
-    private static final String CLIENT_ID = "77f93670fee557f1a613";
 
     /**
      * OAuth parameters - state.
@@ -121,6 +120,24 @@ public class OAuthGitHubProcessor {
      */
     @RequestProcessing(value = "/oauth/github/redirect", method = HttpMethod.GET)
     public void redirectGitHub(final RequestContext context) {
+        final HttpResponse res = HttpRequest.get("https://hacpai.com/oauth/solo/client").trustAllCerts(true).
+                connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
+        if (HttpServletResponse.SC_OK != res.statusCode()) {
+            LOGGER.log(Level.ERROR, "Gets oauth client id failed: " + res.toString());
+
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
+        }
+        res.charset("UTF-8");
+        final JSONObject result = new JSONObject(res.bodyText());
+        if (0 != result.optInt(Keys.CODE)) {
+            LOGGER.log(Level.ERROR, "Gets oauth client id failed: " + result.optString(Keys.MSG));
+
+            return;
+        }
+        final String clientId = result.optString(Common.DATA);
+
         String referer = context.param("referer");
         if (StringUtils.isBlank(referer)) {
             referer = Latkes.getServePath();
@@ -128,7 +145,7 @@ public class OAuthGitHubProcessor {
         final String state = referer + ":::" + RandomStringUtils.randomAlphanumeric(16);
         STATES.put(state, URLs.encode(state));
 
-        final String path = "https://github.com/login/oauth/authorize" + "?client_id=" + CLIENT_ID + "&state=" + state
+        final String path = "https://github.com/login/oauth/authorize" + "?client_id=" + clientId + "&state=" + state
                 + "&scope=public_repo,user";
 
         context.sendRedirect(path);
