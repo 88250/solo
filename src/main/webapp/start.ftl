@@ -32,6 +32,7 @@
         <img src="${staticServePath}/images/github.png"/>
     </div>
     <br>
+    <a class="github__link" target="_blank" href="https://hacpai.com/article/1463025124998">B3log 开源组织欢迎大家加入！</a>
     <label class="github__text">
         <input type="checkbox" checked id="isAgreenCheck">
         是否愿意在 GitHub 上收藏该<a href="https://github.com/b3log/solo" target="_blank">项目</a>并关注<a href="https://github.com/88250" target="_blank">开发者</a>

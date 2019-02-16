@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 1.2.1.0, Jan 4, 2019
+* @version 1.2.1.1, Feb 16, 2019
 */
 
 /* reset */
@@ -518,7 +518,7 @@ input[type=text]:focus {
 /* start responsive */
 @media (max-width: 780px) {
     .wrap {
-        padding: 40px 0;
+        padding: 40px 0 0 0;
     }
 
     .content {
