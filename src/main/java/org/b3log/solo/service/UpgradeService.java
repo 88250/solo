@@ -58,7 +58,7 @@ import java.util.Set;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.2.0.35, Feb 8, 2019
+ * @version 1.2.0.36, Feb 16, 2019
  * @since 1.2.0
  */
 @Service
@@ -82,7 +82,7 @@ public class UpgradeService {
     /**
      * Old version.
      */
-    private static final String FROM_VER = "2.9.8";
+    private static final String FROM_VER = "2.9.9";
 
     /**
      * New version.
@@ -159,7 +159,7 @@ public class UpgradeService {
             }
 
             if (FROM_VER.equals(currentVer)) {
-                perform();
+                perform299_300();
 
                 return;
             }
@@ -180,15 +180,25 @@ public class UpgradeService {
     }
 
     /**
-     * Performs upgrade.
+     * Performs upgrade from v2.9.9 to v3.0.0.
      *
      * @throws Exception upgrade fails
      */
-    private void perform() throws Exception {
+    private void perform299_300() throws Exception {
         LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
 
-        final Transaction transaction = optionRepository.beginTransaction();
         try {
+            Connection connection = Connections.getConnection();
+            Statement statement = connection.createStatement();
+
+            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` ADD COLUMN `userB3Key` VARCHAR(64) NOT NULL");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` ADD COLUMN `userGitHubId` VARCHAR(32) NOT NULL");
+            statement.close();
+            connection.commit();
+            connection.close();
+
+            final Transaction transaction = optionRepository.beginTransaction();
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, TO_VER);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
@@ -208,7 +218,7 @@ public class UpgradeService {
             }
             optionRepository.remove("oauthGitHub");
 
-            final JSONObject b3Key = optionRepository.get("keyOfSolo");
+            final String b3Key = optionRepository.get("keyOfSolo").optString(Option.OPTION_VALUE);
             final JSONObject admin = userRepository.getAdmin();
             admin.put(UserExt.USER_B3_KEY, b3Key);
             userRepository.update(admin.optString(Keys.OBJECT_ID), admin);
@@ -226,14 +236,17 @@ public class UpgradeService {
             optionRepository.remove("editorType");
 
             transaction.commit();
-            dropColumns();
+
+            connection = Connections.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleEditorType`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageEditorType`");
+            statement.close();
+            connection.commit();
+            connection.close();
 
             LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
         } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
             LOGGER.log(Level.ERROR, "Upgrade failed!", e);
 
             throw new Exception("Upgrade failed from version [" + FROM_VER + "] to version [" + TO_VER + ']');
@@ -253,18 +266,6 @@ public class UpgradeService {
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleCreated` BIGINT DEFAULT 0 NOT NULL");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD `articleUpdated` BIGINT DEFAULT 0 NOT NULL");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` ADD `commentCreated` BIGINT DEFAULT 0 NOT NULL");
-        statement.close();
-        connection.commit();
-        connection.close();
-    }
-
-    private void dropColumns() throws Exception {
-        final Connection connection = Connections.getConnection();
-        final Statement statement = connection.createStatement();
-
-        final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleEditorType`");
-        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageEditorType`");
         statement.close();
         connection.commit();
         connection.close();
