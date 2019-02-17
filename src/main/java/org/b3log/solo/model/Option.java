@@ -289,7 +289,7 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.2.0.0, Dec 10, 2018
+     * @version 2.2.0.1, Feb 17, 2019
      * @since 0.3.1
      */
     public static final class DefaultPreference {
@@ -394,7 +394,7 @@ public final class Option {
         /**
          * Default external relevant articles display count.
          */
-        public static final int DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT = 5;
+        public static final int DEFAULT_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_COUNT = 0;
 
         /**
          * Most view articles display count.
