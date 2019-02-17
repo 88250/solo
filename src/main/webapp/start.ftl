@@ -32,12 +32,6 @@
         <img src="${staticServePath}/images/github.png"/>
     </div>
     <br>
-    <a class="github__link" target="_blank" href="https://hacpai.com/article/1463025124998">B3log 开源组织欢迎大家加入！</a>
-    <label class="github__text">
-        <input type="checkbox" checked id="isAgreenCheck">
-        是否愿意在 GitHub 上收藏该<a href="https://github.com/b3log/solo" target="_blank">项目</a>并关注<a href="https://github.com/88250" target="_blank">开发者</a>
-    </label>
-    <br>
     <button class="startAction">${useGitHubAccountLoginLabel}</button><br>
     <a class="github__link" href="javascript:$('ul').slideToggle()">查看 GitHub 数据使用说明</a>
     <div class="github__text">
@@ -47,6 +41,10 @@
             <li>我们不会对你的数据进行任何写入操作</li>
         </ul>
     </div>
+    <label class="github__text">
+        <input type="checkbox" id="isAgreenCheck">
+        是否愿意在 GitHub 上收藏该<a href="https://github.com/b3log/solo" target="_blank">项目</a>、关注<a href="https://github.com/88250" target="_blank">开发者</a>并加入 <a href="https://github.com/b3log" target="_blank">B3log 开源组织</a>
+    </label>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
 <script type="text/javascript">
