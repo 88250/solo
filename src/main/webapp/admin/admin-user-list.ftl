@@ -26,7 +26,7 @@
 <div id="userUpdate" class="none form form__no-table">
     <label for="userNameUpdate">${userName1Label}</label>
     <input id="userNameUpdate" type="text"/>
-    <label for="userEmailUpdate">${commentEmail1Label}</label>
+    <label for="userEmailUpdate">${commentEmailLabel}</label>
     <input id="userEmailUpdate" type="text"/>
     <label for="userURLUpdate">${userURL1Label}</label>
     <input id="userURLUpdate" type="text"/>
