@@ -41,9 +41,11 @@
             <li>我们不会对你的数据进行任何写入操作</li>
         </ul>
     </div>
-    <label class="github__text">
+    <label class="github__check">
         <input type="checkbox" id="isAgreenCheck">
-        是否愿意在 GitHub 上收藏该<a href="https://github.com/b3log/solo" target="_blank">项目</a>、关注<a href="https://github.com/88250" target="_blank">开发者</a>并加入 <a href="https://github.com/b3log" target="_blank">B3log 开源组织</a>
+        <div class="fn-flex-1">
+            是否愿意在 GitHub 上收藏该<a href="https://github.com/b3log/solo" target="_blank">项目</a>、关注<a href="https://github.com/88250" target="_blank">开发者</a>并加入 <a href="https://github.com/b3log" target="_blank">B3log 开源组织</a>
+        </div>
     </label>
 </div>
 <script type="text/javascript" src="${staticServePath}/js/lib/jquery/jquery.min.js" charset="utf-8"></script>
