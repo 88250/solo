@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.14, Feb 8, 2019
+ * @version 1.2.1.15, Feb 17, 2019
  */
 
 /* preference 相关操作 */
@@ -223,14 +223,6 @@ admin.preference = {
 
                 if ($("#localeString").val() !== admin.preference.locale) {
                     window.location.reload();
-                }
-
-                // update article and preferences signs
-                for (var i = 1; i < signs.length; i++) {
-                    if ($("#articleSign" + signs[i].oId).length === 1) {
-                        $("#articleSign" + signs[i].oId).tip("option", "content",
-                            signs[i].signHTML === "" ? Label.signIsNullLabel : signs[i].signHTML.replace(/\n/g, "").replace(/<script.*<\/script>/ig, ""));
-                    }
                 }
 
                 $("#loadMsg").text("");

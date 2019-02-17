@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 2.6.0.2, Feb 10, 2019
+* @version 2.6.0.3, Feb 17, 2019
 */
 
 /* start resset */
@@ -1215,18 +1215,6 @@ button#submitArticle:hover {
     font-size: 12px;
     font-style: italic;
     margin-left: 10px;
-}
-
-.tip-panel {
-    background-color: #FFF;
-    box-shadow: 0 3px 10px #8B8B8B;
-    display: none;
-    max-height: 500px;
-    max-width: 500px;
-    overflow: hidden;
-    padding: 3px;
-    position: absolute;
-    z-index: 1;
 }
 
 .navigation-icon {
