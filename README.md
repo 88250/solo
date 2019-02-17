@@ -55,7 +55,7 @@
 
 ### 初始化
 
-![init](https://user-images.githubusercontent.com/873584/52255268-d5a31980-294c-11e9-9d16-708b9748ebe7.png)
+![init](https://user-images.githubusercontent.com/873584/52908896-800a2d80-32b9-11e9-9702-43bab360651d.png)
 
 ### 后台首页
 
