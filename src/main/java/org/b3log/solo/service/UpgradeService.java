@@ -58,7 +58,7 @@ import java.util.Set;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.2.0.36, Feb 16, 2019
+ * @version 1.2.1.0, Feb 17, 2019
  * @since 1.2.0
  */
 @Service
@@ -192,8 +192,8 @@ public class UpgradeService {
             Statement statement = connection.createStatement();
 
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` ADD COLUMN `userB3Key` VARCHAR(64) NOT NULL");
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` ADD COLUMN `userGitHubId` VARCHAR(32) NOT NULL");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` ADD COLUMN `userB3Key` VARCHAR(64) DEFAULT '' NOT NULL");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` ADD COLUMN `userGitHubId` VARCHAR(32) DEFAULT '' NOT NULL");
             statement.close();
             connection.commit();
             connection.close();
