@@ -37,6 +37,47 @@ public final class Emotions {
     public static final Pattern EMOJI_PATTERN = Pattern.compile(":.+:");
 
     /**
+     * Replaces the emoji's unicode occurrences by one of their alias (between 2 ':'). Example: "😄" gives ":smile:".
+     *
+     * @param content the string to parse
+     * @return the string with the emojis replaced by their alias.
+     */
+    public static String toAliases(final String content) {
+        return EmojiParser.parseToAliases(content, EmojiParser.FitzpatrickAction.IGNORE);
+    }
+
+    /**
+     * Converts the specified content with emotions.
+     * <p>
+     * <ol>
+     * <li>Emoji: http://www.emoji-cheat-sheet.com</li>
+     * </ol>
+     *
+     * @param content the specified content
+     * @return converted content
+     */
+    public static String convert(final String content) {
+        final String staticServePath = Latkes.getStaticServePath();
+
+        String ret = content;
+
+        if (!EMOJI_PATTERN.matcher(ret).find()) {
+            return ret;
+        }
+
+        for (final String emojiCode : EMOJIS) {
+            final String emoji = ":" + emojiCode + ":";
+            String repl = "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
+                    + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode;
+            final String suffix = "huaji".equals(emojiCode) ? ".gif" : ".png";
+            repl += suffix + "\" title=\"" + emoji + "\" width=\"20px\" height=\"20px\"></img>";
+            ret = ret.replace(emoji, repl);
+        }
+
+        return ret;
+    }
+
+    /**
      * Emoji list.
      */
     private static final String[] EMOJIS = {
@@ -64,6 +105,8 @@ public final class Emotions {
             "apple",
             "aquarius",
             "aries",
+            "arrows_clockwise",
+            "arrows_counterclockwise",
             "arrow_backward",
             "arrow_double_down",
             "arrow_double_up",
@@ -78,12 +121,10 @@ public final class Emotions {
             "arrow_right",
             "arrow_right_hook",
             "arrow_up",
-            "arrow_up_down",
-            "arrow_up_small",
             "arrow_upper_left",
             "arrow_upper_right",
-            "arrows_clockwise",
-            "arrows_counterclockwise",
+            "arrow_up_down",
+            "arrow_up_small",
             "art",
             "articulated_lorry",
             "astonished",
@@ -101,8 +142,8 @@ public final class Emotions {
             "banana",
             "bangbang",
             "bank",
-            "bar_chart",
             "barber",
+            "bar_chart",
             "baseball",
             "basketball",
             "bath",
@@ -123,11 +164,11 @@ public final class Emotions {
             "birthday",
             "black_circle",
             "black_joker",
+            "black_large_square",
             "black_medium_small_square",
             "black_medium_square",
             "black_nib",
             "black_small_square",
-            "black_square",
             "black_square_button",
             "blossom",
             "blowfish",
@@ -147,7 +188,6 @@ public final class Emotions {
             "bouquet",
             "bow",
             "bowling",
-            "bowtie",
             "boy",
             "bread",
             "bride_with_veil",
@@ -160,8 +200,9 @@ public final class Emotions {
             "bullettrain_side",
             "bus",
             "busstop",
-            "bust_in_silhouette",
             "busts_in_silhouette",
+            "bust_in_silhouette",
+            "c",
             "cactus",
             "cake",
             "calendar",
@@ -246,8 +287,8 @@ public final class Emotions {
             "copyright",
             "corn",
             "couple",
-            "couple_with_heart",
             "couplekiss",
+            "couple_with_heart",
             "cow",
             "cow2",
             "credit_card",
@@ -265,6 +306,7 @@ public final class Emotions {
             "custard",
             "customs",
             "cyclone",
+            "d",
             "dancer",
             "dancers",
             "dango",
@@ -274,21 +316,20 @@ public final class Emotions {
             "de",
             "deciduous_tree",
             "department_store",
-            "diamond_shape_with_a_dot_inside",
             "diamonds",
+            "diamond_shape_with_a_dot_inside",
             "disappointed",
             "disappointed_relieved",
             "dizzy",
             "dizzy_face",
-            "do_not_litter",
             "dog",
             "dog2",
             "dollar",
             "dolls",
             "dolphin",
-            "donut",
             "door",
             "doughnut",
+            "do_not_litter",
             "dragon",
             "dragon_face",
             "dress",
@@ -296,11 +337,12 @@ public final class Emotions {
             "droplet",
             "dvd",
             "e-mail",
+            "e50a",
             "ear",
-            "ear_of_rice",
             "earth_africa",
             "earth_americas",
             "earth_asia",
+            "ear_of_rice",
             "egg",
             "eggplant",
             "eight",
@@ -320,6 +362,7 @@ public final class Emotions {
             "expressionless",
             "eyeglasses",
             "eyes",
+            "f",
             "facepunch",
             "factory",
             "fallen_leaf",
@@ -327,19 +370,17 @@ public final class Emotions {
             "fast_forward",
             "fax",
             "fearful",
-            "feelsgood",
             "feet",
             "ferris_wheel",
             "file_folder",
-            "finnadie",
             "fire",
-            "fire_engine",
             "fireworks",
+            "fire_engine",
             "first_quarter_moon",
             "first_quarter_moon_with_face",
             "fish",
-            "fish_cake",
             "fishing_pole_and_fish",
+            "fish_cake",
             "fist",
             "five",
             "flags",
@@ -359,10 +400,10 @@ public final class Emotions {
             "fries",
             "frog",
             "frowning",
-            "fu",
             "fuelpump",
             "full_moon",
             "full_moon_with_face",
+            "g",
             "game_die",
             "gb",
             "gem",
@@ -373,8 +414,6 @@ public final class Emotions {
             "girl",
             "globe_with_meridians",
             "goat",
-            "goberserk",
-            "godmode",
             "golf",
             "grapes",
             "green_apple",
@@ -399,14 +438,14 @@ public final class Emotions {
             "hatched_chick",
             "hatching_chick",
             "headphones",
-            "hear_no_evil",
             "heart",
-            "heart_decoration",
-            "heart_eyes",
-            "heart_eyes_cat",
             "heartbeat",
             "heartpulse",
             "hearts",
+            "heart_decoration",
+            "heart_eyes",
+            "heart_eyes_cat",
+            "hear_no_evil",
             "heavy_check_mark",
             "heavy_division_sign",
             "heavy_dollar_sign",
@@ -420,8 +459,8 @@ public final class Emotions {
             "high_brightness",
             "high_heel",
             "hocho",
-            "honey_pot",
             "honeybee",
+            "honey_pot",
             "horse",
             "horse_racing",
             "hospital",
@@ -432,10 +471,10 @@ public final class Emotions {
             "house",
             "house_with_garden",
             "huaji",
-            "hurtrealbad",
             "hushed",
-            "ice_cream",
+            "i",
             "icecream",
+            "ice_cream",
             "id",
             "ideograph_advantage",
             "imp",
@@ -448,6 +487,7 @@ public final class Emotions {
             "iphone",
             "it",
             "izakaya_lantern",
+            "j",
             "jack_o_lantern",
             "japan",
             "japanese_castle",
@@ -457,6 +497,7 @@ public final class Emotions {
             "joy",
             "joy_cat",
             "jp",
+            "k",
             "key",
             "keycap_ten",
             "kimono",
@@ -464,7 +505,6 @@ public final class Emotions {
             "kissing",
             "kissing_cat",
             "kissing_closed_eyes",
-            "kissing_face",
             "kissing_heart",
             "kissing_smiling_eyes",
             "koala",
@@ -478,9 +518,9 @@ public final class Emotions {
             "laughing",
             "leaves",
             "ledger",
+            "leftwards_arrow_with_hook",
             "left_luggage",
             "left_right_arrow",
-            "leftwards_arrow_with_hook",
             "lemon",
             "leo",
             "leopard",
@@ -506,9 +546,9 @@ public final class Emotions {
             "mailbox_with_mail",
             "mailbox_with_no_mail",
             "man",
+            "mans_shoe",
             "man_with_gua_pi_mao",
             "man_with_turban",
-            "mans_shoe",
             "maple_leaf",
             "mask",
             "massage",
@@ -517,7 +557,6 @@ public final class Emotions {
             "melon",
             "memo",
             "mens",
-            "metal",
             "metro",
             "microphone",
             "microscope",
@@ -525,16 +564,16 @@ public final class Emotions {
             "minibus",
             "minidisc",
             "mobile_phone_off",
-            "money_with_wings",
             "moneybag",
+            "money_with_wings",
             "monkey",
             "monkey_face",
             "monorail",
             "mortar_board",
-            "mount_fuji",
             "mountain_bicyclist",
             "mountain_cableway",
             "mountain_railway",
+            "mount_fuji",
             "mouse",
             "mouse2",
             "movie_camera",
@@ -547,16 +586,20 @@ public final class Emotions {
             "mute",
             "nail_care",
             "name_badge",
-            "neckbeard",
             "necktie",
             "negative_squared_cross_mark",
             "neutral_face",
             "new",
+            "newspaper",
             "new_moon",
             "new_moon_with_face",
-            "newspaper",
             "ng",
             "nine",
+            "non-potable_water",
+            "nose",
+            "notebook",
+            "notebook_with_decorative_cover",
+            "notes",
             "no_bell",
             "no_bicycles",
             "no_entry",
@@ -566,11 +609,6 @@ public final class Emotions {
             "no_mouth",
             "no_pedestrians",
             "no_smoking",
-            "non-potable_water",
-            "nose",
-            "notebook",
-            "notebook_with_decorative_cover",
-            "notes",
             "nut_and_bolt",
             "o",
             "o2",
@@ -598,15 +636,15 @@ public final class Emotions {
             "outbox_tray",
             "ox",
             "package",
+            "pager",
             "page_facing_up",
             "page_with_curl",
-            "pager",
             "palm_tree",
             "panda_face",
             "paperclip",
             "parking",
-            "part_alternation_mark",
             "partly_sunny",
+            "part_alternation_mark",
             "passport_control",
             "paw_prints",
             "peach",
@@ -628,7 +666,6 @@ public final class Emotions {
             "pineapple",
             "pisces",
             "pizza",
-            "plus1",
             "point_down",
             "point_left",
             "point_right",
@@ -637,7 +674,6 @@ public final class Emotions {
             "police_car",
             "poodle",
             "poop",
-            "post_office",
             "postal_horn",
             "postbox",
             "potable_water",
@@ -653,16 +689,13 @@ public final class Emotions {
             "pushpin",
             "put_litter_in_its_place",
             "question",
+            "r",
             "rabbit",
             "rabbit2",
             "racehorse",
             "radio",
             "radio_button",
             "rage",
-            "rage1",
-            "rage2",
-            "rage3",
-            "rage4",
             "railway_car",
             "rainbow",
             "raised_hand",
@@ -697,7 +730,6 @@ public final class Emotions {
             "rowboat",
             "ru",
             "rugby_football",
-            "runner",
             "running",
             "running_shirt_with_sash",
             "sa",
@@ -718,16 +750,14 @@ public final class Emotions {
             "scroll",
             "seat",
             "secret",
-            "see_no_evil",
             "seedling",
+            "see_no_evil",
             "seven",
             "shaved_ice",
             "sheep",
             "shell",
             "ship",
-            "shipit",
             "shirt",
-            "shit",
             "shoe",
             "shower",
             "signal_strength",
@@ -743,9 +773,9 @@ public final class Emotions {
             "small_red_triangle",
             "small_red_triangle_down",
             "smile",
-            "smile_cat",
             "smiley",
             "smiley_cat",
+            "smile_cat",
             "smiling_imp",
             "smirk",
             "smirk_cat",
@@ -767,8 +797,8 @@ public final class Emotions {
             "sparkler",
             "sparkles",
             "sparkling_heart",
-            "speak_no_evil",
             "speaker",
+            "speak_no_evil",
             "speech_balloon",
             "speedboat",
             "squirrel",
@@ -784,15 +814,14 @@ public final class Emotions {
             "stuck_out_tongue",
             "stuck_out_tongue_closed_eyes",
             "stuck_out_tongue_winking_eye",
-            "sun_with_face",
             "sunflower",
             "sunglasses",
             "sunny",
             "sunrise",
             "sunrise_over_mountains",
+            "sun_with_face",
             "surfer",
             "sushi",
-            "suspect",
             "suspension_railway",
             "sweat",
             "sweat_drops",
@@ -852,6 +881,7 @@ public final class Emotions {
             "two_hearts",
             "two_men_holding_hands",
             "two_women_holding_hands",
+            "u",
             "u5272",
             "u5408",
             "u55b6",
@@ -863,10 +893,10 @@ public final class Emotions {
             "u7533",
             "u7981",
             "u7a7a",
-            "uk",
             "umbrella",
             "unamused",
             "underage",
+            "unicorn_face",
             "unlock",
             "up",
             "us",
@@ -885,8 +915,8 @@ public final class Emotions {
             "waning_gibbous_moon",
             "warning",
             "watch",
-            "water_buffalo",
             "watermelon",
+            "water_buffalo",
             "wave",
             "wavy_dash",
             "waxing_crescent_moon",
@@ -923,48 +953,7 @@ public final class Emotions {
             "zero",
             "zzz"
     };
-
-    /**
-     * Replaces the emoji's unicode occurrences by one of their alias (between 2 ':'). Example: "😄" gives ":smile:".
-     *
-     * @param content the string to parse
-     * @return the string with the emojis replaced by their alias.
-     */
-    public static String toAliases(final String content) {
-        return EmojiParser.parseToAliases(content, EmojiParser.FitzpatrickAction.IGNORE);
-    }
-
-    /**
-     * Converts the specified content with emotions.
-     * <p>
-     * <ol>
-     * <li>Emoji: http://www.emoji-cheat-sheet.com</li>
-     * </ol>
-     *
-     * @param content the specified content
-     * @return converted content
-     */
-    public static String convert(final String content) {
-        final String staticServePath = Latkes.getStaticServePath();
-
-        String ret = content;
-
-        if (!EMOJI_PATTERN.matcher(ret).find()) {
-            return ret;
-        }
-
-        for (final String emojiCode : EMOJIS) {
-            final String emoji = ":" + emojiCode + ":";
-            String repl = "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                    + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode;
-            final String suffix = "huaji".equals(emojiCode) ? ".gif" : ".png";
-            repl += suffix + "\" title=\"" + emoji + "\" width=\"20px\" height=\"20px\"></img>";
-            ret = ret.replace(emoji, repl);
-        }
-
-        return ret;
-    }
-
+    
     /**
      * Private constructor.
      */
