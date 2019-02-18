@@ -103,7 +103,7 @@ public class B3Receiver {
     private ArticleQueryService articleQueryService;
 
     /**
-     * Adds an article with the specified request.
+     * Adds or updates an article with the specified request.
      * <p>
      * Request json:
      * <pre>
@@ -135,8 +135,8 @@ public class B3Receiver {
      *
      * @param context the specified http request context
      */
-    @RequestProcessing(value = "/apis/symphony/article", method = HttpMethod.POST)
-    public void addArticle(final RequestContext context) {
+    @RequestProcessing(value = "/apis/symphony/article", method = {HttpMethod.POST, HttpMethod.PUT})
+    public void postArticle(final RequestContext context) {
         final JSONObject ret = new JSONObject().put(Keys.CODE, 0);
         context.renderJSON(ret);
 
