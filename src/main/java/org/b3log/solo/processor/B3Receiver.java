@@ -181,7 +181,7 @@ public class B3Receiver {
                 article.put(Article.ARTICLE_VIEW_PWD, "");
                 final String content = article.getString(Article.ARTICLE_CONTENT);
                 article.put(Article.ARTICLE_CONTENT, content);
-                articleMgmtService.addArticle(requestJSONObject);
+                articleMgmtService.addArticle(article);
 
                 return;
             }
