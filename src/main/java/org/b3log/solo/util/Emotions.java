@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * Emotions utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, May 10, 2016
+ * @version 1.0.0.1, Feb 18, 2019
  * @since 1.4.0
  */
 public final class Emotions {
@@ -431,6 +431,7 @@ public final class Emotions {
             "hourglass_flowing_sand",
             "house",
             "house_with_garden",
+            "huaji",
             "hurtrealbad",
             "hushed",
             "ice_cream",
@@ -954,9 +955,11 @@ public final class Emotions {
 
         for (final String emojiCode : EMOJIS) {
             final String emoji = ":" + emojiCode + ":";
-            ret = ret.replace(emoji, "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                    + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode
-                    + ".png\" title=\"" + emoji + "\" width=\"20px\" height=\"20px\"></img>");
+            String repl = "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
+                    + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode;
+            final String suffix = "huaji".equals(emojiCode) ? ".gif" : ".png";
+            repl += suffix + "\" title=\"" + emoji + "\" width=\"20px\" height=\"20px\"></img>";
+            ret = ret.replace(emoji, repl);
         }
 
         return ret;
