@@ -953,7 +953,7 @@ public final class Emotions {
             "zero",
             "zzz"
     };
-    
+
     /**
      * Private constructor.
      */
