@@ -49,7 +49,7 @@ import java.util.Date;
  * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Feb 10, 2019
+ * @version 2.0.1.0, Feb 18, 2019
  * @since 0.5.5
  */
 @RequestProcessor
@@ -164,7 +164,7 @@ public class B3Receiver {
             }
 
             final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
-            final String articleId = symArticle.getString(Keys.OBJECT_ID);
+            final String articleId = symArticle.optString("id");
             final JSONObject oldArticle = articleQueryService.getArticleById(articleId);
             if (null == oldArticle) {
                 final JSONObject article = new JSONObject().
