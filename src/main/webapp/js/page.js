@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.1, Feb 15, 2019
+ * @version 2.0.0.2, Feb 18, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -105,11 +105,11 @@ $.extend(Page.prototype, {
     if (typeof Vditor === 'undefined') {
       $('head').
         append(
-          $('<link rel=\'stylesheet\' href=\'https://vditor.b3log.org/0.1.8/index.classic.css\'>'))
+          $('<link rel=\'stylesheet\' href=\'https://vditor.b3log.org/0.2.0/index.classic.css\'>'))
 
       $.ajax({
         method: 'GET',
-        url: 'https://vditor.b3log.org/0.1.8/index.min.js',
+        url: 'https://vditor.b3log.org/0.2.0/index.min.js',
         dataType: 'script',
         cache: true,
         async: false,
@@ -117,6 +117,9 @@ $.extend(Page.prototype, {
           window.vditor = new Vditor('soloEditorComment', {
             placeholder: that.tips.commentContentCannotEmptyLabel,
             height: 180,
+            hint: {
+              emojiPath: latkeConfig.staticServePath + '/js/lib/emojify.js-1.1.0/images/basic'
+            },
             esc: function () {
               $('#soloEditorCancel').click()
             },
@@ -334,7 +337,7 @@ $.extend(Page.prototype, {
       type = 'page'
     }
 
-    if (vditor.getValue().length > 2 && vditor.getValue().length < 500) {
+    if (vditor.getValue().length > 1 && vditor.getValue().length < 500) {
       $('#soloEditorAdd').attr('disabled', 'disabled')
       var requestJSONObject = {
         'oId': tips.oId,
