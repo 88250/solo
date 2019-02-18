@@ -105,11 +105,11 @@ $.extend(Page.prototype, {
     if (typeof Vditor === 'undefined') {
       $('head').
         append(
-          $('<link rel=\'stylesheet\' href=\'https://vditor.b3log.org/0.2.0/index.classic.css\'>'))
+          $('<link rel=\'stylesheet\' href=\'' + latkeConfig.staticServePath + '/js/lib/vditor-0.2.0/index.classic.css\'>'))
 
       $.ajax({
         method: 'GET',
-        url: 'https://vditor.b3log.org/0.2.0/index.min.js',
+        url: latkeConfig.staticServePath + '/js/lib/vditor-0.2.0/index.min.js',
         dataType: 'script',
         cache: true,
         async: false,
