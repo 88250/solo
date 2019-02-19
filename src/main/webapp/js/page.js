@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.2, Feb 18, 2019
+ * @version 2.0.0.3, Feb 19, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -105,11 +105,11 @@ $.extend(Page.prototype, {
     if (typeof Vditor === 'undefined') {
       $('head').
         append(
-          $('<link rel=\'stylesheet\' href=\'' + latkeConfig.staticServePath + '/js/lib/vditor-0.2.0/index.classic.css\'>'))
+          $('<link rel=\'stylesheet\' href=\'' + latkeConfig.staticServePath + '/js/lib/vditor-0.2.5/index.classic.css\'>'))
 
       $.ajax({
         method: 'GET',
-        url: latkeConfig.staticServePath + '/js/lib/vditor-0.2.0/index.min.js',
+        url: latkeConfig.staticServePath + '/js/lib/vditor-0.2.5/index.min.js',
         dataType: 'script',
         cache: true,
         async: false,

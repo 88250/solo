@@ -31,7 +31,7 @@
         <title>${adminConsoleLabel} - ${blogTitle}</title>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-base${miniPostfix}.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/css/default-admin${miniPostfix}.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/vditor-0.2.0/index.classic.css" />
+        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/vditor-0.2.5/index.classic.css" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight-9.13.1/styles/github.css?${staticResourceVersion}" />
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
         <link rel="manifest" href="${servePath}/manifest.json">
@@ -169,7 +169,7 @@
             </div>
         </div>
         <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>
-        <script src="${staticServePath}/js/lib/vditor-0.2.0/index.min.js"></script>
+        <script src="${staticServePath}/js/lib/vditor-0.2.5/index.min.js"></script>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>

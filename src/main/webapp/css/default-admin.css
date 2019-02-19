@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 2.6.0.3, Feb 17, 2019
+* @version 2.6.0.4, Feb 19, 2019
 */
 
 /* start resset */
@@ -76,7 +76,7 @@ a:hover {
 
 .content-reset img.emoji {
     cursor: auto;
-    max-width: 18px;
+    max-width: 20px;
 }
 
 .content-reset h1,
