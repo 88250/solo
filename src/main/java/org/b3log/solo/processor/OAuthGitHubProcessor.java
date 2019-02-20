@@ -224,6 +224,12 @@ public class OAuthGitHubProcessor {
         }
 
         user = userQueryService.getUserByEmailOrUserName(userName);
+        if (null == user) {
+            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+
+            return;
+        }
+
         Solos.login(user, response);
         context.sendRedirect(referer);
         LOGGER.log(Level.INFO, "Logged in [name={0}, remoteAddr={1}] with GitHub oauth", userName, Requests.getRemoteAddr(request));
