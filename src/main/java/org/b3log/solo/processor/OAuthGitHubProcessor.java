@@ -226,6 +226,6 @@ public class OAuthGitHubProcessor {
         user = userQueryService.getUserByEmailOrUserName(userName);
         Solos.login(user, response);
         context.sendRedirect(referer);
-        LOGGER.log(Level.INFO, "Logged in [email={0}, remoteAddr={1}] with GitHub oauth", userEmail, Requests.getRemoteAddr(request));
+        LOGGER.log(Level.INFO, "Logged in [name={0}, remoteAddr={1}] with GitHub oauth", userName, Requests.getRemoteAddr(request));
     }
 }
