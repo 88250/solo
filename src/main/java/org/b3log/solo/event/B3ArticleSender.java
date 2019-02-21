@@ -18,6 +18,7 @@
 package org.b3log.solo.event;
 
 import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
@@ -47,7 +48,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.0.2.17, Feb 10, 2019
+ * @version 1.0.2.18, Feb 21, 2019
  * @since 0.3.1
  */
 @Singleton
@@ -75,23 +76,28 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
     public static void pushArticleToRhy(final JSONObject data) {
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
+            final String title = originalArticle.getString(Article.ARTICLE_TITLE);
             if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                LOGGER.log(Level.DEBUG, "Ignored push an article [title={0}] to Rhy", originalArticle.getString(Article.ARTICLE_TITLE));
+                LOGGER.log(Level.INFO, "Ignored push an article [title={0}] to Rhy", title);
 
                 return;
             }
 
             if (StringUtils.isNotBlank(originalArticle.optString(Article.ARTICLE_VIEW_PWD))) {
+                LOGGER.log(Level.INFO, "Article [title={0}] is a password article, ignored push to Rhy", title);
+
                 return;
             }
 
             if (!originalArticle.optBoolean(Common.POST_TO_COMMUNITY)) {
+                LOGGER.log(Level.INFO, "Article [title={0}] push flag [postToCommunity] is false, ignored push to Rhy", title);
+
                 return;
             }
 
             if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServePath())) {
-                LOGGER.log(Level.TRACE, "Solo runs on local server, so should not send this article[id={0}, title={1}] to Rhythm",
-                        originalArticle.getString(Keys.OBJECT_ID), originalArticle.getString(Article.ARTICLE_TITLE));
+                LOGGER.log(Level.INFO, "Solo is running on local server, ignored push article [title={0}] to Rhy", title);
+
                 return;
             }
 
@@ -101,7 +107,7 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             final JSONObject preference = preferenceQueryService.getPreference();
 
             final JSONObject article = new JSONObject().
-                    put(Keys.OBJECT_ID, originalArticle.getString(Keys.OBJECT_ID)).
+                    put("id", originalArticle.getString(Keys.OBJECT_ID)).
                     put("title", originalArticle.getString(Article.ARTICLE_TITLE)).
                     put("permalink", originalArticle.getString(Article.ARTICLE_PERMALINK)).
                     put("tags", originalArticle.getString(Article.ARTICLE_TAGS_REF)).
@@ -117,10 +123,11 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             final JSONObject requestJSONObject = new JSONObject().
                     put("article", article).
                     put("client", client);
-            HttpRequest.post("https://rhythm.b3log.org/api/article").bodyText(requestJSONObject.toString()).
-                    contentTypeJson().header("User-Agent", Solos.USER_AGENT).sendAsync();
+            final HttpResponse response = HttpRequest.post("https://rhythm.b3log.org/api/article").bodyText(requestJSONObject.toString()).
+                    connectionTimeout(3000).timeout(7000).
+                    contentTypeJson().header("User-Agent", Solos.USER_AGENT).send();
 
-            LOGGER.log(Level.DEBUG, "Pushed an article to Rhy");
+            LOGGER.log(Level.INFO, "Pushed an article [title={0}] to Rhy, response [{1}]", title, response.toString());
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Pushes an article to Rhy failed: " + e.getMessage());
         }
