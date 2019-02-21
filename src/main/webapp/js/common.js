@@ -106,13 +106,11 @@ var Util = {
         if ($(this).text().split('$').length > 2 ||
           ($(this).text().split('\\(').length > 1 &&
             $(this).text().split('\\)').length > 1)) {
-          hasMathJax = true;
-          return false;
+          hasMathJax = true
         }
-      });
+      })
       if ($(this).find('code.lang-flow, code.language-flow').length > 0) {
         hasFlow = true
-        return false;
       }
     });
 
@@ -120,27 +118,30 @@ var Util = {
       var initMathJax = function () {
         MathJax.Hub.Config({
           tex2jax: {
-            inlineMath: [['$', '$'], ["\\(", "\\)"]],
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
             displayMath: [['$$', '$$']],
             processEscapes: true,
             processEnvironments: true,
-            skipTags: ['pre', 'code', 'script']
+            skipTags: ['pre', 'code', 'script'],
+          },
+          asciimath2jax: {
+            delimiters: [['$','$']]
           }
-        });
-        MathJax.Hub.Typeset();
-      };
+        })
+        MathJax.Hub.Typeset()
+      }
 
       if (typeof MathJax !== 'undefined') {
-        initMathJax();
+        initMathJax()
       } else {
         $.ajax({
-          method: "GET",
-          url: "https://cdn.staticfile.org/MathJax/MathJax-2.6-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&_=1473258780393",
-          dataType: "script",
-          cache: true
+          method: 'GET',
+          url: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML',
+          dataType: 'script',
+          cache: true,
         }).done(function () {
-          initMathJax();
-        });
+          initMathJax()
+        })
       }
     }
 

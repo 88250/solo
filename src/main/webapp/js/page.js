@@ -103,10 +103,6 @@ $.extend(Page.prototype, {
     var that = this
 
     if (typeof Vditor === 'undefined') {
-      $('head').
-        append(
-          $('<link rel=\'stylesheet\' href=\'' + latkeConfig.staticServePath + '/js/lib/vditor-0.2.5/index.classic.css\'>'))
-
       $.ajax({
         method: 'GET',
         url: latkeConfig.staticServePath + '/js/lib/vditor-0.2.5/index.min.js',
