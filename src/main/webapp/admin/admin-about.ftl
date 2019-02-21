@@ -27,16 +27,16 @@
                 <img width="128" src="${staticServePath}/images/logo.png" alt="Solo" title="Solo" />
             </a>
         </div>
-        <div class="left content-reset about__panel" style="margin-left: 20px;">
-            <div id="aboutLatest" class="about-margin left">
+        <div class="fn__left content-reset about__panel" style="margin-left: 20px;">
+            <div id="aboutLatest" class="about-margin fn__left">
                 ${checkingVersionLabel}
             </div>
 
             <iframe src="https://ghbtns.com/github-btn.html?user=b3log&repo=solo&type=star&count=true&size=large"
                     frameborder="0" scrolling="0" width="160px" height="30px" class="about__iframe"
                     style="margin: 21px 0 0 20px;border: 0"
-                    class="left"></iframe>
-            <div class="clear"></div>
+                    class="fn__left"></iframe>
+            <div class="fn__clear"></div>
 
             ${aboutContentLabel}
             <ul class="about-list">
@@ -44,9 +44,9 @@
                 <li><a target="_blank" href="https://hacpai.com/article/1537690756242">Solo 从设计到实现</a></li>
                 <li><a target="_blank" href="https://hacpai.com/article/1493814851007">皮肤开发指南</a></li>
             </ul>
-            <button class="right" onclick="window.open('https://b3log.org/donate.html')">${sponsorLabel}</button>
+            <button class="fn__right" onclick="window.open('https://b3log.org/donate.html')">${sponsorLabel}</button>
         </div>
-        <span class="clear" /> <br/>
+        <span class="fn__clear" /> <br/>
     </div>
 </div>
 ${plugins}

@@ -83,11 +83,11 @@ admin.preference = {
                         selectedClass += " selected";
                     }
                     skinsHTML += "<div title='" + skins[i].skinDirName
-                        + "' class='left skinItem" + selectedClass + "'><img class='skinPreview' src='"
+                        + "' class='fn__left skinItem" + selectedClass + "'><img class='skinPreview' src='"
                         + latkeConfig.staticServePath + "/skins/" + skins[i].skinDirName
                         + "/preview.png'/><div>" + skins[i].skinName + "</div></div>";
                 }
-                $("#skinMain").append(skinsHTML + "<div class='clear'></div>");
+                $("#skinMain").append(skinsHTML + "<div class='fn__clear'></div>");
 
                 $(".skinItem").click(function () {
                     $(".skinItem").removeClass("selected");

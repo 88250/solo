@@ -72,17 +72,17 @@ admin.comment = {
                         hrefHTML = "<a target='_blank'>";
                     }
 
-                    commentsHTML += "<div class='comment-title'><span class='left'>"
+                    commentsHTML += "<div class='comment-title'><span class='fn__left'>"
                     + hrefHTML + comments[i].commentName + "</a>";
 
                     if (comments[i].commentOriginalCommentName) {
                         commentsHTML += "@" + comments[i].commentOriginalCommentName;
                     }
-                    commentsHTML += "</span><span title='" + Label.removeLabel + "' class='right deleteIcon' onclick=\"admin.comment.del('"
-                    + comments[i].oId + "', '" + fromId + "', '" + onId + "')\"></span><span class='right'><a href='mailto:"
+                    commentsHTML += "</span><span title='" + Label.removeLabel + "' class='fn__right deleteIcon' onclick=\"admin.comment.del('"
+                    + comments[i].oId + "', '" + fromId + "', '" + onId + "')\"></span><span class='fn__right'><a href='mailto:"
                     + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
                     + $.bowknot.getDate(comments[i].commentTime)
-                    + "&nbsp;</span><div class='clear'></div></div><div class='margin12'>"
+                    + "&nbsp;</span><div class='fn__clear'></div></div><div class='fn__margin12'>"
                     + contentHTML + "</div>";
                 }
                 if ("" === commentsHTML) {

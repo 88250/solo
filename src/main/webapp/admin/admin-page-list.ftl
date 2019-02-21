@@ -20,9 +20,9 @@
 <div>
     <div id="pageTable">
     </div>
-    <div id="pagePagination" class="margin12 right">
+    <div id="pagePagination" class="fn__margin12 fn__right">
     </div>
-    <div class="clear"></div>
+    <div class="fn__clear"></div>
 </div>
 <div class="form">
     <div>
@@ -49,16 +49,16 @@
         <button data-type="link" class="selected fn-type">${pageLinkLabel}</button>
         <button data-type="page" class="fn-type">${pageLabel}</button>
     </div>
-    <div id="pagePagePanel" class="none">
+    <div id="pagePagePanel" class="fn__none">
         <div id="pageContent" style="height: 430px;width: 100%;" name="pageContent"></div>
         <label>${allowComment1Label}</label>
         <input type="checkbox" id="pageCommentable" checked="checked" />
     </div>
-    <div class="right">
+    <div class="fn__right">
         <button onclick="admin.pageList.submit();">${saveLabel}</button>
     </div>
-    <div class="clear"></div>
+    <div class="fn__clear"></div>
 </div>
-<div id="pageComments" class="none"></div>
-<div class="clear"></div>
+<div id="pageComments" class="fn__none"></div>
+<div class="fn__clear"></div>
 ${plugins}

@@ -28,7 +28,7 @@ ${articleTitle}
     <label for="pwdTyped">访问密码</label>
     <input type="password" id="pwdTyped" name="pwdTyped" />
     <input type="hidden" name="articleId" value="${articleId}" />
-    <div style="text-align: right">
+    <div style="text-align: fn__right">
          <#if msg??>
             <span class="error">${msg}</span>
          </#if>

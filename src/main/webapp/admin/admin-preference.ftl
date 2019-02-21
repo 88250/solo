@@ -17,7 +17,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<div id="tabPreference" class="sub-tabs fn-clear">
+<div id="tabPreference" class="sub-tabs fn__clear">
     <ul>
         <li>
             <div id="tabPreference_config">
@@ -43,8 +43,8 @@
 </div>
 <div id="tabPreferencePanel" class="sub-tabs-main">
     <div id="tabPreferencePanel_config" class="form">
-        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
-        <div class="clear"></div>
+        <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
+        <div class="fn__clear"></div>
         <label for="blogTitle">${blogTitle1Label}</label>
         <input id="blogTitle" type="text"/>
         <label for="blogSubtitle">${blogSubtitle1Label}</label>
@@ -61,12 +61,12 @@
         <textarea rows="6" id="noticeBoard"></textarea>
         <label for="footerContent">${footerContent1Label}</label>
         <textarea rows="2" id="footerContent"></textarea><br><br>
-        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
-        <div class="clear"></div>
+        <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
+        <div class="fn__clear"></div>
     </div>
-    <div id="tabPreferencePanel_setting" class="none form">
-        <button class="right" onclick="admin.preference.update()">${updateLabel}</button>
-        <div class="clear"></div>
+    <div id="tabPreferencePanel_setting" class="fn__none form">
+        <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
+        <div class="fn__clear"></div>
         <label for="localeString">${localeString1Label}</label>
         <select id="localeString">
             <option value="zh_CN">简体中文</option>
@@ -117,17 +117,17 @@
         <input id="feedOutputCnt" class="normalInput" type="text"/>
         <label for="customVars">${customVars1Label}</label>
         <input id="customVars" class="normalInput" type="text"/><br/><br/>
-        <button class="right" onclick="admin.preference.update()">${updateLabel}</button>
-        <div class="clear"></div>
+        <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
+        <div class="fn__clear"></div>
     </div>
-    <div id="tabPreferencePanel_skins" class="none form">
+    <div id="tabPreferencePanel_skins" class="fn__none form">
         <table class="form" width="100%" cellpadding="0" cellspacing="0">
             <tbody>
             <tr>
                 <td>
                     <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
                     <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
-                    <button style="float: right" onclick="admin.preference.update()">${updateLabel}</button>
+                    <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
                 </td>
             </tr>
             <tr>
@@ -139,23 +139,23 @@
                 <td>
                     <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
                     <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
-                    <button style="float: right" onclick="admin.preference.update()">${updateLabel}</button>
+                    <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
-    <div id="tabPreferencePanel_signs" class="none form">
-        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
-        <div class="clear"></div>
+    <div id="tabPreferencePanel_signs" class="fn__none form">
+        <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
+        <div class="fn__clear"></div>
         <button id="preferenceSignButton1">${signLabel}1</button>
         <textarea rows="8" id="preferenceSign1"></textarea>
         <button id="preferenceSignButton2">${signLabel}2</button>
         <textarea rows="8" id="preferenceSign2"></textarea>
         <button id="preferenceSignButton3">${signLabel}3</button>
         <textarea rows="8" id="preferenceSign3"></textarea><br><br>
-        <button onclick="admin.preference.update()" class="right">${updateLabel}</button>
-        <div class="clear"></div>
+        <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
+        <div class="fn__clear"></div>
     </div>
 </div>
 ${plugins}

@@ -240,10 +240,10 @@ $.extend(Admin.prototype, {
         var subNav = $(it).next();
         subNav.slideToggle("normal", function () {
             if (this.style.display !== "none") {
-                $(it).find(".icon-chevron-down")[0].className = "icon-chevron-up right";
+                $(it).find(".icon-chevron-down")[0].className = "icon-chevron-up fn__right";
                 $(it).addClass('tab-current');
             } else {
-                $(it).find(".icon-chevron-up")[0].className = "icon-chevron-down right";
+                $(it).find(".icon-chevron-up")[0].className = "icon-chevron-down fn__right";
                 $(it).removeClass('tab-current');
             }
 

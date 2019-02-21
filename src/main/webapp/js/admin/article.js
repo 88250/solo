@@ -317,7 +317,7 @@ admin.article = {
         for (var i = 0; i < result.tags.length; i++) {
           spans += '<span>' + result.tags[i].tagTitle + '</span>'
         }
-        $('#tagCheckboxPanel').html(spans + '<div class="clear"></div>')
+        $('#tagCheckboxPanel').html(spans + '<div class="fn__clear"></div>')
 
         $('#loadMsg').text('')
       },

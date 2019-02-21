@@ -42,21 +42,21 @@
         <input id="replayEmailTemplateTitle" type="text"/>
         <label for="replayEmailTemplateBody">${emailContent1Label}</label>
         <textarea rows="9" id="replayEmailTemplateBody"></textarea><br><br>
-        <button onclick="admin.others.update()" class="right">${updateLabel}</button>
-        <div class="clear"></div>
+        <button onclick="admin.others.update()" class="fn__right">${updateLabel}</button>
+        <div class="fn__clear"></div>
         <div class="content-reset">
         ${replayEmailExplanationLabel}
         </div>
     </div>
-    <div id="tabOthersPanel_tag" class="none">
-        <button class="margin12" onclick="admin.others.removeUnusedTags();">${removeUnusedTagsLabel}</button>
+    <div id="tabOthersPanel_tag" class="fn__none">
+        <button class="fn__margin12" onclick="admin.others.removeUnusedTags();">${removeUnusedTagsLabel}</button>
     </div>
-    <div id="tabOthersPanel_data" class="none">
+    <div id="tabOthersPanel_data" class="fn__none">
         <#if supportExport>
-        <button class="margin12" onclick="admin.others.exportSQL();">${exportSQLLabel}</button>
+        <button class="fn__margin12" onclick="admin.others.exportSQL();">${exportSQLLabel}</button>
         </#if>
-        <button class="margin12" onclick="admin.others.exportJSON();">${exportJSONLabel}</button>
-        <button class="margin12" onclick="admin.others.exportHexo();">${exportHexoLabel}</button>
+        <button class="fn__margin12" onclick="admin.others.exportJSON();">${exportJSONLabel}</button>
+        <button class="fn__margin12" onclick="admin.others.exportHexo();">${exportHexoLabel}</button>
     </div>
 </div>
 ${plugins}

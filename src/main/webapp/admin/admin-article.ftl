@@ -24,14 +24,14 @@
     </div>
     <div>
         <label>${content1Label}</label>
-        <div class="right">
+        <div class="fn__right">
             <label for="articleThumbnail" style="margin-bottom: 0">
                 ${useTumbnailLabel}
                 <input type="checkbox" style="vertical-align: middle;"
                        id="articleThumbnail" onclick="$('.article__thumbnail').slideToggle()" />
             </label>
         </div>
-        <div class="clear"></div>
+        <div class="fn__clear"></div>
         <div class="article__thumbnail">
             <div class="thumbnail__img"></div>
             <button id="articleThumbnailBtn">${chageLabel}</button>
@@ -58,7 +58,7 @@
             <label for="permalink" class="permalink__label" style="margin-bottom: 0">${permalink1Label}</label>
             <input id="permalink" class="fn__flex1" type="text" style="margin: 0 12px 0 6px;" />
         </div>
-        <div class="right viewpwd__panel">
+        <div class="fn__right viewpwd__panel">
             <label for="viewPwd">${articleViewPwd1Label}</label>
             <input id="viewPwd" type="text" style="width: 156px" />
         </div>
@@ -71,7 +71,7 @@
             <button id="articleSign3">${signLabel}3</button>
             <button id="articleSign0">${noSignLabel}</button>
         </span>
-        <div class="right article-commentable__panel">
+        <div class="fn__right article-commentable__panel">
             <label class="checkbox">
                 <input type="checkbox" id="articleCommentable" checked />
                 ${allowCommentLabel}
@@ -84,13 +84,13 @@
                 </label>
             </span>
         </div>
-        <div class="clear"></div>
+        <div class="fn__clear"></div>
     </div>
-    <div class="right">
-        <button id="unSubmitArticle" class="none marginRight12" onclick="admin.article.unPublish();">${unPublishLabel}</button>
+    <div class="fn__right">
+        <button id="unSubmitArticle" class="fn__none marginRight12" onclick="admin.article.unPublish();">${unPublishLabel}</button>
         <button class="marginRight12" id="saveArticle">${saveLabel}${draftListLabel}</button>
         <button id="submitArticle">${publishLabel}</button>
     </div>
-    <div class="clear"></div>
+    <div class="fn__clear"></div>
 </div>
 ${plugins}

@@ -27,11 +27,9 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta http-equiv="Window-target" content="_top">
-        <meta name="robots" content="none" />
+        <meta name="robots" content="fn__none" />
         <title>${adminConsoleLabel} - ${blogTitle}</title>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/scss/base.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/scss/admin.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/vditor-0.2.5/index.classic.css" />
         <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight-9.13.1/styles/github.css?${staticResourceVersion}" />
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
         <link rel="manifest" href="${servePath}/manifest.json">
@@ -44,9 +42,9 @@
                 <a href="${servePath}" target="_blank" class="hover">
                     Solo
                 </a>
-                <span class="icon-unordered-list top__menu none"
+                <span class="icon-unordered-list top__menu fn__none"
                       onclick="admin.toggleMenu()"></span>
-                <span class="right"> 
+                <span class="fn__right">
                     <a href="${servePath}" title='${indexLabel}'>
                         <div class="avatar" style="background-image: url(${gravatar})"></div>
                         ${userName}
@@ -67,7 +65,7 @@
                         <div id="tabArticleTitle" class="tab-current" onclick="admin.collapseNav(this)">
                             <span class="icon-article"></span>
                             ${articleLabel}
-                            <span class="icon-chevron-up right"></span>
+                            <span class="icon-chevron-up fn__right"></span>
                         </div>
                         <ul id="tabArticleMgt">
                             <li>
@@ -98,9 +96,9 @@
                         <div id="tabToolsTitle" onclick="admin.collapseNav(this)">
                             <span class="icon-setting"></span>
                             ${ToolLabel}
-                            <span class="icon-chevron-down right"></span>
+                            <span class="icon-chevron-down fn__right"></span>
                         </div>
-                        <ul class="none" id="tabTools">
+                        <ul class="fn__none" id="tabTools">
                             <li>
                                 <div id="tabs_preference">
                                     <a href="#tools/preference">${preferenceLabel}</a>
@@ -149,21 +147,21 @@
             </div>
             <div class="tabs__bg" onclick="admin.toggleMenu()"></div>
             <div id="tabsPanel">
-                <div id="tabsPanel_main" class="none"></div>
-                <div id="tabsPanel_article" class="none"></div>
-                <div id="tabsPanel_article-list" class="none"></div>
-                <div id="tabsPanel_draft-list" class="none"></div>
-                <div id="tabsPanel_link-list" class="none"></div>
-                <div id="tabsPanel_preference" class="none"></div>
-                <div id="tabsPanel_category-list" class="none"></div>
-                <div id="tabsPanel_page-list" class="none"></div>
-                <div id="tabsPanel_others" class="none"></div>
-                <div id="tabsPanel_user-list" class="none"></div>
-                <div id="tabsPanel_comment-list" class="none"></div>
-                <div id="tabsPanel_plugin-list" class="none"></div>
-                <div id="tabsPanel_about" class="none"></div>
+                <div id="tabsPanel_main" class="fn__none"></div>
+                <div id="tabsPanel_article" class="fn__none"></div>
+                <div id="tabsPanel_article-list" class="fn__none"></div>
+                <div id="tabsPanel_draft-list" class="fn__none"></div>
+                <div id="tabsPanel_link-list" class="fn__none"></div>
+                <div id="tabsPanel_preference" class="fn__none"></div>
+                <div id="tabsPanel_category-list" class="fn__none"></div>
+                <div id="tabsPanel_page-list" class="fn__none"></div>
+                <div id="tabsPanel_others" class="fn__none"></div>
+                <div id="tabsPanel_user-list" class="fn__none"></div>
+                <div id="tabsPanel_comment-list" class="fn__none"></div>
+                <div id="tabsPanel_plugin-list" class="fn__none"></div>
+                <div id="tabsPanel_about" class="fn__none"></div>
             </div>
-            <div class="clear"></div>
+            <div class="fn__clear"></div>
             <div class="footer">
                 Powered by <a href="https://b3log.org" target="_blank">B3log 开源</a> • <a href="https://solo.b3log.org" target="_blank">Solo</a> ${version}
             </div>

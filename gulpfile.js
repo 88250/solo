@@ -34,7 +34,10 @@ const del = require('del')
 
 function sassSkinProcess () {
   return gulp.src('./src/main/webapp/skins/*/css/*.scss').
-    pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)).
+    pipe(sass({
+      outputStyle: 'compressed',
+      includePaths: ['node_modules']
+    }).on('error', sass.logError)).
     pipe(gulp.dest('./src/main/webapp/skins/'))
 }
 
@@ -45,7 +48,10 @@ function sassWatch () {
 
 function sassCommonProcess () {
   return gulp.src('./src/main/webapp/scss/*.scss').
-    pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)).
+    pipe(sass({
+      outputStyle: 'compressed',
+      includePaths: ['node_modules']
+    }).on('error', sass.logError)).
     pipe(gulp.dest('./src/main/webapp/scss/'))
 }
 
