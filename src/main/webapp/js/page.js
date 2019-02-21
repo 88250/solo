@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.3, Feb 19, 2019
+ * @version 2.1.0.0, Feb 21, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -45,7 +45,7 @@ $.extend(Page.prototype, {
    */
   parseLanguage: function (obj) {
     var isHljs = false
-    $('..content-reset pre, .code-highlight pre').
+    $('.content-reset pre').
       each(function () {
         isHljs = true
       })
@@ -236,7 +236,7 @@ $.extend(Page.prototype, {
 
         var titleHTML = headTitle ? headTitle : '<h4>' + randomArticles1Label +
           '</h4>'
-        var randomArticleListHtml = titleHTML + '<ul class=\'marginLeft12\'>' +
+        var randomArticleListHtml = titleHTML + '<ul>' +
           listHtml + '</ul>'
         $('#randomArticles').append(randomArticleListHtml)
       },
@@ -269,7 +269,7 @@ $.extend(Page.prototype, {
         }
 
         var relevantArticleListHtml = headTitle
-          + '<ul class=\'marginLeft12\'>'
+          + '<ul>'
           + listHtml + '</ul>'
         $('#relevantArticles').append(relevantArticleListHtml)
       },
@@ -316,7 +316,7 @@ $.extend(Page.prototype, {
           var titleHTML = headTitle ? headTitle : '<h4>' +
             tips.externalRelevantArticles1Label + '</h4>'
           var randomArticleListHtml = titleHTML
-            + '<ul class=\'marginLeft12\'>'
+            + '<ul>'
             + listHtml + '</ul>'
           $('#externalRelevantArticles').append(randomArticleListHtml)
         },
