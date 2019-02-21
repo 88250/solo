@@ -54,9 +54,9 @@
         </div>
     </div>
     <div class="fn__flex">
-        <div class="fn__flex fn__flex1" style="align-items: center">
+        <div class="fn__flex fn__flex-1" style="align-items: center">
             <label for="permalink" class="permalink__label" style="margin-bottom: 0">${permalink1Label}</label>
-            <input id="permalink" class="fn__flex1" type="text" style="margin: 0 12px 0 6px;" />
+            <input id="permalink" class="fn__flex-1" type="text" style="margin: 0 12px 0 6px;" />
         </div>
         <div class="fn__right viewpwd__panel">
             <label for="viewPwd">${articleViewPwd1Label}</label>
