@@ -102,10 +102,10 @@ var Util = {
    * 按需加载 MathJax 及 flow
    * @returns {undefined}
    */
-  parseMarkdown: function (className) {
+  parseMarkdown: function () {
     var hasMathJax = false;
     var hasFlow = false;
-    var className = className || 'article-body';
+    var className = 'content-reset';
     $('.' + className).each(function () {
       $(this).find('p').each(function () {
         if ($(this).text().split('$').length > 2 ||

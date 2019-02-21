@@ -73,12 +73,12 @@
     <include path="/skins/**/*.woff"/>
     <include path="/skins/**/*.cur"/>
 
-    <include path="/css/**.css"/>
-    <include path="/css/**/*.css"/>
-    <include path="/css/fonts/*.eot"/>
-    <include path="/css/fonts/*.svg"/>
-    <include path="/css/fonts/*.ttf"/>
-    <include path="/css/fonts/*.woff"/>
+    <include path="/scss/**.css"/>
+    <include path="/scss/**/*.css"/>
+    <include path="/scss/fonts/*.eot"/>
+    <include path="/scss/fonts/*.svg"/>
+    <include path="/scss/fonts/*.ttf"/>
+    <include path="/scss/fonts/*.woff"/>
 
     <include path="/images/**.png"/>
     <include path="/images/**/*.png"/>

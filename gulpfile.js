@@ -30,28 +30,26 @@ const concat = require('gulp-concat')
 const uglify = require('gulp-uglify')
 const sass = require('gulp-sass')
 const rename = require('gulp-rename')
-const minifycss = require('gulp-minify-css')
 const del = require('del')
 
-function sassProcess () {
+function sassSkinProcess () {
   return gulp.src('./src/main/webapp/skins/*/css/*.scss').
-    pipe(sass().on('error', sass.logError)).
+    pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)).
     pipe(gulp.dest('./src/main/webapp/skins/'))
 }
 
-function sassProcessWatch () {
-  gulp.watch('./src/main/webapp/skins/*/css/*.scss', sassProcess)
+function sassWatch () {
+  gulp.watch(['./src/main/webapp/skins/*/css/*.scss'], sassSkinProcess)
+  gulp.watch(['./src/main/webapp/scss/*.scss'], sassCommonProcess)
 }
 
-gulp.task('watch', gulp.series(sassProcessWatch))
-
-function minCSS () {
-  // minify css
-  return gulp.src('./src/main/webapp/css/*.css').
-    pipe(rename({suffix: '.min'})).
-    pipe(minifycss()).
-    pipe(gulp.dest('./src/main/webapp/css/'))
+function sassCommonProcess () {
+  return gulp.src('./src/main/webapp/scss/*.scss').
+    pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError)).
+    pipe(gulp.dest('./src/main/webapp/scss/'))
 }
+
+gulp.task('watch', gulp.series(sassWatch))
 
 function minJS () {
   // minify js
@@ -123,22 +121,12 @@ function minSkinJS () {
     pipe(gulp.dest('./src/main/webapp/skins/'))
 }
 
-function minSkinCSS () {
-  // minify skin css
-  return gulp.src('./src/main/webapp/skins/*/css/*.css').
-    pipe(rename({suffix: '.min'})).
-    pipe(minifycss()).
-    pipe(gulp.dest('./src/main/webapp/skins/'))
-}
-
 function cleanProcess () {
   return del([
-    './src/main/webapp/css/*.min.css',
     './src/main/webapp/js/*.min.js',
-    './src/main/webapp/skins/*/css/*.min.css',
     './src/main/webapp/skins/*/js/*.min.js'])
 }
 
 gulp.task('default',
-  gulp.series(cleanProcess, sassProcess, gulp.parallel(minSkinJS, minJS, minSkinCSS, minCSS),
+  gulp.series(cleanProcess, sassSkinProcess, sassCommonProcess, gulp.parallel(minSkinJS, minJS),
     gulp.parallel(miniPjax, miniAdmin, miniAdminLibs)))

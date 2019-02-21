@@ -25,7 +25,7 @@
     <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
     <title>${searchLabel} - ${blogTitle}${searchLabel}</title>
     <link type="text/css" rel="stylesheet"
-          href="${staticServePath}/css/default-init${miniPostfix}.css?${staticResourceVersion}" charset="utf-8"/>
+          href="${staticServePath}/scss/start.css?${staticResourceVersion}" charset="utf-8"/>
     <link rel="icon" type="image/png" href="${staticServePath}/favicon.png"/>
     <link rel="apple-touch-icon" href="${staticServePath}/favicon.png">
 </head>
@@ -73,7 +73,6 @@
             <footer>
                 <#list article.articleTags?split(",") as articleTag>
                     <a class="tag" rel="tag" href="${servePath}/tags/${articleTag?url('UTF-8')}">${articleTag}</a>
-                    <#if articleTag_has_next> · ‎</#if>
                 </#list>
             </footer>
         </article>

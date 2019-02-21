@@ -16,27 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 /**
-* 403, 404, 500, article-pwd, init, login and kill-browser page style.
+* 401, 403, 404, 500, article-pwd, start, search and kill-browser page style.
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 1.3.0.1, Feb 19, 2019
+* @version 2.0.0.0, Feb 21, 2019
 */
 
+@import "reset";
+@import "reset-content";
+
 /* reset */
-html, body {
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-}
-
-body {
-    background-color: #fff;
-    color: #3b3e43;
-    font-family: \5fae\8f6f\96c5\9ed1;
-    font-size: small;
-}
-
 button {
     background-size: 110% 110%;
     border: 1px solid rgba(27, 31, 35, .2);
@@ -167,24 +157,18 @@ input[type=text]:focus {
 /* end 403/404/500 */
 
 /* start kill */
-.kill img {
-    position: absolute;
-    right: 40px;
-    top: 200px;
+.kill {
+    &__btns {
+        text-align: right;
+    }
+    &__img {
+        float: right;
+        margin: -280px 0 0 0;
+    }
+    .content-reset {
+        margin: 10px;
+    }
 }
-
-.kill ul {
-    margin-bottom: 50px;
-}
-
-.kill p {
-    margin: 12px 20px;
-}
-
-.kill span {
-    margin-left: 20px;
-}
-
 /* end kill */
 
 /* start */
@@ -268,187 +252,6 @@ input[type=text]:focus {
     width: auto;
 }
 
-/* start content-reset */
-.content-reset {
-    word-wrap: break-word;
-    overflow: auto;
-    line-height: 1.65;
-    font-size: 16px;
-    word-break: break-word;
-}
-
-.content-reset ul,
-.content-reset ol {
-    padding-left: 2em;
-    margin-top: 0;
-    margin-bottom: 16px;
-}
-
-.content-reset li {
-    margin-top: 0.25em;
-}
-
-.content-reset img {
-    max-width: 100%;
-}
-
-.content-reset img.emoji {
-    max-width: 20px;
-}
-
-.content-reset h1,
-.content-reset h2,
-.content-reset h3,
-.content-reset h4,
-.content-reset h5,
-.content-reset h6 {
-    margin-top: 24px;
-    margin-bottom: 16px;
-    font-weight: 600;
-    line-height: 1.25;
-}
-
-.content-reset h1 {
-    padding-bottom: 0.3em;
-    font-size: 1.7em;
-    border-bottom: 1px solid #eee;
-}
-
-.content-reset h2 {
-    padding-bottom: 0.3em;
-    font-size: 1.5em;
-    border-bottom: 1px solid #eee;
-}
-
-.content-reset h3 {
-    font-size: 1.25em;
-}
-
-.content-reset h4 {
-    font-size: 1em;
-}
-
-.content-reset h5 {
-    font-size: 0.875em;
-}
-
-.content-reset h6 {
-    font-size: 0.85em;
-}
-
-.content-reset hr {
-    height: 0.15em;
-    padding: 0;
-    margin: 24px 0;
-    background-color: #e7e7e7;
-    border: 0;
-}
-
-.content-reset p {
-    margin-top: 0;
-    margin-bottom: 16px;
-}
-
-.content-reset blockquote {
-    padding: 0 1em;
-    color: #777;
-    border-left: 0.25em solid #ddd;
-    margin-bottom: 16px;
-}
-
-.content-reset blockquote p {
-    margin: 0;
-}
-
-.content-reset ins > iframe {
-    border: 0;
-}
-
-.content-reset iframe {
-    border: 1px solid rgba(0, 0, 0, 0.38);
-}
-
-.content-reset table {
-    width: 100%;
-    border: 1px solid #dedede;
-    margin: 15px auto;
-    border-collapse: collapse;
-    empty-cells: show;
-}
-
-.content-reset thead {
-    text-align: center;
-}
-
-.content-reset td,
-.content-reset th {
-    height: 35px;
-    border: 1px solid #dedede;
-    padding: 0 10px;
-}
-
-.content-reset th {
-    font-weight: bold;
-    text-align: center !important;
-    background: rgba(158, 188, 226, 0.2);
-}
-
-.content-reset tbody tr:nth-child(2n) {
-    background: rgba(158, 188, 226, 0.12);
-}
-
-.content-reset tr:hover {
-    background: #efefef;
-}
-
-.content-reset code {
-    padding: 0.2em 0.4em;
-    margin: 0;
-    font-size: 85%;
-    background-color: rgba(252, 41, 41, 0.12);
-    border-radius: 3px;
-    word-break: break-word;
-}
-
-.content-reset pre {
-    position: relative;
-}
-
-.content-reset pre textarea {
-    position: absolute;
-    top: -100000px;
-}
-
-.content-reset pre > code {
-    padding: 0.5em;
-    background-color: rgba(0, 0, 0, 0.04);
-    background-size: 20px 20px;
-    border-radius: 5px;
-    display: block;
-}
-
-.content-reset kbd {
-    display: inline-block;
-    padding: 3px 5px;
-    font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    line-height: 10px;
-    color: #555;
-    vertical-align: middle;
-    background-color: #fcfcfc;
-    border: solid 1px rgba(0, 0, 0, 0.38);
-    border-bottom-color: #bbb;
-    border-radius: 3px;
-    box-shadow: inset 0 -1px 0 #bbb;
-}
-
-.content-reset__task,
-.content-reset .task-list-item {
-    list-style: none;
-    margin-left: -1em;
-}
-
-/* end content-reset */
-
 /* start search */
 .search {
     border-top: 5px solid #e6e5d9;
@@ -474,6 +277,7 @@ input[type=text]:focus {
 
 .search__input {
     flex: 1;
+    display: flex;
 }
 
 .search__input input {
@@ -490,6 +294,26 @@ input[type=text]:focus {
 
 .search__articles {
     width: 600px;
+    .tag {
+        color: #616161;
+        padding: 2px 5px;
+        border: 1px solid transparent;
+        position: relative;
+        height: 20px;
+        white-space: nowrap;
+        word-wrap: normal;
+        background-color: #f7f7f7;
+        border-radius: 3px 3px 3px 3px;
+        line-height: 21px;
+        font-size: 12px;
+        display: inline-block;
+        margin-right: 5px;
+        &:hover {
+            color: #000;
+            box-shadow: 0 1px 2px rgba(0,0,0,.2);
+            text-decoration: none;
+        }
+    }
 }
 
 .search__articles header h1 {
@@ -505,6 +329,7 @@ input[type=text]:focus {
 .search__articles .meta {
     font-size: 14px;
     color: #999;
+    margin: 5px 0;
 }
 
 .search__articles footer {
@@ -554,12 +379,7 @@ input[type=text]:focus {
         border: 0;
         float: none;
         width: auto;
-    }
-
-    input {
-        width: 100%;
-        box-sizing: border-box;
-        display: block;
+        padding: 10px;
     }
 
     .a-500,
@@ -575,30 +395,21 @@ input[type=text]:focus {
         left: 0;
     }
 
-    .search__input {
-        float: none;
-    }
-
-    .search__input input {
-        margin: 0;
-    }
-
-    .search__input button {
-        position: absolute;
-        right: 20px;
-        height: 32px;
-        line-height: 16px;
-    }
-
     .search {
         padding: 20px;
         width: 100%;
         min-height: auto;
         box-sizing: border-box;
-    }
 
-    .search__articles {
-        width: auto;
+        &__input input {
+            width: auto;
+            flex: 1;
+            margin-left: 0;
+        }
+
+        &__articles {
+            width: auto;
+        }
     }
 }
 

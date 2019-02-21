@@ -45,7 +45,7 @@ $.extend(Page.prototype, {
    */
   parseLanguage: function (obj) {
     var isHljs = false
-    $('.article-body pre, .content-reset pre, .code-highlight pre').
+    $('..content-reset pre, .code-highlight pre').
       each(function () {
         isHljs = true
       })
