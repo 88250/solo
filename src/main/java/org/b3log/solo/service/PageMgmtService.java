@@ -19,6 +19,7 @@ package org.b3log.solo.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -197,7 +198,7 @@ public class PageMgmtService {
                 page.put(Page.PAGE_TYPE, "page");
                 page.put(Page.PAGE_PERMALINK, permalink);
                 final JSONObject preference = preferenceQueryService.getPreference();
-                page.put(Page.PAGE_ICON, "https://static.hacpai.com/images/tags/github2.png");
+                page.put(Page.PAGE_ICON, Latkes.getStaticServePath() + "/images/github-icon.png");
                 page.put(Page.PAGE_CONTENT, content);
                 pageRepository.add(page);
             } else {
