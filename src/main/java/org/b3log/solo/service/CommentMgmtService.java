@@ -58,7 +58,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.4, Jan 28, 2019
+ * @version 1.3.3.5, Feb 21, 2019
  * @since 0.3.5
  */
 @Service
@@ -311,15 +311,6 @@ public class CommentMgmtService {
             if (MAX_COMMENT_NAME_LENGTH < commentName.length() || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
                 LOGGER.log(Level.WARN, "Comment name is too long[{0}]", commentName);
                 ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
-
-                return ret;
-            }
-
-            final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
-
-            if (!Strings.isEmail(commentEmail)) {
-                LOGGER.log(Level.WARN, "Comment email is invalid[{0}]", commentEmail);
-                ret.put(Keys.MSG, langPropsService.get("mailInvalidLabel"));
 
                 return ret;
             }
