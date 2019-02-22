@@ -189,7 +189,7 @@ public final class Markdowns {
             final Document doc = Jsoup.parse(html);
             doc.select("a").forEach(a -> {
                 final String src = a.attr("href");
-                if (!StringUtils.startsWithIgnoreCase(src, Latkes.getServePath())) {
+                if (!StringUtils.startsWithIgnoreCase(src, Latkes.getServePath()) && !StringUtils.startsWithIgnoreCase(src, "#")) {
                     a.attr("target", "_blank");
                 }
             });
