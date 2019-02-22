@@ -28,9 +28,9 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.PluginManager;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
@@ -48,9 +48,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
@@ -162,21 +159,52 @@ public class InitService {
             return true;
         }
 
-        try (final Connection connection = Connections.getConnection()) {
-            final PreparedStatement preparedStatement = connection.prepareStatement("SELECT COUNT(1) AS `c` FROM `" + userRepository.getName() + "`");
-            final ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            final int c = resultSet.getInt("c");
-            inited = 0 < c;
+        try {
+            inited = !optionRepository.getList(new Query()).isEmpty();
+            if (!inited && !printedInitMsg) {
+                LOGGER.log(Level.WARN, "Solo has not been initialized, please open your browser and visit [" + Latkes.getServePath() + "] to init Solo");
+                printedInitMsg = true;
+            }
 
             return inited;
         } catch (final Exception e) {
-            if (!printedInitMsg) {
-                LOGGER.log(Level.WARN, "Solo has not been initialized, please open your browser and visit [" + Latkes.getServePath() + "] to init Solo");
-            }
-            printedInitMsg = true;
+            LOGGER.log(Level.ERROR, "Check init failed", e);
 
+            System.exit(-1);
             return false;
+        }
+    }
+
+    /**
+     * Initializes database tables.
+     */
+    public void initTables() {
+        try {
+            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+            final boolean userTableExist = JdbcRepositories.existTable(tablePrefix + User.USER);
+            final boolean optionTableExist = JdbcRepositories.existTable(tablePrefix + Option.OPTION);
+            if (userTableExist && optionTableExist) {
+                return;
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Check tables failed", e);
+
+            System.exit(-1);
+        }
+
+        LOGGER.info("It's your first time setup Solo, initialize tables in database [" + Latkes.getRuntimeDatabase() + "]");
+
+        if (Latkes.RuntimeDatabase.H2 == Latkes.getRuntimeDatabase()) {
+            String dataDir = Latkes.getLocalProperty("jdbc.URL");
+            dataDir = dataDir.replace("~", System.getProperty("user.home"));
+            LOGGER.log(Level.INFO, "Your DATA will be stored in directory [" + dataDir + "], "
+                    + "please pay more attention on it!");
+        }
+
+        final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
+        for (final CreateTableResult createTableResult : createTableResults) {
+            LOGGER.log(Level.DEBUG, "Creates table result [tableName={0}, isSuccess={1}]",
+                    createTableResult.getName(), createTableResult.isSuccess());
         }
     }
 
@@ -196,21 +224,6 @@ public class InitService {
     public void init(final JSONObject requestJSONObject) throws ServiceException {
         if (isInited()) {
             return;
-        }
-
-        LOGGER.log(Level.DEBUG, "Solo is running with database [{0}], creates all tables", Latkes.getRuntimeDatabase());
-
-        if (Latkes.RuntimeDatabase.H2 == Latkes.getRuntimeDatabase()) {
-            String dataDir = Latkes.getLocalProperty("jdbc.URL");
-            dataDir = dataDir.replace("~", System.getProperty("user.home"));
-            LOGGER.log(Level.INFO, "Your DATA will be stored in directory [" + dataDir + "], "
-                    + "please pay more attention on it!");
-        }
-
-        final List<CreateTableResult> createTableResults = JdbcRepositories.initAllTables();
-        for (final CreateTableResult createTableResult : createTableResults) {
-            LOGGER.log(Level.DEBUG, "Create table result [tableName={0}, isSuccess={1}]",
-                    createTableResult.getName(), createTableResult.isSuccess());
         }
 
         final Transaction transaction = userRepository.beginTransaction();
@@ -270,7 +283,7 @@ public class InitService {
 
         final JSONObject comment = new JSONObject();
         comment.put(Keys.OBJECT_ID, articleId);
-        comment.put(Comment.COMMENT_NAME, "Daniel");
+        comment.put(Comment.COMMENT_NAME, "88250");
         comment.put(Comment.COMMENT_EMAIL, "d@b3log.org");
         comment.put(Comment.COMMENT_URL, "https://hacpai.com/member/88250");
         comment.put(Comment.COMMENT_CONTENT, langPropsService.get("helloWorld.comment.content"));
