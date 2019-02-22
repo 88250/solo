@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
  * {@link ArticleProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Oct 28, 2018
+ * @version 1.0.1.4, Feb 22, 2019
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -223,7 +223,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Solo 的个人博客 - 访问密码</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>访问密码 - Solo 的个人博客</title>"));
     }
 
     /**

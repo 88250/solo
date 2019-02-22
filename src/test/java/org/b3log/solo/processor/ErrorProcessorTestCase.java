@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link ErrorProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.2, Nov 28, 2018
+ * @version 1.0.1.3, Feb 22, 2019
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -55,6 +55,6 @@ public class ErrorProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Solo 的个人博客 - 403 Forbidden!</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>403 Forbidden! - Solo 的个人博客</title>"));
     }
 }

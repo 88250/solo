@@ -32,7 +32,7 @@ import java.util.List;
  * {@link IndexProcessor} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Feb 7, 2019
+ * @version 1.0.1.4, Feb 22, 2019
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -87,7 +87,7 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Solo 的个人博客 - 403 Forbidden!</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>Kill IE! - Solo 的个人博客</title>"));
     }
 
     /**

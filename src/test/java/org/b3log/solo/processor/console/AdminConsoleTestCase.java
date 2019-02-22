@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link AdminConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Dec 7, 2018
+ * @version 1.0.0.2, Feb 22, 2019
  * @since 2.9.7
  */
 @Test(suiteName = "processor")
@@ -95,7 +95,7 @@ public class AdminConsoleTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<div id=\"tabPreference\" class=\"sub-tabs fn-clear\">"));
+        Assert.assertTrue(StringUtils.contains(content, "信息配置"));
     }
 
     /**
