@@ -361,7 +361,7 @@
                     <stopKey>stop</stopKey>
                     <stopPort>4501</stopPort>
                     <webAppConfig>
-                        <contextPath>/solo</contextPath>
+                        <contextPath>/</contextPath>
                     </webAppConfig>
                 </configuration>
             </plugin>
