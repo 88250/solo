@@ -142,7 +142,8 @@ public class OAuthGitHubProcessor {
         if (StringUtils.isBlank(referer)) {
             referer = Latkes.getServePath();
         }
-        final String state = referer + ":::" + RandomStringUtils.randomAlphanumeric(16);
+        final String cb = Latkes.getServePath() + "/oauth/github";
+        final String state = referer + ":::" + RandomStringUtils.randomAlphanumeric(16) + ":::cb=" + cb + ":::";
         STATES.put(state, URLs.encode(state));
 
         final String path = "https://github.com/login/oauth/authorize" + "?client_id=" + clientId + "&state=" + state
@@ -167,7 +168,6 @@ public class OAuthGitHubProcessor {
         }
         STATES.remove(state);
         referer = URLs.decode(referer);
-        referer = StringUtils.substringBeforeLast(referer, "__");
         final String accessToken = context.param("ak");
         final JSONObject userInfo = GitHubs.getGitHubUserInfo(accessToken);
         if (null == userInfo) {
@@ -230,8 +230,9 @@ public class OAuthGitHubProcessor {
             return;
         }
 
+        final String redirect = StringUtils.substringBeforeLast(referer, "__");
         Solos.login(user, response);
-        context.sendRedirect(referer);
+        context.sendRedirect(redirect);
         LOGGER.log(Level.INFO, "Logged in [name={0}, remoteAddr={1}] with GitHub oauth", userName, Requests.getRemoteAddr(request));
     }
 }
