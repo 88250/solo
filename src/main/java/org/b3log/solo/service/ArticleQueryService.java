@@ -53,7 +53,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.9, Feb 6, 2019
+ * @version 1.3.2.10, Feb 23, 2019
  * @since 0.3.5
  */
 @Service
@@ -1078,5 +1078,8 @@ public class ArticleQueryService {
         article.remove(Article.ARTICLE_IS_PUBLISHED);
         article.remove(Article.ARTICLE_PUT_TOP);
         article.remove(Article.ARTICLE_HAD_BEEN_PUBLISHED);
+        article.remove(Article.ARTICLE_VIEW_PWD);
+        article.remove(Article.ARTICLE_SIGN_ID);
+        article.remove(ARTICLE_COMMENTABLE);
     }
 }
