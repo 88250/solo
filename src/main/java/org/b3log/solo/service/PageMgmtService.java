@@ -197,8 +197,7 @@ public class PageMgmtService {
                 page.put(Page.PAGE_COMMENTABLE, true);
                 page.put(Page.PAGE_TYPE, "page");
                 page.put(Page.PAGE_PERMALINK, permalink);
-                final JSONObject preference = preferenceQueryService.getPreference();
-                page.put(Page.PAGE_ICON, Latkes.getStaticServePath() + "/images/github-icon.png");
+                page.put(Page.PAGE_ICON, "images/github-icon.png");
                 page.put(Page.PAGE_CONTENT, content);
                 pageRepository.add(page);
             } else {
