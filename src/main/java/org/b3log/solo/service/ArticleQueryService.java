@@ -390,21 +390,6 @@ public class ArticleQueryService {
     }
 
     /**
-     * Gets all unpublished articles.
-     *
-     * @return articles all unpublished articles
-     * @throws RepositoryException repository exception
-     */
-    public List<JSONObject> getUnpublishedArticles() throws RepositoryException {
-        final Map<String, SortDirection> sorts = new HashMap<>();
-        sorts.put(Article.ARTICLE_CREATED, SortDirection.DESCENDING);
-        sorts.put(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
-        final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
-
-        return articleRepository.getList(query);
-    }
-
-    /**
      * Gets the recent articles with the specified fetch size.
      *
      * @param fetchSize the specified fetch size
@@ -468,8 +453,7 @@ public class ArticleQueryService {
             final JSONArray tags = new JSONArray();
             final List<JSONObject> tagArticleRelations = tagArticleRepository.getByArticleId(articleId);
 
-            for (int i = 0; i < tagArticleRelations.size(); i++) {
-                final JSONObject tagArticleRelation = tagArticleRelations.get(i);
+            for (final JSONObject tagArticleRelation : tagArticleRelations) {
                 final String tagId = tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
 
@@ -757,7 +741,7 @@ public class ArticleQueryService {
             final int maxTagCnt = displayCnt > tagTitles.length ? tagTitles.length : displayCnt;
             final String articleId = article.getString(Keys.OBJECT_ID);
 
-            final List<JSONObject> articles = new ArrayList<JSONObject>();
+            final List<JSONObject> articles = new ArrayList<>();
 
             for (int i = 0; i < maxTagCnt; i++) { // XXX: should average by tag?
                 final String tagTitle = tagTitles[i];
@@ -803,7 +787,7 @@ public class ArticleQueryService {
             }
 
             final List<Integer> randomIntegers = CollectionUtils.getRandomIntegers(0, articles.size() - 1, displayCnt);
-            final List<JSONObject> ret = new ArrayList<JSONObject>();
+            final List<JSONObject> ret = new ArrayList<>();
 
             for (final int index : randomIntegers) {
                 ret.add(articles.get(index));
@@ -814,22 +798,6 @@ public class ArticleQueryService {
             LOGGER.log(Level.ERROR, "Gets relevant articles failed", e);
 
             return Collections.emptyList();
-        }
-    }
-
-    /**
-     * Determines an article specified by the given article id is published.
-     *
-     * @param articleId the given article id
-     * @return {@code true} if it is published
-     * @throws ServiceException service exception
-     */
-    public boolean isArticlePublished(final String articleId) throws ServiceException {
-        try {
-            return articleRepository.isPublished(articleId);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Determines the article publish status failed[articleId=" + articleId + "]", e);
-            throw new ServiceException(e);
         }
     }
 
@@ -899,25 +867,6 @@ public class ArticleQueryService {
             LOGGER.log(Level.ERROR, "Gets an article [id=" + articleId + "] failed", e);
 
             return null;
-        }
-    }
-
-    /**
-     * Gets an article by the specified article permalink.
-     * <p>
-     * <b>Note</b>: The article content and abstract is raw (no editor type processing).
-     * </p>
-     *
-     * @param articlePermalink the specified article permalink
-     * @return an article, returns {@code null} if not found
-     * @throws ServiceException service exception
-     */
-    public JSONObject getArticleByPermalink(final String articlePermalink) throws ServiceException {
-        try {
-            return articleRepository.getByPermalink(articlePermalink);
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets an article[articlePermalink=" + articlePermalink + "] failed", e);
-            throw new ServiceException(e);
         }
     }
 
@@ -1045,7 +994,7 @@ public class ArticleQueryService {
      * @param articles the specified articles
      * @see #removeUnusedProperties(org.json.JSONObject)
      */
-    public void removeUnusedProperties(final List<JSONObject> articles) {
+    private void removeUnusedProperties(final List<JSONObject> articles) {
         for (final JSONObject article : articles) {
             removeUnusedProperties(article);
         }
@@ -1064,7 +1013,7 @@ public class ArticleQueryService {
      * @param article the specified article
      * @see #removeUnusedProperties(java.util.List)
      */
-    public void removeUnusedProperties(final JSONObject article) {
+    private void removeUnusedProperties(final JSONObject article) {
         article.remove(Keys.OBJECT_ID);
         article.remove(Article.ARTICLE_AUTHOR_ID);
         article.remove(Article.ARTICLE_ABSTRACT);
