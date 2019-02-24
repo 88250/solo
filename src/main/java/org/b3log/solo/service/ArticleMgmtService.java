@@ -262,8 +262,6 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public void updateArticle(final JSONObject requestJSONObject) throws ServiceException {
-        final JSONObject ret = new JSONObject();
-
         final Transaction transaction = articleRepository.beginTransaction();
 
         try {
