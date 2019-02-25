@@ -34,7 +34,7 @@ import java.util.List;
  * {@link ArticleRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Sep 16, 2018
+ * @version 1.0.0.5, Feb 25, 2019
  */
 @Test(suiteName = "repository")
 public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
@@ -67,6 +67,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
+        article.put(Article.ARTICLE_IMG1_URL, Article.getArticleImg1URL(article));
 
         final Transaction transaction = articleRepository.beginTransaction();
         articleRepository.add(article);
