@@ -529,6 +529,12 @@
           "description": "文章浏览密码，留空为不设置访问密码",
           "type": "String",
           "legnth": 255
+        },
+        {
+          "name": "articleImg1URL",
+          "type": "String",
+          "length": 255,
+          "description": "文章首图地址"
         }
       ]
     },

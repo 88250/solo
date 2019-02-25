@@ -17,7 +17,10 @@
  */
 package org.b3log.solo.model;
 
+import org.apache.commons.lang.StringUtils;
+import org.b3log.solo.util.Images;
 import org.b3log.solo.util.Markdowns;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -25,7 +28,7 @@ import org.jsoup.safety.Whitelist;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Feb 6, 2019
+ * @version 1.3.0.0, Feb 25, 2019
  * @since 0.3.1
  */
 public final class Article {
@@ -155,6 +158,11 @@ public final class Article {
      */
     public static final String ARTICLE_VIEW_PWD = "articleViewPwd";
 
+    /**
+     * Key of article image1 URL. https://github.com/b3log/solo/issues/12670
+     */
+    public static final String ARTICLE_IMG1_URL = "articleImg1URL";
+
     //// constants
 
     /**
@@ -163,9 +171,50 @@ public final class Article {
     private static final int ARTICLE_ABSTRACT_LENGTH = 500;
 
     /**
+     * Width of article first image.
+     */
+    public static final int ARTICLE_THUMB_IMG_WIDTH = 960;
+
+    /**
+     * Height of article first image.
+     */
+    public static final int ARTICLE_THUMB_IMG_HEIGHT = 540;
+
+    /**
      * Private constructor.
      */
     private Article() {
+    }
+
+    /**
+     * Gets the first image URL of the specified article.
+     *
+     * @param article the specified article
+     * @return the first image URL, returns {@code ""} if not found
+     */
+    public static String getArticleImg1URL(final JSONObject article) {
+        final String content = article.optString(Article.ARTICLE_CONTENT);
+        final String html = Markdowns.toHTML(content);
+        final String[] imgs = StringUtils.substringsBetween(html, "<img", ">");
+        if (null == imgs || 0 == imgs.length) {
+            return Images.imageSize(Images.randImage(), ARTICLE_THUMB_IMG_WIDTH, ARTICLE_THUMB_IMG_HEIGHT);
+        }
+
+        String ret = null;
+        for (final String img : imgs) {
+            ret = StringUtils.substringBetween(img, "src=\"", "\"");
+            if (!StringUtils.containsIgnoreCase(ret, ".ico")) {
+                break;
+            }
+        }
+
+        if (StringUtils.isBlank(ret)) {
+            return Images.imageSize(Images.randImage(), ARTICLE_THUMB_IMG_WIDTH, ARTICLE_THUMB_IMG_HEIGHT);
+        }
+
+        ret = Images.imageSize(ret, ARTICLE_THUMB_IMG_WIDTH, ARTICLE_THUMB_IMG_HEIGHT);
+
+        return ret;
     }
 
     /**

@@ -257,7 +257,7 @@ public class InitService {
         final JSONObject article = new JSONObject();
 
         article.put(Article.ARTICLE_TITLE, langPropsService.get("helloWorld.title"));
-        final String content = "![](" + Images.imageSize(Images.randImage(), 960, 540) + ") \n\n" +
+        final String content = "![](" + Images.imageSize(Images.randImage(), Article.ARTICLE_THUMB_IMG_WIDTH, Article.ARTICLE_THUMB_IMG_HEIGHT) + ") \n\n" +
                 langPropsService.get("helloWorld.content");
 
         article.put(Article.ARTICLE_ABSTRACT, content);
@@ -278,6 +278,8 @@ public class InitService {
         article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
         article.put(Article.ARTICLE_COMMENTABLE, true);
         article.put(Article.ARTICLE_VIEW_PWD, "");
+        final String articleImg1URL = Article.getArticleImg1URL(article);
+        article.put(Article.ARTICLE_IMG1_URL, articleImg1URL);
 
         final String articleId = addHelloWorldArticle(article);
 

@@ -134,13 +134,13 @@ public class ArticleConsole {
         // original: 1920*1080
 
         final String wStr = context.param("w");
-        int w = 960;
+        int w = Article.ARTICLE_THUMB_IMG_WIDTH;
         if (Strings.isNumeric(wStr)) {
             w = Integer.valueOf(wStr);
         }
         final int width = w;
         final String hStr = context.param("h");
-        int h = 540;
+        int h = Article.ARTICLE_THUMB_IMG_HEIGHT;
         if (Strings.isNumeric(hStr)) {
             h = Integer.valueOf(hStr);
         }

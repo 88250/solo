@@ -448,6 +448,9 @@ public class ArticleMgmtService {
 
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
+            final String articleImg1URL = getArticleImg1URL(article);
+            article.put(ARTICLE_IMG1_URL, articleImg1URL);
+
             final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
             article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
 
