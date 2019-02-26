@@ -29,7 +29,7 @@
                 <span id="soloEditorCancel" style="margin: 0 10px;padding: 0 12px;cursor: pointer">
                     ${cancelLabel}
                 </span>
-                <button id="soloEditorAdd" style="border-radius: 4px;background-color: #60b044;border-color: #569e3d;color: #fff;padding: 0 12px">
+                <button id="soloEditorAdd" style="border-radius: 4px;background-color: #60b044;border:1px solid #569e3d;color: #fff;padding: 0 12px">
                     ${confirmLabel}
                 </button>
             </div>
