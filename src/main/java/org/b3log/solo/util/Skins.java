@@ -48,7 +48,7 @@ import java.util.*;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.4, Jan 24, 2019
+ * @version 1.1.6.5, Feb 26, 2019
  * @since 0.3.1
  */
 public final class Skins {
@@ -133,6 +133,11 @@ public final class Skins {
         Stopwatchs.start("Fill Skin Langs");
 
         try {
+            // Fills the core language configurations
+            final BeanManager beanManager = BeanManager.getInstance();
+            final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
+            dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
+
             if (StringUtils.isBlank(currentSkinDirName)) {
                 currentSkinDirName = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
             }
@@ -141,36 +146,30 @@ public final class Skins {
             if (null == langs) {
                 LANG_MAP.clear(); // Collect unused skin languages
 
-                LOGGER.log(Level.DEBUG, "Loading skin [dirName={0}, locale={1}]", currentSkinDirName, localeString);
                 langs = new HashMap<>();
-
                 final String language = Locales.getLanguage(localeString);
                 final String country = Locales.getCountry(localeString);
-
                 final ServletContext servletContext = SoloServletListener.getServletContext();
                 final InputStream inputStream = servletContext.getResourceAsStream(
                         "/skins/" + currentSkinDirName + "/lang/lang_" + language + '_' + country + ".properties");
+                if (null != inputStream) {
+                    LOGGER.log(Level.DEBUG, "Loading skin [dirName={0}, locale={1}]", currentSkinDirName, localeString);
+                    final Properties props = new Properties();
+                    props.load(inputStream);
+                    inputStream.close();
+                    final Set<Object> keys = props.keySet();
+                    for (final Object key : keys) {
+                        String val = props.getProperty((String) key);
+                        val = replaceVars(val);
+                        langs.put((String) key, val);
+                    }
 
-                final Properties props = new Properties();
-                props.load(inputStream);
-                final Set<Object> keys = props.keySet();
-                for (final Object key : keys) {
-                    String val = props.getProperty((String) key);
-                    val = replaceVars(val);
-                    langs.put((String) key, val);
+                    LANG_MAP.put(langName, langs);
+                    LOGGER.log(Level.DEBUG, "Loaded skin [dirName={0}, locale={1}, keyCount={2}]", currentSkinDirName, localeString, langs.size());
                 }
-
-                LANG_MAP.put(langName, langs);
-                LOGGER.log(Level.DEBUG, "Loaded skin[dirName={0}, locale={1}, keyCount={2}]", currentSkinDirName, localeString, langs.size());
             }
 
             dataModel.putAll(langs); // Fills the current skin's language configurations
-
-            // Fills the core language configurations
-            final BeanManager beanManager = BeanManager.getInstance();
-            final LangPropsService langPropsService = beanManager.getReference(LangPropsService.class);
-
-            dataModel.putAll(langPropsService.getAll(Latkes.getLocale()));
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Fills skin langs failed", e);
 
