@@ -19,7 +19,6 @@ package org.b3log.solo.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -46,7 +45,8 @@ import java.util.List;
  * Page management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.13, Feb 7, 2019
+ * @author <a href="http://vanessa.b3log.org">Vanessa</a>
+ * @version 1.1.0.14, Feb 26, 2019
  * @since 0.4.0
  */
 @Service
@@ -179,7 +179,9 @@ public class PageMgmtService {
             } else {
                 contentBuilder.append("。");
             }
-            contentBuilder.append("\n\n---\n\n");
+            if (i < gitHubRepos.length() - 1) {
+                contentBuilder.append("\n\n---\n\n");
+            }
         }
         final String content = contentBuilder.toString();
 
