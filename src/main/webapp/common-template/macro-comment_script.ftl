@@ -36,9 +36,17 @@
         </div>
     </div>
 </#if>
-<script type="text/javascript" src="${staticServePath}/js/page${miniPostfix}.js?${staticResourceVersion}"
-        charset="utf-8"></script>
 <script type="text/javascript">
+    if (!window.Page) {
+        const xhrObj = new XMLHttpRequest()
+        xhrObj.open('GET', '${staticServePath}/js/page${miniPostfix}.js?${staticResourceVersion}', false)
+        xhrObj.setRequestHeader('Accept', 'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01')
+        xhrObj.send('')
+        const scriptElement = document.createElement('script')
+        scriptElement.type = 'text/javascript'
+        scriptElement.text = xhrObj.responseText
+        document.getElementsByTagName('head')[0].appendChild(scriptElement)
+    }
     var page = new Page({
         "commentContentCannotEmptyLabel": "${commentContentCannotEmptyLabel}",
         "langLabel": "${langLabel}",
