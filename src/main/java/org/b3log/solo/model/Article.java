@@ -193,7 +193,9 @@ public final class Article {
      * @return the first image URL, returns {@code ""} if not found
      */
     public static String getArticleImg1URL(final JSONObject article) {
-        final String content = article.optString(Article.ARTICLE_CONTENT);
+        final String summary = article.optString(Article.ARTICLE_ABSTRACT);
+        String content = article.optString(Article.ARTICLE_CONTENT);
+        content = summary + "\n\n" + content;
         final String html = Markdowns.toHTML(content);
         final String[] imgs = StringUtils.substringsBetween(html, "<img", ">");
         if (null == imgs || 0 == imgs.length) {
