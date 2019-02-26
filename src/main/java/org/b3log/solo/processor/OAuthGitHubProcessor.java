@@ -217,7 +217,10 @@ public class OAuthGitHubProcessor {
                     try {
                         userMgmtService.addUser(addUserReq);
                     } catch (final Exception e) {
-                        // ignored
+                        LOGGER.log(Level.ERROR, "Register via oauth failed", e);
+                        context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+
+                        return;
                     }
                 }
             }
