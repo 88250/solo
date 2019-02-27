@@ -22,10 +22,15 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.7.0.2, Feb 11, 2019
+ * @version 1.7.0.3, Feb 27, 2019
  * @since 0.3.1
  */
 public final class Common {
+
+    /**
+     * Key of URL.
+     */
+    public static final String URL = "url";
 
     /**
      * Key of referer.

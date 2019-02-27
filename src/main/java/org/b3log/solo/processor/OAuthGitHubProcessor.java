@@ -55,7 +55,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Feb 15, 2019
+ * @version 1.0.0.5, Feb 27, 2019
  * @since 2.9.5
  */
 @RequestProcessor
@@ -137,6 +137,7 @@ public class OAuthGitHubProcessor {
             return;
         }
         final String clientId = result.optString(Common.DATA);
+        final String loginAuthURL = result.optString(Common.URL);
 
         String referer = context.param("referer");
         if (StringUtils.isBlank(referer)) {
@@ -146,7 +147,7 @@ public class OAuthGitHubProcessor {
         final String state = referer + ":::" + RandomStringUtils.randomAlphanumeric(16) + ":::cb=" + cb + ":::";
         STATES.put(state, URLs.encode(state));
 
-        final String path = "https://github.com/login/oauth/authorize" + "?client_id=" + clientId + "&state=" + state
+        final String path = loginAuthURL + "?client_id=" + clientId + "&state=" + state
                 + "&scope=public_repo,read:user,user:email,user:follow";
 
         context.sendRedirect(path);
