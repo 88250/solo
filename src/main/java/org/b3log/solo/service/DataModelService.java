@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.4, Jan 28, 2019
+ * @version 1.7.0.5, Feb 27, 2019
  * @since 0.3.1
  */
 @Service
@@ -104,6 +104,18 @@ public class DataModelService {
      */
     @Inject
     private TagArticleRepository tagArticleRepository;
+
+    /**
+     * Tag repository.
+     */
+    @Inject
+    private TagRepository tagRepository;
+
+    /**
+     * Category-Tag repository.
+     */
+    @Inject
+    private CategoryTagRepository categoryTagRepository;
 
     /**
      * Link repository.
@@ -918,9 +930,61 @@ public class DataModelService {
             processArticleAbstract(preference, article);
 
             articleQueryService.markdown(article);
+
+            fillCategory(article);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Sets article extra properties failed", e);
             throw new ServiceException(e);
+        }
+    }
+
+    /**
+     * Fills category for the specified article.
+     *
+     * @param article the specified article
+     */
+    public void fillCategory(final JSONObject article) {
+        final String tagsStr = article.optString(Article.ARTICLE_TAGS_REF);
+        final String[] tags = tagsStr.split(",");
+        JSONObject category = null;
+        for (final String tagTitle : tags) {
+            final JSONObject c = getCategoryOfTag(tagTitle);
+            if (null != c) {
+                category = c;
+                break;
+            }
+        }
+        article.put(Category.CATEGORY, category);
+    }
+
+    /**
+     * Gets a category for a tag specified by the given tag title.
+     *
+     * @param tagTitle the given tag title
+     * @return category, returns {@code null} if not found
+     */
+    private JSONObject getCategoryOfTag(final String tagTitle) {
+        try {
+            final JSONObject tag = tagRepository.getByTitle(tagTitle);
+            if (null == tag) {
+                return null;
+            }
+
+            final String tagId = tag.optString(Keys.OBJECT_ID);
+            final Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, tagId)).
+                    setPage(1, 1).setPageCount(1);
+            final JSONObject tagCategory = categoryTagRepository.getFirst(query);
+            if (null == tagCategory) {
+                return null;
+            }
+
+            final String categoryId = tagCategory.optString(Category.CATEGORY + "_" + Keys.OBJECT_ID);
+
+            return categoryRepository.get(categoryId);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets category of tag [" + tagTitle + "] failed", e);
+
+            return null;
         }
     }
 

@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.5.3, Jan 28, 2019
+ * @version 1.4.5.4, Feb 27, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -747,6 +747,8 @@ public class ArticleProcessor {
                 final String thumbnailURL = Solos.getGravatarURL(author.optString(User.USER_EMAIL), "128");
                 article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
             }
+
+            dataModelService.fillCategory(article);
 
             final Map<String, Object> dataModel = renderer.getDataModel();
 
