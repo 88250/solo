@@ -85,7 +85,7 @@ var soloKanbanniang = {
         $.each(result.mouseover, function(index, tips) {
           $(document).on('mouseover', tips.selector, function() {
             soloKanbanniang.showMessage(
-                tips.text.replace('{text}', $(this).text()), 3000);
+                tips.text.replace('{text}', $(this).text()).substr(0, 24), 3000);
           });
         });
         $.each(result.click, function(index, tips) {
