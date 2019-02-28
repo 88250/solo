@@ -160,7 +160,7 @@ public class ImportService {
             // treat it as plain markdown
             ret.put(Article.ARTICLE_TITLE, StringUtils.substringBeforeLast(fileName, "."));
             ret.put(Article.ARTICLE_CONTENT, fileContent);
-            ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstract(fileContent));
+            ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstractText(fileContent));
             ret.put(Article.ARTICLE_TAGS_REF, DEFAULT_TAG);
             ret.put(Article.ARTICLE_IS_PUBLISHED, true);
             ret.put(Article.ARTICLE_COMMENTABLE, true);
@@ -220,7 +220,7 @@ public class ImportService {
             return ret;
         }
 
-        return Article.getAbstract(content);
+        return Article.getAbstractText(content);
     }
 
     private Date parseDate(final Map map) {
