@@ -28,7 +28,7 @@ import org.jsoup.safety.Whitelist;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Feb 25, 2019
+ * @version 1.3.0.1, Feb 28, 2019
  * @since 0.3.1
  */
 public final class Article {
@@ -173,12 +173,12 @@ public final class Article {
     /**
      * Width of article first image.
      */
-    public static final int ARTICLE_THUMB_IMG_WIDTH = 960;
+    public static final int ARTICLE_THUMB_IMG_WIDTH = 768;
 
     /**
      * Height of article first image.
      */
-    public static final int ARTICLE_THUMB_IMG_HEIGHT = 540;
+    public static final int ARTICLE_THUMB_IMG_HEIGHT = 432;
 
     /**
      * Private constructor.
