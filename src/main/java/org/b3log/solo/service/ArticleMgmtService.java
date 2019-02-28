@@ -317,6 +317,12 @@ public class ArticleMgmtService {
                 }
             }
 
+            final String articleImg1URL = getArticleImg1URL(article);
+            article.put(ARTICLE_IMG1_URL, articleImg1URL);
+
+            final String articleAbstractText = Article.getAbstractText(article);
+            article.put(ARTICLE_ABSTRACT_TEXT, articleAbstractText);
+
             final boolean publishNewArticle = !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED) && article.getBoolean(ARTICLE_IS_PUBLISHED);
 
             // Update
@@ -450,6 +456,9 @@ public class ArticleMgmtService {
 
             final String articleImg1URL = getArticleImg1URL(article);
             article.put(ARTICLE_IMG1_URL, articleImg1URL);
+
+            final String articleAbstractText = Article.getAbstractText(article);
+            article.put(ARTICLE_ABSTRACT_TEXT, articleAbstractText);
 
             final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
             article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property

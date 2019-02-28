@@ -260,6 +260,7 @@ public class InitService {
         final String content = "![](" + Images.imageSize(Images.randImage(), Article.ARTICLE_THUMB_IMG_WIDTH, Article.ARTICLE_THUMB_IMG_HEIGHT) + ") \n\n" +
                 langPropsService.get("helloWorld.content");
 
+        article.put(Article.ARTICLE_ABSTRACT_TEXT, Article.getAbstractText(content));
         article.put(Article.ARTICLE_ABSTRACT, content);
         article.put(Article.ARTICLE_CONTENT, content);
         article.put(Article.ARTICLE_TAGS_REF, "Solo");

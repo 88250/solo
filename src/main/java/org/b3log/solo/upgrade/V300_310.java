@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.upgrade;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
@@ -68,6 +69,7 @@ public final class V300_310 {
 
             // 文章表新增首图字段
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD COLUMN `articleAbstractText` TEXT NOT NULL");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD COLUMN `articleImg1URL` VARCHAR(255) DEFAULT '' NOT NULL");
             statement.close();
             connection.commit();
@@ -83,6 +85,18 @@ public final class V300_310 {
             for (final JSONObject article : articles) {
                 final String imgURL = Images.imageSize(Images.randImage(), Article.ARTICLE_THUMB_IMG_WIDTH, Article.ARTICLE_THUMB_IMG_HEIGHT);
                 article.put(Article.ARTICLE_IMG1_URL, imgURL);
+
+                final String summary = article.optString(Article.ARTICLE_ABSTRACT);
+                String summaryText;
+                if (StringUtils.isBlank(summary)) {
+                    final String content = article.optString(Article.ARTICLE_CONTENT);
+                    summaryText = Article.getAbstractText(content);
+                    article.put(Article.ARTICLE_ABSTRACT, summaryText);
+                } else {
+                    summaryText = Article.getAbstractText(summary);
+                }
+                article.put(Article.ARTICLE_ABSTRACT_TEXT, summaryText);
+
                 articleRepository.update(article.optString(Keys.OBJECT_ID), article);
             }
 
