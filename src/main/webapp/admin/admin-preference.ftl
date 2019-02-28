@@ -127,19 +127,11 @@
                 <td>
                     <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
                     <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
-                    <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
                 </td>
             </tr>
             <tr>
                 <td>
                     <div id="skinMain"></div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
-                    <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
-                    <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
                 </td>
             </tr>
             </tbody>

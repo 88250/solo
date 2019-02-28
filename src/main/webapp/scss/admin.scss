@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 3.0.0.0, Feb 21, 2019
+* @version 3.1.0.0, Feb 28, 2019
 */
 @import "reset";
 @import "reset-content";
@@ -70,6 +70,10 @@ button,
     height: auto;
     outline: none;
     line-height: 18px;
+    &.small {
+        padding: 3px 6px;
+        font-size: 12px;
+    }
 }
 
 button:hover {
@@ -558,7 +562,6 @@ button#submitArticle:hover {
 }
 
 .skinPreview {
-    cursor: pointer;
     height: 160px;
     margin: 6px;
     width: 280px;
@@ -567,18 +570,17 @@ button#submitArticle:hover {
 .skinItem {
     background-color: #FAFAFA;
     border-radius: 3px;
-    box-shadow: 1px 1px 3px #333333;
-    line-height: 16px;
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+    font-size: 16px;
+    line-height: 24px;
     margin: 10px;
     text-align: center;
 }
 
-#skinMain .skinItem.selected {
-    background-color: #1fb5ad;
-}
-
+#skinMain .skinItem.selected,
 .skinItem:hover {
-    background-color: #EEE;
+    background-color: #1fb5ad;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
 }
 
 .f-blue, .error-msg {
@@ -675,7 +677,8 @@ button#submitArticle:hover {
 }
 
 .completed-ck span,
-.signs button {
+.signs button,
+.skinItem button {
     margin: 5px 10px 5px 0;
     display: inline-block;
     background-color: #c7cbd6;
@@ -683,7 +686,8 @@ button#submitArticle:hover {
 }
 
 .completed-ck span:hover,
-.signs button:hover {
+.signs button:hover,
+.skinItem button:hover {
     background-color: #b0b5b9;
     border-color: #b0b5b9;
 }
