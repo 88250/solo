@@ -107,18 +107,12 @@ public class OAuthProcessor {
     private InitService initService;
 
     /**
-     * GitHub split.
-     */
-    public static final String GITHUB_SPLIT = ":@:";
-
-    /**
-     * Redirects to GitHub auth page.
+     * Redirects to auth page.
      *
      * @param context the specified context
-     * @throws Exception exception
      */
     @RequestProcessing(value = "/oauth/github/redirect", method = HttpMethod.GET)
-    public void redirectGitHub(final RequestContext context) {
+    public void redirectAuth(final RequestContext context) {
         final HttpResponse res = HttpRequest.get("https://hacpai.com/oauth/solo/client2").trustAllCerts(true).
                 connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
         if (HttpServletResponse.SC_OK != res.statusCode()) {
@@ -154,12 +148,12 @@ public class OAuthProcessor {
     }
 
     /**
-     * Shows GitHub callback page.
+     * Shows OAuth callback page.
      *
      * @param context the specified context
      */
     @RequestProcessing(value = "/oauth/github", method = HttpMethod.GET)
-    public synchronized void showGitHubCallback(final RequestContext context) {
+    public synchronized void showAuthCallback(final RequestContext context) {
         final String state = context.param("state");
         String referer = STATES.get(state);
         if (StringUtils.isBlank(referer)) {
@@ -237,6 +231,6 @@ public class OAuthProcessor {
         final String redirect = StringUtils.substringBeforeLast(referer, "__");
         Solos.login(user, response);
         context.sendRedirect(redirect);
-        LOGGER.log(Level.INFO, "Logged in [name={0}, remoteAddr={1}] with GitHub oauth", userName, Requests.getRemoteAddr(request));
+        LOGGER.log(Level.INFO, "Logged in [name={0}, remoteAddr={1}] with oauth", userName, Requests.getRemoteAddr(request));
     }
 }
