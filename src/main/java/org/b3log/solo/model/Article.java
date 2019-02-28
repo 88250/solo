@@ -28,7 +28,7 @@ import org.jsoup.safety.Whitelist;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.1, Feb 28, 2019
+ * @version 1.4.0.0, Feb 28, 2019
  * @since 0.3.1
  */
 public final class Article {
@@ -52,6 +52,11 @@ public final class Article {
      * Key of abstract.
      */
     public static final String ARTICLE_ABSTRACT = "articleAbstract";
+
+    /**
+     * Key of abstract text.
+     */
+    public static final String ARTICLE_ABSTRACT_TEXT = "articleAbstractText";
 
     /**
      * Key of content.
@@ -220,17 +225,32 @@ public final class Article {
     }
 
     /**
-     * Gets the abstract of the specified content.
+     * Gets the abstract plain text of the specified content.
      *
      * @param content the specified content
-     * @return the abstract
+     * @return the abstract plain text
      */
-    public static String getAbstract(final String content) {
-        final String plainTextContent = Jsoup.clean(Markdowns.toHTML(content), Whitelist.none());
-        if (plainTextContent.length() > ARTICLE_ABSTRACT_LENGTH) {
-            return plainTextContent.substring(0, ARTICLE_ABSTRACT_LENGTH) + "....";
+    public static String getAbstractText(final String content) {
+        final String ret = Jsoup.clean(Markdowns.toHTML(content), Whitelist.none());
+        if (ret.length() > ARTICLE_ABSTRACT_LENGTH) {
+            return ret.substring(0, ARTICLE_ABSTRACT_LENGTH) + "....";
         }
 
-        return plainTextContent;
+        return ret;
+    }
+
+    /**
+     * Gets the abstract plain text of the specified article.
+     *
+     * @param article the specified article
+     * @return the abstract plain text
+     */
+    public static String getAbstractText(final JSONObject article) {
+        String content = article.optString(Article.ARTICLE_ABSTRACT);
+        if (StringUtils.isBlank(content)) {
+            content = article.optString(Article.ARTICLE_CONTENT);
+        }
+
+        return getAbstractText(content);
     }
 }

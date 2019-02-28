@@ -445,15 +445,21 @@
         },
         {
           "name": "articleAbstract",
-          "description": "文章摘要",
+          "description": "文章摘要 Markdown",
           "type": "String",
-          "length": 2000
+          "length": 2048
+        },
+        {
+          "name": "articleAbstractText",
+          "description": "文章摘要纯文本",
+          "type": "String",
+          "length": 2048
         },
         {
           "name": "articleTags",
           "description": "文章标签，英文逗号分隔",
           "type": "String",
-          "length": 2000
+          "length": 2048
         },
         {
           "name": "articleAuthorId",
