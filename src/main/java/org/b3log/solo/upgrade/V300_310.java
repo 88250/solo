@@ -69,7 +69,7 @@ public final class V300_310 {
 
             // 文章表新增首图字段
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD COLUMN `articleAbstractText` TEXT NOT NULL");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD COLUMN `articleAbstractText` TEXT");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD COLUMN `articleImg1URL` VARCHAR(255) DEFAULT '' NOT NULL");
             statement.close();
             connection.commit();
