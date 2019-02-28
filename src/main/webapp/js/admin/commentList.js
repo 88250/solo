@@ -42,7 +42,8 @@ admin.commentList = {
         }, {
             text: Label.authorLabel,
             index: "title",
-            style: "padding-left: 12px;"
+            style: "padding-left: 12px;",
+            width: 154
         }, {
             text: Label.dateLabel,
             index: "date",
