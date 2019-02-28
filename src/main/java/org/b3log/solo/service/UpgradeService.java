@@ -29,7 +29,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.cache.ArticleCache;
 import org.b3log.solo.cache.CommentCache;
@@ -43,6 +42,8 @@ import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.repository.UserRepository;
+import org.b3log.solo.upgrade.V299_300;
+import org.b3log.solo.upgrade.V300_310;
 import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -51,14 +52,13 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.2.1.0, Feb 17, 2019
+ * @version 1.2.1.1, Feb 28, 2019
  * @since 1.2.0
  */
 @Service
@@ -78,16 +78,6 @@ public class UpgradeService {
      * Mail Service.
      */
     private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
-
-    /**
-     * Old version.
-     */
-    private static final String FROM_VER = "2.9.9";
-
-    /**
-     * New version.
-     */
-    private static final String TO_VER = SoloServletListener.VERSION;
 
     /**
      * Article repository.
@@ -158,98 +148,21 @@ public class UpgradeService {
                 return;
             }
 
-            if (FROM_VER.equals(currentVer)) {
-                perform299_300();
+            switch (currentVer) {
+                case "2.9.9":
+                    V299_300.perform();
+                case "3.0.0":
+                    V300_310.perform();
 
-                return;
+                    break;
+                default:
+                    LOGGER.log(Level.ERROR, "Please upgrade to v3.0.0 first");
+                    System.exit(-1);
             }
-
-            LOGGER.log(Level.ERROR, "Attempt to skip more than one version to upgrade. Expected: {0}, Actually: {1}", FROM_VER, currentVer);
-            notifyUserByEmail();
-
-            System.exit(-1);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-            LOGGER.log(Level.ERROR,
-                    "Upgrade failed [" + e.getMessage() + "], please contact the Solo developers or reports this "
-                            + "issue directly (<a href='https://github.com/b3log/solo/issues/new'>"
-                            + "https://github.com/b3log/solo/issues/new</a>) ");
-
+            LOGGER.log(Level.ERROR, "Upgrade failed, please contact the Solo developers or reports this "
+                    + "issue: https://github.com/b3log/solo/issues/new", e);
             System.exit(-1);
-        }
-    }
-
-    /**
-     * Performs upgrade from v2.9.9 to v3.0.0.
-     *
-     * @throws Exception upgrade fails
-     */
-    private void perform299_300() throws Exception {
-        LOGGER.log(Level.INFO, "Upgrading from version [{0}] to version [{1}]....", FROM_VER, TO_VER);
-
-        try {
-            Connection connection = Connections.getConnection();
-            Statement statement = connection.createStatement();
-
-            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` ADD COLUMN `userB3Key` VARCHAR(64) DEFAULT '' NOT NULL");
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` ADD COLUMN `userGitHubId` VARCHAR(32) DEFAULT '' NOT NULL");
-            statement.close();
-            connection.commit();
-            connection.close();
-
-            final Transaction transaction = optionRepository.beginTransaction();
-            final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
-            versionOpt.put(Option.OPTION_VALUE, TO_VER);
-            optionRepository.update(Option.ID_C_VERSION, versionOpt);
-
-            final JSONObject oauthGitHubOpt = optionRepository.get("oauthGitHub");
-            if (null != oauthGitHubOpt) {
-                String value = oauthGitHubOpt.optString(Option.OPTION_VALUE);
-                final Set<String> githubs = CollectionUtils.jsonArrayToSet(new JSONArray(value));
-                for (final String pair : githubs) {
-                    final String githubId = pair.split(":@:")[0];
-                    final String userId = pair.split(":@:")[1];
-                    final JSONObject user = userRepository.get(userId);
-                    user.put(UserExt.USER_GITHUB_ID, githubId);
-                    user.put(UserExt.USER_B3_KEY, githubId);
-                    userRepository.update(userId, user);
-                }
-            }
-            optionRepository.remove("oauthGitHub");
-
-            final String b3Key = optionRepository.get("keyOfSolo").optString(Option.OPTION_VALUE);
-            final JSONObject admin = userRepository.getAdmin();
-            admin.put(UserExt.USER_B3_KEY, b3Key);
-            userRepository.update(admin.optString(Keys.OBJECT_ID), admin);
-            optionRepository.remove("keyOfSolo");
-
-            optionRepository.remove("qiniuAccessKey");
-            optionRepository.remove("qiniuBucket");
-            optionRepository.remove("qiniuDomain");
-            optionRepository.remove("qiniuSecretKey");
-            optionRepository.remove("ossServer");
-            optionRepository.remove("aliyunAccessKey");
-            optionRepository.remove("aliyunSecretKey");
-            optionRepository.remove("aliyunDomain");
-            optionRepository.remove("aliyunBucket");
-            optionRepository.remove("editorType");
-
-            transaction.commit();
-
-            connection = Connections.getConnection();
-            statement = connection.createStatement();
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleEditorType`");
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageEditorType`");
-            statement.close();
-            connection.commit();
-            connection.close();
-
-            LOGGER.log(Level.INFO, "Upgraded from version [{0}] to version [{1}] successfully :-)", FROM_VER, TO_VER);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Upgrade failed!", e);
-
-            throw new Exception("Upgrade failed from version [" + FROM_VER + "] to version [" + TO_VER + ']');
         }
     }
 
