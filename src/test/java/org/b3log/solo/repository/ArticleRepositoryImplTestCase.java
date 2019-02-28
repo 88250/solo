@@ -52,6 +52,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
         article.put(Article.ARTICLE_TITLE, "article title1");
         article.put(Article.ARTICLE_ABSTRACT, "article abstract");
+        article.put(Article.ARTICLE_ABSTRACT_TEXT, "article abstract text");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
         article.put(Article.ARTICLE_AUTHOR_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 0);
@@ -107,6 +108,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
         article.put(Article.ARTICLE_TITLE, "article title2");
         article.put(Article.ARTICLE_ABSTRACT, "article abstract");
+        article.put(Article.ARTICLE_ABSTRACT_TEXT, "article abstract text");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
         article.put(Article.ARTICLE_AUTHOR_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 1);
@@ -157,6 +159,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
         article.put(Article.ARTICLE_TITLE, "article title3");
         article.put(Article.ARTICLE_ABSTRACT, "article abstract");
+        article.put(Article.ARTICLE_ABSTRACT_TEXT, "article abstract text");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
         article.put(Article.ARTICLE_AUTHOR_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 2);
@@ -195,9 +198,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = {"add",
-            "previousAndNext",
-            "getMostCommentArticles"})
+    @Test(dependsOnMethods = {"add", "previousAndNext", "getMostCommentArticles"})
     public void getMostViewCountArticles() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
@@ -205,6 +206,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
         article.put(Article.ARTICLE_TITLE, "article title4");
         article.put(Article.ARTICLE_ABSTRACT, "article abstract");
+        article.put(Article.ARTICLE_ABSTRACT_TEXT, "article abstract text");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2");
         article.put(Article.ARTICLE_AUTHOR_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 3);
@@ -244,10 +246,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = {"add",
-            "previousAndNext",
-            "getMostCommentArticles",
-            "getMostViewCountArticles"})
+    @Test(dependsOnMethods = {"add", "previousAndNext", "getMostCommentArticles", "getMostViewCountArticles"})
     public void getRandomly() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 
@@ -260,10 +259,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
      *
      * @throws Exception exception
      */
-    @Test(dependsOnMethods = {"add",
-            "previousAndNext",
-            "getMostCommentArticles",
-            "getMostViewCountArticles"})
+    @Test(dependsOnMethods = {"add", "previousAndNext", "getMostCommentArticles", "getMostViewCountArticles"})
     public void getRecentArticles() throws Exception {
         final ArticleRepository articleRepository = getArticleRepository();
 

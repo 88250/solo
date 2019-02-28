@@ -82,7 +82,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<p>欢迎使用"));
+        Assert.assertTrue(StringUtils.contains(content, "Solo 博客系统已经初始化完毕"));
     }
 
     /**

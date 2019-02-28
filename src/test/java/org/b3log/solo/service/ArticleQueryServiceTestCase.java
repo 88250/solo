@@ -55,7 +55,7 @@ public class ArticleQueryServiceTestCase extends AbstractTestCase {
     public void searchKeyword() throws Exception {
         final ArticleQueryService articleQueryService = getArticleQueryService();
 
-        JSONObject result = articleQueryService.searchKeyword("欢迎", 1, 20);
+        JSONObject result = articleQueryService.searchKeyword("初始化", 1, 20);
         Assert.assertNotNull(result);
         List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
         Assert.assertEquals(articles.size(), 1);
