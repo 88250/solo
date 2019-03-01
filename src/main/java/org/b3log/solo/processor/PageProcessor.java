@@ -111,7 +111,7 @@ public class PageProcessor {
 
             Skins.fillLangs(preference.getString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
-            // See PermalinkFilter#dispatchToArticleOrPageProcessor()
+            // See PermalinkHandler#dispatchToArticleOrPageProcessor()
             final JSONObject page = (JSONObject) context.attr(Page.PAGE);
             if (null == page) {
                 context.sendError(HttpServletResponse.SC_NOT_FOUND);

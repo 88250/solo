@@ -75,7 +75,7 @@ public class PermalinkHandler implements Handler {
             final String contextPath = Latkes.getContextPath();
             final String permalink = StringUtils.substringAfter(requestURI, contextPath);
             if (PermalinkQueryService.invalidPermalinkFormat(permalink)) {
-                LOGGER.log(Level.DEBUG, "Skip filter request [URI={0}]", permalink);
+                LOGGER.log(Level.DEBUG, "Skip permalink handling request [URI={0}]", permalink);
                 context.handle();
 
                 return;
@@ -95,7 +95,7 @@ public class PermalinkHandler implements Handler {
                 return;
             }
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Processes article permalink filter failed", e);
+            LOGGER.log(Level.ERROR, "Processes article permalink handler failed", e);
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;

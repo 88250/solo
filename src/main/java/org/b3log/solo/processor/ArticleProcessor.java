@@ -693,7 +693,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/article", method = HttpMethod.GET)
     public void showArticle(final RequestContext context) {
-        // See PermalinkFilter#dispatchToArticleOrPageProcessor()
+        // See PermalinkHandler#dispatchToArticleOrPageProcessor()
         final JSONObject article = (JSONObject) context.attr(Article.ARTICLE);
         if (null == article) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);
