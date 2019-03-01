@@ -921,7 +921,7 @@ public class ArticleQueryService {
                 return null;
             }
 
-            if (null != context && Solos.needViewPwd(context.getRequest(), context.getResponse(), article)) {
+            if (null != context && Solos.needViewPwd(context, article)) {
                 final String content = langPropsService.get("articleContentPwd");
                 article.put(ARTICLE_CONTENT, content);
             } else {

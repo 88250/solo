@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.filter;
+package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -23,27 +23,25 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.servlet.handler.Handler;
 import org.b3log.solo.service.InitService;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
- * Checks initialization filter.
+ * Checks initialization handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://github.com/TsLenMo">TsLenMo</a>
- * @version 1.1.1.5, Jan 24, 2019
- * @since 0.3.1
+ * @version 1.0.0.0, Mar 1, 2019
+ * @since 3.2.0
  */
-public final class InitCheckFilter implements Filter {
+public class InitCheckHandler implements Handler {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(InitCheckFilter.class);
+    private static final Logger LOGGER = Logger.getLogger(InitCheckHandler.class);
 
     /**
      * Whether initialization info reported.
@@ -51,30 +49,14 @@ public final class InitCheckFilter implements Filter {
     private static boolean initReported;
 
     @Override
-    public void init(final FilterConfig filterConfig) {
-    }
-
-    /**
-     * If Solo has not been initialized, so redirects to /start.
-     *
-     * @param request  the specified request
-     * @param response the specified response
-     * @param chain    filter chain
-     * @throws IOException      io exception
-     * @throws ServletException servlet exception
-     */
-    @Override
-    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
-            throws IOException, ServletException {
-        final HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        final String requestURI = httpServletRequest.getRequestURI();
-        final boolean isSpiderBot = (boolean) httpServletRequest.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
+    public void handle(final RequestContext context) {
+        final String requestURI = context.requestURI();
+        final boolean isSpiderBot = (boolean) context.attr(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
         LOGGER.log(Level.TRACE, "Request [URI={0}]", requestURI);
 
         // 禁止直接获取 robots.txt https://github.com/b3log/solo/issues/12543
         if (requestURI.startsWith("/robots.txt") && !isSpiderBot) {
-            final HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-            httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
         }
@@ -82,14 +64,14 @@ public final class InitCheckFilter implements Filter {
         final BeanManager beanManager = BeanManager.getInstance();
         final InitService initService = beanManager.getReference(InitService.class);
         if (initService.isInited()) {
-            chain.doFilter(request, response);
+            context.handle();
 
             return;
         }
 
         if (StringUtils.startsWith(requestURI, Latkes.getContextPath() + "/oauth/github")) {
             // Do initialization
-            chain.doFilter(request, response);
+            context.handle();
 
             return;
         }
@@ -99,11 +81,7 @@ public final class InitCheckFilter implements Filter {
             initReported = true;
         }
 
-        request.setAttribute(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/start");
-        chain.doFilter(request, response);
-    }
-
-    @Override
-    public void destroy() {
+        context.attr(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/start");
+        context.handle();
     }
 }

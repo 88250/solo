@@ -20,7 +20,7 @@
 -->
 <!--
     Description: Solo web deployment descriptor.
-    Version: 1.0.5.4, Jan 24, 2019
+    Version: 1.1.0.0, Mar 1, 2019
     Author: Liang Ding
 -->
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -28,40 +28,6 @@
     <listener>
         <listener-class>org.b3log.solo.SoloServletListener</listener-class>
     </listener>
-
-    <filter>
-        <filter-name>EncodingFilter</filter-name>
-        <filter-class>org.b3log.latke.servlet.filter.EncodingFilter</filter-class>
-        <init-param>
-            <param-name>requestEncoding</param-name>
-            <param-value>UTF-8</param-value>
-        </init-param>
-        <init-param>
-            <param-name>responseEncoding</param-name>
-            <param-value>UTF-8</param-value>
-        </init-param>
-    </filter>
-    <filter-mapping>
-        <filter-name>EncodingFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-    <filter>
-        <filter-name>InitCheckFilter</filter-name>
-        <filter-class>org.b3log.solo.filter.InitCheckFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>InitCheckFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter>
-        <filter-name>PermalinkFilter</filter-name>
-        <filter-class>org.b3log.solo.filter.PermalinkFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>PermalinkFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
 
     <session-config>
         <session-timeout>

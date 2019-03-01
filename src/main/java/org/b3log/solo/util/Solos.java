@@ -393,18 +393,18 @@ public final class Solos {
      * The blogger itself dose not need view password never.
      * </p>
      *
-     * @param request  the specified request
-     * @param response the specified response
-     * @param article  the specified article
+     * @param context the specified request context
+     * @param article the specified article
      * @return {@code true} if need, returns {@code false} otherwise
      */
-    public static boolean needViewPwd(final HttpServletRequest request, final HttpServletResponse response, final JSONObject article) {
+    public static boolean needViewPwd(final RequestContext context, final JSONObject article) {
         final String articleViewPwd = article.optString(Article.ARTICLE_VIEW_PWD);
 
         if (StringUtils.isBlank(articleViewPwd)) {
             return false;
         }
 
+        final HttpServletRequest request = context.getRequest();
         if (null == request) {
             return true;
         }
@@ -421,6 +421,7 @@ public final class Solos {
             }
         }
 
+        final HttpServletResponse response = context.getResponse();
         final JSONObject currentUser = getCurrentUser(request, response);
 
         return !(null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE)));

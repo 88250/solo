@@ -922,7 +922,7 @@ public class DataModelService {
                 article.put(Common.HAS_UPDATED, false);
             }
 
-            if (Solos.needViewPwd(context.getRequest(), context.getResponse(), article)) {
+            if (Solos.needViewPwd(context, article)) {
                 final String content = langPropsService.get("articleContentPwd");
                 article.put(ARTICLE_CONTENT, content);
             }
