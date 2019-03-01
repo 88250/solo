@@ -30,7 +30,7 @@ import java.util.*;
  * Mock HTTP servlet request.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, May 1, 2012
+ * @version 1.0.0.3, Mar 1, 2019
  */
 public class MockHttpServletRequest implements HttpServletRequest {
 
@@ -239,7 +239,6 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public void setCharacterEncoding(final String env) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
