@@ -162,7 +162,7 @@ public class InitService {
         try {
             inited = !optionRepository.getList(new Query()).isEmpty();
             if (!inited && !printedInitMsg) {
-                LOGGER.log(Level.WARN, "Solo has not been initialized, please open your browser and visit [" + Latkes.getServePath() + "] to init Solo");
+                LOGGER.log(Level.WARN, "Solo has not been initialized, please open your browser to init Solo");
                 printedInitMsg = true;
             }
 

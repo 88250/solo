@@ -37,6 +37,8 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
+import org.b3log.solo.processor.InitCheckHandler;
+import org.b3log.solo.processor.PermalinkHandler;
 import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
@@ -77,6 +79,9 @@ public final class SoloServletListener extends AbstractServletListener {
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
         Latkes.setScanPath("org.b3log.solo");
         super.contextInitialized(servletContextEvent);
+        DispatcherServlet.HANDLERS.add(0, new InitCheckHandler());
+        DispatcherServlet.HANDLERS.add(1, new PermalinkHandler());
+
         beanManager = BeanManager.getInstance();
         routeConsoleProcessors();
         Stopwatchs.start("Context Initialized");
@@ -116,7 +121,7 @@ public final class SoloServletListener extends AbstractServletListener {
         pluginManager.load();
 
         if (initService.isInited()) {
-            LOGGER.info("Solo is running [" + Latkes.getServePath() + "]");
+            LOGGER.info("Solo is running");
         }
 
         Stopwatchs.end();

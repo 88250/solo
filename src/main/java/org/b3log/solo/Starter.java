@@ -27,9 +27,7 @@ import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Slf4jLog;
 import org.eclipse.jetty.webapp.WebAppContext;
 
-import java.awt.*;
 import java.io.File;
-import java.net.URI;
 
 /**
  * Solo with embedded Jetty, <a href="https://github.com/b3log/solo/issues/12037">standalone mode</a>.
@@ -131,18 +129,32 @@ public final class Starter {
             portArg = "8080";
         }
 
+        Latkes.init();
+
         String serverScheme = commandLine.getOptionValue("server_scheme");
-        Latkes.setServerScheme(serverScheme);
+        if (null != serverScheme) {
+            Latkes.setLatkeProperty("serveScheme", serverScheme);
+        }
         String serverHost = commandLine.getOptionValue("server_host");
-        Latkes.setServerHost(serverHost);
+        if (null != serverHost) {
+            Latkes.setLatkeProperty("serverHost", serverHost);
+        }
         String serverPort = commandLine.getOptionValue("server_port");
-        Latkes.setServerPort(serverPort);
+        if (null != serverPort) {
+            Latkes.setLatkeProperty("serverPort", serverPort);
+        }
         String staticServerScheme = commandLine.getOptionValue("static_server_scheme");
-        Latkes.setStaticServerScheme(staticServerScheme);
+        if (null != staticServerScheme) {
+            Latkes.setLatkeProperty("staticServerScheme", staticServerScheme);
+        }
         String staticServerHost = commandLine.getOptionValue("static_server_host");
-        Latkes.setStaticServerHost(staticServerHost);
+        if (null != staticServerHost) {
+            Latkes.setLatkeProperty("staticServerHost", staticServerHost);
+        }
         String staticServerPort = commandLine.getOptionValue("static_server_port");
-        Latkes.setStaticServerPort(staticServerPort);
+        if (null != staticServerPort) {
+            Latkes.setLatkeProperty("staticServerPort", staticServerPort);
+        }
         String runtimeMode = commandLine.getOptionValue("runtime_mode");
         if (null != runtimeMode) {
             Latkes.setRuntimeMode(Latkes.RuntimeMode.valueOf(runtimeMode));
@@ -170,18 +182,18 @@ public final class Starter {
             System.exit(-1);
         }
 
-        serverScheme = Latkes.getServerScheme();
-        serverHost = Latkes.getServerHost();
-        serverPort = Latkes.getServerPort();
-        final String contextPath = Latkes.getContextPath();
-
-        try {
-            if (!commandLine.hasOption("no")) {
-                Desktop.getDesktop().browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath));
-            }
-        } catch (final Throwable e) {
-            // Ignored
-        }
+//        serverScheme = Latkes.getServerScheme();
+//        serverHost = Latkes.getServerHost();
+//        serverPort = Latkes.getServerPort();
+//        final String contextPath = Latkes.getContextPath();
+//
+//        try {
+//            if (!commandLine.hasOption("no")) {
+//                Desktop.getDesktop().browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath));
+//            }
+//        } catch (final Throwable e) {
+//            // Ignored
+//        }
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
