@@ -54,7 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Feb 27, 2019
+ * @version 1.0.0.6, Mar 2, 2019
  * @since 2.9.5
  */
 @RequestProcessor
@@ -157,6 +157,7 @@ public class OAuthProcessor {
         final String state = context.param("state");
         String referer = STATES.get(state);
         if (StringUtils.isBlank(referer)) {
+            LOGGER.log(Level.WARN, "Empty oauth callback argument [state]");
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -166,6 +167,7 @@ public class OAuthProcessor {
         final String accessToken = context.param("ak");
         final JSONObject userInfo = GitHubs.getGitHubUserInfo(accessToken);
         if (null == userInfo) {
+            LOGGER.log(Level.WARN, "Can't get user info with token [" + accessToken + "]");
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -197,6 +199,7 @@ public class OAuthProcessor {
                 if (null == user) {
                     final JSONObject preference = preferenceQueryService.getPreference();
                     if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
+                        LOGGER.log(Level.DEBUG, "Not allow register");
                         context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                         return;
@@ -223,6 +226,7 @@ public class OAuthProcessor {
 
         user = userQueryService.getUserByEmailOrUserName(userName);
         if (null == user) {
+            LOGGER.log(Level.WARN, "Can't get user by name [" + userName + "]");
             context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
