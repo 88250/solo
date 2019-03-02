@@ -157,8 +157,7 @@ public class OAuthProcessor {
         final String state = context.param("state");
         String referer = STATES.get(state);
         if (StringUtils.isBlank(referer)) {
-            LOGGER.log(Level.WARN, "Empty oauth callback argument [state]");
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;
         }
@@ -191,7 +190,7 @@ public class OAuthProcessor {
                 initReq.put(UserExt.USER_GITHUB_ID, openId);
                 initService.init(initReq);
             } else {
-                user = userQueryService.getUserByEmailOrUserName(userName);
+                user = userQueryService.getUserByName(userName);
                 if (null == user) {
                     final JSONObject preference = preferenceQueryService.getPreference();
                     if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
@@ -212,7 +211,7 @@ public class OAuthProcessor {
                         userMgmtService.addUser(addUserReq);
                     } catch (final Exception e) {
                         LOGGER.log(Level.ERROR, "Register via oauth failed", e);
-                        context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                        context.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
                         return;
                     }
@@ -220,7 +219,7 @@ public class OAuthProcessor {
             }
         }
 
-        user = userQueryService.getUserByEmailOrUserName(userName);
+        user = userQueryService.getUserByName(userName);
         if (null == user) {
             LOGGER.log(Level.WARN, "Can't get user by name [" + userName + "]");
             context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
