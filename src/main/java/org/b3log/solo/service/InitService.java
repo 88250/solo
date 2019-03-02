@@ -34,7 +34,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.solo.SoloServletListener;
@@ -56,7 +55,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.29, Feb 10, 2019
+ * @version 1.5.2.30, Mar 2, 2019
  * @since 0.4.0
  */
 @Service
@@ -219,9 +218,8 @@ public class InitService {
      *                          "userB3Key": "", // optional
      *                          "userGitHubId": "" // optional
      *                          }
-     * @throws ServiceException service exception
      */
-    public void init(final JSONObject requestJSONObject) throws ServiceException {
+    public void init(final JSONObject requestJSONObject) {
         if (isInited()) {
             return;
         }
@@ -236,9 +234,10 @@ public class InitService {
             helloWorld();
 
             transaction.commit();
-        } catch (final Exception e) {
+        } catch (final Throwable e) {
+            LOGGER.log(Level.ERROR, "Initializes Solo failed", e);
 
-            throw new ServiceException("Initializes Solo failed: " + e.getMessage());
+            System.exit(-1);
         } finally {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -302,6 +301,8 @@ public class InitService {
         comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
         commentRepository.add(comment);
+
+        LOGGER.info("Hello World!");
     }
 
     /**
@@ -435,7 +436,7 @@ public class InitService {
         admin.put(UserExt.USER_GITHUB_ID, requestJSONObject.optString(UserExt.USER_GITHUB_ID));
         userRepository.add(admin);
 
-        LOGGER.debug("Initialized admin");
+        LOGGER.info("Initialized admin");
     }
 
     /**
@@ -444,6 +445,7 @@ public class InitService {
      * @throws Exception exception
      */
     private void initLink() throws Exception {
+        LOGGER.debug("Initializing link....");
         final JSONObject link = new JSONObject();
 
         link.put(Link.LINK_TITLE, "黑客派");
@@ -451,7 +453,8 @@ public class InitService {
         link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
         final int maxOrder = linkRepository.getMaxOrder();
         link.put(Link.LINK_ORDER, maxOrder + 1);
-        final String ret = linkRepository.add(link);
+        linkRepository.add(link);
+        LOGGER.info("Initialized link");
     }
 
     /**
@@ -469,7 +472,7 @@ public class InitService {
         statisticBlogViewCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
         optionRepository.add(statisticBlogViewCountOpt);
 
-        LOGGER.debug("Initialized statistic");
+        LOGGER.info("Initialized statistic");
     }
 
     /**
@@ -495,7 +498,7 @@ public class InitService {
         bodyOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("body"));
         optionRepository.add(bodyOpt);
 
-        LOGGER.debug("Initialized reply notification template");
+        LOGGER.info("Initialized reply notification template");
     }
 
     /**
@@ -718,6 +721,6 @@ public class InitService {
         skinsOpt.put(Option.OPTION_VALUE, skinArray.toString());
         optionRepository.add(skinsOpt);
 
-        LOGGER.debug("Initialized preference");
+        LOGGER.info("Initialized preference");
     }
 }
