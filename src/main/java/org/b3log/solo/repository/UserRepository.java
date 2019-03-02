@@ -24,16 +24,13 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.repository.annotation.Repository;
 import org.b3log.solo.cache.UserCache;
-import org.json.JSONArray;
 import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Sep 30, 2018
+ * @version 1.1.0.2, Mar 2, 2019
  * @since 0.3.1
  */
 @Repository
@@ -96,14 +93,7 @@ public class UserRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public JSONObject getByUserName(final String userName) throws RepositoryException {
-        final Query query = new Query().setPageCount(1).
-                setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, userName));
-        final List<JSONObject> users = getList(query);
-        if (users.isEmpty()) {
-            return null;
-        }
-
-        return users.get(0);
+        return getFirst(new Query().setFilter(new PropertyFilter(User.USER_NAME, FilterOperator.EQUAL, userName)));
     }
 
     /**
@@ -119,15 +109,11 @@ public class UserRepository extends AbstractRepository {
             return ret;
         }
 
-        final Query query = new Query().setPageCount(1).
-                setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim()));
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
+        ret = getFirst(new Query().setFilter(new PropertyFilter(User.USER_EMAIL, FilterOperator.EQUAL, email.toLowerCase().trim())));
+        if (null == ret) {
             return null;
         }
 
-        ret = array.optJSONObject(0);
         userCache.putUser(ret);
 
         return ret;
@@ -145,14 +131,11 @@ public class UserRepository extends AbstractRepository {
             return ret;
         }
 
-        final Query query = new Query().setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)).setPageCount(1);
-        final JSONObject result = get(query);
-        final JSONArray array = result.optJSONArray(Keys.RESULTS);
-        if (0 == array.length()) {
+        ret = getFirst(new Query().setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.EQUAL, Role.ADMIN_ROLE)));
+        if (null == ret) {
             return null;
         }
 
-        ret = array.optJSONObject(0);
         userCache.putAdmin(ret);
 
         return ret;
