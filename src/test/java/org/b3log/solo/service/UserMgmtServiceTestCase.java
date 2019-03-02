@@ -125,11 +125,11 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
     public void removeUser() throws Exception {
         final UserMgmtService userMgmtService = getUserMgmtService();
 
-        final JSONObject user = getUserQueryService().getUserByEmailOrUserName("test1@gmail.com");
+        final JSONObject user = getUserQueryService().getUserByName("user1name");
         Assert.assertNotNull(user);
 
         userMgmtService.removeUser(user.getString(Keys.OBJECT_ID));
 
-        Assert.assertNull(getUserQueryService().getUserByEmailOrUserName("test1@gmail.com"));
+        Assert.assertNull(getUserQueryService().getUserByName("user1name"));
     }
 }

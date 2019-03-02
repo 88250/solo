@@ -43,7 +43,7 @@ import java.util.List;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.7, Oct 5, 2018
+ * @version 1.1.0.0, Feb 3, 2019
  * @since 0.4.0
  */
 @Service
@@ -98,21 +98,16 @@ public class UserQueryService {
     }
 
     /**
-     * Gets a user by the specified email or username.
+     * Gets a user by the specified user name.
      *
-     * @param emailOrUserName the specified email or username
+     * @param userName the specified user name
      * @return user, returns {@code null} if not found
      */
-    public JSONObject getUserByEmailOrUserName(final String emailOrUserName) {
+    public JSONObject getUserByName(final String userName) {
         try {
-            JSONObject ret = userRepository.getByEmail(emailOrUserName);
-            if (null == ret) {
-                ret = userRepository.getByUserName(emailOrUserName);
-            }
-
-            return ret;
+            return userRepository.getByUserName(userName);
         } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets a user by email or username [" + emailOrUserName + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets a user by username [" + userName + "] failed", e);
 
             return null;
         }

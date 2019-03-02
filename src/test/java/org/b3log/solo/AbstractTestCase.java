@@ -127,7 +127,7 @@ public abstract class AbstractTestCase {
         requestJSONObject.put(UserExt.USER_B3_KEY, "pass");
         initService.init(requestJSONObject);
         final UserQueryService userQueryService = getUserQueryService();
-        Assert.assertNotNull(userQueryService.getUserByEmailOrUserName("test@gmail.com"));
+        Assert.assertNotNull(userQueryService.getUserByName("Solo"));
     }
 
     /**

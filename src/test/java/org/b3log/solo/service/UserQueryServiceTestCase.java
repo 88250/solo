@@ -58,25 +58,21 @@ public class UserQueryServiceTestCase extends AbstractTestCase {
 
     /**
      * Get User.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "addUser")
-    public void getUser() throws Exception {
+    public void getUser() {
         final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNull(userQueryService.getUser("not found"));
     }
 
     /**
-     * Get User By Email.
-     *
-     * @throws Exception exception
+     * Get User By Name.
      */
     @Test(dependsOnMethods = "addUser")
-    public void getUserByEmail() throws Exception {
+    public void getUserByName() {
         final UserQueryService userQueryService = getUserQueryService();
 
-        final JSONObject user = userQueryService.getUserByEmailOrUserName("test1@gmail.com");
+        final JSONObject user = userQueryService.getUserByName("user1name");
         Assert.assertNotNull(user);
     }
 
