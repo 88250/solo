@@ -189,11 +189,7 @@ public class OAuthProcessor {
                 initReq.put(UserExt.USER_AVATAR, userAvatar);
                 initReq.put(UserExt.USER_B3_KEY, openId);
                 initReq.put(UserExt.USER_GITHUB_ID, openId);
-                try {
-                    initService.init(initReq);
-                } catch (final Exception e) {
-                    // ignored
-                }
+                initService.init(initReq);
             } else {
                 user = userQueryService.getUserByEmailOrUserName(userName);
                 if (null == user) {
