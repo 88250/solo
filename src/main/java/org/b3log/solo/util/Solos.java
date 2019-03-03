@@ -54,7 +54,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.0, Feb 7, 2019
+ * @version 1.7.0.1, Mar 3, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -63,11 +63,6 @@ public final class Solos {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Solos.class);
-
-    /**
-     * Mail configuration (mail.properties).
-     */
-    private static final ResourceBundle mailConf = ResourceBundle.getBundle("mail");
 
     /**
      * Favicon API.
@@ -424,22 +419,6 @@ public final class Solos {
         final JSONObject currentUser = getCurrentUser(request, response);
 
         return !(null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE)));
-    }
-
-    /**
-     * Whether user configures the mail.properties.
-     *
-     * @return {@code true} if user configured, returns {@code false} otherwise
-     */
-    public static boolean isMailConfigured() {
-        try {
-            return StringUtils.isNotBlank(mailConf.getString("mail.user")) &&
-                    StringUtils.isNotBlank(mailConf.getString("mail.password")) &&
-                    StringUtils.isNotBlank(mailConf.getString("mail.smtp.host")) &&
-                    StringUtils.isNotBlank(mailConf.getString("mail.smtp.port"));
-        } catch (final Exception e) {
-            return false;
-        }
     }
 
     /**
