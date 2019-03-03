@@ -167,7 +167,7 @@ public class OAuthProcessor {
         final JSONObject userInfo = GitHubs.getGitHubUserInfo(accessToken);
         if (null == userInfo) {
             LOGGER.log(Level.WARN, "Can't get user info with token [" + accessToken + "]");
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
         }
@@ -219,7 +219,7 @@ public class OAuthProcessor {
         user = userQueryService.getUserByName(userName);
         if (null == user) {
             LOGGER.log(Level.WARN, "Can't get user by name [" + userName + "]");
-            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
             return;
         }
