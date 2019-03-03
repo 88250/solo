@@ -74,7 +74,7 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
 
         final String articleId = articles.get(0).getString(Keys.OBJECT_ID);
         requestJSONObject.put(Keys.OBJECT_ID, articleId);
-        requestJSONObject.put(Comment.COMMENT_NAME, "comment name");
+        requestJSONObject.put(Comment.COMMENT_NAME, "Solo");
         requestJSONObject.put(Comment.COMMENT_URL, "comment URL");
         requestJSONObject.put(Comment.COMMENT_CONTENT, "comment content");
 

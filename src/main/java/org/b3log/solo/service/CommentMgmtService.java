@@ -193,7 +193,7 @@ public class CommentMgmtService {
 
             String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
             if (MAX_COMMENT_NAME_LENGTH < commentName.length() || MIN_COMMENT_NAME_LENGTH > commentName.length()) {
-                LOGGER.log(Level.WARN, "Comment name is too long[{0}]", commentName);
+                LOGGER.log(Level.WARN, "Comment name is too long [{0}]", commentName);
                 ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
 
                 return ret;
@@ -201,7 +201,8 @@ public class CommentMgmtService {
 
             final JSONObject commenter = userRepository.getByUserName(commentName);
             if (null == commenter) {
-                ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
+                LOGGER.log(Level.WARN, "Not found user [" + commentName + "]");
+                ret.put(Keys.MSG, langPropsService.get("queryUserFailedLabel"));
 
                 return ret;
             }
@@ -209,7 +210,7 @@ public class CommentMgmtService {
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
 
             if (!Strings.isURL(commentURL) || StringUtils.contains(commentURL, "<")) {
-                LOGGER.log(Level.WARN, "Comment URL is invalid[{0}]", commentURL);
+                LOGGER.log(Level.WARN, "Comment URL is invalid [{0}]", commentURL);
                 ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
 
                 return ret;
