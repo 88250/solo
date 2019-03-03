@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Option;
 import org.json.JSONObject;
@@ -35,37 +34,13 @@ import org.testng.annotations.Test;
 public class OptionQueryServiceTestCase extends AbstractTestCase {
 
     /**
-     * Gets.
+     * Init.
      *
      * @throws Exception exception
      */
     @Test
-    public void get() throws Exception {
-        // Check
-        final OptionQueryService optionQueryService = getOptionQueryService();
-
-        JSONObject options = optionQueryService.getOptions(Option.CATEGORY_C_PREFERENCE);
-        Assert.assertNull(options);
-
-        // Add one
-        final OptionMgmtService optionMgmtService = getOptionMgmtService();
-
-        JSONObject option = new JSONObject();
-        option.put(Keys.OBJECT_ID, Option.ID_C_BLOG_TITLE);
-        option.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        option.put(Option.OPTION_VALUE, 5L);
-
-        final String id = optionMgmtService.addOrUpdateOption(option);
-        Assert.assertNotNull(id);
-
-        // Check again
-
-        option = optionQueryService.getOptionById(Option.ID_C_BLOG_TITLE);
-        Assert.assertNotNull(option);
-
-        options = optionQueryService.getOptions(Option.CATEGORY_C_PREFERENCE);
-        Assert.assertNotNull(options);
-        Assert.assertEquals(options.optLong(Option.ID_C_BLOG_TITLE), 5L);
+    public void init() throws Exception {
+        super.init();
     }
 
     /**
