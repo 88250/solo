@@ -22,6 +22,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.servlet.HttpMethod;
@@ -37,10 +38,7 @@ import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.service.ArticleMgmtService;
-import org.b3log.solo.service.ArticleQueryService;
-import org.b3log.solo.service.CommentMgmtService;
-import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.*;
 import org.json.JSONObject;
 
 import java.util.Date;
@@ -85,12 +83,6 @@ public class B3Receiver {
     private CommentMgmtService commentMgmtService;
 
     /**
-     * Preference query service.
-     */
-    @Inject
-    private PreferenceQueryService preferenceQueryService;
-
-    /**
      * Article management service.
      */
     @Inject
@@ -101,6 +93,18 @@ public class B3Receiver {
      */
     @Inject
     private ArticleQueryService articleQueryService;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
 
     /**
      * Adds or updates an article with the specified request.
@@ -149,7 +153,7 @@ public class B3Receiver {
             final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
             if (null == articleAuthor) {
                 ret.put(Keys.CODE, 1);
-                ret.put(Keys.MSG, "No found user [" + articleAuthorName + "]");
+                ret.put(Keys.MSG, "Not found user [" + articleAuthorName + "]");
 
                 return;
             }
@@ -246,7 +250,6 @@ public class B3Receiver {
 
         LOGGER.log(Level.INFO, "Adds a comment from Sym [" + requestJSONObject.toString() + "]");
 
-        final Transaction transaction = commentRepository.beginTransaction();
         try {
             final JSONObject symCmt = requestJSONObject.optJSONObject(Comment.COMMENT);
             final JSONObject symClient = requestJSONObject.optJSONObject("client");
@@ -254,7 +257,7 @@ public class B3Receiver {
             final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
             if (null == articleAuthor) {
                 ret.put(Keys.CODE, 1);
-                ret.put(Keys.MSG, "No found user [" + articleAuthorName + "]");
+                ret.put(Keys.MSG, "Not found user [" + articleAuthorName + "]");
 
                 return;
             }
@@ -283,9 +286,37 @@ public class B3Receiver {
                 commentURL = "";
             }
             final String commentThumbnailURL = symCmt.getString("authorAvatarURL");
+
+            final JSONObject commenter = userRepository.getByUserName(commentName);
+            if (null == commenter) {
+                // 社区回帖同步博客评论 https://github.com/b3log/solo/issues/12691
+                if (!optionQueryService.allowRegister()) {
+                    ret.put(Keys.CODE, 1);
+                    ret.put(Keys.MSG, "Not allow register");
+
+                    return;
+                }
+
+                final JSONObject addUserReq = new JSONObject();
+                addUserReq.put(User.USER_NAME, commentName);
+                addUserReq.put(UserExt.USER_AVATAR, commentThumbnailURL);
+                addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
+                addUserReq.put(UserExt.USER_GITHUB_ID, "");
+                addUserReq.put(UserExt.USER_B3_KEY, "");
+                try {
+                    userMgmtService.addUser(addUserReq);
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Adds a user [" + commentName + "] failed", e);
+                    ret.put(Keys.CODE, 1);
+                    ret.put(Keys.MSG, "Adds a user [" + commentName + "] failed");
+
+                    return;
+                }
+            }
+
             String commentContent = symCmt.getString("content"); // Markdown
 
-            // Step 1: Add comment
+            final Transaction transaction = commentRepository.beginTransaction();
             final JSONObject comment = new JSONObject();
             final String commentId = Ids.genTimeMillisId();
             comment.put(Keys.OBJECT_ID, commentId);
@@ -303,8 +334,9 @@ public class B3Receiver {
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             commentRepository.add(comment);
             articleMgmtService.incArticleCommentCount(articleId);
-
             transaction.commit();
+
+            LOGGER.log(Level.INFO, "Added a comment from Sym [" + requestJSONObject.toString() + "]");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             ret.put(Keys.CODE, 1).put(Keys.MSG, e.getMessage());
