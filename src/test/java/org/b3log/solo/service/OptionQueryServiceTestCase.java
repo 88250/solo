@@ -67,4 +67,17 @@ public class OptionQueryServiceTestCase extends AbstractTestCase {
         Assert.assertNotNull(options);
         Assert.assertEquals(options.optLong(Option.ID_C_BLOG_TITLE), 5L);
     }
+
+    /**
+     * Get Preference.
+     *
+     * @throws Exception exception
+     */
+    @Test(dependsOnMethods = "init")
+    public void getPreference() throws Exception {
+        final OptionQueryService optionQueryService = getOptionQueryService();
+        final JSONObject preference = optionQueryService.getPreference();
+
+        Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), "Solo 的个人博客");
+    }
 }
