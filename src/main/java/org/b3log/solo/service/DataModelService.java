@@ -528,15 +528,8 @@ public class DataModelService {
                 comment.put(Comment.COMMENT_NAME, comment.getString(Comment.COMMENT_NAME));
                 comment.put(Comment.COMMENT_URL, comment.getString(Comment.COMMENT_URL));
                 comment.put(Common.IS_REPLY, false);
-                comment.remove(Comment.COMMENT_EMAIL); // Erases email for security reason
                 comment.put(Comment.COMMENT_T_DATE, new Date(comment.optLong(Comment.COMMENT_CREATED)));
                 comment.put("commentDate2", new Date(comment.optLong(Comment.COMMENT_CREATED)));
-
-                final String email = comment.optString(Comment.COMMENT_EMAIL);
-                final String thumbnailURL = comment.optString(Comment.COMMENT_THUMBNAIL_URL);
-                if (StringUtils.isBlank(thumbnailURL)) {
-                    comment.put(Comment.COMMENT_THUMBNAIL_URL, Solos.getGravatarURL(email, "128"));
-                }
             }
 
             dataModel.put(Common.RECENT_COMMENTS, recentComments);
@@ -615,14 +608,7 @@ public class DataModelService {
             final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             if (null != currentUser) {
                 final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
-                if (StringUtils.isNotBlank(userAvatar)) {
-                    dataModel.put(Common.GRAVATAR, userAvatar);
-                } else {
-                    final String email = currentUser.optString(User.USER_EMAIL);
-                    final String gravatar = Solos.getGravatarURL(email, "128");
-                    dataModel.put(Common.GRAVATAR, gravatar);
-                }
-
+                dataModel.put(Common.GRAVATAR, userAvatar);
                 dataModel.put(User.USER_NAME, currentUser.optString(User.USER_NAME));
             }
 
@@ -909,12 +895,7 @@ public class DataModelService {
             article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(Article.ARTICLE_UPDATED)));
 
             final String userAvatar = author.optString(UserExt.USER_AVATAR);
-            if (StringUtils.isNotBlank(userAvatar)) {
-                article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
-            } else {
-                final String thumbnailURL = Solos.getGravatarURL(author.optString(User.USER_EMAIL), "128");
-                article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
-            }
+            article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
 
             if (preference.getBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));

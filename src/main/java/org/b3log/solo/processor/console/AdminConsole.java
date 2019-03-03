@@ -135,14 +135,8 @@ public class AdminConsole {
         dataModel.put(User.USER_NAME, userName);
         final String roleName = currentUser.optString(User.USER_ROLE);
         dataModel.put(User.USER_ROLE, roleName);
-        final String email = currentUser.optString(User.USER_EMAIL);
         final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
-        if (StringUtils.isNotBlank(userAvatar)) {
-            dataModel.put(Common.GRAVATAR, userAvatar);
-        } else {
-            final String gravatar = Solos.getGravatarURL(email, "128");
-            dataModel.put(Common.GRAVATAR, gravatar);
-        }
+        dataModel.put(Common.GRAVATAR, userAvatar);
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();

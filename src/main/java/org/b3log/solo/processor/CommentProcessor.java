@@ -295,7 +295,6 @@ public class CommentProcessor {
         }
 
         requestJSONObject.put(Comment.COMMENT_NAME, currentUser.optString(User.USER_NAME));
-        requestJSONObject.put(Comment.COMMENT_EMAIL, currentUser.optString(User.USER_EMAIL));
         requestJSONObject.put(Comment.COMMENT_URL, currentUser.optString(User.USER_URL));
     }
 }

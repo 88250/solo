@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.5.0.3, Feb 8, 2019
+ * @version 1.5.0.4, Mar 3, 2019
  * @since 0.6.0
  */
 public final class Option {
@@ -116,11 +116,6 @@ public final class Option {
      * Key of article list pagination window size.
      */
     public static final String ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE = "articleListPaginationWindowSize";
-
-    /**
-     * Key of administrator's email.
-     */
-    public static final String ID_C_ADMIN_EMAIL = "adminEmail";
 
     /**
      * Key of locale string.

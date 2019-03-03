@@ -209,19 +209,12 @@ public class PreferenceMgmtService {
             preference.put(Option.ID_C_SIGNS, preference.get(Option.ID_C_SIGNS).toString());
 
             final JSONObject oldPreference = preferenceQueryService.getPreference();
-            final String adminEmail = oldPreference.getString(Option.ID_C_ADMIN_EMAIL);
-            preference.put(Option.ID_C_ADMIN_EMAIL, adminEmail);
 
             final String version = oldPreference.optString(Option.ID_C_VERSION);
             preference.put(Option.ID_C_VERSION, version);
 
             final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
-            LOGGER.log(Level.DEBUG, "Current locale[string={0}]", localeString);
             Latkes.setLocale(new Locale(Locales.getLanguage(localeString), Locales.getCountry(localeString)));
-
-            final JSONObject adminEmailOpt = optionRepository.get(Option.ID_C_ADMIN_EMAIL);
-            adminEmailOpt.put(Option.OPTION_VALUE, adminEmail);
-            optionRepository.update(Option.ID_C_ADMIN_EMAIL, adminEmailOpt);
 
             final JSONObject allowVisitDraftViaPermalinkOpt = optionRepository.get(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
             allowVisitDraftViaPermalinkOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK));

@@ -81,13 +81,10 @@ public class PreferenceQueryService {
      */
     public JSONObject getPreference() {
         try {
-            final JSONObject checkInit = optionRepository.get(Option.ID_C_ADMIN_EMAIL);
-            if (null == checkInit) {
-                return null;
-            }
-
             return optionQueryService.getOptions(Option.CATEGORY_C_PREFERENCE);
         } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets preference failed", e);
+
             return null;
         }
     }

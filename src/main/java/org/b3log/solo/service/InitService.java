@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -213,7 +212,6 @@ public class InitService {
      * @param requestJSONObject the specified request json object, for example,
      *                          {
      *                          "userName": "",
-     *                          "userEmail": "",
      *                          "userAvatar": "", // optional
      *                          "userB3Key": "", // optional
      *                          "userGitHubId": "" // optional
@@ -286,7 +284,6 @@ public class InitService {
         final JSONObject comment = new JSONObject();
         comment.put(Keys.OBJECT_ID, articleId);
         comment.put(Comment.COMMENT_NAME, "88250");
-        comment.put(Comment.COMMENT_EMAIL, "d@b3log.org");
         comment.put(Comment.COMMENT_URL, "https://hacpai.com/member/88250");
         comment.put(Comment.COMMENT_CONTENT, langPropsService.get("helloWorld.comment.content"));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
@@ -412,7 +409,6 @@ public class InitService {
      * @param requestJSONObject the specified request json object, for example,
      *                          {
      *                          "userName": "",
-     *                          "userEmail": "",
      *                          "userAvatar": "", // optional
      *                          "userB3Key": "", // optional
      *                          "userGitHubId": "" // optional
@@ -427,11 +423,7 @@ public class InitService {
         admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
         admin.put(User.USER_URL, Latkes.getServePath());
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-        String avatar = requestJSONObject.optString(UserExt.USER_AVATAR);
-        if (StringUtils.isBlank(avatar)) {
-            avatar = Solos.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128");
-        }
-        admin.put(UserExt.USER_AVATAR, avatar);
+        admin.put(UserExt.USER_AVATAR, requestJSONObject.optString(UserExt.USER_AVATAR));
         admin.put(UserExt.USER_B3_KEY, requestJSONObject.optString(UserExt.USER_B3_KEY));
         admin.put(UserExt.USER_GITHUB_ID, requestJSONObject.optString(UserExt.USER_GITHUB_ID));
         userRepository.add(admin);
@@ -611,12 +603,6 @@ public class InitService {
         blogSubtitleOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         blogSubtitleOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_BLOG_SUBTITLE);
         optionRepository.add(blogSubtitleOpt);
-
-        final JSONObject adminEmailOpt = new JSONObject();
-        adminEmailOpt.put(Keys.OBJECT_ID, Option.ID_C_ADMIN_EMAIL);
-        adminEmailOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        adminEmailOpt.put(Option.OPTION_VALUE, requestJSONObject.getString(User.USER_EMAIL));
-        optionRepository.add(adminEmailOpt);
 
         final JSONObject localeStringOpt = new JSONObject();
         localeStringOpt.put(Keys.OBJECT_ID, Option.ID_C_LOCALE_STRING);

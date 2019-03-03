@@ -72,10 +72,13 @@ public final class V310_320 {
             connection.commit();
             connection.close();
 
+            optionRepository.remove("adminEmail");
+
             final Transaction transaction = optionRepository.beginTransaction();
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, toVer);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
+
 
             transaction.commit();
 

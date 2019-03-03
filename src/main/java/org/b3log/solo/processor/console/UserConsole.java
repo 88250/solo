@@ -183,7 +183,6 @@ public class UserConsole {
      *     "users": [{
      *         "oId": "",
      *         "userName": "",
-     *         "userEmail": "",
      *         "roleName": "",
      *         ....
      *      }, ....]
