@@ -385,8 +385,6 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.post("/console/plugin/updateSetting", pluginConsole::updateSetting);
 
         final PreferenceConsole preferenceConsole = beanManager.getReference(PreferenceConsole.class);
-        DispatcherServlet.get("/console/reply/notification/template", preferenceConsole::getReplyNotificationTemplate);
-        DispatcherServlet.put("/console/reply/notification/template", preferenceConsole::updateReplyNotificationTemplate);
         DispatcherServlet.get("/console/signs/", preferenceConsole::getSigns);
         DispatcherServlet.get("/console/preference/", preferenceConsole::getPreference);
         DispatcherServlet.put("/console/preference/", preferenceConsole::updatePreference);

@@ -223,16 +223,6 @@ public final class Option {
     public static final String ID_C_SKIN_NAME = "skinName";
 
     /**
-     * Key of reply notification template body.
-     */
-    public static final String ID_C_REPLY_NOTI_TPL_BODY = "replyNotiTplBody";
-
-    /**
-     * Key of reply notification template subject.
-     */
-    public static final String ID_C_REPLY_NOTI_TPL_SUBJECT = "replyNotiTplSubject";
-
-    /**
      * Key of footer content.
      */
     public static final String ID_C_FOOTER_CONTENT = "footerContent";
@@ -422,16 +412,6 @@ public final class Option {
         public static final String DEFAULT_ARTICLE_LIST_STYLE = "titleAndAbstract";
 
         /**
-         * Default key of solo.
-         */
-        public static final String DEFAULT_KEY_OF_SOLO = "Your key";
-
-        /**
-         * Default reply notification template.
-         */
-        public static final String DEFAULT_REPLY_NOTIFICATION_TEMPLATE;
-
-        /**
          * Default feed output mode.
          */
         public static final String DEFAULT_FEED_OUTPUT_MODE = "abstract";
@@ -454,13 +434,6 @@ public final class Option {
 
             // Sign(id=0) is the 'empty' sign, used for article user needn't a sign
             DEFAULT_SIGNS = signs.toString();
-
-            final JSONObject replyNotificationTemplate = new JSONObject();
-            replyNotificationTemplate.put("subject", "${blogTitle}: New reply of your comment");
-            replyNotificationTemplate.put("body",
-                    "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"
-                            + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
-            DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
         }
 
         /**

@@ -50,51 +50,6 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
     }
 
     /**
-     * getReplyNotificationTemplate.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "init")
-    public void getReplyNotificationTemplate() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/reply/notification/template");
-
-        mockAdminLogin(request);
-
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
-    }
-
-    /**
-     * updateReplyNotificationTemplate.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "getReplyNotificationTemplate")
-    public void updateReplyNotificationTemplate() throws Exception {
-        final JSONObject p = getPreferenceQueryService().getReplyNotificationTemplate();
-
-        final MockHttpServletRequest request = mockRequest();
-        request.setRequestURI("/console/reply/notification/template");
-        request.setMethod("PUT");
-        final JSONObject requestJSON = new JSONObject();
-        requestJSON.put("replyNotificationTemplate", p);
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
-
-        mockAdminLogin(request);
-
-        final MockHttpServletResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
-
-        final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
-    }
-
-    /**
      * getSigns.
      *
      * @throws Exception exception

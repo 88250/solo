@@ -141,35 +141,6 @@ public class PreferenceMgmtService {
     }
 
     /**
-     * Updates the reply notification template with the specified reply notification template.
-     *
-     * @param replyNotificationTemplate the specified reply notification template
-     * @throws ServiceException service exception
-     */
-    public void updateReplyNotificationTemplate(final JSONObject replyNotificationTemplate) throws ServiceException {
-        final Transaction transaction = optionRepository.beginTransaction();
-
-        try {
-            final JSONObject bodyOpt = optionRepository.get(Option.ID_C_REPLY_NOTI_TPL_BODY);
-            bodyOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("body"));
-            optionRepository.update(Option.ID_C_REPLY_NOTI_TPL_BODY, bodyOpt);
-
-            final JSONObject subjectOpt = optionRepository.get(Option.ID_C_REPLY_NOTI_TPL_SUBJECT);
-            subjectOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("subject"));
-            optionRepository.update(Option.ID_C_REPLY_NOTI_TPL_SUBJECT, subjectOpt);
-
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.ERROR, "Updates reply notification failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
      * Updates the preference with the specified preference.
      *
      * @param preference the specified preference

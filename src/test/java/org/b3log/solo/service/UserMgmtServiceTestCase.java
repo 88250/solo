@@ -48,7 +48,6 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
         final JSONObject requestJSONObject = new JSONObject();
 
         requestJSONObject.put(User.USER_NAME, "user1name");
-        requestJSONObject.put(User.USER_EMAIL, "test1@gmail.com");
 
         final String id = userMgmtService.addUser(requestJSONObject);
         Assert.assertNotNull(id);
@@ -65,7 +64,6 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
 
         JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_NAME, "user2name");
-        requestJSONObject.put(User.USER_EMAIL, "test2@gmail.com");
         requestJSONObject.put(User.USER_ROLE, Role.ADMIN_ROLE);
 
         final String id = userMgmtService.addUser(requestJSONObject);
@@ -91,7 +89,6 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
 
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_NAME, "user1 name");
-        requestJSONObject.put(User.USER_EMAIL, "test1@gmail.com");
 
         try {
             final String id = userMgmtService.addUser(requestJSONObject);
@@ -110,8 +107,7 @@ public class UserMgmtServiceTestCase extends AbstractTestCase {
         final UserMgmtService userMgmtService = getUserMgmtService();
 
         final JSONObject requestJSONObject = new JSONObject();
-        requestJSONObject.put(User.USER_NAME, "username");
-        requestJSONObject.put(User.USER_EMAIL, "<script></script>");
+        requestJSONObject.put(User.USER_NAME, "<script></script>");
 
         final String id = userMgmtService.addUser(requestJSONObject);
     }

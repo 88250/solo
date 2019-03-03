@@ -226,7 +226,6 @@ public class InitService {
         try {
             initStatistic();
             initPreference(requestJSONObject);
-            initReplyNotificationTemplate();
             initAdmin(requestJSONObject);
             initLink();
             helloWorld();
@@ -464,32 +463,6 @@ public class InitService {
         optionRepository.add(statisticBlogViewCountOpt);
 
         LOGGER.info("Initialized statistic");
-    }
-
-    /**
-     * Initializes reply notification template.
-     *
-     * @throws Exception exception
-     */
-    private void initReplyNotificationTemplate() throws Exception {
-        LOGGER.debug("Initializing reply notification template");
-
-        final JSONObject replyNotificationTemplate = new JSONObject(DefaultPreference.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
-        replyNotificationTemplate.put(Keys.OBJECT_ID, "replyNotificationTemplate");
-
-        final JSONObject subjectOpt = new JSONObject();
-        subjectOpt.put(Keys.OBJECT_ID, Option.ID_C_REPLY_NOTI_TPL_SUBJECT);
-        subjectOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        subjectOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("subject"));
-        optionRepository.add(subjectOpt);
-
-        final JSONObject bodyOpt = new JSONObject();
-        bodyOpt.put(Keys.OBJECT_ID, Option.ID_C_REPLY_NOTI_TPL_BODY);
-        bodyOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        bodyOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("body"));
-        optionRepository.add(bodyOpt);
-
-        LOGGER.info("Initialized reply notification template");
     }
 
     /**

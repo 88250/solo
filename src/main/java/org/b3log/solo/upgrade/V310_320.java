@@ -73,6 +73,8 @@ public final class V310_320 {
             connection.close();
 
             optionRepository.remove("adminEmail");
+            optionRepository.remove("replyNotiTplBody");
+            optionRepository.remove("replyNotiTplSubject");
 
             final Transaction transaction = optionRepository.beginTransaction();
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);

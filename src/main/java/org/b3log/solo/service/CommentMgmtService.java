@@ -400,9 +400,6 @@ public class CommentMgmtService {
 
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-
-            JSONObject originalComment = null;
-
             comment.put(Comment.COMMENT_NAME, commentName);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
@@ -425,6 +422,7 @@ public class CommentMgmtService {
             ret.put(Comment.COMMENT_CONTENT, cmtContent);
             ret.put(Comment.COMMENT_URL, commentURL);
 
+            JSONObject originalComment;
             if (StringUtils.isNotBlank(originalCommentId)) {
                 originalComment = commentRepository.get(originalCommentId);
                 if (null != originalComment) {
