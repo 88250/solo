@@ -82,7 +82,6 @@ public final class GitHubs {
      * {
      *   "openId": "",
      *   "userName": "D",
-     *   "userEmail": "d@b3log.org", // may be empty
      *   "userAvatar": "https://avatars3.githubusercontent.com/u/873584?v=4"
      * }
      * </pre>, returns {@code null} if not found QQ user info
@@ -101,14 +100,12 @@ public final class GitHubs {
             }
             final JSONObject data = result.optJSONObject(Common.DATA);
             final String userName = StringUtils.trim(data.optString("userName"));
-            final String email = data.optString("userEmail");
             final String openId = data.optString("userId");
             final String avatarUrl = data.optString("userAvatarURL");
 
             final JSONObject ret = new JSONObject();
             ret.put("openId", openId);
             ret.put(User.USER_NAME, userName);
-            ret.put(User.USER_EMAIL, email);
             ret.put(UserExt.USER_AVATAR, avatarUrl);
 
             return ret;

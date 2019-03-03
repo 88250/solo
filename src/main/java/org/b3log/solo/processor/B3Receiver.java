@@ -290,7 +290,6 @@ public class B3Receiver {
             final String commentId = Ids.genTimeMillisId();
             comment.put(Keys.OBJECT_ID, commentId);
             comment.put(Comment.COMMENT_NAME, commentName);
-            comment.put(Comment.COMMENT_EMAIL, "");
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_THUMBNAIL_URL, commentThumbnailURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
@@ -304,12 +303,7 @@ public class B3Receiver {
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             commentRepository.add(comment);
             articleMgmtService.incArticleCommentCount(articleId);
-            try {
-                final JSONObject preference = preferenceQueryService.getPreference();
-                commentMgmtService.sendNotificationMail(article, comment, null, preference);
-            } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Send mail failed", e);
-            }
+
             transaction.commit();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

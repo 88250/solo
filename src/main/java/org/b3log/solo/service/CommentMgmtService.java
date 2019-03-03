@@ -33,8 +33,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.event.EventTypes;
-import org.b3log.solo.mail.MailService;
-import org.b3log.solo.mail.MailServiceFactory;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
@@ -139,11 +137,6 @@ public class CommentMgmtService {
     private LangPropsService langPropsService;
 
     /**
-     * Mail service.
-     */
-    private MailService mailService = MailServiceFactory.getMailService();
-
-    /**
      * Checks the specified comment adding request.
      * <p>
      * XSS process (name) in this method.
@@ -154,7 +147,6 @@ public class CommentMgmtService {
      *                          "type": "", // "article"/"page"
      *                          "oId": "",
      *                          "commentName": "",
-     *                          "commentEmail": "",
      *                          "commentURL": "",
      *                          "commentContent": "",
      *                          }

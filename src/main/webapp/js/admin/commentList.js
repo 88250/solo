@@ -101,8 +101,7 @@ admin.commentList = {
                         "' target='_blank' class='no-underline'>" + comments[i].commentName + 
                         "</a>";
                     }                    
-                    commentsData[i].title += "<br/><a href='mailto:" + comments[i].commentEmail +
-                    "'>" + comments[i].commentEmail + "</a>";                
+                    commentsData[i].title += "<br/>";
                     
                     commentsData[i].date = $.bowknot.getDate(comments[i].commentTime);
                 }

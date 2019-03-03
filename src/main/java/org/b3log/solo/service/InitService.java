@@ -420,7 +420,6 @@ public class InitService {
         final JSONObject admin = new JSONObject();
 
         admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
-        admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
         admin.put(User.USER_URL, Latkes.getServePath());
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
         admin.put(UserExt.USER_AVATAR, requestJSONObject.optString(UserExt.USER_AVATAR));

@@ -237,7 +237,6 @@ public class PreferenceConsole {
      *         "noticeBoard": "",
      *         "footerContent": "",
      *         "htmlHead": "",
-     *         "adminEmail": "",
      *         "metaKeywords": "",
      *         "metaDescription": "",
      *         "enableArticleUpdateHint": boolean,

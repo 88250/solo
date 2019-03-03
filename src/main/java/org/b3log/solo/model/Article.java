@@ -139,11 +139,6 @@ public final class Article {
     public static final String ARTICLE_AUTHOR_ID = "articleAuthorId";
 
     /**
-     * Key of author email.
-     */
-    public static final String ARTICLE_T_AUTHOR_EMAIL = "articleAuthorEmail";
-
-    /**
      * Key of had been published.
      */
     public static final String ARTICLE_HAD_BEEN_PUBLISHED = "articleHadBeenPublished";

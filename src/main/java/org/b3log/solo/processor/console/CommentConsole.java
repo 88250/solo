@@ -173,7 +173,6 @@ public class CommentConsole {
      *         "oId": "",
      *         "commentTitle": "",
      *         "commentName": "",
-     *         "commentEmail": "",
      *         "thumbnailUrl": "",
      *         "commentURL": "",
      *         "commentContent": "",
@@ -219,7 +218,6 @@ public class CommentConsole {
      *     "comments": [{
      *         "oId": "",
      *         "commentName": "",
-     *         "commentEmail": "",
      *         "thumbnailUrl": "",
      *         "commentURL": "",
      *         "commentContent": "",
@@ -264,7 +262,6 @@ public class CommentConsole {
      *     "comments": [{
      *         "oId": "",
      *         "commentName": "",
-     *         "commentEmail": "",
      *         "thumbnailUrl": "",
      *         "commentURL": "",
      *         "commentContent": "",

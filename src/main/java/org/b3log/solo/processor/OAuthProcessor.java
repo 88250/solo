@@ -142,7 +142,7 @@ public class OAuthProcessor {
         STATES.put(state, URLs.encode(state));
 
         final String path = loginAuthURL + "?client_id=" + clientId + "&state=" + state
-                + "&scope=public_repo,read:user,user:email,user:follow";
+                + "&scope=public_repo,read:user,user:follow";
 
         context.sendRedirect(path);
     }
@@ -176,7 +176,6 @@ public class OAuthProcessor {
         final HttpServletRequest request = context.getRequest();
         final String openId = userInfo.optString("openId");
         final String userName = userInfo.optString(User.USER_NAME);
-        final String userEmail = userInfo.optString(User.USER_EMAIL);
         final String userAvatar = userInfo.optString(UserExt.USER_AVATAR);
 
         JSONObject user = userQueryService.getUserByGitHubId(openId);
@@ -184,7 +183,6 @@ public class OAuthProcessor {
             if (!initService.isInited()) {
                 final JSONObject initReq = new JSONObject();
                 initReq.put(User.USER_NAME, userName);
-                initReq.put(User.USER_EMAIL, userEmail);
                 initReq.put(UserExt.USER_AVATAR, userAvatar);
                 initReq.put(UserExt.USER_B3_KEY, openId);
                 initReq.put(UserExt.USER_GITHUB_ID, openId);
@@ -202,7 +200,6 @@ public class OAuthProcessor {
 
                     final JSONObject addUserReq = new JSONObject();
                     addUserReq.put(User.USER_NAME, userName);
-                    addUserReq.put(User.USER_EMAIL, userEmail);
                     addUserReq.put(UserExt.USER_AVATAR, userAvatar);
                     addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
                     addUserReq.put(UserExt.USER_GITHUB_ID, openId);

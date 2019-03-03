@@ -130,7 +130,6 @@ public class UserQueryService {
      *     "users": [{
      *         "oId": "",
      *         "userName": "",
-     *         "userEmail": "",
      *         "roleName": ""
      *      }, ....]
      * }
@@ -176,8 +175,7 @@ public class UserQueryService {
      * {
      *     "user": {
      *         "oId": "",
-     *         "userName": "",
-     *         "userEmail": ""
+     *         "userName": ""
      *     }
      * }
      * </pre>, returns {@code null} if not found

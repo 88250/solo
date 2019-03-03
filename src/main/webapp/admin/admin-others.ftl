@@ -20,11 +20,6 @@
 <div id="tabOthers" class="sub-tabs">
     <ul>
         <li>
-            <div id="tabOthers_email">
-                <a class="tab-current" href="#tools/others/email">${replayEmailTemplateLabel}</a>
-            </div>
-        </li>
-        <li>
             <div id="tabOthers_tag">
                 <a href="#tools/others/tag">${clearTagLabel}</a>
             </div>
@@ -37,17 +32,6 @@
     </ul>
 </div>
 <div id="tabOthersPanel" class="sub-tabs-main">
-    <div id="tabOthersPanel_email" class="form form__no-table">
-        <label for="replayEmailTemplateTitle">${emailSubject1Label}</label>
-        <input id="replayEmailTemplateTitle" type="text"/>
-        <label for="replayEmailTemplateBody">${emailContent1Label}</label>
-        <textarea rows="9" id="replayEmailTemplateBody"></textarea><br><br>
-        <button onclick="admin.others.update()" class="fn__right">${updateLabel}</button>
-        <div class="fn__clear"></div>
-        <div class="content-reset">
-        ${replayEmailExplanationLabel}
-        </div>
-    </div>
     <div id="tabOthersPanel_tag" class="fn__none">
         <button class="fn__margin12" onclick="admin.others.removeUnusedTags();">${removeUnusedTagsLabel}</button>
     </div>

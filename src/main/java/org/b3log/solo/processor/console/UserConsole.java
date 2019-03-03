@@ -86,7 +86,6 @@ public class UserConsole {
      * {
      *     "oId": "",
      *     "userName": "",
-     *     "userEmail": "",
      *     "userRole": "",
      *     "userURL": "",
      *     "userAvatar": "",
@@ -232,7 +231,6 @@ public class UserConsole {
      *     "user": {
      *         "oId": "",
      *         "userName": "",
-     *         "userEmail": "",
      *         "userAvatar": ""
      *     }
      * }

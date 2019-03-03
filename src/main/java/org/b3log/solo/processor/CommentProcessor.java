@@ -99,7 +99,6 @@ public class CommentProcessor {
      *     "captcha": "",
      *     "oId": pageId,
      *     "commentName": "",
-     *     "commentEmail": "",
      *     "commentURL": "",
      *     "commentContent": "",
      *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
@@ -196,7 +195,6 @@ public class CommentProcessor {
      *     "captcha": "",
      *     "oId": articleId,
      *     "commentName": "",
-     *     "commentEmail": "",
      *     "commentURL": "",
      *     "commentContent": "",
      *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
