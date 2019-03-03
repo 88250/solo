@@ -23,7 +23,7 @@
  * @version 1.3.0.0, Nov 11, 2017
  */
 
-/* oterhs 相关操作 */
+/* others 相关操作 */
 admin.others = {
   /*
    * @description 初始化

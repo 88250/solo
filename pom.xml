@@ -89,7 +89,6 @@
         <freemarker.version>2.3.28</freemarker.version>
         <user-agent-utils.version>1.21</user-agent-utils.version>
         <servlet.version>3.1.0</servlet.version>
-        <javax.mail.version>1.6.2</javax.mail.version>
 
         <license-maven-plugin.version>3.0</license-maven-plugin.version>
         <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
@@ -115,12 +114,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>${servlet.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.sun.mail</groupId>
-            <artifactId>javax.mail</artifactId>
-            <version>${javax.mail.version}</version>
         </dependency>
 
         <dependency>
