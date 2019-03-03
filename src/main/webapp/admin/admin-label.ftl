@@ -79,7 +79,6 @@
         "statusLabel": "${statusLabel}",
         "versionLabel": "${versionLabel}",
         "userNameLabel": "${userNameLabel}",
-        "commentEmailLabel": "${commentEmailLabel}",
         "roleLabel": "${roleLabel}",
         "administratorLabel": "${administratorLabel}",
         "noSettingLabel": "${noSettingLabel}",

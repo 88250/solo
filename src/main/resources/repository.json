@@ -133,12 +133,6 @@
           "type": "long"
         },
         {
-          "name": "commentEmail",
-          "description": "评论人邮箱",
-          "type": "String",
-          "length": 255
-        },
-        {
           "name": "commentName",
           "description": "评论人名称",
           "type": "String",
@@ -382,12 +376,6 @@
           "description": "主键",
           "type": "String",
           "length": 19
-        },
-        {
-          "name": "userEmail",
-          "description": "用户邮箱",
-          "type": "String",
-          "length": 255
         },
         {
           "name": "userName",
