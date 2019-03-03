@@ -78,7 +78,7 @@
 
         <slf4j.version>1.7.5</slf4j.version>
         <jsoup.version>1.9.1</jsoup.version>
-        <flexmark.version>0.40.0</flexmark.version>
+        <flexmark.version>0.40.20</flexmark.version>
         <jetty.version>9.4.12.v20180830</jetty.version>
         <commons-cli.version>1.3.1</commons-cli.version>
         <commons-codec.version>1.10</commons-codec.version>
