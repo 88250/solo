@@ -31,7 +31,7 @@ import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.DataModelService;
-import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
@@ -66,12 +66,6 @@ public class UserTemplateProcessor {
     private DataModelService dataModelService;
 
     /**
-     * Preference query service.
-     */
-    @Inject
-    private PreferenceQueryService preferenceQueryService;
-
-    /**
      * Language service.
      */
     @Inject
@@ -82,6 +76,12 @@ public class UserTemplateProcessor {
      */
     @Inject
     private StatisticMgmtService statisticMgmtService;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
 
     /**
      * Shows the user template page.
@@ -109,7 +109,7 @@ public class UserTemplateProcessor {
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillUserTemplate(context, template, dataModel, preference);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);

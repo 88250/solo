@@ -45,7 +45,10 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.UserExt;
-import org.b3log.solo.service.*;
+import org.b3log.solo.service.DataModelService;
+import org.b3log.solo.service.ExportService;
+import org.b3log.solo.service.OptionQueryService;
+import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -82,12 +85,6 @@ public class AdminConsole {
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * Preference query service.
-     */
-    @Inject
-    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Option query service.
@@ -139,7 +136,7 @@ public class AdminConsole {
         dataModel.put(Common.GRAVATAR, userAvatar);
 
         try {
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
             dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
             dataModel.put(Option.ID_C_BLOG_SUBTITLE, preference.getString(Option.ID_C_BLOG_SUBTITLE));
@@ -209,7 +206,7 @@ public class AdminConsole {
         dataModel.putAll(langs);
         dataModel.put(Option.ID_C_LOCALE_STRING, locale.toString());
 
-        final JSONObject preference = preferenceQueryService.getPreference();
+        final JSONObject preference = optionQueryService.getPreference();
         final StringBuilder timeZoneIdOptions = new StringBuilder();
         final String[] availableIDs = TimeZone.getAvailableIDs();
         for (int i = 0; i < availableIDs.length; i++) {

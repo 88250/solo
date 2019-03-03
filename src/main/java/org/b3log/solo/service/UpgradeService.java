@@ -44,17 +44,17 @@ public class UpgradeService {
     private static final Logger LOGGER = Logger.getLogger(UpgradeService.class);
 
     /**
-     * Preference Query Service.
+     * Option Query Service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * Upgrades if need.
      */
     public void upgrade() {
         try {
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 return;
             }

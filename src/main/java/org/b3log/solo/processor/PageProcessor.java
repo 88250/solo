@@ -33,7 +33,7 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.service.CommentQueryService;
 import org.b3log.solo.service.DataModelService;
-import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
@@ -72,10 +72,10 @@ public class PageProcessor {
     private DataModelService dataModelService;
 
     /**
-     * Preference query service.
+     * Option query service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * Comment query service.
@@ -102,7 +102,7 @@ public class PageProcessor {
         final HttpServletResponse response = context.getResponse();
 
         try {
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 context.sendError(HttpServletResponse.SC_NOT_FOUND);
 

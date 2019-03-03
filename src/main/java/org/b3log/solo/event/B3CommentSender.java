@@ -35,7 +35,7 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
@@ -55,10 +55,10 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
     private static final Logger LOGGER = Logger.getLogger(B3CommentSender.class);
 
     /**
-     * Preference query service.
+     * Option query service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * User repository.
@@ -81,7 +81,7 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
         try {
             final JSONObject originalComment = data.getJSONObject(Comment.COMMENT);
 
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 LOGGER.log(Level.ERROR, "Not found preference");
 

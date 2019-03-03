@@ -39,7 +39,7 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.InitService;
-import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.StatisticMgmtService;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
@@ -74,10 +74,10 @@ public class IndexProcessor {
     private DataModelService dataModelService;
 
     /**
-     * Preference query service.
+     * Option query service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * Language service.
@@ -111,7 +111,7 @@ public class IndexProcessor {
         final Map<String, Object> dataModel = renderer.getDataModel();
         try {
             final int currentPageNum = Paginator.getPage(request);
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
 
             // 前台皮肤切换 https://github.com/b3log/solo/issues/12060
             String specifiedSkin = Skins.getSkinDirName(context);
@@ -208,7 +208,7 @@ public class IndexProcessor {
         try {
             final Map<String, String> langs = langPropsService.getAll(Locales.getLocale(request));
             dataModel.putAll(langs);
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             dataModelService.fillCommon(context, dataModel, preference);
             Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);

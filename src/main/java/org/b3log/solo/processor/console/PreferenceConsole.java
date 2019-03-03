@@ -33,7 +33,6 @@ import org.b3log.solo.model.Skin;
 import org.b3log.solo.service.OptionMgmtService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceMgmtService;
-import org.b3log.solo.service.PreferenceQueryService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -56,12 +55,6 @@ public class PreferenceConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(PreferenceConsole.class);
-
-    /**
-     * Preference query service.
-     */
-    @Inject
-    private PreferenceQueryService preferenceQueryService;
 
     /**
      * Preference management service.
@@ -109,7 +102,7 @@ public class PreferenceConsole {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             final JSONArray signs = new JSONArray();
             final JSONArray allSigns = // includes the empty sign(id=0)
                     new JSONArray(preference.getString(Option.ID_C_SIGNS));
@@ -188,7 +181,7 @@ public class PreferenceConsole {
         context.setRenderer(renderer);
 
         try {
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
 

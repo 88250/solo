@@ -125,10 +125,10 @@ public class CommentMgmtService {
     private PageRepository pageRepository;
 
     /**
-     * Preference query service.
+     * Option query service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * Language service.
@@ -162,7 +162,7 @@ public class CommentMgmtService {
 
         try {
             ret.put(Keys.STATUS_CODE, false);
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
 
             if (null == preference || !preference.optBoolean(Option.ID_C_COMMENTABLE)) {
                 ret.put(Keys.MSG, langPropsService.get("notAllowCommentLabel"));
@@ -298,7 +298,7 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_NAME, commentName);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             final Date date = new Date();
 
             comment.put(Comment.COMMENT_CREATED, date.getTime());
@@ -413,7 +413,7 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME));
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             final Date date = new Date();
 
             comment.put(Comment.COMMENT_CREATED, date.getTime());

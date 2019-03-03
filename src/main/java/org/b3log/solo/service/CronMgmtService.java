@@ -48,12 +48,6 @@ public class CronMgmtService {
     private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newScheduledThreadPool(1);
 
     /**
-     * Preference query service.
-     */
-    @Inject
-    private PreferenceQueryService preferenceQueryService;
-
-    /**
      * User query service.
      */
     @Inject

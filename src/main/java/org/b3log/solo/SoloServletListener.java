@@ -191,10 +191,10 @@ public final class SoloServletListener extends AbstractServletListener {
 
         LOGGER.debug("Loading preference....");
 
-        final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
         JSONObject preference;
         try {
-            preference = preferenceQueryService.getPreference();
+            preference = optionQueryService.getPreference();
             if (null == preference) {
                 return;
             }
@@ -250,8 +250,8 @@ public final class SoloServletListener extends AbstractServletListener {
             try {
                 final InitService initService = beanManager.getReference(InitService.class);
                 if (initService.isInited()) {
-                    final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
-                    final JSONObject preference = preferenceQueryService.getPreference();
+                    final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+                    final JSONObject preference = optionQueryService.getPreference();
                     if (null != preference) {
                         skin = preference.getString(Skin.SKIN_DIR_NAME);
                     }

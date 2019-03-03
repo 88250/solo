@@ -42,7 +42,7 @@ import org.b3log.solo.model.rss.Channel;
 import org.b3log.solo.model.rss.Item;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.service.ArticleQueryService;
-import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.util.Emotions;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -83,10 +83,10 @@ public class FeedProcessor {
     private ArticleRepository articleRepository;
 
     /**
-     * Preference query service.
+     * Option query service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * Blog articles Atom output.
@@ -100,7 +100,7 @@ public class FeedProcessor {
 
         final Feed feed = new Feed();
         try {
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
             final String blogSubtitle = preference.getString(Option.ID_C_BLOG_SUBTITLE);
             final int outputCnt = preference.getInt(Option.ID_C_FEED_OUTPUT_CNT);
@@ -174,7 +174,7 @@ public class FeedProcessor {
         final Channel channel = new Channel();
 
         try {
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 context.sendError(HttpServletResponse.SC_NOT_FOUND);
 

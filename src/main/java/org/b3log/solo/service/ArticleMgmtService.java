@@ -111,12 +111,6 @@ public class ArticleMgmtService {
     private CommentRepository commentRepository;
 
     /**
-     * Preference query service.
-     */
-    @Inject
-    private PreferenceQueryService preferenceQueryService;
-
-    /**
      * Permalink query service.
      */
     @Inject
