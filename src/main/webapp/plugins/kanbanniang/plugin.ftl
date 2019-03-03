@@ -17,8 +17,8 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<link type="text/css" rel="stylesheet" href="https://static-solo.b3log.org/plugins/kanbanniang/assert/index.css"/>
-<script async src="https://static-solo.b3log.org/plugins/kanbanniang/assert/index.js"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/kanbanniang/index.css"/>
+<script async src="https://cdn.jsdelivr.net/npm/kanbanniang/index.js"></script>
 <div class="solo-kanbanniang">
     <div class="solo-kanbanniang__tip"></div>
     <canvas id="soloKanbanniang" width="280" height="250"></canvas>
