@@ -199,6 +199,13 @@ public class CommentMgmtService {
                 return ret;
             }
 
+            final JSONObject commenter = userRepository.getByUserName(commentName);
+            if (null == commenter) {
+                ret.put(Keys.MSG, langPropsService.get("nameTooLongLabel"));
+
+                return ret;
+            }
+
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
 
             if (!Strings.isURL(commentURL) || StringUtils.contains(commentURL, "<")) {
