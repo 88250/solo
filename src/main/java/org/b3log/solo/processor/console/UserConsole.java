@@ -115,10 +115,6 @@ public class UserConsole {
             final JSONObject requestJSONObject = context.requestJSON();
             userMgmtService.updateUser(requestJSONObject);
 
-            final String userName = requestJSONObject.optString(User.USER_NAME);
-            final JSONObject user = userQueryService.getUserByName(userName);
-            Solos.login(user, context.getResponse());
-
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
             renderer.setJSONObject(ret);
