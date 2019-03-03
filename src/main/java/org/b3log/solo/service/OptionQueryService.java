@@ -18,8 +18,11 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
 import org.json.JSONObject;
 
@@ -34,10 +37,32 @@ import org.json.JSONObject;
 public class OptionQueryService {
 
     /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(OptionQueryService.class);
+
+    /**
      * Option repository.
      */
     @Inject
     private OptionRepository optionRepository;
+
+    /**
+     * Checks whether allow register.
+     *
+     * @return {@code true} to allow register, returns {@code false} otherwise
+     */
+    public boolean allowRegister() {
+        try {
+            final JSONObject opt = optionRepository.get(Option.ID_C_ALLOW_REGISTER);
+
+            return opt.optBoolean(Option.OPTION_VALUE);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Checks allow register failed", e);
+
+            return false;
+        }
+    }
 
     /**
      * Gets an option with the specified option id.

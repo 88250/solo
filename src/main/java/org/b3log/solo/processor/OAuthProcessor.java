@@ -34,7 +34,6 @@ import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.GitHubs;
@@ -190,9 +189,7 @@ public class OAuthProcessor {
             } else {
                 user = userQueryService.getUserByName(userName);
                 if (null == user) {
-                    final JSONObject preference = preferenceQueryService.getPreference();
-                    if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
-                        LOGGER.log(Level.DEBUG, "Not allow register");
+                    if (!optionQueryService.allowRegister()) {
                         context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                         return;
