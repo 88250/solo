@@ -11,10 +11,6 @@ services:
       SERVER_SCHMEA: https
       SERVER_NAME: <your host>
       SERVER_PORT: 80
-      EMAIL_ADDRESS: <your address>
-      EMAIL_PASSWORD: <your smtp password>
-      SMTP_HOST: <your smtp host>
-      SMTP_PROT: <your smtp port>
     volumes:
      - database:/opt/b3log/backup
 

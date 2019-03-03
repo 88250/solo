@@ -88,82 +88,6 @@ public class PreferenceConsole {
     private LangPropsService langPropsService;
 
     /**
-     * Gets reply template.
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "replyNotificationTemplate": {
-     *         "subject": "",
-     *         "body": ""
-     *     }
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     */
-    public void getReplyNotificationTemplate(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-
-        try {
-            final JSONObject replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
-
-            final JSONObject ret = new JSONObject();
-            renderer.setJSONObject(ret);
-            ret.put("replyNotificationTemplate", replyNotificationTemplate);
-            ret.put(Keys.STATUS_CODE, true);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
-        }
-    }
-
-    /**
-     * Updates reply template.
-     * <p>
-     * <p>
-     * Request json:
-     * <pre>
-     * {
-     *     "replyNotificationTemplate": {
-     *         "subject": "",
-     *         "body": ""
-     *     }
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified http request context
-     */
-    public void updateReplyNotificationTemplate(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-
-        try {
-            final JSONObject requestJSONObject = context.requestJSON();
-            final JSONObject replyNotificationTemplate = requestJSONObject.getJSONObject("replyNotificationTemplate");
-            preferenceMgmtService.updateReplyNotificationTemplate(replyNotificationTemplate);
-
-            final JSONObject ret = new JSONObject();
-            ret.put(Keys.STATUS_CODE, true);
-            ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
-            renderer.setJSONObject(ret);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
-        }
-    }
-
-    /**
      * Gets signs.
      * <p>
      * Renders the response with a json object, for example,
@@ -178,7 +102,7 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getSigns(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -237,7 +161,6 @@ public class PreferenceConsole {
      *         "noticeBoard": "",
      *         "footerContent": "",
      *         "htmlHead": "",
-     *         "adminEmail": "",
      *         "metaKeywords": "",
      *         "metaDescription": "",
      *         "enableArticleUpdateHint": boolean,
@@ -258,7 +181,7 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getPreference(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -336,7 +259,7 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void updatePreference(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();

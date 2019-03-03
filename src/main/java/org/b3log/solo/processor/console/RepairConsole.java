@@ -24,8 +24,6 @@ import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.TextHtmlRenderer;
-import org.b3log.solo.mail.MailService;
-import org.b3log.solo.mail.MailServiceFactory;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.TagArticleRepository;
@@ -40,7 +38,7 @@ import org.json.JSONObject;
  * Provides patches on some special issues.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.20, Jan 28, 2019
+ * @version 1.2.0.21, Mar 3, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -51,11 +49,6 @@ public class RepairConsole {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(RepairConsole.class);
-
-    /**
-     * Mail service.
-     */
-    private static final MailService MAIL_SVC = MailServiceFactory.getMailService();
 
     /**
      * Preference query service.

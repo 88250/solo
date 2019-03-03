@@ -148,7 +148,7 @@ public class ArticleProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @RequestProcessing(value = "/console/markdown/2html", method = HttpMethod.POST)
     public void markdown2HTML(final RequestContext context) {
@@ -741,12 +741,7 @@ public class ArticleProcessor {
             article.put(Common.AUTHOR_ID, authorId);
             article.put(Common.AUTHOR_ROLE, author.getString(User.USER_ROLE));
             final String userAvatar = author.optString(UserExt.USER_AVATAR);
-            if (StringUtils.isNotBlank(userAvatar)) {
-                article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
-            } else {
-                final String thumbnailURL = Solos.getGravatarURL(author.optString(User.USER_EMAIL), "128");
-                article.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
-            }
+            article.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
 
             dataModelService.fillCategory(article);
 
@@ -836,12 +831,7 @@ public class ArticleProcessor {
         dataModel.put(Common.AUTHOR_NAME, author.optString(User.USER_NAME));
 
         final String userAvatar = author.optString(UserExt.USER_AVATAR);
-        if (StringUtils.isNotBlank(userAvatar)) {
-            dataModel.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
-        } else {
-            final String thumbnailURL = Solos.getGravatarURL(author.optString(User.USER_EMAIL), "128");
-            dataModel.put(Common.AUTHOR_THUMBNAIL_URL, thumbnailURL);
-        }
+        dataModel.put(Common.AUTHOR_THUMBNAIL_URL, userAvatar);
 
         dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
     }

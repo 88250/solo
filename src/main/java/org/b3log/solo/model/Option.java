@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.5.0.3, Feb 8, 2019
+ * @version 1.5.0.4, Mar 3, 2019
  * @since 0.6.0
  */
 public final class Option {
@@ -116,11 +116,6 @@ public final class Option {
      * Key of article list pagination window size.
      */
     public static final String ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE = "articleListPaginationWindowSize";
-
-    /**
-     * Key of administrator's email.
-     */
-    public static final String ID_C_ADMIN_EMAIL = "adminEmail";
 
     /**
      * Key of locale string.
@@ -226,16 +221,6 @@ public final class Option {
      * Key of skin name.
      */
     public static final String ID_C_SKIN_NAME = "skinName";
-
-    /**
-     * Key of reply notification template body.
-     */
-    public static final String ID_C_REPLY_NOTI_TPL_BODY = "replyNotiTplBody";
-
-    /**
-     * Key of reply notification template subject.
-     */
-    public static final String ID_C_REPLY_NOTI_TPL_SUBJECT = "replyNotiTplSubject";
 
     /**
      * Key of footer content.
@@ -427,16 +412,6 @@ public final class Option {
         public static final String DEFAULT_ARTICLE_LIST_STYLE = "titleAndAbstract";
 
         /**
-         * Default key of solo.
-         */
-        public static final String DEFAULT_KEY_OF_SOLO = "Your key";
-
-        /**
-         * Default reply notification template.
-         */
-        public static final String DEFAULT_REPLY_NOTIFICATION_TEMPLATE;
-
-        /**
          * Default feed output mode.
          */
         public static final String DEFAULT_FEED_OUTPUT_MODE = "abstract";
@@ -459,13 +434,6 @@ public final class Option {
 
             // Sign(id=0) is the 'empty' sign, used for article user needn't a sign
             DEFAULT_SIGNS = signs.toString();
-
-            final JSONObject replyNotificationTemplate = new JSONObject();
-            replyNotificationTemplate.put("subject", "${blogTitle}: New reply of your comment");
-            replyNotificationTemplate.put("body",
-                    "Your comment on post[<a href='${postLink}'>" + "${postTitle}</a>] received an reply: <p>${replier}"
-                            + ": <span><a href='${replyURL}'>${replyContent}</a></span></p>");
-            DEFAULT_REPLY_NOTIFICATION_TEMPLATE = replyNotificationTemplate.toString();
         }
 
         /**

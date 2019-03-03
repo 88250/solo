@@ -19,7 +19,6 @@ package org.b3log.solo.util;
 
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -55,7 +54,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.0, Feb 7, 2019
+ * @version 1.7.0.1, Mar 3, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -64,11 +63,6 @@ public final class Solos {
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(Solos.class);
-
-    /**
-     * Mail configuration (mail.properties).
-     */
-    private static final ResourceBundle mailConf = ResourceBundle.getBundle("mail");
 
     /**
      * Favicon API.
@@ -428,22 +422,6 @@ public final class Solos {
     }
 
     /**
-     * Whether user configures the mail.properties.
-     *
-     * @return {@code true} if user configured, returns {@code false} otherwise
-     */
-    public static boolean isMailConfigured() {
-        try {
-            return StringUtils.isNotBlank(mailConf.getString("mail.user")) &&
-                    StringUtils.isNotBlank(mailConf.getString("mail.password")) &&
-                    StringUtils.isNotBlank(mailConf.getString("mail.smtp.host")) &&
-                    StringUtils.isNotBlank(mailConf.getString("mail.smtp.port"));
-        } catch (final Exception e) {
-            return false;
-        }
-    }
-
-    /**
      * Checks the specified request is made from a mobile device.
      *
      * @param request the specified request
@@ -474,14 +452,12 @@ public final class Solos {
     }
 
     /**
-     * Gets the Gravatar URL for the specified email with the specified size.
+     * Gets the default user avatar URL..
      *
-     * @param email the specified email
-     * @param size  the specified size
-     * @return the Gravatar URL
+     * @return default user avatar URL
      */
-    public static String getGravatarURL(final String email, final String size) {
-        return GRAVATAR + DigestUtils.md5Hex(email) + "?s=" + size;
+    public static String getDefaultAvatar() {
+        return Latkes.getStaticServePath() + "/images/default-user-thumbnail.png";
     }
 
     /**

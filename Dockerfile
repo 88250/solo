@@ -6,7 +6,7 @@ ADD . /tmp
 
 RUN cd /tmp && mvn install -DskipTests -Pci && mv target/solo/* /opt/b3log/solo/ \
     && mkdir -p /opt/b3log/backup/ && mkdir -p /opt/b3log/tmp/ \
-    && rm -rf /opt/b3log/solo/WEB-INF/classes/local.properties /opt/b3log/solo/WEB-INF/classes/mail.properties /opt/b3log/solo/WEB-INF/classes/latke.properties \
+    && rm -rf /opt/b3log/solo/WEB-INF/classes/local.properties /opt/b3log/solo/WEB-INF/classes/latke.properties \
     && rm -rf /tmp/* && rm -rf ~/.m2
 
 ADD ./src/main/resources/docker/entrypoint.sh $WORKDIR

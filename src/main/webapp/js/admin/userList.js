@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.5, Feb 10, 2019
+ * @version 1.1.2.6, Mar 3, 2019
  */
 
 /* user-list 相关操作 */
@@ -45,11 +45,6 @@ admin.userList = {
         text: Label.userNameLabel,
         index: 'userName',
         width: 230,
-      }, {
-        style: 'padding-left: 12px;',
-        text: Label.commentEmailLabel,
-        index: 'userEmail',
-        minWidth: 180,
       }, {
         style: 'padding-left: 12px;',
         text: Label.roleLabel,
@@ -79,7 +74,7 @@ admin.userList = {
 
     $.ajax({
       url: latkeConfig.servePath + '/console/users/' + pageNum + '/' +
-      Label.PAGE_SIZE + '/' + Label.WINDOW_SIZE,
+        Label.PAGE_SIZE + '/' + Label.WINDOW_SIZE,
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
@@ -103,7 +98,6 @@ admin.userList = {
         for (var i = 0; i < users.length; i++) {
           userData[i] = {}
           userData[i].userName = users[i].userName
-          userData[i].userEmail = users[i].userEmail
 
           if ('adminRole' === users[i].userRole) {
             userData[i].isAdmin = '&nbsp;' + Label.administratorLabel
@@ -121,8 +115,7 @@ admin.userList = {
               users[i].oId + '\')">' + Label.changeRoleLabel + '</a>'
             if ('defaultRole' === users[i].userRole) {
               userData[i].isAdmin = Label.commonUserLabel
-            }
-            else {
+            } else {
               userData[i].isAdmin = Label.visitorUserLabel
             }
           }
@@ -155,12 +148,6 @@ admin.userList = {
           return
         }
 
-        var $userEmailUpdate = $('#userEmailUpdate')
-        $('#userNameUpdate').val(result.user.userName).data('userInfo', {
-          'oId': id,
-          'userRole': userRole,
-        })
-        $userEmailUpdate.val(result.user.userEmail)
         $('#userURLUpdate').val(result.user.userURL)
         $('#userAvatarUpdate').val(result.user.userAvatar)
         $('#userB3KeyUpdate').val(result.user.userB3Key)
@@ -181,7 +168,6 @@ admin.userList = {
       var requestJSONObject = {
         'userName': $('#userNameUpdate').val(),
         'oId': userInfo.oId,
-        'userEmail': $('#userEmailUpdate').val(),
         'userURL': $('#userURLUpdate').val(),
         'userRole': userInfo.userRole,
         'userAvatar': $('#userAvatarUpdate').val(),
@@ -297,16 +283,10 @@ admin.userList = {
     if (2 > userName.length || userName.length > 20) {
       $('#tipMsg').text(Label.nameTooLongLabel)
       $('#userName' + status).focus()
-    } else if ($('#userEmail' + status).val().replace(/\s/g, '') === '') {
-      $('#tipMsg').text(Label.mailCannotEmptyLabel)
-      $('#userEmail' + status).focus()
-    } else if (!/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i.test(
-      $('#userEmail' + status).val())) {
-      $('#tipMsg').text(Label.mailInvalidLabel)
-      $('#userEmail' + status).focus()
     } else {
       return true
     }
+
     return false
   },
 }

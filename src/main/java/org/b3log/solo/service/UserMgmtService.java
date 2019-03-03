@@ -33,7 +33,6 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
 /**
@@ -88,7 +87,6 @@ public class UserMgmtService {
      * @param requestJSONObject the specified request json object, for example,
      *                          "oId": "",
      *                          "userName": "",
-     *                          "userEmail": "",
      *                          "userRole": "",
      *                          "userURL": "",
      *                          "userB3Key": ""
@@ -104,19 +102,12 @@ public class UserMgmtService {
                 throw new ServiceException(langPropsService.get("updateFailLabel"));
             }
 
-            final String userNewEmail = requestJSONObject.optString(User.USER_EMAIL).toLowerCase().trim();
-            JSONObject mayBeAnother = userRepository.getByEmail(userNewEmail);
-            if (null != mayBeAnother && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
-                throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
-            }
-
-            oldUser.put(User.USER_EMAIL, userNewEmail);
-
             final String userName = requestJSONObject.optString(User.USER_NAME);
             if (UserExt.invalidUserName(userName)) {
                 throw new ServiceException(langPropsService.get("userNameInvalidLabel"));
             }
-            mayBeAnother = userRepository.getByUserName(userName);
+
+            JSONObject mayBeAnother = userRepository.getByUserName(userName);
             if (null != mayBeAnother && !mayBeAnother.optString(Keys.OBJECT_ID).equals(oldUserId)) {
                 throw new ServiceException(langPropsService.get("duplicatedUserNameLabel"));
             }
@@ -189,7 +180,6 @@ public class UserMgmtService {
      *
      * @param requestJSONObject the specified request json object, for example,
      *                          "userName": "",
-     *                          "userEmail": "",
      *                          "userURL": "", // optional, uses 'servePath' instead if not specified
      *                          "userRole": "", // optional, uses {@value Role#DEFAULT_ROLE} instead if not specified
      *                          "userAvatar": "", // optional, users generated gravatar url instead if not specified
@@ -202,28 +192,12 @@ public class UserMgmtService {
         final Transaction transaction = userRepository.beginTransaction();
 
         try {
-            final JSONObject user = new JSONObject();
-            final String userEmail = requestJSONObject.optString(User.USER_EMAIL).trim().toLowerCase();
-            if (!Strings.isEmail(userEmail)) {
-                throw new ServiceException(langPropsService.get("mailInvalidLabel"));
-            }
-
-            JSONObject duplicatedUser = userRepository.getByEmail(userEmail);
-            if (null != duplicatedUser) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                throw new ServiceException(langPropsService.get("duplicatedEmailLabel"));
-            }
-
-            user.put(User.USER_EMAIL, userEmail);
-
             final String userName = requestJSONObject.optString(User.USER_NAME);
             if (UserExt.invalidUserName(userName)) {
                 throw new ServiceException(langPropsService.get("userNameInvalidLabel"));
             }
-            duplicatedUser = userRepository.getByUserName(userName);
+
+            JSONObject duplicatedUser = userRepository.getByUserName(userName);
             if (null != duplicatedUser) {
                 if (transaction.isActive()) {
                     transaction.rollback();
@@ -231,26 +205,22 @@ public class UserMgmtService {
 
                 throw new ServiceException(langPropsService.get("duplicatedUserNameLabel"));
             }
+            final JSONObject user = new JSONObject();
             user.put(User.USER_NAME, userName);
 
             String userURL = requestJSONObject.optString(User.USER_URL);
             if (StringUtils.isBlank(userURL)) {
                 userURL = Latkes.getServePath();
             }
-
             if (!Strings.isURL(userURL)) {
                 throw new ServiceException(langPropsService.get("urlInvalidLabel"));
             }
-
             user.put(User.USER_URL, userURL);
 
             final String roleName = requestJSONObject.optString(User.USER_ROLE, Role.DEFAULT_ROLE);
             user.put(User.USER_ROLE, roleName);
 
-            String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
-            if (StringUtils.isBlank(userAvatar)) {
-                userAvatar = Solos.getGravatarURL(userEmail, "128");
-            }
+            final String userAvatar = requestJSONObject.optString(UserExt.USER_AVATAR);
             user.put(UserExt.USER_AVATAR, userAvatar);
 
             final String userGitHubId = requestJSONObject.optString(UserExt.USER_GITHUB_ID);

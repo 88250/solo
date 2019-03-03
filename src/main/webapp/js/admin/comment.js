@@ -79,8 +79,7 @@ admin.comment = {
                         commentsHTML += "@" + comments[i].commentOriginalCommentName;
                     }
                     commentsHTML += "</span><span title='" + Label.removeLabel + "' class='fn__right deleteIcon' onclick=\"admin.comment.del('"
-                    + comments[i].oId + "', '" + fromId + "', '" + onId + "')\"></span><span class='fn__right'><a href='mailto:"
-                    + comments[i].commentEmail + "'>" + comments[i].commentEmail + "</a>&nbsp;&nbsp;"
+                    + comments[i].oId + "', '" + fromId + "', '" + onId + "')\"></span><span class='fn__right'>&nbsp;&nbsp;"
                     + $.bowknot.getDate(comments[i].commentTime)
                     + "&nbsp;</span><div class='fn__clear'></div></div><div class='fn__margin12'>"
                     + contentHTML + "</div>";

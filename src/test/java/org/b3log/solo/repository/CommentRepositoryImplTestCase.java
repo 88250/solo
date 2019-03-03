@@ -49,7 +49,6 @@ public class CommentRepositoryImplTestCase extends AbstractTestCase {
 
         comment.put(Comment.COMMENT_CONTENT, "comment1 content");
         comment.put(Comment.COMMENT_CREATED, new Date().getTime());
-        comment.put(Comment.COMMENT_EMAIL, "test@gmail.com");
         comment.put(Comment.COMMENT_NAME, "comment1 name");
         comment.put(Comment.COMMENT_ON_ID, "comment1 on id");
         comment.put(Comment.COMMENT_ON_TYPE, "comment1 on type");

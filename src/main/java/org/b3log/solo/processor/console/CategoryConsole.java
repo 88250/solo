@@ -108,7 +108,7 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      * @throws Exception exception
      */
     public void changeOrder(final RequestContext context) {
@@ -151,7 +151,7 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      * @throws Exception exception
      */
     public void getCategory(final RequestContext context) {
@@ -197,7 +197,7 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      * @throws Exception exception
      */
     public void removeCategory(final RequestContext context) {
@@ -243,7 +243,7 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void updateCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -375,7 +375,7 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void addCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -505,7 +505,7 @@ public class CategoryConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getCategories(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();

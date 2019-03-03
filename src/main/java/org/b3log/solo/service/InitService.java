@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
@@ -34,7 +33,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
 import org.b3log.solo.SoloServletListener;
@@ -56,7 +54,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.29, Feb 10, 2019
+ * @version 1.5.2.30, Mar 2, 2019
  * @since 0.4.0
  */
 @Service
@@ -214,14 +212,12 @@ public class InitService {
      * @param requestJSONObject the specified request json object, for example,
      *                          {
      *                          "userName": "",
-     *                          "userEmail": "",
      *                          "userAvatar": "", // optional
      *                          "userB3Key": "", // optional
      *                          "userGitHubId": "" // optional
      *                          }
-     * @throws ServiceException service exception
      */
-    public void init(final JSONObject requestJSONObject) throws ServiceException {
+    public void init(final JSONObject requestJSONObject) {
         if (isInited()) {
             return;
         }
@@ -230,15 +226,15 @@ public class InitService {
         try {
             initStatistic();
             initPreference(requestJSONObject);
-            initReplyNotificationTemplate();
             initAdmin(requestJSONObject);
             initLink();
             helloWorld();
 
             transaction.commit();
-        } catch (final Exception e) {
+        } catch (final Throwable e) {
+            LOGGER.log(Level.ERROR, "Initializes Solo failed", e);
 
-            throw new ServiceException("Initializes Solo failed: " + e.getMessage());
+            System.exit(-1);
         } finally {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -287,7 +283,6 @@ public class InitService {
         final JSONObject comment = new JSONObject();
         comment.put(Keys.OBJECT_ID, articleId);
         comment.put(Comment.COMMENT_NAME, "88250");
-        comment.put(Comment.COMMENT_EMAIL, "d@b3log.org");
         comment.put(Comment.COMMENT_URL, "https://hacpai.com/member/88250");
         comment.put(Comment.COMMENT_CONTENT, langPropsService.get("helloWorld.comment.content"));
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
@@ -302,6 +297,8 @@ public class InitService {
         comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
 
         commentRepository.add(comment);
+
+        LOGGER.info("Hello World!");
     }
 
     /**
@@ -411,7 +408,6 @@ public class InitService {
      * @param requestJSONObject the specified request json object, for example,
      *                          {
      *                          "userName": "",
-     *                          "userEmail": "",
      *                          "userAvatar": "", // optional
      *                          "userB3Key": "", // optional
      *                          "userGitHubId": "" // optional
@@ -423,19 +419,14 @@ public class InitService {
         final JSONObject admin = new JSONObject();
 
         admin.put(User.USER_NAME, requestJSONObject.getString(User.USER_NAME));
-        admin.put(User.USER_EMAIL, requestJSONObject.getString(User.USER_EMAIL));
         admin.put(User.USER_URL, Latkes.getServePath());
         admin.put(User.USER_ROLE, Role.ADMIN_ROLE);
-        String avatar = requestJSONObject.optString(UserExt.USER_AVATAR);
-        if (StringUtils.isBlank(avatar)) {
-            avatar = Solos.getGravatarURL(requestJSONObject.getString(User.USER_EMAIL), "128");
-        }
-        admin.put(UserExt.USER_AVATAR, avatar);
+        admin.put(UserExt.USER_AVATAR, requestJSONObject.optString(UserExt.USER_AVATAR));
         admin.put(UserExt.USER_B3_KEY, requestJSONObject.optString(UserExt.USER_B3_KEY));
         admin.put(UserExt.USER_GITHUB_ID, requestJSONObject.optString(UserExt.USER_GITHUB_ID));
         userRepository.add(admin);
 
-        LOGGER.debug("Initialized admin");
+        LOGGER.info("Initialized admin");
     }
 
     /**
@@ -444,6 +435,7 @@ public class InitService {
      * @throws Exception exception
      */
     private void initLink() throws Exception {
+        LOGGER.debug("Initializing link....");
         final JSONObject link = new JSONObject();
 
         link.put(Link.LINK_TITLE, "黑客派");
@@ -451,7 +443,8 @@ public class InitService {
         link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
         final int maxOrder = linkRepository.getMaxOrder();
         link.put(Link.LINK_ORDER, maxOrder + 1);
-        final String ret = linkRepository.add(link);
+        linkRepository.add(link);
+        LOGGER.info("Initialized link");
     }
 
     /**
@@ -469,33 +462,7 @@ public class InitService {
         statisticBlogViewCountOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_STATISTIC);
         optionRepository.add(statisticBlogViewCountOpt);
 
-        LOGGER.debug("Initialized statistic");
-    }
-
-    /**
-     * Initializes reply notification template.
-     *
-     * @throws Exception exception
-     */
-    private void initReplyNotificationTemplate() throws Exception {
-        LOGGER.debug("Initializing reply notification template");
-
-        final JSONObject replyNotificationTemplate = new JSONObject(DefaultPreference.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
-        replyNotificationTemplate.put(Keys.OBJECT_ID, "replyNotificationTemplate");
-
-        final JSONObject subjectOpt = new JSONObject();
-        subjectOpt.put(Keys.OBJECT_ID, Option.ID_C_REPLY_NOTI_TPL_SUBJECT);
-        subjectOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        subjectOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("subject"));
-        optionRepository.add(subjectOpt);
-
-        final JSONObject bodyOpt = new JSONObject();
-        bodyOpt.put(Keys.OBJECT_ID, Option.ID_C_REPLY_NOTI_TPL_BODY);
-        bodyOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        bodyOpt.put(Option.OPTION_VALUE, replyNotificationTemplate.optString("body"));
-        optionRepository.add(bodyOpt);
-
-        LOGGER.debug("Initialized reply notification template");
+        LOGGER.info("Initialized statistic");
     }
 
     /**
@@ -609,12 +576,6 @@ public class InitService {
         blogSubtitleOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_BLOG_SUBTITLE);
         optionRepository.add(blogSubtitleOpt);
 
-        final JSONObject adminEmailOpt = new JSONObject();
-        adminEmailOpt.put(Keys.OBJECT_ID, Option.ID_C_ADMIN_EMAIL);
-        adminEmailOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        adminEmailOpt.put(Option.OPTION_VALUE, requestJSONObject.getString(User.USER_EMAIL));
-        optionRepository.add(adminEmailOpt);
-
         final JSONObject localeStringOpt = new JSONObject();
         localeStringOpt.put(Keys.OBJECT_ID, Option.ID_C_LOCALE_STRING);
         localeStringOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
@@ -718,6 +679,6 @@ public class InitService {
         skinsOpt.put(Option.OPTION_VALUE, skinArray.toString());
         optionRepository.add(skinsOpt);
 
-        LOGGER.debug("Initialized preference");
+        LOGGER.info("Initialized preference");
     }
 }

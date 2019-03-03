@@ -54,17 +54,4 @@ public class PreferenceQueryServiceTestCase extends AbstractTestCase {
 
         Assert.assertEquals(preference.getString(Option.ID_C_BLOG_TITLE), "Solo 的个人博客");
     }
-
-    /**
-     * Get Reply Notification Template.
-     *
-     * @throws Exception exception
-     */
-    @Test(dependsOnMethods = "init")
-    public void getReplyNotificationTemplate() throws Exception {
-        final PreferenceQueryService preferenceQueryService = getPreferenceQueryService();
-        final JSONObject replyNotificationTemplate = preferenceQueryService.getReplyNotificationTemplate();
-
-        Assert.assertEquals(replyNotificationTemplate.toString(), Option.DefaultPreference.DEFAULT_REPLY_NOTIFICATION_TEMPLATE);
-    }
 }

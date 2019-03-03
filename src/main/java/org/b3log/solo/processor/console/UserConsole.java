@@ -86,7 +86,6 @@ public class UserConsole {
      * {
      *     "oId": "",
      *     "userName": "",
-     *     "userEmail": "",
      *     "userRole": "",
      *     "userURL": "",
      *     "userAvatar": "",
@@ -104,7 +103,7 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void updateUser(final RequestContext context) {
@@ -117,7 +116,7 @@ public class UserConsole {
             userMgmtService.updateUser(requestJSONObject);
 
             final String userName = requestJSONObject.optString(User.USER_NAME);
-            final JSONObject user = userQueryService.getUserByEmailOrUserName(userName);
+            final JSONObject user = userQueryService.getUserByName(userName);
             Solos.login(user, context.getResponse());
 
             ret.put(Keys.STATUS_CODE, true);
@@ -144,7 +143,7 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void removeUser(final RequestContext context) {
@@ -183,7 +182,6 @@ public class UserConsole {
      *     "users": [{
      *         "oId": "",
      *         "userName": "",
-     *         "userEmail": "",
      *         "roleName": "",
      *         ....
      *      }, ....]
@@ -192,7 +190,7 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void getUsers(final RequestContext context) {
@@ -233,14 +231,13 @@ public class UserConsole {
      *     "user": {
      *         "oId": "",
      *         "userName": "",
-     *         "userEmail": "",
      *         "userAvatar": ""
      *     }
      * }
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void getUser(final RequestContext context) {
@@ -273,7 +270,7 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void changeUserRole(final RequestContext context) {

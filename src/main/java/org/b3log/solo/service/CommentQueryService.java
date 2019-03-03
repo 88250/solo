@@ -39,7 +39,6 @@ import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
-import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -145,7 +144,6 @@ public class CommentQueryService {
      *         "oId": "",
      *         "commentTitle": "",
      *         "commentName": "",
-     *         "commentEmail": "",
      *         "thumbnailUrl": "",
      *         "commentURL": "",
      *         "commentContent": "",
@@ -247,12 +245,6 @@ public class CommentQueryService {
                 }
                 comment.put(Comment.COMMENT_URL, url);
                 comment.put(Common.IS_REPLY, false); // Assumes this comment is not a reply
-
-                final String thumbnailURL = comment.optString(Comment.COMMENT_THUMBNAIL_URL);
-                if (StringUtils.isBlank(thumbnailURL)) {
-                    final String email = comment.optString(Comment.COMMENT_EMAIL);
-                    comment.put(Comment.COMMENT_THUMBNAIL_URL, Solos.getGravatarURL(email, "128"));
-                }
 
                 if (StringUtils.isNotBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
                     // This comment is a reply

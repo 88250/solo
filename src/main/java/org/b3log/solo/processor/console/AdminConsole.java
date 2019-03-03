@@ -135,14 +135,8 @@ public class AdminConsole {
         dataModel.put(User.USER_NAME, userName);
         final String roleName = currentUser.optString(User.USER_ROLE);
         dataModel.put(User.USER_ROLE, roleName);
-        final String email = currentUser.optString(User.USER_EMAIL);
         final String userAvatar = currentUser.optString(UserExt.USER_AVATAR);
-        if (StringUtils.isNotBlank(userAvatar)) {
-            dataModel.put(Common.GRAVATAR, userAvatar);
-        } else {
-            final String gravatar = Solos.getGravatarURL(email, "128");
-            dataModel.put(Common.GRAVATAR, gravatar);
-        }
+        dataModel.put(Common.GRAVATAR, userAvatar);
 
         try {
             final JSONObject preference = preferenceQueryService.getPreference();
@@ -238,7 +232,7 @@ public class AdminConsole {
     /**
      * Exports data as SQL zip file.
      *
-     * @param context the specified HTTP request context
+     * @param context the specified request context
      */
     public void exportSQL(final RequestContext context) {
         final HttpServletResponse response = context.getResponse();
@@ -351,7 +345,7 @@ public class AdminConsole {
     /**
      * Exports data as JSON zip file.
      *
-     * @param context the specified HTTP request context
+     * @param context the specified request context
      */
     public void exportJSON(final RequestContext context) {
         final HttpServletResponse response = context.getResponse();
@@ -401,7 +395,7 @@ public class AdminConsole {
     /**
      * Exports data as Hexo markdown zip file.
      *
-     * @param context the specified HTTP request context
+     * @param context the specified request context
      */
     public void exportHexo(final RequestContext context) {
         final HttpServletResponse response = context.getResponse();

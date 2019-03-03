@@ -82,7 +82,7 @@ public class PluginConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void setPluginStatus(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -122,7 +122,7 @@ public class PluginConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      * @throws Exception exception
      */
     public void getPlugins(final RequestContext context) {
@@ -149,7 +149,7 @@ public class PluginConsole {
     /**
      * get the info of the specified pluginoId,just fot the plugin-setting.
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void toSetting(final RequestContext context) {
         final ConsoleRenderer renderer = new ConsoleRenderer(context, "admin-plugin-setting.ftl");
@@ -175,7 +175,7 @@ public class PluginConsole {
     /**
      * update the setting of the plugin.
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void updateSetting(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();

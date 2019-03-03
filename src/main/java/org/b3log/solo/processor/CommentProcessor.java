@@ -99,7 +99,6 @@ public class CommentProcessor {
      *     "captcha": "",
      *     "oId": pageId,
      *     "commentName": "",
-     *     "commentEmail": "",
      *     "commentURL": "",
      *     "commentContent": "",
      *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
@@ -196,7 +195,6 @@ public class CommentProcessor {
      *     "captcha": "",
      *     "oId": articleId,
      *     "commentName": "",
-     *     "commentEmail": "",
      *     "commentURL": "",
      *     "commentContent": "",
      *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
@@ -295,7 +293,6 @@ public class CommentProcessor {
         }
 
         requestJSONObject.put(Comment.COMMENT_NAME, currentUser.optString(User.USER_NAME));
-        requestJSONObject.put(Comment.COMMENT_EMAIL, currentUser.optString(User.USER_EMAIL));
         requestJSONObject.put(Comment.COMMENT_URL, currentUser.optString(User.USER_URL));
     }
 }

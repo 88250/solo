@@ -20,7 +20,6 @@ package org.b3log.solo.service;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
@@ -54,40 +53,16 @@ public class PreferenceQueryService {
     private OptionQueryService optionQueryService;
 
     /**
-     * Gets the reply notification template.
-     *
-     * @return reply notification template, returns {@code null} if not found
-     * @throws ServiceException service exception
-     */
-    public JSONObject getReplyNotificationTemplate() throws ServiceException {
-        try {
-            final JSONObject ret = new JSONObject();
-            final JSONObject preference = getPreference();
-
-            ret.put("subject", preference.optString(Option.ID_C_REPLY_NOTI_TPL_SUBJECT));
-            ret.put("body", preference.optString(Option.ID_C_REPLY_NOTI_TPL_BODY));
-
-            return ret;
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Updates reply notification template failed", e);
-            throw new ServiceException(e);
-        }
-    }
-
-    /**
      * Gets the user preference.
      *
      * @return user preference, returns {@code null} if not found
      */
     public JSONObject getPreference() {
         try {
-            final JSONObject checkInit = optionRepository.get(Option.ID_C_ADMIN_EMAIL);
-            if (null == checkInit) {
-                return null;
-            }
-
             return optionQueryService.getOptions(Option.CATEGORY_C_PREFERENCE);
         } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets preference failed", e);
+
             return null;
         }
     }

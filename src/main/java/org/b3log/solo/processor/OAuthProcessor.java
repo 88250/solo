@@ -54,7 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Feb 27, 2019
+ * @version 1.0.0.6, Mar 2, 2019
  * @since 2.9.5
  */
 @RequestProcessor
@@ -142,7 +142,7 @@ public class OAuthProcessor {
         STATES.put(state, URLs.encode(state));
 
         final String path = loginAuthURL + "?client_id=" + clientId + "&state=" + state
-                + "&scope=public_repo,read:user,user:email,user:follow";
+                + "&scope=public_repo,read:user,user:follow";
 
         context.sendRedirect(path);
     }
@@ -157,7 +157,7 @@ public class OAuthProcessor {
         final String state = context.param("state");
         String referer = STATES.get(state);
         if (StringUtils.isBlank(referer)) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;
         }
@@ -166,6 +166,7 @@ public class OAuthProcessor {
         final String accessToken = context.param("ak");
         final JSONObject userInfo = GitHubs.getGitHubUserInfo(accessToken);
         if (null == userInfo) {
+            LOGGER.log(Level.WARN, "Can't get user info with token [" + accessToken + "]");
             context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
             return;
@@ -175,7 +176,6 @@ public class OAuthProcessor {
         final HttpServletRequest request = context.getRequest();
         final String openId = userInfo.optString("openId");
         final String userName = userInfo.optString(User.USER_NAME);
-        final String userEmail = userInfo.optString(User.USER_EMAIL);
         final String userAvatar = userInfo.optString(UserExt.USER_AVATAR);
 
         JSONObject user = userQueryService.getUserByGitHubId(openId);
@@ -183,20 +183,16 @@ public class OAuthProcessor {
             if (!initService.isInited()) {
                 final JSONObject initReq = new JSONObject();
                 initReq.put(User.USER_NAME, userName);
-                initReq.put(User.USER_EMAIL, userEmail);
                 initReq.put(UserExt.USER_AVATAR, userAvatar);
                 initReq.put(UserExt.USER_B3_KEY, openId);
                 initReq.put(UserExt.USER_GITHUB_ID, openId);
-                try {
-                    initService.init(initReq);
-                } catch (final Exception e) {
-                    // ignored
-                }
+                initService.init(initReq);
             } else {
-                user = userQueryService.getUserByEmailOrUserName(userName);
+                user = userQueryService.getUserByName(userName);
                 if (null == user) {
                     final JSONObject preference = preferenceQueryService.getPreference();
                     if (!preference.optBoolean(Option.ID_C_ALLOW_REGISTER)) {
+                        LOGGER.log(Level.DEBUG, "Not allow register");
                         context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                         return;
@@ -204,7 +200,6 @@ public class OAuthProcessor {
 
                     final JSONObject addUserReq = new JSONObject();
                     addUserReq.put(User.USER_NAME, userName);
-                    addUserReq.put(User.USER_EMAIL, userEmail);
                     addUserReq.put(UserExt.USER_AVATAR, userAvatar);
                     addUserReq.put(User.USER_ROLE, Role.VISITOR_ROLE);
                     addUserReq.put(UserExt.USER_GITHUB_ID, openId);
@@ -213,7 +208,7 @@ public class OAuthProcessor {
                         userMgmtService.addUser(addUserReq);
                     } catch (final Exception e) {
                         LOGGER.log(Level.ERROR, "Register via oauth failed", e);
-                        context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                        context.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
                         return;
                     }
@@ -221,8 +216,9 @@ public class OAuthProcessor {
             }
         }
 
-        user = userQueryService.getUserByEmailOrUserName(userName);
+        user = userQueryService.getUserByName(userName);
         if (null == user) {
+            LOGGER.log(Level.WARN, "Can't get user by name [" + userName + "]");
             context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
 
             return;
