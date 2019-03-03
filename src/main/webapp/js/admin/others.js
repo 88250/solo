@@ -30,6 +30,7 @@ admin.others = {
    */
   init: function () {
     $("#tabOthers").tabs();
+    $('#loadMsg').text('')
   },
   /*
    * @description 移除未使用的标签
