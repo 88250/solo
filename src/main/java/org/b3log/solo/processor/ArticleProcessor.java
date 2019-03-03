@@ -148,7 +148,7 @@ public class ArticleProcessor {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @RequestProcessing(value = "/console/markdown/2html", method = HttpMethod.POST)
     public void markdown2HTML(final RequestContext context) {

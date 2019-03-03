@@ -82,7 +82,7 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void removeLink(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -129,7 +129,7 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void updateLink(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -173,7 +173,7 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void changeOrder(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -223,7 +223,7 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void addLink(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -273,7 +273,7 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getLinks(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -320,7 +320,7 @@ public class LinkConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getLink(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();

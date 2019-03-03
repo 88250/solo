@@ -104,7 +104,7 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void updateUser(final RequestContext context) {
@@ -144,7 +144,7 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void removeUser(final RequestContext context) {
@@ -192,7 +192,7 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void getUsers(final RequestContext context) {
@@ -240,7 +240,7 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void getUser(final RequestContext context) {
@@ -273,7 +273,7 @@ public class UserConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void changeUserRole(final RequestContext context) {

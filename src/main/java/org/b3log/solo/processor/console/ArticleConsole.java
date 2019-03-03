@@ -114,7 +114,7 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getArticleThumbs(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -175,7 +175,7 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -224,7 +224,7 @@ public class ArticleConsole {
      * </pre>, order by article update date and sticky(put top).
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getArticles(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -285,7 +285,7 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void removeArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -329,7 +329,7 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void cancelPublishArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -373,7 +373,7 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void cancelTopArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -414,7 +414,7 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void putTopArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -475,7 +475,7 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void updateArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -540,7 +540,7 @@ public class ArticleConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void addArticle(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();

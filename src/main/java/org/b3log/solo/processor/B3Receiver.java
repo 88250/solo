@@ -133,7 +133,7 @@ public class B3Receiver {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @RequestProcessing(value = "/apis/symphony/article", method = {HttpMethod.POST, HttpMethod.PUT})
     public void postArticle(final RequestContext context) {
@@ -235,7 +235,7 @@ public class B3Receiver {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @RequestProcessing(value = "/apis/symphony/comment", method = HttpMethod.PUT)
     public void addComment(final RequestContext context) {

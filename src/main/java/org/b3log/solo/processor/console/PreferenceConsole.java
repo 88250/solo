@@ -102,7 +102,7 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getReplyNotificationTemplate(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -139,7 +139,7 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void updateReplyNotificationTemplate(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -178,7 +178,7 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getSigns(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -258,7 +258,7 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getPreference(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -336,7 +336,7 @@ public class PreferenceConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void updatePreference(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();

@@ -238,7 +238,7 @@ public class AdminConsole {
     /**
      * Exports data as SQL zip file.
      *
-     * @param context the specified HTTP request context
+     * @param context the specified request context
      */
     public void exportSQL(final RequestContext context) {
         final HttpServletResponse response = context.getResponse();
@@ -351,7 +351,7 @@ public class AdminConsole {
     /**
      * Exports data as JSON zip file.
      *
-     * @param context the specified HTTP request context
+     * @param context the specified request context
      */
     public void exportJSON(final RequestContext context) {
         final HttpServletResponse response = context.getResponse();
@@ -401,7 +401,7 @@ public class AdminConsole {
     /**
      * Exports data as Hexo markdown zip file.
      *
-     * @param context the specified HTTP request context
+     * @param context the specified request context
      */
     public void exportHexo(final RequestContext context) {
         final HttpServletResponse response = context.getResponse();

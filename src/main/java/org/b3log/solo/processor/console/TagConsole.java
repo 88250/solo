@@ -83,7 +83,7 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAuthAdvice.class)
     public void getTags(final RequestContext context) {
@@ -117,7 +117,7 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void getUnusedTags(final RequestContext context) {
@@ -160,7 +160,7 @@ public class TagConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @Before(ConsoleAdminAuthAdvice.class)
     public void removeUnusedTags(final RequestContext context) {

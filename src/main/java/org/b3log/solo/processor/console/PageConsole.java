@@ -109,7 +109,7 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void updatePage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -144,7 +144,7 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void removePage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -196,7 +196,7 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void addPage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -241,7 +241,7 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void changeOrder(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -288,7 +288,7 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getPage(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -338,7 +338,7 @@ public class PageConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getPages(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();

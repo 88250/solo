@@ -49,7 +49,7 @@ public class KanBanNiangProcessor {
     /**
      * Returns a random model.
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     @RequestProcessing(value = "/plugins/kanbanniang/assert/model", method = HttpMethod.GET)
     public void randomModel(final RequestContext context) {

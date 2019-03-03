@@ -81,7 +81,7 @@ public class CommentConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void removePageComment(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -123,7 +123,7 @@ public class CommentConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void removeArticleComment(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -184,7 +184,7 @@ public class CommentConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getComments(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -231,7 +231,7 @@ public class CommentConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getArticleComments(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
@@ -276,7 +276,7 @@ public class CommentConsole {
      * </pre>
      * </p>
      *
-     * @param context the specified http request context
+     * @param context the specified request context
      */
     public void getPageComments(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
