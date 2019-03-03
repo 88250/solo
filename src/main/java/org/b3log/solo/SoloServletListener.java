@@ -34,7 +34,10 @@ import org.b3log.latke.servlet.DispatcherServlet;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.event.*;
+import org.b3log.solo.event.B3ArticleSender;
+import org.b3log.solo.event.B3ArticleUpdater;
+import org.b3log.solo.event.B3CommentSender;
+import org.b3log.solo.event.PluginRefresher;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.InitCheckHandler;
@@ -216,10 +219,6 @@ public final class SoloServletListener extends AbstractServletListener {
 
         try {
             final EventManager eventManager = beanManager.getReference(EventManager.class);
-            final ArticleCommentReplyNotifier articleCommentReplyNotifier = beanManager.getReference(ArticleCommentReplyNotifier.class);
-            eventManager.registerListener(articleCommentReplyNotifier);
-            final PageCommentReplyNotifier pageCommentReplyNotifier = beanManager.getReference(PageCommentReplyNotifier.class);
-            eventManager.registerListener(pageCommentReplyNotifier);
             final PluginRefresher pluginRefresher = beanManager.getReference(PluginRefresher.class);
             eventManager.registerListener(pluginRefresher);
             eventManager.registerListener(new ViewLoadEventHandler());

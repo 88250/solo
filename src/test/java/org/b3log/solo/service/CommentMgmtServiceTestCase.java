@@ -75,7 +75,6 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         final String articleId = articles.get(0).getString(Keys.OBJECT_ID);
         requestJSONObject.put(Keys.OBJECT_ID, articleId);
         requestJSONObject.put(Comment.COMMENT_NAME, "comment name");
-        requestJSONObject.put(Comment.COMMENT_EMAIL, "comment email");
         requestJSONObject.put(Comment.COMMENT_URL, "comment URL");
         requestJSONObject.put(Comment.COMMENT_CONTENT, "comment content");
 
@@ -124,7 +123,6 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         final String pageId = pages.getJSONObject(0).getString(Keys.OBJECT_ID);
         requestJSONObject.put(Keys.OBJECT_ID, pageId);
         requestJSONObject.put(Comment.COMMENT_NAME, "comment name");
-        requestJSONObject.put(Comment.COMMENT_EMAIL, "comment email");
         requestJSONObject.put(Comment.COMMENT_URL, "comment URL");
         requestJSONObject.put(Comment.COMMENT_CONTENT, "comment content");
 

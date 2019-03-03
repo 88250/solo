@@ -89,11 +89,11 @@ public final class UserRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertEquals(users.length(), 1);
         Assert.assertEquals(users.getJSONObject(0).getString(User.USER_EMAIL), "test1@gmail.com");
 
-        final JSONObject notFound = userRepository.getByEmail("not.found@gmail.com");
+        final JSONObject notFound = userRepository.getByUserName("not.found");
         Assert.assertNull(notFound);
 
-        final JSONObject found = userRepository.getByEmail("test1@gmail.com");
+        final JSONObject found = userRepository.getByUserName("test1");
         Assert.assertNotNull(found);
-        Assert.assertEquals(found.getString(User.USER_EMAIL), "test1@gmail.com");
+        Assert.assertEquals(found.getString(User.USER_NAME), "test1");
     }
 }
