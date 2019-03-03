@@ -19,7 +19,6 @@ package org.b3log.solo.util;
 
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
@@ -474,14 +473,12 @@ public final class Solos {
     }
 
     /**
-     * Gets the Gravatar URL for the specified email with the specified size.
+     * Gets the default user avatar URL..
      *
-     * @param email the specified email
-     * @param size  the specified size
-     * @return the Gravatar URL
+     * @return default user avatar URL
      */
-    public static String getGravatarURL(final String email, final String size) {
-        return GRAVATAR + DigestUtils.md5Hex(email) + "?s=" + size;
+    public static String getDefaultAvatar() {
+        return Latkes.getStaticServePath() + "/images/default-user-thumbnail.png";
     }
 
     /**

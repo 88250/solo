@@ -64,9 +64,10 @@ public final class V310_320 {
             Connection connection = Connections.getConnection();
             Statement statement = connection.createStatement();
 
-            // 删除 userEmail 字段，移除邮件相关功能 https://github.com/b3log/solo/issues/12690
+            // 移除邮件相关功能 https://github.com/b3log/solo/issues/12690
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `userEmail`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentEmail`");
             statement.close();
             connection.commit();
             connection.close();

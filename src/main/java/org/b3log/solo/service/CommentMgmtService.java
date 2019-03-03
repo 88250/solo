@@ -17,11 +17,9 @@
  */
 package org.b3log.solo.service;
 
-import jodd.http.HttpRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.ioc.Inject;
@@ -44,41 +42,27 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
-import org.b3log.solo.util.Solos;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import javax.servlet.http.HttpServletResponse;
-import java.net.URL;
 import java.util.Date;
 
 /**
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.5, Feb 21, 2019
+ * @version 1.3.3.6, Mar 3, 2019
  * @since 0.3.5
  */
 @Service
 public class CommentMgmtService {
 
     /**
-     * Comment mail HTML body.
-     */
-    public static final String COMMENT_MAIL_HTML_BODY = "<p>{articleOrPage} [<a href=\"" + "{articleOrPageURL}\">" + "{title}</a>]"
-            + " received a new comment:</p>" + "{commenter}: <span><a href=\"{commentSharpURL}\">" + "{commentContent}</a></span>";
-
-    /**
      * Logger.
      */
     private static final Logger LOGGER = Logger.getLogger(CommentMgmtService.class);
-
-    /**
-     * Default user thumbnail.
-     */
-    private static final String DEFAULT_USER_THUMBNAIL = "default-user-thumbnail.png";
 
     /**
      * Minimum length of comment name.
@@ -158,98 +142,6 @@ public class CommentMgmtService {
      * Mail service.
      */
     private MailService mailService = MailServiceFactory.getMailService();
-
-    /**
-     * Sends a notification mail to administrator for notifying the specified article or page received the specified
-     * comment and original comment.
-     *
-     * @param articleOrPage   the specified article or page
-     * @param comment         the specified comment
-     * @param originalComment original comment, if not exists, set it as {@code null}
-     * @param preference      the specified preference
-     * @throws Exception exception
-     */
-    public void sendNotificationMail(final JSONObject articleOrPage,
-                                     final JSONObject comment,
-                                     final JSONObject originalComment,
-                                     final JSONObject preference) throws Exception {
-        if (!Solos.isMailConfigured()) {
-            return;
-        }
-
-        final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
-        final String commentId = comment.getString(Keys.OBJECT_ID);
-        final String commentContent = comment.getString(Comment.COMMENT_CONTENT);
-
-        final String adminEmail = preference.getString(Option.ID_C_ADMIN_EMAIL);
-
-        if (adminEmail.equalsIgnoreCase(commentEmail)) {
-            LOGGER.log(Level.DEBUG, "Do not send comment notification mail to admin itself[{0}]", adminEmail);
-
-            return;
-        }
-
-        if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServePath())) {
-            LOGGER.log(Level.INFO, "Solo runs on local server, so should not send mail");
-
-            return;
-        }
-
-        if (null != originalComment && comment.has(Comment.COMMENT_ORIGINAL_COMMENT_ID)) {
-            final String originalEmail = originalComment.getString(Comment.COMMENT_EMAIL);
-            if (originalEmail.equalsIgnoreCase(adminEmail)) {
-                LOGGER.log(Level.DEBUG, "Do not send comment notification mail to admin while the specified comment[{0}] is an reply",
-                        commentId);
-                return;
-            }
-        }
-
-        final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
-        boolean isArticle = true;
-        String title = articleOrPage.optString(Article.ARTICLE_TITLE);
-        if (StringUtils.isBlank(title)) {
-            title = articleOrPage.getString(Page.PAGE_TITLE);
-            isArticle = false;
-        }
-
-        final String commentSharpURL = comment.getString(Comment.COMMENT_SHARP_URL);
-        final MailService.Message message = new MailService.Message();
-        message.setFrom(adminEmail);
-        message.addRecipient(adminEmail);
-        String mailSubject;
-        String articleOrPageURL;
-        String mailBody;
-
-        if (isArticle) {
-            mailSubject = blogTitle + ": New comment on article [" + title + "]";
-            articleOrPageURL = Latkes.getServePath() + articleOrPage.getString(Article.ARTICLE_PERMALINK);
-            mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Article");
-        } else {
-            mailSubject = blogTitle + ": New comment on page [" + title + "]";
-            articleOrPageURL = Latkes.getServePath() + articleOrPage.getString(Page.PAGE_PERMALINK);
-            mailBody = COMMENT_MAIL_HTML_BODY.replace("{articleOrPage}", "Page");
-        }
-
-        message.setSubject(mailSubject);
-        final String commentName = comment.getString(Comment.COMMENT_NAME);
-        final String commentURL = comment.getString(Comment.COMMENT_URL);
-        String commenter;
-
-        if (!"http://".equals(commentURL)) {
-            commenter = "<a target=\"_blank\" " + "href=\"" + commentURL + "\">" + commentName + "</a>";
-        } else {
-            commenter = commentName;
-        }
-
-        mailBody = mailBody.replace("{articleOrPageURL}", articleOrPageURL).replace("{title}", title).replace("{commentContent}", commentContent).replace("{commentSharpURL}", Latkes.getServePath() + commentSharpURL).replace(
-                "{commenter}", commenter);
-        message.setHtmlBody(mailBody);
-
-        LOGGER.log(Level.DEBUG, "Sending a mail[mailSubject={0}, mailBody=[{1}] to admin[email={2}]",
-                mailSubject, mailBody, adminEmail);
-
-        mailService.send(message);
-    }
 
     /**
      * Checks the specified comment adding request.
@@ -356,7 +248,6 @@ public class CommentMgmtService {
      *                          {
      *                          "oId": "", // page id
      *                          "commentName": "",
-     *                          "commentEmail": "",
      *                          "commentURL": "", // optional
      *                          "commentContent": "",
      *                          "commentOriginalCommentId": "" // optional
@@ -391,7 +282,6 @@ public class CommentMgmtService {
             final JSONObject page = pageRepository.get(pageId);
             ret.put(Page.PAGE, page);
             final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
-            final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
             final String commentContent = requestJSONObject.getString(Comment.COMMENT_CONTENT);
 
@@ -406,7 +296,6 @@ public class CommentMgmtService {
             JSONObject originalComment = null;
 
             comment.put(Comment.COMMENT_NAME, commentName);
-            comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             final JSONObject preference = preferenceQueryService.getPreference();
@@ -450,11 +339,6 @@ public class CommentMgmtService {
             comment.put(Keys.OBJECT_ID, commentId);
             commentRepository.add(comment);
             incPageCommentCount(pageId);
-            try {
-                sendNotificationMail(page, comment, originalComment, preference);
-            } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Send mail failed", e);
-            }
 
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
@@ -480,7 +364,6 @@ public class CommentMgmtService {
      *                          {
      *                          "oId": "", // article id
      *                          "commentName": "",
-     *                          "commentEmail": "",
      *                          "commentURL": "", // optional
      *                          "commentContent": "",
      *                          "commentOriginalCommentId": "" // optional
@@ -515,7 +398,6 @@ public class CommentMgmtService {
             final JSONObject article = articleRepository.get(articleId);
             ret.put(Article.ARTICLE, article);
             final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
-            final String commentEmail = requestJSONObject.getString(Comment.COMMENT_EMAIL).trim().toLowerCase();
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
             final String commentContent = requestJSONObject.getString(Comment.COMMENT_CONTENT);
 
@@ -530,7 +412,6 @@ public class CommentMgmtService {
             JSONObject originalComment = null;
 
             comment.put(Comment.COMMENT_NAME, commentName);
-            comment.put(Comment.COMMENT_EMAIL, commentEmail);
             comment.put(Comment.COMMENT_URL, commentURL);
             comment.put(Comment.COMMENT_CONTENT, commentContent);
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID));
@@ -582,12 +463,6 @@ public class CommentMgmtService {
             commentRepository.add(comment);
             articleMgmtService.incArticleCommentCount(articleId);
 
-            try {
-                sendNotificationMail(article, comment, originalComment, preference);
-            } catch (final Exception e) {
-                LOGGER.log(Level.WARN, "Send mail failed", e);
-            }
-
             final JSONObject eventData = new JSONObject();
             eventData.put(Comment.COMMENT, comment);
             eventData.put(Article.ARTICLE, article);
@@ -637,8 +512,7 @@ public class CommentMgmtService {
      * @param commentId the given comment id
      * @throws ServiceException service exception
      */
-    public void removeArticleComment(final String commentId)
-            throws ServiceException {
+    public void removeArticleComment(final String commentId) throws ServiceException {
         final Transaction transaction = commentRepository.beginTransaction();
 
         try {
@@ -665,8 +539,7 @@ public class CommentMgmtService {
      * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
-    public void incPageCommentCount(final String pageId)
-            throws JSONException, RepositoryException {
+    public void incPageCommentCount(final String pageId) throws JSONException, RepositoryException {
         final JSONObject page = pageRepository.get(pageId);
         final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
         final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
@@ -682,8 +555,7 @@ public class CommentMgmtService {
      * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
-    private void decArticleCommentCount(final String articleId)
-            throws JSONException, RepositoryException {
+    private void decArticleCommentCount(final String articleId) throws JSONException, RepositoryException {
         final JSONObject article = articleRepository.get(articleId);
         final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
@@ -700,8 +572,7 @@ public class CommentMgmtService {
      * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
-    private void decPageCommentCount(final String pageId)
-            throws JSONException, RepositoryException {
+    private void decPageCommentCount(final String pageId) throws JSONException, RepositoryException {
         final JSONObject page = pageRepository.get(pageId);
         final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
         final int commentCnt = page.getInt(Page.PAGE_COMMENT_COUNT);
@@ -712,46 +583,14 @@ public class CommentMgmtService {
 
     /**
      * Sets commenter thumbnail URL for the specified comment.
-     * <p>
-     * Try to set thumbnail URL using:
-     * <ol>
-     * <li>User avatar</li>
-     * <li>Gravatar service</li>
-     * <ol>
-     * </p>
      *
      * @param comment the specified comment
      * @throws Exception exception
      */
     public void setCommentThumbnailURL(final JSONObject comment) throws Exception {
-        final String commentEmail = comment.getString(Comment.COMMENT_EMAIL);
-
-        // 1. user avatar
-        final JSONObject user = userRepository.getByEmail(commentEmail);
-        if (null != user) {
-            final String avatar = user.optString(UserExt.USER_AVATAR);
-            if (StringUtils.isNotBlank(avatar)) {
-                comment.put(Comment.COMMENT_THUMBNAIL_URL, avatar);
-
-                return;
-            }
-        }
-
-        // 2. Gravatar
-        String thumbnailURL = Solos.getGravatarURL(commentEmail.toLowerCase(), "128");
-        final URL gravatarURL = new URL(thumbnailURL);
-
-        int statusCode = HttpServletResponse.SC_OK;
-        try {
-            statusCode = HttpRequest.get(thumbnailURL).header("User-Agent", Solos.USER_AGENT).send().statusCode();
-        } catch (final Exception e) {
-            LOGGER.log(Level.DEBUG, "Can not fetch thumbnail from Gravatar [commentEmail={0}]", commentEmail);
-        } finally {
-            if (HttpServletResponse.SC_OK != statusCode) {
-                thumbnailURL = Latkes.getStaticServePath() + "/images/" + DEFAULT_USER_THUMBNAIL;
-            }
-        }
-
-        comment.put(Comment.COMMENT_THUMBNAIL_URL, thumbnailURL);
+        final String commenterName = comment.optString(Comment.COMMENT_NAME);
+        final JSONObject commenter = userRepository.getByUserName(commenterName);
+        final String avatarURL = commenter.optString(UserExt.USER_AVATAR);
+        comment.put(Comment.COMMENT_THUMBNAIL_URL, avatarURL);
     }
 }
