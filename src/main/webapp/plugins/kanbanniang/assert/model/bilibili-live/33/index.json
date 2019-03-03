@@ -1,5 +1,5 @@
 {
-  "model": "model/bilibili-live/22/model.moc",
+  "model": "model/bilibili-live/33/model.moc",
   "textures": [],
   "layout": {
     "center_x": 0,
@@ -52,16 +52,9 @@
     ],
     "tap_body": [
       {
-        "file": "model/bilibili-live/33/motions/touch.mtn",
+        "file": "model/bilibili-live/33/motions/thanking.mtn",
         "fade_in": 150,
         "fade_out": 100
-      }
-    ],
-    "thanking": [
-      {
-        "file": "model/bilibili-live/33/motions/thanking.mtn",
-        "fade_in": 2000,
-        "fade_out": 2000
       }
     ]
   }

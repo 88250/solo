@@ -1,11 +1,6 @@
 {
-  "model": "model/bilibili-live/22/model.moc",
-  "textures": [
-    "model/bilibili-live/22/texture_00/closet-default-v2.png",
-    "model/bilibili-live/22/texture_01/cba-normal-upper.png",
-    "model/bilibili-live/22/texture_02/cba-normal-lower.png",
-    "model/bilibili-live/22/texture_03/cba-hat.png"
-  ],
+  "model": "model/bilibili-live/33/model.moc",
+  "textures": [],
   "layout": {
     "center_x": 0,
     "center_y": 0.1,
@@ -33,37 +28,33 @@
   "motions": {
     "idle": [
       {
-        "file": "model/bilibili-live/22/motions/idle-01.mtn",
+        "file": "model/bilibili-live/33/motions/idle-01.mtn",
+        "fade_in": 2000,
+        "fade_out": 2000
+      },
+      {
+        "file": "model/bilibili-live/33/motions/idle-02.mtn",
+        "fade_in": 2000,
+        "fade_out": 2000
+      },
+      {
+        "file": "model/bilibili-live/33/motions/idle-03.mtn",
         "fade_in": 2000,
         "fade_out": 2000
       }
     ],
-    "sleepy": [
-      {
-        "file": "model/bilibili-live/22/motions/idle-03.mtn",
-        "fade_in": 100,
-        "fade_out": 100
-      }
-    ],
-    "pinch_out": [
-      {
-        "file": "model/bilibili-live/22/motions/idle-02.mtn",
-        "fade_in": 100,
-        "fade_out": 100
-      }
-    ],
     "flick_head": [
       {
-        "file": "model/bilibili-live/22/motions/touch.mtn",
-        "fade_in": 500,
-        "fade_out": 200
+        "file": "model/bilibili-live/33/motions/touch.mtn",
+        "fade_in": 150,
+        "fade_out": 100
       }
     ],
     "tap_body": [
       {
-        "file": "model/bilibili-live/22/motions/thanking.mtn",
-        "fade_in": 500,
-        "fade_out": 200
+        "file": "model/bilibili-live/33/motions/thanking.mtn",
+        "fade_in": 150,
+        "fade_out": 100
       }
     ]
   }
