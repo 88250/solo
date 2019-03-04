@@ -58,7 +58,7 @@ public class KanBanNiangProcessor {
         try {
             final int i = RandomUtils.nextInt(MODEL_NAMES.length);
             final String name = MODEL_NAMES[i];
-            final InputStream modelResource = SoloServletListener.getServletContext().getResourceAsStream("/plugins/kanbanniang/assert/model.json");
+            final InputStream modelResource = SoloServletListener.getServletContext().getResourceAsStream("/plugins/kanbanniang/assert/model/bilibili-live/22/index.json");
             String s = IOUtils.toString(modelResource, "UTF-8");
             s = s.replace("${name}", name);
             final JSONObject model = new JSONObject(s);

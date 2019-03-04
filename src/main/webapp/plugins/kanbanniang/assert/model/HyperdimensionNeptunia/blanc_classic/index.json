@@ -7,6 +7,7 @@
     "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/blanc_classic/textures.1024/03.png"
   ],
   "physics": "model/HyperdimensionNeptunia/blanc_classic/physics.json",
+  "pose": "model/HyperdimensionNeptunia/general/pose.json",
   "layout": {
     "center_x": 0,
     "center_y": -0.6,

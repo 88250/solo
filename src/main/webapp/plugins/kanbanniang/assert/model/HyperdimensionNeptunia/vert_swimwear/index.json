@@ -1,12 +1,13 @@
 {
   "model": "model/HyperdimensionNeptunia/vert_swimwear/model.moc",
   "textures": [
-    "model/HyperdimensionNeptunia/vert_classic/textures.1024/00.png",
-    "model/HyperdimensionNeptunia/vert_classic/textures.1024/01.png",
-    "model/HyperdimensionNeptunia/vert_swimwear/textures.1024/02.png",
-    "model/HyperdimensionNeptunia/vert_swimwear/textures.1024/03.png"
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/vert_classic/textures.1024/00.png",
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/vert_classic/textures.1024/01.png",
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/vert_swimwear/textures.1024/02.png",
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/vert_swimwear/textures.1024/03.png"
   ],
   "physics": "model/HyperdimensionNeptunia/vert_classic/physics.json",
+  "pose": "model/HyperdimensionNeptunia/general/pose.json",
   "layout": {
     "center_x": 0,
     "center_y": -0.7,

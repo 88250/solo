@@ -1,11 +1,12 @@
 {
   "model": "model/HyperdimensionNeptunia/noir/model.moc",
   "textures": [
-    "model/HyperdimensionNeptunia/noir/textures.1024/00.png",
-    "model/HyperdimensionNeptunia/noir/textures.1024/01.png",
-    "model/HyperdimensionNeptunia/noir/textures.1024/02.png"
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/noir/textures.1024/00.png",
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/noir/textures.1024/01.png",
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/noir/textures.1024/02.png"
   ],
   "physics": "model/HyperdimensionNeptunia/noir/physics.json",
+  "pose": "model/HyperdimensionNeptunia/general/pose.json",
   "layout": {
     "center_x": 0,
     "center_y": -0.8,

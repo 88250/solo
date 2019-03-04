@@ -1,11 +1,38 @@
 {
   "model": "model/HyperdimensionNeptunia/nepmaid/model.moc",
   "textures": [
-    "model/HyperdimensionNeptunia/nepmaid/textures.1024/00.png",
-    "model/HyperdimensionNeptunia/nepmaid/textures.1024/01.png",
-    "model/HyperdimensionNeptunia/nepmaid/textures.1024/02.png"
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/nepmaid/textures.1024/00.png",
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/nepmaid/textures.1024/01.png",
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/nepmaid/textures.1024/02.png"
   ],
   "physics": "model/HyperdimensionNeptunia/nepmaid/physics.json",
+  "pose": "model/HyperdimensionNeptunia/general/pose.json",
+  "expressions": [
+    {
+      "name": "normal",
+      "file": "model/HyperdimensionNeptunia/nepnep/general/exp/normal.json"
+    },
+    {
+      "name": "happy",
+      "file": "model/HyperdimensionNeptunia/nepnep/general/exp/happy.json"
+    },
+    {
+      "name": "unhappy",
+      "file": "model/HyperdimensionNeptunia/nepnep/general/exp/unhappy.json"
+    },
+    {
+      "name": "kira",
+      "file": "model/HyperdimensionNeptunia/nepnep/general/exp/kira.json"
+    },
+    {
+      "name": "deformed",
+      "file": "model/HyperdimensionNeptunia/nepnep/general/exp/deformed.json"
+    },
+    {
+      "name": "enjoy",
+      "file": "model/HyperdimensionNeptunia/nepnep/general/exp/enjoy.json"
+    }
+  ],
   "layout": {
     "center_x": 0,
     "center_y": -0.5,
