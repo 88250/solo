@@ -106,6 +106,7 @@
     <include path="/plugins/**/*.json"/>
     <include path="/plugins/**/*.moc"/>
     <include path="/plugins/**/*.mtn"/>
+    <include path="/plugins/**/*.ogg"/>
 
     <include path="/CHANGE_LOGS.html"/>
     <include path="/LICENSE.txt"/>

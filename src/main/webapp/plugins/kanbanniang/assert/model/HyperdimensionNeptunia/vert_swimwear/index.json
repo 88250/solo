@@ -3,7 +3,8 @@
   "textures": [
     "model/HyperdimensionNeptunia/vert_classic/textures.1024/00.png",
     "model/HyperdimensionNeptunia/vert_classic/textures.1024/01.png",
-    "model/HyperdimensionNeptunia/vert_swimwear/textures.1024/02.png"
+    "model/HyperdimensionNeptunia/vert_swimwear/textures.1024/02.png",
+    "model/HyperdimensionNeptunia/vert_swimwear/textures.1024/03.png"
   ],
   "physics": "model/HyperdimensionNeptunia/vert_classic/physics.json",
   "layout": {
