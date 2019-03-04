@@ -94,7 +94,7 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void updatePreference() throws Exception {
-        final JSONObject p = getPreferenceQueryService().getPreference();
+        final JSONObject p = getOptionQueryService().getPreference();
 
         final MockHttpServletRequest request = mockRequest();
         request.setRequestURI("/console/preference/");

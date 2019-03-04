@@ -71,10 +71,10 @@ public class TagProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * Preference query service.
+     * Option query service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * Article query service.
@@ -126,7 +126,7 @@ public class TagProcessor {
             final JSONObject tag = result.getJSONObject(Tag.TAG);
             final String tagId = tag.getString(Keys.OBJECT_ID);
 
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);

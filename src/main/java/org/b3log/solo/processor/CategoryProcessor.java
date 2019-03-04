@@ -73,10 +73,10 @@ public class CategoryProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * Preference query service.
+     * Option query service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * Article query service.
@@ -129,7 +129,7 @@ public class CategoryProcessor {
 
             dataModel.put(Category.CATEGORY, category);
 
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
             final String categoryId = category.optString(Keys.OBJECT_ID);
 

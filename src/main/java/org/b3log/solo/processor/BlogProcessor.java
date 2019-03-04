@@ -70,12 +70,6 @@ public class BlogProcessor {
     private UserQueryService userQueryService;
 
     /**
-     * Preference query service.
-     */
-    @Inject
-    private PreferenceQueryService preferenceQueryService;
-
-    /**
      * Option query service.
      */
     @Inject

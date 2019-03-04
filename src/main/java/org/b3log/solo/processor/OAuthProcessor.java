@@ -94,12 +94,6 @@ public class OAuthProcessor {
     private UserMgmtService userMgmtService;
 
     /**
-     * Preference query service.
-     */
-    @Inject
-    private PreferenceQueryService preferenceQueryService;
-
-    /**
      * Initialization service.
      */
     @Inject

@@ -31,7 +31,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.*;
 import org.b3log.solo.service.CommentMgmtService;
-import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
 import org.b3log.solo.util.Emotions;
@@ -84,10 +84,10 @@ public class CommentProcessor {
     private UserMgmtService userMgmtService;
 
     /**
-     * Preference query service.
+     * Option query service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * Adds a comment to a page.
@@ -160,7 +160,7 @@ public class CommentProcessor {
             try {
                 final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
                 final Template template = Skins.getSkinTemplate(context, "common-comment.ftl");
-                final JSONObject preference = preferenceQueryService.getPreference();
+                final JSONObject preference = optionQueryService.getPreference();
                 Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
                 Keys.fillServer(dataModel);
                 final StringWriter stringWriter = new StringWriter();
@@ -256,7 +256,7 @@ public class CommentProcessor {
             try {
                 final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
                 final Template template = Skins.getSkinTemplate(context, "common-comment.ftl");
-                final JSONObject preference = preferenceQueryService.getPreference();
+                final JSONObject preference = optionQueryService.getPreference();
                 Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
                 Keys.fillServer(dataModel);
                 final StringWriter stringWriter = new StringWriter();

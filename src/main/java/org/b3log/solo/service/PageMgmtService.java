@@ -88,12 +88,6 @@ public class PageMgmtService {
     private PermalinkQueryService permalinkQueryService;
 
     /**
-     * Preference query service.
-     */
-    @Inject
-    private PreferenceQueryService preferenceQueryService;
-
-    /**
      * Statistic management service.
      */
     @Inject

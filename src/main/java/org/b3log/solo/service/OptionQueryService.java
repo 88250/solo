@@ -48,6 +48,21 @@ public class OptionQueryService {
     private OptionRepository optionRepository;
 
     /**
+     * Gets the user preference.
+     *
+     * @return user preference, returns {@code null} if not found
+     */
+    public JSONObject getPreference() {
+        try {
+            return getOptions(Option.CATEGORY_C_PREFERENCE);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets preference failed", e);
+
+            return null;
+        }
+    }
+
+    /**
      * Checks whether allow register.
      *
      * @return {@code true} to allow register, returns {@code false} otherwise

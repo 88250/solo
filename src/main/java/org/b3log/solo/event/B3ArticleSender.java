@@ -36,7 +36,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.ArticleQueryService;
-import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
@@ -102,9 +102,9 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             }
 
             final BeanManager beanManager = BeanManager.getInstance();
-            final PreferenceQueryService preferenceQueryService = beanManager.getReference(PreferenceQueryService.class);
+            final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
             final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
 
             final JSONObject article = new JSONObject().
                     put("id", originalArticle.getString(Keys.OBJECT_ID)).

@@ -37,7 +37,7 @@ import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.DataModelService;
-import org.b3log.solo.service.PreferenceQueryService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.UserQueryService;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -79,10 +79,10 @@ public class SearchProcessor {
     private UserQueryService userQueryService;
 
     /**
-     * Preference query service.
+     * Option query service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * Language service.
@@ -109,7 +109,7 @@ public class SearchProcessor {
         try {
             final InputStream resourceAsStream = SearchProcessor.class.getResourceAsStream("/opensearch.xml");
             String content = IOUtils.toString(resourceAsStream, "UTF-8");
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
             content = StringUtils.replace(content, "${blogTitle}", Jsoup.clean(preference.optString(Option.ID_C_BLOG_TITLE), Whitelist.none()));
             content = StringUtils.replace(content, "${blogSubtitle}", Jsoup.clean(preference.optString(Option.ID_C_BLOG_SUBTITLE), Whitelist.none()));
             content = StringUtils.replace(content, "${servePath}", Latkes.getServePath());
@@ -145,7 +145,7 @@ public class SearchProcessor {
         final List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
 
         try {
-            final JSONObject preference = preferenceQueryService.getPreference();
+            final JSONObject preference = optionQueryService.getPreference();
 
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.setArticlesExProperties(context, articles, preference);

@@ -57,10 +57,10 @@ public class PreferenceMgmtService {
     private static final Logger LOGGER = Logger.getLogger(PreferenceMgmtService.class);
 
     /**
-     * Preference query service.
+     * Option query service.
      */
     @Inject
-    private PreferenceQueryService preferenceQueryService;
+    private OptionQueryService optionQueryService;
 
     /**
      * Option repository.
@@ -179,7 +179,7 @@ public class PreferenceMgmtService {
 
             preference.put(Option.ID_C_SIGNS, preference.get(Option.ID_C_SIGNS).toString());
 
-            final JSONObject oldPreference = preferenceQueryService.getPreference();
+            final JSONObject oldPreference = optionQueryService.getPreference();
 
             final String version = oldPreference.optString(Option.ID_C_VERSION);
             preference.put(Option.ID_C_VERSION, version);

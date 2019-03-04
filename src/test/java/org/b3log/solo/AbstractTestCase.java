@@ -415,15 +415,6 @@ public abstract class AbstractTestCase {
     }
 
     /**
-     * Gets preference query service.
-     *
-     * @return preference query service
-     */
-    public PreferenceQueryService getPreferenceQueryService() {
-        return beanManager.getReference(PreferenceQueryService.class);
-    }
-
-    /**
      * Gets tag query service.
      *
      * @return tag query service
