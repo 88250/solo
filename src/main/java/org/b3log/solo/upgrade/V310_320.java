@@ -17,12 +17,17 @@
  */
 package org.b3log.solo.upgrade;
 
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.FilterOperator;
+import org.b3log.latke.repository.PropertyFilter;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.Connections;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.OptionRepository;
@@ -30,6 +35,7 @@ import org.json.JSONObject;
 
 import java.sql.Connection;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * Upgrade script from v3.1.0 to v3.2.0.
@@ -61,28 +67,45 @@ public final class V310_320 {
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
 
         try {
+            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+
             Connection connection = Connections.getConnection();
             Statement statement = connection.createStatement();
-
-            // 移除邮件相关功能 https://github.com/b3log/solo/issues/12690
-            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `userEmail`");
-            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentEmail`");
+            // 重构文章草稿、发布状态 https://github.com/b3log/solo/issues/12669
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` ADD COLUMN `articleStatus` INT DEFAULT 0 NOT NULL");
             statement.close();
             connection.commit();
             connection.close();
+
+            final Transaction transaction = optionRepository.beginTransaction();
 
             optionRepository.remove("adminEmail");
             optionRepository.remove("replyNotiTplBody");
             optionRepository.remove("replyNotiTplSubject");
 
-            final Transaction transaction = optionRepository.beginTransaction();
+            final List<JSONObject> drafts = articleRepository.getList(new Query().setFilter(new PropertyFilter("articleIsPublished", FilterOperator.EQUAL, false)));
+            for (final JSONObject draft : drafts) {
+                draft.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_DRAFT);
+                articleRepository.update(draft.optString(Keys.OBJECT_ID), draft);
+            }
+
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, toVer);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
-
             transaction.commit();
+
+            connection = Connections.getConnection();
+            statement = connection.createStatement();
+            // 移除邮件相关功能 https://github.com/b3log/solo/issues/12690
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "user` DROP COLUMN `userEmail`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentEmail`");
+            // 重构文章草稿、发布状态 https://github.com/b3log/solo/issues/12669
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleIsPublished`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "article` DROP COLUMN `articleHadBeenPublished`");
+            statement.close();
+            connection.commit();
+            connection.close();
 
             LOGGER.log(Level.INFO, "Upgraded from version [" + fromVer + "] to version [" + toVer + "] successfully");
         } catch (final Exception e) {
