@@ -53,7 +53,7 @@ public class KanBanNiangProcessor {
      *
      * @param context the specified request context
      */
-    @RequestProcessing(value = "/plugins/kanbanniang/assert/model", method = HttpMethod.GET)
+    @RequestProcessing(value = "/plugins/kanbanniang/assets/model", method = HttpMethod.GET)
     public void randomModel(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
