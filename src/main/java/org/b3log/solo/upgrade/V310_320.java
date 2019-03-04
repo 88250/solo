@@ -60,7 +60,7 @@ public final class V310_320 {
         final String fromVer = "3.1.0";
         final String toVer = "3.2.0";
 
-        LOGGER.log(Level.INFO, "Upgrading from version [" + fromVer + "] to version [" + fromVer + "]....");
+        LOGGER.log(Level.INFO, "Upgrading from version [" + fromVer + "] to version [" + toVer + "]....");
 
         final BeanManager beanManager = BeanManager.getInstance();
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);

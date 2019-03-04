@@ -108,7 +108,8 @@ public final class V300_310 {
 
             transaction.commit();
 
-            LOGGER.log(Level.INFO, "Upgraded from version [3.0.0] to version [3.1.0] successfully");
+            LOGGER.log(Level.INFO, "Upgraded from version [3.0.0] to version [3.1.0] successfully, please restart Solo");
+            System.exit(0);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Upgrade failed!", e);
 
