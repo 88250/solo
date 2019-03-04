@@ -2,7 +2,7 @@
   "model": "model/HyperdimensionNeptunia/neptune_santa/model.moc",
   "textures": [
     "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/nepmaid/textures.1024/00.png",
-    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/nepmaid/textures.1024/01.png",
+    "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/neptune_classic/textures.1024/01.png",
     "https://cdn.jsdelivr.net/npm/kanbanniang/model/HyperdimensionNeptunia/neptune_santa/textures.1024/02.png"
   ],
   "physics": "model/HyperdimensionNeptunia/nepmaid/physics.json",
