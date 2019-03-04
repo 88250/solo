@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.3, Feb 15, 2019
+ * @version 1.6.0.4, Mar 4, 2019
  */
 admin.article = {
   // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -28,7 +28,6 @@ admin.article = {
   status: {
     id: undefined,
     isArticle: undefined,
-    articleHadBeenPublished: undefined,
   },
   content: '',
   // 自动保存草稿定时器
@@ -65,7 +64,6 @@ admin.article = {
 
         // set default value for article.
         $('#title').val(result.article.articleTitle)
-        admin.article.status.articleHadBeenPublished = result.article.articleHadBeenPublished
         admin.editors.articleEditor.setContent(result.article.articleContent)
         admin.editors.abstractEditor.setContent(result.article.articleAbstract)
         admin.article.content = admin.editors.articleEditor.getContent()
@@ -134,10 +132,10 @@ admin.article = {
   },
   /**
    * @@description 添加文章
-   * @param {Boolean} articleIsPublished 文章是否发布过
+   * @param {Boolean} articleStatus 0：已发布，1：草稿
    * @param {Boolean} isAuto 是否为自动保存
    */
-  add: function (articleIsPublished, isAuto) {
+  add: function (articleStatus, isAuto) {
     if (admin.article.validate()) {
       var that = this
       that._addDisabled()
@@ -156,7 +154,9 @@ admin.article = {
 
       if ($('#articleThumbnail').prop('checked')) {
         var bgImage = $('.thumbnail__img').css('background-image')
-        articleContent = '![](' + bgImage.substring(5, bgImage.length - 2).replace('w/768', 'w/960').replace('h/432', 'h/540') +
+        articleContent = '![](' + bgImage.substring(5, bgImage.length - 2).
+            replace('w/768', 'w/960').
+            replace('h/432', 'h/540') +
           ')\n\n' + articleContent
       }
 
@@ -167,7 +167,7 @@ admin.article = {
           'articleAbstract': articleAbstract,
           'articleTags': this.trimUniqueArray($('#tag').val()).toString(),
           'articlePermalink': $('#permalink').val(),
-          'articleIsPublished': articleIsPublished,
+          'articleStatus': articleStatus,
           'articleSignId': signId,
           'postToCommunity': $('#postToCommunity').prop('checked'),
           'articleCommentable': $('#articleCommentable').prop('checked'),
@@ -192,7 +192,7 @@ admin.article = {
             return
           }
 
-          if (articleIsPublished) {
+          if (articleStatus === 0) {
             admin.article.status.id = undefined
             admin.selectTab('article/article-list')
           } else {
@@ -201,23 +201,19 @@ admin.article = {
 
           admin.article.isConfirm = false
         },
-        complete: function (jqXHR, textStatus) {
+        complete: function () {
           that._removeDisabled()
           $('#loadMsg').text('')
-          if (jqXHR.status === 403) {
-            $.get('/admin-index.do')
-            that.add(articleIsPublished)
-          }
         },
       })
     }
   },
   /**
    * @description 更新文章
-   * @param {Boolean} articleIsPublished 文章是否发布过
+   * @param {Boolean} articleStatus 0：已发布，1：草稿
    * @param {Boolean} isAuto 是否为自动保存
    */
-  update: function (articleIsPublished, isAuto) {
+  update: function (articleStatus, isAuto) {
     if (admin.article.validate()) {
       var that = this
       that._addDisabled()
@@ -235,7 +231,9 @@ admin.article = {
         articleAbstract = admin.editors.abstractEditor.getContent()
       if ($('#articleThumbnail').prop('checked')) {
         var bgImage = $('.thumbnail__img').css('background-image')
-        articleContent = '![](' + bgImage.substring(5, bgImage.length - 2).replace('w/768', 'w/960').replace('h/432', 'h/540') +
+        articleContent = '![](' + bgImage.substring(5, bgImage.length - 2).
+            replace('w/768', 'w/960').
+            replace('h/432', 'h/540') +
           ') \n\n' + articleContent
       }
       var requestJSONObject = {
@@ -246,7 +244,7 @@ admin.article = {
           'articleAbstract': articleAbstract,
           'articleTags': this.trimUniqueArray($('#tag').val()).toString(),
           'articlePermalink': $('#permalink').val(),
-          'articleIsPublished': articleIsPublished,
+          'articleStatus': articleStatus,
           'articleSignId': signId,
           'articleCommentable': $('#articleCommentable').prop('checked'),
           'articleViewPwd': $('#viewPwd').val(),
@@ -270,7 +268,7 @@ admin.article = {
             return
           }
 
-          if (articleIsPublished) {
+          if (articleStatus === 0) {
             admin.selectTab('article/article-list')
           } else {
             admin.selectTab('article/draft-list')
@@ -284,10 +282,6 @@ admin.article = {
         complete: function (jqXHR, textStatus) {
           that._removeDisabled()
           $('#loadMsg').text('')
-          if (jqXHR.status === 403) {
-            $.get('/admin-index.do')
-            that.update(articleIsPublished)
-          }
         },
       })
     }
@@ -348,7 +342,6 @@ admin.article = {
     this.status = {
       id: undefined,
       isArticle: undefined,
-      articleHadBeenPublished: undefined,
     }
     this.setStatus()
 
@@ -422,17 +415,17 @@ admin.article = {
     // submit action
     $('#submitArticle').click(function () {
       if (admin.article.status.id) {
-        admin.article.update(true)
+        admin.article.update(0)
       } else {
-        admin.article.add(true)
+        admin.article.add(0)
       }
     })
 
     $('#saveArticle').click(function () {
       if (admin.article.status.id) {
-        admin.article.update(admin.article.status.isArticle)
+        admin.article.update(admin.article.status.isArticle ? 0 : 1)
       } else {
-        admin.article.add(false)
+        admin.article.add(1)
       }
     })
 
@@ -442,14 +435,14 @@ admin.article = {
       height: 500,
       fun: fun,
       previewShow: true,
-      resize: false
+      resize: false,
     })
 
     admin.editors.abstractEditor = new SoloEditor({
       id: 'abstract',
       height: 200,
       previewShow: false,
-      resize: true
+      resize: true,
     })
 
     admin.article.clearDraftTimer()
@@ -486,10 +479,10 @@ admin.article = {
     }
     if (admin.article.status.id) {
       if (!admin.article.status.isArticle) {
-        admin.article.update(false, true)
+        admin.article.update(1, true)
       }
     } else {
-      admin.article.add(false, true)
+      admin.article.add(1, true)
       admin.article.status.isArticle = false
     }
   },
@@ -548,10 +541,6 @@ admin.article = {
       complete: function (jqXHR, textStatus) {
         that._removeDisabled()
         $('#loadMsg').text('')
-        if (jqXHR.status === 403) {
-          $.get('/admin-index.do')
-          that.unPublish()
-        }
       },
     })
   },
