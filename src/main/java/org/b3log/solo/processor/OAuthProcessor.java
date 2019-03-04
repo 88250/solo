@@ -28,6 +28,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
+import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
@@ -53,7 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Mar 2, 2019
+ * @version 1.0.0.7, Mar 4, 2019
  * @since 2.9.5
  */
 @RequestProcessor
@@ -98,6 +99,12 @@ public class OAuthProcessor {
      */
     @Inject
     private InitService initService;
+
+    /**
+     * Language service.
+     */
+    @Inject
+    private LangPropsService langPropsService;
 
     /**
      * Redirects to auth page.
@@ -184,6 +191,7 @@ public class OAuthProcessor {
                 user = userQueryService.getUserByName(userName);
                 if (null == user) {
                     if (!optionQueryService.allowRegister()) {
+                        context.attr(Keys.MSG, langPropsService.get("notAllowRegisterLabel"));
                         context.sendError(HttpServletResponse.SC_FORBIDDEN);
 
                         return;
