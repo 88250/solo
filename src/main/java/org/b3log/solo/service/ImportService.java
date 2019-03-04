@@ -162,7 +162,7 @@ public class ImportService {
             ret.put(Article.ARTICLE_CONTENT, fileContent);
             ret.put(Article.ARTICLE_ABSTRACT, Article.getAbstractText(fileContent));
             ret.put(Article.ARTICLE_TAGS_REF, DEFAULT_TAG);
-            ret.put(Article.ARTICLE_IS_PUBLISHED, true);
+            ret.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
             ret.put(Article.ARTICLE_COMMENTABLE, true);
             ret.put(Article.ARTICLE_VIEW_PWD, "");
 
@@ -201,7 +201,7 @@ public class ImportService {
         tagBuilder.deleteCharAt(tagBuilder.length() - 1);
         ret.put(Article.ARTICLE_TAGS_REF, tagBuilder.toString());
 
-        ret.put(Article.ARTICLE_IS_PUBLISHED, true);
+        ret.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         ret.put(Article.ARTICLE_COMMENTABLE, true);
         ret.put(Article.ARTICLE_VIEW_PWD, "");
 

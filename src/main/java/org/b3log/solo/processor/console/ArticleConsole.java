@@ -160,7 +160,6 @@ public class ArticleConsole {
      *     "articleAbstract": "",
      *     "articleContent": "",
      *     "articlePermalink": "",
-     *     "articleHadBeenPublished": boolean,
      *     "articleTags": [{
      *         "oId": "",
      *         "tagTitle": ""
@@ -235,16 +234,13 @@ public class ArticleConsole {
 
             path = path.substring((status + "/").length());
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(path);
-            final boolean published = "published".equals(status);
-            requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, published);
+            requestJSONObject.put(Article.ARTICLE_STATUS, "published".equals(status) ? Article.ARTICLE_STATUS_C_PUBLISHED : Article.ARTICLE_STATUS_C_DRAFT);
 
             final JSONArray excludes = new JSONArray();
             excludes.put(Article.ARTICLE_CONTENT);
             excludes.put(Article.ARTICLE_UPDATED);
             excludes.put(Article.ARTICLE_CREATED);
             excludes.put(Article.ARTICLE_AUTHOR_ID);
-            excludes.put(Article.ARTICLE_HAD_BEEN_PUBLISHED);
-            excludes.put(Article.ARTICLE_IS_PUBLISHED);
             excludes.put(Article.ARTICLE_RANDOM_DOUBLE);
             requestJSONObject.put(Keys.EXCLUDES, excludes);
 
@@ -456,7 +452,7 @@ public class ArticleConsole {
      *         "articleContent": "",
      *         "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
      *         "articlePermalink": "", // optional
-     *         "articleIsPublished": boolean,
+     *         "articleStatus": int, // 0: published, 1: draft
      *         "articleSignId": "" // optional
      *         "articleCommentable": boolean,
      *         "articleViewPwd": "",
@@ -520,7 +516,7 @@ public class ArticleConsole {
      *         "articleContent": "",
      *         "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
      *         "articlePermalink": "", // optional
-     *         "articleIsPublished": boolean,
+     *         "articleStatus": int, // 0: published, 1: draft
      *         "postToCommunity": boolean,
      *         "articleSignId": "" // optional
      *         "articleCommentable": boolean,

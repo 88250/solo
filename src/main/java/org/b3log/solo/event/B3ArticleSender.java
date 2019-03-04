@@ -77,8 +77,8 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
         try {
             final JSONObject originalArticle = data.getJSONObject(Article.ARTICLE);
             final String title = originalArticle.getString(Article.ARTICLE_TITLE);
-            if (!originalArticle.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                LOGGER.log(Level.INFO, "Ignored push an article [title={0}] to Rhy", title);
+            if (Article.ARTICLE_STATUS_C_PUBLISHED != originalArticle.optInt(Article.ARTICLE_STATUS)) {
+                LOGGER.log(Level.INFO, "Ignored push a draft [title={0}] to Rhy", title);
 
                 return;
             }

@@ -261,8 +261,7 @@ public class InitService {
         article.put(Article.ARTICLE_CONTENT, content);
         article.put(Article.ARTICLE_TAGS_REF, "Solo");
         article.put(Article.ARTICLE_PERMALINK, "/hello-solo");
-        article.put(Article.ARTICLE_IS_PUBLISHED, true);
-        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
+        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENT_COUNT, 1);
         article.put(Article.ARTICLE_VIEW_COUNT, 0);

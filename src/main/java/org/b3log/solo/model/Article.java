@@ -28,7 +28,7 @@ import org.jsoup.safety.Whitelist;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Feb 28, 2019
+ * @version 1.5.0.0, Mar 4, 2019
  * @since 0.3.1
  */
 public final class Article {
@@ -129,19 +129,9 @@ public final class Article {
     public static final String ARTICLE_PUT_TOP = "articlePutTop";
 
     /**
-     * Key of is published.
-     */
-    public static final String ARTICLE_IS_PUBLISHED = "articleIsPublished";
-
-    /**
      * Key of author id.
      */
     public static final String ARTICLE_AUTHOR_ID = "articleAuthorId";
-
-    /**
-     * Key of had been published.
-     */
-    public static final String ARTICLE_HAD_BEEN_PUBLISHED = "articleHadBeenPublished";
 
     /**
      * Key of random double.
@@ -163,7 +153,24 @@ public final class Article {
      */
     public static final String ARTICLE_IMG1_URL = "articleImg1URL";
 
-    //// constants
+    /**
+     * Key of article status.
+     */
+    public static final String ARTICLE_STATUS = "articleStatus";
+
+    //// Status constants
+
+    /**
+     * Article status - published.
+     */
+    public static final int ARTICLE_STATUS_C_PUBLISHED = 0;
+
+    /**
+     * Article status - draft.
+     */
+    public static final int ARTICLE_STATUS_C_DRAFT = 1;
+
+    //// Other constants
 
     /**
      * Article abstract length.

@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "3.2.1.5, Feb 8, 2019",
+  "version": "3.2.1.6, Mar 4, 2019",
   "authors": [
     "Liang Ding"
   ],
@@ -478,16 +478,6 @@
           "length": 255
         },
         {
-          "name": "articleHadBeenPublished",
-          "description": "文章是否已经发布过",
-          "type": "boolean"
-        },
-        {
-          "name": "articleIsPublished",
-          "description": "文章是否处于已发布状态",
-          "type": "boolean"
-        },
-        {
           "name": "articlePutTop",
           "description": "文章是否置顶",
           "type": "boolean"
@@ -529,6 +519,11 @@
           "type": "String",
           "length": 255,
           "description": "文章首图地址"
+        },
+        {
+          "name": "articleStatus",
+          "type": "int",
+          "description": "文章状态，0：已发布，1：草稿"
         }
       ]
     },

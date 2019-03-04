@@ -71,11 +71,6 @@ public class DataModelService {
     private static final Logger LOGGER = Logger.getLogger(DataModelService.class);
 
     /**
-     * {@code true} for published.
-     */
-    private static final boolean PUBLISHED = true;
-
-    /**
      * Article repository.
      */
     @Inject
@@ -201,7 +196,7 @@ public class DataModelService {
             final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
 
             final Query query = new Query().setPage(currentPageNum, pageSize).
-                    setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, PUBLISHED));
+                    setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED));
 
             final Template template = Skins.getSkinTemplate(context, "index.ftl");
             boolean isArticles1 = false;

@@ -193,7 +193,7 @@ public class ArticleMgmtService {
 
         try {
             final JSONObject article = articleRepository.get(articleId);
-            article.put(ARTICLE_IS_PUBLISHED, false);
+            article.put(ARTICLE_STATUS, ARTICLE_STATUS_C_DRAFT);
             articleRepository.update(articleId, article);
 
             transaction.commit();
@@ -247,7 +247,7 @@ public class ArticleMgmtService {
      *                          "articleContent": "",
      *                          "articleTags": "tag1,tag2,tag3", // optional, default set "待分类"
      *                          "articlePermalink": "", // optional
-     *                          "articleIsPublished": boolean,
+     *                          "articleStatus": int, // 0: published, 1: draft
      *                          "articleSignId": "", // optional
      *                          "articleCommentable": boolean,
      *                          "articleViewPwd": ""
@@ -291,25 +291,7 @@ public class ArticleMgmtService {
                 article.put(Article.ARTICLE_SIGN_ID, "0");
             }
 
-            if (article.getBoolean(ARTICLE_IS_PUBLISHED)) { // Publish it
-                if (articleQueryService.hadBeenPublished(oldArticle)) {
-                    // Edit update date only for published article
-                    article.put(ARTICLE_UPDATED, now);
-                } else { // This article is a draft and this is the first time to publish it
-                    article.put(ARTICLE_CREATED, now);
-                    article.put(ARTICLE_UPDATED, now);
-                    article.put(ARTICLE_HAD_BEEN_PUBLISHED, true);
-                }
-            } else { // Save as draft
-                if (articleQueryService.hadBeenPublished(oldArticle)) {
-                    // Save update date only for published article
-                    article.put(ARTICLE_UPDATED, now);
-                } else {
-                    // Reset create/update date to indicate this is an new draft
-                    article.put(ARTICLE_CREATED, now);
-                    article.put(ARTICLE_UPDATED, now);
-                }
-            }
+            article.put(ARTICLE_UPDATED, now);
 
             final String articleImg1URL = getArticleImg1URL(article);
             article.put(ARTICLE_IMG1_URL, articleImg1URL);
@@ -317,23 +299,18 @@ public class ArticleMgmtService {
             final String articleAbstractText = Article.getAbstractText(article);
             article.put(ARTICLE_ABSTRACT_TEXT, articleAbstractText);
 
-            final boolean publishNewArticle = !oldArticle.getBoolean(ARTICLE_IS_PUBLISHED) && article.getBoolean(ARTICLE_IS_PUBLISHED);
-
             // Update
             final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
             article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
             articleRepository.update(articleId, article);
             article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
 
+            final boolean publishNewArticle = Article.ARTICLE_STATUS_C_DRAFT == oldArticle.optInt(ARTICLE_STATUS) && Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(ARTICLE_STATUS);
+            final JSONObject eventData = new JSONObject();
+            eventData.put(ARTICLE, article);
             if (publishNewArticle) {
-                // Fire add article event
-                final JSONObject eventData = new JSONObject();
-                eventData.put(ARTICLE, article);
                 eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
             } else {
-                // Fire update article event
-                final JSONObject eventData = new JSONObject();
-                eventData.put(ARTICLE, article);
                 eventManager.fireEventAsynchronously(new Event<>(EventTypes.UPDATE_ARTICLE, eventData));
             }
 
@@ -368,7 +345,7 @@ public class ArticleMgmtService {
      *                          "articleAbstract": "",
      *                          "articleContent": "",
      *                          "articleTags": "tag1,tag2,tag3",
-     *                          "articleIsPublished": boolean,
+     *                          "articleStatus": int, // 0: published, 1: draft
      *                          "articlePermalink": "", // optional
      *                          "postToCommunity": boolean, // optional, default is true
      *                          "articleSignId": "" // optional, default is "0",
@@ -440,12 +417,6 @@ public class ArticleMgmtService {
             final String signId = article.optString(Article.ARTICLE_SIGN_ID, "1");
             article.put(Article.ARTICLE_SIGN_ID, signId);
 
-            article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
-            if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
-                // Publish it directly
-                article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
-            }
-
             article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
             final String articleImg1URL = getArticleImg1URL(article);
@@ -461,7 +432,7 @@ public class ArticleMgmtService {
 
             article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
 
-            if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+            if (Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(ARTICLE_STATUS)) {
                 final JSONObject eventData = new JSONObject();
                 eventData.put(Article.ARTICLE, article);
                 eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
@@ -848,7 +819,6 @@ public class ArticleMgmtService {
         article.put(ARTICLE_COMMENT_COUNT, oldArticle.getInt(ARTICLE_COMMENT_COUNT));
         article.put(ARTICLE_VIEW_COUNT, oldArticle.getInt(ARTICLE_VIEW_COUNT));
         article.put(ARTICLE_PUT_TOP, oldArticle.getBoolean(ARTICLE_PUT_TOP));
-        article.put(ARTICLE_HAD_BEEN_PUBLISHED, oldArticle.getBoolean(ARTICLE_HAD_BEEN_PUBLISHED));
         article.put(ARTICLE_AUTHOR_ID, oldArticle.getString(ARTICLE_AUTHOR_ID));
         article.put(ARTICLE_RANDOM_DOUBLE, Math.random());
     }

@@ -59,8 +59,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_VIEW_COUNT, 0);
         article.put(Article.ARTICLE_CONTENT, "article content");
         article.put(Article.ARTICLE_PERMALINK, "article permalink1");
-        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
-        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_CREATED, new Date().getTime());
         article.put(Article.ARTICLE_UPDATED, new Date().getTime());
@@ -115,8 +114,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_VIEW_COUNT, 1);
         article.put(Article.ARTICLE_CONTENT, "article content");
         article.put(Article.ARTICLE_PERMALINK, "article permalink2");
-        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
-        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_CREATED, new Date().getTime());
         article.put(Article.ARTICLE_UPDATED, new Date().getTime());
@@ -166,8 +164,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_VIEW_COUNT, 2);
         article.put(Article.ARTICLE_CONTENT, "article content");
         article.put(Article.ARTICLE_PERMALINK, "article permalink3");
-        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, true);
-        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_CREATED, new Date().getTime());
         article.put(Article.ARTICLE_UPDATED, new Date().getTime());
@@ -213,8 +210,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_VIEW_COUNT, 3);
         article.put(Article.ARTICLE_CONTENT, "article content");
         article.put(Article.ARTICLE_PERMALINK, "article permalink4");
-        article.put(Article.ARTICLE_HAD_BEEN_PUBLISHED, false);
-        article.put(Article.ARTICLE_IS_PUBLISHED, false); // Unpublished
+        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_DRAFT);
         article.put(Article.ARTICLE_PUT_TOP, false);
         article.put(Article.ARTICLE_CREATED, new Date().getTime());
         article.put(Article.ARTICLE_UPDATED, new Date().getTime());
@@ -291,7 +287,7 @@ public final class ArticleRepositoryImplTestCase extends AbstractTestCase {
 
         final JSONObject notPublished = articleRepository.getByPermalink("article permalink4");
         Assert.assertNotNull(notPublished);
-        Assert.assertFalse(notPublished.getBoolean(Article.ARTICLE_IS_PUBLISHED));
+        Assert.assertEquals(Article.ARTICLE_STATUS_C_DRAFT, notPublished.optInt(Article.ARTICLE_STATUS));
 
         Assert.assertFalse(articleRepository.isPublished("not found"));
     }

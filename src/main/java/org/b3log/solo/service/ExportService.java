@@ -180,7 +180,7 @@ public class ExportService {
                 passwords.add(one);
 
                 continue;
-            } else if (article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+            } else if (Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(Article.ARTICLE_STATUS)) {
                 posts.add(one);
 
                 continue;

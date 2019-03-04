@@ -112,7 +112,7 @@ public class ArticleRepository extends AbstractRepository {
         Query query = new Query().setFilter(CompositeFilterOperator.and(
                 new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, mid),
                 new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
+                new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
                 setPage(1, fetchSize).setPageCount(1);
 
         final List<JSONObject> list1 = getList(query);
@@ -125,7 +125,7 @@ public class ArticleRepository extends AbstractRepository {
                     CompositeFilterOperator.and(
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.GREATER_THAN_OR_EQUAL, 0D),
                             new PropertyFilter(Article.ARTICLE_RANDOM_DOUBLE, FilterOperator.LESS_THAN_OR_EQUAL, mid),
-                            new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
+                            new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
                     setPage(1, reminingSize).setPageCount(1);
 
             final List<JSONObject> list2 = getList(query);
@@ -159,7 +159,7 @@ public class ArticleRepository extends AbstractRepository {
         final Query query = new Query().
                 setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Article.ARTICLE_AUTHOR_ID, FilterOperator.EQUAL, authorId),
-                        new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
+                        new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING).
                 setPage(currentPageNum, pageSize);
 
@@ -204,7 +204,7 @@ public class ArticleRepository extends AbstractRepository {
      */
     public List<JSONObject> getRecentArticles(final int fetchSize) throws RepositoryException {
         final Query query = new Query().
-                setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
+                setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED)).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).
                 setPage(1, fetchSize).setPageCount(1);
 
@@ -222,7 +222,7 @@ public class ArticleRepository extends AbstractRepository {
         final Query query = new Query().
                 addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).
-                setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
+                setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED)).
                 setPage(1, num).setPageCount(1);
 
         return getList(query);
@@ -239,7 +239,7 @@ public class ArticleRepository extends AbstractRepository {
         final Query query = new Query().
                 addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).
                 addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).
-                setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)).
+                setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED)).
                 setPage(1, num).setPageCount(1);
 
         return getList(query);
@@ -271,7 +271,7 @@ public class ArticleRepository extends AbstractRepository {
         final Query query = new Query().
                 setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Article.ARTICLE_CREATED, FilterOperator.LESS_THAN, currentArticleCreated),
-                        new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
+                        new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
                 addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).
                 setPage(1, 1).setPageCount(1).
                 select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_ABSTRACT);
@@ -322,7 +322,7 @@ public class ArticleRepository extends AbstractRepository {
         final Query query = new Query().
                 setFilter(CompositeFilterOperator.and(
                         new PropertyFilter(Article.ARTICLE_CREATED, FilterOperator.GREATER_THAN, currentArticleCreated),
-                        new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true))).
+                        new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
                 addSort(Article.ARTICLE_CREATED, SortDirection.ASCENDING).
                 setPage(1, 1).setPageCount(1).
                 select(Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK, Article.ARTICLE_ABSTRACT);
@@ -360,6 +360,6 @@ public class ArticleRepository extends AbstractRepository {
             return false;
         }
 
-        return article.optBoolean(Article.ARTICLE_IS_PUBLISHED);
+        return Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(Article.ARTICLE_STATUS);
     }
 }

@@ -53,7 +53,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.10, Feb 23, 2019
+ * @version 1.3.2.11, Mar 4, 2019
  * @since 0.3.5
  */
 @Service
@@ -143,7 +143,7 @@ public class ArticleQueryService {
 
         try {
             final Query query = new Query().setFilter(
-                    CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true),
+                    CompositeFilterOperator.and(new PropertyFilter(ARTICLE_STATUS, FilterOperator.EQUAL, ARTICLE_STATUS_C_PUBLISHED),
                             CompositeFilterOperator.or(
                                     new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
                                     new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%")))).
@@ -230,7 +230,7 @@ public class ArticleQueryService {
             final JSONArray articleArray = articleRepository.get(query).optJSONArray(Keys.RESULTS);
             for (int i = 0; i < articleArray.length(); i++) {
                 final JSONObject article = articleArray.optJSONObject(i);
-                if (!article.optBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (ARTICLE_STATUS_C_PUBLISHED != article.optInt(ARTICLE_STATUS)) {
                     // Skips the unpublished article
                     continue;
                 }
@@ -379,17 +379,6 @@ public class ArticleQueryService {
     }
 
     /**
-     * Determines the specified article had been published.
-     *
-     * @param article the specified article
-     * @return {@code true} if it had been published, {@code false} otherwise
-     * @throws JSONException json exception
-     */
-    public boolean hadBeenPublished(final JSONObject article) throws JSONException {
-        return article.getBoolean(Article.ARTICLE_HAD_BEEN_PUBLISHED);
-    }
-
-    /**
      * Gets the recent articles with the specified fetch size.
      *
      * @param fetchSize the specified fetch size
@@ -420,7 +409,6 @@ public class ArticleQueryService {
      *         "articleAbstract": "",
      *         "articleContent": "",
      *         "articlePermalink": "",
-     *         "articleHadBeenPublished": boolean,
      *         "articleCreateDate": java.util.Date,
      *         "articleTags": [{
      *             "oId": "",
@@ -469,13 +457,12 @@ public class ArticleQueryService {
             // Remove unused properties
             article.remove(ARTICLE_AUTHOR_ID);
             article.remove(ARTICLE_COMMENT_COUNT);
-            article.remove(ARTICLE_IS_PUBLISHED);
             article.remove(ARTICLE_PUT_TOP);
             article.remove(ARTICLE_UPDATED);
             article.remove(ARTICLE_VIEW_COUNT);
             article.remove(ARTICLE_RANDOM_DOUBLE);
 
-            LOGGER.log(Level.DEBUG, "Got an article[id={0}]", articleId);
+            LOGGER.log(Level.DEBUG, "Got an article [id={0}]", articleId);
 
             return ret;
         } catch (final Exception e) {
@@ -498,7 +485,7 @@ public class ArticleQueryService {
      *                          "paginationCurrentPageNum": 1,
      *                          "paginationPageSize": 20,
      *                          "paginationWindowSize": 10,
-     *                          "articleIsPublished": boolean,
+     *                          "articleStatus": int,
      *                          "keyword": "", // Optional search keyword
      *                          "excludes": ["", ....], // Optional
      *                          "enableArticleUpdateHint": bool // Optional
@@ -532,7 +519,7 @@ public class ArticleQueryService {
             final int currentPageNum = requestJSONObject.getInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
-            final boolean articleIsPublished = requestJSONObject.optBoolean(ARTICLE_IS_PUBLISHED, true);
+            final int articleStatus = requestJSONObject.optInt(ARTICLE_STATUS, ARTICLE_STATUS_C_PUBLISHED);
 
             final Query query = new Query().setPage(currentPageNum, pageSize).
                     addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING);
@@ -544,10 +531,10 @@ public class ArticleQueryService {
 
             final String keyword = requestJSONObject.optString(Common.KEYWORD);
             if (StringUtils.isBlank(keyword)) {
-                query.setFilter(new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished));
+                query.setFilter(new PropertyFilter(ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus));
             } else {
                 query.setFilter(CompositeFilterOperator.and(
-                        new PropertyFilter(ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, articleIsPublished),
+                        new PropertyFilter(ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus),
                         CompositeFilterOperator.or(
                                 new PropertyFilter(ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
                                 new PropertyFilter(ARTICLE_TAGS_REF, FilterOperator.LIKE, "%" + keyword + "%")
@@ -628,7 +615,7 @@ public class ArticleQueryService {
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (ARTICLE_STATUS_C_PUBLISHED != article.optInt(ARTICLE_STATUS)) {
                     // Skips the unpublished article
                     continue;
                 }
@@ -682,7 +669,7 @@ public class ArticleQueryService {
             final JSONArray articles = result.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-                if (!article.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                if (ARTICLE_STATUS_C_PUBLISHED != article.optInt(ARTICLE_STATUS)) {
                     // Skips the unpublished article
                     continue;
                 }
@@ -762,7 +749,7 @@ public class ArticleQueryService {
 
                     final JSONObject relevant = articleRepository.get(relatedArticleId);
 
-                    if (!relevant.getBoolean(Article.ARTICLE_IS_PUBLISHED)) {
+                    if (ARTICLE_STATUS_C_PUBLISHED != relevant.optInt(ARTICLE_STATUS)) {
                         continue;
                     }
 
@@ -1024,9 +1011,7 @@ public class ArticleQueryService {
         article.remove(Article.ARTICLE_UPDATED);
         article.remove(Article.ARTICLE_VIEW_COUNT);
         article.remove(Article.ARTICLE_RANDOM_DOUBLE);
-        article.remove(Article.ARTICLE_IS_PUBLISHED);
         article.remove(Article.ARTICLE_PUT_TOP);
-        article.remove(Article.ARTICLE_HAD_BEEN_PUBLISHED);
         article.remove(Article.ARTICLE_VIEW_PWD);
         article.remove(Article.ARTICLE_SIGN_ID);
         article.remove(ARTICLE_COMMENTABLE);

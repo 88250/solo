@@ -112,7 +112,7 @@ public class FeedProcessor {
             feed.setId(Latkes.getServePath() + "/");
 
             final List<Filter> filters = new ArrayList<>();
-            filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
+            filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
             final Query query = new Query().setPage(1, outputCnt).
                     setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
@@ -199,7 +199,7 @@ public class FeedProcessor {
 
             final List<Filter> filters = new ArrayList<>();
 
-            filters.add(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true));
+            filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
             final Query query = new Query().setPageCount(1).setPage(1, outputCnt).
                     setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).

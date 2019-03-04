@@ -400,7 +400,7 @@ public class ArticleProcessor {
             pathBuilder.append(currentPageNum).append('/').append(pageSize).append('/').append(windowSize);
 
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(pathBuilder.toString());
-            requestJSONObject.put(Article.ARTICLE_IS_PUBLISHED, true);
+            requestJSONObject.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
             requestJSONObject.put(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, preference.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT));
             final JSONObject result = articleQueryService.getArticles(requestJSONObject);
             final List<JSONObject> articles = org.b3log.latke.util.CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
@@ -709,7 +709,7 @@ public class ArticleProcessor {
         try {
             final JSONObject preference = optionQueryService.getPreference();
             final boolean allowVisitDraftViaPermalink = preference.getBoolean(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
-            if (!article.optBoolean(Article.ARTICLE_IS_PUBLISHED) && !allowVisitDraftViaPermalink) {
+            if (Article.ARTICLE_STATUS_C_PUBLISHED != article.optInt(Article.ARTICLE_STATUS) && !allowVisitDraftViaPermalink) {
                 context.sendError(HttpServletResponse.SC_NOT_FOUND);
 
                 return;

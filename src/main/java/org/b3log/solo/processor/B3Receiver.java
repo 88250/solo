@@ -179,7 +179,7 @@ public class B3Receiver {
                 article.put(Article.ARTICLE_AUTHOR_ID, articleAuthor.getString(Keys.OBJECT_ID));
                 final String articleContent = article.optString(Article.ARTICLE_CONTENT);
                 article.put(Article.ARTICLE_ABSTRACT, Article.getAbstractText(articleContent));
-                article.put(Article.ARTICLE_IS_PUBLISHED, true);
+                article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
                 article.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
                 article.put(Article.ARTICLE_COMMENTABLE, true);
                 article.put(Article.ARTICLE_VIEW_PWD, "");

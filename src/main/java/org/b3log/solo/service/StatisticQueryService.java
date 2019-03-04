@@ -80,7 +80,7 @@ public class StatisticQueryService {
     public JSONObject getStatistic() {
         try {
             final JSONObject ret = optionQueryService.getOptions(Option.CATEGORY_C_STATISTIC);
-            final long publishedArticleCount = articleRepository.count(new Query().setFilter(new PropertyFilter(Article.ARTICLE_IS_PUBLISHED, FilterOperator.EQUAL, true)));
+            final long publishedArticleCount = articleRepository.count(new Query().setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED)));
             ret.put(Option.ID_T_STATISTIC_PUBLISHED_ARTICLE_COUNT, publishedArticleCount);
             final long commentCount = commentRepository.count(new Query());
             ret.put(Option.ID_T_STATISTIC_PUBLISHED_BLOG_COMMENT_COUNT, commentCount);
