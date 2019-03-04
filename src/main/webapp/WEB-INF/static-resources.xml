@@ -54,9 +54,7 @@
     <include path="/js/**/*.woff"/>
 
     <include path="/skins/**.css"/>
-    <include path="/skins/**.css.map"/>
     <include path="/skins/**/*.css"/>
-    <include path="/skins/**/*.css.map"/>
     <include path="/skins/**.js"/>
     <include path="/skins/**/*.js"/>
     <include path="/skins/**.png"/>

@@ -302,10 +302,9 @@
                     <includes>
                         <include>**/src/*/java/**/*.java</include>
                         <include>**/src/*/webapp/js/*.js</include>
-                        <include>**/src/*/webapp/css/*.css</include>
                         <include>**/src/*/webapp/**/*.ftl</include>
                         <include>**/src/*/webapp/skins/*/js/*.js</include>
-                        <include>**/src/*/webapp/skins/*/css/*.css</include>
+                        <include>**/src/*/webapp/skins/*/css/*.scss</include>
                         <include>**/src/*/webapp/skins/**/*.properties</include>
                         <include>**/src/*/webapp/plugins/*/js/*.js</include>
                         <include>**/src/*/webapp/plugins/*/css/*.css</include>
@@ -319,6 +318,10 @@
                     <excludes>
                         <exclude>**/src/main/java/**/package-info.java</exclude>
                         <exclude>**/src/*/webapp/js/lib/*.js</exclude>
+                        <include>**/src/*/webapp/js/*.min.js</include>
+                        <include>**/src/*/webapp/js/admin/*.min.js</include>
+                        <include>**/src/*/webapp/skins/*/js/*.min.js</include>
+                        <include>**/src/*/webapp/skins/*/css/*.css</include>
                         <exclude>**/src/main/java/com/**/*.java</exclude>
                     </excludes>
 
