@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.0, Feb 21, 2019
+ * @version 1.7.0.0, Mar 4, 2019
  */
 
 /**
@@ -92,6 +92,14 @@ var Util = {
         NProgress.done()
       })
     }
+  },
+  /**
+   * 图片预览
+   */
+  previewImg:function () {
+    $('body').on('click', '.content-reset img', function () {
+      window.open(this.src);
+    });
   },
   /**
    * 按需加载 MathJax 及 flow
@@ -286,6 +294,7 @@ var Util = {
     Util.setTopBar()
     Util.parseMarkdown()
     Util.initSW()
+    Util.previewImg()
   },
   /**
    * @description 注册 Service Work
