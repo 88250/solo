@@ -41,7 +41,7 @@ import java.util.List;
  * Upgrade script from v3.0.0 to v3.1.0.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Feb 28, 2019
+ * @version 1.0.1.0, Mar 4, 2019
  * @since 3.1.0
  */
 public final class V300_310 {
@@ -62,6 +62,12 @@ public final class V300_310 {
         final BeanManager beanManager = BeanManager.getInstance();
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
         final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
+
+        String serverHost = Latkes.getLatkeProperty("serverHost");
+        if (StringUtils.isBlank(serverHost)) {
+            serverHost = "localhost";
+            Latkes.setLatkeProperty("serverHost", serverHost);
+        }
 
         try {
             Connection connection = Connections.getConnection();
