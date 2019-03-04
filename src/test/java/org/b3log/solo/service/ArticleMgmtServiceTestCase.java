@@ -70,7 +70,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_CONTENT, "article1 content");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2, tag3");
         article.put(Article.ARTICLE_PERMALINK, "article1 permalink");
-        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
@@ -102,7 +102,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_ABSTRACT, "article1 abstract");
         article.put(Article.ARTICLE_CONTENT, "article1 content");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2, tag3");
-        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
@@ -135,7 +135,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_CONTENT, "article2 content");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2, tag3");
         article.put(Article.ARTICLE_PERMALINK, "article2 permalink");
-        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
@@ -178,7 +178,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_CONTENT, "article3 content");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2, tag3");
         article.put(Article.ARTICLE_PERMALINK, "article3 permalink");
-        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
@@ -237,7 +237,7 @@ public class ArticleMgmtServiceTestCase extends AbstractTestCase {
         article.put(Article.ARTICLE_CONTENT, "article4 content");
         article.put(Article.ARTICLE_TAGS_REF, "tag1, tag2, tag3");
         article.put(Article.ARTICLE_PERMALINK, "article4 permalink");
-        article.put(Article.ARTICLE_IS_PUBLISHED, true);
+        article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
         article.put(Common.POST_TO_COMMUNITY, true);
         article.put(Article.ARTICLE_SIGN_ID, "1");
         article.put(Article.ARTICLE_COMMENTABLE, true);
