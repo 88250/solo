@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
  * Emotions utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Feb 18, 2019
+ * @version 1.0.0.2, Mar 5, 2019
  * @since 1.4.0
  */
 public final class Emotions {
@@ -324,6 +324,7 @@ public final class Emotions {
             "dizzy_face",
             "dog",
             "dog2",
+            "doge",
             "dollar",
             "dolls",
             "dolphin",
