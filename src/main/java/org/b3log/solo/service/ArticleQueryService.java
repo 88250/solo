@@ -474,10 +474,6 @@ public class ArticleQueryService {
     /**
      * Gets articles(by crate date descending) by the specified request json object.
      * <p>
-     * If the property "articleIsPublished" of the specified request json object is {@code true}, the returned articles
-     * all are published, {@code false} otherwise.
-     * </p>
-     * <p>
      * Specified the "excludes" for results properties exclusion.
      * </p>
      *
