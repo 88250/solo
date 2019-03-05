@@ -12,7 +12,6 @@ RUN cd /tmp && mvn install -DskipTests -Pci && mv target/solo/* /opt/b3log/solo/
 ADD ./src/main/resources/docker/entrypoint.sh $WORKDIR
 ADD ./src/main/resources/docker/local.properties.h2 /opt/b3log/tmp
 ADD ./src/main/resources/docker/local.properties.mysql /opt/b3log/tmp
-ADD ./src/main/resources/docker/mail.properties /opt/b3log/tmp
 ADD ./src/main/resources/docker/latke.properties /opt/b3log/tmp
 
 RUN chmod 777 /opt/b3log/solo/entrypoint.sh
