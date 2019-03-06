@@ -162,7 +162,6 @@ public class PreferenceConsole {
      *             "signHTML": ""
      *         }, ...]",
      *         "allowVisitDraftViaPermalink": boolean,
-     *         "allowRegister": boolean,
      *         "version": "",
      *         "articleListStyle": "", // Optional values: "titleOnly"/"titleAndContent"/"titleAndAbstract"
      *         "commentable": boolean,
@@ -241,7 +240,6 @@ public class PreferenceConsole {
      *             "signHTML": ""
      *             }, ...],
      *         "allowVisitDraftViaPermalink": boolean,
-     *         "allowRegister": boolean,
      *         "articleListStyle": "",
      *         "commentable": boolean,
      *         "feedOutputMode: "",

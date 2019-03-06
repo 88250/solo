@@ -106,8 +106,6 @@
         <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
         <label for="commentable">${allowComment1Label}</label>
         <input id="commentable" type="checkbox" class="normalInput"/>
-        <label for="allowRegister">${allowRegister1Label}</label>
-        <input id="allowRegister" type="checkbox" class="normalInput"/>
         <label for="feedOutputMode">${feedOutputModel1Label}</label>
         <select id="feedOutputMode">
             <option value="abstract">${abstractLabel}</option>

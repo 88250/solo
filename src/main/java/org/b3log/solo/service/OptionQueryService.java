@@ -63,17 +63,17 @@ public class OptionQueryService {
     }
 
     /**
-     * Checks whether allow register.
+     * Checks whether allow comment globally.
      *
-     * @return {@code true} to allow register, returns {@code false} otherwise
+     * @return {@code true} to allow comment, returns {@code false} otherwise
      */
-    public boolean allowRegister() {
+    public boolean allowComment() {
         try {
-            final JSONObject opt = optionRepository.get(Option.ID_C_ALLOW_REGISTER);
+            final JSONObject opt = optionRepository.get(Option.ID_C_COMMENTABLE);
 
             return opt.optBoolean(Option.OPTION_VALUE);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Checks allow register failed", e);
+            LOGGER.log(Level.ERROR, "Checks allow comment failed", e);
 
             return false;
         }

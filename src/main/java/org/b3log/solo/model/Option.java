@@ -163,11 +163,6 @@ public final class Option {
     public static final String ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK = "allowVisitDraftViaPermalink";
 
     /**
-     * Key of allow register.
-     */
-    public static final String ID_C_ALLOW_REGISTER = "allowRegister";
-
-    /**
      * Key of version.
      */
     public static final String ID_C_VERSION = "version";
@@ -395,11 +390,6 @@ public final class Option {
          * Default allow visit draft via permalink.
          */
         public static final String DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK = "false";
-
-        /**
-         * Default allow register.
-         */
-        public static final String DEFAULT_ALLOW_REGISTER = "true";
 
         /**
          * Default allow comment article/page.

@@ -190,13 +190,6 @@ public class OAuthProcessor {
             } else {
                 user = userQueryService.getUserByName(userName);
                 if (null == user) {
-                    if (!optionQueryService.allowRegister()) {
-                        context.attr(Keys.MSG, langPropsService.get("notAllowRegisterLabel"));
-                        context.sendError(HttpServletResponse.SC_FORBIDDEN);
-
-                        return;
-                    }
-
                     final JSONObject addUserReq = new JSONObject();
                     addUserReq.put(User.USER_NAME, userName);
                     addUserReq.put(UserExt.USER_AVATAR, userAvatar);

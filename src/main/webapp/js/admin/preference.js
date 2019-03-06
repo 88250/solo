@@ -78,9 +78,6 @@ admin.preference = {
         'true' === preference.allowVisitDraftViaPermalink ? $(
           '#allowVisitDraftViaPermalink').attr('checked', 'checked') : $(
           'allowVisitDraftViaPermalink').removeAttr('checked')
-        'true' === preference.allowRegister ? $('#allowRegister').
-          attr('checked', 'checked') : $('#allowRegister').
-          removeAttr('checked')
         'true' === preference.commentable ? $('#commentable').
           attr('checked', 'checked') : $('commentable').removeAttr('checked')
 
@@ -258,7 +255,6 @@ admin.preference = {
         'feedOutputMode': $('#feedOutputMode').val(),
         'feedOutputCnt': $('#feedOutputCnt').val(),
         'commentable': $('#commentable').prop('checked'),
-        'allowRegister': $('#allowRegister').prop('checked'),
         'customVars': $('#customVars').val(),
       },
     }

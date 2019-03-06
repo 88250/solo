@@ -605,12 +605,6 @@ public class InitService {
         allowVisitDraftViaPermalinkOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
         optionRepository.add(allowVisitDraftViaPermalinkOpt);
 
-        final JSONObject allowRegisterOpt = new JSONObject();
-        allowRegisterOpt.put(Keys.OBJECT_ID, Option.ID_C_ALLOW_REGISTER);
-        allowRegisterOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        allowRegisterOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_ALLOW_REGISTER);
-        optionRepository.add(allowRegisterOpt);
-
         final JSONObject commentableOpt = new JSONObject();
         commentableOpt.put(Keys.OBJECT_ID, Option.ID_C_COMMENTABLE);
         commentableOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);

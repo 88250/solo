@@ -290,13 +290,6 @@ public class B3Receiver {
             final JSONObject commenter = userRepository.getByUserName(commentName);
             if (null == commenter) {
                 // 社区回帖同步博客评论 https://github.com/b3log/solo/issues/12691
-                if (!optionQueryService.allowRegister()) {
-                    ret.put(Keys.CODE, 1);
-                    ret.put(Keys.MSG, "Not allow register");
-
-                    return;
-                }
-
                 final JSONObject addUserReq = new JSONObject();
                 addUserReq.put(User.USER_NAME, commentName);
                 addUserReq.put(UserExt.USER_AVATAR, commentThumbnailURL);
@@ -312,6 +305,13 @@ public class B3Receiver {
 
                     return;
                 }
+            }
+
+            if (!optionQueryService.allowComment() || !article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
+                ret.put(Keys.CODE, 1);
+                ret.put(Keys.MSG, "Not allow comment");
+
+                return;
             }
 
             String commentContent = symCmt.getString("content"); // Markdown
