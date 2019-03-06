@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.0, Feb 21, 2019
+ * @version 2.1.0.1, Mar 6, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -113,6 +113,7 @@ $.extend(Page.prototype, {
           window.vditor = new Vditor('soloEditorComment', {
             placeholder: that.tips.commentContentCannotEmptyLabel,
             height: 180,
+            tab: '\t',
             hint: {
               emojiPath: latkeConfig.staticServePath + '/js/lib/emojify.js-1.1.0/images/basic'
             },

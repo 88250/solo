@@ -19,7 +19,7 @@
  * @fileoverview editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.3, Feb 18, 2019
+ * @version 1.2.0.4, Mar 6, 2019
  */
 
 admin.editors = {}
@@ -43,6 +43,7 @@ $.extend(SoloEditor.prototype, {
   init: function () {
     this.editor = new Vditor(this.conf.id, {
       cache: true,
+      tab: '\t',
       hint: {
         emojiPath: latkeConfig.staticServePath + '/js/lib/emojify.js-1.1.0/images/basic'
       },
