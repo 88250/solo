@@ -75,7 +75,7 @@ public final class Images {
      * @param height   the specified height
      * @return image URL
      */
-    public static final String imageSize(final String imageURL, final int width, final int height) {
+    public static String imageSize(final String imageURL, final int width, final int height) {
         if (StringUtils.containsIgnoreCase(imageURL, "imageView") || !StringUtils.containsIgnoreCase(imageURL, "img.hacpai.com")) {
             return imageURL;
         }
