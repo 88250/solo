@@ -100,12 +100,24 @@
         <input id="relevantArticlesDisplayCount" class="normalInput" type="text"/>
         <label for="externalRelevantArticlesDisplayCount">${externalRelevantArticlesDisplayCnt1Label}</label>
         <input id="externalRelevantArticlesDisplayCount" class="normalInput" type="text"/>
-        <label for="enableArticleUpdateHint">${enableArticleUpdateHint1Label}</label>
-        <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
-        <label for="allowVisitDraftViaPermalink">${allowVisitDraftViaPermalink1Label}</label>
-        <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
-        <label for="commentable">${allowComment1Label}</label>
-        <input id="commentable" type="checkbox" class="normalInput"/>
+        <label>
+            <div class="fn__flex-inline">
+                ${enableArticleUpdateHint1Label}
+                <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
+            </div>
+        </label>
+        <label>
+            <div class="fn__flex-inline">
+                ${allowVisitDraftViaPermalink1Label}
+                <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
+            </div>
+        </label>
+        <label>
+            <div class="fn__flex-inline">
+                ${allowComment1Label}
+                <input id="commentable" type="checkbox" class="normalInput"/>
+            </div>
+        </label>
         <label for="feedOutputMode">${feedOutputModel1Label}</label>
         <select id="feedOutputMode">
             <option value="abstract">${abstractLabel}</option>
