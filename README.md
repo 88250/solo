@@ -53,7 +53,7 @@
 
 ## 界面
 
-### 初始化
+### 开始使用
 
 ![init](https://user-images.githubusercontent.com/873584/52908896-800a2d80-32b9-11e9-9702-43bab360651d.png)
 
