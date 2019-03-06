@@ -105,7 +105,7 @@ $.extend(Page.prototype, {
     if (typeof Vditor === 'undefined') {
       $.ajax({
         method: 'GET',
-        url: latkeConfig.staticServePath + '/js/lib/vditor-0.3.0/index.min.js',
+        url: latkeConfig.staticServePath + '/js/lib/vditor-0.4.0/index.min.js',
         dataType: 'script',
         cache: true,
         async: false,
