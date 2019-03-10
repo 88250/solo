@@ -54,7 +54,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.2, Mar 10, 2019
+ * @version 1.7.0.3, Mar 10, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -238,8 +238,9 @@ public final class Solos {
      */
     public static String sanitizeFilename(final String unsanitized) {
         return unsanitized.
-                replaceAll("[\\?\\\\/:|<>\\*\\[\\]]", "-"). // ? \ / : | < > * [ ] to -
-                replaceAll("\\s+", "-");              // white space to -
+                replaceAll("[^(a-zA-Z0-9\\u4e00-\\u9fa5\\.)]", "").
+                replaceAll("[\\?\\\\/:|<>\\*\\[\\]\\(\\)\\$%\\{\\}@~]", "").
+                replaceAll("\\s", "");
     }
 
     /**
