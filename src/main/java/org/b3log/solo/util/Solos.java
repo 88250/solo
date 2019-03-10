@@ -54,7 +54,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.1, Mar 3, 2019
+ * @version 1.7.0.2, Mar 10, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -126,13 +126,13 @@ public final class Solos {
     static {
         String cookieNameConf = Latkes.getLatkeProperty("cookieName");
         if (StringUtils.isBlank(cookieNameConf)) {
-            cookieNameConf = "b3log-latke";
+            cookieNameConf = "solo";
         }
         COOKIE_NAME = cookieNameConf;
 
         String cookieSecret = Latkes.getLatkeProperty("cookieSecret");
         if (StringUtils.isBlank(cookieSecret)) {
-            cookieSecret = "Beyond";
+            cookieSecret = RandomStringUtils.randomAlphanumeric(8);
         }
         COOKIE_SECRET = cookieSecret;
 
