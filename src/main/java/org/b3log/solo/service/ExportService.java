@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Sep 16, 2018
+ * @version 1.1.0.2, Mar 10, 2019
  * @since 2.5.0
  */
 @Service
@@ -139,7 +139,8 @@ public class ExportService {
      *         {
      *             "front": "", // yaml front matter,
      *             "title": "",
-     *             "content": ""
+     *             "content": "",
+     *             "created": long
      *         }, ....
      *     ],
      *     "passwords": [], // format is same as post
@@ -175,6 +176,7 @@ public class ExportService {
             one.put("front", new Yaml().dump(front));
             one.put("title", title);
             one.put("content", article.optString(Article.ARTICLE_CONTENT));
+            one.put("created", article.optLong(Article.ARTICLE_CREATED));
 
             if (StringUtils.isNotBlank(article.optString(Article.ARTICLE_VIEW_PWD))) {
                 passwords.add(one);

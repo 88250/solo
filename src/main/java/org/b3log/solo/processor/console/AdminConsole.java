@@ -41,10 +41,7 @@ import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
-import org.b3log.solo.model.UserExt;
+import org.b3log.solo.model.*;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.ExportService;
 import org.b3log.solo.service.OptionQueryService;
@@ -68,7 +65,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.11, Feb 6, 2019
+ * @version 1.7.0.12, Mar 10, 2019
  * @since 0.4.1
  */
 @Singleton
@@ -482,7 +479,10 @@ public class AdminConsole {
             final String text = article.optString("front") + "---" + Strings.LINE_SEPARATOR + article.optString("content");
 
             try {
-                FileUtils.writeStringToFile(new File(dirPath + File.separator + filename), text, "UTF-8");
+                final String date = DateFormatUtils.format(article.optLong("created"), "yyyyMM");
+                final String dir = dirPath + File.separator + date + File.separator;
+                new File(dir).mkdirs();
+                FileUtils.writeStringToFile(new File(dir + filename), text, "UTF-8");
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Write markdown file failed", e);
             }
