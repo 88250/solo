@@ -81,6 +81,7 @@ var Util = {
         },
         callback: function () {
           Util.parseMarkdown()
+          Util.parseLanguage()
           cb && cb()
         },
       })
@@ -118,12 +119,11 @@ var Util = {
   parseLanguage: function () {
     Util.addStyle('https://cdn.jsdelivr.net/npm/highlight.js@9.15.6/styles/' +
       Label.hljsStyle + '.min.css', 'vditorHljsStyle')
-    Vditor.codeRender(document.body, Label.langLabel)
 
     if (!Label.markedAvailable) {
       if (typeof hljs === 'undefined') {
         $.ajax({
-          url: 'https://cdn.jsdelivr.net/npm/highlight.js@9.15.6/lib/index.min.js',
+          url: 'https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.6/build/highlight.min.js',
           dataType: 'script',
           cache: true,
           success: function () {
@@ -157,8 +157,7 @@ var Util = {
 
     Vditor.mermaidRender(document.body)
     Vditor.mathRender(document.body)
-
-    this.parseLanguage()
+    Vditor.codeRender(document.body, Label.langLabel)
   },
   /**
    * @description IE6/7，跳转到 kill-browser 页面
@@ -267,6 +266,7 @@ var Util = {
   init: function () {
     Util.killIE()
     Util.parseMarkdown()
+    Util.parseLanguage()
     Util.initSW()
     Util.previewImg()
   },

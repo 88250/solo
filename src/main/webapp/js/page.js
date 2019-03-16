@@ -87,6 +87,12 @@ $.extend(Page.prototype, {
             enable: true,
             style: Label.hljsStyle,
           },
+          parse: function(element) {
+            if (element.style.display === 'none') {
+              return
+            }
+            Util.parseLanguage()
+          },
         },
         counter: 500,
         resize: {
@@ -356,6 +362,7 @@ $.extend(Page.prototype, {
       $('#comments').html(commentHTML)
     }
     Util.parseMarkdown()
+    Util.parseLanguage()
     window.location.hash = '#comments'
   },
 })

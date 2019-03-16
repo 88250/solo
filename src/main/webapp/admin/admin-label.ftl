@@ -25,6 +25,7 @@
     };
 
     var Label = {
+        "hljsStyle": "atom-one-light",
         "pushSuccLabel": '${pushSuccLabel}',
         "pushToHacpaiLabel": '${pushToHacpaiLabel}',
         "uploadMsg": '${uploadMsg}',

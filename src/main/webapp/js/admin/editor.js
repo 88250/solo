@@ -51,6 +51,12 @@ $.extend(SoloEditor.prototype, {
         delay: 500,
         show: this.conf.previewShow,
         url: latkeConfig.servePath + '/console/markdown/2html',
+        parse: function(element) {
+          if (element.style.display === 'none') {
+            return
+          }
+          Util.parseLanguage()
+        },
       },
       upload: {
         max: 10 * 1024 * 1024,
