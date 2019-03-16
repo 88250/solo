@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 2.0.0.1, Feb 26, 2019
+* @version 2.0.0.2, Mar 16, 2019
 */
 
 @import "reset";
@@ -127,17 +127,6 @@ input[type=text]:focus {
     flex: 1;
 }
 
-.logo {
-    width: 217px;
-    text-align: center;
-    align-self: center;
-}
-
-.logo img {
-    height: 128px;
-    width: 128px;
-}
-
 .footerWrapper {
     background-color: #FFFFFF;
     border-top: 1px solid #E6E5D9;
@@ -238,21 +227,19 @@ input[type=text]:focus {
 
 .github__check {
     font-size: 12px;
-    display: flex;
-    width: 80%;
+    display: inline-block;
     margin: 10px auto 0;
     align-items: center;
     line-height: 20px;
     color: #999;
-}
-
-.github__check a {
-    color: #999;
-    text-decoration: underline;
-}
-
-.github__check input {
-    width: auto;
+    a {
+        color: #999;
+        text-decoration: underline;
+    }
+    input {
+        width: auto;
+        margin-right: 5px;
+    }
 }
 
 /* start search */

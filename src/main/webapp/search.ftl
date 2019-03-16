@@ -31,7 +31,7 @@
 </head>
 <body class="search__body">
 <div class="search__header fn-clear">
-    <a href="${servePath}"><img width="44" border="0" alt="Solo" title="Solo" src="${staticServePath}/images/logo.png"/></a>
+    <a href="${servePath}"><img width="44" border="0" alt="Solo" title="Solo" src="${staticServePath}/favicon.png"/></a>
     <div class="search__input">
         <input value="${keyword}" id="keyword" type="text" onkeypress="if(event.keyCode===13){document.getElementById('searchBtn').click()}">
         <button id="searchBtn" onclick="window.location.href='${servePath}/search?keyword=' + document.getElementById('keyword').value">搜索</button>
