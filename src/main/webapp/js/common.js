@@ -80,6 +80,7 @@ var Util = {
           return true
         },
         callback: function () {
+          Util.parseMarkdown()
           cb && cb()
         },
       })
