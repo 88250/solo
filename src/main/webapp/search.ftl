@@ -67,7 +67,7 @@
                 ${article.articleViewCount} ${viewLabel}
                 </div>
             </header>
-            <div class="content-reset">
+            <div class="vditor-reset">
             ${article.articleAbstract}
             </div>
             <footer>

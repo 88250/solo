@@ -45,7 +45,7 @@ $.extend(Page.prototype, {
    */
   parseLanguage: function (obj) {
     var isHljs = false
-    $('.content-reset pre').
+    $('.vditor-reset pre').
       each(function () {
         isHljs = true
       })
@@ -105,7 +105,7 @@ $.extend(Page.prototype, {
     if (typeof Vditor === 'undefined') {
       $.ajax({
         method: 'GET',
-        url: latkeConfig.staticServePath + '/js/lib/vditor-0.4.0/index.min.js',
+        url: latkeConfig.staticServePath + '/js/lib/vditor-1.1.7/index.min.js',
         dataType: 'script',
         cache: true,
         async: false,
@@ -127,16 +127,6 @@ $.extend(Page.prototype, {
               delay: 500,
               show: false,
               url: latkeConfig.servePath + '/console/markdown/2html',
-              parse: function (element) {
-                if (element.style.display === 'none') {
-                  return
-                }
-                Util.parseMarkdown('content-reset')
-                if (!Label.markedAvailable) {
-                  hljs.initHighlighting.called = false
-                  hljs.initHighlighting()
-                }
-              },
             },
             counter: 500,
             resize: {

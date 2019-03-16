@@ -58,7 +58,7 @@
     (function () {
         page.load();
         // emotions
-        page.replaceCommentsEm("#comments .content-reset");
+        page.replaceCommentsEm("#comments .vditor-reset");
         <#nested>
     })();
 </script>

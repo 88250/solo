@@ -84,7 +84,7 @@ admin.commentList = {
                     
                     commentsData[i] = {};
                     
-                    commentsData[i].content = '<div class="content-reset">' + Util.replaceEmString(comments[i].commentContent) +
+                    commentsData[i].content = '<div class="vditor-reset">' + Util.replaceEmString(comments[i].commentContent) +
                     "</div><span class='table-tag'> on &nbsp;&nbsp;</span><a href='" + latkeConfig.servePath + comments[i].commentSharpURL +
                     "' target='_blank'>" + comments[i].commentTitle +
                     "</a>";

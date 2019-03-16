@@ -51,17 +51,6 @@ $.extend(SoloEditor.prototype, {
         delay: 500,
         show: this.conf.previewShow,
         url: latkeConfig.servePath + '/console/markdown/2html',
-        parse: function (element) {
-          if (element.style.display === 'none') {
-            return
-          }
-
-          Util.parseMarkdown('content-reset')
-          if (!Label.markedAvailable) {
-            hljs.initHighlighting.called = false
-            hljs.initHighlighting()
-          }
-        },
       },
       upload: {
         max: 10 * 1024 * 1024,
@@ -77,9 +66,6 @@ $.extend(SoloEditor.prototype, {
         enable: this.conf.resize,
       },
       lang: Label.localeString,
-      classes: {
-        preview: 'content-reset',
-      },
     })
 
     if (typeof this.conf.fun === 'function') {

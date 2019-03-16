@@ -27,7 +27,7 @@
                 <img width="128" src="${staticServePath}/images/logo.png" alt="Solo" title="Solo" />
             </a>
         </div>
-        <div class="fn__left content-reset about__panel" style="margin-left: 20px;">
+        <div class="fn__left vditor-reset about__panel" style="margin-left: 20px;">
             <div id="aboutLatest" class="about-margin fn__left">
                 ${checkingVersionLabel}
             </div>

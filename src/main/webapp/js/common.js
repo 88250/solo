@@ -97,92 +97,16 @@ var Util = {
    * 图片预览
    */
   previewImg:function () {
-    $('body').on('click', '.content-reset img', function () {
+    $('body').on('click', '.vditor-reset img', function () {
       window.open(this.src);
     });
   },
   /**
-   * 按需加载 MathJax 及 flow
+   * 按需加载 MathJax 及图标
    * @returns {undefined}
    */
   parseMarkdown: function () {
-    var hasMathJax = false
-    var hasFlow = false
-    var className = 'content-reset'
-    $('.' + className).each(function () {
-      $(this).find('p').each(function () {
-        if ($(this).text().split('$').length > 2 ||
-          ($(this).text().split('\\(').length > 1 &&
-            $(this).text().split('\\)').length > 1)) {
-          hasMathJax = true
-        }
-      })
-      if ($(this).find('code.lang-flow, code.language-flow').length > 0) {
-        hasFlow = true
-      }
-    })
-
-    if (hasMathJax) {
-      var initMathJax = function () {
-        MathJax.Hub.Config({
-          tex2jax: {
-            inlineMath: [['$', '$'], ['\\(', '\\)']],
-            displayMath: [['$$', '$$']],
-            processEscapes: true,
-            processEnvironments: true,
-            skipTags: ['pre', 'code', 'script'],
-          },
-          asciimath2jax: {
-            delimiters: [['$', '$']],
-          },
-        })
-        MathJax.Hub.Typeset()
-      }
-
-      if (typeof MathJax !== 'undefined') {
-        initMathJax()
-      } else {
-        $.ajax({
-          method: 'GET',
-          url: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML',
-          dataType: 'script',
-          cache: true,
-        }).done(function () {
-          initMathJax()
-        })
-      }
-    }
-
-    if (hasFlow) {
-      var initFlow = function () {
-        $('.' + className + ' code.lang-flow, .' + className +
-          ' code.language-flow').each(function (index) {
-          var $it = $(this)
-          var id = 'symFlow' + (new Date()).getTime() + index
-          $it.hide()
-          var diagram = flowchart.parse($.trim($it.text()))
-          $it.parent().
-            after('<div style="text-align: center" id="' + id + '"></div>')
-          diagram.drawSVG(id)
-          $it.parent().remove()
-          $('#' + id).find('svg').height('auto').width('auto')
-        })
-      }
-
-      if (typeof (flowchart) !== 'undefined') {
-        initFlow()
-      } else {
-        $.ajax({
-          method: 'GET',
-          url: latkeConfig.staticServePath +
-          '/js/lib/flowchart/flowchart.min.js',
-          dataType: 'script',
-          cache: true,
-        }).done(function () {
-          initFlow()
-        })
-      }
-    }
+    // TODO
   },
   /**
    * @description IE6/7，跳转到 kill-browser 页面

@@ -20,10 +20,9 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 3.1.0.0, Feb 28, 2019
+* @version 3.1.0.1, Mar 16, 2019
 */
 @import "reset";
-@import "reset-content";
 @import "tooltipped";
 @import "function";
 @import "vditor/src/assets/scss/classic";
@@ -619,11 +618,11 @@ button#submitArticle:hover {
     margin: 20px 0;
 }
 
-.content-reset .about-list li {
+.vditor-reset .about-list li {
     border: 0;
 }
 
-.content-reset .about-list li:hover {
+.vditor-reset .about-list li:hover {
     background-color: #fff;
     text-decoration: underline;
 }
