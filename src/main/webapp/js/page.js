@@ -40,53 +40,10 @@ $.extend(Page.prototype, {
     }
   },
   /*
-   * @description 解析语法高亮
-   * @param {Obj} obj 语法高亮配置参数
-   */
-  parseLanguage: function (obj) {
-    var isHljs = false
-    $('.vditor-reset pre').
-      each(function () {
-        isHljs = true
-      })
-
-    if (isHljs) {
-      // otherelse use highlight
-      // load css
-      if (document.createStyleSheet) {
-        document.createStyleSheet(latkeConfig.staticServePath +
-          '/js/lib/highlight-9.13.1/styles/' +
-          ((obj && obj.theme) || 'github') + '.css')
-      } else {
-        $('head').
-          append(
-            $('<link rel=\'stylesheet\' href=\'' + latkeConfig.staticServePath +
-              '/js/lib/highlight-9.13.1/styles/' +
-              ((obj && obj.theme) || 'github') + '.css\'>'))
-      }
-      if (!Label.markedAvailable) {
-        $.ajax({
-          url: latkeConfig.staticServePath +
-          '/js/lib/highlight-9.13.1/highlight.pack.js',
-          dataType: 'script',
-          cache: true,
-          success: function () {
-            hljs.initHighlighting.called = false
-            hljs.initHighlighting()
-          },
-        })
-      }
-    }
-  },
-  /*
    * @description 文章/自定义页面加载
-   * @param {Obj} obj 配置设定
-   * @param {Obj} obj.theme 代码高亮配置
    */
-  load: function (obj) {
+  load: function () {
     var that = this
-    // language
-    that.parseLanguage(obj)
     // comment
     $('#comment').click(function () {
       that.toggleEditor()
@@ -100,84 +57,76 @@ $.extend(Page.prototype, {
     })
   },
   toggleEditor: function (commentId, name) {
-    var that = this
-
-    if (typeof Vditor === 'undefined') {
-      $.ajax({
-        method: 'GET',
-        url: latkeConfig.staticServePath + '/js/lib/vditor-1.1.7/index.min.js',
-        dataType: 'script',
-        cache: true,
-        async: false,
-        success: function () {
-          window.vditor = new Vditor('soloEditorComment', {
-            placeholder: that.tips.commentContentCannotEmptyLabel,
-            height: 180,
-            tab: '\t',
-            hint: {
-              emojiPath: latkeConfig.staticServePath + '/js/lib/emojify.js-1.1.0/images/basic'
-            },
-            esc: function () {
-              $('#soloEditorCancel').click()
-            },
-            ctrlEnter: function () {
-              $('#soloEditorAdd').click()
-            },
-            preview: {
-              delay: 500,
-              show: false,
-              url: latkeConfig.servePath + '/console/markdown/2html',
-            },
-            counter: 500,
-            resize: {
-              enable: true,
-              position: 'top',
-              after: function () {
-                $('body').css('padding-bottom', $('#soloEditor').outerHeight())
-              }
-            },
-            lang: that.tips.langLabel,
-            toolbar: [
-              'emoji',
-              'headings',
-              'bold',
-              'italic',
-              'strike',
-              '|',
-              'line',
-              'quote',
-              '|',
-              'list',
-              'ordered-list',
-              'check',
-              '|',
-              'code',
-              'inline-code',
-              '|',
-              'undo',
-              'redo',
-              '|',
-              'link',
-              'table',
-              '|',
-              'preview',
-              'fullscreen',
-              'info',
-              'help',
-            ],
-            classes: {
-              preview: 'content__reset',
-            },
-          })
-          vditor.focus()
-        },
-      })
-    }
-
     var $editor = $('#soloEditor')
     if ($editor.length === 0) {
       location.href = latkeConfig.servePath + '/start'
       return
+    }
+
+    if (typeof vditor === 'undefined') {
+      var that = this
+      window.vditor = new Vditor('soloEditorComment', {
+        placeholder: that.tips.commentContentCannotEmptyLabel,
+        height: 180,
+        tab: '\t',
+        hint: {
+          emojiPath: latkeConfig.staticServePath +
+          '/js/lib/emojify.js-1.1.0/images/basic',
+        },
+        esc: function () {
+          $('#soloEditorCancel').click()
+        },
+        ctrlEnter: function () {
+          $('#soloEditorAdd').click()
+        },
+        preview: {
+          delay: 500,
+          show: false,
+          url: latkeConfig.servePath + '/console/markdown/2html',
+          hljs: {
+            enable: true,
+            style: Label.hljsStyle,
+          },
+        },
+        counter: 500,
+        resize: {
+          enable: true,
+          position: 'top',
+          after: function () {
+            $('body').css('padding-bottom', $('#soloEditor').outerHeight())
+          },
+        },
+        lang: Label.langLabel,
+        toolbar: [
+          'emoji',
+          'headings',
+          'bold',
+          'italic',
+          'strike',
+          '|',
+          'line',
+          'quote',
+          '|',
+          'list',
+          'ordered-list',
+          'check',
+          '|',
+          'code',
+          'inline-code',
+          '|',
+          'undo',
+          'redo',
+          '|',
+          'link',
+          'table',
+          '|',
+          'preview',
+          'fullscreen',
+          'info',
+          'help',
+        ],
+      })
+      vditor.focus()
     }
 
     if ($('body').css('padding-bottom') === '0px' || commentId) {
@@ -406,6 +355,7 @@ $.extend(Page.prototype, {
     } else {
       $('#comments').html(commentHTML)
     }
+    Util.parseMarkdown()
     window.location.hash = '#comments'
   },
 })

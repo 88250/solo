@@ -30,7 +30,7 @@
         <meta name="robots" content="fn__none" />
         <title>${adminConsoleLabel} - ${blogTitle}</title>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/scss/admin.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/js/lib/highlight-9.13.1/styles/github.css?${staticResourceVersion}" />
+        <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.6/styles/atom-one-light.min.css" />
         <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
         <link rel="manifest" href="${servePath}/manifest.json">
     </head>
@@ -167,7 +167,7 @@
             </div>
         </div>
         <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>
-        <script src="${staticServePath}/js/lib/vditor-1.1.7/index.min.js"></script>
+        <script src="${staticServePath}/js/lib/vditor-1.1.8/index.min.js"></script>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
