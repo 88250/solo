@@ -120,9 +120,9 @@ public final class Markdowns {
             MARKDOWN_HTTP_AVAILABLE = StringUtils.contains(html, "<p>昔日舞曲</p>");
 
             if (MARKDOWN_HTTP_AVAILABLE) {
-                LOGGER.log(Level.DEBUG, "[markdown-http] is available, uses it for markdown processing");
+                LOGGER.log(Level.INFO, "[markdown-http] is available, uses it for markdown processing");
             } else {
-                LOGGER.log(Level.DEBUG, "[markdown-http] is not available, uses built-in [flexmark] for markdown processing");
+                LOGGER.log(Level.INFO, "[markdown-http] is not available, uses built-in [flexmark] for markdown processing");
             }
         } catch (final Exception e) {
             LOGGER.log(Level.INFO, "[markdown-http] is not available, uses built-in [flexmark] for markdown processing. " +
