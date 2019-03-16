@@ -52,7 +52,7 @@ import java.util.List;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.4, Jan 15, 2019
+ * @version 1.3.2.5, Mar 16, 2019
  * @since 0.3.5
  */
 @Service
@@ -254,7 +254,7 @@ public class CommentQueryService {
                 String commentContent = comment.optString(Comment.COMMENT_CONTENT);
                 commentContent = Emotions.convert(commentContent);
                 commentContent = Markdowns.toHTML(commentContent);
-                commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
+                commentContent = Jsoup.clean(commentContent, Whitelist.relaxed().addAttributes("code", "class") /* 允许代码块语言高亮信息 */);
                 comment.put(Comment.COMMENT_CONTENT, commentContent);
 
                 String commentName = comment.optString(Comment.COMMENT_NAME);
