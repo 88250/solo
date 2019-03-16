@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.0, Mar 4, 2019
+ * @version 1.8.0.0, Mar 16, 2019
  */
 
 /**
@@ -96,17 +96,68 @@ var Util = {
   /**
    * 图片预览
    */
-  previewImg:function () {
+  previewImg: function () {
     $('body').on('click', '.vditor-reset img', function () {
-      window.open(this.src);
-    });
+      window.open(this.src)
+    })
+  },
+  addStyle: function (url, id) {
+    if (!document.getElementById(id)) {
+      var styleElement = document.createElement('link')
+      styleElement.id = id
+      styleElement.setAttribute('rel', 'stylesheet')
+      styleElement.setAttribute('type', 'text/css')
+      styleElement.setAttribute('href', url)
+      document.getElementsByTagName('head')[0].appendChild(styleElement)
+    }
+  },
+  /*
+  * @description 解析语法高亮
+  */
+  parseLanguage: function () {
+    Util.addStyle('https://cdn.jsdelivr.net/npm/highlight.js@9.15.6/styles/' +
+      Label.hljsStyle + '.min.css', 'vditorHljsStyle')
+    Vditor.codeRender(document.body, Label.langLabel)
+
+    if (!Label.markedAvailable) {
+      if (typeof hljs === 'undefined') {
+        $.ajax({
+          url: 'https://cdn.jsdelivr.net/npm/highlight.js@9.15.6/lib/index.min.js',
+          dataType: 'script',
+          cache: true,
+          success: function () {
+            hljs.initHighlighting.called = false
+            hljs.initHighlighting()
+          },
+        })
+      } else {
+        hljs.initHighlighting.called = false
+        hljs.initHighlighting()
+      }
+    }
   },
   /**
    * 按需加载 MathJax 及图标
    * @returns {undefined}
    */
   parseMarkdown: function () {
-    // TODO
+    if (!window.Vditor) {
+      var xhrObj = new XMLHttpRequest()
+      xhrObj.open('GET', latkeConfig.staticServePath +
+        '/js/lib/vditor-1.1.8/index.min.js', false)
+      xhrObj.setRequestHeader('Accept',
+        'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01')
+      xhrObj.send('')
+      var scriptElement = document.createElement('script')
+      scriptElement.type = 'text/javascript'
+      scriptElement.text = xhrObj.responseText
+      document.getElementsByTagName('head')[0].appendChild(scriptElement)
+    }
+
+    Vditor.mermaidRender(document.body)
+    Vditor.mathRender(document.body)
+
+    this.parseLanguage()
   },
   /**
    * @description IE6/7，跳转到 kill-browser 页面
@@ -213,9 +264,7 @@ var Util = {
    * @description 页面初始化执行的函数
    */
   init: function () {
-    //window.onerror = Util.error;
     Util.killIE()
-    Util.setTopBar()
     Util.parseMarkdown()
     Util.initSW()
     Util.previewImg()

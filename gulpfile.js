@@ -97,8 +97,7 @@ function miniAdminLibs () {
   // concat js
   const jsJqueryUpload = [
     './src/main/webapp/js/lib/jquery/jquery.min.js',
-    './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',
-    './src/main/webapp/js/lib/highlight-9.13.1/highlight.pack.js']
+    './src/main/webapp/js/lib/jquery/jquery.bowknot.min.js',]
   return gulp.src(jsJqueryUpload).
     pipe(uglify({output: {ascii_only: true}})).
     // https://github.com/b3log/solo/issues/12522
