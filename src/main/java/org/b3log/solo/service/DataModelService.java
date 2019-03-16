@@ -568,7 +568,7 @@ public class DataModelService {
         dataModel.put("customVars", customVars);
 
         // 使用 Marked 时代码高亮问题 https://github.com/b3log/solo/issues/12614
-        dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKED_AVAILABLE);
+        dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKDOWN_HTTP_AVAILABLE);
     }
 
     /**

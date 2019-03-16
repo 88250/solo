@@ -46,7 +46,7 @@ import java.util.concurrent.*;
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  * <p>
- * Uses the <a href="https://github.com/markedjs/marked">marked</a> as the processor, if not found this command, try
+ * Uses the <a href="https://github.com/b3log/markdown-http">markdown-http</a> as the processor, if not found this command, try
  * built-in <a href="https://github.com/vsch/flexmark-java">flexmark</a> instead.
  * </p>
  *
@@ -91,18 +91,18 @@ public final class Markdowns {
     private static final HtmlRenderer RENDERER = HtmlRenderer.builder(OPTIONS).build();
 
     /**
-     * Marked engine serve path.
+     * Markdown engine serve path.
      */
-    private static final String MARKED_ENGINE_URL = "http://localhost:8250";
+    private static final String MARKDOWN_ENGINE_URL = "http://localhost:8250";
 
     /**
-     * Whether marked is available.
+     * Whether markdown-http is available.
      */
-    public static boolean MARKED_AVAILABLE;
+    public static boolean MARKDOWN_HTTP_AVAILABLE;
 
     static {
         try {
-            final URL url = new URL(MARKED_ENGINE_URL);
+            final URL url = new URL(MARKDOWN_ENGINE_URL);
             final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(true);
 
@@ -117,15 +117,15 @@ public final class Markdowns {
 
             conn.disconnect();
 
-            MARKED_AVAILABLE = StringUtils.contains(html, "<p>昔日舞曲</p>");
+            MARKDOWN_HTTP_AVAILABLE = StringUtils.contains(html, "<p>昔日舞曲</p>");
 
-            if (MARKED_AVAILABLE) {
-                LOGGER.log(Level.DEBUG, "[marked] is available, uses it for markdown processing");
+            if (MARKDOWN_HTTP_AVAILABLE) {
+                LOGGER.log(Level.DEBUG, "[markdown-http] is available, uses it for markdown processing");
             } else {
-                LOGGER.log(Level.DEBUG, "[marked] is not available, uses built-in [flexmark] for markdown processing");
+                LOGGER.log(Level.DEBUG, "[markdown-http] is not available, uses built-in [flexmark] for markdown processing");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.INFO, "[marked] is not available, uses built-in [flexmark] for markdown processing. " +
+            LOGGER.log(Level.INFO, "[markdown-http] is not available, uses built-in [flexmark] for markdown processing. " +
                     "Please read FAQ section in user guide (https://hacpai.com/article/1492881378588) for more details.");
         }
     }
@@ -163,14 +163,14 @@ public final class Markdowns {
 
             String html = langPropsService.get("contentRenderFailedLabel");
 
-            if (MARKED_AVAILABLE) {
+            if (MARKDOWN_HTTP_AVAILABLE) {
                 try {
-                    html = toHtmlByMarked(markdownText);
+                    html = toHtmlByMarkdownHTTP(markdownText);
                     if (!StringUtils.startsWith(html, "<p>")) {
                         html = "<p>" + html + "</p>";
                     }
                 } catch (final Exception e) {
-                    LOGGER.log(Level.WARN, "Failed to use [marked] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
+                    LOGGER.log(Level.WARN, "Failed to use [markdown-http] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
 
                     com.vladsch.flexmark.util.ast.Node document = PARSER.parse(markdownText);
                     html = RENDERER.render(document);
@@ -233,8 +233,8 @@ public final class Markdowns {
         return langPropsService.get("contentRenderFailedLabel");
     }
 
-    private static String toHtmlByMarked(final String markdownText) throws Exception {
-        final URL url = new URL(MARKED_ENGINE_URL);
+    private static String toHtmlByMarkdownHTTP(final String markdownText) throws Exception {
+        final URL url = new URL(MARKDOWN_ENGINE_URL);
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setDoOutput(true);
 
