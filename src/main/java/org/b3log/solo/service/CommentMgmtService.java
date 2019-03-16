@@ -51,7 +51,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.6, Mar 3, 2019
+ * @version 1.3.3.7, Mar 16, 2019
  * @since 0.3.5
  */
 @Service
@@ -400,12 +400,9 @@ public class CommentMgmtService {
             final String commentName = requestJSONObject.getString(Comment.COMMENT_NAME);
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
             final String commentContent = requestJSONObject.getString(Comment.COMMENT_CONTENT);
-
             final String originalCommentId = requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID);
             ret.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, originalCommentId);
-            // Step 1: Add comment
             final JSONObject comment = new JSONObject();
-
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             comment.put(Comment.COMMENT_NAME, commentName);
@@ -415,14 +412,11 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, requestJSONObject.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME));
             final JSONObject preference = optionQueryService.getPreference();
             final Date date = new Date();
-
             comment.put(Comment.COMMENT_CREATED, date.getTime());
             ret.put(Comment.COMMENT_T_DATE, DateFormatUtils.format(date, "yyyy-MM-dd HH:mm:ss"));
             ret.put("commentDate2", date);
-
             ret.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));
             ret.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
-
             ret.put(Comment.COMMENT_NAME, commentName);
             String cmtContent = Emotions.convert(commentContent);
             cmtContent = Markdowns.toHTML(cmtContent);
@@ -451,7 +445,6 @@ public class CommentMgmtService {
             comment.put(Comment.COMMENT_ON_ID, articleId);
             comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
             final String commentId = Ids.genTimeMillisId();
-
             comment.put(Keys.OBJECT_ID, commentId);
             ret.put(Keys.OBJECT_ID, commentId);
             final String commentSharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
