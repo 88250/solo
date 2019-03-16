@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.9, May 28, 2013
+ * @version 1.0.1.0, Mar 16, 2019
  */
 
 admin.comment = { 
@@ -78,8 +78,8 @@ admin.comment = {
                     if (comments[i].commentOriginalCommentName) {
                         commentsHTML += "@" + comments[i].commentOriginalCommentName;
                     }
-                    commentsHTML += "</span><span title='" + Label.removeLabel + "' class='fn__right deleteIcon' onclick=\"admin.comment.del('"
-                    + comments[i].oId + "', '" + fromId + "', '" + onId + "')\"></span><span class='fn__right'>&nbsp;&nbsp;"
+                    commentsHTML += "</span><a title='" + Label.removeLabel + "' class='fn__right fn__pointer' href=\"javascript:admin.comment.del('"
+                    + comments[i].oId + "', '" + fromId + "', '" + onId + "')\">" + Label.removeLabel + "</a><span class='fn__right'>&nbsp;&nbsp;"
                     + $.bowknot.getDate(comments[i].commentTime)
                     + "&nbsp;</span><div class='fn__clear'></div></div><div class='fn__margin12'>"
                     + contentHTML + "</div>";
