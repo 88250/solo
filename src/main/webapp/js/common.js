@@ -145,7 +145,7 @@ var Util = {
     if (!window.Vditor) {
       var xhrObj = new XMLHttpRequest()
       xhrObj.open('GET', latkeConfig.staticServePath +
-        '/js/lib/vditor-1.1.8/index.min.js', false)
+        '/js/lib/vditor-1.1.9/index.min.js', false)
       xhrObj.setRequestHeader('Accept',
         'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01')
       xhrObj.send('')
