@@ -34,6 +34,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -51,7 +52,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.4, Jan 2, 2019
+ * @version 2.3.1.5, Mar 17, 2019
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -131,9 +132,15 @@ public final class Markdowns {
     }
 
     /**
-     * Private constructor.
+     * Cleans the specified HTML.
+     *
+     * @param html the specified HTML
+     * @return html
      */
-    private Markdowns() {
+    public static String clean(final String html) {
+        String ret = Jsoup.clean(html, Whitelist.relaxed().addAttributes("code", "class") /* 允许代码块语言高亮信息 */);
+
+        return ret;
     }
 
     /**
@@ -279,5 +286,11 @@ public final class Markdowns {
         final JSONObject value = new JSONObject();
         value.put("data", html);
         MD_CACHE.put(hash, value);
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Markdowns() {
     }
 }

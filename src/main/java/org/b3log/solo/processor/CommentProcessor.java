@@ -48,7 +48,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.3.3.6, Feb 10, 2019
+ * @version 1.3.3.7, Mar 17, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -262,7 +262,7 @@ public class CommentProcessor {
                 final StringWriter stringWriter = new StringWriter();
                 template.process(dataModel, stringWriter);
                 stringWriter.close();
-                String cmtTpl = stringWriter.toString();
+                final String cmtTpl = stringWriter.toString();
 
                 addResult.put("cmtTpl", cmtTpl);
             } catch (final Exception e) {

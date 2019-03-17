@@ -51,7 +51,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.7, Mar 16, 2019
+ * @version 1.3.3.8, Mar 17, 2019
  * @since 0.3.5
  */
 @Service
@@ -420,7 +420,7 @@ public class CommentMgmtService {
             ret.put(Comment.COMMENT_NAME, commentName);
             String cmtContent = Emotions.convert(commentContent);
             cmtContent = Markdowns.toHTML(cmtContent);
-            cmtContent = Jsoup.clean(cmtContent, Whitelist.relaxed());
+            cmtContent = Markdowns.clean(cmtContent);
             ret.put(Comment.COMMENT_CONTENT, cmtContent);
             ret.put(Comment.COMMENT_URL, commentURL);
 
