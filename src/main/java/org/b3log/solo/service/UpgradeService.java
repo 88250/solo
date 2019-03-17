@@ -26,13 +26,14 @@ import org.b3log.solo.model.Option;
 import org.b3log.solo.upgrade.V299_300;
 import org.b3log.solo.upgrade.V300_310;
 import org.b3log.solo.upgrade.V310_320;
+import org.b3log.solo.upgrade.V320_330;
 import org.json.JSONObject;
 
 /**
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.2, Mar 3, 2019
+ * @version 1.2.1.3, Mar 17, 2019
  * @since 1.2.0
  */
 @Service
@@ -71,6 +72,8 @@ public class UpgradeService {
                     V300_310.perform();
                 case "3.1.0":
                     V310_320.perform();
+                case "3.2.0":
+                    V320_330.perform();
 
                     break;
                 default:

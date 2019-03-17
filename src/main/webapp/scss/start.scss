@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 2.0.0.3, Mar 16, 2019
+* @version 2.0.0.4, Mar 17, 2019
 */
 
 @import "reset";
@@ -262,7 +262,7 @@ input[type=text]:focus {
 }
 
 .search__header a {
-    line-height: 44px;
+    line-height: 32px;
 }
 
 .search__input {
@@ -273,12 +273,12 @@ input[type=text]:focus {
 .search__input input {
     margin: 0 10px 0 20px;
     width: 523px;
-    height: 44px;
-    line-height: 44px;
+    height: 32px;
+    line-height: 32px;
 }
 
 .search__input button {
-    height: 44px;
+    height: 32px;
     margin: 0;
 }
 

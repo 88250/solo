@@ -16,7 +16,7 @@
     <artifactId>solo</artifactId>
     <packaging>war</packaging>
     <name>Solo</name>
-    <version>3.2.0</version>
+    <version>3.3.0</version>
     <description>
         一款小而美的博客系统，专为程序员设计。
     </description>
