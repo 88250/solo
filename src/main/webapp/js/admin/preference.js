@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Feb 28, 2019
+ * @version 1.3.0.1, Mar 17, 2019
  */
 
 /* preference 相关操作 */
@@ -122,6 +122,7 @@ admin.preference = {
         $('#articleListDisplay').val(preference.articleListStyle)
         $('#feedOutputMode').val(preference.feedOutputMode)
         $('#feedOutputCnt').val(preference.feedOutputCnt)
+        $('#faviconURL').val(preference.faviconURL)
 
         $('#loadMsg').text('')
       },
@@ -254,6 +255,7 @@ admin.preference = {
         'articleListStyle': $('#articleListDisplay').val(),
         'feedOutputMode': $('#feedOutputMode').val(),
         'feedOutputCnt': $('#feedOutputCnt').val(),
+        'faviconURL': $('#faviconURL').val(),
         'commentable': $('#commentable').prop('checked'),
         'customVars': $('#customVars').val(),
       },
