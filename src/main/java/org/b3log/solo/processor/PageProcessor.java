@@ -136,6 +136,7 @@ public class PageProcessor {
             Stopwatchs.end();
 
             dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillFaviconURL(dataModel, preference);
             statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

@@ -101,6 +101,7 @@ public class ErrorProcessor {
                 dataModel.putAll(langs);
                 final JSONObject preference = optionQueryService.getPreference();
                 dataModelService.fillCommon(context, dataModel, preference);
+                dataModelService.fillFaviconURL(dataModel, preference);
                 final String msg = (String) context.attr(Keys.MSG);
                 dataModel.put(Keys.MSG, msg);
                 dataModel.put(Common.LOGIN_URL, userQueryService.getLoginURL(Common.ADMIN_INDEX_URI));

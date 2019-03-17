@@ -41,7 +41,10 @@ import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
-import org.b3log.solo.model.*;
+import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Skin;
+import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.ExportService;
 import org.b3log.solo.service.OptionQueryService;
@@ -142,7 +145,6 @@ public class AdminConsole {
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT));
             dataModel.put(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
-            dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
             dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
             Keys.fillRuntime(dataModel);
             dataModelService.fillMinified(dataModel);
@@ -158,6 +160,7 @@ public class AdminConsole {
                 dataModel.put(Common.UPLOAD_URL, upload.optString(Common.UPLOAD_URL));
                 dataModel.put(Common.UPLOAD_MSG, upload.optString(Common.UPLOAD_MSG));
             }
+            dataModelService.fillFaviconURL(dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Admin index render failed", e);
         }

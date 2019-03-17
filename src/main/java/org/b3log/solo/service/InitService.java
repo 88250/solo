@@ -475,6 +475,12 @@ public class InitService {
     private void initPreference(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
 
+        final JSONObject faviconURLOpt = new JSONObject();
+        faviconURLOpt.put(Keys.OBJECT_ID, Option.ID_C_FAVICON_URL);
+        faviconURLOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        faviconURLOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_FAVICON_URL);
+        optionRepository.add(faviconURLOpt);
+
         final JSONObject customVarsOpt = new JSONObject();
         customVarsOpt.put(Keys.OBJECT_ID, Option.ID_C_CUSTOM_VARS);
         customVarsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);

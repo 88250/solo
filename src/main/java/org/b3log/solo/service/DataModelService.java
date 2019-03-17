@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.5, Feb 27, 2019
+ * @version 1.7.0.6, Mar 17, 2019
  * @since 0.3.1
  */
 @Service
@@ -538,6 +538,20 @@ public class DataModelService {
     }
 
     /**
+     * Fills favicon URL. 可配置 favicon 图标路径 https://github.com/b3log/solo/issues/12706
+     *
+     * @param dataModel the specified data model
+     * @param preference the specified preference
+     */
+    public void fillFaviconURL(final Map<String, Object> dataModel, final JSONObject preference) {
+        if (null == preference) {
+            dataModel.put(Common.FAVICON_URL, Option.DefaultPreference.DEFAULT_FAVICON_URL);
+        } else {
+            dataModel.put(Common.FAVICON_URL, preference.optString(Option.ID_C_FAVICON_URL));
+        }
+    }
+
+    /**
      * Fills common parts (header, side and footer).
      *
      * @param context    the specified HTTP servlet request context
@@ -545,8 +559,7 @@ public class DataModelService {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillCommon(final RequestContext context, final Map<String, Object> dataModel, final JSONObject preference)
-            throws ServiceException {
+    public void fillCommon(final RequestContext context, final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         fillSide(context, dataModel, preference);
         fillBlogHeader(context, dataModel, preference);
         fillBlogFooter(context, dataModel, preference);

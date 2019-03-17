@@ -148,6 +148,7 @@ public class SearchProcessor {
             final JSONObject preference = optionQueryService.getPreference();
 
             dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.setArticlesExProperties(context, articles, preference);
 
             dataModel.put(Article.ARTICLES, articles);

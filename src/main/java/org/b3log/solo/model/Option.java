@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.5.0.4, Mar 3, 2019
+ * @version 1.5.0.5, Mar 17, 2019
  * @since 0.6.0
  */
 public final class Option {
@@ -52,6 +52,11 @@ public final class Option {
     public static final String OPTION_CATEGORY = "optionCategory";
 
     // oId constants
+    /**
+     * Key of favicon URL.
+     */
+    public static final String ID_C_FAVICON_URL = "faviconURL";
+
     /**
      * Key of custom vars.
      */
@@ -269,10 +274,15 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.2.0.1, Feb 17, 2019
+     * @version 2.2.0.2, Mar 17, 2019
      * @since 0.3.1
      */
     public static final class DefaultPreference {
+
+        /**
+         * Default favicon URL.
+         */
+        public static final String DEFAULT_FAVICON_URL = "https://static.b3log.org/images/brand/solo-32.png";
 
         /**
          * Default custom vars.

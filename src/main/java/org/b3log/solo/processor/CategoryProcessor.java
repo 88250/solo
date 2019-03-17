@@ -151,6 +151,7 @@ public class CategoryProcessor {
             dataModel.put(Common.PATH, "/category/" + URLs.encode(categoryURI));
 
             dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillFaviconURL(dataModel, preference);
 
             statisticMgmtService.incBlogViewCount(context, response);
         } catch (final ServiceException | JSONException e) {

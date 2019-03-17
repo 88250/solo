@@ -22,10 +22,15 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.7.0.3, Feb 27, 2019
+ * @version 1.7.0.4, Mar 17, 2019
  * @since 0.3.1
  */
 public final class Common {
+
+    /**
+     * Key of favicon URL.
+     */
+    public static final String FAVICON_URL = "faviconURL";
 
     /**
      * Key of URL.

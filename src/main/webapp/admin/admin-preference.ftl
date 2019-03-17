@@ -125,6 +125,8 @@
         </select>
         <label for="feedOutputCnt">${feedOutputCnt1Label}</label>
         <input id="feedOutputCnt" class="normalInput" type="text"/>
+        <label for="faviconURL">Favicon</label>
+        <input id="faviconURL" class="normalInput" type="text"/>
         <label for="customVars">${customVars1Label}</label>
         <input id="customVars" class="normalInput" type="text"/><br/><br/>
         <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
