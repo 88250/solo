@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.5, Feb 27, 2019
+ * @version 1.7.0.6, Mar 17, 2019
  * @since 0.3.1
  */
 @Service
@@ -569,6 +569,9 @@ public class DataModelService {
 
         // 使用 Marked 时代码高亮问题 https://github.com/b3log/solo/issues/12614
         dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKDOWN_HTTP_AVAILABLE);
+
+        // 可配置 favicon 图标路径 https://github.com/b3log/solo/issues/12706
+        dataModel.put(Common.FAVICON_URL, preference.optString(Option.ID_C_FAVICON_URL));
     }
 
     /**

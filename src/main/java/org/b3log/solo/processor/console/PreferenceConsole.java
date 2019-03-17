@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.2.0.21, Feb 8, 2019
+ * @version 1.2.0.22, Mar 17, 2019
  * @since 0.4.0
  */
 @RequestProcessor
@@ -167,6 +167,7 @@ public class PreferenceConsole {
      *         "commentable": boolean,
      *         "feedOutputMode: "" // Optional values: "abstract"/"full"
      *         "feedOutputCnt": int,
+     *         "faviconURL": "",
      *         "customVars" "", // 支持配置自定义参数 https://github.com/b3log/solo/issues/12535
      *     }
      * }
@@ -244,6 +245,7 @@ public class PreferenceConsole {
      *         "commentable": boolean,
      *         "feedOutputMode: "",
      *         "feedOutputCnt": int,
+     *         "faviconURL": "",
      *         "customVars" "", // 支持配置自定义参数 https://github.com/b3log/solo/issues/12535
      *     }
      * }

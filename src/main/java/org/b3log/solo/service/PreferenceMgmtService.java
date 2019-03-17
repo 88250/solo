@@ -307,6 +307,10 @@ public class PreferenceMgmtService {
             versionOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_VERSION));
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
+            final JSONObject faviconURLOpt = optionRepository.get(Option.ID_C_FAVICON_URL);
+            faviconURLOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_FAVICON_URL));
+            optionRepository.update(Option.ID_C_FAVICON_URL, faviconURLOpt);
+
             final JSONObject customVarsOpt = optionRepository.get(Option.ID_C_CUSTOM_VARS);
             customVarsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_CUSTOM_VARS));
             optionRepository.update(Option.ID_C_CUSTOM_VARS, customVarsOpt);
