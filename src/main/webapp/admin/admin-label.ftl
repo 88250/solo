@@ -25,6 +25,7 @@
     };
 
     var Label = {
+        "langLabel": "${langLabel}",
         "hljsStyle": "atom-one-light",
         "pushSuccLabel": '${pushSuccLabel}',
         "pushToHacpaiLabel": '${pushToHacpaiLabel}',
