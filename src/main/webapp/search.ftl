@@ -26,12 +26,12 @@
     <title>${searchLabel} - ${blogTitle}${searchLabel}</title>
     <link type="text/css" rel="stylesheet"
           href="${staticServePath}/scss/start.css?${staticResourceVersion}" charset="utf-8"/>
-    <link rel="icon" type="image/png" href="${staticServePath}/favicon.png"/>
-    <link rel="apple-touch-icon" href="${staticServePath}/favicon.png">
+    <link rel="icon" type="image/png" href="${faviconURL}"/>
+    <link rel="apple-touch-icon" href="${faviconURL}">
 </head>
 <body class="search__body">
 <div class="search__header fn-clear">
-    <a href="${servePath}"><img width="44" border="0" alt="Solo" title="Solo" src="${staticServePath}/favicon.png"/></a>
+    <a href="${servePath}"><img width="32" border="0" alt="Solo" title="Solo" src="${faviconURL}"/></a>
     <div class="search__input">
         <input value="${keyword}" id="keyword" type="text" onkeypress="if(event.keyCode===13){document.getElementById('searchBtn').click()}">
         <button id="searchBtn" onclick="window.location.href='${servePath}/search?keyword=' + document.getElementById('keyword').value">搜索</button>

@@ -27,7 +27,6 @@
 <static-files>
     <!-- Uses the STANDARD Ant Path Pattern to configure these paths!  -->
 
-    <include path="/favicon.png"/>
     <include path="/robots.txt"/>
     <include path="/sw.js"/>
     <include path="/manifest.json"/>

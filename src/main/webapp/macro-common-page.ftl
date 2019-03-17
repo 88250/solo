@@ -28,8 +28,8 @@
     <title>${title}<#if blogTitle??> - ${blogTitle}</#if></title>
     <link type="text/css" rel="stylesheet"
           href="${staticServePath}/scss/start.css?${staticResourceVersion}" charset="utf-8"/>
-    <link rel="icon" type="image/png" href="${staticServePath}/favicon.png"/>
-    <link rel="apple-touch-icon" href="${staticServePath}/favicon.png">
+    <link rel="icon" type="image/png" href="${faviconURL}"/>
+    <link rel="apple-touch-icon" href="${faviconURL}">
 </head>
 <body>
 <div class="wrap">

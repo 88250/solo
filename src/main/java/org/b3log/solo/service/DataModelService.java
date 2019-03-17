@@ -545,8 +545,7 @@ public class DataModelService {
      * @param preference the specified preference
      * @throws ServiceException service exception
      */
-    public void fillCommon(final RequestContext context, final Map<String, Object> dataModel, final JSONObject preference)
-            throws ServiceException {
+    public void fillCommon(final RequestContext context, final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
         fillSide(context, dataModel, preference);
         fillBlogHeader(context, dataModel, preference);
         fillBlogFooter(context, dataModel, preference);

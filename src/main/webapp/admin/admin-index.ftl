@@ -31,7 +31,7 @@
         <title>${adminConsoleLabel} - ${blogTitle}</title>
         <link type="text/css" rel="stylesheet" href="${staticServePath}/scss/admin.css?${staticResourceVersion}" />
         <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.6/styles/atom-one-light.min.css" />
-        <link rel="icon" type="image/png" href="${staticServePath}/favicon.png" />
+        <link rel="icon" type="image/png" href="${faviconURL}" />
         <link rel="manifest" href="${servePath}/manifest.json">
     </head>
     <body onhashchange="admin.setCurByHash();">
