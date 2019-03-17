@@ -187,7 +187,7 @@ public class InitService {
                 return;
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Check tables failed, please make sure database existed and connection URL in local.props is correct [msg=" + e.getMessage() + "]");
+            LOGGER.log(Level.ERROR, "Check tables failed, please make sure database existed and connection URL [jdbc.URL] in local.props is correct [msg=" + e.getMessage() + "]");
 
             System.exit(-1);
         }
