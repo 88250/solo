@@ -224,6 +224,7 @@ public class ArticleProcessor {
 
         Keys.fillRuntime(dataModel);
         dataModelService.fillMinified(dataModel);
+        dataModelService.fillFaviconURL(dataModel, preference);
     }
 
     /**
@@ -623,6 +624,7 @@ public class ArticleProcessor {
             prepareShowAuthorArticles(pageNums, dataModel, pageCount, currentPageNum, articles, author);
             final HttpServletResponse response = context.getResponse();
             dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillFaviconURL(dataModel, preference);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             statisticMgmtService.incBlogViewCount(context, response);
@@ -678,6 +680,7 @@ public class ArticleProcessor {
             prepareShowArchiveArticles(preference, dataModel, articles, currentPageNum, pageCount, archiveDateString, archiveDate);
             final HttpServletResponse response = context.getResponse();
             dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillFaviconURL(dataModel, preference);
 
             statisticMgmtService.incBlogViewCount(context, response);
         } catch (final Exception e) {
@@ -751,6 +754,7 @@ public class ArticleProcessor {
 
             final HttpServletResponse response = context.getResponse();
             dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillFaviconURL(dataModel, preference);
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);
 
             if (!StatisticMgmtService.hasBeenServed(context, response)) {

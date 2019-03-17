@@ -160,7 +160,7 @@ public class AdminConsole {
                 dataModel.put(Common.UPLOAD_URL, upload.optString(Common.UPLOAD_URL));
                 dataModel.put(Common.UPLOAD_MSG, upload.optString(Common.UPLOAD_MSG));
             }
-            dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillFaviconURL(dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Admin index render failed", e);
         }

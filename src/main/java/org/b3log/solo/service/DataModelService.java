@@ -538,6 +538,20 @@ public class DataModelService {
     }
 
     /**
+     * Fills favicon URL. 可配置 favicon 图标路径 https://github.com/b3log/solo/issues/12706
+     *
+     * @param dataModel the specified data model
+     * @param preference the specified preference
+     */
+    public void fillFaviconURL(final Map<String, Object> dataModel, final JSONObject preference) {
+        if (null == preference) {
+            dataModel.put(Common.FAVICON_URL, Option.DefaultPreference.DEFAULT_FAVICON_URL);
+        } else {
+            dataModel.put(Common.FAVICON_URL, preference.optString(Option.ID_C_FAVICON_URL));
+        }
+    }
+
+    /**
      * Fills common parts (header, side and footer).
      *
      * @param context    the specified HTTP servlet request context
@@ -568,9 +582,6 @@ public class DataModelService {
 
         // 使用 Marked 时代码高亮问题 https://github.com/b3log/solo/issues/12614
         dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKDOWN_HTTP_AVAILABLE);
-
-        // 可配置 favicon 图标路径 https://github.com/b3log/solo/issues/12706
-        dataModel.put(Common.FAVICON_URL, preference.optString(Option.ID_C_FAVICON_URL));
     }
 
     /**

@@ -129,6 +129,7 @@ public class IndexProcessor {
 
             dataModelService.fillIndexArticles(context, dataModel, currentPageNum, preference);
             dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillFaviconURL(dataModel, preference);
 
             dataModel.put(Pagination.PAGINATION_CURRENT_PAGE_NUM, currentPageNum);
             final int previousPageNum = currentPageNum > 1 ? currentPageNum - 1 : 0;
@@ -176,15 +177,8 @@ public class IndexProcessor {
         dataModel.put(Common.REFERER, referer);
         Keys.fillRuntime(dataModel);
         dataModelService.fillMinified(dataModel);
+        dataModelService.fillFaviconURL(dataModel, optionQueryService.getPreference());
         Solos.addGoogleNoIndex(context);
-        try {
-            final JSONObject preference = optionQueryService.getPreference();
-            dataModelService.fillCommon(context, dataModel, preference);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            context.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-        }
     }
 
     /**
@@ -217,6 +211,7 @@ public class IndexProcessor {
             dataModel.putAll(langs);
             final JSONObject preference = optionQueryService.getPreference();
             dataModelService.fillCommon(context, dataModel, preference);
+            dataModelService.fillFaviconURL(dataModel, preference);
             Keys.fillServer(dataModel);
             Keys.fillRuntime(dataModel);
             dataModelService.fillMinified(dataModel);
