@@ -30,6 +30,7 @@ import org.b3log.latke.plugin.PluginManager;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
@@ -46,6 +47,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Connection;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Set;
@@ -177,7 +179,7 @@ public class InitService {
      * Initializes database tables.
      */
     public void initTables() {
-        try {
+        try (final Connection chk = Connections.getConnection()){
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
             final boolean userTableExist = JdbcRepositories.existTable(tablePrefix + User.USER);
             final boolean optionTableExist = JdbcRepositories.existTable(tablePrefix + Option.OPTION);
@@ -185,7 +187,7 @@ public class InitService {
                 return;
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Check tables failed", e);
+            LOGGER.log(Level.ERROR, "Check tables failed, please make sure database existed and connection URL in local.props is correct [msg=" + e.getMessage() + "]");
 
             System.exit(-1);
         }
