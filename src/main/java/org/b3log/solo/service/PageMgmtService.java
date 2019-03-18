@@ -118,8 +118,7 @@ public class PageMgmtService {
     private InitService initService;
 
     /**
-     * Refreshes GitHub repos.
-     * 同步 GitHub 仓库 https://github.com/b3log/solo/issues/12514
+     * Refreshes GitHub repos. 同步拉取 GitHub 仓库 https://github.com/b3log/solo/issues/12514
      */
     public void refreshGitHub() {
         if (!initService.isInited()) {
