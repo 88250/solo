@@ -17,7 +17,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<#include "macro-common-page.ftl">
+<#include "macro-common_page.ftl">
 
 <@commonPage "${welcomeToSoloLabel}!">
 <h2>

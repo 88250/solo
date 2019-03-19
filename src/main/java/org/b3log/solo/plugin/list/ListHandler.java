@@ -37,6 +37,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.annpeter.cn">Ann Peter</a>
+ * @author <a href="http://vanessa.b3log.org">Vanessa</a>
  * @version 1.0.2.2, Mar 19, 2019
  * @since 0.6.7
  */
@@ -64,7 +65,7 @@ public class ListHandler extends AbstractEventListener<JSONObject> {
             final String id = "b3_solo_" + tagName + "_" + i;
             element.before("<span id='" + id + "'></span>");
             final JSONObject li = new JSONObject().
-                    put("class", "b3-solo-list-" + tagName).
+                    put("className", "toc__" + tagName).
                     put("id", id).
                     put("text", text);
             toc.add(li);

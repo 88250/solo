@@ -17,7 +17,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<#include "../common-template/macro-common-page.ftl">
+<#include "../common-template/macro-common_page.ftl">
 
 <@commonPage "${articleViewPwdLabel}">
 <h2>
