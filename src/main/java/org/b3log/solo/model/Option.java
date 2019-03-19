@@ -53,6 +53,11 @@ public final class Option {
 
     // oId constants
     /**
+     * Key of enable syn GitHub. 博文定时同步 GitHub 仓库 https://github.com/b3log/solo/issues/12676
+     */
+    public static final String ID_C_SYNC_GITHUB = "syncGitHub";
+
+    /**
      * Key of favicon URL.
      */
     public static final String ID_C_FAVICON_URL = "faviconURL";
@@ -274,10 +279,15 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.2.0.2, Mar 17, 2019
+     * @version 2.2.0.3, Mar 19, 2019
      * @since 0.3.1
      */
     public static final class DefaultPreference {
+
+        /**
+         * Default enable sync GitHub.
+         */
+        public static final String DEFAULT_SYNC_GITHUB = "false";
 
         /**
          * Default favicon URL.

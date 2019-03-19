@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  * Cron management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Jan 29, 2019
+ * @version 1.0.0.3, Mar 19, 2019
  * @since 2.9.7
  */
 @Service
@@ -99,7 +99,17 @@ public class CronMgmtService {
         }, delay, 1000 * 60 * 60 * 24, TimeUnit.MILLISECONDS);
         delay += 2000;
 
-        exportService.exportGitHubRepo();
+        SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
+            try {
+                exportService.exportGitHubRepo();
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Executes cron failed", e);
+            } finally {
+                Stopwatchs.release();
+            }
+        }, delay + 1000 * 60 * 10, 1000 * 60 * 60 * 24, TimeUnit.MILLISECONDS);
+        delay += 2000;
+
     }
 
     /**

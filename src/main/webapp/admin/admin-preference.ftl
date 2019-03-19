@@ -100,6 +100,17 @@
         <input id="relevantArticlesDisplayCount" class="normalInput" type="text"/>
         <label for="externalRelevantArticlesDisplayCount">${externalRelevantArticlesDisplayCnt1Label}</label>
         <input id="externalRelevantArticlesDisplayCount" class="normalInput" type="text"/>
+        <label for="feedOutputMode">${feedOutputModel1Label}</label>
+        <select id="feedOutputMode">
+            <option value="abstract">${abstractLabel}</option>
+            <option value="fullContent">${fullContentLabel}</option>
+        </select>
+        <label for="feedOutputCnt">${feedOutputCnt1Label}</label>
+        <input id="feedOutputCnt" class="normalInput" type="text"/>
+        <label for="faviconURL">Favicon</label>
+        <input id="faviconURL" class="normalInput" type="text"/>
+        <label for="customVars">${customVars1Label}</label>
+        <input id="customVars" class="normalInput" type="text"/>
         <label>
             <div class="fn__flex-inline">
                 ${enableArticleUpdateHint1Label}
@@ -118,17 +129,12 @@
                 <input id="commentable" type="checkbox" class="normalInput"/>
             </div>
         </label>
-        <label for="feedOutputMode">${feedOutputModel1Label}</label>
-        <select id="feedOutputMode">
-            <option value="abstract">${abstractLabel}</option>
-            <option value="fullContent">${fullContentLabel}</option>
-        </select>
-        <label for="feedOutputCnt">${feedOutputCnt1Label}</label>
-        <input id="feedOutputCnt" class="normalInput" type="text"/>
-        <label for="faviconURL">Favicon</label>
-        <input id="faviconURL" class="normalInput" type="text"/>
-        <label for="customVars">${customVars1Label}</label>
-        <input id="customVars" class="normalInput" type="text"/><br/><br/>
+        <label>
+            <div class="fn__flex-inline">
+                ${syncGitHubLabel}
+                <input id="syncGitHub" type="checkbox" class="normalInput"/>
+            </div>
+        </label>
         <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="fn__clear"></div>
     </div>

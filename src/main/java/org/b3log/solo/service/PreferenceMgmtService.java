@@ -311,6 +311,10 @@ public class PreferenceMgmtService {
             faviconURLOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_FAVICON_URL));
             optionRepository.update(Option.ID_C_FAVICON_URL, faviconURLOpt);
 
+            final JSONObject syncGitHubOpt = optionRepository.get(Option.ID_C_SYNC_GITHUB);
+            syncGitHubOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SYNC_GITHUB));
+            optionRepository.update(Option.ID_C_SYNC_GITHUB, syncGitHubOpt);
+
             final JSONObject customVarsOpt = optionRepository.get(Option.ID_C_CUSTOM_VARS);
             customVarsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_CUSTOM_VARS));
             optionRepository.update(Option.ID_C_CUSTOM_VARS, customVarsOpt);

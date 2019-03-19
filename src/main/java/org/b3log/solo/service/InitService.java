@@ -179,7 +179,7 @@ public class InitService {
      * Initializes database tables.
      */
     public void initTables() {
-        try (final Connection chk = Connections.getConnection()){
+        try (final Connection chk = Connections.getConnection()) {
             final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
             final boolean userTableExist = JdbcRepositories.existTable(tablePrefix + User.USER);
             final boolean optionTableExist = JdbcRepositories.existTable(tablePrefix + Option.OPTION);
@@ -474,6 +474,12 @@ public class InitService {
      */
     private void initPreference(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
+
+        final JSONObject syncGitHubOpt = new JSONObject();
+        syncGitHubOpt.put(Keys.OBJECT_ID, Option.ID_C_SYNC_GITHUB);
+        syncGitHubOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        syncGitHubOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_SYNC_GITHUB);
+        optionRepository.add(syncGitHubOpt);
 
         final JSONObject faviconURLOpt = new JSONObject();
         faviconURLOpt.put(Keys.OBJECT_ID, Option.ID_C_FAVICON_URL);

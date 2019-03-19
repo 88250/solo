@@ -153,6 +153,15 @@ public class ExportService {
      */
     public void exportGitHubRepo() {
         try {
+            final JSONObject preference = optionQueryService.getPreference();
+            if (null == preference) {
+                return;
+            }
+
+            if (!preference.optBoolean(Option.ID_C_SYNC_GITHUB)) {
+                return;
+            }
+
             final JSONObject mds = exportHexoMDs();
             final List<JSONObject> posts = (List<JSONObject>) mds.opt("posts");
 
@@ -176,7 +185,6 @@ public class ExportService {
             final JSONObject user = userRepository.getAdmin();
             final String userName = user.optString(User.USER_NAME);
             final String userB3Ke = user.optString(UserExt.USER_B3_KEY);
-            final JSONObject preference = optionQueryService.getPreference();
             final String clientTitle = preference.optString(Option.ID_C_BLOG_TITLE);
             final String clientSubtitle = preference.optString(Option.ID_C_BLOG_SUBTITLE);
 
