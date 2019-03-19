@@ -17,10 +17,13 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-var Label = {
-    "servePath": "${servePath}",
-    "staticServePath": "${staticServePath}",
-    "markedAvailable": ${markedAvailable?c},
-    "hljsStyle": "atom-one-light",
-    "langLabel": "${langLabel}"
-};
+<script>
+    var Label = {
+        "servePath": "${servePath}",
+        "staticServePath": "${staticServePath}",
+        "markedAvailable": ${markedAvailable?c},
+        "hljsStyle": "atom-one-light",
+        "langLabel": "${langLabel}"
+    };
+    Util.init()
+</script>
