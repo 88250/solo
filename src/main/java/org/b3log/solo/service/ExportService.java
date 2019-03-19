@@ -229,7 +229,7 @@ public class ExportService {
                 }
             }
             if (0 < mostCmtBuilder.length()) {
-                bodyBuilder.append("热议\n").append(mostCmtBuilder).append("\n");
+                bodyBuilder.append("热议\n").append(mostCmtBuilder);
             }
 
             final HttpResponse response = HttpRequest.post("http://localhost:8080/github/repos").connectionTimeout(7000).timeout(60000).header("User-Agent", Solos.USER_AGENT).
