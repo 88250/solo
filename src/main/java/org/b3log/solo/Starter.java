@@ -37,7 +37,7 @@ import java.io.File;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.15, Dec 15, 2018
+ * @version 1.1.0.16, Mar 19, 2019
  * @since 1.2.0
  */
 public final class Starter {
@@ -99,7 +99,6 @@ public final class Starter {
         options.addOption(runtimeModeOpt);
 
         options.addOption("h", "help", false, "print help for the command");
-        options.addOption("no", "not_open", false, "not auto open in the browser");
 
         final HelpFormatter helpFormatter = new HelpFormatter();
         final CommandLineParser commandLineParser = new DefaultParser();
@@ -181,19 +180,6 @@ public final class Starter {
 
             System.exit(-1);
         }
-
-//        serverScheme = Latkes.getServerScheme();
-//        serverHost = Latkes.getServerHost();
-//        serverPort = Latkes.getServerPort();
-//        final String contextPath = Latkes.getContextPath();
-//
-//        try {
-//            if (!commandLine.hasOption("no")) {
-//                Desktop.getDesktop().browse(new URI(serverScheme + "://" + serverHost + ":" + serverPort + contextPath));
-//            }
-//        } catch (final Throwable e) {
-//            // Ignored
-//        }
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
