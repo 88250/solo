@@ -182,7 +182,7 @@ public class ExportService {
 
             final Set<String> articleIds = new HashSet<>();
 
-            final StringBuilder bodyBuilder = new StringBuilder("最新\n");
+            final StringBuilder bodyBuilder = new StringBuilder("### 最新\n");
             final List<JSONObject> recentArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).setPage(1, 20));
             for (final JSONObject article : recentArticles) {
                 final String title = article.optString(Article.ARTICLE_TITLE);
@@ -209,7 +209,7 @@ public class ExportService {
                 }
             }
             if (0 < mostViewBuilder.length()) {
-                bodyBuilder.append("热门\n").append(mostViewBuilder).append("\n\n");
+                bodyBuilder.append("### 热门\n").append(mostViewBuilder).append("\n\n");
             }
 
             final StringBuilder mostCmtBuilder = new StringBuilder();
@@ -229,10 +229,10 @@ public class ExportService {
                 }
             }
             if (0 < mostCmtBuilder.length()) {
-                bodyBuilder.append("热议\n").append(mostCmtBuilder);
+                bodyBuilder.append("### 热议\n").append(mostCmtBuilder);
             }
 
-            final HttpResponse response = HttpRequest.post("http://localhost:8080/github/repos").connectionTimeout(7000).timeout(60000).header("User-Agent", Solos.USER_AGENT).
+            final HttpResponse response = HttpRequest.post("https://hacpai.com/github/repos").connectionTimeout(7000).timeout(60000).header("User-Agent", Solos.USER_AGENT).
                     form("userName", userName,
                             "userB3Key", userB3Ke,
                             "clientName", "Solo",
@@ -245,6 +245,7 @@ public class ExportService {
                             "file", zipData).send();
             response.close();
             response.charset("UTF-8");
+            LOGGER.info("Github repo sync completed: " + response.bodyText());
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Exports articles to github repo failed", e);
         }
