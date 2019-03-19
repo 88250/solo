@@ -190,27 +190,47 @@ public class ExportService {
                 bodyBuilder.append("\n* [").append(title).append("](").append(link).append(")");
                 articleIds.add(article.optString(Keys.OBJECT_ID));
             }
-            bodyBuilder.append("\n\n热门\n\n");
-            final List<JSONObject> mostViewArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).setPage(1, 20));
+            bodyBuilder.append("\n\n");
+
+            final StringBuilder mostViewBuilder = new StringBuilder();
+            final List<JSONObject> mostViewArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).setPage(1, 40));
+            int count = 0;
             for (final JSONObject article : mostViewArticles) {
                 final String articleId = article.optString(Keys.OBJECT_ID);
                 if (!articleIds.contains(articleId)) {
                     final String title = article.optString(Article.ARTICLE_TITLE);
                     final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-                    bodyBuilder.append("\n* [").append(title).append("](").append(link).append(")");
+                    mostViewBuilder.append("\n* [").append(title).append("](").append(link).append(")");
+                    articleIds.add(articleId);
+                    count++;
+                }
+                if (20 <= count) {
+                    break;
                 }
             }
-            bodyBuilder.append("\n\n热议\n\n");
-            final List<JSONObject> mostCmtArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).setPage(1, 20));
+            if (0 < mostViewBuilder.length()) {
+                bodyBuilder.append("热门\n\n").append(mostViewBuilder).append("\n\n");
+            }
+
+            final StringBuilder mostCmtBuilder = new StringBuilder();
+            final List<JSONObject> mostCmtArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).setPage(1, 60));
+            count = 0;
             for (final JSONObject article : mostCmtArticles) {
                 final String articleId = article.optString(Keys.OBJECT_ID);
                 if (!articleIds.contains(articleId)) {
                     final String title = article.optString(Article.ARTICLE_TITLE);
                     final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
-                    bodyBuilder.append("\n* [").append(title).append("](").append(link).append(")");
+                    mostCmtBuilder.append("\n* [").append(title).append("](").append(link).append(")");
+                    articleIds.add(articleId);
+                    count++;
+                }
+                if (20 <= count) {
+                    break;
                 }
             }
-            bodyBuilder.append("\n\n");
+            if (0 < mostCmtBuilder.length()) {
+                bodyBuilder.append("热议\n\n").append(mostCmtBuilder).append("\n\n");
+            }
 
             final HttpResponse response = HttpRequest.post("http://localhost:8080/github/repos").connectionTimeout(7000).timeout(60000).header("User-Agent", Solos.USER_AGENT).
                     form("userName", userName,
