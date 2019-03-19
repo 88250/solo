@@ -74,14 +74,37 @@
 
 ## 安装
 
+### 本地试用
+
 [下载](https://github.com/b3log/solo/releases)最新的 Solo 包解压，进入解压目录执行：
 
 * Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter`
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
 
-用 `Docker` 运行？
+如果你有 Java 开发环境，可参考[这里(https://hacpai.com/article/1493822943172)通过源码构建运行。
 
-`docker volume create solo_datas && docker run --privileged --name solo --restart=unless-stopped -p 8080:8080 -v solo_datas:/opt/b3log/backup/ -d b3log/solo`
+**请注意**：我们不推荐通过发布包部署或者源码源码构建部署，因为这样的部署方式在将来有新版本发布时升级会比较麻烦。
+这两种方式请仅用于本地试用，线上生产环境我们**强烈建议**通过 Docker 进行部署。
+
+### Docker
+
+获取最新镜像：
+
+```shell
+docker pull b3log/solo
+```
+
+* 使用 MySQL
+  TBD
+  ```shell
+  docker run --name solo -p 8080:8080 --net=host -d b3log/solo
+  ```
+* 使用 H2 Databse
+
+  ```shell
+  docker run --name solo -p 8080:8080 -v ~/solo_h2:/opt/b3log/backup/ -d b3log/solo
+  ```
+
 
 ## 文档
 

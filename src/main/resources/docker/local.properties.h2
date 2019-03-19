@@ -22,8 +22,5 @@ jdbc.URL=jdbc:h2:/opt/b3log/backup/solo_h2/db
 jdbc.minConnCnt=5
 jdbc.maxConnCnt=10
 
-# Be care to change the transaction isolation 
-jdbc.transactionIsolation=REPEATABLE_READ
-
 # The specific table name prefix
 jdbc.tablePrefix=b3_solo

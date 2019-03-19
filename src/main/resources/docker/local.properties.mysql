@@ -22,8 +22,5 @@ jdbc.URL=jdbc:mysql://{{DATABASE_HOST}}:{{DATABASE_PORT}}/{{DATABASE_NAME}}?useU
 jdbc.minConnCnt=5
 jdbc.maxConnCnt=10
 
-# Be care to change the transaction isolation 
-jdbc.transactionIsolation=REPEATABLE_READ
-
 # The specific table name prefix
 jdbc.tablePrefix=b3_solo

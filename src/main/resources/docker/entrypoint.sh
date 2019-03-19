@@ -17,7 +17,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-
 ## author: tomaer.Ma <i@tomaer.com>
 
 DATEBASE_TYPE=${DATEBASE_TYPE:-h2}
@@ -36,7 +35,7 @@ if [ ! -f "/opt/b3log/solo/WEB-INF/classes/local.properties" ]; then
     fi
 
     cat /opt/b3log/tmp/latke.properties | sed \
-     -e "s|{{SERVER_SCHMEA}}|${SERVER_SCHMEA:-http}|g" \
+     -e "s|{{SERVER_SCHEME}}|${SERVER_SCHEME:-http}|g" \
      -e "s|{{SERVER_NAME}}|${SERVER_NAME:-localhost}|g" \
      -e "s|{{SERVER_PORT}}|${SERVER_PORT:-8080}|g" \
     > /opt/b3log/solo/WEB-INF/classes/latke.properties
