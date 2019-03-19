@@ -1,4 +1,4 @@
-FROM maven:3
+FROM maven:3-jdk-8-alpine
 LABEL maintainer="Tomaer Ma<i@tomaer.com>"
 
 WORKDIR /opt/b3log/solo
