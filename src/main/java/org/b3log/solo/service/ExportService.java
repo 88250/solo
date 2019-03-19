@@ -17,9 +17,15 @@
  */
 package org.b3log.solo.service;
 
+import jodd.http.HttpRequest;
+import jodd.http.HttpResponse;
+import jodd.io.ZipUtil;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -27,13 +33,19 @@ import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Repository;
+import org.b3log.latke.repository.SortDirection;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Strings;
+import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
+import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,7 +53,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Mar 10, 2019
+ * @version 1.1.0.3, Mar 19, 2019
  * @since 2.5.0
  */
 @Service
@@ -129,6 +141,115 @@ public class ExportService {
      */
     @Inject
     private UserRepository userRepository;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
+     * Exports public articles to admin's GitHub repos. 博文定时同步 GitHub 仓库 https://github.com/b3log/solo/issues/12676
+     */
+    public void exportGitHubRepo() {
+        try {
+            final JSONObject mds = exportHexoMDs();
+            final List<JSONObject> posts = (List<JSONObject>) mds.opt("posts");
+
+            final String tmpDir = System.getProperty("java.io.tmpdir");
+            final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
+            String localFilePath = tmpDir + File.separator + "solo-hexo-" + date;
+            final File localFile = new File(localFilePath);
+
+            final File postDir = new File(localFilePath + File.separator + "posts");
+            exportHexoMd(posts, postDir.getPath());
+
+            final File zipFile = ZipUtil.zip(localFile);
+            byte[] zipData;
+            try (final FileInputStream inputStream = new FileInputStream(zipFile)) {
+                zipData = IOUtils.toByteArray(inputStream);
+            }
+
+            FileUtils.deleteQuietly(localFile);
+            FileUtils.deleteQuietly(new File(localFile + ".zip"));
+
+            final JSONObject user = userRepository.getAdmin();
+            final String userName = user.optString(User.USER_NAME);
+            final String userB3Ke = user.optString(UserExt.USER_B3_KEY);
+            final JSONObject preference = optionQueryService.getPreference();
+            final String clientTitle = preference.optString(Option.ID_C_BLOG_TITLE);
+            final String clientSubtitle = preference.optString(Option.ID_C_BLOG_SUBTITLE);
+
+            final Set<String> articleIds = new HashSet<>();
+
+            final StringBuilder bodyBuilder = new StringBuilder("\n最新\n\n");
+            final List<JSONObject> recentArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).setPage(1, 20));
+            for (final JSONObject article : recentArticles) {
+                final String title = article.optString(Article.ARTICLE_TITLE);
+                final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+                bodyBuilder.append("\n* [").append(title).append("](").append(link).append(")");
+                articleIds.add(article.optString(Keys.OBJECT_ID));
+            }
+            bodyBuilder.append("\n\n热门\n\n");
+            final List<JSONObject> mostViewArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).setPage(1, 20));
+            for (final JSONObject article : mostViewArticles) {
+                final String articleId = article.optString(Keys.OBJECT_ID);
+                if (!articleIds.contains(articleId)) {
+                    final String title = article.optString(Article.ARTICLE_TITLE);
+                    final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+                    bodyBuilder.append("\n* [").append(title).append("](").append(link).append(")");
+                }
+            }
+            bodyBuilder.append("\n\n热议\n\n");
+            final List<JSONObject> mostCmtArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).setPage(1, 20));
+            for (final JSONObject article : mostCmtArticles) {
+                final String articleId = article.optString(Keys.OBJECT_ID);
+                if (!articleIds.contains(articleId)) {
+                    final String title = article.optString(Article.ARTICLE_TITLE);
+                    final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+                    bodyBuilder.append("\n* [").append(title).append("](").append(link).append(")");
+                }
+            }
+            bodyBuilder.append("\n\n");
+
+            final HttpResponse response = HttpRequest.post("http://localhost:8080/github/repos").connectionTimeout(7000).timeout(60000).header("User-Agent", Solos.USER_AGENT).
+                    form("userName", userName,
+                            "userB3Key", userB3Ke,
+                            "clientName", "Solo",
+                            "clientVersion", SoloServletListener.VERSION,
+                            "clientHost", Latkes.getServePath(),
+                            "clientTitle", clientTitle,
+                            "clientSubtitle", clientSubtitle,
+                            "clientBody", bodyBuilder.toString(),
+                            "file", zipData).send();
+            response.close();
+            response.charset("UTF-8");
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Exports articles to github repo failed", e);
+        }
+    }
+
+    /**
+     * Exports the specified articles to the specified dir path.
+     *
+     * @param articles the specified articles
+     * @param dirPath  the specified dir path
+     */
+    public void exportHexoMd(final List<JSONObject> articles, final String dirPath) {
+        articles.forEach(article -> {
+            final String filename = Solos.sanitizeFilename(article.optString("title")) + ".md";
+            final String text = article.optString("front") + "---" + Strings.LINE_SEPARATOR + article.optString("content");
+
+            try {
+                final String date = DateFormatUtils.format(article.optLong("created"), "yyyyMM");
+                final String dir = dirPath + File.separator + date + File.separator;
+                new File(dir).mkdirs();
+                FileUtils.writeStringToFile(new File(dir + filename), text, "UTF-8");
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Write markdown file failed", e);
+            }
+        });
+    }
 
     /**
      * Exports as Hexo markdown format.

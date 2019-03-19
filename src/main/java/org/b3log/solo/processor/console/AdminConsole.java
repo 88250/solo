@@ -18,7 +18,6 @@
 package org.b3log.solo.processor.console;
 
 import jodd.io.ZipUtil;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
@@ -68,7 +67,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.12, Mar 10, 2019
+ * @version 1.7.0.13, Mar 19, 2019
  * @since 0.4.1
  */
 @Singleton
@@ -431,11 +430,11 @@ public class AdminConsole {
 
             final JSONObject result = exportService.exportHexoMDs();
             final List<JSONObject> posts = (List<JSONObject>) result.opt("posts");
-            exportHexoMd(posts, postDir.getPath());
+            exportService.exportHexoMd(posts, postDir.getPath());
             final List<JSONObject> passwords = (List<JSONObject>) result.opt("passwords");
-            exportHexoMd(passwords, passwordDir.getPath());
+            exportService.exportHexoMd(passwords, passwordDir.getPath());
             final List<JSONObject> drafts = (List<JSONObject>) result.opt("drafts");
-            exportHexoMd(drafts, draftDir.getPath());
+            exportService.exportHexoMd(drafts, draftDir.getPath());
 
             final File zipFile = ZipUtil.zip(localFile);
             byte[] zipData;
@@ -474,21 +473,5 @@ public class AdminConsole {
             // There is no plugin for this template, fill ${plugins} with blank.
             dataModel.put(Plugin.PLUGINS, "");
         }
-    }
-
-    private void exportHexoMd(final List<JSONObject> articles, final String dirPath) {
-        articles.forEach(article -> {
-            final String filename = Solos.sanitizeFilename(article.optString("title")) + ".md";
-            final String text = article.optString("front") + "---" + Strings.LINE_SEPARATOR + article.optString("content");
-
-            try {
-                final String date = DateFormatUtils.format(article.optLong("created"), "yyyyMM");
-                final String dir = dirPath + File.separator + date + File.separator;
-                new File(dir).mkdirs();
-                FileUtils.writeStringToFile(new File(dir + filename), text, "UTF-8");
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Write markdown file failed", e);
-            }
-        });
     }
 }

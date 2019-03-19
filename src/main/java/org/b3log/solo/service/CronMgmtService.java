@@ -66,6 +66,12 @@ public class CronMgmtService {
     private OptionQueryService optionQueryService;
 
     /**
+     * Export service.
+     */
+    @Inject
+    private ExportService exportService;
+
+    /**
      * Start all cron tasks.
      */
     public void start() {
@@ -92,6 +98,8 @@ public class CronMgmtService {
             }
         }, delay, 1000 * 60 * 60 * 24, TimeUnit.MILLISECONDS);
         delay += 2000;
+
+        exportService.exportGitHubRepo();
     }
 
     /**
