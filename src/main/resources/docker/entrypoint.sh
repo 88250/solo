@@ -17,7 +17,6 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-
 ## author: tomaer.Ma <i@tomaer.com>
 
 DATEBASE_TYPE=${DATEBASE_TYPE:-h2}
