@@ -182,7 +182,7 @@ public class ExportService {
 
             final Set<String> articleIds = new HashSet<>();
 
-            final StringBuilder bodyBuilder = new StringBuilder("\n最新\n\n");
+            final StringBuilder bodyBuilder = new StringBuilder("最新\n");
             final List<JSONObject> recentArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).setPage(1, 20));
             for (final JSONObject article : recentArticles) {
                 final String title = article.optString(Article.ARTICLE_TITLE);
@@ -209,7 +209,7 @@ public class ExportService {
                 }
             }
             if (0 < mostViewBuilder.length()) {
-                bodyBuilder.append("热门\n\n").append(mostViewBuilder).append("\n\n");
+                bodyBuilder.append("热门\n").append(mostViewBuilder).append("\n\n");
             }
 
             final StringBuilder mostCmtBuilder = new StringBuilder();
@@ -229,7 +229,7 @@ public class ExportService {
                 }
             }
             if (0 < mostCmtBuilder.length()) {
-                bodyBuilder.append("热议\n\n").append(mostCmtBuilder).append("\n\n");
+                bodyBuilder.append("热议\n").append(mostCmtBuilder).append("\n");
             }
 
             final HttpResponse response = HttpRequest.post("http://localhost:8080/github/repos").connectionTimeout(7000).timeout(60000).header("User-Agent", Solos.USER_AGENT).
@@ -238,6 +238,7 @@ public class ExportService {
                             "clientName", "Solo",
                             "clientVersion", SoloServletListener.VERSION,
                             "clientHost", Latkes.getServePath(),
+                            "clientFavicon", preference.optString(Option.ID_C_FAVICON_URL),
                             "clientTitle", clientTitle,
                             "clientSubtitle", clientSubtitle,
                             "clientBody", bodyBuilder.toString(),
