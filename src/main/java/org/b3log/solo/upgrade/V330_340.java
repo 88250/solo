@@ -18,13 +18,19 @@
 package org.b3log.solo.upgrade;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
 import org.json.JSONObject;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 /**
  * Upgrade script from v3.3.0 to v3.4.0.
@@ -55,6 +61,24 @@ public final class V330_340 {
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
 
         try {
+            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+            final Connection connection = Connections.getConnection();
+            final Statement statement = connection.createStatement();
+            // 修复升级程序问题 https://github.com/b3log/solo/issues/12717
+            final ResultSet resultSet = statement.executeQuery("SELECT count(*) AS c FROM information_schema.COLUMNS WHERE table_name = '" + tablePrefix + "user" + "' AND column_name = 'userPassword'");
+            while (resultSet.next()) {
+                final int c = resultSet.getInt("c");
+                if (0 < c) {
+                    final Statement drop = connection.createStatement();
+                    drop.executeUpdate("ALTER TABLE `" + tablePrefix + "user` DROP COLUMN `userPassword`");
+                    drop.close();
+                }
+            }
+            resultSet.close();
+            statement.close();
+            connection.commit();
+            connection.close();
+
             final Transaction transaction = optionRepository.beginTransaction();
 
             JSONObject syncGitHubOpt = optionRepository.get(Option.ID_C_SYNC_GITHUB);
