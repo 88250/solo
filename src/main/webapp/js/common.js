@@ -30,28 +30,28 @@
 var Util = {
   isArticlePage: function (href) {
     var isArticle = true
-    if (href.indexOf(latkeConfig.servePath + '/tags/') > -1) {
+    if (href.indexOf(Label.servePath + '/tags/') > -1) {
       isArticle = false
     }
-    if (href.indexOf(latkeConfig.servePath + '/tags.html') > -1) {
+    if (href.indexOf(Label.servePath + '/tags.html') > -1) {
       isArticle = false
     }
-    if (href.indexOf(latkeConfig.servePath + '/category/') > -1) {
+    if (href.indexOf(Label.servePath + '/category/') > -1) {
       isArticle = false
     }
-    if (href.indexOf(latkeConfig.servePath + '/archives.html') > -1) {
+    if (href.indexOf(Label.servePath + '/archives.html') > -1) {
       isArticle = false
     }
-    if (href.indexOf(latkeConfig.servePath + '/archives/') > -1) {
+    if (href.indexOf(Label.servePath + '/archives/') > -1) {
       isArticle = false
     }
-    if (href.indexOf(latkeConfig.servePath + '/links.html') > -1) {
+    if (href.indexOf(Label.servePath + '/links.html') > -1) {
       isArticle = false
     }
-    if (href === latkeConfig.servePath) {
+    if (href === Label.servePath) {
       isArticle = false
     }
-    if (/^[0-9]*$/.test(href.replace(latkeConfig.servePath + '/', ''))) {
+    if (/^[0-9]*$/.test(href.replace(Label.servePath + '/', ''))) {
       isArticle = false
     }
     return isArticle
@@ -70,11 +70,11 @@ var Util = {
         storage: true,
         titleSuffix: '',
         filter: function (href) {
-          if (href === latkeConfig.servePath + '/rss.xml' ||
-            href.indexOf(latkeConfig.servePath + '/admin-index.do') > -1) {
+          if (href === Label.servePath + '/rss.xml' ||
+            href.indexOf(Label.servePath + '/admin-index.do') > -1) {
             return true
           }
-          if (href.indexOf(latkeConfig.servePath) > -1) {
+          if (href.indexOf(Label.servePath) > -1) {
             return false
           }
           return true
@@ -144,7 +144,7 @@ var Util = {
   parseMarkdown: function () {
     if (!window.Vditor) {
       var xhrObj = new XMLHttpRequest()
-      xhrObj.open('GET', latkeConfig.staticServePath +
+      xhrObj.open('GET', Label.staticServePath +
         '/js/lib/vditor-1.1.10/index.min.js', false)
       xhrObj.setRequestHeader('Accept',
         'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01')
@@ -171,7 +171,7 @@ var Util = {
           var killIEHTML = '<div style=\'display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110\'></div>'
             + '<iframe style=\'left:' + left + 'px;z-index:120;top: ' + top1 +
             'px; position: fixed; border: 0px none; width: 781px; height: 680px;\' src=\'' +
-            latkeConfig.servePath + '/kill-browser\'></iframe>'
+            Label.servePath + '/kill-browser\'></iframe>'
           $('body').append(killIEHTML)
         } catch (e) {
           var left = 10,
@@ -179,7 +179,7 @@ var Util = {
           var killIEHTML = '<div style=\'display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110\'></div>'
             + '<iframe style=\'left:' + left + 'px;z-index:120;top: ' + top1 +
             'px; position: fixed; border: 0px none; width: 781px; height: 680px;\' src=\'' +
-            latkeConfig.servePath + '/kill-browser\'></iframe>'
+            Label.servePath + '/kill-browser\'></iframe>'
           document.body.innerHTML = document.body.innerHTML + killIEHTML
         }
       }
@@ -209,7 +209,7 @@ var Util = {
     str = commentSplited[0]
     for (var j = 1; j < commentSplited.length; j++) {
       var key = commentSplited[j].substr(0, 2)
-      str += '<img width=\'20\' src=\'' + latkeConfig.staticServePath +
+      str += '<img width=\'20\' src=\'' + Label.staticServePath +
         '/images/emotions/em' + key + '.png\' alt=\'' +
         Label['em' + key + 'Label'] + '\' title=\'' +
         Label['em' + key + 'Label'] + '\'/> ' + commentSplited[j].substr(3)

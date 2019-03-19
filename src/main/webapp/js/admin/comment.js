@@ -51,7 +51,7 @@ admin.comment = {
     }
 
     $.ajax({
-      url: latkeConfig.servePath + '/console/comments/' + from + '/' + onId,
+      url: Label.servePath + '/console/comments/' + from + '/' + onId,
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
@@ -117,7 +117,7 @@ admin.comment = {
       }
 
       $.ajax({
-        url: latkeConfig.servePath + '/console/' + from + '/comment/' + id,
+        url: Label.servePath + '/console/' + from + '/comment/' + id,
         type: 'DELETE',
         cache: false,
         success: function (result, textStatus) {

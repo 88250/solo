@@ -40,7 +40,7 @@
         };
         
         $.ajax({
-            url: latkeConfig.servePath + "/console/plugin/updateSetting",
+            url: Label.servePath + "/console/plugin/updateSetting",
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),

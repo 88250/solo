@@ -51,7 +51,7 @@ admin.article = {
     $('#loadMsg').text(Label.loadingLabel)
     $('#tipMsg').text('')
     $.ajax({
-      url: latkeConfig.servePath + '/console/article/' +
+      url: Label.servePath + '/console/article/' +
       admin.article.status.id,
       type: 'GET',
       cache: false,
@@ -115,7 +115,7 @@ admin.article = {
       $('#tipMsg').text('')
 
       $.ajax({
-        url: latkeConfig.servePath + '/console/article/' + id,
+        url: Label.servePath + '/console/article/' + id,
         type: 'DELETE',
         cache: false,
         success: function (result, textStatus) {
@@ -176,7 +176,7 @@ admin.article = {
       }
 
       $.ajax({
-        url: latkeConfig.servePath + '/console/article/',
+        url: Label.servePath + '/console/article/',
         type: 'POST',
         cache: false,
         data: JSON.stringify(requestJSONObject),
@@ -253,7 +253,7 @@ admin.article = {
       }
 
       $.ajax({
-        url: latkeConfig.servePath + '/console/article/',
+        url: Label.servePath + '/console/article/',
         type: 'PUT',
         cache: false,
         data: JSON.stringify(requestJSONObject),
@@ -291,7 +291,7 @@ admin.article = {
    */
   setStatus: function () {
     $.ajax({// Gets all tags
-      url: latkeConfig.servePath + '/console/tags',
+      url: Label.servePath + '/console/tags',
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
@@ -383,7 +383,7 @@ admin.article = {
 
     // For tag auto-completion
     $.ajax({// Gets all tags
-      url: latkeConfig.servePath + '/console/tags',
+      url: Label.servePath + '/console/tags',
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
@@ -453,7 +453,7 @@ admin.article = {
     // thumbnail
     $('#articleThumbnailBtn').click(function () {
       $.ajax({// Gets all tags
-        url: latkeConfig.servePath + '/console/thumbs?n=1&w=768&h=432',
+        url: Label.servePath + '/console/thumbs?n=1&w=768&h=432',
         type: 'GET',
         cache: false,
         success: function (result, textStatus) {
@@ -519,7 +519,7 @@ admin.article = {
     var that = this
     that._addDisabled()
     $.ajax({
-      url: latkeConfig.servePath + '/console/article/unpublish/' +
+      url: Label.servePath + '/console/article/unpublish/' +
       admin.article.status.id,
       type: 'PUT',
       cache: false,

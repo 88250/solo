@@ -70,7 +70,7 @@ admin.categoryList = {
 
         // For tag auto-completion
         $.ajax({// Gets all tags
-            url: latkeConfig.servePath + "/console/tags",
+            url: Label.servePath + "/console/tags",
             type: "GET",
             cache: false,
             success: function (result, textStatus) {
@@ -110,7 +110,7 @@ admin.categoryList = {
         var that = this;
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/categories/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
+            url: Label.servePath + "/console/categories/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
             success: function(result, textStatus) {
@@ -177,7 +177,7 @@ admin.categoryList = {
             };
 
             $.ajax({
-                url: latkeConfig.servePath + "/console/category/",
+                url: Label.servePath + "/console/category/",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -218,7 +218,7 @@ admin.categoryList = {
         $("#categoryUpdate").dialog("open");
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/category/" + id,
+            url: Label.servePath + "/console/category/" + id,
             type: "GET",
             cache: false,
             success: function(result, textStatus) {
@@ -254,7 +254,7 @@ admin.categoryList = {
             };
 
             $.ajax({
-                url: latkeConfig.servePath + "/console/category/",
+                url: Label.servePath + "/console/category/",
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -285,7 +285,7 @@ admin.categoryList = {
             $("#tipMsg").text("");
 
             $.ajax({
-                url: latkeConfig.servePath + "/console/category/" + id,
+                url: Label.servePath + "/console/category/" + id,
                 type: "DELETE",
                 cache: false,
                 success: function(result, textStatus) {
@@ -345,7 +345,7 @@ admin.categoryList = {
         };
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/category/order/",
+            url: Label.servePath + "/console/category/order/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),

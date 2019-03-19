@@ -33,7 +33,7 @@ admin.preference = {
     $('#tabPreference').tabs()
 
     $.ajax({
-      url: latkeConfig.servePath + '/console/preference/',
+      url: Label.servePath + '/console/preference/',
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
@@ -95,10 +95,10 @@ admin.preference = {
             '"><div class="ft__center">' +
             skins[i].skinName
             + '</div><img class="skinPreview" src="'
-            + latkeConfig.staticServePath + '/skins/' + skins[i].skinDirName
+            + Label.staticServePath + '/skins/' + skins[i].skinDirName
             + '/preview.png"/><div><button class="update small" data-name="' +
             skins[i].skinDirName + '">' + Label.enableLabel +
-            '</button><button class="small" onclick="window.open(\'' + latkeConfig.servePath +
+            '</button><button class="small" onclick="window.open(\'' + Label.servePath +
             '?skin=' + skins[i].skinName + '\')">'
             + Label.previewLabel + '</button></div></div>'
         }
@@ -261,7 +261,7 @@ admin.preference = {
     }
 
     $.ajax({
-      url: latkeConfig.servePath + '/console/preference/',
+      url: Label.servePath + '/console/preference/',
       type: 'PUT',
       cache: false,
       data: JSON.stringify(requestJSONObject),

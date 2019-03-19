@@ -105,7 +105,7 @@ admin.pageList = {
         var that = this;
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
+            url: Label.servePath + "/console/pages/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
             success: function (result, textStatus) {
@@ -172,7 +172,7 @@ admin.pageList = {
         $("#tipMsg").text("");
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/page/" + id,
+            url: Label.servePath + "/console/page/" + id,
             type: "GET",
             cache: false,
             success: function (result, textStatus) {
@@ -213,7 +213,7 @@ admin.pageList = {
             $("#tipMsg").text("");
 
             $.ajax({
-                url: latkeConfig.servePath + "/console/page/" + id,
+                url: Label.servePath + "/console/page/" + id,
                 type: "DELETE",
                 cache: false,
                 success: function (result, textStatus) {
@@ -269,7 +269,7 @@ admin.pageList = {
             };
 
             $.ajax({
-                url: latkeConfig.servePath + "/console/page/",
+                url: Label.servePath + "/console/page/",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -336,7 +336,7 @@ admin.pageList = {
             };
 
             $.ajax({
-                url: latkeConfig.servePath + "/console/page/",
+                url: Label.servePath + "/console/page/",
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -402,7 +402,7 @@ admin.pageList = {
         };
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/page/order/",
+            url: Label.servePath + "/console/page/order/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),

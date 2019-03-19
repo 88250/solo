@@ -39,7 +39,7 @@ admin.others = {
     $("#tipMsg").text("");
 
     $.ajax({
-      url: latkeConfig.servePath + "/console/tag/unused",
+      url: Label.servePath + "/console/tag/unused",
       type: "DELETE",
       cache: false,
       success: function (result, textStatus) {
@@ -54,14 +54,14 @@ admin.others = {
     $("#tipMsg").text("");
 
     $.ajax({
-      url: latkeConfig.servePath + "/console/export/sql",
+      url: Label.servePath + "/console/export/sql",
       type: "GET",
       cache: false,
       success: function (result, textStatus) {
         // AJAX 下载文件的话这里会发两次请求，用 sc 来判断是否是文件，如果没有 sc 说明文件可以下载（实际上就是 result）
         if (!result.sc) {
           // 再发一次请求进行正式下载
-          window.location = latkeConfig.servePath + "/console/export/sql";
+          window.location = Label.servePath + "/console/export/sql";
         } else {
           $("#tipMsg").text(result.msg);
         }
@@ -75,14 +75,14 @@ admin.others = {
     $("#tipMsg").text("");
 
     $.ajax({
-      url: latkeConfig.servePath + "/console/export/json",
+      url: Label.servePath + "/console/export/json",
       type: "GET",
       cache: false,
       success: function (result, textStatus) {
         // AJAX 下载文件的话这里会发两次请求，用 sc 来判断是否是文件，如果没有 sc 说明文件可以下载（实际上就是 result）
         if (!result.sc) {
           // 再发一次请求进行正式下载
-          window.location = latkeConfig.servePath + "/console/export/json";
+          window.location = Label.servePath + "/console/export/json";
         } else {
           $("#tipMsg").text(result.msg);
         }
@@ -96,14 +96,14 @@ admin.others = {
     $("#tipMsg").text("");
 
     $.ajax({
-      url: latkeConfig.servePath + "/console/export/hexo",
+      url: Label.servePath + "/console/export/hexo",
       type: "GET",
       cache: false,
       success: function (result, textStatus) {
         // AJAX 下载文件的话这里会发两次请求，用 sc 来判断是否是文件，如果没有 sc 说明文件可以下载（实际上就是 result）
         if (!result.sc) {
           // 再发一次请求进行正式下载
-          window.location = latkeConfig.servePath + "/console/export/hexo";
+          window.location = Label.servePath + "/console/export/hexo";
         } else {
           $("#tipMsg").text(result.msg);
         }
@@ -116,7 +116,7 @@ admin.others = {
    */
   getUnusedTags: function () {
     $.ajax({
-      url: latkeConfig.servePath + "/console/tag/unused",
+      url: Label.servePath + "/console/tag/unused",
       type: "GET",
       cache: false,
       success: function (result, textStatus) {

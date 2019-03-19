@@ -74,7 +74,7 @@ admin.articleList = {
    */
   syncToHacpai: function (id) {
     $.ajax({
-      url: latkeConfig.servePath + '/console/article/push2rhy?id=' + id,
+      url: Label.servePath + '/console/article/push2rhy?id=' + id,
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
@@ -91,7 +91,7 @@ admin.articleList = {
     var that = this
     $('#loadMsg').text(Label.loadingLabel)
     $.ajax({
-      url: latkeConfig.servePath + '/console/articles/status/published/' +
+      url: Label.servePath + '/console/articles/status/published/' +
       pageNum + '/' + Label.PAGE_SIZE + '/' + Label.WINDOW_SIZE + '?k=' +
       $('#articleListInput').val(),
       type: 'GET',
@@ -107,7 +107,7 @@ admin.articleList = {
           articleData = []
         for (var i = 0; i < articles.length; i++) {
           articleData[i] = {}
-          articleData[i].title = '<a href="' + latkeConfig.servePath +
+          articleData[i].title = '<a href="' + Label.servePath +
             articles[i].articlePermalink + '" target=\'_blank\' title=\'' +
             articles[i].articleTitle + '\' class=\'no-underline\'>'
             + articles[i].articleTitle + '</a><span class=\'table-tag\'>' +
@@ -163,7 +163,7 @@ admin.articleList = {
     }
 
     $.ajax({
-      url: latkeConfig.servePath + '/console/article/' + ajaxUrl + '/' + id,
+      url: Label.servePath + '/console/article/' + ajaxUrl + '/' + id,
       type: 'PUT',
       cache: false,
       success: function (result, textStatus) {

@@ -83,7 +83,7 @@ admin.linkList = {
         var that = this;
         
         $.ajax({
-            url: latkeConfig.servePath + "/console/links/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+            url: Label.servePath + "/console/links/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -151,7 +151,7 @@ admin.linkList = {
             };
             
             $.ajax({
-                url: latkeConfig.servePath + "/console/link/",
+                url: Label.servePath + "/console/link/",
                 type: "POST",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -191,7 +191,7 @@ admin.linkList = {
         $("#updateLink").dialog("open");
         
         $.ajax({
-            url: latkeConfig.servePath + "/console/link/" + id,
+            url: Label.servePath + "/console/link/" + id,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -229,7 +229,7 @@ admin.linkList = {
             };
             
             $.ajax({
-                url: latkeConfig.servePath + "/console/link/",
+                url: Label.servePath + "/console/link/",
                 type: "PUT",
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
@@ -261,7 +261,7 @@ admin.linkList = {
             $("#tipMsg").text("");
             
             $.ajax({
-                url: latkeConfig.servePath + "/console/link/" + id,
+                url: Label.servePath + "/console/link/" + id,
                 type: "DELETE",
                 cache: false,
                 success: function(result, textStatus){
@@ -327,7 +327,7 @@ admin.linkList = {
         };
         
         $.ajax({
-            url: latkeConfig.servePath + "/console/link/order/",
+            url: Label.servePath + "/console/link/order/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),

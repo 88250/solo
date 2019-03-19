@@ -76,7 +76,7 @@ admin.pluginList = {
         var that = this;
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/plugins/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
+            url: Label.servePath + "/console/plugins/" + pageNum + "/" + Label.PAGE_SIZE + "/" + Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
             success: function(result, textStatus) {
@@ -119,7 +119,7 @@ admin.pluginList = {
         };
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/plugin/toSetting",
+            url: Label.servePath + "/console/plugin/toSetting",
             type: "POST",
             cache: false,
             data: JSON.stringify(requestJSONObject),
@@ -148,7 +148,7 @@ admin.pluginList = {
         };
 
         $.ajax({
-            url: latkeConfig.servePath + "/console/plugin/status/",
+            url: Label.servePath + "/console/plugin/status/",
             type: "PUT",
             cache: false,
             data: JSON.stringify(requestJSONObject),

@@ -45,12 +45,12 @@ $.extend(SoloEditor.prototype, {
       cache: true,
       tab: '\t',
       hint: {
-        emojiPath: latkeConfig.staticServePath + '/js/lib/emojify.js-1.1.0/images/basic'
+        emojiPath: Label.staticServePath + '/js/lib/emojify.js-1.1.0/images/basic'
       },
       preview: {
         delay: 500,
         show: this.conf.previewShow,
-        url: latkeConfig.servePath + '/console/markdown/2html',
+        url: Label.servePath + '/console/markdown/2html',
         parse: function(element) {
           if (element.style.display === 'none') {
             return

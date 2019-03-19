@@ -71,7 +71,7 @@ admin.draftList = {
         var that = this;
         
         $.ajax({
-            url: latkeConfig.servePath + "/console/articles/status/unpublished/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
+            url: Label.servePath + "/console/articles/status/unpublished/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
             type: "GET",
             cache: false,
             success: function(result, textStatus){
@@ -90,7 +90,7 @@ admin.draftList = {
                     articleData[i].comments = articles[i].articleCommentCount;
                     articleData[i].articleViewCount = articles[i].articleViewCount;
                     articleData[i].author = articles[i].authorName;
-                    articleData[i].title = "<a class='no-underline' href='" + latkeConfig.servePath +
+                    articleData[i].title = "<a class='no-underline' href='" + Label.servePath +
                     articles[i].articlePermalink + "' target='_blank'>" + 
                     articles[i].articleTitle + "</a><span class='table-tag'>" + articles[i].articleTags + "</span>";
                     articleData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', false);\">" + Label.updateLabel + "</a>  \

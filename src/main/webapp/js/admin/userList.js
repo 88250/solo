@@ -73,7 +73,7 @@ admin.userList = {
     var that = this
 
     $.ajax({
-      url: latkeConfig.servePath + '/console/users/' + pageNum + '/' +
+      url: Label.servePath + '/console/users/' + pageNum + '/' +
         Label.PAGE_SIZE + '/' + Label.WINDOW_SIZE,
       type: 'GET',
       cache: false,
@@ -138,7 +138,7 @@ admin.userList = {
     $('#userUpdate').dialog('open')
 
     $.ajax({
-      url: latkeConfig.servePath + '/console/user/' + id,
+      url: Label.servePath + '/console/user/' + id,
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
@@ -179,7 +179,7 @@ admin.userList = {
       }
 
       $.ajax({
-        url: latkeConfig.servePath + '/console/user/',
+        url: Label.servePath + '/console/user/',
         type: 'PUT',
         cache: false,
         data: JSON.stringify(requestJSONObject),
@@ -211,7 +211,7 @@ admin.userList = {
       $('#tipMsg').text('')
 
       $.ajax({
-        url: latkeConfig.servePath + '/console/user/' + id,
+        url: Label.servePath + '/console/user/' + id,
         type: 'DELETE',
         cache: false,
         success: function (result, textStatus) {
@@ -247,7 +247,7 @@ admin.userList = {
   changeRole: function (id) {
     $('#tipMsg').text('')
     $.ajax({
-      url: latkeConfig.servePath + '/console/changeRole/' + id,
+      url: Label.servePath + '/console/changeRole/' + id,
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
