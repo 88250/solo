@@ -17,7 +17,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<#include "../macro-common-page.ftl">
+<#include "../common-template/macro-common-page.ftl">
 
 <@commonPage "500 Internal Server Error!">
 <h2>500 Internal Server Error!</h2>

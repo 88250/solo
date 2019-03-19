@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.6, Mar 17, 2019
+ * @version 1.7.0.7, Mar 19, 2019
  * @since 0.3.1
  */
 @Service
@@ -1042,7 +1042,7 @@ public class DataModelService {
         Stopwatchs.start("Gens Top Bar HTML");
 
         try {
-            final Template topBarTemplate = Skins.getTemplate("top-bar.ftl");
+            final Template topBarTemplate = Skins.getTemplate("common-template/top-bar.ftl");
             final StringWriter stringWriter = new StringWriter();
             final Map<String, Object> topBarModel = new HashMap<>();
             final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());

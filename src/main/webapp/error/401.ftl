@@ -17,7 +17,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<#include "../macro-common-page.ftl">
+<#include "../common-template/macro-common-page.ftl">
 
 <@commonPage "401 Unauthorized!">
 <h2>401 Unauthorized!</h2>
