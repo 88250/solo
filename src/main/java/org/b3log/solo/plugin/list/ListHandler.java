@@ -18,10 +18,8 @@
 package org.b3log.solo.plugin.list;
 
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
-import org.b3log.latke.logging.Logger;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
@@ -31,20 +29,18 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * List (table of contents of an article) handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.annpeter.cn">Ann Peter</a>
- * @version 1.0.2.1, Oct 24, 2018
+ * @version 1.0.2.2, Mar 19, 2019
  * @since 0.6.7
  */
 public class ListHandler extends AbstractEventListener<JSONObject> {
-
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger.getLogger(ListHandler.class);
 
     @Override
     public String getEventType() {
@@ -55,36 +51,24 @@ public class ListHandler extends AbstractEventListener<JSONObject> {
     public void action(final Event<JSONObject> event) {
         final JSONObject data = event.getData();
         final JSONObject article = data.optJSONObject(Article.ARTICLE);
-        String content = article.optString(Article.ARTICLE_CONTENT);
-        if (StringUtils.containsIgnoreCase(content, "plugins/list/style.css")) {
-//            LOGGER.log(Level.WARN, "ToC hit twice, please report this \"ghosty\" issue to developer team: https://github.com/b3log/solo/issues/new");
-
-            return;
-        }
-
-
+        final String content = article.optString(Article.ARTICLE_CONTENT);
         final Document doc = Jsoup.parse(content, StringUtils.EMPTY, Parser.htmlParser());
         doc.outputSettings().prettyPrint(false);
 
-        final StringBuilder listBuilder = new StringBuilder();
-        listBuilder.append("<link rel=\"stylesheet\" type=\"text/css\" href=\"" + Latkes.getStaticServePath() + "/plugins/list/style.css\" />");
+        final List<JSONObject> toc = new ArrayList<>();
         final Elements hs = doc.select("h1, h2, h3, h4, h5");
-        listBuilder.append("<ul class='b3-solo-list'>");
         for (int i = 0; i < hs.size(); i++) {
             final Element element = hs.get(i);
             final String tagName = element.tagName().toLowerCase();
             final String text = element.text();
             final String id = "b3_solo_" + tagName + "_" + i;
-
             element.before("<span id='" + id + "'></span>");
-
-            listBuilder.append("<li class='b3-solo-list-").append(tagName).append("'><a href='#").append(id).append("'>").
-                    append(text).append("</a></li>");
+            final JSONObject li = new JSONObject().
+                    put("class", "b3-solo-list-" + tagName).
+                    put("id", id).
+                    put("text", text);
+            toc.add(li);
         }
-        listBuilder.append("</ul>");
-
-        final Element body = doc.getElementsByTag("body").get(0);
-        content = listBuilder.toString() + body.html();
-        article.put(Article.ARTICLE_CONTENT, content);
+        article.put(Article.ARTICLE_T_TOC, (Object) toc);
     }
 }

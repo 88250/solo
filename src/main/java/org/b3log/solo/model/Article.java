@@ -28,7 +28,7 @@ import org.jsoup.safety.Whitelist;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.0, Mar 4, 2019
+ * @version 1.5.0.1, Mar 19, 2019
  * @since 0.3.1
  */
 public final class Article {
@@ -169,6 +169,12 @@ public final class Article {
      * Article status - draft.
      */
     public static final int ARTICLE_STATUS_C_DRAFT = 1;
+
+    //// Transient ////
+    /**
+     * Key of article ToC.
+     */
+    public static final String ARTICLE_T_TOC = "articleToC";
 
     //// Other constants
 
