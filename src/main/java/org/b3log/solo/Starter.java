@@ -128,7 +128,13 @@ public final class Starter {
             portArg = "8080";
         }
 
-        Latkes.init();
+        try {
+            Latkes.init();
+        } catch (final Exception e) {
+            logger.log(Level.ERROR, "Latke init failed, please configure latke.props or run with args, visit https://hacpai.com/article/1492881378588 for more details");
+
+            System.exit(-1);
+        }
 
         String serverScheme = commandLine.getOptionValue("server_scheme");
         if (null != serverScheme) {
