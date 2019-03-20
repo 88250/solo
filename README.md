@@ -102,7 +102,13 @@ docker pull b3log/solo
 * 使用 H2 Databse
 
   ```shell
-  docker run --name solo -p 8080:8080 -v ~/solo_h2:/opt/b3log/backup/ -d b3log/solo
+  docker run --detach --name solo --network=host \
+      --env RUNTIME_DB="MYSQL" \
+      --env JDBC_USERNAME="root" \
+      --env JDBC_PASSWORD="123456" \
+      --env JDBC_DRIVER="com.mysql.cj.jdbc.Driver" \
+      --env JDBC_URL="jdbc:mysql://localhost:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC" \
+      b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost 
   ```
 
 
