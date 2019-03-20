@@ -63,13 +63,15 @@ public class ListHandler extends AbstractEventListener<JSONObject> {
             final String tagName = element.tagName().toLowerCase();
             final String text = element.text();
             final String id = "b3_solo_" + tagName + "_" + i;
-            element.before("<span id='" + id + "'></span>");
+            element.attr("id", id);
             final JSONObject li = new JSONObject().
                     put("className", "toc__" + tagName).
                     put("id", id).
                     put("text", text);
             toc.add(li);
         }
+        final Element body = doc.getElementsByTag("body").get(0);
+        article.put(Article.ARTICLE_CONTENT, body.html());
         article.put(Article.ARTICLE_T_TOC, (Object) toc);
     }
 }
