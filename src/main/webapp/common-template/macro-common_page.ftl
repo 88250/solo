@@ -22,6 +22,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <#if !blogTitle??>
+    <#assign blogTitle = welcomeToSoloLabel>
+    </#if>
     <@head title="${title} - ${blogTitle}">
         <link type="text/css" rel="stylesheet"
         href="${staticServePath}/scss/start.css?${staticResourceVersion}" charset="utf-8"/>
