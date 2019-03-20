@@ -42,8 +42,6 @@ import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 import java.util.Date;
 

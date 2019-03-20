@@ -152,6 +152,7 @@ public class CategoryProcessor {
 
             dataModelService.fillCommon(context, dataModel, preference);
             dataModelService.fillFaviconURL(dataModel, preference);
+            dataModelService.fillUsite(dataModel);
 
             statisticMgmtService.incBlogViewCount(context, response);
         } catch (final ServiceException | JSONException e) {

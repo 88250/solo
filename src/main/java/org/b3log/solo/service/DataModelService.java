@@ -540,7 +540,7 @@ public class DataModelService {
     /**
      * Fills favicon URL. 可配置 favicon 图标路径 https://github.com/b3log/solo/issues/12706
      *
-     * @param dataModel the specified data model
+     * @param dataModel  the specified data model
      * @param preference the specified preference
      */
     public void fillFaviconURL(final Map<String, Object> dataModel, final JSONObject preference) {
@@ -548,6 +548,24 @@ public class DataModelService {
             dataModel.put(Common.FAVICON_URL, Option.DefaultPreference.DEFAULT_FAVICON_URL);
         } else {
             dataModel.put(Common.FAVICON_URL, preference.optString(Option.ID_C_FAVICON_URL));
+        }
+    }
+
+    /**
+     * Fills usite. 展示站点连接 https://github.com/b3log/solo/issues/12719
+     *
+     * @param dataModel the specified data model
+     */
+    public void fillUsite(final Map<String, Object> dataModel) {
+        try {
+            final JSONObject usiteOpt = optionQueryService.getOptionById(Option.ID_C_USITE);
+            if (null == usiteOpt) {
+                return;
+            }
+
+            dataModel.put(Option.ID_C_USITE, new JSONObject(usiteOpt.optString(Option.OPTION_VALUE)));
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Fills usite failed", e);
         }
     }
 
