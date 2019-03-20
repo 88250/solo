@@ -81,10 +81,10 @@
 * Windows: `java -cp "WEB-INF/lib/*;WEB-INF/classes" org.b3log.solo.Starter`
 * Unix-like: `java -cp "WEB-INF/lib/*:WEB-INF/classes" org.b3log.solo.Starter`
 
-如果你有 Java 开发环境，可参考[这里(https://hacpai.com/article/1493822943172)通过源码构建运行。
+如果你有 Java 开发环境，可参考[这里](https://hacpai.com/article/1493822943172)通过源码构建运行。
 
-**请注意**：我们不推荐通过发布包部署或者源码源码构建部署，因为这样的部署方式在将来有新版本发布时升级会比较麻烦。
-这两种方式请仅用于本地试用，线上生产环境我们**强烈建议**通过 Docker 进行部署。
+**请注意**：我们不建议通过发布包部署或者源码源码构建部署，因为这样的部署方式在将来有新版本发布时升级会比较麻烦。
+这两种方式请仅用于本地试用，线上生产环境我们**建议**通过 Docker 部署。
 
 ### Docker 部署
 
