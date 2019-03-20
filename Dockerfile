@@ -1,23 +1,13 @@
 FROM maven:3-jdk-8-alpine
 LABEL maintainer="Tomaer Ma<i@tomaer.com>"
 
-WORKDIR /opt/b3log/solo
+WORKDIR /opt/solo
 ADD . /tmp
 
-RUN cd /tmp && mvn install -DskipTests -Pci && mv target/solo/* /opt/b3log/solo/ \
-    && mkdir -p /opt/b3log/backup/ && mkdir -p /opt/b3log/tmp/ \
-    && rm -rf /opt/b3log/solo/WEB-INF/classes/local.properties /opt/b3log/solo/WEB-INF/classes/latke.properties \
+RUN cd /tmp && mvn install -DskipTests -Pci && mv target/solo/* /opt/solo/ \
+    && cp -f /tmp/src/main/resources/docker/* /opt/solo/WEB-INF/classes/ \
     && rm -rf /tmp/* && rm -rf ~/.m2
-
-ADD ./src/main/resources/docker/entrypoint.sh $WORKDIR
-ADD ./src/main/resources/docker/local.properties.h2 /opt/b3log/tmp
-ADD ./src/main/resources/docker/local.properties.mysql /opt/b3log/tmp
-ADD ./src/main/resources/docker/latke.properties /opt/b3log/tmp
-
-RUN chmod 777 /opt/b3log/solo/entrypoint.sh
-
-VOLUME ["/opt/b3log/backup/"]
 
 EXPOSE 8080
 
-ENTRYPOINT [ "/opt/b3log/solo/entrypoint.sh" ]
+ENTRYPOINT [ "java", "-cp", "WEB-INF/lib/*:WEB-INF/classes", "org.b3log.solo.Starter" ]
