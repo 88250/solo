@@ -132,7 +132,7 @@ docker pull b3log/solo
 1. 拉取最新镜像
 2. 重启容器
 
-可参考[这里](https://github.com/b3log/solo/blob/master/scripts/docker-restart.sh) 编写一个重启脚本，并通过 crontab 每日凌晨运行来实现自动更新。
+可参考[这里](https://github.com/b3log/solo/blob/master/scripts/docker-restart.sh)编写一个重启脚本，并通过 crontab 每日凌晨运行来实现自动更新。
 
 ## 文档
 
