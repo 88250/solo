@@ -17,17 +17,14 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
+<#include "macro-common_head.ftl"/>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
-    <title>${searchLabel} - ${blogTitle}${searchLabel}</title>
-    <link type="text/css" rel="stylesheet"
-          href="${staticServePath}/scss/start.css?${staticResourceVersion}" charset="utf-8"/>
-    <link rel="icon" type="image/png" href="${faviconURL}"/>
-    <link rel="apple-touch-icon" href="${faviconURL}">
+    <@head title="${searchLabel} - ${blogTitle}${searchLabel}">
+        <link type="text/css" rel="stylesheet"
+              href="${staticServePath}/scss/start.css?${staticResourceVersion}" charset="utf-8"/>
+    </@head>
 </head>
 <body class="search__body">
 <div class="search__header fn-clear">

@@ -17,22 +17,14 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
+<#include "../common-template/macro-common_head.ftl"/>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-        <meta name="copyright" content="B3log">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta http-equiv="Window-target" content="_top">
-        <meta name="robots" content="fn__none" />
-        <title>${adminConsoleLabel} - ${blogTitle}</title>
-        <link type="text/css" rel="stylesheet" href="${staticServePath}/scss/admin.css?${staticResourceVersion}" />
-        <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.6/styles/atom-one-light.min.css" />
-        <link rel="icon" type="image/png" href="${faviconURL}" />
-        <link rel="manifest" href="${servePath}/manifest.json">
+        <@head title="${adminConsoleLabel} - ${blogTitle}">
+            <link type="text/css" rel="stylesheet" href="${staticServePath}/scss/admin.css?${staticResourceVersion}" />
+            <meta name="robots" content="fn__none" />
+        </@head>
     </head>
     <body onhashchange="admin.setCurByHash();">
         <div class="tip"><span id="loadMsg">${loadingLabel}</span></div>

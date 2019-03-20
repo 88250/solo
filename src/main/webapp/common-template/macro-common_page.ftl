@@ -17,19 +17,16 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
+<#include "macro-common_head.ftl"/>
 <#macro commonPage title>
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
-    <meta name="viewport" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
-    <meta name="robots" content="none"/>
-    <title>${title}<#if blogTitle??> - ${blogTitle}</#if></title>
-    <link type="text/css" rel="stylesheet"
-          href="${staticServePath}/scss/start.css?${staticResourceVersion}" charset="utf-8"/>
-    <link rel="icon" type="image/png" href="${faviconURL}"/>
-    <link rel="apple-touch-icon" href="${faviconURL}">
+    <@head title="${title} - ${blogTitle}">
+        <link type="text/css" rel="stylesheet"
+        href="${staticServePath}/scss/start.css?${staticResourceVersion}" charset="utf-8"/>
+        <meta name="robots" content="none"/>
+    </@head>
 </head>
 <body>
 <div class="wrap">
