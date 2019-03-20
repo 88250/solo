@@ -150,6 +150,8 @@ public class PageMgmtService {
             optionMgmtService.addOrUpdateOption(githubReposOpt);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates github repos option failed", e);
+
+            return;
         }
 
         final StringBuilder contentBuilder = new StringBuilder();

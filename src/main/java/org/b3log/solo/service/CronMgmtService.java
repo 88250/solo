@@ -72,6 +72,12 @@ public class CronMgmtService {
     private ExportService exportService;
 
     /**
+     * User management service.
+     */
+    @Inject
+    private UserMgmtService userMgmtService;
+
+    /**
      * Start all cron tasks.
      */
     public void start() {
@@ -91,6 +97,7 @@ public class CronMgmtService {
         SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
             try {
                 pageMgmtService.refreshGitHub();
+                userMgmtService.refreshUSite();
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Executes cron failed", e);
             } finally {

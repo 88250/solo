@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.5.0.5, Mar 17, 2019
+ * @version 1.5.0.6, Mar 20, 2019
  * @since 0.6.0
  */
 public final class Option {
@@ -242,6 +242,11 @@ public final class Option {
      */
     public static final String ID_C_GITHUB_REPOS = "githubRepos";
 
+    /**
+     * Key of USite.
+     */
+    public static final String ID_C_USITE = "usite";
+
     // Category constants
     /**
      * Category - Preference.
@@ -257,6 +262,11 @@ public final class Option {
      * Category - GitHub.
      */
     public static final String CATEGORY_C_GITHUB = "github";
+
+    /**
+     * Category - HacPai.
+     */
+    public static final String CATEGORY_C_HACPAI = "hacpai";
 
     //// Transient ////
     /**
