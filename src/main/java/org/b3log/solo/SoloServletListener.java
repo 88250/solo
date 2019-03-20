@@ -58,7 +58,7 @@ import javax.servlet.http.HttpSessionEvent;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.11, Mar 17, 2019
+ * @version 1.10.0.12, Mar 20, 2019
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -403,7 +403,9 @@ public final class SoloServletListener extends AbstractServletListener {
         final TagConsole tagConsole = beanManager.getReference(TagConsole.class);
         DispatcherServlet.get("/console/tags", tagConsole::getTags);
         DispatcherServlet.get("/console/tag/unused", tagConsole::getUnusedTags);
-        DispatcherServlet.delete("/console/tag/unused", tagConsole::removeUnusedTags);
+
+        final OtherConsole otherConsole = beanManager.getReference(OtherConsole.class);
+        DispatcherServlet.delete("/console/archive/unused", otherConsole::removeUnusedArchives);
 
         final UserConsole userConsole = beanManager.getReference(UserConsole.class);
         DispatcherServlet.put("/console/user/", userConsole::updateUser);

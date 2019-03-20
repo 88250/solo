@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Nov 11, 2017
+ * @version 1.4.0.0, Mar 20, 2019
  */
 
 /* others 相关操作 */
@@ -31,6 +31,21 @@ admin.others = {
   init: function () {
     $("#tabOthers").tabs();
     $('#loadMsg').text('')
+  },
+  /*
+   * @description 移除未使用的存档
+   */
+  removeUnusedArchives: function () {
+    $("#tipMsg").text("");
+
+    $.ajax({
+      url: Label.servePath + "/console/archive/unused",
+      type: "DELETE",
+      cache: false,
+      success: function (result, textStatus) {
+        $("#tipMsg").text(result.msg);
+      }
+    });
   },
   /*
    * @description 移除未使用的标签
