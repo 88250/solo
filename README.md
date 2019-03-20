@@ -95,11 +95,6 @@ docker pull b3log/solo
 ```
 
 * 使用 MySQL
-  TBD
-  ```shell
-  docker run --name solo -p 8080:8080 --net=host -d b3log/solo
-  ```
-* 使用 H2 Databse
 
   ```shell
   docker run --detach --name solo --network=host \
@@ -110,7 +105,27 @@ docker pull b3log/solo
       --env JDBC_URL="jdbc:mysql://localhost:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC" \
       b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost 
   ```
+  为了简单，使用了主机网络模式来连接主机上的 MySQL。
+  
+* 使用 H2 Databse
 
+  ```shell
+  docker run --detach --name solo --volume ~/solo_h2/:/opt/solo/h2/ --publish 8080:8080 \
+      --env RUNTIME_DB="H2" \
+      --env JDBC_USERNAME="root" \
+      --env JDBC_PASSWORD="123456" \
+      --env JDBC_DRIVER="org.h2.Driver" \
+      --env JDBC_URL="jdbc:h2:/opt/solo/h2/db;MODE=MYSQL" \
+      b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost 
+  ```
+
+启动参数说明：
+
+* `--listen_port`：进程监听端口
+* `--server_scheme`：最终访问协议，如果反代服务启用了 HTTPS 这里也需要改为 `https`
+* `--server_host`：最终访问域名或 IP，不要带端口号，如果是 IP 的话请用公网 IP
+
+完整启动参数的说明可以使用 `-h` 来查看。
 
 ## 文档
 
