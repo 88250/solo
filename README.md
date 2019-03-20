@@ -86,7 +86,7 @@
 **请注意**：我们不推荐通过发布包部署或者源码源码构建部署，因为这样的部署方式在将来有新版本发布时升级会比较麻烦。
 这两种方式请仅用于本地试用，线上生产环境我们**强烈建议**通过 Docker 进行部署。
 
-### Docker
+### Docker 部署
 
 获取最新镜像：
 
@@ -102,7 +102,7 @@ docker pull b3log/solo
       --env JDBC_USERNAME="root" \
       --env JDBC_PASSWORD="123456" \
       --env JDBC_DRIVER="com.mysql.cj.jdbc.Driver" \
-      --env JDBC_URL="jdbc:mysql://localhost:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC" \
+      --env JDBC_URL="jdbc:mysql://127.0.0.1:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC" \
       b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost 
   ```
   为了简单，使用了主机网络模式来连接主机上的 MySQL。
@@ -123,9 +123,16 @@ docker pull b3log/solo
 
 * `--listen_port`：进程监听端口
 * `--server_scheme`：最终访问协议，如果反代服务启用了 HTTPS 这里也需要改为 `https`
-* `--server_host`：最终访问域名或 IP，不要带端口号，如果是 IP 的话请用公网 IP
+* `--server_host`：最终访问域名或公网 IP，不要带端口号
 
 完整启动参数的说明可以使用 `-h` 来查看。
+
+### Docker 升级
+
+1. 拉取最新镜像
+2. 重启容器
+
+可参考[这里](https://github.com/b3log/solo/blob/master/scripts/docker-restart.sh) 编写一个重启脚本，并通过 crontab 每日凌晨运行来实现自动更新。
 
 ## 文档
 
