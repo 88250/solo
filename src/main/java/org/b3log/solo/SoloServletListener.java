@@ -89,6 +89,14 @@ public final class SoloServletListener extends AbstractServletListener {
         routeConsoleProcessors();
         Stopwatchs.start("Context Initialized");
 
+        final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
+        final Latkes.RuntimeMode runtimeMode = Latkes.getRuntimeMode();
+        final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
+        final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
+
+        LOGGER.log(Level.INFO, "Solo is booting [pid=" + Solos.currentPID() + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode +
+                ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
+
         validateSkin();
 
         final InitService initService = beanManager.getReference(InitService.class);
