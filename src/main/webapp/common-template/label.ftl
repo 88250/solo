@@ -17,9 +17,6 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<script src="${staticServePath}/js/lib/compress/pjax.min.js"></script>
-<script src="${staticServePath}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
-<script src="${staticServePath}/skins/${skinDirName}/js/common${miniPostfix}.js?${staticResourceVersion}"></script>
 <script>
     var Label = {
         "servePath": "${servePath}",

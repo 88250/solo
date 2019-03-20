@@ -103,6 +103,11 @@ var Util = {
       window.open(this.src)
     })
   },
+  /**
+   * 异步添加 css
+   * @param url css 文件访问地址
+   * @param id css 文件标示
+   */
   addStyle: function (url, id) {
     if (!document.getElementById(id)) {
       var styleElement = document.createElement('link')
@@ -111,6 +116,25 @@ var Util = {
       styleElement.setAttribute('type', 'text/css')
       styleElement.setAttribute('href', url)
       document.getElementsByTagName('head')[0].appendChild(styleElement)
+    }
+  },
+  /**
+   * 异步添加 js
+   * @param url js 文件访问地址
+   * @param id js 文件标示
+   */
+  addScript: function (url, id) {
+    if (!document.getElementById(id)) {
+      var xhrObj = new XMLHttpRequest()
+      xhrObj.open('GET', url, false)
+      xhrObj.setRequestHeader('Accept',
+        'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01')
+      xhrObj.send('')
+      var scriptElement = document.createElement('script')
+      scriptElement.id = id
+      scriptElement.type = 'text/javascript'
+      scriptElement.text = xhrObj.responseText
+      document.getElementsByTagName('head')[0].appendChild(scriptElement)
     }
   },
   /*
@@ -141,22 +165,18 @@ var Util = {
     }
   },
   /**
-   * 按需加载 MathJax 及图标
+   * 按需加载数学公式、代码复制、图标
    * @returns {undefined}
    */
   parseMarkdown: function () {
-    if (!window.Vditor) {
-      var xhrObj = new XMLHttpRequest()
-      xhrObj.open('GET', Label.staticServePath +
-        '/js/lib/vditor-1.1.10/index.min.js', false)
-      xhrObj.setRequestHeader('Accept',
-        'text/javascript, application/javascript, application/ecmascript, application/x-ecmascript, */*; q=0.01')
-      xhrObj.send('')
-      var scriptElement = document.createElement('script')
-      scriptElement.type = 'text/javascript'
-      scriptElement.text = xhrObj.responseText
-      document.getElementsByTagName('head')[0].appendChild(scriptElement)
+    var text = $('.vditor-reset').text()
+    if ($('.vditor-reset pre > code').length === 0 ||
+      !(text.split('$').length > 2 ||
+        (text.split('\\(').length > 1 && text.split('\\)').length > 1))) {
+      return
     }
+
+    Util.addScript(Label.staticServePath + '/js/lib/vditor-1.1.10/index.min.js', 'vditorScript')
 
     Vditor.mermaidRender(document.body)
     Vditor.mathRender(document.body)

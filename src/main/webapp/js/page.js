@@ -65,6 +65,7 @@ $.extend(Page.prototype, {
 
     if (typeof vditor === 'undefined') {
       var that = this
+      Util.addScript(Label.staticServePath + '/js/lib/vditor-1.1.10/index.min.js', 'vditorScript')
       window.vditor = new Vditor('soloEditorComment', {
         placeholder: that.tips.commentContentCannotEmptyLabel,
         height: 180,
