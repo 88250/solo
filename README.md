@@ -30,7 +30,7 @@
 * [思干豆](http://sigandou.com)
 * [DevHyxo](https://blog.devhyxo.top)
 
-## 功能 
+## 功能
 
 * Markdown / Emoji
 * [聚合分类](https://github.com/b3log/solo/issues/12256) / 标签
@@ -47,7 +47,7 @@
 * SQL / JSON / Markdown 导出
 * Atom / RSS / Sitemap
 * CDN 静态资源分离
-* [GitHub 集成](https://github.com/b3log/solo/issues/12514)
+* [GitHub 仓库展示](https://github.com/b3log/solo/issues/12514) / [自动备份文章到仓库](https://github.com/b3log/solo/issues/12676)
 * [内置 HTTPS+CDN 文件存储](https://github.com/b3log/solo/issues/12556)
 
 ## 界面
