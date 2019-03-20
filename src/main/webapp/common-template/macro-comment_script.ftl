@@ -54,11 +54,11 @@
         "randomArticles1Label": "${randomArticles1Label}",
         "externalRelevantArticles1Label": "${externalRelevantArticles1Label}"
     });
-    (function () {
+    $(document).ready(function () {
         page.load();
         // emotions
         page.replaceCommentsEm("#comments .vditor-reset");
         <#nested>
-    })();
+    });
 </script>
 </#macro>

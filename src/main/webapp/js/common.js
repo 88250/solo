@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.0, Mar 16, 2019
+ * @version 1.8.0.1, Mar 20, 2019
  */
 
 /**
@@ -117,6 +117,9 @@ var Util = {
   * @description 解析语法高亮
   */
   parseLanguage: function () {
+    if ($('.vditor-reset pre > code').length === 0) {
+      return
+    }
     Util.addStyle('https://cdn.jsdelivr.net/npm/highlight.js@9.15.6/styles/' +
       Label.hljsStyle + '.min.css', 'vditorHljsStyle')
 
