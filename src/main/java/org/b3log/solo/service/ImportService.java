@@ -21,7 +21,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -40,7 +39,7 @@ import java.util.*;
  * Import service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.4, Mar 17, 2019
+ * @version 1.0.1.5, Mar 20, 2019
  * @since 2.2.0
  */
 @Service
@@ -87,12 +86,6 @@ public class ImportService {
 
             if (null == admin) { // Not init yet
                 return;
-            }
-
-            String serverHost = Latkes.getLatkeProperty("serverHost");
-            if (StringUtils.isBlank(serverHost)) {
-                serverHost = "localhost";
-                Latkes.setLatkeProperty("serverHost", serverHost);
             }
 
             final String adminId = admin.optString(Keys.OBJECT_ID);
@@ -146,9 +139,6 @@ public class ImportService {
                 logBuilder.append(" :p");
             }
             LOGGER.info(logBuilder.toString());
-
-            LOGGER.log(Level.INFO, "Imported articles, please restart Solo");
-            System.exit(0);
         }).start();
     }
 
