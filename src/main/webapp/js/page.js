@@ -63,7 +63,7 @@ $.extend(Page.prototype, {
       return
     }
 
-    if (typeof vditor === 'undefined') {
+    if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
       Util.addScript(Label.staticServePath + '/js/lib/vditor-1.1.10/index.min.js', 'vditorScript')
       window.vditor = new Vditor('soloEditorComment', {
@@ -303,6 +303,7 @@ $.extend(Page.prototype, {
             $('#soloEditorError').html(result.msg)
             return
           }
+          debugger
 
           that.toggleEditor()
           vditor.setValue('')
