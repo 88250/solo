@@ -25,4 +25,5 @@
         "hljsStyle": "atom-one-light",
         "langLabel": "${langLabel}"
     };
+    Util.init()
 </script>

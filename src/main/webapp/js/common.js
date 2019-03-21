@@ -170,7 +170,7 @@ var Util = {
    */
   parseMarkdown: function () {
     var text = $('.vditor-reset').text()
-    if ($('.vditor-reset pre > code').length === 0 ||
+    if ($('.vditor-reset pre > code').length === 0 &&
       !(text.split('$').length > 2 ||
         (text.split('\\(').length > 1 && text.split('\\)').length > 1))) {
       return
