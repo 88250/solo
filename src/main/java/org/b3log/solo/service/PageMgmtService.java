@@ -46,7 +46,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.1.0.14, Feb 26, 2019
+ * @version 1.1.0.15, Mar 21, 2019
  * @since 0.4.0
  */
 @Service
@@ -190,7 +190,7 @@ public class PageMgmtService {
                 final int maxOrder = pageRepository.getMaxOrder();
                 page.put(Page.PAGE_ORDER, maxOrder + 1);
                 page.put(Page.PAGE_TITLE, "我的开源");
-                page.put(Page.PAGE_OPEN_TARGET, "_blank");
+                page.put(Page.PAGE_OPEN_TARGET, "_self");
                 page.put(Page.PAGE_COMMENTABLE, true);
                 page.put(Page.PAGE_TYPE, "page");
                 page.put(Page.PAGE_PERMALINK, permalink);
@@ -199,6 +199,7 @@ public class PageMgmtService {
                 pageRepository.add(page);
             } else {
                 page.put(Page.PAGE_CONTENT, content);
+                page.put(Page.PAGE_OPEN_TARGET, "_self");
                 pageRepository.update(page.optString(Keys.OBJECT_ID), page);
             }
 
