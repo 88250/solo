@@ -52,7 +52,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.5, Mar 17, 2019
+ * @version 2.3.1.6, Mar 22, 2019
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -199,6 +199,7 @@ public final class Markdowns {
                 if (!StringUtils.startsWithIgnoreCase(src, Latkes.getServePath()) && !StringUtils.startsWithIgnoreCase(src, "#")) {
                     a.attr("target", "_blank");
                 }
+                a.removeAttr("id");
             });
             doc.outputSettings().prettyPrint(false);
 
