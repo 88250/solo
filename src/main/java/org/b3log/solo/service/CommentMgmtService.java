@@ -49,7 +49,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.8, Mar 17, 2019
+ * @version 1.3.4.0, Mar 22, 2019
  * @since 0.3.5
  */
 @Service
@@ -329,7 +329,10 @@ public class CommentMgmtService {
             ret.put(Keys.OBJECT_ID, commentId);
             final String commentSharpURL = Comment.getCommentSharpURLForPage(page, commentId);
             ret.put(Comment.COMMENT_NAME, commentName);
-            ret.put(Comment.COMMENT_CONTENT, commentContent);
+            String cmtContent = Emotions.convert(commentContent);
+            cmtContent = Markdowns.toHTML(cmtContent);
+            cmtContent = Markdowns.clean(cmtContent);
+            ret.put(Comment.COMMENT_CONTENT, cmtContent);
             ret.put(Comment.COMMENT_URL, commentURL);
 
             ret.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
