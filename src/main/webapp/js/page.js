@@ -303,8 +303,6 @@ $.extend(Page.prototype, {
             $('#soloEditorError').html(result.msg)
             return
           }
-          debugger
-
           that.toggleEditor()
           vditor.setValue('')
           that.addCommentAjax(Util.replaceEmString(result.cmtTpl))

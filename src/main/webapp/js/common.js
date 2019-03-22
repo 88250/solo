@@ -100,6 +100,9 @@ var Util = {
    */
   previewImg: function () {
     $('body').on('click', '.vditor-reset img', function () {
+      if ($(this).hasClass('prevent')) {
+        return
+      }
       window.open(this.src)
     })
   },
