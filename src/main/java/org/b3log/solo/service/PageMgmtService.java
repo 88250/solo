@@ -132,6 +132,10 @@ public class PageMgmtService {
             return;
         }
 
+        if (null == admin) {
+            return;
+        }
+
         final String githubId = admin.optString(UserExt.USER_GITHUB_ID);
         final JSONArray gitHubRepos = GitHubs.getGitHubRepos(githubId);
         if (null == gitHubRepos || gitHubRepos.isEmpty()) {
