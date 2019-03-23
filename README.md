@@ -95,8 +95,8 @@ docker pull b3log/solo
 ```
 
 * 使用 MySQL
-  先手动建库（字符集使用 `utf8mb4`，排序规则 `utf8mb4_general_ci`），然后启动容器：
 
+  先手动建库（字符集使用 `utf8mb4`，排序规则 `utf8mb4_general_ci`），然后启动容器：
   ```shell
   docker run --detach --name solo --network=host \
       --env RUNTIME_DB="MYSQL" \

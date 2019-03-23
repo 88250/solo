@@ -27,7 +27,6 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.PluginManager;
-import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.RepositoryException;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.repository.jdbc.util.Connections;
@@ -56,7 +55,7 @@ import java.util.Set;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.30, Mar 2, 2019
+ * @version 1.5.2.31, Mar 23, 2019
  * @since 0.4.0
  */
 @Service
@@ -160,7 +159,7 @@ public class InitService {
         }
 
         try {
-            inited = !optionRepository.getList(new Query()).isEmpty();
+            inited = null != optionRepository.get(Option.ID_C_VERSION);
             if (!inited && !printedInitMsg) {
                 LOGGER.log(Level.WARN, "Solo has not been initialized, please open your browser to init Solo");
                 printedInitMsg = true;
