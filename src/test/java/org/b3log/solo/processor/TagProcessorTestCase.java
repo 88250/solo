@@ -58,6 +58,6 @@ public class TagProcessorTestCase extends AbstractTestCase {
         mockDispatcherServletService(request, response);
 
         final String content = response.body();
-        Assert.assertTrue(StringUtils.contains(content, "<title>Solo - Solo 的个人博客</title>"));
+        Assert.assertTrue(StringUtils.contains(content, "<title>Solo 标签 - Solo 的个人博客</title>"));
     }
 }

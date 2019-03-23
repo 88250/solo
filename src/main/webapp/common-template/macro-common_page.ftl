@@ -23,7 +23,7 @@
 <html>
 <head>
     <#if !blogTitle??>
-    <#assign blogTitle = welcomeToSoloLabel>
+    <#assign blogTitle = "Solo">
     </#if>
     <@head title="${title} - ${blogTitle}">
         <link type="text/css" rel="stylesheet"

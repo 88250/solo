@@ -406,6 +406,7 @@ public final class SoloServletListener extends AbstractServletListener {
 
         final OtherConsole otherConsole = beanManager.getReference(OtherConsole.class);
         DispatcherServlet.delete("/console/archive/unused", otherConsole::removeUnusedArchives);
+        DispatcherServlet.delete("/console/tag/unused", otherConsole::removeUnusedTags);
 
         final UserConsole userConsole = beanManager.getReference(UserConsole.class);
         DispatcherServlet.put("/console/user/", userConsole::updateUser);

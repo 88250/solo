@@ -145,7 +145,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 
     @Override
     public String getQueryString() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return "";
     }
 
     @Override
