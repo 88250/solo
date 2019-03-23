@@ -37,7 +37,7 @@ public final class UserExt {
     /**
      * Max user name length.
      */
-    public static final int MAX_USER_NAME_LENGTH = 20;
+    public static final int MAX_USER_NAME_LENGTH = 64;
 
     /**
      * Min user name length.
@@ -59,8 +59,8 @@ public final class UserExt {
      * <p>
      * A valid user name:
      * <ul>
-     * <li>length [1, 20]</li>
-     * <li>content {a-z, A-Z, 0-9}</li>
+     * <li>length [1, 64]</li>
+     * <li>content {a-z, A-Z, 0-9, -}</li>
      * <li>Not contains "admin"/"Admin"</li>
      * </ul>
      * </p>
@@ -77,8 +77,7 @@ public final class UserExt {
         char c;
         for (int i = 0; i < length; i++) {
             c = name.charAt(i);
-
-            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || '0' <= c && c <= '9') {
+            if (('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || ('0' <= c && c <= '9') || '-' == c) {
                 continue;
             }
 
