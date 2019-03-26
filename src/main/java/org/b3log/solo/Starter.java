@@ -107,7 +107,7 @@ public final class Starter {
         final boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
         final String cmdSyntax = isWindows ? "java -cp \"WEB-INF/lib/*;WEB-INF/classes\" org.b3log.solo.Starter"
                 : "java -cp \"WEB-INF/lib/*:WEB-INF/classes\" org.b3log.solo.Starter";
-        final String header = "\nSolo 是一款小而美的 Java 博客系统。\n\n";
+        final String header = "\nSolo 是一款小而美的博客系统，专为程序员设计。\n\n";
         final String footer = "\n提需求或报告缺陷请到项目网站: https://github.com/b3log/solo\n\n";
         try {
             commandLine = commandLineParser.parse(options, args);
