@@ -19,11 +19,12 @@
 -->
 <script>
     var Label = {
-        "servePath": "${servePath}",
-        "staticServePath": "${staticServePath}",
-        "markedAvailable": ${markedAvailable?c},
-        "hljsStyle": "atom-one-light",
-        "langLabel": "${langLabel}"
-    };
+        servePath: "${servePath}",
+        staticServePath: "${staticServePath}",
+        markedAvailable: ${markedAvailable?c},
+        hljsStyle: 'atom-one-light',
+        langLabel: "${langLabel}",
+        version: "${version}",
+    }
     Util.init()
 </script>

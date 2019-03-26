@@ -179,7 +179,8 @@ var Util = {
       return
     }
 
-    Util.addScript(Label.staticServePath + '/js/lib/vditor-1.1.10/index.min.js', 'vditorScript')
+    Util.addScript(Label.staticServePath + '/js/lib/vditor-1.1.10/index.min.js',
+      'vditorScript')
 
     Vditor.mermaidRender(document.body)
     Vditor.mathRender(document.body)
@@ -295,6 +296,16 @@ var Util = {
     Util.parseLanguage()
     Util.initSW()
     Util.previewImg()
+    Util.initDebugInfo()
+  },
+  /**
+   * 调试区域文案
+   */
+  initDebugInfo: function () {
+    console.log(
+      '%cSolo%c\n  🎸一款小而美的博客系统，专为程序员设计。' + Label.version + ' © ' +
+      (new Date).getFullYear(),
+      'font-size:96px;color:#3b3e43', 'font-size:12px;color:rgba(0,0,0,0.38);')
   },
   /**
    * @description 注册 Service Work
