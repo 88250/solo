@@ -47,7 +47,7 @@ import java.util.Date;
  * Receiving articles and comments from B3log community. Visits <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.0, Feb 18, 2019
+ * @version 2.0.1.1, Mar 26, 2019
  * @since 0.5.5
  */
 @RequestProcessor
@@ -153,7 +153,9 @@ public class B3Receiver {
             final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
             if (null == articleAuthor) {
                 ret.put(Keys.CODE, 1);
-                ret.put(Keys.MSG, "Not found user [" + articleAuthorName + "]");
+                final String msg = "Not found user [" + articleAuthorName + "]";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, msg);
 
                 return;
             }
@@ -162,18 +164,21 @@ public class B3Receiver {
             final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
             if (!StringUtils.equals(key, b3Key)) {
                 ret.put(Keys.CODE, 1);
-                ret.put(Keys.MSG, "Wrong key");
+                final String msg = "Wrong key";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, msg);
 
                 return;
             }
 
             final JSONObject symArticle = requestJSONObject.optJSONObject(Article.ARTICLE);
+            final String title = symArticle.optString("title");
             final String articleId = symArticle.optString("id");
             final JSONObject oldArticle = articleQueryService.getArticleById(articleId);
             if (null == oldArticle) {
                 final JSONObject article = new JSONObject().
                         put(Keys.OBJECT_ID, symArticle.optString("id")).
-                        put(Article.ARTICLE_TITLE, symArticle.optString("title")).
+                        put(Article.ARTICLE_TITLE, title).
                         put(Article.ARTICLE_CONTENT, symArticle.optString("content")).
                         put(Article.ARTICLE_TAGS_REF, symArticle.optString("tags"));
                 article.put(Article.ARTICLE_AUTHOR_ID, articleAuthor.getString(Keys.OBJECT_ID));
@@ -187,6 +192,7 @@ public class B3Receiver {
                 article.put(Article.ARTICLE_CONTENT, content);
                 final JSONObject addRequest = new JSONObject().put(Article.ARTICLE, article);
                 articleMgmtService.addArticle(addRequest);
+                LOGGER.log(Level.INFO, "Added an article [" + title + "] via Sym");
 
                 return;
             }
@@ -199,6 +205,7 @@ public class B3Receiver {
             oldArticle.put(Common.POST_TO_COMMUNITY, false); // Do not send to rhythm
             final JSONObject updateRequest = new JSONObject().put(Article.ARTICLE, oldArticle);
             articleMgmtService.updateArticle(updateRequest);
+            LOGGER.log(Level.INFO, "Updated an article [" + title + "] via Sym");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
             ret.put(Keys.CODE, 1).put(Keys.MSG, e.getMessage());
@@ -257,7 +264,9 @@ public class B3Receiver {
             final JSONObject articleAuthor = userRepository.getByUserName(articleAuthorName);
             if (null == articleAuthor) {
                 ret.put(Keys.CODE, 1);
-                ret.put(Keys.MSG, "Not found user [" + articleAuthorName + "]");
+                final String msg = "Not found user [" + articleAuthorName + "]";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, msg);
 
                 return;
             }
@@ -266,7 +275,9 @@ public class B3Receiver {
             final String key = articleAuthor.optString(UserExt.USER_B3_KEY);
             if (!StringUtils.equals(key, b3Key)) {
                 ret.put(Keys.CODE, 1);
-                ret.put(Keys.MSG, "Wrong key");
+                final String msg = "Wrong key";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, msg);
 
                 return;
             }
@@ -275,7 +286,9 @@ public class B3Receiver {
             final JSONObject article = articleRepository.get(articleId);
             if (null == article) {
                 ret.put(Keys.CODE, 1);
-                ret.put(Keys.MSG, "Not found the specified article [id=" + articleId + "]");
+                final String msg = "Not found the specified article [id=" + articleId + "]";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, msg);
 
                 return;
             }
@@ -298,6 +311,7 @@ public class B3Receiver {
                 addUserReq.put(UserExt.USER_B3_KEY, "");
                 try {
                     userMgmtService.addUser(addUserReq);
+                    LOGGER.log(Level.INFO, "Created a user [role=" + Role.VISITOR_ROLE + "] via Sym comment");
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Adds a user [" + commentName + "] failed", e);
                     ret.put(Keys.CODE, 1);
@@ -309,7 +323,9 @@ public class B3Receiver {
 
             if (!optionQueryService.allowComment() || !article.optBoolean(Article.ARTICLE_COMMENTABLE)) {
                 ret.put(Keys.CODE, 1);
-                ret.put(Keys.MSG, "Not allow comment");
+                final String msg = "Not allow comment";
+                ret.put(Keys.MSG, msg);
+                LOGGER.log(Level.WARN, msg);
 
                 return;
             }
