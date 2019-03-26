@@ -23,17 +23,14 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.upgrade.V299_300;
-import org.b3log.solo.upgrade.V300_310;
-import org.b3log.solo.upgrade.V310_320;
-import org.b3log.solo.upgrade.V320_330;
+import org.b3log.solo.upgrade.*;
 import org.json.JSONObject;
 
 /**
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.3, Mar 17, 2019
+ * @version 1.2.1.4, Mar 26, 2019
  * @since 1.2.0
  */
 @Service
@@ -74,6 +71,8 @@ public class UpgradeService {
                     V310_320.perform();
                 case "3.2.0":
                     V320_330.perform();
+                case "3.3.0":
+                    V330_340.perform();
 
                     break;
                 default:
