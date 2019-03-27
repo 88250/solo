@@ -43,7 +43,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending comment to B3log Rhythm. Sees <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Feb 9, 2019
+ * @version 1.0.1.6, Mar 27, 2019
  * @since 0.5.5
  */
 @Singleton
@@ -116,6 +116,7 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
                     put("client", client);
 
             HttpRequest.post("https://rhythm.b3log.org/api/comment").bodyText(requestJSONObject.toString()).
+                    connectionTimeout(3000).timeout(7000).trustAllCerts(true).
                     header("User-Agent", Solos.USER_AGENT).contentTypeJson().sendAsync();
             LOGGER.log(Level.DEBUG, "Pushed a comment to Sym");
         } catch (final Exception e) {

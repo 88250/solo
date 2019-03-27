@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Mar 19, 2019
+ * @version 1.1.0.4, Mar 27, 2019
  * @since 2.5.0
  */
 @Service
@@ -240,7 +240,8 @@ public class ExportService {
                 bodyBuilder.append("### 热议\n").append(mostCmtBuilder);
             }
 
-            final HttpResponse response = HttpRequest.post("https://hacpai.com/github/repos").connectionTimeout(7000).timeout(60000).header("User-Agent", Solos.USER_AGENT).
+            final HttpResponse response = HttpRequest.post("https://hacpai.com/github/repos").
+                    connectionTimeout(7000).timeout(60000).trustAllCerts(true).header("User-Agent", Solos.USER_AGENT).
                     form("userName", userName,
                             "userB3Key", userB3Ke,
                             "clientName", "Solo",
