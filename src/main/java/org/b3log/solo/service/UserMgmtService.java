@@ -48,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.0.17, Mar 20, 2019
+ * @version 1.1.0.18, Mar 27, 2019
  * @since 0.4.0
  */
 @Service
@@ -156,7 +156,8 @@ public class UserMgmtService {
      *                          "userName": "",
      *                          "userRole": "",
      *                          "userURL": "",
-     *                          "userB3Key": ""
+     *                          "userB3Key": "",
+     *                          "userGitHubId": "" // optional
      * @throws ServiceException service exception
      */
     public void updateUser(final JSONObject requestJSONObject) throws ServiceException {
@@ -191,6 +192,11 @@ public class UserMgmtService {
 
             final String userB3Key = requestJSONObject.optString(UserExt.USER_B3_KEY);
             oldUser.put(UserExt.USER_B3_KEY, userB3Key);
+
+            final String userGitHubId = requestJSONObject.optString(UserExt.USER_GITHUB_ID);
+            if (StringUtils.isNotBlank(userGitHubId)) {
+                oldUser.put(UserExt.USER_GITHUB_ID, userGitHubId);
+            }
 
             userRepository.update(oldUserId, oldUser);
             transaction.commit();

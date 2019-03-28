@@ -48,7 +48,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.0.2.18, Feb 21, 2019
+ * @version 1.0.2.19, Mar 27, 2019
  * @since 0.3.1
  */
 @Singleton
@@ -124,7 +124,7 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
                     put("article", article).
                     put("client", client);
             final HttpResponse response = HttpRequest.post("https://rhythm.b3log.org/api/article").bodyText(requestJSONObject.toString()).
-                    connectionTimeout(3000).timeout(7000).
+                    connectionTimeout(3000).timeout(7000).trustAllCerts(true).
                     contentTypeJson().header("User-Agent", Solos.USER_AGENT).send();
 
             LOGGER.log(Level.INFO, "Pushed an article [title={0}] to Rhy, response [{1}]", title, response.toString());

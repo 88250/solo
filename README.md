@@ -56,23 +56,23 @@
 
 ### 开始使用
 
-![init](https://user-images.githubusercontent.com/873584/52908896-800a2d80-32b9-11e9-9702-43bab360651d.png)
+![start](https://user-images.githubusercontent.com/873584/54970301-9001e500-4fbc-11e9-83de-bf3841adecff.png)
 
 ### 后台首页
 
-![console-index](https://user-images.githubusercontent.com/873584/52255442-85788700-294d-11e9-8c8e-38bdcba6736c.png)
+![console](https://user-images.githubusercontent.com/873584/54970489-4796f700-4fbd-11e9-837b-93394ff80304.png)
 
 ### 编辑文章
 
-![article](https://user-images.githubusercontent.com/873584/52255441-85788700-294d-11e9-8fb4-f72e353a76de.png)
+![post](https://user-images.githubusercontent.com/873584/54970405-ea9b4100-4fbc-11e9-9e05-5f5e4b94d2b8.png)
 
 ### 选择皮肤
 
-![skin](https://user-images.githubusercontent.com/873584/52255444-85788700-294d-11e9-9c21-8758bad2c3b4.png)
+![skin](https://user-images.githubusercontent.com/873584/54970463-22a28400-4fbd-11e9-953e-6922a12f5f11.png)
 
 ### 前台界面
 
-![index](https://user-images.githubusercontent.com/873584/52255333-19961e80-294d-11e9-85c4-92bc508864a4.png)
+![index](https://user-images.githubusercontent.com/873584/54970236-5a5cfc00-4fbc-11e9-8d04-d7a517f78839.png)
 
 ## 安装
 
@@ -98,7 +98,8 @@ docker pull b3log/solo
 
 * 使用 MySQL
 
-  先手动建库（字符集使用 `utf8mb4`，排序规则 `utf8mb4_general_ci`），然后启动容器：
+  先手动建库（库名 `solo`，字符集使用 `utf8mb4`，排序规则 `utf8mb4_general_ci`），然后启动容器：
+  
   ```shell
   docker run --detach --name solo --network=host \
       --env RUNTIME_DB="MYSQL" \
@@ -110,7 +111,7 @@ docker pull b3log/solo
   ```
   为了简单，使用了主机网络模式来连接主机上的 MySQL。
   
-* 使用 H2 Databse
+* 使用 H2 Database
 
   ```shell
   docker run --detach --name solo --volume ~/solo_h2/:/opt/solo/h2/ --publish 8080:8080 \
