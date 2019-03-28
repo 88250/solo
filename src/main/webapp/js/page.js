@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.1.0.1, Mar 6, 2019
+ * @version 2.2.0.0, Mar 28, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -28,6 +28,52 @@ var Page = function (tips) {
 }
 
 $.extend(Page.prototype, {
+  share: function () {
+    var $this = $('.article__share')
+    if ($this.length === 0) {
+      return
+    }
+    var $qrCode = $this.find('.item__qr')
+    var shareURL = $this.data('url')
+    var avatarURL = $this.data('avatar')
+    var title = encodeURIComponent($this.data('title') + ' - ' +
+      $this.data('blogtitle'))
+    var url = encodeURIComponent(shareURL)
+
+    var urls = {}
+    urls.tencent = 'http://share.v.t.qq.com/index.php?c=share&a=index&title=' +
+      title +
+      '&url=' + url + '&pic=' + avatarURL
+    urls.weibo = 'http://v.t.sina.com.cn/share/share.php?title=' +
+      title + '&url=' + url + '&pic=' + avatarURL
+    urls.qqz = 'https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url='
+      + url + '&sharesource=qzone&title=' + title + '&pics=' + avatarURL
+    urls.twitter = 'https://twitter.com/intent/tweet?status=' + title + ' ' +
+      url
+
+    $this.find('span').click(function () {
+      var key = $(this).data('type')
+
+      if (!key) {
+        return
+      }
+
+      if (key === 'wechat') {
+        if ($qrCode.find('canvas').length === 0) {
+          $qrCode.qrcode({
+            width: 128,
+            height: 128,
+            text: shareURL,
+          })
+        } else {
+          $qrCode.slideToggle()
+        }
+        return false
+      }
+
+      window.open(urls[key], '_blank', 'top=100,left=200,width=648,height=618')
+    })
+  },
   /*
    * @description 把评论中的标识替换为图片
    * @param {Dom} selector
@@ -65,7 +111,8 @@ $.extend(Page.prototype, {
 
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
-      Util.addScript(Label.staticServePath + '/js/lib/vditor-1.1.10/index.min.js', 'vditorScript')
+      Util.addScript(Label.staticServePath +
+        '/js/lib/vditor-1.1.10/index.min.js', 'vditorScript')
       window.vditor = new Vditor('soloEditorComment', {
         placeholder: that.tips.commentContentCannotEmptyLabel,
         height: 180,
@@ -88,7 +135,7 @@ $.extend(Page.prototype, {
             enable: true,
             style: Label.hljsStyle,
           },
-          parse: function(element) {
+          parse: function (element) {
             if (element.style.display === 'none') {
               return
             }
