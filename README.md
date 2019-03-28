@@ -111,7 +111,7 @@ docker pull b3log/solo
   ```
   为了简单，使用了主机网络模式来连接主机上的 MySQL。
   
-* 使用 H2 Databse
+* 使用 H2 Database
 
   ```shell
   docker run --detach --name solo --volume ~/solo_h2/:/opt/solo/h2/ --publish 8080:8080 \
