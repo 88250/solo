@@ -60,6 +60,8 @@ $.extend(Page.prototype, {
 
       if (key === 'wechat') {
         if ($qrCode.find('canvas').length === 0) {
+          Util.addScript(Label.staticServePath +
+            '/js/lib/jquery.qrcode.min.js', 'qrcodeScript')
           $qrCode.qrcode({
             width: 128,
             height: 128,
