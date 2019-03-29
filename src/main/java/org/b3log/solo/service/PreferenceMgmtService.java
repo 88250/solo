@@ -28,15 +28,11 @@ import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
-import org.b3log.solo.util.Skins;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Set;
 
 /**
  * Preference management service.
@@ -89,15 +85,6 @@ public class PreferenceMgmtService {
         final Transaction transaction = optionRepository.beginTransaction();
 
         try {
-            final Set<String> skinDirNames = Skins.getSkinDirNames();
-            final JSONArray skinArray = new JSONArray();
-            for (final String dirName : skinDirNames) {
-                final JSONObject skin = new JSONObject();
-                skinArray.put(skin);
-                skin.put(Skin.SKIN_DIR_NAME, dirName);
-            }
-            preference.put(Skin.SKINS, skinArray.toString());
-
             preference.put(Option.ID_C_SIGNS, preference.get(Option.ID_C_SIGNS).toString());
 
             final JSONObject oldPreference = optionQueryService.getPreference();
@@ -207,10 +194,6 @@ public class PreferenceMgmtService {
             final JSONObject signsOpt = optionRepository.get(Option.ID_C_SIGNS);
             signsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SIGNS));
             optionRepository.update(Option.ID_C_SIGNS, signsOpt);
-
-            final JSONObject skinsOpt = optionRepository.get(Option.ID_C_SKINS);
-            skinsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SKINS));
-            optionRepository.update(Option.ID_C_SKINS, skinsOpt);
 
             final JSONObject timeZoneIdOpt = optionRepository.get(Option.ID_C_TIME_ZONE_ID);
             timeZoneIdOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_TIME_ZONE_ID));

@@ -29,15 +29,11 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Sign;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.service.OptionMgmtService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PreferenceMgmtService;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Preference console request processing.
@@ -225,7 +221,6 @@ public class PreferenceConsole {
      *         "randomArticlesDisplayCount": int,
      *         "blogTitle": "",
      *         "blogSubtitle": "",
-     *         "skinDirName": "",
      *         "localeString": "",
      *         "timeZoneId": "",
      *         "noticeBoard": "",
@@ -267,12 +262,6 @@ public class PreferenceConsole {
             }
 
             preferenceMgmtService.updatePreference(preference);
-
-            final HttpServletResponse response = context.getResponse();
-            final Cookie cookie = new Cookie(Skin.SKIN, preference.getString(Skin.SKIN_DIR_NAME));
-            cookie.setMaxAge(60 * 60); // 1 hour
-            cookie.setPath("/");
-            response.addCookie(cookie);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));

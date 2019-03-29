@@ -36,7 +36,6 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.OptionQueryService;
@@ -124,7 +123,7 @@ public class IndexProcessor {
             }
             request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
 
-            final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
+            final Cookie cookie = new Cookie(Option.CATEGORY_C_SKIN, specifiedSkin);
             cookie.setMaxAge(60 * 60); // 1 hour
             cookie.setPath("/");
             response.addCookie(cookie);

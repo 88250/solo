@@ -29,14 +29,11 @@ import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
+import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Set;
-
-import static org.b3log.solo.model.Skin.SKINS;
-import static org.b3log.solo.model.Skin.SKIN_DIR_NAME;
-import static org.b3log.solo.util.Skins.getSkinDirNames;
 
 /**
  * Skin management service.
@@ -78,10 +75,7 @@ public class SkinMgmtService {
      * @throws Exception exception
      */
     public void loadSkins(final JSONObject skin) throws Exception {
-        Stopwatchs.start("Load Skins");
-
-        LOGGER.debug("Loading skins....");
-        final Set<String> skinDirNames = getSkinDirNames();
+        final Set<String> skinDirNames = Skins.getSkinDirNames();
         LOGGER.log(Level.DEBUG, "Loaded skins [dirNames={0}]", skinDirNames);
         final JSONArray skinArray = new JSONArray();
         for (final String dirName : skinDirNames) {
@@ -93,11 +87,11 @@ public class SkinMgmtService {
                 continue;
             }
 
-            s.put(SKIN_DIR_NAME, dirName);
+            s.put(Option.ID_C_SKIN_DIR_NAME, dirName);
             skinArray.put(s);
         }
 
-        final String currentSkinDirName = skin.optString(SKIN_DIR_NAME);
+        final String currentSkinDirName = skin.optString(Option.ID_C_SKIN_DIR_NAME);
         if (!skinDirNames.contains(currentSkinDirName)) {
             LOGGER.log(Level.WARN, "Configured skin [dirName={0}] can not find, try to use " + "default skin [dirName="
                     + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead.", currentSkinDirName);
@@ -107,20 +101,9 @@ public class SkinMgmtService {
                 System.exit(-1);
             }
 
-            skin.put(SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+            skin.put(Option.ID_C_SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
             updateSkin(skin);
         }
-
-        final String skinsString = skinArray.toString();
-        if (!skinsString.equals(skin.getString(SKINS))) {
-            LOGGER.debug("The skins directory has been changed, persists it into database");
-            skin.put(SKINS, skinsString);
-            updateSkin(skin);
-        }
-
-        LOGGER.debug("Loaded skins....");
-
-        Stopwatchs.end();
     }
 
     /**

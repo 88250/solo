@@ -28,7 +28,6 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.SkinMgmtService;
 import org.json.JSONObject;
@@ -146,7 +145,7 @@ public class SkinConsole {
             skinMgmtService.updateSkin(skin);
 
             final HttpServletResponse response = context.getResponse();
-            final Cookie cookie = new Cookie(Skin.SKIN, skin.getString(Skin.SKIN_DIR_NAME));
+            final Cookie cookie = new Cookie(Option.CATEGORY_C_SKIN, skin.getString(Option.ID_C_SKIN_DIR_NAME));
             cookie.setMaxAge(60 * 60); // 1 hour
             cookie.setPath("/");
             response.addCookie(cookie);

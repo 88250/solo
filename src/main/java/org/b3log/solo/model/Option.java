@@ -218,11 +218,6 @@ public final class Option {
     public static final String ID_C_FEED_OUTPUT_CNT = "feedOutputCnt";
 
     /**
-     * Key of skins.
-     */
-    public static final String ID_C_SKINS = "skins";
-
-    /**
      * Key of skin dir name.
      */
     public static final String ID_C_SKIN_DIR_NAME = "skinDirName";

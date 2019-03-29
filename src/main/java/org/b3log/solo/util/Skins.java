@@ -33,7 +33,6 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
@@ -219,7 +218,7 @@ public final class Skins {
      */
     public static String getSkinDirName(final RequestContext context) {
         // 1. Get skin from query
-        final String specifiedSkin = context.param(Skin.SKIN);
+        final String specifiedSkin = context.param(Option.CATEGORY_C_SKIN);
         if (StringUtils.isNotBlank(specifiedSkin)) {
             final Set<String> skinDirNames = Skins.getSkinDirNames();
             if (skinDirNames.contains(specifiedSkin)) {
@@ -243,7 +242,7 @@ public final class Skins {
         final Cookie[] cookies = request.getCookies();
         if (null != cookies) {
             for (final Cookie cookie : cookies) {
-                if (Skin.SKIN.equals(cookie.getName())) {
+                if (Option.CATEGORY_C_SKIN.equals(cookie.getName())) {
                     final String skin = cookie.getValue();
                     final Set<String> skinDirNames = Skins.getSkinDirNames();
 

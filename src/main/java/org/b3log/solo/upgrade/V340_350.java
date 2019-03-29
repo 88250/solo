@@ -58,6 +58,7 @@ public final class V340_350 {
             final Transaction transaction = optionRepository.beginTransaction();
 
             optionRepository.remove("skinName");
+            optionRepository.remove("skins");
             final JSONObject skinOpt = optionRepository.get(Option.ID_C_SKIN_DIR_NAME);
             skinOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);
             optionRepository.update(Option.ID_C_SKIN_DIR_NAME, skinOpt);

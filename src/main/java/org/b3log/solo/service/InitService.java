@@ -672,19 +672,6 @@ public class InitService {
         mobileSkinDirNameOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME);
         optionRepository.add(mobileSkinDirNameOpt);
 
-        final Set<String> skinDirNames = Skins.getSkinDirNames();
-        final JSONArray skinArray = new JSONArray();
-        for (final String dirName : skinDirNames) {
-            final JSONObject skin = new JSONObject();
-            skinArray.put(skin);
-            skin.put(Skin.SKIN_DIR_NAME, dirName);
-        }
-        final JSONObject skinsOpt = new JSONObject();
-        skinsOpt.put(Keys.OBJECT_ID, Option.ID_C_SKINS);
-        skinsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);
-        skinsOpt.put(Option.OPTION_VALUE, skinArray.toString());
-        optionRepository.add(skinsOpt);
-
         LOGGER.info("Initialized preference");
     }
 }
