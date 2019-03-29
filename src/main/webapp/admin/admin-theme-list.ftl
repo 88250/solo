@@ -17,12 +17,19 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<#include "../common-template/macro-common_page.ftl">
-
-<@commonPage "404 Not Found!">
-<h2>404 Not Found!</h2>
-<img class="img-error" src="${staticServePath}/images/404.gif" title="404" alt="404 Not Found!"/>
-<div class="a-error">
-    Please <a href="${loginURL}">Star</a> or return to <a href="${servePath}">Index</a>.
-</div>
-</@commonPage>
+<table class="form" width="100%" cellpadding="0" cellspacing="0">
+    <tbody>
+    <tr>
+        <td>
+            <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
+            <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <div id="skinMain"></div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+${plugins}

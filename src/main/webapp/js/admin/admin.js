@@ -44,11 +44,11 @@ var Admin = function () {
   this.register = {}
   // 工具栏下的工具
   this.tools = [
-    '#page-list', '#file-list', '#link-list', '#preference',
+    '#page-list', '#theme-list', '#link-list', '#preference',
     '#user-list', '#plugin-list', '#others', '#category-list']
   // 多用户时，一般用户不能使用的功能
   this.adTools = [
-    'link-list', 'preference', 'file-list', 'page-list',
+    'link-list', 'preference', 'theme-list', 'page-list',
     'user-list', 'plugin-list', 'others', 'category-list']
 }
 

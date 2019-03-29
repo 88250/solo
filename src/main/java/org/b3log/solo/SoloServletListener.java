@@ -58,7 +58,8 @@ import javax.servlet.http.HttpSessionEvent;
  * Solo Servlet listener.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.10.0.13, Mar 26, 2019
+ * @author <a href="http://vanessa.b3log.org">Vanessa</a>
+ * @version 1.11.0.13, Mar 29, 2019
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -336,6 +337,7 @@ public final class SoloServletListener extends AbstractServletListener {
                 "/admin-draft-list.do",
                 "/admin-user-list.do",
                 "/admin-category-list.do",
+                "/admin-theme-list.do",
                 "/admin-plugin-list.do",
                 "/admin-main.do",
                 "/admin-about.do"}, adminConsole::showAdminFunctions);

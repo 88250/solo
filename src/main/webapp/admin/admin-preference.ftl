@@ -25,11 +25,6 @@
             </div>
         </li>
         <li>
-            <div id="tabPreference_skins">
-                <a href="#tools/preference/skins">${skinLabel}</a>
-            </div>
-        </li>
-        <li>
             <div id="tabPreference_signs">
                 <a href="#tools/preference/signs">${signLabel}</a>
             </div>
@@ -234,23 +229,6 @@
         </label>
         <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="fn__clear"></div>
-    </div>
-    <div id="tabPreferencePanel_skins" class="fn__none form">
-        <table class="form" width="100%" cellpadding="0" cellspacing="0">
-            <tbody>
-            <tr>
-                <td>
-                    <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
-                    <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div id="skinMain"></div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
     </div>
     <div id="tabPreferencePanel_signs" class="fn__none form">
         <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>

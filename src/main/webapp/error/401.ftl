@@ -23,6 +23,6 @@
 <h2>401 Unauthorized!</h2>
 <img class="img-error" src="${staticServePath}/images/401.png" alt="401" title="401 Unauthorized!" />
 <div class="a-error">
-    Please <a href="${loginURL}">Login</a> or return to <a href="${servePath}">Index</a>.
+    Please <a href="${loginURL}">Star</a> or return to <a href="${servePath}">Index</a>.
 </div>
 </@commonPage>

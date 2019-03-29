@@ -77,8 +77,6 @@ admin.preference = {
         'true' === preference.commentable ? $('#commentable').attr('checked', 'checked') : $('commentable').removeAttr('checked')
         'true' === preference.syncGitHub ? $('#syncGitHub').attr('checked', 'checked') : $('syncGitHub').removeAttr('checked')
 
-        syncGitHub
-
         admin.preference.locale = preference.localeString
 
         // skin

@@ -97,6 +97,11 @@
                                 </div>
                             </li>
                             <li>
+                                <div id="tabs_preference">
+                                    <a href="#tools/theme-list">${skinLabel}</a>
+                                </div>
+                            </li>
+                            <li>
                                 <div id="tabs_category-list">
                                     <a href="#tools/category-list">${categoryListLabel}</a>
                                 </div>
@@ -145,6 +150,7 @@
                 <div id="tabsPanel_draft-list" class="fn__none"></div>
                 <div id="tabsPanel_link-list" class="fn__none"></div>
                 <div id="tabsPanel_preference" class="fn__none"></div>
+                <div id="tabsPanel_theme-list" class="fn__none"></div>
                 <div id="tabsPanel_category-list" class="fn__none"></div>
                 <div id="tabsPanel_page-list" class="fn__none"></div>
                 <div id="tabsPanel_others" class="fn__none"></div>
@@ -180,6 +186,7 @@
         <script src="${staticServePath}/js/admin/plugin.js"></script>
         <script src="${staticServePath}/js/admin/main.js"></script>
         <script src="${staticServePath}/js/admin/about.js"></script>
+        <script src="${staticServePath}/js/admin/themeList.js"></script>
         <#else>
         <script src="${staticServePath}/js/admin/admin.min.js?${staticResourceVersion}"></script>
         </#if>
