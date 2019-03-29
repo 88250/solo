@@ -255,24 +255,22 @@ public final class SoloServletListener extends AbstractServletListener {
     private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
         String skin = Skins.getSkinDirNameFromCookie(httpServletRequest);
         if (StringUtils.isBlank(skin)) {
-            try {
-                final InitService initService = beanManager.getReference(InitService.class);
-                if (initService.isInited()) {
-                    final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
-                    final JSONObject preference = optionQueryService.getPreference();
-                    if (null != preference) {
-                        skin = preference.getString(Skin.SKIN_DIR_NAME);
-                    }
+            final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+            final JSONObject preference = optionQueryService.getPreference();
+
+            if (Solos.isMobile(httpServletRequest)) {
+                if (null != preference) {
+                    skin = preference.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME);
+                } else {
+                    skin = Option.DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME;
                 }
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Resolves skin failed", e);
+            } else {
+                if (null != preference) {
+                    skin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
+                } else {
+                    skin = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
+                }
             }
-        }
-        if (StringUtils.isBlank(skin)) {
-            skin = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
-        }
-        if (Solos.isMobile(httpServletRequest)) {
-            skin = Solos.MOBILE_SKIN;
         }
 
         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);

@@ -48,7 +48,7 @@ import java.util.*;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.5, Feb 26, 2019
+ * @version 1.1.6.6, Mar 29, 2019
  * @since 0.3.1
  */
 public final class Skins {
@@ -218,10 +218,6 @@ public final class Skins {
      * @return directory name, or {@code null} if not found
      */
     public static String getSkinDirName(final RequestContext context) {
-        if (Solos.isMobile(context.getRequest())) {
-            return Solos.MOBILE_SKIN;
-        }
-
         // 1. Get skin from query
         final String specifiedSkin = context.param(Skin.SKIN);
         if (StringUtils.isNotBlank(specifiedSkin)) {

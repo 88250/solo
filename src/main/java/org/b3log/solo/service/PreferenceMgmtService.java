@@ -103,17 +103,11 @@ public class PreferenceMgmtService {
                 continue;
             }
 
-            skin.put(SKIN_NAME, name);
             skin.put(SKIN_DIR_NAME, dirName);
-
             skinArray.put(skin);
         }
 
         final String currentSkinDirName = preference.optString(SKIN_DIR_NAME);
-        final String skinName = preference.optString(SKIN_NAME);
-
-        LOGGER.log(Level.DEBUG, "Current skin[name={0}]", skinName);
-
         if (!skinDirNames.contains(currentSkinDirName)) {
             LOGGER.log(Level.WARN, "Configured skin [dirName={0}] can not find, try to use " + "default skin [dirName="
                     + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead.", currentSkinDirName);
@@ -124,8 +118,6 @@ public class PreferenceMgmtService {
             }
 
             preference.put(SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-            preference.put(SKIN_NAME, Latkes.getSkinName(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME));
-
             updatePreference(preference);
         }
 
@@ -160,22 +152,13 @@ public class PreferenceMgmtService {
         final Transaction transaction = optionRepository.beginTransaction();
 
         try {
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            final String skinName = Latkes.getSkinName(skinDirName);
-
-            preference.put(Skin.SKIN_NAME, skinName);
             final Set<String> skinDirNames = Skins.getSkinDirNames();
             final JSONArray skinArray = new JSONArray();
-
             for (final String dirName : skinDirNames) {
                 final JSONObject skin = new JSONObject();
                 skinArray.put(skin);
-
-                final String name = Latkes.getSkinName(dirName);
-                skin.put(Skin.SKIN_NAME, name);
                 skin.put(Skin.SKIN_DIR_NAME, dirName);
             }
-
             preference.put(Skin.SKINS, skinArray.toString());
 
             preference.put(Option.ID_C_SIGNS, preference.get(Option.ID_C_SIGNS).toString());
@@ -292,9 +275,18 @@ public class PreferenceMgmtService {
             skinDirNameOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SKIN_DIR_NAME));
             optionRepository.update(Option.ID_C_SKIN_DIR_NAME, skinDirNameOpt);
 
-            final JSONObject skinNameOpt = optionRepository.get(Option.ID_C_SKIN_NAME);
-            skinNameOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SKIN_NAME));
-            optionRepository.update(Option.ID_C_SKIN_NAME, skinNameOpt);
+            JSONObject mobileSkinDirNameOpt = optionRepository.get(Option.ID_C_MOBILE_SKIN_DIR_NAME);
+            // TODO: 在 v3.5.0 发布后可移除判空
+            if (null == mobileSkinDirNameOpt) {
+                mobileSkinDirNameOpt = new JSONObject();
+                mobileSkinDirNameOpt.put(Keys.OBJECT_ID, Option.ID_C_MOBILE_SKIN_DIR_NAME);
+                mobileSkinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+                mobileSkinDirNameOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME);
+                optionRepository.add(mobileSkinDirNameOpt);
+            } else {
+                mobileSkinDirNameOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME));
+                optionRepository.update(Option.ID_C_MOBILE_SKIN_DIR_NAME, mobileSkinDirNameOpt);
+            }
 
             final JSONObject skinsOpt = optionRepository.get(Option.ID_C_SKINS);
             skinsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SKINS));

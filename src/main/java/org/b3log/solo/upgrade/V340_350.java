@@ -57,6 +57,8 @@ public final class V340_350 {
         try {
             final Transaction transaction = optionRepository.beginTransaction();
 
+            optionRepository.remove("skinName");
+
             JSONObject hljsThemeOpt = optionRepository.get(Option.ID_C_HLJS_THEME);
             if (null == hljsThemeOpt) {
                 hljsThemeOpt = new JSONObject();

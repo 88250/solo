@@ -21,7 +21,7 @@ package org.b3log.solo.model;
  * This class defines all skin model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Aug 22, 2010
+ * @version 1.1.0.0, Mar 29, 2019
  */
 public final class Skin {
 
@@ -34,11 +34,6 @@ public final class Skin {
      * Skins.
      */
     public static final String SKINS = "skins";
-
-    /**
-     * Key of skin name, current selected skin name.
-     */
-    public static final String SKIN_NAME = "skinName";
 
     /**
      * Key of skin directory name.
