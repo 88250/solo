@@ -18,7 +18,6 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -26,11 +25,9 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.util.Skins;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Set;
@@ -100,7 +97,14 @@ public class SkinMgmtService {
     public void updateSkin(final JSONObject skin) throws ServiceException {
         final Transaction transaction = optionRepository.beginTransaction();
         try {
-            final JSONObject skinDirNameOpt = optionRepository.get(Option.ID_C_SKIN_DIR_NAME);
+            JSONObject skinDirNameOpt = optionRepository.get(Option.ID_C_SKIN_DIR_NAME);
+            if (null == skinDirNameOpt) {
+                skinDirNameOpt = new JSONObject();
+                skinDirNameOpt.put(Keys.OBJECT_ID, Option.ID_C_SKIN_DIR_NAME);
+                skinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);
+                skinDirNameOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
+                optionRepository.add(skinDirNameOpt);
+            }
             skinDirNameOpt.put(Option.OPTION_VALUE, skin.optString(Option.ID_C_SKIN_DIR_NAME));
             optionRepository.update(Option.ID_C_SKIN_DIR_NAME, skinDirNameOpt);
 
@@ -112,10 +116,9 @@ public class SkinMgmtService {
                 mobileSkinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);
                 mobileSkinDirNameOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME);
                 optionRepository.add(mobileSkinDirNameOpt);
-            } else {
-                mobileSkinDirNameOpt.put(Option.OPTION_VALUE, skin.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME));
-                optionRepository.update(Option.ID_C_MOBILE_SKIN_DIR_NAME, mobileSkinDirNameOpt);
             }
+            mobileSkinDirNameOpt.put(Option.OPTION_VALUE, skin.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME));
+            optionRepository.update(Option.ID_C_MOBILE_SKIN_DIR_NAME, mobileSkinDirNameOpt);
 
             transaction.commit();
         } catch (final Exception e) {
