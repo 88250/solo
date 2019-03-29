@@ -144,7 +144,7 @@ public class AdminConsole {
             dataModel.put(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT));
             dataModel.put(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
             final JSONObject skin = optionQueryService.getSkin();
-            dataModel.put(Option.CATEGORY_C_SKIN, skin.optString(Option.OPTION_VALUE));
+            dataModel.put(Option.CATEGORY_C_SKIN, skin.optString(Option.ID_C_SKIN_DIR_NAME));
             Keys.fillRuntime(dataModel);
             dataModelService.fillMinified(dataModel);
             // 使用 Marked 时代码高亮问题 https://github.com/b3log/solo/issues/12614

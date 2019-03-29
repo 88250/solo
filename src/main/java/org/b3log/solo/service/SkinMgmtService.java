@@ -76,28 +76,13 @@ public class SkinMgmtService {
      */
     public void loadSkins(final JSONObject skin) throws Exception {
         final Set<String> skinDirNames = Skins.getSkinDirNames();
-        LOGGER.log(Level.DEBUG, "Loaded skins [dirNames={0}]", skinDirNames);
-        final JSONArray skinArray = new JSONArray();
-        for (final String dirName : skinDirNames) {
-            final JSONObject s = new JSONObject();
-            final String name = Latkes.getSkinName(dirName);
-            if (null == name) {
-                LOGGER.log(Level.WARN, "The directory [{0}] does not contain any skin, ignored it", dirName);
-
-                continue;
-            }
-
-            s.put(Option.ID_C_SKIN_DIR_NAME, dirName);
-            skinArray.put(s);
-        }
-
         final String currentSkinDirName = skin.optString(Option.ID_C_SKIN_DIR_NAME);
         if (!skinDirNames.contains(currentSkinDirName)) {
-            LOGGER.log(Level.WARN, "Configured skin [dirName={0}] can not find, try to use " + "default skin [dirName="
-                    + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead.", currentSkinDirName);
+            LOGGER.log(Level.WARN, "Not found skin [dirName={0}] configured, try to use default skin [dirName="
+                    + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead", currentSkinDirName);
             if (!skinDirNames.contains(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME)) {
-                LOGGER.log(Level.ERROR, "Can not find default skin [dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME
-                        + "], please redeploy your Solo and make sure contains the default skin. If you are using git, try to re-pull with 'git pull --recurse-submodules'");
+                LOGGER.log(Level.ERROR, "Not found default skin [dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME
+                        + "], please redeploy your Solo and make sure contains the default skin. If you are using git, try to pull with 'git pull --recurse-submodules'");
                 System.exit(-1);
             }
 

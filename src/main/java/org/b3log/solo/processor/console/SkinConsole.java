@@ -18,6 +18,7 @@
 package org.b3log.solo.processor.console;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -30,10 +31,13 @@ import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.SkinMgmtService;
+import org.b3log.solo.util.Skins;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Set;
 
 /**
  * Skin console request processing.
@@ -101,6 +105,22 @@ public class SkinConsole {
                 return;
             }
 
+            final Set<String> skinDirNames = Skins.getSkinDirNames();
+            final JSONArray skinArray = new JSONArray();
+            for (final String dirName : skinDirNames) {
+                final JSONObject s = new JSONObject();
+                final String name = Latkes.getSkinName(dirName);
+                if (null == name) {
+                    LOGGER.log(Level.WARN, "The directory [{0}] does not contain any skin, ignored it", dirName);
+
+                    continue;
+                }
+
+                s.put(Option.ID_C_SKIN_DIR_NAME, dirName);
+                skinArray.put(s);
+            }
+            skin.put("skins", skinArray.toString());
+
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
             ret.put(Option.CATEGORY_C_SKIN, skin);
@@ -121,7 +141,8 @@ public class SkinConsole {
      * <pre>
      * {
      *     "skin": {
-     *         "skinDirName": ""
+     *         "skinDirName": "",
+     *         "mobileSkinDirName": "",
      *     }
      * }
      * </pre>
@@ -138,9 +159,6 @@ public class SkinConsole {
             final JSONObject skin = requestJSONObject.getJSONObject(Option.CATEGORY_C_SKIN);
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
-            if (isInvalid(skin, ret)) {
-                return;
-            }
 
             skinMgmtService.updateSkin(skin);
 
@@ -159,102 +177,6 @@ public class SkinConsole {
             renderer.setJSONObject(jsonObject);
             jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
-    }
-
-    /**
-     * Checks whether the specified preference is invalid and sets the specified response object.
-     *
-     * @param preference     the specified preference
-     * @param responseObject the specified response object
-     * @return {@code true} if the specified preference is invalid, returns {@code false} otherwise
-     */
-    private boolean isInvalid(final JSONObject preference, final JSONObject responseObject) {
-        responseObject.put(Keys.STATUS_CODE, false);
-
-        final StringBuilder errMsgBuilder = new StringBuilder('[' + langPropsService.get("paramSettingsLabel"));
-        errMsgBuilder.append(" - ");
-
-        String input = preference.optString(Option.ID_C_EXTERNAL_RELEVANT_ARTICLES_DISPLAY_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("externalRelevantArticlesDisplayCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_RELEVANT_ARTICLES_DISPLAY_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("relevantArticlesDisplayCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_RANDOM_ARTICLES_DISPLAY_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("randomArticlesDisplayCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_MOST_COMMENT_ARTICLE_DISPLAY_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexMostCommentArticleDisplayCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_MOST_VIEW_ARTICLE_DISPLAY_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexMostViewArticleDisplayCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_RECENT_COMMENT_DISPLAY_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexRecentCommentDisplayCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_MOST_USED_TAG_DISPLAY_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("indexTagDisplayCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("pageSizeLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("windowSizeLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        input = preference.optString(Option.ID_C_FEED_OUTPUT_CNT);
-        if (!isNonNegativeInteger(input)) {
-            errMsgBuilder.append(langPropsService.get("feedOutputCntLabel")).append("]  ")
-                    .append(langPropsService.get("nonNegativeIntegerOnlyLabel"));
-            responseObject.put(Keys.MSG, errMsgBuilder.toString());
-            return true;
-        }
-
-        return false;
     }
 
     /**
