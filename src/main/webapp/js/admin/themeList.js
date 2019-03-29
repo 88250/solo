@@ -75,7 +75,7 @@ admin.themeList = {
             Label.servePath + '?skin=' + skins[i].skinDirName + '\')">'
             + Label.previewLabel + '</button></div></div>'
         }
-        $('#skinMain').append(skinsHTML + '<div class=\'fn__clear\'></div>')
+        $('#skinMain').html(skinsHTML + '<div class=\'fn__clear\'></div>')
 
         $('.skinItem .update').click(function () {
           admin.themeList.update($(this).data('name'), 'pc')
