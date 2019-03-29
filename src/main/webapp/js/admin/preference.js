@@ -79,36 +79,6 @@ admin.preference = {
 
         admin.preference.locale = preference.localeString
 
-        // skin
-        $('#skinMain').data('skinDirName', preference.skinDirName)
-        var skins = eval('(' + preference.skins + ')')
-        var skinsHTML = ''
-        for (var i = 0; i < skins.length; i++) {
-          var selectedClass = ''
-          if (skins[i].skinName === preference.skinName
-            && skins[i].skinDirName === preference.skinDirName) {
-            selectedClass += ' selected'
-          }
-          skinsHTML += '<div class="fn__left skinItem' + selectedClass +
-            '"><div class="ft__center">' +
-            skins[i].skinName
-            + '</div><img class="skinPreview" src="'
-            + Label.staticServePath + '/skins/' + skins[i].skinDirName
-            + '/preview.png"/><div><button class="update small" data-name="' +
-            skins[i].skinDirName + '">' + Label.enableLabel +
-            '</button><button class="small" onclick="window.open(\'' + Label.servePath +
-            '?skin=' + skins[i].skinName + '\')">'
-            + Label.previewLabel + '</button></div></div>'
-        }
-        $('#skinMain').append(skinsHTML + '<div class=\'fn__clear\'></div>')
-
-        $('.skinItem .update').click(function () {
-          $('.skinItem').removeClass('selected')
-          $(this).closest('.skinItem').addClass('selected')
-          $('#skinMain').data('skinDirName', $(this).data('name'))
-          admin.preference.update()
-        })
-
         // sign
         var signs = eval('(' + preference.signs + ')')
         for (var j = 1; j < signs.length; j++) {
@@ -233,7 +203,6 @@ admin.preference = {
         'articleListDisplayCount': $('#articleListDisplayCount').val(),
         'articleListPaginationWindowSize': $(
           '#articleListPaginationWindowSize').val(),
-        'skinDirName': $('#skinMain').data('skinDirName'),
         'localeString': $('#localeString').val(),
         'timeZoneId': $('#timeZoneId').val(),
         'noticeBoard': $('#noticeBoard').val(),

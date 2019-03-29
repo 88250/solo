@@ -17,19 +17,11 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<table class="form" width="100%" cellpadding="0" cellspacing="0">
-    <tbody>
-    <tr>
-        <td>
-            <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
-            <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <div id="skinMain"></div>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="module-panel">
+    <div class="module-header">
+        <a href="https://github.com/b3log/solo/issues/12449" target="_blank">新皮肤推荐</a> •
+        <a href="https://hacpai.com/article/1493814851007" target="_blank">皮肤开发指南</a>
+    </div>
+    <div class="module-body padding12"><div id="skinMain"></div></div>
+</div>
 ${plugins}

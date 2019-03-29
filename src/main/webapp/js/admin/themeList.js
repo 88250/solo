@@ -58,7 +58,8 @@ admin.themeList = {
             + Label.staticServePath + '/skins/' + skins[i].skinDirName
             + '/preview.png"/><div><button class="update small" data-name="' +
             skins[i].skinDirName + '">' + Label.enableLabel +
-            '</button><button class="small" onclick="window.open(\'' + Label.servePath +
+            '</button><button class="small" onclick="window.open(\'' +
+            Label.servePath +
             '?skin=' + skins[i].skinName + '\')">'
             + Label.previewLabel + '</button></div></div>'
         }
@@ -85,7 +86,6 @@ admin.themeList = {
 
     $('#tipMsg').text('')
     $('#loadMsg').text(Label.loadingLabel)
-
 
     var requestJSONObject = {
       'preference': {
@@ -121,5 +121,7 @@ admin.themeList = {
 admin.register['theme-list'] = {
   'obj': admin.themeList,
   'init': admin.themeList.init,
-  'refresh': admin.themeList.init,
+  'refresh': function () {
+    $('#loadMsg').text('')
+  },
 }

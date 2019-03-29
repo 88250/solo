@@ -97,7 +97,7 @@
                                 </div>
                             </li>
                             <li>
-                                <div id="tabs_preference">
+                                <div id="tabs_theme-list">
                                     <a href="#tools/theme-list">${skinLabel}</a>
                                 </div>
                             </li>
