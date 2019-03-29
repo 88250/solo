@@ -39,7 +39,6 @@ import org.b3log.solo.event.B3ArticleUpdater;
 import org.b3log.solo.event.B3CommentSender;
 import org.b3log.solo.event.PluginRefresher;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.processor.InitCheckHandler;
 import org.b3log.solo.processor.PermalinkHandler;
 import org.b3log.solo.processor.console.*;
@@ -189,10 +188,9 @@ public final class SoloServletListener extends AbstractServletListener {
     }
 
     /**
-     * Loads preference.
+     * Loads skin.
      * <p>
-     * Loads preference from repository, loads skins from skin directory then sets it into preference if the skins
-     * changed.
+     * Loads skin from repository, loads skins from skin directory then sets it into preference if the skins changed.
      * </p>
      */
     private void loadPreference() {
@@ -201,15 +199,15 @@ public final class SoloServletListener extends AbstractServletListener {
         LOGGER.debug("Loading preference....");
 
         final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
-        JSONObject preference;
+        JSONObject skin;
         try {
-            preference = optionQueryService.getPreference();
-            if (null == preference) {
+            skin = optionQueryService.getSkin();
+            if (null == skin) {
                 return;
             }
 
-            final PreferenceMgmtService preferenceMgmtService = beanManager.getReference(PreferenceMgmtService.class);
-            preferenceMgmtService.loadSkins(preference);
+            final SkinMgmtService skinMgmtService = beanManager.getReference(SkinMgmtService.class);
+            skinMgmtService.loadSkins(skin);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
 
@@ -256,24 +254,21 @@ public final class SoloServletListener extends AbstractServletListener {
     private void resolveSkinDir(final HttpServletRequest httpServletRequest) {
         String skin = Skins.getSkinDirNameFromCookie(httpServletRequest);
         if (StringUtils.isBlank(skin)) {
-            try {
-                final InitService initService = beanManager.getReference(InitService.class);
-                if (initService.isInited()) {
-                    final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
-                    final JSONObject preference = optionQueryService.getPreference();
-                    if (null != preference) {
-                        skin = preference.getString(Skin.SKIN_DIR_NAME);
-                    }
+            final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+            final JSONObject skinOpt = optionQueryService.getSkin();
+            if (Solos.isMobile(httpServletRequest)) {
+                if (null != skinOpt) {
+                    skin = skinOpt.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME);
+                } else {
+                    skin = Option.DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME;
                 }
-            } catch (final Exception e) {
-                LOGGER.log(Level.ERROR, "Resolves skin failed", e);
+            } else {
+                if (null != skinOpt) {
+                    skin = skinOpt.optString(Option.ID_C_SKIN_DIR_NAME);
+                } else {
+                    skin = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
+                }
             }
-        }
-        if (StringUtils.isBlank(skin)) {
-            skin = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
-        }
-        if (Solos.isMobile(httpServletRequest)) {
-            skin = Solos.MOBILE_SKIN;
         }
 
         httpServletRequest.setAttribute(Keys.TEMAPLTE_DIR_NAME, skin);
@@ -398,6 +393,10 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/signs/", preferenceConsole::getSigns);
         DispatcherServlet.get("/console/preference/", preferenceConsole::getPreference);
         DispatcherServlet.put("/console/preference/", preferenceConsole::updatePreference);
+
+        final SkinConsole skinConsole = beanManager.getReference(SkinConsole.class);
+        DispatcherServlet.get("/console/skin", skinConsole::getSkin);
+        DispatcherServlet.put("/console/skin", skinConsole::updateSkin);
 
         final RepairConsole repairConsole = beanManager.getReference(RepairConsole.class);
         DispatcherServlet.get("/fix/restore-signs", repairConsole::restoreSigns);

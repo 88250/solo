@@ -707,7 +707,7 @@ public class DataModelService {
             final JSONObject admin = userRepository.getAdmin();
             dataModel.put(Common.ADMIN_USER, admin);
             final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
-            dataModel.put(Skin.SKIN_DIR_NAME, skinDirName);
+            dataModel.put(Option.ID_C_SKIN_DIR_NAME, skinDirName);
             Keys.fillRuntime(dataModel);
             fillMinified(dataModel);
             fillPageNavigations(dataModel);

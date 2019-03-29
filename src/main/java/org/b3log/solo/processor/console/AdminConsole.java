@@ -42,7 +42,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.ExportService;
@@ -144,7 +143,8 @@ public class AdminConsole {
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT));
             dataModel.put(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE, preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE));
-            dataModel.put(Skin.SKIN_DIR_NAME, preference.getString(Skin.SKIN_DIR_NAME));
+            final JSONObject skin = optionQueryService.getSkin();
+            dataModel.put(Option.CATEGORY_C_SKIN, skin.optString(Option.OPTION_VALUE));
             Keys.fillRuntime(dataModel);
             dataModelService.fillMinified(dataModel);
             // 使用 Marked 时代码高亮问题 https://github.com/b3log/solo/issues/12614

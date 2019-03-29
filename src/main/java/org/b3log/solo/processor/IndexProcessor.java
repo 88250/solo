@@ -36,7 +36,6 @@ import org.b3log.latke.util.Paginator;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.service.DataModelService;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.OptionQueryService;
@@ -117,11 +116,14 @@ public class IndexProcessor {
             // 前台皮肤切换 https://github.com/b3log/solo/issues/12060
             String specifiedSkin = Skins.getSkinDirName(context);
             if (StringUtils.isBlank(specifiedSkin)) {
-                specifiedSkin = preference.optString(Option.ID_C_SKIN_DIR_NAME);
+                final JSONObject skinOpt = optionQueryService.getSkin();
+                specifiedSkin = Solos.isMobile(request) ?
+                        skinOpt.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME) :
+                        skinOpt.optString(Option.ID_C_SKIN_DIR_NAME);
             }
             request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
 
-            final Cookie cookie = new Cookie(Skin.SKIN, specifiedSkin);
+            final Cookie cookie = new Cookie(Option.CATEGORY_C_SKIN, specifiedSkin);
             cookie.setMaxAge(60 * 60); // 1 hour
             cookie.setPath("/");
             response.addCookie(cookie);

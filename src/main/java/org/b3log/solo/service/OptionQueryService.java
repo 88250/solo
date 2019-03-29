@@ -48,6 +48,29 @@ public class OptionQueryService {
     private OptionRepository optionRepository;
 
     /**
+     * Gets the skin.
+     *
+     * @return skin, returns {@code null} if not found
+     */
+    public JSONObject getSkin() {
+        try {
+            JSONObject ret = getOptions(Option.CATEGORY_C_SKIN);
+            if (null == ret) {
+                // TODO: 在 v3.5.0 发布后可移除判空
+                ret = new JSONObject().
+                        put(Option.ID_C_SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME).
+                        put(Option.ID_C_MOBILE_SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME);
+            }
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets skin failed", e);
+
+            return null;
+        }
+    }
+
+    /**
      * Gets the user preference.
      *
      * @return user preference, returns {@code null} if not found

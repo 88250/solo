@@ -27,26 +27,18 @@ import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Locales;
-import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
 import org.b3log.solo.repository.OptionRepository;
-import org.b3log.solo.util.Skins;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.Iterator;
 import java.util.Locale;
-import java.util.Set;
-
-import static org.b3log.solo.model.Skin.*;
-import static org.b3log.solo.util.Skins.getSkinDirNames;
 
 /**
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.18, Feb 6, 2019
+ * @version 1.4.0.0, Mar 29, 2019
  * @since 0.4.0
  */
 @Service
@@ -76,72 +68,6 @@ public class PreferenceMgmtService {
     private LangPropsService langPropsService;
 
     /**
-     * Loads skins for the specified preference and initializes templates loading.
-     * <p>
-     * If the skins directory has been changed, persists the change into preference.
-     * </p>
-     *
-     * @param preference the specified preference
-     * @throws Exception exception
-     */
-    public void loadSkins(final JSONObject preference) throws Exception {
-        Stopwatchs.start("Load Skins");
-
-        LOGGER.debug("Loading skins....");
-
-        final Set<String> skinDirNames = getSkinDirNames();
-
-        LOGGER.log(Level.DEBUG, "Loaded skins[dirNames={0}]", skinDirNames);
-        final JSONArray skinArray = new JSONArray();
-
-        for (final String dirName : skinDirNames) {
-            final JSONObject skin = new JSONObject();
-            final String name = Latkes.getSkinName(dirName);
-            if (null == name) {
-                LOGGER.log(Level.WARN, "The directory [{0}] does not contain any skin, ignored it", dirName);
-
-                continue;
-            }
-
-            skin.put(SKIN_NAME, name);
-            skin.put(SKIN_DIR_NAME, dirName);
-
-            skinArray.put(skin);
-        }
-
-        final String currentSkinDirName = preference.optString(SKIN_DIR_NAME);
-        final String skinName = preference.optString(SKIN_NAME);
-
-        LOGGER.log(Level.DEBUG, "Current skin[name={0}]", skinName);
-
-        if (!skinDirNames.contains(currentSkinDirName)) {
-            LOGGER.log(Level.WARN, "Configured skin [dirName={0}] can not find, try to use " + "default skin [dirName="
-                    + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME + "] instead.", currentSkinDirName);
-            if (!skinDirNames.contains(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME)) {
-                LOGGER.log(Level.ERROR, "Can not find default skin [dirName=" + Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME
-                        + "], please redeploy your Solo and make sure contains the default skin. If you are using git, try to re-pull with 'git pull --recurse-submodules'");
-                System.exit(-1);
-            }
-
-            preference.put(SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-            preference.put(SKIN_NAME, Latkes.getSkinName(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME));
-
-            updatePreference(preference);
-        }
-
-        final String skinsString = skinArray.toString();
-        if (!skinsString.equals(preference.getString(SKINS))) {
-            LOGGER.debug("The skins directory has been changed, persists the change into preference");
-            preference.put(SKINS, skinsString);
-            updatePreference(preference);
-        }
-
-        LOGGER.debug("Loaded skins....");
-
-        Stopwatchs.end();
-    }
-
-    /**
      * Updates the preference with the specified preference.
      *
      * @param preference the specified preference
@@ -151,33 +77,14 @@ public class PreferenceMgmtService {
         final Iterator<String> keys = preference.keys();
         while (keys.hasNext()) {
             final String key = keys.next();
-
             if (preference.isNull(key)) {
-                throw new ServiceException("A value is null of preference[key=" + key + "]");
+                throw new ServiceException("A value is null of preference [key=" + key + "]");
             }
         }
 
         final Transaction transaction = optionRepository.beginTransaction();
 
         try {
-            final String skinDirName = preference.getString(Skin.SKIN_DIR_NAME);
-            final String skinName = Latkes.getSkinName(skinDirName);
-
-            preference.put(Skin.SKIN_NAME, skinName);
-            final Set<String> skinDirNames = Skins.getSkinDirNames();
-            final JSONArray skinArray = new JSONArray();
-
-            for (final String dirName : skinDirNames) {
-                final JSONObject skin = new JSONObject();
-                skinArray.put(skin);
-
-                final String name = Latkes.getSkinName(dirName);
-                skin.put(Skin.SKIN_NAME, name);
-                skin.put(Skin.SKIN_DIR_NAME, dirName);
-            }
-
-            preference.put(Skin.SKINS, skinArray.toString());
-
             preference.put(Option.ID_C_SIGNS, preference.get(Option.ID_C_SIGNS).toString());
 
             final JSONObject oldPreference = optionQueryService.getPreference();
@@ -287,18 +194,6 @@ public class PreferenceMgmtService {
             final JSONObject signsOpt = optionRepository.get(Option.ID_C_SIGNS);
             signsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SIGNS));
             optionRepository.update(Option.ID_C_SIGNS, signsOpt);
-
-            final JSONObject skinDirNameOpt = optionRepository.get(Option.ID_C_SKIN_DIR_NAME);
-            skinDirNameOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SKIN_DIR_NAME));
-            optionRepository.update(Option.ID_C_SKIN_DIR_NAME, skinDirNameOpt);
-
-            final JSONObject skinNameOpt = optionRepository.get(Option.ID_C_SKIN_NAME);
-            skinNameOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SKIN_NAME));
-            optionRepository.update(Option.ID_C_SKIN_NAME, skinNameOpt);
-
-            final JSONObject skinsOpt = optionRepository.get(Option.ID_C_SKINS);
-            skinsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SKINS));
-            optionRepository.update(Option.ID_C_SKINS, skinsOpt);
 
             final JSONObject timeZoneIdOpt = optionRepository.get(Option.ID_C_TIME_ZONE_ID);
             timeZoneIdOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_TIME_ZONE_ID));

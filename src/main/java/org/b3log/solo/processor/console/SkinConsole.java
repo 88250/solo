@@ -28,41 +28,34 @@ import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Sign;
-import org.b3log.solo.service.OptionMgmtService;
 import org.b3log.solo.service.OptionQueryService;
-import org.b3log.solo.service.PreferenceMgmtService;
-import org.json.JSONArray;
+import org.b3log.solo.service.SkinMgmtService;
 import org.json.JSONObject;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 /**
- * Preference console request processing.
+ * Skin console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.2.0.24, Mar 29, 2019
- * @since 0.4.0
+ * @version 1.0.0.0, Mar 29, 2019
+ * @since 3.5.0
  */
 @RequestProcessor
 @Before(ConsoleAdminAuthAdvice.class)
-public class PreferenceConsole {
+public class SkinConsole {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(PreferenceConsole.class);
+    private static final Logger LOGGER = Logger.getLogger(SkinConsole.class);
 
     /**
-     * Preference management service.
+     * Skin management service.
      */
     @Inject
-    private PreferenceMgmtService preferenceMgmtService;
-
-    /**
-     * Option management service.
-     */
-    @Inject
-    private OptionMgmtService optionMgmtService;
+    private SkinMgmtService skinMgmtService;
 
     /**
      * Option query service.
@@ -77,93 +70,18 @@ public class PreferenceConsole {
     private LangPropsService langPropsService;
 
     /**
-     * Gets signs.
+     * Gets skin.
      * <p>
      * Renders the response with a json object, for example,
      * <pre>
      * {
      *     "sc": boolean,
-     *     "signs": [{
-     *         "oId": "",
-     *         "signHTML": ""
-     *      }, ...]
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified request context
-     */
-    public void getSigns(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-
-        try {
-            final JSONObject preference = optionQueryService.getPreference();
-            final JSONArray signs = new JSONArray();
-            final JSONArray allSigns = // includes the empty sign(id=0)
-                    new JSONArray(preference.getString(Option.ID_C_SIGNS));
-
-            for (int i = 1; i < allSigns.length(); i++) { // excludes the empty sign
-                signs.put(allSigns.getJSONObject(i));
-            }
-
-            final JSONObject ret = new JSONObject();
-            renderer.setJSONObject(ret);
-            ret.put(Sign.SIGNS, signs);
-            ret.put(Keys.STATUS_CODE, true);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
-        }
-    }
-
-    /**
-     * Gets preference.
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "preference": {
-     *         "mostViewArticleDisplayCount": int,
-     *         "recentCommentDisplayCount": int,
-     *         "mostUsedTagDisplayCount": int,
-     *         "articleListDisplayCount": int,
-     *         "articleListPaginationWindowSize": int,
-     *         "mostCommentArticleDisplayCount": int,
-     *         "externalRelevantArticlesDisplayCount": int,
-     *         "relevantArticlesDisplayCount": int,
-     *         "randomArticlesDisplayCount": int,
-     *         "blogTitle": "",
-     *         "blogSubtitle": "",
-     *         "localeString": "",
-     *         "timeZoneId": "",
+     *     "skin": {
      *         "skinDirName": "",
+     *         "mobileSkinDirName": "",
      *         "skins": "[{
      *             "skinDirName": ""
-     *         }, ....]",
-     *         "noticeBoard": "",
-     *         "footerContent": "",
-     *         "htmlHead": "",
-     *         "metaKeywords": "",
-     *         "metaDescription": "",
-     *         "enableArticleUpdateHint": boolean,
-     *         "signs": "[{
-     *             "oId": "",
-     *             "signHTML": ""
-     *         }, ...]",
-     *         "allowVisitDraftViaPermalink": boolean,
-     *         "version": "",
-     *         "articleListStyle": "", // Optional values: "titleOnly"/"titleAndContent"/"titleAndAbstract"
-     *         "commentable": boolean,
-     *         "feedOutputMode: "" // Optional values: "abstract"/"full"
-     *         "feedOutputCnt": int,
-     *         "faviconURL": "",
-     *         "syncGitHub": boolean,
-     *         "customVars" "", // 支持配置自定义参数 https://github.com/b3log/solo/issues/12535
+     *         }, ....]"
      *     }
      * }
      * </pre>
@@ -171,28 +89,21 @@ public class PreferenceConsole {
      *
      * @param context the specified request context
      */
-    public void getPreference(final RequestContext context) {
+    public void getSkin(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
-            final JSONObject preference = optionQueryService.getPreference();
-            if (null == preference) {
+            final JSONObject skin = optionQueryService.getSkin();
+            if (null == skin) {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
 
                 return;
             }
 
-            String footerContent = "";
-            final JSONObject opt = optionQueryService.getOptionById(Option.ID_C_FOOTER_CONTENT);
-            if (null != opt) {
-                footerContent = opt.optString(Option.OPTION_VALUE);
-            }
-            preference.put(Option.ID_C_FOOTER_CONTENT, footerContent);
-
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
-            ret.put(Option.CATEGORY_C_PREFERENCE, preference);
+            ret.put(Option.CATEGORY_C_SKIN, skin);
             ret.put(Keys.STATUS_CODE, true);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);
@@ -204,43 +115,13 @@ public class PreferenceConsole {
     }
 
     /**
-     * Updates the preference by the specified request.
+     * Updates the skin by the specified request.
      * <p>
      * Request json:
      * <pre>
      * {
-     *     "preference": {
-     *         "mostViewArticleDisplayCount": int,
-     *         "recentCommentDisplayCount": int,
-     *         "mostUsedTagDisplayCount": int,
-     *         "articleListDisplayCount": int,
-     *         "articleListPaginationWindowSize": int,
-     *         "mostCommentArticleDisplayCount": int,
-     *         "externalRelevantArticlesDisplayCount": int,
-     *         "relevantArticlesDisplayCount": int,
-     *         "randomArticlesDisplayCount": int,
-     *         "blogTitle": "",
-     *         "blogSubtitle": "",
-     *         "localeString": "",
-     *         "timeZoneId": "",
-     *         "noticeBoard": "",
-     *         "footerContent": "",
-     *         "htmlHead": "",
-     *         "metaKeywords": "",
-     *         "metaDescription": "",
-     *         "enableArticleUpdateHint": boolean,
-     *         "signs": [{
-     *             "oId": "",
-     *             "signHTML": ""
-     *             }, ...],
-     *         "allowVisitDraftViaPermalink": boolean,
-     *         "articleListStyle": "",
-     *         "commentable": boolean,
-     *         "feedOutputMode: "",
-     *         "feedOutputCnt": int,
-     *         "faviconURL": "",
-     *         "syncGitHub": boolean,
-     *         "customVars" "", // 支持配置自定义参数 https://github.com/b3log/solo/issues/12535
+     *     "skin": {
+     *         "skinDirName": ""
      *     }
      * }
      * </pre>
@@ -248,20 +129,26 @@ public class PreferenceConsole {
      *
      * @param context the specified request context
      */
-    public void updatePreference(final RequestContext context) {
+    public void updateSkin(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
 
         try {
             final JSONObject requestJSONObject = context.requestJSON();
-            final JSONObject preference = requestJSONObject.getJSONObject(Option.CATEGORY_C_PREFERENCE);
+            final JSONObject skin = requestJSONObject.getJSONObject(Option.CATEGORY_C_SKIN);
             final JSONObject ret = new JSONObject();
             renderer.setJSONObject(ret);
-            if (isInvalid(preference, ret)) {
+            if (isInvalid(skin, ret)) {
                 return;
             }
 
-            preferenceMgmtService.updatePreference(preference);
+            skinMgmtService.updateSkin(skin);
+
+            final HttpServletResponse response = context.getResponse();
+            final Cookie cookie = new Cookie(Option.CATEGORY_C_SKIN, skin.getString(Option.ID_C_SKIN_DIR_NAME));
+            cookie.setMaxAge(60 * 60); // 1 hour
+            cookie.setPath("/");
+            response.addCookie(cookie);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));

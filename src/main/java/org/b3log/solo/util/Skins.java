@@ -33,7 +33,6 @@ import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Skin;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
@@ -48,7 +47,7 @@ import java.util.*;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.5, Feb 26, 2019
+ * @version 1.1.6.6, Mar 29, 2019
  * @since 0.3.1
  */
 public final class Skins {
@@ -120,7 +119,7 @@ public final class Skins {
     }
 
     /**
-     * Fills the specified data model with the current skink's (WebRoot/skins/${skinName}/lang/lang_xx_XX.properties)
+     * Fills the specified data model with the current skin's (WebRoot/skins/${skinDirName}/lang/lang_xx_XX.properties)
      * and core language (WebRoot/WEB-INF/classes/lang_xx_XX.properties) configurations.
      *
      * @param localeString       the specified locale string
@@ -218,12 +217,8 @@ public final class Skins {
      * @return directory name, or {@code null} if not found
      */
     public static String getSkinDirName(final RequestContext context) {
-        if (Solos.isMobile(context.getRequest())) {
-            return Solos.MOBILE_SKIN;
-        }
-
         // 1. Get skin from query
-        final String specifiedSkin = context.param(Skin.SKIN);
+        final String specifiedSkin = context.param(Option.CATEGORY_C_SKIN);
         if (StringUtils.isNotBlank(specifiedSkin)) {
             final Set<String> skinDirNames = Skins.getSkinDirNames();
             if (skinDirNames.contains(specifiedSkin)) {
@@ -247,7 +242,7 @@ public final class Skins {
         final Cookie[] cookies = request.getCookies();
         if (null != cookies) {
             for (final Cookie cookie : cookies) {
-                if (Skin.SKIN.equals(cookie.getName())) {
+                if (Option.CATEGORY_C_SKIN.equals(cookie.getName())) {
                     final String skin = cookie.getValue();
                     final Set<String> skinDirNames = Skins.getSkinDirNames();
 
