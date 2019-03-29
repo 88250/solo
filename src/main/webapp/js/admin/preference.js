@@ -118,6 +118,7 @@ admin.preference = {
         }
 
         $('#articleListDisplay').val(preference.articleListStyle)
+        $('#hljsTheme').val(preference.hljsTheme)
         $('#feedOutputMode').val(preference.feedOutputMode)
         $('#feedOutputCnt').val(preference.feedOutputCnt)
         $('#faviconURL').val(preference.faviconURL)
@@ -251,6 +252,7 @@ admin.preference = {
         'allowVisitDraftViaPermalink': $('#allowVisitDraftViaPermalink').
           prop('checked'),
         'articleListStyle': $('#articleListDisplay').val(),
+        'hljsTheme': $('#hljsTheme').val(),
         'feedOutputMode': $('#feedOutputMode').val(),
         'feedOutputCnt': $('#feedOutputCnt').val(),
         'faviconURL': $('#faviconURL').val(),

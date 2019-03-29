@@ -22,7 +22,7 @@
         servePath: "${servePath}",
         staticServePath: "${staticServePath}",
         markedAvailable: ${markedAvailable?c},
-        hljsStyle: 'atom-one-light',
+        hljsStyle: '${hljsTheme}',
         langLabel: "${langLabel}",
         version: "${version}",
     }

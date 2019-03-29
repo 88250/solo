@@ -82,8 +82,8 @@
             <option value="titleAndAbstract">${titleAndAbstractLabel}</option>
             <option value="titleAndContent">${titleAndContentLabel}</option>
         </select>
-        <label for="articleHljsTheme">${hljsThemeLabel}</label>
-        <select id="articleHljsTheme">
+        <label for="hljsTheme">${hljsThemeLabel}</label>
+        <select id="hljsTheme">
             <option value="default">Default</option>
             <option value="a11y-dark">A 11 Y Dark</option>
             <option value="a11y-light">A 11 Y Light</option>
