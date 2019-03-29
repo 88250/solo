@@ -5,7 +5,7 @@ WORKDIR /opt/solo
 ADD . /tmp
 
 ENV TZ=Asia/Shanghai
-RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone \
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
     && cd /tmp && mvn package -DskipTests -Pci && mv target/solo/* /opt/solo/ \
     && cp -f /tmp/src/main/resources/docker/* /opt/solo/WEB-INF/classes/ \
     && rm -rf /tmp/* && rm -rf ~/.m2
