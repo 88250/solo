@@ -37,7 +37,7 @@ import java.io.File;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.16, Mar 19, 2019
+ * @version 1.1.1.0, Mar 29, 2019
  * @since 1.2.0
  */
 public final class Starter {
@@ -138,7 +138,7 @@ public final class Starter {
 
         String serverScheme = commandLine.getOptionValue("server_scheme");
         if (null != serverScheme) {
-            Latkes.setLatkeProperty("serveScheme", serverScheme);
+            Latkes.setLatkeProperty("serverScheme", serverScheme);
         }
         String serverHost = commandLine.getOptionValue("server_host");
         if (null != serverHost) {
