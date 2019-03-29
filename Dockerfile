@@ -9,7 +9,7 @@ FROM openjdk:8-alpine
 LABEL maintainer="Liang Ding<d@b3log.org>"
 
 WORKDIR /opt/solo
-COPY --from=MVN_BUILD /opt/solo /opt/pipe/
+COPY --from=MVN_BUILD /opt/solo /opt/solo/
 RUN apk add --no-cache ca-certificates tzdata
 
 ENV TZ=Asia/Shanghai
