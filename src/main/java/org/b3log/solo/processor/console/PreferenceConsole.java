@@ -44,7 +44,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.2.0.23, Mar 19, 2019
+ * @version 1.2.0.24, Mar 29, 2019
  * @since 0.4.0
  */
 @RequestProcessor
@@ -284,7 +284,7 @@ public class PreferenceConsole {
 
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, e.getMessage());
+            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
         }
     }
 
