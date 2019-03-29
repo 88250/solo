@@ -145,10 +145,8 @@ public class PreferenceConsole {
      *         "blogSubtitle": "",
      *         "localeString": "",
      *         "timeZoneId": "",
-     *         "skinName": "",
      *         "skinDirName": "",
      *         "skins": "[{
-     *             "skinName": "",
      *             "skinDirName": ""
      *         }, ....]",
      *         "noticeBoard": "",

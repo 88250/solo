@@ -120,7 +120,7 @@ public final class Skins {
     }
 
     /**
-     * Fills the specified data model with the current skink's (WebRoot/skins/${skinName}/lang/lang_xx_XX.properties)
+     * Fills the specified data model with the current skin's (WebRoot/skins/${skinDirName}/lang/lang_xx_XX.properties)
      * and core language (WebRoot/WEB-INF/classes/lang_xx_XX.properties) configurations.
      *
      * @param localeString       the specified locale string
