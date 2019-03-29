@@ -64,7 +64,7 @@ public final class V340_350 {
             optionRepository.update(Option.ID_C_SKIN_DIR_NAME, skinOpt);
             final JSONObject mobileSkinOpt = optionRepository.get(Option.ID_C_MOBILE_SKIN_DIR_NAME);
             mobileSkinOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);
-            optionRepository.update(Option.ID_C_SKIN_DIR_NAME, mobileSkinOpt);
+            optionRepository.update(Option.ID_C_MOBILE_SKIN_DIR_NAME, mobileSkinOpt);
 
             JSONObject hljsThemeOpt = optionRepository.get(Option.ID_C_HLJS_THEME);
             if (null == hljsThemeOpt) {
