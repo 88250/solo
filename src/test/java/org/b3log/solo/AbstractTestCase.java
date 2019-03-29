@@ -28,6 +28,7 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Crypts;
 import org.b3log.solo.cache.*;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.processor.MockDispatcherServlet;
 import org.b3log.solo.repository.*;
@@ -52,7 +53,7 @@ import java.util.Locale;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.1, Feb 7, 2019
+ * @version 3.0.0.2, Mar 29, 2019
  * @since 2.9.7
  */
 public abstract class AbstractTestCase {
@@ -145,6 +146,7 @@ public abstract class AbstractTestCase {
         final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), Solos.COOKIE_SECRET);
         final Cookie cookie = new Cookie(Solos.COOKIE_NAME, cookieValue);
         request.setCookies(new Cookie[]{cookie});
+        request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
     }
 
     /**
