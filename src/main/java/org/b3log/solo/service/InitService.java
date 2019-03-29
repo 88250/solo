@@ -226,7 +226,7 @@ public class InitService {
         final Transaction transaction = userRepository.beginTransaction();
         try {
             initStatistic();
-            initPreference(requestJSONObject);
+            initOptions(requestJSONObject);
             initAdmin(requestJSONObject);
             initLink();
             helloWorld();
@@ -466,12 +466,12 @@ public class InitService {
     }
 
     /**
-     * Initializes preference.
+     * Initializes options.
      *
      * @param requestJSONObject the specified json object
      * @throws Exception exception
      */
-    private void initPreference(final JSONObject requestJSONObject) throws Exception {
+    private void initOptions(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
 
         final JSONObject hljsThemeOpt = new JSONObject();
@@ -662,13 +662,13 @@ public class InitService {
 
         final JSONObject skinDirNameOpt = new JSONObject();
         skinDirNameOpt.put(Keys.OBJECT_ID, Option.ID_C_SKIN_DIR_NAME);
-        skinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        skinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);
         skinDirNameOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         optionRepository.add(skinDirNameOpt);
 
         final JSONObject mobileSkinDirNameOpt = new JSONObject();
         mobileSkinDirNameOpt.put(Keys.OBJECT_ID, Option.ID_C_MOBILE_SKIN_DIR_NAME);
-        mobileSkinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        mobileSkinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);
         mobileSkinDirNameOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME);
         optionRepository.add(mobileSkinDirNameOpt);
 
@@ -679,10 +679,9 @@ public class InitService {
             skinArray.put(skin);
             skin.put(Skin.SKIN_DIR_NAME, dirName);
         }
-
         final JSONObject skinsOpt = new JSONObject();
         skinsOpt.put(Keys.OBJECT_ID, Option.ID_C_SKINS);
-        skinsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        skinsOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);
         skinsOpt.put(Option.OPTION_VALUE, skinArray.toString());
         optionRepository.add(skinsOpt);
 

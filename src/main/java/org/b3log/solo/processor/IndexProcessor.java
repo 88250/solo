@@ -117,9 +117,10 @@ public class IndexProcessor {
             // 前台皮肤切换 https://github.com/b3log/solo/issues/12060
             String specifiedSkin = Skins.getSkinDirName(context);
             if (StringUtils.isBlank(specifiedSkin)) {
+                final JSONObject skinOpt = optionQueryService.getSkin();
                 specifiedSkin = Solos.isMobile(request) ?
-                        preference.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME) :
-                        preference.optString(Option.ID_C_SKIN_DIR_NAME);
+                        skinOpt.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME) :
+                        skinOpt.optString(Option.ID_C_SKIN_DIR_NAME);
             }
             request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
 

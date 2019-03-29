@@ -48,6 +48,21 @@ public class OptionQueryService {
     private OptionRepository optionRepository;
 
     /**
+     * Gets the skin.
+     *
+     * @return skin, returns {@code null} if not found
+     */
+    public JSONObject getSkin() {
+        try {
+            return getOptions(Option.CATEGORY_C_SKIN);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets skin failed", e);
+
+            return null;
+        }
+    }
+
+    /**
      * Gets the user preference.
      *
      * @return user preference, returns {@code null} if not found

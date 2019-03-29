@@ -273,6 +273,11 @@ public final class Option {
      */
     public static final String CATEGORY_C_HACPAI = "hacpai";
 
+    /**
+     * Category - Skin.
+     */
+    public static final String CATEGORY_C_SKIN = "skin";
+
     //// Transient ////
     /**
      * Key of statistic blog published article count.
