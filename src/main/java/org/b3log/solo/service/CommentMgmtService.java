@@ -49,7 +49,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.0, Mar 22, 2019
+ * @version 1.3.4.1, Mar 29, 2019
  * @since 0.3.5
  */
 @Service
@@ -208,10 +208,7 @@ public class CommentMgmtService {
             final String commentURL = requestJSONObject.optString(Comment.COMMENT_URL);
 
             if (!Strings.isURL(commentURL) || StringUtils.contains(commentURL, "<")) {
-                LOGGER.log(Level.WARN, "Comment URL is invalid [{0}]", commentURL);
-                ret.put(Keys.MSG, langPropsService.get("urlInvalidLabel"));
-
-                return ret;
+                requestJSONObject.put(Comment.COMMENT_URL, "");
             }
 
             String commentContent = requestJSONObject.optString(Comment.COMMENT_CONTENT);
