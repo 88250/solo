@@ -42,7 +42,6 @@ admin.themeList = {
         var preference = result.preference
 
         // skin
-        $('#skinMain').data('skinDirName', preference.skinDirName)
         var skins = eval('(' + preference.skins + ')')
         var skinsHTML = ''
         for (var i = 0; i < skins.length; i++) {
@@ -56,19 +55,23 @@ admin.themeList = {
             skins[i].skinName
             + '</div><img class="skinPreview" src="'
             + Label.staticServePath + '/skins/' + skins[i].skinDirName
-            + '/preview.png"/><div><button class="update small" data-name="' +
+            + '/preview.png"/><div><button class="small update fn__left" data-name="' +
             skins[i].skinDirName + '">' + Label.enableLabel +
-            '</button><button class="small" onclick="window.open(\'' +
-            Label.servePath +
-            '?skin=' + skins[i].skinName + '\')">'
-            + Label.previewLabel + '</button></div></div>'
+            '</button><button class="small fn__right" onclick="window.open(\'' +
+            Label.servePath + '?skin=' + skins[i].skinName + '\')">'
+            + Label.previewLabel + '</button><button class="small mobile fn__left">' +
+            Label.setMobileLabel + '</button></div></div>'
         }
         $('#skinMain').append(skinsHTML + '<div class=\'fn__clear\'></div>')
 
         $('.skinItem .update').click(function () {
           $('.skinItem').removeClass('selected')
           $(this).closest('.skinItem').addClass('selected')
-          $('#skinMain').data('skinDirName', $(this).data('name'))
+          admin.preference.update()
+        })
+        $('.skinItem .mobile').click(function () {
+          $('.skinItem').removeClass('selected')
+          $(this).closest('.skinItem').addClass('selected')
           admin.preference.update()
         })
 

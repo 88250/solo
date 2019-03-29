@@ -19,6 +19,7 @@
 -->
 <#include "../common-template/label.ftl"/>
 <script type="text/javascript">
+    Label.setMobileLabel = '${setMobileLabel}'
     Label.pushSuccLabel = '${pushSuccLabel}'
     Label.pushToHacpaiLabel = '${pushToHacpaiLabel}'
     Label.uploadMsg = '${uploadMsg}'
