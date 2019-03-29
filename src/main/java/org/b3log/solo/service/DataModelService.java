@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.7, Mar 19, 2019
+ * @version 1.7.0.8, Mar 29, 2019
  * @since 0.3.1
  */
 @Service
@@ -600,6 +600,12 @@ public class DataModelService {
 
         // 使用 Marked 时代码高亮问题 https://github.com/b3log/solo/issues/12614
         dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKDOWN_HTTP_AVAILABLE);
+
+        String hljsTheme = preference.getString(Option.ID_C_HLJS_THEME);
+        if (StringUtils.isBlank(hljsTheme)) {
+            hljsTheme = Option.DefaultPreference.DEFAULT_HLJS_THEME;
+        }
+        dataModel.put(Option.ID_C_HLJS_THEME, hljsTheme);
     }
 
     /**

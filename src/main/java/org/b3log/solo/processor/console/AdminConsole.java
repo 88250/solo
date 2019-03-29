@@ -161,6 +161,7 @@ public class AdminConsole {
             }
             dataModelService.fillFaviconURL(dataModel, preference);
             dataModelService.fillUsite(dataModel);
+            dataModelService.fillCommon(context, dataModel, preference);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Admin index render failed", e);
         }

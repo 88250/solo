@@ -18,33 +18,27 @@
 package org.b3log.solo.upgrade;
 
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.OptionRepository;
 import org.json.JSONObject;
-
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 /**
  * Upgrade script from v3.3.0 to v3.4.0.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 19, 2019
- * @since 3.4.0
+ * @version 1.0.0.0, Mar 29, 2019
+ * @since 3.5.0
  */
-public final class V330_340 {
+public final class V340_350 {
 
     /**
      * Logger.
      */
-    private static final Logger LOGGER = Logger.getLogger(V330_340.class);
+    private static final Logger LOGGER = Logger.getLogger(V340_350.class);
 
     /**
      * Performs upgrade from v3.3.0 to v3.4.0.
@@ -52,8 +46,8 @@ public final class V330_340 {
      * @throws Exception upgrade fails
      */
     public static void perform() throws Exception {
-        final String fromVer = "3.3.0";
-        final String toVer = "3.4.0";
+        final String fromVer = "3.4.0";
+        final String toVer = "3.5.0";
 
         LOGGER.log(Level.INFO, "Upgrading from version [" + fromVer + "] to version [" + toVer + "]....");
 
@@ -61,33 +55,15 @@ public final class V330_340 {
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
 
         try {
-            final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-            final Connection connection = Connections.getConnection();
-            final Statement statement = connection.createStatement();
-            // 修复升级程序问题 https://github.com/b3log/solo/issues/12717
-            final ResultSet resultSet = statement.executeQuery("SELECT count(*) AS c FROM information_schema.COLUMNS WHERE table_name = '" + tablePrefix + "user" + "' AND column_name = 'userPassword'");
-            while (resultSet.next()) {
-                final int c = resultSet.getInt("c");
-                if (0 < c) {
-                    final Statement drop = connection.createStatement();
-                    drop.executeUpdate("ALTER TABLE `" + tablePrefix + "user` DROP COLUMN `userPassword`");
-                    drop.close();
-                }
-            }
-            resultSet.close();
-            statement.close();
-            connection.commit();
-            connection.close();
-
             final Transaction transaction = optionRepository.beginTransaction();
 
-            JSONObject syncGitHubOpt = optionRepository.get(Option.ID_C_SYNC_GITHUB);
-            if (null == syncGitHubOpt) {
-                syncGitHubOpt = new JSONObject();
-                syncGitHubOpt.put(Keys.OBJECT_ID, Option.ID_C_SYNC_GITHUB);
-                syncGitHubOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-                syncGitHubOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_SYNC_GITHUB);
-                optionRepository.add(syncGitHubOpt);
+            JSONObject hljsThemeOpt = optionRepository.get(Option.ID_C_HLJS_THEME);
+            if (null == hljsThemeOpt) {
+                hljsThemeOpt = new JSONObject();
+                hljsThemeOpt.put(Keys.OBJECT_ID, Option.ID_C_HLJS_THEME);
+                hljsThemeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+                hljsThemeOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_HLJS_THEME);
+                optionRepository.add(hljsThemeOpt);
             }
 
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);

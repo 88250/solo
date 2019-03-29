@@ -474,6 +474,12 @@ public class InitService {
     private void initPreference(final JSONObject requestJSONObject) throws Exception {
         LOGGER.debug("Initializing preference....");
 
+        final JSONObject hljsThemeOpt = new JSONObject();
+        hljsThemeOpt.put(Keys.OBJECT_ID, Option.ID_C_HLJS_THEME);
+        hljsThemeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        hljsThemeOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_HLJS_THEME);
+        optionRepository.add(hljsThemeOpt);
+
         final JSONObject syncGitHubOpt = new JSONObject();
         syncGitHubOpt.put(Keys.OBJECT_ID, Option.ID_C_SYNC_GITHUB);
         syncGitHubOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);

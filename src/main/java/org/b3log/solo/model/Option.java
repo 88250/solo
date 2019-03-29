@@ -53,6 +53,11 @@ public final class Option {
 
     // oId constants
     /**
+     * Key of hljs theme. 在设置中可选择语法高亮主题 https://github.com/b3log/solo/issues/12722
+     */
+    public static final String ID_C_HLJS_THEME = "hljsTheme";
+
+    /**
      * Key of enable syn GitHub. 博文定时同步 GitHub 仓库 https://github.com/b3log/solo/issues/12676
      */
     public static final String ID_C_SYNC_GITHUB = "syncGitHub";
@@ -289,10 +294,15 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.2.0.3, Mar 19, 2019
+     * @version 2.3.0.0, Mar 29, 2019
      * @since 0.3.1
      */
     public static final class DefaultPreference {
+
+        /**
+         * Default hljs theme.
+         */
+        public static final String DEFAULT_HLJS_THEME = "atom-one-light";
 
         /**
          * Default enable sync GitHub.

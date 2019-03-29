@@ -315,6 +315,10 @@ public class PreferenceMgmtService {
             syncGitHubOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SYNC_GITHUB));
             optionRepository.update(Option.ID_C_SYNC_GITHUB, syncGitHubOpt);
 
+            final JSONObject hljsThemeOpt = optionRepository.get(Option.ID_C_HLJS_THEME);
+            hljsThemeOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_HLJS_THEME));
+            optionRepository.update(Option.ID_C_HLJS_THEME, hljsThemeOpt);
+
             final JSONObject customVarsOpt = optionRepository.get(Option.ID_C_CUSTOM_VARS);
             customVarsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_CUSTOM_VARS));
             optionRepository.update(Option.ID_C_CUSTOM_VARS, customVarsOpt);
