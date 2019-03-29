@@ -106,6 +106,7 @@ public class SkinMgmtService {
                 optionRepository.add(skinDirNameOpt);
             }
             skinDirNameOpt.put(Option.OPTION_VALUE, skin.optString(Option.ID_C_SKIN_DIR_NAME));
+            skinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);  // TODO: 在 v3.5.0 发布后可移除
             optionRepository.update(Option.ID_C_SKIN_DIR_NAME, skinDirNameOpt);
 
             JSONObject mobileSkinDirNameOpt = optionRepository.get(Option.ID_C_MOBILE_SKIN_DIR_NAME);
@@ -118,6 +119,7 @@ public class SkinMgmtService {
                 optionRepository.add(mobileSkinDirNameOpt);
             }
             mobileSkinDirNameOpt.put(Option.OPTION_VALUE, skin.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME));
+            mobileSkinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN); // TODO: 在 v3.5.0 发布后可移除
             optionRepository.update(Option.ID_C_MOBILE_SKIN_DIR_NAME, mobileSkinDirNameOpt);
 
             transaction.commit();
