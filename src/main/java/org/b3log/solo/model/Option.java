@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.5.0.6, Mar 20, 2019
+ * @version 1.6.0.0, Mar 29, 2019
  * @since 0.6.0
  */
 public final class Option {
@@ -228,9 +228,9 @@ public final class Option {
     public static final String ID_C_SKIN_DIR_NAME = "skinDirName";
 
     /**
-     * Key of skin name.
+     * Key of mobile skin dir name.
      */
-    public static final String ID_C_SKIN_NAME = "skinName";
+    public static final String ID_C_MOBILE_SKIN_DIR_NAME = "mobileSkinDirName";
 
     /**
      * Key of footer content.
@@ -358,6 +358,11 @@ public final class Option {
          * Default skin directory name.
          */
         public static final String DEFAULT_SKIN_DIR_NAME = "Pinghsu";
+
+        /**
+         * Default mobile skin directory name.
+         */
+        public static final String DEFAULT_MOBILE_SKIN_DIR_NAME = "Pinghsu";
 
         /**
          * Default language.

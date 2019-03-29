@@ -36,7 +36,6 @@ import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
-import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONObject;
@@ -54,7 +53,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.0, Mar 20, 2019
+ * @version 1.8.0.1, Mar 29, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -73,11 +72,6 @@ public final class Solos {
      * Gravatar address.
      */
     public static final String GRAVATAR;
-
-    /**
-     * Mobile skin.
-     */
-    public static final String MOBILE_SKIN;
 
     /**
      * Solo User-Agent.
@@ -114,13 +108,6 @@ public final class Solos {
 
         FAVICON_API = solo.getString("faviconAPI");
         GRAVATAR = solo.getString("gravatar");
-        String mobileSkin = Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME;
-        try {
-            mobileSkin = solo.getString("mobile.skin");
-        } catch (final Exception e) {
-            LOGGER.log(Level.WARN, "Loads [mobile.skin] in solo.props failed [" + e.getMessage() + "], using [" + mobileSkin + "] as the default mobile skin");
-        }
-        MOBILE_SKIN = mobileSkin;
     }
 
     static {
