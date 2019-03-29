@@ -24,12 +24,14 @@
 
 /* theme list 相关操作 */
 admin.themeList = {
+  skinDirName: '',
+  mobileSkinDirName: '',
   /*
    * 初始化
    */
   init: function () {
     $.ajax({
-      url: Label.servePath + '/console/preference/',
+      url: Label.servePath + '/console/skin',
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
@@ -39,40 +41,47 @@ admin.themeList = {
           return
         }
 
-        var preference = result.preference
+        admin.themeList.skinDirName = result.skin.skinDirName
+        admin.themeList.mobileSkinDirName = result.skin.mobileSkinDirName
 
-        // skin
-        var skins = eval('(' + preference.skins + ')')
+        var skins = JSON.parse(result.skin.skins)
         var skinsHTML = ''
+
         for (var i = 0; i < skins.length; i++) {
           var selectedClass = ''
-          if (skins[i].skinName === preference.skinName
-            && skins[i].skinDirName === preference.skinDirName) {
-            selectedClass += ' selected'
+          if (skins[i].skinDirName === result.skin.skinDirName) {
+            selectedClass = ' selected'
           }
+
           skinsHTML += '<div class="fn__left skinItem' + selectedClass +
-            '"><div class="ft__center">' +
-            skins[i].skinName
+            '"><div class="ft__center">' + skins[i].skinDirName
             + '</div><img class="skinPreview" src="'
             + Label.staticServePath + '/skins/' + skins[i].skinDirName
-            + '/preview.png"/><div><button class="small update fn__left" data-name="' +
-            skins[i].skinDirName + '">' + Label.enableLabel +
-            '</button><button class="small fn__right" onclick="window.open(\'' +
-            Label.servePath + '?skin=' + skins[i].skinName + '\')">'
-            + Label.previewLabel + '</button><button class="small mobile fn__left">' +
-            Label.setMobileLabel + '</button></div></div>'
+            + '/preview.png"/><div>'
+
+          if (skins[i].skinDirName !== result.skin.skinDirName) {
+            skinsHTML += '<button class="small update fn__left" data-name="' +
+              skins[i].skinDirName + '">' + Label.enableLabel +
+              '</button>'
+          }
+
+          if (skins[i].skinDirName !== result.skin.mobileSkinDirName) {
+            skinsHTML += '<button class="small mobile fn__left" data-name="' +
+              skins[i].skinDirName + '">' +
+              Label.setMobileLabel + '</button>'
+          }
+
+          skinsHTML += '<button class="small fn__right" onclick="window.open(\'' +
+            Label.servePath + '?skin=' + skins[i].skinDirName + '\')">'
+            + Label.previewLabel + '</button></div></div>'
         }
         $('#skinMain').append(skinsHTML + '<div class=\'fn__clear\'></div>')
 
         $('.skinItem .update').click(function () {
-          $('.skinItem').removeClass('selected')
-          $(this).closest('.skinItem').addClass('selected')
-          admin.preference.update()
+          admin.preference.update($(this).data('name'), 'pc')
         })
         $('.skinItem .mobile').click(function () {
-          $('.skinItem').removeClass('selected')
-          $(this).closest('.skinItem').addClass('selected')
-          admin.preference.update()
+          admin.preference.update($(this).data('name'), 'mobile')
         })
 
         $('#loadMsg').text('')
@@ -82,22 +91,25 @@ admin.themeList = {
   /*
    * @description 更新
    */
-  update: function () {
-    if (!admin.preference.validate()) {
-      return
-    }
-
+  update: function (skinDirName, type) {
     $('#tipMsg').text('')
     $('#loadMsg').text(Label.loadingLabel)
 
     var requestJSONObject = {
-      'preference': {
-        'skinDirName': $('#skinMain').data('skinDirName'),
+      skin: {
+        skinDirName: admin.themeList.skinDirName,
+        mobileSkinDirName: admin.themeList.mobileSkinDirName,
       },
     }
 
+    if (type === 'pc') {
+      requestJSONObject.skin.skinDirName = skinDirName
+    } else {
+      requestJSONObject.skin.mobileSkinDirName = skinDirName
+    }
+
     $.ajax({
-      url: Label.servePath + '/console/preference/',
+      url: Label.servePath + '/console/skin',
       type: 'PUT',
       cache: false,
       data: JSON.stringify(requestJSONObject),
@@ -107,11 +119,7 @@ admin.themeList = {
           $('#loadMsg').text('')
           return
         }
-
-        if ($('#localeString').val() !== admin.preference.locale) {
-          window.location.reload()
-        }
-
+        admin.preference.init()
         $('#loadMsg').text('')
       },
     })
