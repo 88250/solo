@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -315,9 +316,18 @@ public class PreferenceMgmtService {
             syncGitHubOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SYNC_GITHUB));
             optionRepository.update(Option.ID_C_SYNC_GITHUB, syncGitHubOpt);
 
-            final JSONObject hljsThemeOpt = optionRepository.get(Option.ID_C_HLJS_THEME);
-            hljsThemeOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_HLJS_THEME));
-            optionRepository.update(Option.ID_C_HLJS_THEME, hljsThemeOpt);
+            // TODO: 在 v3.5.0 发布后可移除判空
+            JSONObject hljsThemeOpt = optionRepository.get(Option.ID_C_HLJS_THEME);
+            if (null == hljsThemeOpt) {
+                hljsThemeOpt = new JSONObject();
+                hljsThemeOpt.put(Keys.OBJECT_ID, Option.ID_C_HLJS_THEME);
+                hljsThemeOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+                hljsThemeOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_HLJS_THEME);
+                optionRepository.add(hljsThemeOpt);
+            } else {
+                hljsThemeOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_HLJS_THEME));
+                optionRepository.update(Option.ID_C_HLJS_THEME, hljsThemeOpt);
+            }
 
             final JSONObject customVarsOpt = optionRepository.get(Option.ID_C_CUSTOM_VARS);
             customVarsOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_CUSTOM_VARS));
