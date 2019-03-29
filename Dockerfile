@@ -1,11 +1,10 @@
 FROM maven:3-jdk-8-alpine
-LABEL maintainer="Tomaer Ma<i@tomaer.com>"
+LABEL maintainer="Liang Ding<d@b3log.org>"
 
 WORKDIR /opt/solo
 ADD . /tmp
 
-ENV TZ=Asia/Shanghai
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+RUN apk add tzdata \
     && cd /tmp && mvn package -DskipTests -Pci && mv target/solo/* /opt/solo/ \
     && cp -f /tmp/src/main/resources/docker/* /opt/solo/WEB-INF/classes/ \
     && rm -rf /tmp/* && rm -rf ~/.m2
