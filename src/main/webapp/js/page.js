@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.0, Mar 28, 2019
+ * @version 2.2.0.1, Mar 29, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -113,8 +113,7 @@ $.extend(Page.prototype, {
 
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
-      Util.addScript(Label.staticServePath +
-        '/js/lib/vditor-1.1.10/index.min.js', 'vditorScript')
+      Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.2.5/dist/index.min.js', 'vditorScript')
       window.vditor = new Vditor('soloEditorComment', {
         placeholder: that.tips.commentContentCannotEmptyLabel,
         height: 180,
