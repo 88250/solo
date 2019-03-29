@@ -78,10 +78,10 @@ admin.themeList = {
         $('#skinMain').append(skinsHTML + '<div class=\'fn__clear\'></div>')
 
         $('.skinItem .update').click(function () {
-          admin.preference.update($(this).data('name'), 'pc')
+          admin.themeList.update($(this).data('name'), 'pc')
         })
         $('.skinItem .mobile').click(function () {
-          admin.preference.update($(this).data('name'), 'mobile')
+          admin.themeList.update($(this).data('name'), 'mobile')
         })
 
         $('#loadMsg').text('')
@@ -119,7 +119,7 @@ admin.themeList = {
           $('#loadMsg').text('')
           return
         }
-        admin.preference.init()
+        admin.themeList.init()
         $('#loadMsg').text('')
       },
     })
