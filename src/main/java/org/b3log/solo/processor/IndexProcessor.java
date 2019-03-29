@@ -123,7 +123,12 @@ public class IndexProcessor {
             }
             request.setAttribute(Keys.TEMAPLTE_DIR_NAME, specifiedSkin);
 
-            final Cookie cookie = new Cookie(Option.CATEGORY_C_SKIN, specifiedSkin);
+            Cookie cookie;
+            if (!Solos.isMobile(request)) {
+                cookie = new Cookie(Common.COOKIE_NAME_SKIN, specifiedSkin);
+            } else {
+                cookie = new Cookie(Common.COOKIE_NAME_MOBILE_SKIN, specifiedSkin);
+            }
             cookie.setMaxAge(60 * 60); // 1 hour
             cookie.setPath("/");
             response.addCookie(cookie);

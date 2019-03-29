@@ -32,6 +32,7 @@ import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 
 import javax.servlet.ServletContext;
@@ -239,18 +240,34 @@ public final class Skins {
      * @return directory name, or {@code null} if not found
      */
     public static String getSkinDirNameFromCookie(final HttpServletRequest request) {
+        final Set<String> skinDirNames = Skins.getSkinDirNames();
+        boolean isMobile = Solos.isMobile(request);
+        String skin = null, mobileSkin = null;
         final Cookie[] cookies = request.getCookies();
         if (null != cookies) {
             for (final Cookie cookie : cookies) {
-                if (Option.CATEGORY_C_SKIN.equals(cookie.getName())) {
-                    final String skin = cookie.getValue();
-                    final Set<String> skinDirNames = Skins.getSkinDirNames();
-
-                    if (skinDirNames.contains(skin)) {
-                        return skin;
+                if (Common.COOKIE_NAME_SKIN.equals(cookie.getName()) && !isMobile) {
+                    final String s = cookie.getValue();
+                    if (skinDirNames.contains(s)) {
+                        skin = s;
+                        break;
+                    }
+                }
+                if (Common.COOKIE_NAME_MOBILE_SKIN.equals(cookie.getName()) && isMobile) {
+                    final String s = cookie.getValue();
+                    if (skinDirNames.contains(s)) {
+                        mobileSkin = s;
+                        break;
                     }
                 }
             }
+        }
+
+        if (StringUtils.isNotBlank(skin)) {
+            return skin;
+        }
+        if (StringUtils.isNotBlank(mobileSkin)) {
+            return mobileSkin;
         }
 
         return null;

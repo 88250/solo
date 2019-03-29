@@ -28,6 +28,7 @@ import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.Before;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
+import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.SkinMgmtService;
@@ -163,10 +164,14 @@ public class SkinConsole {
             skinMgmtService.updateSkin(skin);
 
             final HttpServletResponse response = context.getResponse();
-            final Cookie cookie = new Cookie(Option.CATEGORY_C_SKIN, skin.getString(Option.ID_C_SKIN_DIR_NAME));
-            cookie.setMaxAge(60 * 60); // 1 hour
-            cookie.setPath("/");
-            response.addCookie(cookie);
+            final Cookie skinDirNameCookie = new Cookie(Common.COOKIE_NAME_SKIN, skin.getString(Option.ID_C_SKIN_DIR_NAME));
+            skinDirNameCookie.setMaxAge(60 * 60); // 1 hour
+            skinDirNameCookie.setPath("/");
+            response.addCookie(skinDirNameCookie);
+            final Cookie mobileSkinDirNameCookie = new Cookie(Common.COOKIE_NAME_MOBILE_SKIN, skin.getString(Option.ID_C_MOBILE_SKIN_DIR_NAME));
+            mobileSkinDirNameCookie.setMaxAge(60 * 60); // 1 hour
+            mobileSkinDirNameCookie.setPath("/");
+            response.addCookie(mobileSkinDirNameCookie);
 
             ret.put(Keys.STATUS_CODE, true);
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
