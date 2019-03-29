@@ -8,6 +8,7 @@ RUN apk add tzdata \
     && cd /tmp && mvn package -DskipTests -Pci && mv target/solo/* /opt/solo/ \
     && cp -f /tmp/src/main/resources/docker/* /opt/solo/WEB-INF/classes/ \
     && rm -rf /tmp/* && rm -rf ~/.m2
+ENV TZ=Asia/Shanghai
 
 EXPOSE 8080
 
