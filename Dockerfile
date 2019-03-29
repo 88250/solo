@@ -2,7 +2,7 @@ FROM maven:3-jdk-8-alpine as MVN_BUILD
 
 WORKDIR /opt/solo
 ADD . /tmp
-RUN && cd /tmp && mvn package -DskipTests -Pci && mv target/solo/* /opt/solo/ \
+RUN cd /tmp && mvn package -DskipTests -Pci && mv target/solo/* /opt/solo/ \
     && cp -f /tmp/src/main/resources/docker/* /opt/solo/WEB-INF/classes/
 
 FROM openjdk:8-alpine
