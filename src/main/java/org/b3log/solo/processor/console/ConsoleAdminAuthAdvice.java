@@ -41,7 +41,7 @@ public class ConsoleAdminAuthAdvice extends ProcessAdvice {
     public void doAdvice(final RequestContext context) throws RequestProcessAdviceException {
         if (!Solos.isAdminLoggedIn(context)) {
             final JSONObject exception401 = new JSONObject();
-            exception401.put(Keys.MSG, "Unauthorized to request [" + context.requestURI() + "]");
+            exception401.put(Keys.MSG, "Unauthorized to request [" + context.requestURI() + "], please signin using admin account");
             exception401.put(Keys.STATUS_CODE, HttpServletResponse.SC_UNAUTHORIZED);
 
             throw new RequestProcessAdviceException(exception401);
