@@ -190,7 +190,7 @@ admin.article = {
 
           admin.article.isConfirm = false
         },
-        complete: function () {
+        complete: function (jqXHR, textStatus) {
           that._removeDisabled()
           $('#loadMsg').text('')
         },
@@ -560,19 +560,3 @@ admin.register.article = {
     $('#tipMsg').text(Label.uploadMsg)
   },
 }
-
-function getUUID () {
-  var d = new Date().getTime()
-
-  var ret = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,
-    function (c) {
-      var r = (d + Math.random() * 16) % 16 | 0
-      d = Math.floor(d / 16)
-      return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16)
-    })
-
-  ret = ret.replace(new RegExp('-', 'g'), '')
-
-  return ret
-}
-

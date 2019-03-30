@@ -19,7 +19,7 @@
  * @description index for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.0, Apr 5, 2018
+ * @version 1.3.0.0, Mar 30, 2019
  */
 
 Util.htmlDecode = function (code) {
@@ -241,6 +241,12 @@ $.extend(Admin.prototype, {
         return Label.editorLeaveLabel
       }
     }
+
+    $(document).ajaxError(function (event, xhr, options, exc) {
+      if (xhr.status !== 200) {
+        $('#tipMsg').text(xhr.status + ': '+ exc)
+      }
+    })
   },
   /**
    * @description tools and article collapse
