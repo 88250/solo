@@ -44,7 +44,7 @@ import java.util.Map;
  * Error processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.8, Mar 4, 2019
+ * @version 1.0.2.0, Mar 30, 2019
  * @since 0.4.5
  */
 @RequestProcessor
@@ -85,7 +85,7 @@ public class ErrorProcessor {
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = "/error/{statusCode}", method = HttpMethod.GET)
+    @RequestProcessing(value = "/error/{statusCode}", method = {HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE})
     public void showErrorPage(final RequestContext context) {
         final HttpServletRequest request = context.getRequest();
         final String statusCode = context.pathVar("statusCode");
