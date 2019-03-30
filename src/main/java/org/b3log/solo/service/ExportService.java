@@ -162,6 +162,10 @@ public class ExportService {
                 return;
             }
 
+            if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServerHost())) {
+                return;
+            }
+
             if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode()) {
                 return;
             }

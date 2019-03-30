@@ -88,7 +88,7 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
-            if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServePath())) {
+            if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServerHost())) {
                 LOGGER.log(Level.TRACE, "Solo runs on local server, so should not send this comment[id={0}] to Symphony",
                         originalComment.getString(Keys.OBJECT_ID));
                 return;
