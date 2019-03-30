@@ -53,7 +53,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.11, Mar 4, 2019
+ * @version 1.3.2.12, Mar 30, 2019
  * @since 0.3.5
  */
 @Service
@@ -179,7 +179,7 @@ public class ArticleQueryService {
     public JSONObject getCategoryArticles(final String categoryId,
                                           final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
-        ret.put(Article.ARTICLES, (Object) Collections.emptyList());
+        ret.put(Keys.RESULTS, (Object) Collections.emptyList());
 
         final JSONObject pagination = new JSONObject();
         ret.put(Pagination.PAGINATION, pagination);
@@ -241,7 +241,7 @@ public class ArticleQueryService {
 
                 articles.add(article);
             }
-            ret.put(Article.ARTICLES, (Object) articles);
+            ret.put(Keys.RESULTS, (Object) articles);
 
             return ret;
         } catch (final RepositoryException e) {

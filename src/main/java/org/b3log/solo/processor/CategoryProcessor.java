@@ -29,7 +29,9 @@ import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.Stopwatchs;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Category;
@@ -49,7 +51,7 @@ import java.util.Map;
  * Category processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.6, Jan 5, 2019
+ * @version 1.1.0.0, Mar 30, 2019
  * @since 2.0.0
  */
 @RequestProcessor
@@ -103,6 +105,55 @@ public class CategoryProcessor {
     private StatisticMgmtService statisticMgmtService;
 
     /**
+     * Gets category articles paged with the specified context.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = "/articles/category/{categoryURI}", method = HttpMethod.GET)
+    public void getCategoryArticlesByPage(final RequestContext context) {
+        final JSONObject jsonObject = new JSONObject();
+
+        final HttpServletRequest request = context.getRequest();
+        final String categoryURI = context.pathVar("categoryURI");
+        final int currentPageNum = Paginator.getPage(request);
+
+        Stopwatchs.start("Get Category-Articles Paged [categoryURI=" + categoryURI + ", pageNum=" + currentPageNum + ']');
+        try {
+            final JSONObject category = categoryQueryService.getByURI(categoryURI);
+            if (null == category) {
+                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+                return;
+            }
+
+            jsonObject.put(Keys.STATUS_CODE, true);
+            final String categoryId = category.optString(Keys.OBJECT_ID);
+            final JSONObject preference = optionQueryService.getPreference();
+            final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
+            final JSONObject articlesResult = articleQueryService.getCategoryArticles(categoryId, currentPageNum, pageSize);
+            final List<JSONObject> articles = (List<JSONObject>) articlesResult.opt(Keys.RESULTS);
+            dataModelService.setArticlesExProperties(context, articles, preference);
+            final int pageCount = articlesResult.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+
+            final JSONObject result = new JSONObject();
+            final JSONObject pagination = new JSONObject();
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            result.put(Pagination.PAGINATION, pagination);
+            result.put(Article.ARTICLES, articles);
+            jsonObject.put(Keys.RESULTS, result);
+        } catch (final Exception e) {
+            jsonObject.put(Keys.STATUS_CODE, false);
+            LOGGER.log(Level.ERROR, "Gets article paged failed", e);
+        } finally {
+            Stopwatchs.end();
+        }
+
+        final JsonRenderer renderer = new JsonRenderer();
+        context.setRenderer(renderer);
+        renderer.setJSONObject(jsonObject);
+    }
+
+    /**
      * Shows articles related with a category with the specified context.
      *
      * @param context the specified context
@@ -134,7 +185,7 @@ public class CategoryProcessor {
             final String categoryId = category.optString(Keys.OBJECT_ID);
 
             final JSONObject result = articleQueryService.getCategoryArticles(categoryId, currentPageNum, pageSize);
-            final List<JSONObject> articles = (List<JSONObject>) result.opt(Article.ARTICLES);
+            final List<JSONObject> articles = (List<JSONObject>) result.opt(Keys.RESULTS);
 
             final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             if (0 == pageCount) {
