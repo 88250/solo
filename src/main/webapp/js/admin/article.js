@@ -30,10 +30,6 @@ admin.article = {
     isArticle: undefined,
   },
   content: '',
-  // 自动保存草稿定时器
-  autoSaveDraftTimer: '',
-  // 自动保存间隔
-  AUTOSAVETIME: 1000 * 60,
   /**
    * @description 获取文章并把值塞入发布文章页面
    * @param {String} id 文章 id
@@ -133,9 +129,8 @@ admin.article = {
   /**
    * @@description 添加文章
    * @param {Boolean} articleStatus 0：已发布，1：草稿
-   * @param {Boolean} isAuto 是否为自动保存
    */
-  add: function (articleStatus, isAuto) {
+  add: function (articleStatus) {
     if (admin.article.validate()) {
       var that = this
       that._addDisabled()
@@ -180,20 +175,14 @@ admin.article = {
         type: 'POST',
         cache: false,
         data: JSON.stringify(requestJSONObject),
-        success: function (result, textStatus) {
-          if (isAuto) {
-            $('#tipMsg').text(Label.autoSaveLabel)
-            admin.article.status.id = result.oId
-            return
-          }
-
+        success: function (result) {
           $('#tipMsg').text(result.msg)
           if (!result.sc) {
             return
           }
 
+          admin.article.status.id = undefined
           if (articleStatus === 0) {
-            admin.article.status.id = undefined
             admin.selectTab('article/article-list')
           } else {
             admin.selectTab('article/draft-list')
@@ -211,9 +200,8 @@ admin.article = {
   /**
    * @description 更新文章
    * @param {Boolean} articleStatus 0：已发布，1：草稿
-   * @param {Boolean} isAuto 是否为自动保存
    */
-  update: function (articleStatus, isAuto) {
+  update: function (articleStatus) {
     if (admin.article.validate()) {
       var that = this
       that._addDisabled()
@@ -258,11 +246,6 @@ admin.article = {
         cache: false,
         data: JSON.stringify(requestJSONObject),
         success: function (result, textStatus) {
-          if (isAuto) {
-            $('#tipMsg').text(Label.autoSaveLabel)
-            return
-          }
-
           $('#tipMsg').text(result.msg)
           if (!result.sc) {
             return
@@ -445,11 +428,6 @@ admin.article = {
       resize: true,
     })
 
-    admin.article.clearDraftTimer()
-    admin.article.autoSaveDraftTimer = setInterval(function () {
-      admin.article._autoSaveToDraft()
-    }, admin.article.AUTOSAVETIME)
-
     // thumbnail
     $('#articleThumbnailBtn').click(function () {
       $.ajax({// Gets all tags
@@ -470,32 +448,6 @@ admin.article = {
     }).click()
   },
   /**
-   * @description 自动保存草稿件
-   */
-  _autoSaveToDraft: function () {
-    if ($('#title').val().replace(/\s/g, '') === '' ||
-      admin.editors.articleEditor.getContent().replace(/\s/g, '') === '') {
-      return
-    }
-    if (admin.article.status.id) {
-      if (!admin.article.status.isArticle) {
-        admin.article.update(1, true)
-      }
-    } else {
-      admin.article.add(1, true)
-      admin.article.status.isArticle = false
-    }
-  },
-  /**
-   * @description 关闭定时器
-   */
-  clearDraftTimer: function () {
-    if (admin.article.autoSaveDraftTimer !== '') {
-      window.clearInterval(admin.article.autoSaveDraftTimer)
-      admin.article.autoSaveDraftTimer = ''
-    }
-  },
-  /**
    * @description 验证发布文章字段的合法性
    */
   validate: function () {
@@ -513,9 +465,8 @@ admin.article = {
   },
   /**
    * @description 取消发布
-   * @param {Boolean} isAuto 是否为自动保存
    */
-  unPublish: function (isAuto) {
+  unPublish: function () {
     var that = this
     that._addDisabled()
     $.ajax({
@@ -524,11 +475,6 @@ admin.article = {
       type: 'PUT',
       cache: false,
       success: function (result, textStatus) {
-        if (isAuto) {
-          $('#tipMsg').text(Label.autoSaveLabel)
-          return
-        }
-
         $('#tipMsg').text(result.msg)
         if (!result.sc) {
           return

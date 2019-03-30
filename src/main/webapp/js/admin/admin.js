@@ -35,9 +35,9 @@ Util.htmlDecode = function (code) {
  */
 Util.proessURL = function (url) {
   if (!/^\w+:\/\//.test(url)) {
-    url = "http://" + url;
+    url = 'http://' + url
   }
-  return url;
+  return url
 }
 
 var Admin = function () {
@@ -133,37 +133,14 @@ $.extend(Admin.prototype, {
       return
     }
 
-    if (tab !== 'article') {
-      admin.article.clearDraftTimer()
-    } else if (tab === 'article') {
-      admin.article.autoSaveDraftTimer = setInterval(function () {
-        admin.article._autoSaveToDraft()
-      }, admin.article.AUTOSAVETIME)
-    }
-
     // 离开编辑器时进行提示
     try {
-      // 除更新、发布、取消发布文章，编辑器中无内容外，离开编辑器需进行提示。
-      if (tab !== 'article' && admin.article.isConfirm &&
-        admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ''
-        && admin.article.content !== admin.editors.articleEditor.getContent()) {
-        if (!confirm(Label.editorLeaveLabel)) {
-          window.location.hash = '#article/article'
-          return
-        }
-      }
-      // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
-      if (tab === 'article' && admin.article.isConfirm &&
-        admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ''
-        && admin.article.content !== admin.editors.articleEditor.getContent()) {
-        return
-      }
-    } catch (e) {
-      var $articleContent = $('#articleContent')
-      if ($articleContent.length > 0) {
+      if (admin.editors.articleEditor.getContent) {
+        // 除更新、发布、取消发布文章，编辑器中无内容外，离开编辑器需进行提示。
         if (tab !== 'article' && admin.article.isConfirm &&
-          $articleContent.val().replace(/\s/g, '') !== ''
-          && admin.article.content !== $articleContent.val()) {
+          admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ''
+          && admin.article.content !==
+          admin.editors.articleEditor.getContent()) {
           if (!confirm(Label.editorLeaveLabel)) {
             window.location.hash = '#article/article'
             return
@@ -171,11 +148,14 @@ $.extend(Admin.prototype, {
         }
         // 不离开编辑器，hash 需变为 "#article/article"，此时不需要做任何处理。
         if (tab === 'article' && admin.article.isConfirm &&
-          $articleContent.val().replace(/\s/g, '') !== ''
-          && admin.article.content !== $articleContent.val()) {
+          admin.editors.articleEditor.getContent().replace(/\s/g, '') !== ''
+          && admin.article.content !==
+          admin.editors.articleEditor.getContent()) {
           return
         }
       }
+    } catch (e) {
+      console.log(e)
     }
 
     // clear article
@@ -252,6 +232,15 @@ $.extend(Admin.prototype, {
       }
     }, 6000)
     $('#loadMsg').text('')
+
+    window.onbeforeunload = (event) => {
+      if (window.location.hash === '#article/article') {
+        if (event) {
+          event.returnValue = Label.editorLeaveLabel
+        }
+        return Label.editorLeaveLabel
+      }
+    }
   },
   /**
    * @description tools and article collapse

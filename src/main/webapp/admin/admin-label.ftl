@@ -98,7 +98,6 @@
     Label.visitorUserLabel = "${visitorUserLabel}"
     Label.categoryTooLongLabel = "${categoryTooLongLabel}"
     Label.descriptionLabel = "${descriptionLabel}"
-    Label.autoSaveLabel = "${autoSaveLabel}"
     Label.previewLabel = '${previewLabel}'
     admin.init()
 </script>
