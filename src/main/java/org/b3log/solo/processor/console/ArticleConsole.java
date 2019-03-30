@@ -491,6 +491,9 @@ public class ArticleConsole {
                 return;
             }
 
+            // 打印请求日志，如果发生特殊情况丢失数据，至少还可以根据日志寻回内容
+            LOGGER.log(Level.INFO, "Updates an article request [" + requestJSONObject.toString() + "]");
+
             articleMgmtService.updateArticle(requestJSONObject);
 
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
@@ -546,6 +549,9 @@ public class ArticleConsole {
             final JSONObject requestJSONObject = context.requestJSON();
             final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
             requestJSONObject.getJSONObject(Article.ARTICLE).put(Article.ARTICLE_AUTHOR_ID, currentUser.getString(Keys.OBJECT_ID));
+
+            // 打印请求日志，如果发生特殊情况丢失数据，至少还可以根据日志寻回内容
+            LOGGER.log(Level.INFO, "Adds an article request [" + requestJSONObject.toString() + "]");
 
             final String articleId = articleMgmtService.addArticle(requestJSONObject);
             ret.put(Keys.OBJECT_ID, articleId);
