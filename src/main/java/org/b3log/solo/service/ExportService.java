@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.4, Mar 27, 2019
+ * @version 1.1.0.5, Mar 30, 2019
  * @since 2.5.0
  */
 @Service
@@ -159,6 +159,10 @@ public class ExportService {
             }
 
             if (!preference.optBoolean(Option.ID_C_SYNC_GITHUB)) {
+                return;
+            }
+
+            if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode()) {
                 return;
             }
 
