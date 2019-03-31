@@ -79,7 +79,7 @@
             &nbsp;
             <span id="postToCommunityPanel">
                 <label class="checkbox">
-                    <input id="postToCommunity" type="checkbox" checked="checked" />
+                    <input id="postToCommunity" type="checkbox" />
                     <a href="https://hacpai.com/article/1546941897596" target="_blank">${syncToCommunityLabel}</a>
                 </label>
             </span>
