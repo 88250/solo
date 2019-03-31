@@ -79,7 +79,7 @@ function miniAdmin () {
     './src/main/webapp/js/admin/others.js',
     './src/main/webapp/js/admin/linkList.js',
     './src/main/webapp/js/admin/preference.js',
-    './src/main/webapp/js/admin/theme-list.js',
+    './src/main/webapp/js/admin/themeList.js',
     './src/main/webapp/js/admin/pluginList.js',
     './src/main/webapp/js/admin/userList.js',
     './src/main/webapp/js/admin/categoryList.js',
