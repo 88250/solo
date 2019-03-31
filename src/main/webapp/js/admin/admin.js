@@ -233,7 +233,7 @@ $.extend(Admin.prototype, {
     }, 6000)
     $('#loadMsg').text('')
 
-    window.onbeforeunload = (event) => {
+    window.onbeforeunload = function (event) {
       if (window.location.hash === '#article/article') {
         if (event) {
           event.returnValue = Label.editorLeaveLabel
@@ -244,7 +244,7 @@ $.extend(Admin.prototype, {
 
     $(document).ajaxError(function (event, xhr, options, exc) {
       if (xhr.status !== 200) {
-        $('#tipMsg').text(xhr.status + ': '+ exc)
+        $('#tipMsg').text(xhr.status + ': ' + exc)
       }
     })
   },
