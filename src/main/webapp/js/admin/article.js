@@ -339,7 +339,7 @@ admin.article = {
 
     $('#permalink').val('')
     $('#articleCammentable').prop('checked', true)
-    $('#postToCommunity').prop('checked', true)
+    $('#postToCommunity').prop('checked', false)
     $('.signs button').each(function (i) {
       if (i === 0) {
         this.className = 'selected'
