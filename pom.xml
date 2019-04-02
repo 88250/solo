@@ -74,7 +74,7 @@
     </scm>
 
     <properties>
-        <org.b3log.latke.version>2.4.48</org.b3log.latke.version>
+        <org.b3log.latke.version>2.4.49</org.b3log.latke.version>
 
         <slf4j.version>1.7.5</slf4j.version>
         <jsoup.version>1.9.1</jsoup.version>
