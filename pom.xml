@@ -302,9 +302,10 @@
                     <includes>
                         <include>**/src/*/java/**/*.java</include>
                         <include>**/src/*/webapp/js/*.js</include>
+                        <include>**/src/*/webapp/scss/*.scss</include>
                         <include>**/src/*/webapp/**/*.ftl</include>
                         <include>**/src/*/webapp/skins/*/js/*.js</include>
-                        <include>**/src/*/webapp/skins/*/css/*.scss</include>
+                        <include>**/src/*/webapp/skins/**/*.scss</include>
                         <include>**/src/*/webapp/skins/**/*.properties</include>
                         <include>**/src/*/webapp/plugins/*/js/*.js</include>
                         <include>**/src/*/webapp/plugins/*/css/*.css</include>
@@ -328,11 +329,12 @@
                     <useDefaultExcludes>true</useDefaultExcludes>
                     <mapping>
                         <java>SLASHSTAR_STYLE</java>
+                        <scss>SLASHSTAR_STYLE</scss>
                     </mapping>
                     <useDefaultMapping>true</useDefaultMapping>
                     <properties>
-                        <year>2010-2019</year>
-                        <devTeam>b3log.org &amp; hacpai.com</devTeam>
+                        <year>2010-present</year>
+                        <devTeam>b3log.org</devTeam>
                     </properties>
                     <encoding>UTF-8</encoding>
                 </configuration>
