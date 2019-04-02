@@ -53,7 +53,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.1, Mar 29, 2019
+ * @version 1.8.0.2, Apr 2, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -67,11 +67,6 @@ public final class Solos {
      * Favicon API.
      */
     public static final String FAVICON_API;
-
-    /**
-     * Gravatar address.
-     */
-    public static final String GRAVATAR;
 
     /**
      * Solo User-Agent.
@@ -107,7 +102,6 @@ public final class Solos {
         }
 
         FAVICON_API = solo.getString("faviconAPI");
-        GRAVATAR = solo.getString("gravatar");
     }
 
     static {
