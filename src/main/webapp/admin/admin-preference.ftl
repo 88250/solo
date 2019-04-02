@@ -82,7 +82,9 @@
             <option value="titleAndAbstract">${titleAndAbstractLabel}</option>
             <option value="titleAndContent">${titleAndContentLabel}</option>
         </select>
-        <label for="hljsTheme">${hljsThemeLabel}</label>
+        <label for="hljsTheme">
+            <a href="https://highlightjs.org/static/demo/" target="_blank">${previewLabel}</a>${hljsThemeLabel}
+        </label>
         <select id="hljsTheme">
             <option value="default">Default</option>
             <option value="a11y-dark">A 11 Y Dark</option>
