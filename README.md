@@ -42,7 +42,7 @@
 * 自定义文章永久链接 / 签名档
 * 配置站点 SEO 参数 / 公告 / 页脚
 * 代码高亮 / 数学公式 / 流程图
-* [多皮肤，多端适配](https://github.com/b3log/solo-skins/tree/master/skin-preview) / [社区皮肤](https://github.com/b3log/solo-third-skins/tree/master/skin-preview)
+* [多皮肤，多端适配](https://github.com/b3log/solo-skins) / [社区皮肤](https://github.com/b3log/solo-third-skins)
 * 多语言 / 国际化
 * 友情链接管理
 * 多用户写作，团队博客
