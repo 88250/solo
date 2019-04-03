@@ -148,12 +148,12 @@ public class OAuthProcessor {
     }
 
     /**
-     * Shows OAuth callback page.
+     * OAuth callback.
      *
      * @param context the specified context
      */
     @RequestProcessing(value = "/oauth/github", method = HttpMethod.GET)
-    public synchronized void showAuthCallback(final RequestContext context) {
+    public synchronized void authCallback(final RequestContext context) {
         final String state = context.param("state");
         String referer = STATES.get(state);
         if (StringUtils.isBlank(referer)) {
