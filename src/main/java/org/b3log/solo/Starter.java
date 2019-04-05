@@ -51,12 +51,6 @@ public final class Starter {
     }
 
     /**
-     * Private constructor.
-     */
-    private Starter() {
-    }
-
-    /**
      * Main.
      *
      * @param args the specified arguments
@@ -66,36 +60,36 @@ public final class Starter {
         final Logger logger = Logger.getLogger(Starter.class);
 
         final Options options = new Options();
-        final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT")
-                .hasArg().desc("listen port, default is 8080").build();
+        final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT").
+                hasArg().desc("listen port, default is 8080").build();
         options.addOption(listenPortOpt);
 
-        final Option serverSchemeOpt = Option.builder("ss").longOpt("server_scheme").argName("SERVER_SCHEME")
-                .hasArg().desc("browser visit protocol, default is http").build();
+        final Option serverSchemeOpt = Option.builder("ss").longOpt("server_scheme").argName("SERVER_SCHEME").
+                hasArg().desc("browser visit protocol, default is http").build();
         options.addOption(serverSchemeOpt);
 
-        final Option serverHostOpt = Option.builder("sh").longOpt("server_host").argName("SERVER_HOST")
-                .hasArg().desc("browser visit domain name, default is localhost").build();
+        final Option serverHostOpt = Option.builder("sh").longOpt("server_host").argName("SERVER_HOST").
+                hasArg().desc("browser visit domain name, default is localhost").build();
         options.addOption(serverHostOpt);
 
-        final Option serverPortOpt = Option.builder("sp").longOpt("server_port").argName("SERVER_PORT")
-                .hasArg().desc("browser visit port, default is 8080").build();
+        final Option serverPortOpt = Option.builder("sp").longOpt("server_port").argName("SERVER_PORT").
+                hasArg().desc("browser visit port, default is 8080").build();
         options.addOption(serverPortOpt);
 
-        final Option staticServerSchemeOpt = Option.builder("sss").longOpt("static_server_scheme").argName("STATIC_SERVER_SCHEME")
-                .hasArg().desc("browser visit static resource protocol, default is http").build();
+        final Option staticServerSchemeOpt = Option.builder("sss").longOpt("static_server_scheme").argName("STATIC_SERVER_SCHEME").
+                hasArg().desc("browser visit static resource protocol, default is http").build();
         options.addOption(staticServerSchemeOpt);
 
-        final Option staticServerHostOpt = Option.builder("ssh").longOpt("static_server_host").argName("STATIC_SERVER_HOST")
-                .hasArg().desc("browser visit static resource domain name, default is localhost").build();
+        final Option staticServerHostOpt = Option.builder("ssh").longOpt("static_server_host").argName("STATIC_SERVER_HOST").
+                hasArg().desc("browser visit static resource domain name, default is localhost").build();
         options.addOption(staticServerHostOpt);
 
-        final Option staticServerPortOpt = Option.builder("ssp").longOpt("static_server_port").argName("STATIC_SERVER_PORT")
-                .hasArg().desc("browser visit static resource port, default is 8080").build();
+        final Option staticServerPortOpt = Option.builder("ssp").longOpt("static_server_port").argName("STATIC_SERVER_PORT").
+                hasArg().desc("browser visit static resource port, default is 8080").build();
         options.addOption(staticServerPortOpt);
 
-        final Option runtimeModeOpt = Option.builder("rm").longOpt("runtime_mode").argName("RUNTIME_MODE")
-                .hasArg().desc("runtime mode (DEVELOPMENT/PRODUCTION), default is DEVELOPMENT").build();
+        final Option runtimeModeOpt = Option.builder("rm").longOpt("runtime_mode").argName("RUNTIME_MODE").
+                hasArg().desc("runtime mode (DEVELOPMENT/PRODUCTION), default is DEVELOPMENT").build();
         options.addOption(runtimeModeOpt);
 
         options.addOption("h", "help", false, "print help for the command");
@@ -198,5 +192,11 @@ public final class Starter {
         }));
 
         server.join();
+    }
+
+    /**
+     * Private constructor.
+     */
+    private Starter() {
     }
 }
