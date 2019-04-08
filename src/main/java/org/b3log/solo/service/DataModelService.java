@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.8, Mar 29, 2019
+ * @version 1.7.0.9, Apr 8, 2019
  * @since 0.3.1
  */
 @Service
@@ -701,7 +701,8 @@ public class DataModelService {
             dataModel.put(Common.FAVICON_API, Solos.FAVICON_API);
             final String noticeBoard = preference.getString(Option.ID_C_NOTICE_BOARD);
             dataModel.put(Option.ID_C_NOTICE_BOARD, noticeBoard);
-            final Query query = new Query().setPageCount(1);
+            // 皮肤不显示访客用户 https://github.com/b3log/solo/issues/12752
+            final Query query = new Query().setPageCount(1).setFilter(new PropertyFilter(User.USER_ROLE, FilterOperator.NOT_EQUAL, Role.VISITOR_ROLE));
             final List<JSONObject> userList = userRepository.getList(query);
             dataModel.put(User.USERS, userList);
             final JSONObject admin = userRepository.getAdmin();
