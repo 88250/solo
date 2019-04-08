@@ -162,6 +162,10 @@ docker pull b3log/solo
 
 可参考[这里](https://github.com/b3log/solo/blob/master/scripts/docker-restart.sh)编写一个重启脚本，并通过 crontab 每日凌晨运行来实现自动更新。
 
+### Docker Compose
+
+请参考[这里](https://github.com/liumapp/solo-in-docker)，感谢 [@liumapp](https://github.com/liumapp) 提供 :heart:
+
 ## 文档
 
 * [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
