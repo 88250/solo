@@ -31,7 +31,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * Image utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Feb 10, 2019
+ * @version 1.1.0.1, Apr 13, 2019
  * @since 2.7.0
  */
 public final class Images {
@@ -57,11 +57,11 @@ public final class Images {
 
         for (final String imgSrc : imgSrcs) {
             if (!StringUtils.startsWith(imgSrc, qiniuDomain) || StringUtils.contains(imgSrc, ".gif")
-                    || StringUtils.containsIgnoreCase(imgSrc, "?imageView2")) {
+                    || StringUtils.containsIgnoreCase(imgSrc, "imageView")) {
                 continue;
             }
 
-            ret = StringUtils.replace(ret, imgSrc, imgSrc + "?imageView2/2/w/768/format/jpg/interlace/1");
+            ret = StringUtils.replace(ret, imgSrc, imgSrc + "?imageView2/2/w/768/format/jpg/interlace/1/q/100");
         }
 
         return ret;
@@ -113,11 +113,7 @@ public final class Images {
         final List<String> ret = new ArrayList<>();
 
         int i = 0;
-        while (true) {
-            if (i >= n * 5) {
-                break;
-            }
-
+        while (i < n * 5) {
             final String url = randImage();
             if (!ret.contains(url)) {
                 ret.add(url);
