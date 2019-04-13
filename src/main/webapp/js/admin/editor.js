@@ -19,7 +19,7 @@
  * @fileoverview editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.0.4, Mar 6, 2019
+ * @version 1.2.1.0, Apr 13, 2019
  */
 
 admin.editors = {}
@@ -63,7 +63,9 @@ $.extend(SoloEditor.prototype, {
         url: Label.uploadURL,
         token: Label.uploadToken,
         filename: function (name) {
-          return name.replace(/\?|\\|\/|:|\||<|>|\*|\[|\]|\s+/g, '-')
+          return  name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').
+            replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').
+            replace('/\\s/g', '')
         }
       },
       height: this.conf.height,
