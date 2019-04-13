@@ -51,7 +51,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Feb 10, 2019
+ * @version 1.3.1.0, Apr 13, 2019
  * @since 0.3.5
  */
 @Service
@@ -299,11 +299,10 @@ public class ArticleMgmtService {
             final String articleAbstractText = Article.getAbstractText(article);
             article.put(ARTICLE_ABSTRACT_TEXT, articleAbstractText);
 
-            // Update
-            final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
-            article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
+            final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY);
+            article.remove(Common.POST_TO_COMMUNITY);
             articleRepository.update(articleId, article);
-            article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
+            article.put(Common.POST_TO_COMMUNITY, postToCommunity);
 
             final boolean publishNewArticle = Article.ARTICLE_STATUS_C_DRAFT == oldArticle.optInt(ARTICLE_STATUS) && Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(ARTICLE_STATUS);
             final JSONObject eventData = new JSONObject();
@@ -362,34 +361,12 @@ public class ArticleMgmtService {
 
         try {
             final JSONObject article = requestJSONObject.getJSONObject(Article.ARTICLE);
-            final String ret = addArticleInternal(article);
-            transaction.commit();
-
-            return ret;
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
+            String ret = article.optString(Keys.OBJECT_ID);
+            if (StringUtils.isBlank(ret)) {
+                ret = Ids.genTimeMillisId();
+                article.put(Keys.OBJECT_ID, ret);
             }
 
-            throw new ServiceException(e.getMessage());
-        }
-    }
-
-    /**
-     * Adds the specified article for internal invocation purposes.
-     *
-     * @param article the specified article
-     * @return generated article id
-     * @throws ServiceException service exception
-     */
-    public String addArticleInternal(final JSONObject article) throws ServiceException {
-        String ret = article.optString(Keys.OBJECT_ID);
-        if (StringUtils.isBlank(ret)) {
-            ret = Ids.genTimeMillisId();
-            article.put(Keys.OBJECT_ID, ret);
-        }
-
-        try {
             String tagsString = article.optString(Article.ARTICLE_TAGS_REF);
             tagsString = Tag.formatTags(tagsString);
             if (StringUtils.isBlank(tagsString)) {
@@ -425,27 +402,26 @@ public class ArticleMgmtService {
             final String articleAbstractText = Article.getAbstractText(article);
             article.put(ARTICLE_ABSTRACT_TEXT, articleAbstractText);
 
-            final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY, true);
-            article.remove(Common.POST_TO_COMMUNITY); // Do not persist this property
-
+            final boolean postToCommunity = article.optBoolean(Common.POST_TO_COMMUNITY);
+            article.remove(Common.POST_TO_COMMUNITY);
             articleRepository.add(article);
+            transaction.commit();
 
-            article.put(Common.POST_TO_COMMUNITY, postToCommunity); // Restores the property
-
+            article.put(Common.POST_TO_COMMUNITY, postToCommunity);
             if (Article.ARTICLE_STATUS_C_PUBLISHED == article.optInt(ARTICLE_STATUS)) {
                 final JSONObject eventData = new JSONObject();
                 eventData.put(Article.ARTICLE, article);
                 eventManager.fireEventAsynchronously(new Event<>(EventTypes.ADD_ARTICLE, eventData));
             }
 
-            article.remove(Common.POST_TO_COMMUNITY);
+            return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Adds an article failed", e);
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
 
-            throw new ServiceException(e);
+            throw new ServiceException(e.getMessage());
         }
-
-        return ret;
     }
 
     /**
