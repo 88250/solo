@@ -46,7 +46,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.1.0.15, Mar 21, 2019
+ * @version 1.1.0.16, Apr 13, 2019
  * @since 0.4.0
  */
 @Service
@@ -166,18 +166,20 @@ public class PageMgmtService {
             final String url = repo.optString("githubrepoHTMLURL");
             final String desc = repo.optString("githubrepoDescription");
             final String name = repo.optString("githubrepoName");
-            final int stars = repo.optInt("githubrepoStargazersCount");
-            final int watchers = repo.optInt("githubrepoWatchersCount");
-            final int forks = repo.optInt("githubrepoForksCount");
+            final String stars = repo.optString("githubrepoStargazersCount");
+            final String watchers = repo.optString("githubrepoWatchersCount");
+            final String forks = repo.optString("githubrepoForksCount");
             final String lang = repo.optString("githubrepoLanguage");
             final String hp = repo.optString("githubrepoHomepage");
-            contentBuilder.append("### [" + name + "](" + url + ")\n\n" + desc + "\n" + watchers + " 个关注者，" + stars + " 颗星，" + forks + " 个分叉。\n" +
-                    "该项目主要使用 " + lang + " 编写");
+
+            String stat = "<span style=\"font-size: 12px;\">[🤩`{watchers}`]({url}/watchers \"关注数\")&nbsp;&nbsp;[⭐️`{stars}`]({url}/stargazers \"收藏数\")&nbsp;&nbsp;[🖖`{forks}`]({url}/network/members \"分叉数\")";
+            stat = stat.replace("{watchers}", watchers).replace("{stars}", stars).replace("{url}", url).replace("{forks}", forks);
             if (StringUtils.isNotBlank(hp)) {
-                contentBuilder.append("，项目主页：[" + hp + "](" + hp + ")");
-            } else {
-                contentBuilder.append("。");
+                stat += "&nbsp;&nbsp;[\uD83C\uDFE0`{hp}`]({hp} \"项目主页\")";
+                stat = stat.replace("{hp}", hp);
             }
+            stat += "</span>";
+            contentBuilder.append("### [" + (i + 1) + ". " + name + "](" + url + ") <kbd title=\"主要编程语言\">" + lang + "</kbd> " + stat + "\n\n" + desc + "\n\n");
             if (i < gitHubRepos.length() - 1) {
                 contentBuilder.append("\n\n---\n\n");
             }
