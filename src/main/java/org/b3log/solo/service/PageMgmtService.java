@@ -179,7 +179,7 @@ public class PageMgmtService {
                 stat = stat.replace("{hp}", hp);
             }
             stat += "</span>";
-            contentBuilder.append("### [" + (i + 1) + ". " + name + "](" + url + ") <kbd title=\"主要编程语言\">" + lang + "</kbd> " + stat + "\n\n" + desc + "\n\n");
+            contentBuilder.append("### " + (i + 1) + ". [" + name + "](" + url + ") <kbd title=\"主要编程语言\">" + lang + "</kbd> " + stat + "\n\n" + desc + "\n\n");
             if (i < gitHubRepos.length() - 1) {
                 contentBuilder.append("\n\n---\n\n");
             }
