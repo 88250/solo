@@ -926,6 +926,7 @@ public class ArticleProcessor {
         signHtml = StringUtils.replace(signHtml, "{title}", articleTitle);
         signHtml = StringUtils.replace(signHtml, "{author}", author);
         signHtml = StringUtils.replace(signHtml, "{url}", url);
+        signHtml = StringUtils.replace(signHtml, "{blog}", Latkes.getServePath());
         sign.put(Sign.SIGN_HTML, signHtml);
         article.put(Common.ARTICLE_SIGN, sign);
         LOGGER.debug("Got article sign");

@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.6.0.0, Mar 29, 2019
+ * @version 1.6.0.1, Apr 16, 2019
  * @since 0.6.0
  */
 public final class Option {
@@ -384,7 +384,7 @@ public final class Option {
         /**
          * Default notice board.
          */
-        public static final String DEFAULT_NOTICE_BOARD = "Open Source, Open Mind, <br/>Open Sight, Open Future!";
+        public static final String DEFAULT_NOTICE_BOARD = "Open Source, Open Mind, <br/>Open Sight, Open Future!\n\n<!-- 公告栏可使用 HTML、JavaScript，比如可以在此加入第三方统计 js -->";
 
         /**
          * Default meta keywords..
@@ -458,13 +458,16 @@ public final class Option {
 
         static {
             final JSONArray signs = new JSONArray();
-            final int signLength = 4;
-
-            for (int i = 0; i < signLength; i++) {
+            for (int i = 0; i < 4; i++) {
                 final JSONObject sign = new JSONObject();
                 sign.put(Keys.OBJECT_ID, i);
                 signs.put(sign);
-                sign.put(Sign.SIGN_HTML, "");
+                String html = "<hr>\n\n";
+                html += "标题：{title}<br>\n";
+                html += "作者：<a href=\"{blog}\" target=\"_blank\">{author}</a><br>\n";
+                html += "地址：<a href=\"{url}\" target=\"_blank\">{url}</a><br>\n\n";
+                html += "<!-- 签名档内可使用 HTML、JavaScript -->\n<br>";
+                sign.put(Sign.SIGN_HTML, html);
             }
 
             // Sign(id=0) is the 'empty' sign, used for article user needn't a sign
