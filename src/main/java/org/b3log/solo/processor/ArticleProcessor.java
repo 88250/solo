@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.5.4, Feb 27, 2019
+ * @version 1.4.5.5, Apr 16, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -917,7 +917,17 @@ public class ArticleProcessor {
 
         Stopwatchs.start("Get Article Sign");
         LOGGER.debug("Getting article sign....");
-        article.put(Common.ARTICLE_SIGN, articleQueryService.getSign(article.getString(Article.ARTICLE_SIGN_ID), preference));
+        final JSONObject sign = articleQueryService.getSign(article.getString(Article.ARTICLE_SIGN_ID), preference);
+        final String articleTitle = article.optString(Article.ARTICLE_TITLE);
+        final String author = article.optString(Common.AUTHOR_NAME);
+        final String url = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
+        String signHtml = sign.optString(Sign.SIGN_HTML);
+        // 签名档内置模板变量 https://github.com/b3log/solo/issues/12758
+        signHtml = StringUtils.replace(signHtml, "{title}", articleTitle);
+        signHtml = StringUtils.replace(signHtml, "{author}", author);
+        signHtml = StringUtils.replace(signHtml, "{url}", url);
+        sign.put(Sign.SIGN_HTML, signHtml);
+        article.put(Common.ARTICLE_SIGN, sign);
         LOGGER.debug("Got article sign");
         Stopwatchs.end();
 
