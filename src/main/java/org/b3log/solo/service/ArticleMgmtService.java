@@ -76,6 +76,12 @@ public class ArticleMgmtService {
     private ArticleRepository articleRepository;
 
     /**
+     * Page repository.
+     */
+    @Inject
+    private PageRepository pageRepository;
+
+    /**
      * User repository.
      */
     @Inject
@@ -262,6 +268,28 @@ public class ArticleMgmtService {
                 articleRepository.update(articleId, article);
                 transaction.commit();
             }
+
+            final Transaction transaction = pageRepository.beginTransaction();
+            JSONObject page = pageRepository.getByPermalink(permalink);
+            if (null == page) {
+                page = new JSONObject();
+                page.put(Page.PAGE_COMMENT_COUNT, 0);
+                final int maxOrder = pageRepository.getMaxOrder();
+                page.put(Page.PAGE_ORDER, maxOrder + 1);
+                page.put(Page.PAGE_TITLE, "我的开源");
+                page.put(Page.PAGE_OPEN_TARGET, "_self");
+                page.put(Page.PAGE_COMMENTABLE, true);
+                page.put(Page.PAGE_TYPE, "link");
+                page.put(Page.PAGE_PERMALINK, permalink);
+                page.put(Page.PAGE_ICON, "images/github-icon.png");
+                page.put(Page.PAGE_CONTENT, content);
+                pageRepository.add(page);
+            } else {
+                page.put(Page.PAGE_CONTENT, content);
+                page.put(Page.PAGE_OPEN_TARGET, "_self");
+                pageRepository.update(page.optString(Keys.OBJECT_ID), page);
+            }
+            transaction.commit();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Updates github repos page failed", e);
         }
