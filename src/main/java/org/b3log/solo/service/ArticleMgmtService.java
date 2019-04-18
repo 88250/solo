@@ -346,7 +346,7 @@ public class ArticleMgmtService {
      *                          "articleTags": "tag1,tag2,tag3",
      *                          "articleStatus": int, // 0: published, 1: draft
      *                          "articlePermalink": "", // optional
-     *                          "postToCommunity": boolean, // optional, default is true
+     *                          "postToCommunity": boolean, // optional
      *                          "articleSignId": "" // optional, default is "0",
      *                          "articleCommentable": boolean,
      *                          "articleViewPwd": "",
