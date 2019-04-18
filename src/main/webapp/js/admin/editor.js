@@ -104,4 +104,3 @@ $.extend(SoloEditor.prototype, {
 
 admin.editors.articleEditor = {}
 admin.editors.abstractEditor = {}
-admin.editors.pageEditor = {}

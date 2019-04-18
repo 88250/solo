@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.2, Apr 2, 2019
+ * @version 2.2.0.3, Apr 18, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -322,11 +322,7 @@ $.extend(Page.prototype, {
    */
   submitComment: function () {
     var that = this,
-      tips = this.tips,
-      type = 'article'
-    if (tips.externalRelevantArticlesDisplayCount === undefined) {
-      type = 'page'
-    }
+      tips = this.tips
 
     if (vditor.getValue().length > 1 && vditor.getValue().length < 500) {
       $('#soloEditorAdd').attr('disabled', 'disabled')
@@ -341,7 +337,7 @@ $.extend(Page.prototype, {
 
       $.ajax({
         type: 'POST',
-        url: Label.servePath + '/' + type + '/comments',
+        url: Label.servePath + '/article/comments',
         cache: false,
         contentType: 'application/json',
         data: JSON.stringify(requestJSONObject),

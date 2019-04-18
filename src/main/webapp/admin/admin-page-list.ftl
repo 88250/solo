@@ -44,15 +44,7 @@
             <option value="_blank">${targetBlankLabel}</option>
             <option value="_parent">${targetParentLabel}</option>
             <option value="_top">${targetTopLabel}</option>
-        </select>&nbsp;&nbsp;&nbsp;&nbsp;
-        <label class="page-list__label">${type1Label}</label>
-        <button data-type="link" class="selected fn-type">${pageLinkLabel}</button>
-        <button data-type="page" class="fn-type">${pageLabel}</button>
-    </div>
-    <div id="pagePagePanel" class="fn__none">
-        <div id="pageContent" style="height: 430px;width: 100%;" name="pageContent"></div>
-        <label>${allowComment1Label}</label>
-        <input type="checkbox" id="pageCommentable" checked="checked" />
+        </select>
     </div>
     <div class="fn__right">
         <button onclick="admin.pageList.submit();">${saveLabel}</button>
