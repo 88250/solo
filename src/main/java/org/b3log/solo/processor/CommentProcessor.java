@@ -29,12 +29,14 @@ import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.annotation.RequestProcessing;
 import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.JsonRenderer;
-import org.b3log.solo.model.*;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Comment;
+import org.b3log.solo.model.Common;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.service.CommentMgmtService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.UserMgmtService;
 import org.b3log.solo.service.UserQueryService;
-import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -48,7 +50,7 @@ import java.util.Map;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.3.3.7, Mar 17, 2019
+ * @version 1.4.0.0, Apr 18, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -88,102 +90,6 @@ public class CommentProcessor {
      */
     @Inject
     private OptionQueryService optionQueryService;
-
-    /**
-     * Adds a comment to a page.
-     *
-     * <p>
-     * Request json:
-     * <pre>
-     * {
-     *     "captcha": "",
-     *     "oId": pageId,
-     *     "commentName": "",
-     *     "commentURL": "",
-     *     "commentContent": "",
-     *     "commentOriginalCommentId": "" // optional, if exists this key, the comment is an reply
-     * }
-     * </pre>
-     * </p>
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "oId": generatedCommentId,
-     *     "sc": "COMMENT_PAGE_SUCC"
-     *     "commentDate": "", // yyyy/MM/dd HH:mm:ss
-     *     "commentSharpURL": "",
-     *     "commentThumbnailURL": "",
-     *     "commentOriginalCommentName": "" // if exists this key, the comment is an reply
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified context
-     */
-    @RequestProcessing(value = "/page/comments", method = HttpMethod.POST)
-    public void addPageComment(final RequestContext context) {
-        final JSONObject requestJSONObject = context.requestJSON();
-        requestJSONObject.put(Common.TYPE, Page.PAGE);
-
-        fillCommenter(requestJSONObject, context);
-
-        final JSONObject jsonObject = commentMgmtService.checkAddCommentRequest(requestJSONObject);
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        renderer.setJSONObject(jsonObject);
-
-        if (!jsonObject.optBoolean(Keys.STATUS_CODE)) {
-            LOGGER.log(Level.WARN, "Can't add comment[msg={0}]", jsonObject.optString(Keys.MSG));
-            return;
-        }
-
-        if (!Solos.isLoggedIn(context)) {
-            jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, "Need login");
-
-            return;
-        }
-
-        try {
-            final JSONObject addResult = commentMgmtService.addPageComment(requestJSONObject);
-
-            final Map<String, Object> dataModel = new HashMap<>();
-            dataModel.put(Comment.COMMENT, addResult);
-
-            final JSONObject page = addResult.optJSONObject(Page.PAGE);
-            page.put(Common.COMMENTABLE, addResult.opt(Common.COMMENTABLE));
-            page.put(Common.PERMALINK, addResult.opt(Common.PERMALINK));
-            dataModel.put(Article.ARTICLE, page);
-
-            // 添加评论优化 https://github.com/b3log/solo/issues/12246
-            try {
-                final String skinDirName = (String) context.attr(Keys.TEMAPLTE_DIR_NAME);
-                final Template template = Skins.getSkinTemplate(context, "common-comment.ftl");
-                final JSONObject preference = optionQueryService.getPreference();
-                Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), skinDirName, dataModel);
-                Keys.fillServer(dataModel);
-                final StringWriter stringWriter = new StringWriter();
-                template.process(dataModel, stringWriter);
-                stringWriter.close();
-                String cmtTpl = stringWriter.toString();
-                cmtTpl = Emotions.convert(cmtTpl);
-
-                addResult.put("cmtTpl", cmtTpl);
-            } catch (final Exception e) {
-                // 1.9.0 向后兼容
-            }
-
-            addResult.put(Keys.STATUS_CODE, true);
-
-            renderer.setJSONObject(addResult);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Can not add comment on page", e);
-
-            jsonObject.put(Keys.STATUS_CODE, false);
-            jsonObject.put(Keys.MSG, langPropsService.get("addFailLabel"));
-        }
-    }
 
     /**
      * Adds a comment to an article.
