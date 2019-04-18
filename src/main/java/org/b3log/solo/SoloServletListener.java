@@ -58,7 +58,7 @@ import javax.servlet.http.HttpSessionEvent;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.0.14, Mar 31, 2019
+ * @version 1.11.0.15, Apr 18, 2019
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -361,11 +361,9 @@ public final class SoloServletListener extends AbstractServletListener {
         DispatcherServlet.get("/console/categories/{page}/{pageSize}/{windowSize}", categoryConsole::getCategories);
 
         final CommentConsole commentConsole = beanManager.getReference(CommentConsole.class);
-        DispatcherServlet.delete("/console/page/comment/{id}", commentConsole::removePageComment);
         DispatcherServlet.delete("/console/article/comment/{id}", commentConsole::removeArticleComment);
         DispatcherServlet.get("/console/comments/{page}/{pageSize}/{windowSize}", commentConsole::getComments);
         DispatcherServlet.get("/console/comments/article/{id}", commentConsole::getArticleComments);
-        DispatcherServlet.get("/console/comments/page/{id}", commentConsole::getPageComments);
 
         final LinkConsole linkConsole = beanManager.getReference(LinkConsole.class);
         DispatcherServlet.delete("/console/link/{id}", linkConsole::removeLink);
