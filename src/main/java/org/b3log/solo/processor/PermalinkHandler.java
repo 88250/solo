@@ -118,10 +118,8 @@ public class PermalinkHandler implements Handler {
      * @see DispatcherServlet#result(RequestContext)
      */
     private void dispatchToArticleProcessor(final RequestContext context, final JSONObject article) {
-        if (null != article) {
-            context.attr(Article.ARTICLE, article);
-            context.attr(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/article");
-        }
+        context.attr(Article.ARTICLE, article);
+        context.attr(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/article");
         context.attr(Keys.HttpRequest.REQUEST_METHOD, HttpMethod.GET.name());
     }
 }
