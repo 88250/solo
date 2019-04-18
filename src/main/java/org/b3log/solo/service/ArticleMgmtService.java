@@ -36,6 +36,7 @@ import org.b3log.solo.event.B3ArticleSender;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
+import org.b3log.solo.util.GitHubs;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.0, Apr 13, 2019
+ * @version 1.3.1.1, Apr 18, 2019
  * @since 0.3.5
  */
 @Service
@@ -141,10 +142,130 @@ public class ArticleMgmtService {
     private StatisticQueryService statisticQueryService;
 
     /**
+     * Init service.
+     */
+    @Inject
+    private InitService initService;
+
+    /**
      * Tag management service.
      */
     @Inject
     private TagMgmtService tagMgmtService;
+
+    /**
+     * Option query service.
+     */
+    @Inject
+    private OptionQueryService optionQueryService;
+
+    /**
+     * Option management service.
+     */
+    @Inject
+    private OptionMgmtService optionMgmtService;
+
+    /**
+     * Refreshes GitHub repos. 同步拉取 GitHub 仓库 https://github.com/b3log/solo/issues/12514
+     */
+    public void refreshGitHub() {
+        if (!initService.isInited()) {
+            return;
+        }
+
+        JSONObject admin;
+        try {
+            admin = userRepository.getAdmin();
+        } catch (final Exception e) {
+            return;
+        }
+
+        if (null == admin) {
+            return;
+        }
+
+        final String githubId = admin.optString(UserExt.USER_GITHUB_ID);
+        final JSONArray gitHubRepos = GitHubs.getGitHubRepos(githubId);
+        if (null == gitHubRepos || gitHubRepos.isEmpty()) {
+            return;
+        }
+
+        JSONObject githubReposOpt = optionQueryService.getOptionById(Option.ID_C_GITHUB_REPOS);
+        if (null == githubReposOpt) {
+            githubReposOpt = new JSONObject();
+            githubReposOpt.put(Keys.OBJECT_ID, Option.ID_C_GITHUB_REPOS);
+            githubReposOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_GITHUB);
+        }
+        githubReposOpt.put(Option.OPTION_VALUE, gitHubRepos.toString());
+
+        try {
+            optionMgmtService.addOrUpdateOption(githubReposOpt);
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Updates github repos option failed", e);
+
+            return;
+        }
+
+        final StringBuilder contentBuilder = new StringBuilder();
+        contentBuilder.append("<!-- 该页面会被定时任务自动覆盖，所以请勿手工更新 -->\n");
+        contentBuilder.append("<!-- 如果你有更漂亮的排版方式，请发 issue 告诉我们 -->\n\n");
+        for (int i = 0; i < gitHubRepos.length(); i++) {
+            final JSONObject repo = gitHubRepos.optJSONObject(i);
+            final String url = repo.optString("githubrepoHTMLURL");
+            final String desc = repo.optString("githubrepoDescription");
+            final String name = repo.optString("githubrepoName");
+            final String stars = repo.optString("githubrepoStargazersCount");
+            final String watchers = repo.optString("githubrepoWatchersCount");
+            final String forks = repo.optString("githubrepoForksCount");
+            final String lang = repo.optString("githubrepoLanguage");
+            final String hp = repo.optString("githubrepoHomepage");
+
+            String stat = "<span style=\"font-size: 12px;\">[🤩`{watchers}`]({url}/watchers \"关注数\")&nbsp;&nbsp;[⭐️`{stars}`]({url}/stargazers \"收藏数\")&nbsp;&nbsp;[🖖`{forks}`]({url}/network/members \"分叉数\")";
+            stat = stat.replace("{watchers}", watchers).replace("{stars}", stars).replace("{url}", url).replace("{forks}", forks);
+            if (StringUtils.isNotBlank(hp)) {
+                stat += "&nbsp;&nbsp;[\uD83C\uDFE0`{hp}`]({hp} \"项目主页\")";
+                stat = stat.replace("{hp}", hp);
+            }
+            stat += "</span>";
+            contentBuilder.append("### " + (i + 1) + ". [" + name + "](" + url + ") <kbd title=\"主要编程语言\">" + lang + "</kbd> " + stat + "\n\n" + desc + "\n\n");
+            if (i < gitHubRepos.length() - 1) {
+                contentBuilder.append("\n\n---\n\n");
+            }
+        }
+        final String content = contentBuilder.toString();
+
+        try {
+            final String permalink = "/my-github-repos";
+            JSONObject article = articleRepository.getByPermalink(permalink);
+            if (null == article) {
+                article = new JSONObject();
+                article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));
+                article.put(Article.ARTICLE_TITLE, "我在 GitHub 上的开源项目");
+                article.put(Article.ARTICLE_ABSTRACT, Article.getAbstractText(content));
+                article.put(Article.ARTICLE_COMMENT_COUNT, 0);
+                article.put(Article.ARTICLE_TAGS_REF, "开源,GitHub");
+                article.put(Article.ARTICLE_PERMALINK, permalink);
+                article.put(Article.ARTICLE_COMMENTABLE, true);
+                article.put(Article.ARTICLE_CONTENT, content);
+                article.put(Article.ARTICLE_VIEW_PWD, "");
+                article.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
+                article.put(Common.POST_TO_COMMUNITY, false);
+
+                final JSONObject addArticleReq = new JSONObject();
+                addArticleReq.put(Article.ARTICLE, article);
+                addArticle(addArticleReq);
+            } else {
+                article.put(Article.ARTICLE_CONTENT, content);
+
+                final String articleId = article.optString(Keys.OBJECT_ID);
+                final Transaction transaction = articleRepository.beginTransaction();
+                articleRepository.update(articleId, article);
+                transaction.commit();
+            }
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Updates github repos page failed", e);
+        }
+    }
 
     /**
      * Pushes an article specified by the given article id to community.
