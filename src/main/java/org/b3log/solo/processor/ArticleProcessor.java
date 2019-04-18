@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.5.5, Apr 16, 2019
+ * @version 1.4.5.6, Apr 18, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -699,7 +699,7 @@ public class ArticleProcessor {
      */
     @RequestProcessing(value = "/article", method = HttpMethod.GET)
     public void showArticle(final RequestContext context) {
-        // See PermalinkHandler#dispatchToArticleOrPageProcessor()
+        // See PermalinkHandler#dispatchToArticleProcessor()
         final JSONObject article = (JSONObject) context.attr(Article.ARTICLE);
         if (null == article) {
             context.sendError(HttpServletResponse.SC_NOT_FOUND);

@@ -29,9 +29,7 @@ import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.handler.Handler;
 import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.ArticleRepository;
-import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.service.InitService;
 import org.b3log.solo.service.PermalinkQueryService;
 import org.b3log.solo.util.Solos;
@@ -40,10 +38,10 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Article/Page permalink  handler.
+ * Article permalink  handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 1, 2019
+ * @version 1.0.0.1, Apr 18, 2019
  * @since 3.2.0
  */
 public class PermalinkHandler implements Handler {
@@ -61,7 +59,6 @@ public class PermalinkHandler implements Handler {
     @Override
     public void handle(final RequestContext context) {
         JSONObject article;
-        JSONObject page = null;
         try {
             final BeanManager beanManager = BeanManager.getInstance();
             final InitService initService = beanManager.getReference(InitService.class);
@@ -84,12 +81,7 @@ public class PermalinkHandler implements Handler {
             final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
             article = articleRepository.getByPermalink(permalink);
             if (null == article) {
-                final PageRepository pageRepository = beanManager.getReference(PageRepository.class);
-                page = pageRepository.getByPermalink(permalink);
-            }
-
-            if (null == page && null == article) {
-                LOGGER.log(Level.DEBUG, "Not found article/page with permalink [{0}]", permalink);
+                LOGGER.log(Level.DEBUG, "Not found article with permalink [{0}]", permalink);
                 context.handle();
 
                 return;
@@ -102,7 +94,7 @@ public class PermalinkHandler implements Handler {
         }
 
         // If requests an article and the article need view password, sends redirect to the password form
-        if (null != article && Solos.needViewPwd(context, article)) {
+        if (Solos.needViewPwd(context, article)) {
             try {
                 context.sendRedirect(Latkes.getServePath() + "/console/article-pwd?articleId=" + article.optString(Keys.OBJECT_ID));
 
@@ -114,25 +106,21 @@ public class PermalinkHandler implements Handler {
             }
         }
 
-        dispatchToArticleOrPageProcessor(context, article, page);
+        dispatchToArticleProcessor(context, article);
         context.handle();
     }
 
     /**
-     * Dispatches the specified request to the specified article or page processor with the specified response.
+     * Dispatches the specified request to the specified article processor with the specified response.
      *
      * @param context the specified request context
      * @param article the specified article
-     * @param page    the specified page
      * @see DispatcherServlet#result(RequestContext)
      */
-    private void dispatchToArticleOrPageProcessor(final RequestContext context, final JSONObject article, final JSONObject page) {
+    private void dispatchToArticleProcessor(final RequestContext context, final JSONObject article) {
         if (null != article) {
             context.attr(Article.ARTICLE, article);
             context.attr(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/article");
-        } else {
-            context.attr(Page.PAGE, page);
-            context.attr(Keys.HttpRequest.REQUEST_URI, Latkes.getContextPath() + "/page");
         }
         context.attr(Keys.HttpRequest.REQUEST_METHOD, HttpMethod.GET.name());
     }
