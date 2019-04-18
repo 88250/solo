@@ -39,7 +39,7 @@ import java.util.List;
  * Comment console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Dec 11, 2018
+ * @version 1.1.0.0, Apr 18, 2019
  * @since 0.4.0
  */
 @RequestProcessor
@@ -68,48 +68,6 @@ public class CommentConsole {
      */
     @Inject
     private LangPropsService langPropsService;
-
-    /**
-     * Removes a comment of an article by the specified request.
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "msg": ""
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified request context
-     */
-    public void removePageComment(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
-
-        try {
-            final String commentId = context.pathVar("id");
-            final JSONObject currentUser = Solos.getCurrentUser(context.getRequest(), context.getResponse());
-            if (!commentQueryService.canAccessComment(commentId, currentUser)) {
-                ret.put(Keys.STATUS_CODE, false);
-                ret.put(Keys.MSG, langPropsService.get("forbiddenLabel"));
-
-                return;
-            }
-
-            commentMgmtService.removePageComment(commentId);
-
-            ret.put(Keys.STATUS_CODE, true);
-            ret.put(Keys.MSG, langPropsService.get("removeSuccLabel"));
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            ret.put(Keys.STATUS_CODE, false);
-            ret.put(Keys.MSG, langPropsService.get("removeFailLabel"));
-        }
-    }
 
     /**
      * Removes a comment of an article by the specified request.
@@ -240,50 +198,6 @@ public class CommentConsole {
         try {
             final String articleId = context.pathVar("id");
             final List<JSONObject> comments = commentQueryService.getComments(articleId);
-
-            ret.put(Comment.COMMENTS, comments);
-            ret.put(Keys.STATUS_CODE, true);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
-            final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
-            renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("getFailLabel"));
-        }
-    }
-
-    /**
-     * Gets comments of a page specified by the article id for administrator.
-     * <p>
-     * Renders the response with a json object, for example,
-     * <pre>
-     * {
-     *     "sc": boolean,
-     *     "comments": [{
-     *         "oId": "",
-     *         "commentName": "",
-     *         "thumbnailUrl": "",
-     *         "commentURL": "",
-     *         "commentContent": "",
-     *         "commentTime": long,
-     *         "commentSharpURL": "",
-     *         "isReply": boolean
-     *      }, ....]
-     * }
-     * </pre>
-     * </p>
-     *
-     * @param context the specified request context
-     */
-    public void getPageComments(final RequestContext context) {
-        final JsonRenderer renderer = new JsonRenderer();
-        context.setRenderer(renderer);
-        final JSONObject ret = new JSONObject();
-        renderer.setJSONObject(ret);
-
-        try {
-            final String pageId = context.pathVar("id");
-            final List<JSONObject> comments = commentQueryService.getComments(pageId);
 
             ret.put(Comment.COMMENTS, comments);
             ret.put(Keys.STATUS_CODE, true);

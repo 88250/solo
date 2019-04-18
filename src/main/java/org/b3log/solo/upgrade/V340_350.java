@@ -27,7 +27,7 @@ import org.b3log.solo.repository.OptionRepository;
 import org.json.JSONObject;
 
 /**
- * Upgrade script from v3.3.0 to v3.4.0.
+ * Upgrade script from v3.4.0 to v3.5.0.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @version 1.0.0.1, Mar 31, 2019
@@ -41,7 +41,7 @@ public final class V340_350 {
     private static final Logger LOGGER = Logger.getLogger(V340_350.class);
 
     /**
-     * Performs upgrade from v3.3.0 to v3.4.0.
+     * Performs upgrade from v3.4.0 to v3.5.0.
      *
      * @throws Exception upgrade fails
      */

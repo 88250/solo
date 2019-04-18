@@ -21,7 +21,7 @@ package org.b3log.solo.model;
  * This class defines all page model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Feb 6, 2019
+ * @version 1.1.0.2, Apr 18, 2019
  * @since 0.3.1
  */
 public final class Page {
@@ -82,6 +82,8 @@ public final class Page {
      * A normal customized page.
      * </ul>
      * </p>
+     * <p>
+     * "page" 类型已经废除 https://github.com/b3log/solo/issues/12764
      */
     public static final String PAGE_TYPE = "pageType";
 
