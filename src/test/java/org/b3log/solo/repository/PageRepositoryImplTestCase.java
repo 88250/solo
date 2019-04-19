@@ -73,7 +73,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
     public void getByPermalink() throws Exception {
         final PageRepository pageRepository = getPageRepository();
 
-        final JSONObject page1 = pageRepository.getByPermalink("page1 permalink");
+        final JSONObject page1 = pageRepository.getByPermalink(Latkes.getServePath() + "/p1");
         Assert.assertNotNull(page1);
         Assert.assertEquals(page1.getString(Page.PAGE_TITLE), "page1 title");
 
@@ -124,7 +124,7 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         pageRepository.add(page);
         transaction.commit();
 
-        final JSONObject page2 = pageRepository.getByPermalink("page2 permalink");
+        final JSONObject page2 = pageRepository.getByPermalink(Latkes.getServePath() + "/p2");
         Assert.assertNotNull(page2);
 
         final JSONObject page1 = pageRepository.getUpper(page2.getString(Keys.OBJECT_ID));

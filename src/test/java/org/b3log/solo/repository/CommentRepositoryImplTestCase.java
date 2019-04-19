@@ -66,7 +66,5 @@ public class CommentRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertEquals(comments.size(), 1);
 
         Assert.assertEquals(commentRepository.getComments("not found", 1, Integer.MAX_VALUE).size(), 0);
-
-        Assert.assertEquals(commentRepository.getRecentComments(3).size(), 1);
     }
 }
