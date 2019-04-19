@@ -33,7 +33,7 @@ admin.pageList = {
     },
     id: "",
     /*
-     * 初始化 table, pagination, comments dialog
+     * 初始化 table, pagination
      */
     init: function (page) {
         this.tablePagination.buildTable([{
@@ -56,14 +56,8 @@ admin.pageList = {
                 text: Label.openMethodLabel,
                 index: "pageTarget",
                 width: 120
-            }, {
-                text: Label.commentLabel,
-                index: "comments",
-                width: 80,
-                style: "padding-left: 12px;"
             }]);
         this.tablePagination.initPagination();
-        this.tablePagination.initCommentsDialog();
         this.getList(page);
     },
     /* 
@@ -120,11 +114,9 @@ admin.pageList = {
                     pageData[i].pagePermalink = "<a class='no-underline' href='" + pages[i].pagePermalink + "' target='_blank'>"
                             + pages[i].pagePermalink + "</a>";
                     pageData[i].pageTarget = pages[i].pageOpenTarget;
-                    pageData[i].comments = pages[i].pageCommentCount;
                     pageData[i].expendRow = "<span><a href='" + pages[i].pagePermalink + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.pageList.get('" + pages[i].oId + "')\">" + Label.updateLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "', '" + encodeURIComponent(pages[i].pageTitle) + "')\">" + Label.removeLabel + "</a>\
-                                <a href='javascript:void(0)' onclick=\"admin.comment.open('" + pages[i].oId + "', 'page')\">" + Label.commentLabel + "</a></span>";
+                                <a href='javascript:void(0)' onclick=\"admin.pageList.del('" + pages[i].oId + "', '" + encodeURIComponent(pages[i].pageTitle) + "')\">" + Label.removeLabel + "</a></span>";
                 }
 
                 that.tablePagination.updateTablePagination(pageData, pageNum, result.pagination);
