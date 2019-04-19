@@ -145,12 +145,6 @@
           "length": 19
         },
         {
-          "name": "commentOnType",
-          "description": "评论的是文章还是页面，文章：article 页面：page",
-          "type": "String",
-          "length": 20
-        },
-        {
           "name": "commentSharpURL",
           "description": "评论访问路径，带 # 锚点",
           "type": "String",
@@ -245,11 +239,6 @@
           "description": "页面标题",
           "type": "String",
           "length": 255
-        },
-        {
-          "name": "pageCommentable",
-          "description": "页面是否可以评论",
-          "type": "boolean"
         },
         {
           "name": "pageOpenTarget",

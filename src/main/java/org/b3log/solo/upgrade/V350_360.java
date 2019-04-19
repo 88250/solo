@@ -97,6 +97,7 @@ public final class V350_360 {
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageContent`");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageCommentCount`");
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageCommentable`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentOnType`");
         statement.close();
         connection.commit();
         connection.close();
