@@ -90,7 +90,6 @@ public class PageConsole {
      *         "pageTitle": "",
      *         "pageOrder": int,
      *         "pagePermalink": "",
-     *         "pageCommentable": boolean,
      *         "pageOpenTarget": "",
      *         "pageIcon": ""
      *     }
@@ -174,7 +173,6 @@ public class PageConsole {
      *     "page": {
      *         "pageTitle": "",
      *         "pagePermalink": "" // optional
-     *         "pageCommentable": boolean,
      *         "pageOpenTarget": "",
      *         "pageIcon": ""
      *     }
@@ -322,7 +320,6 @@ public class PageConsole {
      *     "pages": [{
      *         "oId": "",
      *         "pageTitle": "",
-     *         "pageCommentCount": int,
      *         "pageOrder": int,
      *         "pagePermalink": "",
      *         .{@link PageMgmtService...}

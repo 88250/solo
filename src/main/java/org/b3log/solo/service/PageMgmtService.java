@@ -112,9 +112,7 @@ public class PageMgmtService {
      *                          "oId": "",
      *                          "pageTitle": "",
      *                          "pageOrder": int,
-     *                          "pageCommentCount": int,
      *                          "pagePermalink": "",
-     *                          "pageCommentable": boolean,
      *                          "pageOpenTarget": "",
      *                          "pageIcon": "" // optional
      *                          }
@@ -198,7 +196,6 @@ public class PageMgmtService {
      *                          "page": {
      *                          "pageTitle": "",
      *                          "pageOpenTarget": "",
-     *                          "pageCommentable": boolean,
      *                          "pagePermalink": "",
      *                          "pageIcon": "" // optional
      *                          }

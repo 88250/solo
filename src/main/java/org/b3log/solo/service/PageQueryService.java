@@ -67,7 +67,6 @@ public class PageQueryService {
      *         "pageTitle": "",
      *         "pageOrder": int,
      *         "pagePermalink": "",
-     *         "pageCommentable": boolean,
      *         "pageOpenTarget": "",
      *         "pageIcon": ""
      *     }
@@ -114,7 +113,6 @@ public class PageQueryService {
      *         "pageTitle": "",
      *         "pageOrder": int,
      *         "pagePermalink": "",
-     *         "pageCommentable": boolean,
      *         "pageOpenTarget": ""
      *      }, ....]
      * }
