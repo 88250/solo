@@ -18,6 +18,7 @@
 package org.b3log.solo.repository;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.repository.Transaction;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Page;
@@ -48,11 +49,9 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertEquals(pageRepository.getMaxOrder(), -1);
 
         final JSONObject page = new JSONObject();
-        page.put(Page.PAGE_CONTENT, "page1 content");
         page.put(Page.PAGE_ORDER, 0);
-        page.put(Page.PAGE_PERMALINK, "page1 permalink");
+        page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + "/p1");
         page.put(Page.PAGE_TITLE, "page1 title");
-        page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_OPEN_TARGET, "_self");
         page.put(Page.PAGE_ICON, "");
 
@@ -91,11 +90,9 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         final PageRepository pageRepository = getPageRepository();
 
         final JSONObject page = new JSONObject();
-        page.put(Page.PAGE_CONTENT, "page2 content");
         page.put(Page.PAGE_ORDER, 1);
-        page.put(Page.PAGE_PERMALINK, "page2 permalink");
+        page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + "/p2");
         page.put(Page.PAGE_TITLE, "page2 title");
-        page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_OPEN_TARGET, "_self");
         page.put(Page.PAGE_ICON, "");
 
@@ -117,11 +114,9 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         final PageRepository pageRepository = getPageRepository();
 
         final JSONObject page = new JSONObject();
-        page.put(Page.PAGE_CONTENT, "page3 content");
         page.put(Page.PAGE_ORDER, 2);
-        page.put(Page.PAGE_PERMALINK, "page3 permalink");
+        page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + "/p3");
         page.put(Page.PAGE_TITLE, "page3 title");
-        page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_OPEN_TARGET, "_self");
         page.put(Page.PAGE_ICON, "");
 

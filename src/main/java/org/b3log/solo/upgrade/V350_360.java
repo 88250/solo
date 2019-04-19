@@ -94,6 +94,9 @@ public final class V350_360 {
         final Connection connection = Connections.getConnection();
         final Statement statement = connection.createStatement();
         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageType`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageContent`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageCommentCount`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageCommentable`");
         statement.close();
         connection.commit();
         connection.close();
@@ -109,10 +112,10 @@ public final class V350_360 {
                 setFilter(new PropertyFilter("pageType", FilterOperator.EQUAL, Page.PAGE)));
         for (final JSONObject page : pages) {
             final String title = page.optString(Page.PAGE_TITLE);
-            final String content = page.optString(Page.PAGE_CONTENT);
-            final int commentCnt = page.optInt("pageCommentCount");
             final String permalink = page.optString(Page.PAGE_PERMALINK);
-            final boolean commentable = page.optBoolean(Page.PAGE_COMMENTABLE);
+            final String content = page.optString("pageContent");
+            final int commentCnt = page.optInt("pageCommentCount");
+            final boolean commentable = page.optBoolean("pageCommentable");
 
             final JSONObject article = new JSONObject();
             article.put(Article.ARTICLE_AUTHOR_ID, admin.optString(Keys.OBJECT_ID));

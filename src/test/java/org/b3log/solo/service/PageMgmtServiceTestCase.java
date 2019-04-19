@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.latke.Latkes;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Page;
 import org.json.JSONObject;
@@ -55,10 +56,8 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
         final JSONObject page = new JSONObject();
         requestJSONObject.put(Page.PAGE, page);
 
-        page.put(Page.PAGE_CONTENT, "page1 content");
-        page.put(Page.PAGE_PERMALINK, "page1 permalink");
+        page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + "/p1");
         page.put(Page.PAGE_TITLE, "page1 title");
-        page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);
@@ -79,10 +78,8 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
         final JSONObject page = new JSONObject();
         requestJSONObject.put(Page.PAGE, page);
 
-        page.put(Page.PAGE_CONTENT, "page2 content");
-        page.put(Page.PAGE_PERMALINK, "page2 permalink");
+        page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + "/p2");
         page.put(Page.PAGE_TITLE, "page2 title");
-        page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);
@@ -113,10 +110,8 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
         final JSONObject page = new JSONObject();
         requestJSONObject.put(Page.PAGE, page);
 
-        page.put(Page.PAGE_CONTENT, "page3 content");
-        page.put(Page.PAGE_PERMALINK, "page3 permalink");
+        page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + "/p3");
         page.put(Page.PAGE_TITLE, "page3 title");
-        page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);
@@ -149,10 +144,8 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
         final JSONObject page = new JSONObject();
         requestJSONObject.put(Page.PAGE, page);
 
-        page.put(Page.PAGE_CONTENT, "page4 content");
-        page.put(Page.PAGE_PERMALINK, "page4 permalink");
+        page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + "/p4");
         page.put(Page.PAGE_TITLE, "page4 title");
-        page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);

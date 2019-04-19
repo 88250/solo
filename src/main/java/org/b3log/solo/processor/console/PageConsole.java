@@ -88,12 +88,9 @@ public class PageConsole {
      *     "page": {
      *         "oId": "",
      *         "pageTitle": "",
-     *         "pageContent": "",
      *         "pageOrder": int,
-     *         "pageCommentCount": int,
      *         "pagePermalink": "",
      *         "pageCommentable": boolean,
-     *         "pageType": "",
      *         "pageOpenTarget": "",
      *         "pageIcon": ""
      *     }
@@ -176,10 +173,8 @@ public class PageConsole {
      * {
      *     "page": {
      *         "pageTitle": "",
-     *         "pageContent": "",
      *         "pagePermalink": "" // optional
      *         "pageCommentable": boolean,
-     *         "pageType": "",
      *         "pageOpenTarget": "",
      *         "pageIcon": ""
      *     }
@@ -279,10 +274,8 @@ public class PageConsole {
      *     "page": {
      *         "oId": "",
      *         "pageTitle": "",
-     *         "pageContent": ""
      *         "pageOrder": int,
      *         "pagePermalink": "",
-     *         "pageCommentCount": int,
      *         "pageIcon": ""
      *     }
      * }

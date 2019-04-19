@@ -18,6 +18,7 @@
 package org.b3log.solo.service;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.solo.AbstractTestCase;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
@@ -101,10 +102,8 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         final JSONObject page = new JSONObject();
         requestJSONObject.put(Page.PAGE, page);
 
-        page.put(Page.PAGE_CONTENT, "page1 content");
-        page.put(Page.PAGE_PERMALINK, "page1 permalink");
+        page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + "/p1");
         page.put(Page.PAGE_TITLE, "page1 title");
-        page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);

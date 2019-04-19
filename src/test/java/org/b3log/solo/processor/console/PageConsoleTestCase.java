@@ -66,9 +66,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
         final JSONObject page = new JSONObject();
         requestJSON.put(Page.PAGE, page);
         page.put(Page.PAGE_TITLE, "黑客派");
-        page.put(Page.PAGE_CONTENT, "");
         page.put(Page.PAGE_PERMALINK, "https://hacpai.com");
-        page.put(Page.PAGE_COMMENTABLE, true);
         page.put(Page.PAGE_OPEN_TARGET, "");
         page.put(Page.PAGE_ICON, "");
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));

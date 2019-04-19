@@ -38,7 +38,7 @@ import java.util.List;
  * Page query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Oct 27, 2011
+ * @version 1.0.0.1, Apr 19, 2019
  * @since 0.4.0
  */
 @Service
@@ -65,12 +65,9 @@ public class PageQueryService {
      *     "page": {
      *         "oId": "",
      *         "pageTitle": "",
-     *         "pageContent": ""
      *         "pageOrder": int,
      *         "pagePermalink": "",
-     *         "pageCommentCount": int,
      *         "pageCommentable": boolean,
-     *         "pageType": "",
      *         "pageOpenTarget": "",
      *         "pageIcon": ""
      *     }
@@ -115,11 +112,9 @@ public class PageQueryService {
      *     "pages": [{
      *         "oId": "",
      *         "pageTitle": "",
-     *         "pageCommentCount": int,
      *         "pageOrder": int,
      *         "pagePermalink": "",
      *         "pageCommentable": boolean,
-     *         "pageType": "",
      *         "pageOpenTarget": ""
      *      }, ....]
      * }
@@ -146,13 +141,6 @@ public class PageQueryService {
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, pageNums);
 
             final JSONArray pages = result.getJSONArray(Keys.RESULTS);
-
-            for (int i = 0; i < pages.length(); i++) { // remove unused properties
-                final JSONObject page = pages.getJSONObject(i);
-
-                page.remove(Page.PAGE_CONTENT);
-            }
-
             ret.put(Pagination.PAGINATION, pagination);
             ret.put(Page.PAGES, pages);
 

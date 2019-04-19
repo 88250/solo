@@ -17,9 +17,7 @@
  */
 package org.b3log.solo.service;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -28,14 +26,12 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.solo.model.Comment;
+import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * Page management service.
@@ -115,7 +111,6 @@ public class PageMgmtService {
      *                          "page": {
      *                          "oId": "",
      *                          "pageTitle": "",
-     *                          "pageContent": "",
      *                          "pageOrder": int,
      *                          "pageCommentCount": int,
      *                          "pagePermalink": "",
@@ -138,15 +133,7 @@ public class PageMgmtService {
 
             final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
             if (!oldPermalink.equals(permalink)) {
-                if (StringUtils.isBlank(permalink)) {
-                    permalink = Latkes.getServePath();
-                }
-
-                if (!permalink.startsWith("/")) {
-                    permalink = "/" + permalink;
-                }
-
-                if (PermalinkQueryService.invalidPagePermalinkFormat(permalink)) {
+                if (!Strings.isURL(permalink)) {
                     if (transaction.isActive()) {
                         transaction.rollback();
                     }
@@ -163,13 +150,7 @@ public class PageMgmtService {
                 }
             }
 
-            newPage.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));
-
-            if (!oldPage.getString(Page.PAGE_PERMALINK).equals(permalink)) { // The permalink has been updated
-                // Updates related comments' links
-                processCommentsForPageUpdate(newPage);
-            }
-
+            newPage.put(Page.PAGE_PERMALINK, permalink);
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
 
             pageRepository.update(pageId, newPage);
@@ -216,10 +197,9 @@ public class PageMgmtService {
      *                          {
      *                          "page": {
      *                          "pageTitle": "",
-     *                          "pageContent": "",
      *                          "pageOpenTarget": "",
      *                          "pageCommentable": boolean,
-     *                          "pagePermalink": "", // optional
+     *                          "pagePermalink": "",
      *                          "pageIcon": "" // optional
      *                          }
      *                          }, see {@link Page} for more details
@@ -235,15 +215,7 @@ public class PageMgmtService {
             page.put(Page.PAGE_ORDER, maxOrder + 1);
 
             String permalink = page.optString(Page.PAGE_PERMALINK);
-            if (StringUtils.isBlank(permalink)) {
-                permalink = Latkes.getServePath();
-            }
-
-            if (!permalink.startsWith("/")) {
-                permalink = "/" + permalink;
-            }
-
-            if (PermalinkQueryService.invalidPagePermalinkFormat(permalink)) {
+            if (!Strings.isURL(permalink)) {
                 if (transaction.isActive()) {
                     transaction.rollback();
                 }
@@ -259,8 +231,7 @@ public class PageMgmtService {
                 throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
             }
 
-            page.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));
-
+            page.put(Page.PAGE_PERMALINK, permalink);
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
             final String ret = pageRepository.add(page);
             transaction.commit();
@@ -326,31 +297,6 @@ public class PageMgmtService {
             LOGGER.log(Level.ERROR, "Changes page's order failed", e);
 
             throw new ServiceException(e);
-        }
-    }
-
-    /**
-     * Processes comments for page update.
-     *
-     * @param page the specified page to update
-     * @throws Exception exception
-     */
-    public void processCommentsForPageUpdate(final JSONObject page) throws Exception {
-        final String pageId = page.getString(Keys.OBJECT_ID);
-
-        final List<JSONObject> comments = commentRepository.getComments(pageId, 1, Integer.MAX_VALUE);
-        for (final JSONObject comment : comments) {
-            final String commentId = comment.getString(Keys.OBJECT_ID);
-            final String sharpURL = Comment.getCommentSharpURLForPage(page, commentId);
-            comment.put(Comment.COMMENT_SHARP_URL, sharpURL);
-            if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_ID))) {
-                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
-            }
-            if (StringUtils.isBlank(comment.optString(Comment.COMMENT_ORIGINAL_COMMENT_NAME))) {
-                comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
-            }
-
-            commentRepository.update(commentId, comment);
         }
     }
 }

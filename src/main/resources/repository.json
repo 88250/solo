@@ -230,12 +230,6 @@
           "length": 19
         },
         {
-          "name": "pageContent",
-          "description": "页面内容",
-          "type": "String",
-          "length": 1048576
-        },
-        {
           "name": "pageOrder",
           "description": "页面展现排序",
           "type": "int"

@@ -42,11 +42,6 @@ public final class Page {
     public static final String PAGE_TITLE = "pageTitle";
 
     /**
-     * Key of content.
-     */
-    public static final String PAGE_CONTENT = "pageContent";
-
-    /**
      * Key of order.
      */
     public static final String PAGE_ORDER = "pageOrder";
@@ -55,11 +50,6 @@ public final class Page {
      * Key of permalink.
      */
     public static final String PAGE_PERMALINK = "pagePermalink";
-
-    /**
-     * Key of comment-able.
-     */
-    public static final String PAGE_COMMENTABLE = "pageCommentable";
 
     /**
      * Key of open target.
