@@ -19,6 +19,7 @@ package org.b3log.solo.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -27,7 +28,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Ids;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
@@ -42,7 +42,7 @@ import java.util.List;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.1.0.17, Apr 18, 2019
+ * @version 1.1.0.18, Apr 19, 2019
  * @since 0.4.0
  */
 @Service
@@ -120,7 +120,6 @@ public class PageMgmtService {
      *                          "pageCommentCount": int,
      *                          "pagePermalink": "",
      *                          "pageCommentable": boolean,
-     *                          "pageType": "",
      *                          "pageOpenTarget": "",
      *                          "pageIcon": "" // optional
      *                          }
@@ -135,35 +134,32 @@ public class PageMgmtService {
             final JSONObject oldPage = pageRepository.get(pageId);
             final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
             newPage.put(Page.PAGE_ORDER, oldPage.getInt(Page.PAGE_ORDER));
-            newPage.put(Page.PAGE_COMMENT_COUNT, oldPage.getInt(Page.PAGE_COMMENT_COUNT));
             String permalink = page.optString(Page.PAGE_PERMALINK).trim();
 
             final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
             if (!oldPermalink.equals(permalink)) {
                 if (StringUtils.isBlank(permalink)) {
-                    permalink = "/pages/" + pageId + ".html";
+                    permalink = Latkes.getServePath();
                 }
 
-                if (Page.PAGE.equals(page.getString(Page.PAGE_TYPE))) {
-                    if (!permalink.startsWith("/")) {
-                        permalink = "/" + permalink;
+                if (!permalink.startsWith("/")) {
+                    permalink = "/" + permalink;
+                }
+
+                if (PermalinkQueryService.invalidPagePermalinkFormat(permalink)) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
                     }
 
-                    if (PermalinkQueryService.invalidPagePermalinkFormat(permalink)) {
-                        if (transaction.isActive()) {
-                            transaction.rollback();
-                        }
+                    throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
+                }
 
-                        throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
+                if (!oldPermalink.equals(permalink) && permalinkQueryService.exist(permalink)) {
+                    if (transaction.isActive()) {
+                        transaction.rollback();
                     }
 
-                    if (!oldPermalink.equals(permalink) && permalinkQueryService.exist(permalink)) {
-                        if (transaction.isActive()) {
-                            transaction.rollback();
-                        }
-
-                        throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
-                    }
+                    throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
                 }
             }
 
@@ -223,7 +219,6 @@ public class PageMgmtService {
      *                          "pageContent": "",
      *                          "pageOpenTarget": "",
      *                          "pageCommentable": boolean,
-     *                          "pageType": "",
      *                          "pagePermalink": "", // optional
      *                          "pageIcon": "" // optional
      *                          }
@@ -236,35 +231,32 @@ public class PageMgmtService {
 
         try {
             final JSONObject page = requestJSONObject.getJSONObject(Page.PAGE);
-            page.put(Page.PAGE_COMMENT_COUNT, 0);
             final int maxOrder = pageRepository.getMaxOrder();
             page.put(Page.PAGE_ORDER, maxOrder + 1);
 
             String permalink = page.optString(Page.PAGE_PERMALINK);
             if (StringUtils.isBlank(permalink)) {
-                permalink = "/pages/" + Ids.genTimeMillisId() + ".html";
+                permalink = Latkes.getServePath();
             }
 
-            if (Page.PAGE.equals(page.getString(Page.PAGE_TYPE))) {
-                if (!permalink.startsWith("/")) {
-                    permalink = "/" + permalink;
+            if (!permalink.startsWith("/")) {
+                permalink = "/" + permalink;
+            }
+
+            if (PermalinkQueryService.invalidPagePermalinkFormat(permalink)) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
                 }
 
-                if (PermalinkQueryService.invalidPagePermalinkFormat(permalink)) {
-                    if (transaction.isActive()) {
-                        transaction.rollback();
-                    }
+                throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
+            }
 
-                    throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
+            if (permalinkQueryService.exist(permalink)) {
+                if (transaction.isActive()) {
+                    transaction.rollback();
                 }
 
-                if (permalinkQueryService.exist(permalink)) {
-                    if (transaction.isActive()) {
-                        transaction.rollback();
-                    }
-
-                    throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
-                }
+                throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
             }
 
             page.put(Page.PAGE_PERMALINK, permalink.replaceAll(" ", "-"));

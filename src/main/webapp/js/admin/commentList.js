@@ -80,12 +80,7 @@ admin.commentList = {
           commentsData = []
         for (var i = 0; i < comments.length; i++) {
           var type = 'Article'
-          if (comments[i].type === 'pageComment') {
-            type = 'Page'
-          }
-
           commentsData[i] = {}
-
           commentsData[i].content = '<div class="vditor-reset">' +
             Util.replaceEmString(comments[i].commentContent) +
             '</div><span class=\'table-tag\'> on &nbsp;&nbsp;</span><a href=\'' +

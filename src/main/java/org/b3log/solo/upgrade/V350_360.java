@@ -18,6 +18,7 @@
 package org.b3log.solo.upgrade;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -25,6 +26,7 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.OptionRepository;
@@ -33,6 +35,8 @@ import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.json.JSONObject;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.List;
 
 /**
@@ -86,6 +90,14 @@ public final class V350_360 {
      * 去掉自定义页面 https://github.com/b3log/solo/issues/12764
      */
     private static void convertPagesToArticles() throws Exception {
+        final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+        final Connection connection = Connections.getConnection();
+        final Statement statement = connection.createStatement();
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageType`");
+        statement.close();
+        connection.commit();
+        connection.close();
+
         final BeanManager beanManager = BeanManager.getInstance();
         final PageRepository pageRepository = beanManager.getReference(PageRepository.class);
         final CommentRepository commentRepository = beanManager.getReference(CommentRepository.class);
@@ -94,11 +106,11 @@ public final class V350_360 {
         final JSONObject admin = userRepository.getAdmin();
 
         final List<JSONObject> pages = pageRepository.getList(new Query().
-                setFilter(new PropertyFilter(Page.PAGE_TYPE, FilterOperator.EQUAL, Page.PAGE)));
+                setFilter(new PropertyFilter("pageType", FilterOperator.EQUAL, Page.PAGE)));
         for (final JSONObject page : pages) {
             final String title = page.optString(Page.PAGE_TITLE);
             final String content = page.optString(Page.PAGE_CONTENT);
-            final int commentCnt = page.optInt(Page.PAGE_COMMENT_COUNT);
+            final int commentCnt = page.optInt("pageCommentCount");
             final String permalink = page.optString(Page.PAGE_PERMALINK);
             final boolean commentable = page.optBoolean(Page.PAGE_COMMENTABLE);
 
@@ -126,11 +138,9 @@ public final class V350_360 {
             final Transaction transaction = pageRepository.beginTransaction();
             for (final JSONObject comment : comments) {
                 comment.put(Comment.COMMENT_ON_ID, articleId);
-                comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
                 final String commentId = comment.optString(Keys.OBJECT_ID);
                 commentRepository.update(commentId, comment);
             }
-            page.put(Page.PAGE_TYPE, "link");
             pageRepository.update(pageId, page);
 
             transaction.commit();

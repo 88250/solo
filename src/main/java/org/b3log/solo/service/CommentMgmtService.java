@@ -48,7 +48,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Apr 18, 2019
+ * @version 1.4.0.1, Apr 19, 2019
  * @since 0.3.5
  */
 @Service
@@ -311,7 +311,6 @@ public class CommentMgmtService {
             setCommentThumbnailURL(comment);
             ret.put(Comment.COMMENT_THUMBNAIL_URL, comment.getString(Comment.COMMENT_THUMBNAIL_URL));
             comment.put(Comment.COMMENT_ON_ID, articleId);
-            comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
             final String commentId = Ids.genTimeMillisId();
             comment.put(Keys.OBJECT_ID, commentId);
             ret.put(Keys.OBJECT_ID, commentId);

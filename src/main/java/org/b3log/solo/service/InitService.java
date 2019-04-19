@@ -40,8 +40,6 @@ import org.b3log.solo.model.*;
 import org.b3log.solo.model.Option.DefaultPreference;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.util.Images;
-import org.b3log.solo.util.Skins;
-import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +47,6 @@ import org.json.JSONObject;
 import java.sql.Connection;
 import java.text.ParseException;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Solo initialization service.
@@ -290,7 +287,6 @@ public class InitService {
         comment.put(Comment.COMMENT_THUMBNAIL_URL, "https://img.hacpai.com/avatar/1353745196354_1535379434567.png?imageView2/1/w/64/h/64/q/100");
         comment.put(Comment.COMMENT_CREATED, now);
         comment.put(Comment.COMMENT_ON_ID, articleId);
-        comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
         final String commentId = Ids.genTimeMillisId();
         comment.put(Keys.OBJECT_ID, commentId);
         final String commentSharpURL = Comment.getCommentSharpURLForArticle(article, commentId);

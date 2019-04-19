@@ -51,6 +51,5 @@
     </div>
     <div class="fn__clear"></div>
 </div>
-<div id="pageComments" class="fn__none"></div>
 <div class="fn__clear"></div>
 ${plugins}

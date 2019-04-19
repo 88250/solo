@@ -24,52 +24,22 @@ import org.testng.annotations.Test;
  * {@link org.b3log.solo.service.PermalinkQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Jun 21, 2013
+ * @version 1.0.0.1, Apr 19, 2019
  * @since 0.6.1
  */
 public final class PermalinkQueryServiceTestCase {
 
     /**
-     * Test method for {@linkplain Permalinks#matchDefaultArticlePermalinkFormat(java.lang.String)}.
+     * Test method for {@linkplain PermalinkQueryService#matchDefaultArticlePermalinkFormat(java.lang.String)}.
      */
     @Test
     public void matchDefaultArticlePermalinkFormat() {
-        Assert.assertTrue(
-                PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                        "/articles/1986/08/25/1234567890.html"));
-        Assert.assertFalse(
-                PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                        "/articles/1986/0/25/1234567890.html"));
-        Assert.assertFalse(
-                PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                        "/articles/1.html"));
-        Assert.assertFalse(
-                PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                        "/articles/1986/08/25/a.html"));
-        Assert.assertFalse(
-                PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                        "/articles/1986/aa/25/1234567890.html"));
-        Assert.assertFalse(
-                PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                        "/1986/aa/25/1234567890.html"));
-        Assert.assertFalse(
-                PermalinkQueryService.matchDefaultArticlePermalinkFormat(
-                        "/articles/1986/08/25/1234567890html"));
-
-    }
-
-    /**
-     * Test method for {@linkplain Permalinks#matchDefaultPagePermalinkFormat(java.lang.String)}.
-     */
-    @Test
-    public void matchDefaultPagePermalinkFormat() {
-        Assert.assertTrue(PermalinkQueryService.matchDefaultPagePermalinkFormat(
-                "/pages/1234567890.html"));
-        Assert.assertFalse(PermalinkQueryService.matchDefaultPagePermalinkFormat(
-                "/pages.html"));
-        Assert.assertFalse(PermalinkQueryService.matchDefaultPagePermalinkFormat(
-                "/1234567890.html"));
-        Assert.assertFalse(PermalinkQueryService.matchDefaultPagePermalinkFormat(
-                "/pages/a1234567890.html"));
+        Assert.assertTrue(PermalinkQueryService.matchDefaultArticlePermalinkFormat("/articles/1986/08/25/1234567890.html"));
+        Assert.assertFalse(PermalinkQueryService.matchDefaultArticlePermalinkFormat("/articles/1986/0/25/1234567890.html"));
+        Assert.assertFalse(PermalinkQueryService.matchDefaultArticlePermalinkFormat("/articles/1.html"));
+        Assert.assertFalse(PermalinkQueryService.matchDefaultArticlePermalinkFormat("/articles/1986/08/25/a.html"));
+        Assert.assertFalse(PermalinkQueryService.matchDefaultArticlePermalinkFormat("/articles/1986/aa/25/1234567890.html"));
+        Assert.assertFalse(PermalinkQueryService.matchDefaultArticlePermalinkFormat("/1986/aa/25/1234567890.html"));
+        Assert.assertFalse(PermalinkQueryService.matchDefaultArticlePermalinkFormat("/articles/1986/08/25/1234567890html"));
     }
 }

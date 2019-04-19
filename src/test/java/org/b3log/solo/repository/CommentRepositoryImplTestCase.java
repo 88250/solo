@@ -31,7 +31,7 @@ import java.util.List;
  * {@link ArticleRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 16, 2018
+ * @version 1.0.0.3, Apr 19, 2019
  */
 @Test(suiteName = "repository")
 public class CommentRepositoryImplTestCase extends AbstractTestCase {
@@ -51,7 +51,6 @@ public class CommentRepositoryImplTestCase extends AbstractTestCase {
         comment.put(Comment.COMMENT_CREATED, new Date().getTime());
         comment.put(Comment.COMMENT_NAME, "comment1 name");
         comment.put(Comment.COMMENT_ON_ID, "comment1 on id");
-        comment.put(Comment.COMMENT_ON_TYPE, "comment1 on type");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
         comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
         comment.put(Comment.COMMENT_SHARP_URL, "comment1 sharp url");

@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * This class defines all comment model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Mar 3, 2019
+ * @version 1.2.0.2, Apr 19, 2019
  * @since 0.3.1
  */
 public final class Comment {
@@ -88,11 +88,6 @@ public final class Comment {
      * Key of original comment user name.
      */
     public static final String COMMENT_ORIGINAL_COMMENT_NAME = "commentOriginalCommentName";
-
-    /**
-     * Key of comment on type.
-     */
-    public static final String COMMENT_ON_TYPE = "commentOnType";
 
     /**
      * Key of comment on id.

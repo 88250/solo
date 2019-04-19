@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
  * Permalink query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Feb 7, 2019
+ * @version 1.0.0.7, Apr 19, 2019
  * @since 0.6.1
  */
 @Service
@@ -84,19 +84,6 @@ public class PermalinkQueryService {
     }
 
     /**
-     * Checks whether the specified page permalink matches the system generated format pattern ("/pages/${pageId}.html").
-     *
-     * @param permalink the specified permalink
-     * @return {@code true} if matches, returns {@code false} otherwise
-     */
-    public static boolean matchDefaultPagePermalinkFormat(final String permalink) {
-        final Pattern pattern = Pattern.compile("/pages/\\d+\\.html");
-        final Matcher matcher = pattern.matcher(permalink);
-
-        return matcher.matches();
-    }
-
-    /**
      * Checks whether the specified permalink is a {@link #invalidArticlePermalinkFormat(java.lang.String) invalid article
      * permalink format} and {@link #invalidPagePermalinkFormat(java.lang.String) invalid page permalink format}.
      *
@@ -134,10 +121,6 @@ public class PermalinkQueryService {
     public static boolean invalidPagePermalinkFormat(final String permalink) {
         if (StringUtils.isBlank(permalink)) {
             return true;
-        }
-
-        if (matchDefaultPagePermalinkFormat(permalink)) {
-            return false;
         }
 
         return invalidUserDefinedPermalinkFormat(permalink);

@@ -105,7 +105,6 @@ public class CommentMgmtServiceTestCase extends AbstractTestCase {
         page.put(Page.PAGE_PERMALINK, "page1 permalink");
         page.put(Page.PAGE_TITLE, "page1 title");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);

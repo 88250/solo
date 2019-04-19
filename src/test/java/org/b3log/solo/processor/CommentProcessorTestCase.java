@@ -40,7 +40,7 @@ import java.io.StringReader;
  * {@link CommentProcessorTestCase} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.5, Feb 10, 2019
+ * @version 1.0.0.6, Apr 19, 2019
  * @since 1.7.0
  */
 @Test(suiteName = "processor")
@@ -98,7 +98,6 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         page.put(Page.PAGE_PERMALINK, "page1 permalink");
         page.put(Page.PAGE_TITLE, "page1 title");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         return pageMgmtService.addPage(requestJSONObject);

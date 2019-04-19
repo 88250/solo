@@ -345,7 +345,6 @@ public class B3Receiver {
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_ID, "");
             comment.put(Comment.COMMENT_ORIGINAL_COMMENT_NAME, "");
             comment.put(Comment.COMMENT_ON_ID, articleId);
-            comment.put(Comment.COMMENT_ON_TYPE, Article.ARTICLE);
             final String commentSharpURL = Comment.getCommentSharpURLForArticle(article, commentId);
             comment.put(Comment.COMMENT_SHARP_URL, commentSharpURL);
             commentRepository.add(comment);

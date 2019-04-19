@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "3.2.1.6, Mar 4, 2019",
+  "version": "3.2.1.7, Apr 19, 2019",
   "authors": [
     "Liang Ding"
   ],
@@ -230,11 +230,6 @@
           "length": 19
         },
         {
-          "name": "pageCommentCount",
-          "description": "页面评论计数",
-          "type": "int"
-        },
-        {
           "name": "pageContent",
           "description": "页面内容",
           "type": "String",
@@ -261,12 +256,6 @@
           "name": "pageCommentable",
           "description": "页面是否可以评论",
           "type": "boolean"
-        },
-        {
-          "name": "pageType",
-          "description": "页面类型，自定义导航：link，普通页面：page",
-          "type": "String",
-          "length": 10
         },
         {
           "name": "pageOpenTarget",

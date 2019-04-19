@@ -36,7 +36,7 @@ import java.io.StringReader;
  * {@link PageConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 11, 2018
+ * @version 1.0.0.1, Apr 19, 2019
  * @since 2.9.8
  */
 @Test(suiteName = "processor")
@@ -69,7 +69,6 @@ public class PageConsoleTestCase extends AbstractTestCase {
         page.put(Page.PAGE_CONTENT, "");
         page.put(Page.PAGE_PERMALINK, "https://hacpai.com");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "link");
         page.put(Page.PAGE_OPEN_TARGET, "");
         page.put(Page.PAGE_ICON, "");
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));

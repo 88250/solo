@@ -864,9 +864,8 @@ public class DataModelService {
             LOGGER.debug("Filling page navigations....");
             final List<JSONObject> pages = pageRepository.getPages();
             for (final JSONObject page : pages) {
-                if ("page".equals(page.optString(Page.PAGE_TYPE))) {
-                    final String permalink = page.optString(Page.PAGE_PERMALINK);
-
+                final String permalink = page.optString(Page.PAGE_PERMALINK);
+                if (StringUtils.startsWith(permalink, "/")) {
                     page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + permalink);
                 }
             }

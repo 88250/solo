@@ -31,7 +31,7 @@ import java.util.List;
  * {@link PageRepository} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Sep 22, 2017
+ * @version 1.0.0.4, Apr 19, 2019
  */
 @Test(suiteName = "repository")
 public class PageRepositoryImplTestCase extends AbstractTestCase {
@@ -48,14 +48,11 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         Assert.assertEquals(pageRepository.getMaxOrder(), -1);
 
         final JSONObject page = new JSONObject();
-
-        page.put(Page.PAGE_COMMENT_COUNT, 0);
         page.put(Page.PAGE_CONTENT, "page1 content");
         page.put(Page.PAGE_ORDER, 0);
         page.put(Page.PAGE_PERMALINK, "page1 permalink");
         page.put(Page.PAGE_TITLE, "page1 title");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
         page.put(Page.PAGE_ICON, "");
 
@@ -94,14 +91,11 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         final PageRepository pageRepository = getPageRepository();
 
         final JSONObject page = new JSONObject();
-
-        page.put(Page.PAGE_COMMENT_COUNT, 0);
         page.put(Page.PAGE_CONTENT, "page2 content");
         page.put(Page.PAGE_ORDER, 1);
         page.put(Page.PAGE_PERMALINK, "page2 permalink");
         page.put(Page.PAGE_TITLE, "page2 title");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
         page.put(Page.PAGE_ICON, "");
 
@@ -123,14 +117,11 @@ public class PageRepositoryImplTestCase extends AbstractTestCase {
         final PageRepository pageRepository = getPageRepository();
 
         final JSONObject page = new JSONObject();
-
-        page.put(Page.PAGE_COMMENT_COUNT, 0);
         page.put(Page.PAGE_CONTENT, "page3 content");
         page.put(Page.PAGE_ORDER, 2);
         page.put(Page.PAGE_PERMALINK, "page3 permalink");
         page.put(Page.PAGE_TITLE, "page3 title");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
         page.put(Page.PAGE_ICON, "");
 

@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * {@link PageMgmtService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 11, 2012
+ * @version 1.0.0.3, Apr 19, 2019
  */
 @Test(suiteName = "service")
 public class PageMgmtServiceTestCase extends AbstractTestCase {
@@ -59,7 +59,6 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
         page.put(Page.PAGE_PERMALINK, "page1 permalink");
         page.put(Page.PAGE_TITLE, "page1 title");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);
@@ -84,7 +83,6 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
         page.put(Page.PAGE_PERMALINK, "page2 permalink");
         page.put(Page.PAGE_TITLE, "page2 title");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);
@@ -119,7 +117,6 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
         page.put(Page.PAGE_PERMALINK, "page3 permalink");
         page.put(Page.PAGE_TITLE, "page3 title");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);
@@ -156,7 +153,6 @@ public class PageMgmtServiceTestCase extends AbstractTestCase {
         page.put(Page.PAGE_PERMALINK, "page4 permalink");
         page.put(Page.PAGE_TITLE, "page4 title");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);

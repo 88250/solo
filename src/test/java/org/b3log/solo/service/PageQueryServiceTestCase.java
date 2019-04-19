@@ -28,7 +28,7 @@ import org.testng.annotations.Test;
  * {@link PageQueryService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Sep 11, 2012
+ * @version 1.0.0.3, Apr 19, 2019
  */
 @Test(suiteName = "service")
 public class PageQueryServiceTestCase extends AbstractTestCase {
@@ -60,7 +60,6 @@ public class PageQueryServiceTestCase extends AbstractTestCase {
         page.put(Page.PAGE_PERMALINK, "page1 permalink");
         page.put(Page.PAGE_TITLE, "page1 title");
         page.put(Page.PAGE_COMMENTABLE, true);
-        page.put(Page.PAGE_TYPE, "page");
         page.put(Page.PAGE_OPEN_TARGET, "_self");
 
         final String pageId = pageMgmtService.addPage(requestJSONObject);
