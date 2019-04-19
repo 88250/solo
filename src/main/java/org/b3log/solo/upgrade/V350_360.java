@@ -18,6 +18,7 @@
 package org.b3log.solo.upgrade;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -25,6 +26,8 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.latke.repository.jdbc.JdbcRepository;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.OptionRepository;
@@ -33,6 +36,8 @@ import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.service.ArticleMgmtService;
 import org.json.JSONObject;
 
+import java.sql.Connection;
+import java.sql.Statement;
 import java.util.List;
 
 /**
@@ -137,17 +142,18 @@ public final class V350_360 {
             transaction.commit();
         }
 
-        // TODO: v3.6.1 进行清理
-//        final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
-//        final Connection connection = Connections.getConnection();
-//        final Statement statement = connection.createStatement();
-//        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageType`");
-//        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageContent`");
-//        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageCommentCount`");
-//        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageCommentable`");
-//        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentOnType`");
-//        statement.close();
-//        connection.commit();
-//        connection.close();
+        JdbcRepository.dispose();
+
+        final String tablePrefix = Latkes.getLocalProperty("jdbc.tablePrefix") + "_";
+        final Connection connection = Connections.getConnection();
+        final Statement statement = connection.createStatement();
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageType`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageContent`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageCommentCount`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "page` DROP COLUMN `pageCommentable`");
+        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "comment` DROP COLUMN `commentOnType`");
+        statement.close();
+        connection.commit();
+        connection.close();
     }
 }
