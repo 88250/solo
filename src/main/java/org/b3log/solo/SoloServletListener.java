@@ -58,7 +58,7 @@ import javax.servlet.http.HttpSessionEvent;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.0.15, Apr 18, 2019
+ * @version 1.11.0.16, Apr 19, 2019
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -71,7 +71,7 @@ public final class SoloServletListener extends AbstractServletListener {
     /**
      * Solo version.
      */
-    public static final String VERSION = "3.5.0";
+    public static final String VERSION = "3.6.0";
 
     /**
      * Bean manager.
