@@ -88,7 +88,7 @@ $.extend(Page.prototype, {
     }
   },
   /*
-   * @description 文章/自定义页面加载
+   * @description 文章加载
    */
   load: function () {
     var that = this

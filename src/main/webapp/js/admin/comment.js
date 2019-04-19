@@ -27,7 +27,7 @@ admin.comment = {
   /*
    * 打开评论窗口
    * @id 该评论对应的 id
-   * @fromId 该评论来自文章/草稿/自定义页面
+   * @fromId 该评论来自文章/草稿
    */
   open: function (id, fromId) {
     this.getList(id, fromId)
@@ -37,8 +37,8 @@ admin.comment = {
   /*
    * 获取评论列表
    *
-   * @onId 该评论对应的实体 id，可能是文章，也可能是自定义页面
-   * @fromId 该评论来自文章/草稿/自定义页面
+   * @onId 该评论对应的文章 id
+   * @fromId 该评论来自文章/草稿
    */
   getList: function (onId, fromId) {
     $('#loadMsg').text(Label.loadingLabel)
@@ -104,8 +104,8 @@ admin.comment = {
   /*
    * 删除评论
    * @id 评论 id
-   * @fromId 该评论来自文章/草稿/自定义页面
-   * @articleId 该评论对应的实体 id，可能是文章，也可能是自定义页面
+   * @fromId 该评论来自文章/草稿
+   * @articleId 该评论对应的文章 id
    */
   del: function (id, fromId, articleId) {
     var isDelete = confirm(Label.confirmRemoveLabel + Label.commentLabel + '?')

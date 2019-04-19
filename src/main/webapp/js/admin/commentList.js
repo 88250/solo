@@ -120,7 +120,7 @@ admin.commentList = {
   /*
    * 删除评论
    * @id 评论 id
-   * @type 评论类型：文章/自定义页面
+   * @type 评论类型：文章
    */
   del: function (id, type) {
     if (confirm(Label.confirmRemoveLabel + Label.commentLabel + '?')) {

@@ -58,7 +58,7 @@ var Util = {
   },
   /**
    * 初始化 Pjax
-   * @param cb 除文章和自定义页面外的其他页面加载回调
+   * @param cb 除文章外的其他页面加载回调
    */
   initPjax: function (cb) {
     if ($('#pjax').length === 1) {
