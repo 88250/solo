@@ -158,7 +158,7 @@ var Util = {
     if (!Label.markedAvailable) {
       if (typeof hljs === 'undefined') {
         $.ajax({
-          url: 'https://cdn.jsdelivr.net/npm/vditor@1.2.10/src/assets/js/highlight.pack.js',
+          url: 'https://cdn.jsdelivr.net/npm/vditor@1.3.0/src/assets/js/highlight.pack.js',
           dataType: 'script',
           cache: true,
           success: function () {
@@ -182,7 +182,7 @@ var Util = {
       return
     }
 
-    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.2.10/dist/index.min.js',
+    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.3.0/dist/index.min.js',
       'vditorScript')
 
     Vditor.mermaidRender(document.body)
