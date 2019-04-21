@@ -113,7 +113,7 @@ $.extend(Page.prototype, {
 
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
-      Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.3.0/dist/index.min.js', 'vditorScript')
+      Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.3.3/dist/index.min.js', 'vditorScript')
       window.vditor = new Vditor('soloEditorComment', {
         placeholder: that.tips.commentContentCannotEmptyLabel,
         height: 180,
