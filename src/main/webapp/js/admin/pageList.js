@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.0.0, Feb 6, 2019
+ * @version 1.3.0.1, Apr 22, 2019
  */
 
 /* page-list 相关操作 */
@@ -202,7 +202,7 @@ admin.pageList = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
 
-            var pagePermalink = Util.proessURL($("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, ""));
+            var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
 
             var requestJSONObject = {
                 "page": {
@@ -255,8 +255,7 @@ admin.pageList = {
             $("#loadMsg").text(Label.loadingLabel);
             $("#tipMsg").text("");
 
-            var pagePermalink = Util.proessURL($("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, ""));
-
+            var pagePermalink = $("#pagePermalink").val().replace(/(^\s*)|(\s*$)/g, "");
 
             var requestJSONObject = {
                 "page": {
