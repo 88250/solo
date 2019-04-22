@@ -18,7 +18,6 @@
 package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
@@ -43,7 +42,7 @@ import org.json.JSONObject;
  * Plugin console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.11, Apr 19, 2019
+ * @version 1.0.0.12, Apr 22, 2019
  * @since 0.4.0
  */
 @RequestProcessor
@@ -344,11 +343,6 @@ public class PageConsole {
 
             for (int i = 0; i < pages.length(); i++) {
                 final JSONObject page = pages.getJSONObject(i);
-                final String permalink = page.optString(Page.PAGE_PERMALINK);
-                if (StringUtils.startsWith(permalink, "/")) {
-                    page.put(Page.PAGE_PERMALINK, Latkes.getServePath() + permalink);
-                }
-
                 String title = page.optString(Page.PAGE_TITLE);
                 title = StringEscapeUtils.escapeXml(title);
                 page.put(Page.PAGE_TITLE, title);
