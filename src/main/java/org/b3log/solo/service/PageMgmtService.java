@@ -26,7 +26,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Page;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.PageRepository;
@@ -127,27 +126,7 @@ public class PageMgmtService {
             final JSONObject oldPage = pageRepository.get(pageId);
             final JSONObject newPage = new JSONObject(page, JSONObject.getNames(page));
             newPage.put(Page.PAGE_ORDER, oldPage.getInt(Page.PAGE_ORDER));
-            String permalink = page.optString(Page.PAGE_PERMALINK).trim();
-
-            final String oldPermalink = oldPage.getString(Page.PAGE_PERMALINK);
-            if (!oldPermalink.equals(permalink)) {
-                if (!Strings.isURL(permalink)) {
-                    if (transaction.isActive()) {
-                        transaction.rollback();
-                    }
-
-                    throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
-                }
-
-                if (!oldPermalink.equals(permalink) && permalinkQueryService.exist(permalink)) {
-                    if (transaction.isActive()) {
-                        transaction.rollback();
-                    }
-
-                    throw new ServiceException(langPropsService.get("duplicatedPermalinkLabel"));
-                }
-            }
-
+            final String permalink = page.optString(Page.PAGE_PERMALINK).trim();
             newPage.put(Page.PAGE_PERMALINK, permalink);
             page.put(Page.PAGE_ICON, page.optString(Page.PAGE_ICON));
 
@@ -211,15 +190,7 @@ public class PageMgmtService {
             final int maxOrder = pageRepository.getMaxOrder();
             page.put(Page.PAGE_ORDER, maxOrder + 1);
 
-            String permalink = page.optString(Page.PAGE_PERMALINK);
-            if (!Strings.isURL(permalink)) {
-                if (transaction.isActive()) {
-                    transaction.rollback();
-                }
-
-                throw new ServiceException(langPropsService.get("invalidPermalinkFormatLabel"));
-            }
-
+            final String permalink = page.optString(Page.PAGE_PERMALINK);
             if (permalinkQueryService.exist(permalink)) {
                 if (transaction.isActive()) {
                     transaction.rollback();

@@ -19,25 +19,14 @@
  * @description index for admin
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.0.0, Mar 30, 2019
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 1.4.0.0, Apr 22, 2019
  */
 
 Util.htmlDecode = function (code) {
   var div = document.createElement('div')
   div.innerHTML = decodeURIComponent(code)
   return div.innerText
-}
-
-/**
- * @description URL 没有协议头，则自动加上 http://
- * @param {String} url URL 地址
- * @returns {String} 添加后的URL
- */
-Util.proessURL = function (url) {
-  if (!/^\w+:\/\//.test(url)) {
-    url = 'http://' + url
-  }
-  return url
 }
 
 var Admin = function () {
