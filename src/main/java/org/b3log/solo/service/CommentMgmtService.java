@@ -375,9 +375,7 @@ public class CommentMgmtService {
         final JSONObject article = articleRepository.get(articleId);
         final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
-
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt - 1);
-
         articleRepository.update(articleId, newArticle);
     }
 

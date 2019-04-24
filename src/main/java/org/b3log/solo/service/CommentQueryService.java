@@ -19,7 +19,6 @@ package org.b3log.solo.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
-import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -28,6 +27,7 @@ import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Paginator;
@@ -172,10 +172,11 @@ public class CommentQueryService {
                 final JSONObject article = articleRepository.get(onId);
                 if (null == article) {
                     // 某种情况下导致的数据不一致：文章已经被删除了，但是评论还在
-                    // 为了保持数据一致性，需要删除该条评论
-                    // https://hacpai.com/article/1556060195022
-                    final CommentMgmtService commentMgmtService = BeanManager.getInstance().getReference(CommentMgmtService.class);
-                    commentMgmtService.removeArticleComment(onId);
+                    // 为了保持数据一致性，需要删除该条评论 https://hacpai.com/article/1556060195022
+                    final Transaction transaction = commentRepository.beginTransaction();
+                    final String commentId = comment.optString(Keys.OBJECT_ID);
+                    commentRepository.remove(commentId);
+                    transaction.commit();
 
                     continue;
                 }
