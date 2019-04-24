@@ -44,8 +44,6 @@ import org.json.JSONObject;
 
 import java.util.*;
 
-import static org.b3log.solo.model.Article.*;
-
 /**
  * Article query service.
  *
@@ -53,7 +51,7 @@ import static org.b3log.solo.model.Article.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.12, Mar 30, 2019
+ * @version 1.3.2.13, Apr 24, 2019
  * @since 0.3.5
  */
 @Service
@@ -143,7 +141,7 @@ public class ArticleQueryService {
 
         try {
             final Query query = new Query().setFilter(
-                    CompositeFilterOperator.and(new PropertyFilter(ARTICLE_STATUS, FilterOperator.EQUAL, ARTICLE_STATUS_C_PUBLISHED),
+                    CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED),
                             CompositeFilterOperator.or(
                                     new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
                                     new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%")))).
@@ -187,8 +185,7 @@ public class ArticleQueryService {
         pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) Collections.emptyList());
 
         try {
-            final JSONArray categoryTags = categoryTagRepository.getByCategoryId(
-                    categoryId, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS);
+            final JSONArray categoryTags = categoryTagRepository.getByCategoryId(categoryId, 1, Integer.MAX_VALUE).optJSONArray(Keys.RESULTS);
             if (categoryTags.length() <= 0) {
                 return ret;
             }
@@ -198,8 +195,7 @@ public class ArticleQueryService {
                 tagIds.add(categoryTags.optJSONObject(i).optString(Tag.TAG + "_" + Keys.OBJECT_ID));
             }
 
-            Query query = new Query().setFilter(
-                    new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.IN, tagIds)).
+            Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.IN, tagIds)).
                     setPage(currentPageNum, pageSize).
                     addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
             JSONObject result = tagArticleRepository.get(query);
@@ -222,22 +218,21 @@ public class ArticleQueryService {
                 articleIds.add(tagArticles.optJSONObject(i).optString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
             }
 
-            query = new Query().setFilter(
-                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
 
             final List<JSONObject> articles = new ArrayList<>();
             final JSONArray articleArray = articleRepository.get(query).optJSONArray(Keys.RESULTS);
             for (int i = 0; i < articleArray.length(); i++) {
                 final JSONObject article = articleArray.optJSONObject(i);
-                if (ARTICLE_STATUS_C_PUBLISHED != article.optInt(ARTICLE_STATUS)) {
+                if (Article.ARTICLE_STATUS_C_PUBLISHED != article.optInt(Article.ARTICLE_STATUS)) {
                     // Skips the unpublished article
                     continue;
                 }
 
-                article.put(ARTICLE_CREATE_TIME, article.optLong(ARTICLE_CREATED));
-                article.put(ARTICLE_T_CREATE_DATE, new Date(article.optLong(ARTICLE_CREATED)));
-                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(ARTICLE_UPDATED)));
+                article.put(Article.ARTICLE_CREATE_TIME, article.optLong(Article.ARTICLE_CREATED));
+                article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.optLong(Article.ARTICLE_CREATED)));
+                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(Article.ARTICLE_UPDATED)));
 
                 articles.add(article);
             }
@@ -435,7 +430,7 @@ public class ArticleQueryService {
                 return null;
             }
 
-            ret.put(ARTICLE, article);
+            ret.put(Article.ARTICLE, article);
 
             // Tags
             final JSONArray tags = new JSONArray();
@@ -447,7 +442,7 @@ public class ArticleQueryService {
 
                 tags.put(tag);
             }
-            article.put(ARTICLE_TAGS_REF, tags);
+            article.put(Article.ARTICLE_TAGS_REF, tags);
 
             // Signs
             final JSONObject preference = optionQueryService.getPreference();
@@ -455,12 +450,12 @@ public class ArticleQueryService {
             article.put(Sign.SIGNS, new JSONArray(preference.getString(Option.ID_C_SIGNS)));
 
             // Remove unused properties
-            article.remove(ARTICLE_AUTHOR_ID);
-            article.remove(ARTICLE_COMMENT_COUNT);
-            article.remove(ARTICLE_PUT_TOP);
-            article.remove(ARTICLE_UPDATED);
-            article.remove(ARTICLE_VIEW_COUNT);
-            article.remove(ARTICLE_RANDOM_DOUBLE);
+            article.remove(Article.ARTICLE_AUTHOR_ID);
+            article.remove(Article.ARTICLE_COMMENT_COUNT);
+            article.remove(Article.ARTICLE_PUT_TOP);
+            article.remove(Article.ARTICLE_UPDATED);
+            article.remove(Article.ARTICLE_VIEW_COUNT);
+            article.remove(Article.ARTICLE_RANDOM_DOUBLE);
 
             LOGGER.log(Level.DEBUG, "Got an article [id={0}]", articleId);
 
@@ -515,25 +510,25 @@ public class ArticleQueryService {
             final int currentPageNum = requestJSONObject.getInt(Pagination.PAGINATION_CURRENT_PAGE_NUM);
             final int pageSize = requestJSONObject.getInt(Pagination.PAGINATION_PAGE_SIZE);
             final int windowSize = requestJSONObject.getInt(Pagination.PAGINATION_WINDOW_SIZE);
-            final int articleStatus = requestJSONObject.optInt(ARTICLE_STATUS, ARTICLE_STATUS_C_PUBLISHED);
+            final int articleStatus = requestJSONObject.optInt(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
 
             final Query query = new Query().setPage(currentPageNum, pageSize).
-                    addSort(ARTICLE_PUT_TOP, SortDirection.DESCENDING);
+                    addSort(Article.ARTICLE_PUT_TOP, SortDirection.DESCENDING);
             if (requestJSONObject.optBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
-                query.addSort(ARTICLE_UPDATED, SortDirection.DESCENDING);
+                query.addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING);
             } else {
-                query.addSort(ARTICLE_CREATED, SortDirection.DESCENDING);
+                query.addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING);
             }
 
             final String keyword = requestJSONObject.optString(Common.KEYWORD);
             if (StringUtils.isBlank(keyword)) {
-                query.setFilter(new PropertyFilter(ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus));
+                query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus));
             } else {
                 query.setFilter(CompositeFilterOperator.and(
-                        new PropertyFilter(ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus),
+                        new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus),
                         CompositeFilterOperator.or(
-                                new PropertyFilter(ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
-                                new PropertyFilter(ARTICLE_TAGS_REF, FilterOperator.LIKE, "%" + keyword + "%")
+                                new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
+                                new PropertyFilter(Article.ARTICLE_TAGS_REF, FilterOperator.LIKE, "%" + keyword + "%")
                         )
                 ));
             }
@@ -556,8 +551,8 @@ public class ArticleQueryService {
                 final JSONObject author = getAuthor(article);
                 final String authorName = author.getString(User.USER_NAME);
                 article.put(Common.AUTHOR_NAME, authorName);
-                article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
-                article.put(ARTICLE_UPDATE_TIME, article.getLong(ARTICLE_UPDATED));
+                article.put(Article.ARTICLE_CREATE_TIME, article.getLong(Article.ARTICLE_CREATED));
+                article.put(Article.ARTICLE_UPDATE_TIME, article.getLong(Article.ARTICLE_UPDATED));
 
                 // Remove unused properties
                 for (int j = 0; j < excludes.length(); j++) {
@@ -565,7 +560,7 @@ public class ArticleQueryService {
                 }
             }
 
-            ret.put(ARTICLES, articles);
+            ret.put(Article.ARTICLES, articles);
 
             return ret;
         } catch (final Exception e) {
@@ -606,19 +601,16 @@ public class ArticleQueryService {
 
             final List<JSONObject> retArticles = new ArrayList<>();
 
-            final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).setPageCount(1);
-            result = articleRepository.get(query);
-            final JSONArray articles = result.getJSONArray(Keys.RESULTS);
-            for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.getJSONObject(i);
-                if (ARTICLE_STATUS_C_PUBLISHED != article.optInt(ARTICLE_STATUS)) {
-                    // Skips the unpublished article
-                    continue;
-                }
-
-                article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
-                article.put(ARTICLE_T_CREATE_DATE, new Date(article.getLong(ARTICLE_CREATED)));
-                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(ARTICLE_UPDATED)));
+            final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds),
+                    new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
+                    setPageCount(1).
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+            final List<JSONObject> articles = articleRepository.getList(query);
+            for (final JSONObject article : articles) {
+                article.put(Article.ARTICLE_CREATE_TIME, article.getLong(Article.ARTICLE_CREATED));
+                article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.getLong(Article.ARTICLE_CREATED)));
+                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(Article.ARTICLE_UPDATED)));
                 retArticles.add(article);
             }
             final JSONObject ret = new JSONObject();
@@ -660,20 +652,16 @@ public class ArticleQueryService {
 
             final List<JSONObject> ret = new ArrayList<>();
 
-            final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).setPageCount(1);
-            result = articleRepository.get(query);
-            final JSONArray articles = result.getJSONArray(Keys.RESULTS);
-            for (int i = 0; i < articles.length(); i++) {
-                final JSONObject article = articles.getJSONObject(i);
-                if (ARTICLE_STATUS_C_PUBLISHED != article.optInt(ARTICLE_STATUS)) {
-                    // Skips the unpublished article
-                    continue;
-                }
-
-                article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
-                article.put(ARTICLE_T_CREATE_DATE, new Date(article.getLong(ARTICLE_CREATED)));
-                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(ARTICLE_UPDATED)));
-
+            final Query query = new Query().setFilter(CompositeFilterOperator.and(
+                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds),
+                    new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
+                    setPageCount(1).
+                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
+            final List<JSONObject> articles = articleRepository.getList(query);
+            for (final JSONObject article : articles) {
+                article.put(Article.ARTICLE_CREATE_TIME, article.getLong(Article.ARTICLE_CREATED));
+                article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.getLong(Article.ARTICLE_CREATED)));
+                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(Article.ARTICLE_UPDATED)));
                 ret.add(article);
             }
 
@@ -745,7 +733,7 @@ public class ArticleQueryService {
 
                     final JSONObject relevant = articleRepository.get(relatedArticleId);
 
-                    if (ARTICLE_STATUS_C_PUBLISHED != relevant.optInt(ARTICLE_STATUS)) {
+                    if (Article.ARTICLE_STATUS_C_PUBLISHED != relevant.optInt(Article.ARTICLE_STATUS)) {
                         continue;
                     }
 
@@ -869,9 +857,9 @@ public class ArticleQueryService {
             final JSONArray articles = ret.getJSONArray(Keys.RESULTS);
             for (int i = 0; i < articles.length(); i++) {
                 final JSONObject article = articles.getJSONObject(i);
-                article.put(ARTICLE_CREATE_TIME, article.getLong(ARTICLE_CREATED));
-                article.put(ARTICLE_T_CREATE_DATE, new Date(article.optLong(ARTICLE_CREATED)));
-                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(ARTICLE_UPDATED)));
+                article.put(Article.ARTICLE_CREATE_TIME, article.getLong(Article.ARTICLE_CREATED));
+                article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.optLong(Article.ARTICLE_CREATED)));
+                article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(Article.ARTICLE_UPDATED)));
             }
 
             return ret;
@@ -906,14 +894,14 @@ public class ArticleQueryService {
 
             if (null != context && Solos.needViewPwd(context, article)) {
                 final String content = langPropsService.get("articleContentPwd");
-                article.put(ARTICLE_CONTENT, content);
+                article.put(Article.ARTICLE_CONTENT, content);
             } else {
                 // Markdown to HTML for content and abstract
                 Stopwatchs.start("Get Article Content [Markdown]");
-                String content = article.optString(ARTICLE_CONTENT);
+                String content = article.optString(Article.ARTICLE_CONTENT);
                 content = Emotions.convert(content);
                 content = Markdowns.toHTML(content);
-                article.put(ARTICLE_CONTENT, content);
+                article.put(Article.ARTICLE_CONTENT, content);
                 Stopwatchs.end();
             }
 
@@ -944,17 +932,17 @@ public class ArticleQueryService {
     public void markdown(final JSONObject article) {
         Stopwatchs.start("Markdown Article [id=" + article.optString(Keys.OBJECT_ID) + "]");
 
-        String content = article.optString(ARTICLE_CONTENT);
+        String content = article.optString(Article.ARTICLE_CONTENT);
         content = Emotions.convert(content);
         content = Markdowns.toHTML(content);
-        article.put(ARTICLE_CONTENT, content);
+        article.put(Article.ARTICLE_CONTENT, content);
 
-        String abstractContent = article.optString(ARTICLE_ABSTRACT);
+        String abstractContent = article.optString(Article.ARTICLE_ABSTRACT);
         if (StringUtils.isNotBlank(abstractContent)) {
             Stopwatchs.start("Abstract");
             abstractContent = Emotions.convert(abstractContent);
             abstractContent = Markdowns.toHTML(abstractContent);
-            article.put(ARTICLE_ABSTRACT, abstractContent);
+            article.put(Article.ARTICLE_ABSTRACT, abstractContent);
             Stopwatchs.end();
         }
 
@@ -1010,6 +998,6 @@ public class ArticleQueryService {
         article.remove(Article.ARTICLE_PUT_TOP);
         article.remove(Article.ARTICLE_VIEW_PWD);
         article.remove(Article.ARTICLE_SIGN_ID);
-        article.remove(ARTICLE_COMMENTABLE);
+        article.remove(Article.ARTICLE_COMMENTABLE);
     }
 }

@@ -19,6 +19,7 @@ package org.b3log.solo.service;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -51,7 +52,7 @@ import java.util.List;
  * Comment query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.6, Apr 19, 2019
+ * @version 1.3.2.7, Apr 24, 2019
  * @since 0.3.5
  */
 @Service
@@ -169,6 +170,16 @@ public class CommentQueryService {
 
                 final String onId = comment.getString(Comment.COMMENT_ON_ID);
                 final JSONObject article = articleRepository.get(onId);
+                if (null == article) {
+                    // 某种情况下导致的数据不一致：文章已经被删除了，但是评论还在
+                    // 为了保持数据一致性，需要删除该条评论
+                    // https://hacpai.com/article/1556060195022
+                    final CommentMgmtService commentMgmtService = BeanManager.getInstance().getReference(CommentMgmtService.class);
+                    commentMgmtService.removeArticleComment(onId);
+
+                    continue;
+                }
+
                 title = article.getString(Article.ARTICLE_TITLE);
                 comment.put(Common.TYPE, Common.ARTICLE_COMMENT_TYPE);
                 comment.put(Common.COMMENT_TITLE, title);

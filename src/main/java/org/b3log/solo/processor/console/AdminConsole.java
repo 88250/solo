@@ -66,7 +66,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.13, Mar 19, 2019
+ * @version 1.7.0.14, Apr 24, 2019
  * @since 0.4.1
  */
 @Singleton
@@ -332,6 +332,10 @@ public class AdminConsole {
             outputStream.write(zipData);
             outputStream.flush();
             outputStream.close();
+
+            // 导出 SQL 包后清理临时文件 https://github.com/b3log/solo/issues/12770
+            localFile.delete();
+            zipFile.delete();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
             context.renderJSON().renderMsg("Export failed, please check log");
