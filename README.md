@@ -18,12 +18,6 @@
 
 [Solo](https://github.com/b3log/solo) 是一款小而美的开源博客系统，专为程序员设计。Solo 有着非常活跃的[社区](https://hacpai.com)，文章自动推送到社区后可以让很多人看到，产生丰富的交流互动。
 
-PS：
-
-* 如果你需要搭建一个多用户博客平台，可以考虑使用 [Pipe](https://github.com/b3log/pipe)
-* 如果你需要搭建一个社区平台，可以考虑使用 [Sym](https://github.com/b3log/symphony)
-* 欢迎加入我们的小众开源社区，详情请看[这里](https://hacpai.com/article/1463025124998)
-
 ## 案例
 
 * [D 的个人博客](https://88250.b3log.org)
@@ -201,3 +195,11 @@ Solo 使用 [GNU Affero General Public License, Version 3](https://www.gnu.org/l
 * [flexmark](https://github.com/vsch/flexmark-java)：Java Markdown 处理库
 * [Apache Commons](http://commons.apache.org)：Java 工具库集
 * [Latke](https://github.com/b3log/latke)：以 JSON 为主的 Java Web 框架
+
+---
+
+## 开源项目推荐
+
+* 如果你需要搭建一个多用户博客平台，可以考虑使用 [Pipe](https://github.com/b3log/pipe)
+* 如果你需要搭建一个社区平台，可以考虑使用 [Sym](https://github.com/b3log/symphony)
+* 欢迎加入我们的小众开源社区，详情请看[这里](https://hacpai.com/article/1463025124998)
