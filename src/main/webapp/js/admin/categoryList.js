@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.1, Oct 24, 2018
+ * @version 1.2.0.0, Apr 28, 2019
  * @since 2.0.0
  */
 
@@ -59,14 +59,6 @@ admin.categoryList = {
 
         this.tablePagination.initPagination();
         this.getList(page);
-
-        $("#categoryUpdate").dialog({
-            title: $("#categoryUpdate").data('title'),
-            width: 700,
-            height: 358,
-            "modal": true,
-            "hideFooter": true
-        });
 
         // For tag auto-completion
         $.ajax({// Gets all tags
@@ -176,9 +168,16 @@ admin.categoryList = {
                 "categoryDescription": $("#categoryDesc").val()
             };
 
+            var oId = $("#categoryName").data("oId");
+            var type = "POST"
+            if (oId) {
+              requestJSONObject.oId = oId
+              type = "PUT"
+            }
+
             $.ajax({
                 url: Label.servePath + "/console/category/",
-                type: "POST",
+                type: type,
                 cache: false,
                 data: JSON.stringify(requestJSONObject),
                 success: function(result, textStatus) {
@@ -188,18 +187,21 @@ admin.categoryList = {
                         return;
                     }
 
-                    $("#categoryName").val("");
+                    if (!oId) {
+                      if (admin.categoryList.pageInfo.currentCount === Label.PAGE_SIZE &&
+                        admin.categoryList.pageInfo.currentPage === admin.categoryList.pageInfo.pageCount) {
+                        admin.categoryList.pageInfo.pageCount++;
+                      }
+                      var hashList = window.location.hash.split("/");
+                      if (admin.categoryList.pageInfo.pageCount !== parseInt(hashList[hashList.length - 1])) {
+                        admin.setHashByPage(admin.categoryList.pageInfo.pageCount);
+                      }
+                    }
+
+                    $("#categoryName").val("").data("oId", '');
                     $("#categoryTags").val("");
                     $("#categoryURI").val("");
                     $("#categoryDesc").val("");
-                    if (admin.categoryList.pageInfo.currentCount === Label.PAGE_SIZE &&
-                            admin.categoryList.pageInfo.currentPage === admin.categoryList.pageInfo.pageCount) {
-                        admin.categoryList.pageInfo.pageCount++;
-                    }
-                    var hashList = window.location.hash.split("/");
-                    if (admin.categoryList.pageInfo.pageCount !== parseInt(hashList[hashList.length - 1])) {
-                        admin.setHashByPage(admin.categoryList.pageInfo.pageCount);
-                    }
 
                     admin.categoryList.getList(admin.categoryList.pageInfo.pageCount);
 
@@ -215,7 +217,6 @@ admin.categoryList = {
     get: function(id) {
         $("#loadMsg").text(Label.loadingLabel);
         $("#tipMsg").text("");
-        $("#categoryUpdate").dialog("open");
 
         $.ajax({
             url: Label.servePath + "/console/category/" + id,
@@ -228,50 +229,14 @@ admin.categoryList = {
                     return;
                 }
 
-                $("#categoryNameUpdate").val(result.categoryTitle).data("oId", id);
-                $("#categoryURIUpdate").val(result.categoryURI);
-                $("#categoryDescUpdate").val(result.categoryDescription);
-                $("#categoryTagsUpdate").val(result.categoryTags);
+                $("#categoryName").val(result.categoryTitle).data("oId", id);
+                $("#categoryURI").val(result.categoryURI);
+                $("#categoryDesc").val(result.categoryDescription);
+                $("#categoryTags").val(result.categoryTags);
 
                 $("#loadMsg").text("");
             }
         });
-    },
-    /*
-     * 更新分类
-     */
-    update: function() {
-        if (this.validate("Update")) {
-            $("#loadMsg").text(Label.loadingLabel);
-            $("#tipMsg").text("");
-
-            var requestJSONObject = {
-                "categoryTitle": $("#categoryNameUpdate").val(),
-                "oId": $("#categoryNameUpdate").data("oId"),
-                "categoryTags": $("#categoryTagsUpdate").val(),
-                "categoryURI": $("#categoryURIUpdate").val(),
-                "categoryDescription": $("#categoryDescUpdate").val()
-            };
-
-            $.ajax({
-                url: Label.servePath + "/console/category/",
-                type: "PUT",
-                cache: false,
-                data: JSON.stringify(requestJSONObject),
-                success: function(result, textStatus) {
-                    $("#categoryUpdate").dialog("close");
-                    $("#tipMsg").text(result.msg);
-                    if (!result.sc) {
-                        $("#loadMsg").text("");
-                        return;
-                    }
-
-                    admin.categoryList.getList(admin.categoryList.pageInfo.currentPage);
-
-                    $("#loadMsg").text("");
-                }
-            });
-        }
     },
     /*
      * 删除分类
