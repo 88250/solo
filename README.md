@@ -22,6 +22,7 @@ PS：
 
 * 如果你需要搭建一个多用户博客平台，可以考虑使用 [Pipe](https://github.com/b3log/pipe)
 * 如果你需要搭建一个社区平台，可以考虑使用 [Sym](https://github.com/b3log/symphony)
+* 欢迎加入我们的小众开源社区，详情请看[这里](https://hacpai.com/article/1463025124998)
 
 ## 案例
 
