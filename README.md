@@ -58,23 +58,23 @@
 
 ### 开始使用
 
-![start](https://user-images.githubusercontent.com/873584/56876833-b2d05f00-6a7c-11e9-9211-acb1cc3b4bcf.png)
+![start](https://user-images.githubusercontent.com/970828/56885783-df49a280-6a9f-11e9-8f52-bc37fcb03bc5.png)
 
 ### 后台首页
 
-![console](https://user-images.githubusercontent.com/873584/56876829-b237c880-6a7c-11e9-8b05-530df97a0250.png)
+![console](https://user-images.githubusercontent.com/970828/56886176-f210a700-6aa0-11e9-894f-75eda5cf3317.png)
 
 ### 编辑文章
 
-![post](https://user-images.githubusercontent.com/873584/56876830-b237c880-6a7c-11e9-8aa1-c2184feaf72c.png)
+![post](https://user-images.githubusercontent.com/970828/56886177-f2a93d80-6aa0-11e9-8a87-14731bdf59e7.png)
 
 ### 选择皮肤
 
-![skins](https://user-images.githubusercontent.com/873584/56876831-b2d05f00-6a7c-11e9-8e84-380ad47521b3.png)
+![skins](https://user-images.githubusercontent.com/970828/56886476-ad394000-6aa1-11e9-8a27-abaa22b9996b.png)
 
 ### 前台界面
 
-![pinghsu](https://user-images.githubusercontent.com/873584/56876646-86681300-6a7b-11e9-82ae-4b8ef83ae6dd.png)
+![pinghsu](https://user-images.githubusercontent.com/970828/56885233-875e6c00-6a9e-11e9-88de-4551d955e8b6.png)
 
 ## 皮肤
 
