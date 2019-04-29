@@ -58,19 +58,19 @@
 
 ### 开始使用
 
-![start](https://user-images.githubusercontent.com/873584/56876707-d941ca80-6a7b-11e9-8fe6-f7c889f3c42f.png)
+![start](https://user-images.githubusercontent.com/873584/56876833-b2d05f00-6a7c-11e9-9211-acb1cc3b4bcf.png)
 
 ### 后台首页
 
-![console](https://user-images.githubusercontent.com/873584/56876728-01c9c480-6a7c-11e9-9be8-156060a25c3f.png)
+![console](https://user-images.githubusercontent.com/873584/56876829-b237c880-6a7c-11e9-8b05-530df97a0250.png)
 
 ### 编辑文章
 
-![post](https://user-images.githubusercontent.com/873584/56876752-26be3780-6a7c-11e9-9b23-d4b024b4aeb3.png)
+![post](https://user-images.githubusercontent.com/873584/56876830-b237c880-6a7c-11e9-8aa1-c2184feaf72c.png)
 
 ### 选择皮肤
 
-![skins](https://user-images.githubusercontent.com/873584/56876769-49505080-6a7c-11e9-815d-03bd43d515d1.png)
+![skins](https://user-images.githubusercontent.com/873584/56876831-b2d05f00-6a7c-11e9-8e84-380ad47521b3.png)
 
 ### 前台界面
 
