@@ -16,7 +16,7 @@
 <br>
 <a title="GitHub Commits" target="_blank" href="https://github.com/b3log/solo/commits/master"><img src="https://img.shields.io/github/commit-activity/m/b3log/solo.svg?style=flat-square"></a>
 <a title="Last Commit" target="_blank" href="https://github.com/b3log/solo/commits/master"><img src="https://img.shields.io/github/last-commit/b3log/solo.svg?style=flat-square"></a>
-<a title="GitHub Pull Requests" target="_blank" href=""><img src="https://img.shields.io/github/issues-pr-closed/b3log/solo.svg?style=flat-square&color=FF9966"></a>
+<a title="GitHub Pull Requests" target="_blank" href="https://github.com/b3log/solo/pulls"><img src="https://img.shields.io/github/issues-pr-closed/b3log/solo.svg?style=flat-square&color=FF9966"></a>
 <a title="Hits" target="_blank" href="https://github.com/b3log/hits"><img src="https://hits.b3log.org/b3log/solo.svg"></a>
 <br><br>
 <a title="GitHub Watchers" target="_blank" href="https://github.com/b3log/solo/watchers"><img src="https://img.shields.io/github/watchers/b3log/solo.svg?label=Watchers&style=social"></a>&nbsp;&nbsp;
