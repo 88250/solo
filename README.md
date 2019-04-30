@@ -4,18 +4,18 @@
 小而美的博客系统，为未来而构建
 <br><br>
 <a title="Build Status" target="_blank" href="https://travis-ci.org/b3log/solo"><img src="https://img.shields.io/travis/b3log/solo.svg?style=flat-square"></a>
-<a title="Coverage Status" target="_blank" href="https://coveralls.io/github/b3log/solo"><img src="https://img.shields.io/coveralls/github/b3log/solo.svg?style=flat-square"></a>
-<a title="Code Size" target="_blank" href="https://github.com/b3log/solo"><img src="https://img.shields.io/github/languages/code-size/b3log/solo.svg?style=flat-square&color=9cf"></a>
+<a title="Coverage Status" target="_blank" href="https://coveralls.io/github/b3log/solo"><img src="https://img.shields.io/coveralls/github/b3log/solo.svg?style=flat-square&color=CC9933"></a>
+<a title="Code Size" target="_blank" href="https://github.com/b3log/solo"><img src="https://img.shields.io/github/languages/code-size/b3log/solo.svg?style=flat-square&color=6699FF"></a>
 <a title="AGPLv3" target="_blank" href="https://www.gnu.org/licenses/agpl-3.0.txt"><img src="http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat-square"></a>
 <br>
-<a title="Releases" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/release/b3log/solo.svg?style=flat-square"></a>
+<a title="Releases" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/release/b3log/solo.svg?style=flat-square&color=CC6666"></a>
 <a title="Release Date" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/release-date/b3log/solo.svg?style=flat-square&color=99CCFF"></a>
-<a title="Downloads" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/downloads/b3log/solo/total.svg?style=flat-square"></a>
+<a title="Downloads" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/downloads/b3log/solo/total.svg?style=flat-square&color=99CC99"></a>
 <a title="Docker Pulls" target="_blank" href="https://hub.docker.com/r/b3log/solo"><img src="https://img.shields.io/docker/pulls/b3log/solo.svg?style=flat-square&color=blueviolet"></a>
 <a title="Docker Image Size" target="_blank" href="https://hub.docker.com/r/b3log/solo"><img src="https://img.shields.io/microbadger/image-size/b3log/solo.svg?style=flat-square&color=ff96b4"></a>
 <br>
 <a title="GitHub Commits" target="_blank" href="https://github.com/b3log/solo/commits/master"><img src="https://img.shields.io/github/commit-activity/m/b3log/solo.svg?style=flat-square"></a>
-<a title="Last Commit" target="_blank" href="https://github.com/b3log/solo/commits/master"><img src="https://img.shields.io/github/last-commit/b3log/solo.svg?style=flat-square"></a>
+<a title="Last Commit" target="_blank" href="https://github.com/b3log/solo/commits/master"><img src="https://img.shields.io/github/last-commit/b3log/solo.svg?style=flat-square&color=FF9900"></a>
 <a title="GitHub Pull Requests" target="_blank" href="https://github.com/b3log/solo/pulls"><img src="https://img.shields.io/github/issues-pr-closed/b3log/solo.svg?style=flat-square&color=FF9966"></a>
 <a title="Hits" target="_blank" href="https://github.com/b3log/hits"><img src="https://hits.b3log.org/b3log/solo.svg"></a>
 <br><br>
