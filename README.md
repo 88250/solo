@@ -9,15 +9,15 @@
 <a title="AGPLv3" target="_blank" href="https://www.gnu.org/licenses/agpl-3.0.txt"><img src="http://img.shields.io/badge/license-AGPLv3-orange.svg?style=flat-square"></a>
 <br>
 <a title="Releases" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/release/b3log/solo.svg?style=flat-square"></a>
+<a title="Release Date" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/release-date/b3log/solo.svg?style=flat-square&color=99CCFF"></a>
 <a title="Downloads" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/downloads/b3log/solo/total.svg?style=flat-square"></a>
 <a title="Docker Pulls" target="_blank" href="https://hub.docker.com/r/b3log/solo"><img src="https://img.shields.io/docker/pulls/b3log/solo.svg?style=flat-square&color=blueviolet"></a>
 <a title="Docker Image Size" target="_blank" href="https://hub.docker.com/r/b3log/solo"><img src="https://img.shields.io/microbadger/image-size/b3log/solo.svg?style=flat-square&color=ff96b4"></a>
-<a title="Hits" target="_blank" href="https://github.com/b3log/hits"><img src="https://hits.b3log.org/b3log/solo.svg"></a>
 <br>
 <a title="GitHub Commits" target="_blank" href="https://github.com/b3log/solo/commits/master"><img src="https://img.shields.io/github/commit-activity/m/b3log/solo.svg?style=flat-square"></a>
 <a title="Last Commit" target="_blank" href="https://github.com/b3log/solo/commits/master"><img src="https://img.shields.io/github/last-commit/b3log/solo.svg?style=flat-square"></a>
 <a title="GitHub Pull Requests" target="_blank" href=""><img src="https://img.shields.io/github/issues-pr-closed/b3log/solo.svg?style=flat-square&color=FF9966"></a>
-<a title="Release Date" target="_blank" href="https://github.com/b3log/solo/releases"><img src="https://img.shields.io/github/release-date/b3log/solo.svg?style=flat-square&color=99CCFF"></a>
+<a title="Hits" target="_blank" href="https://github.com/b3log/hits"><img src="https://hits.b3log.org/b3log/solo.svg"></a>
 <br><br>
 <a title="GitHub Watchers" target="_blank" href="https://github.com/b3log/solo/watchers"><img src="https://img.shields.io/github/watchers/b3log/solo.svg?label=Watchers&style=social"></a>&nbsp;&nbsp;
 <a title="GitHub Stars" target="_blank" href="https://github.com/b3log/solo/stargazers"><img src="https://img.shields.io/github/stars/b3log/solo.svg?label=Stars&style=social"></a>&nbsp;&nbsp;
