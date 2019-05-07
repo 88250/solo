@@ -62,7 +62,7 @@
 * SQL / JSON / Markdown 导出
 * Atom / RSS / Sitemap
 * CDN 静态资源分离
-* [GitHub 仓库展示](https://github.com/b3log/solo/issues/12514) / [自动备份文章到仓库](https://github.com/b3log/solo/issues/12676)
+* [自动同步 GitHub 仓库](https://hacpai.com/article/1557238327458)
 * [内置 HTTPS+CDN 文件存储](https://github.com/b3log/solo/issues/12556)
 
 ## 界面
