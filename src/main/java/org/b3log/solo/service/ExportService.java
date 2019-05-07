@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.5, Mar 30, 2019
+ * @version 1.1.0.6, May 7, 2019
  * @since 2.5.0
  */
 @Service
@@ -263,6 +263,10 @@ public class ExportService {
             response.close();
             response.charset("UTF-8");
             LOGGER.info("Github repo sync completed: " + response.bodyText());
+
+            // GitHub 导出同步后清理临时文件 https://github.com/b3log/solo/issues/12776
+            localFile.delete();
+            zipFile.delete();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Exports articles to github repo failed", e);
         }
