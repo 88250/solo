@@ -192,7 +192,7 @@ public class ExportService {
 
             final JSONObject user = userRepository.getAdmin();
             final String userName = user.optString(User.USER_NAME);
-            final String userB3Ke = user.optString(UserExt.USER_B3_KEY);
+            final String userB3Key = user.optString(UserExt.USER_B3_KEY);
             final String clientTitle = preference.optString(Option.ID_C_BLOG_TITLE);
             final String clientSubtitle = preference.optString(Option.ID_C_BLOG_SUBTITLE);
 
@@ -251,7 +251,7 @@ public class ExportService {
             final HttpResponse response = HttpRequest.post("https://hacpai.com/github/repos").
                     connectionTimeout(7000).timeout(60000).trustAllCerts(true).header("User-Agent", Solos.USER_AGENT).
                     form("userName", userName,
-                            "userB3Key", userB3Ke,
+                            "userB3Key", userB3Key,
                             "clientName", "Solo",
                             "clientVersion", SoloServletListener.VERSION,
                             "clientHost", Latkes.getServePath(),
