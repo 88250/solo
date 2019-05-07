@@ -188,7 +188,7 @@ public class ExportService {
             }
 
             FileUtils.deleteQuietly(localFile);
-            FileUtils.deleteQuietly(new File(localFile + ".zip"));
+            FileUtils.deleteQuietly(zipFile);
 
             final JSONObject user = userRepository.getAdmin();
             final String userName = user.optString(User.USER_NAME);
@@ -263,10 +263,6 @@ public class ExportService {
             response.close();
             response.charset("UTF-8");
             LOGGER.info("Github repo sync completed: " + response.bodyText());
-
-            // GitHub 导出同步后清理临时文件 https://github.com/b3log/solo/issues/12776
-            localFile.delete();
-            zipFile.delete();
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Exports articles to github repo failed", e);
         }
