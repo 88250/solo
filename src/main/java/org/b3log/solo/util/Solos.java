@@ -32,7 +32,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Crypts;
-import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
@@ -127,15 +126,7 @@ public final class Solos {
      * @return {@code true} it is, returns {@code false} otherwise
      */
     public static boolean isDocker() {
-        final String os = System.getProperty("os.name");
-        if (StringUtils.containsIgnoreCase(os, "windows") || StringUtils.containsIgnoreCase(os, "darwin")) {
-            return false; // 虽然现在 Windows 和 Mac 都可以运行 Docker 了，但实际使用比较少，所以暂时忽略
-        }
-
-        // https://stackoverflow.com/questions/20010199/how-to-determine-if-a-process-runs-inside-lxc-docker
-        final String output = Execs.exec("cat /proc/1/cgroup", 1000);
-
-        return StringUtils.contains(output, "/docker/");
+        return 1 == currentPID();
     }
 
     /**
