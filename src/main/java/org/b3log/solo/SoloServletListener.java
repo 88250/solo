@@ -44,6 +44,7 @@ import org.b3log.solo.processor.PermalinkHandler;
 import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
+import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -95,10 +96,11 @@ public final class SoloServletListener extends AbstractServletListener {
         final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
         final String os = System.getProperty("os.name");
         final boolean isDocker = Solos.isDocker();
+        final boolean markdownHttpAvailable = Markdowns.MARKDOWN_HTTP_AVAILABLE;
 
         LOGGER.log(Level.INFO, "Solo is booting [ver=" + VERSION + ", servletContainer=" + servletContextEvent.getServletContext().getServerInfo()
-                + ", os=" + os + ", isDocker=" + isDocker + ", pid=" + Solos.currentPID() + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode +
-                ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
+                + ", os=" + os + ", isDocker=" + isDocker + ", markdownHttpAvailable=" + markdownHttpAvailable + ", pid=" + Solos.currentPID()
+                + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode + ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
         validateSkin();
 
