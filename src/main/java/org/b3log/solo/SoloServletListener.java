@@ -94,7 +94,8 @@ public final class SoloServletListener extends AbstractServletListener {
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
         final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
 
-        LOGGER.log(Level.INFO, "Solo is booting [ver=" + VERSION + ", pid=" + Solos.currentPID() + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode +
+        LOGGER.log(Level.INFO, "Solo is booting [ver=" + VERSION + ", servletContainer=" + servletContextEvent.getServletContext().getServerInfo()
+                + ", pid=" + Solos.currentPID() + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode +
                 ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
         validateSkin();
