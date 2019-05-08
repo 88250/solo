@@ -58,7 +58,7 @@ import javax.servlet.http.HttpSessionEvent;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.0.16, Apr 19, 2019
+ * @version 1.11.0.17, May 8, 2019
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -94,7 +94,7 @@ public final class SoloServletListener extends AbstractServletListener {
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
         final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
 
-        LOGGER.log(Level.INFO, "Solo is booting [pid=" + Solos.currentPID() + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode +
+        LOGGER.log(Level.INFO, "Solo is booting [ver=" + VERSION + ", pid=" + Solos.currentPID() + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode +
                 ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
         validateSkin();
