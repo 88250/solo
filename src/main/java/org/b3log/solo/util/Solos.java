@@ -53,7 +53,7 @@ import java.util.ResourceBundle;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.0, May 8, 2019
+ * @version 1.9.0.1, May 9, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -118,26 +118,6 @@ public final class Solos {
         COOKIE_SECRET = cookieSecret;
 
         COOKIE_HTTP_ONLY = Boolean.valueOf(Latkes.getLocalProperty("cookieHttpOnly"));
-    }
-
-    /**
-     * Checks if Solo is running via docker.
-     *
-     * @return {@code true} it is, returns {@code false} otherwise
-     */
-    public static boolean isDocker() {
-        return 1 == currentPID();
-    }
-
-    /**
-     * Gets the current process's id.
-     *
-     * @return the current process's id
-     */
-    public static long currentPID() {
-        final String processName = java.lang.management.ManagementFactory.getRuntimeMXBean().getName();
-
-        return Long.parseLong(processName.split("@")[0]);
     }
 
     /**

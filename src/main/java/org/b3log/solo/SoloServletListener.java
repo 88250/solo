@@ -59,7 +59,7 @@ import javax.servlet.http.HttpSessionEvent;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.0.17, May 8, 2019
+ * @version 1.11.0.18, May 9, 2019
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -94,12 +94,10 @@ public final class SoloServletListener extends AbstractServletListener {
         final Latkes.RuntimeMode runtimeMode = Latkes.getRuntimeMode();
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
         final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
-        final String os = System.getProperty("os.name");
-        final boolean isDocker = Solos.isDocker();
         final boolean markdownHttpAvailable = Markdowns.MARKDOWN_HTTP_AVAILABLE;
 
-        LOGGER.log(Level.INFO, "Solo is booting [ver=" + VERSION + ", servletContainer=" + servletContextEvent.getServletContext().getServerInfo()
-                + ", os=" + os + ", isDocker=" + isDocker + ", markdownHttpAvailable=" + markdownHttpAvailable + ", pid=" + Solos.currentPID()
+        LOGGER.log(Level.INFO, "Solo is booting [ver=" + VERSION + ", servletContainer=" + Latkes.getServletInfo(servletContextEvent.getServletContext())
+                + ", os=" + Latkes.getOperatingSystemName() + ", isDocker=" + Latkes.isDocker() + ", markdownHttpAvailable=" + markdownHttpAvailable + ", pid=" + Latkes.currentPID()
                 + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode + ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
         validateSkin();
