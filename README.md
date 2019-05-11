@@ -44,6 +44,7 @@
 * [思干豆](http://sigandou.com)
 * [DevHyxo](https://blog.devhyxo.top)
 * [EchoCow](https://echocow.cn)
+* [贼拉正经的技术博客](http://blog.stackoverflow.wiki)
 
 ## 功能
 
