@@ -17,6 +17,7 @@
  */
 package org.b3log.solo.processor;
 
+import com.vdurmont.emoji.EmojiParser;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
@@ -43,7 +44,6 @@ import org.b3log.solo.model.rss.Item;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.OptionQueryService;
-import org.b3log.solo.util.Emotions;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +59,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 2.0.0.1, Dec 3, 2018
+ * @version 2.0.0.2, May 15, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -228,12 +228,12 @@ public class FeedProcessor {
         final JSONObject article = articles.getJSONObject(i);
         final Item ret = new Item();
         String title = article.getString(Article.ARTICLE_TITLE);
-        title = Emotions.toAliases(title);
+        title = EmojiParser.parseToAliases(title);
         ret.setTitle(title);
         String description = isFullContent
                 ? article.getString(Article.ARTICLE_CONTENT)
                 : article.optString(Article.ARTICLE_ABSTRACT);
-        description = Emotions.toAliases(description);
+        description = EmojiParser.parseToAliases(description);
         ret.setDescription(description);
         final long pubDate = article.getLong(Article.ARTICLE_UPDATED);
         ret.setPubDate(new Date(pubDate));

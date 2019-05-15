@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.util;
 
-import com.vdurmont.emoji.EmojiParser;
 import org.b3log.latke.Latkes;
 
 import java.util.regex.Pattern;
@@ -26,7 +25,7 @@ import java.util.regex.Pattern;
  * Emotions utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Mar 5, 2019
+ * @version 1.1.0.0, Mar 15, 2019
  * @since 1.4.0
  */
 public final class Emotions {
@@ -35,16 +34,6 @@ public final class Emotions {
      * Emoji pattern.
      */
     public static final Pattern EMOJI_PATTERN = Pattern.compile(":.+:");
-
-    /**
-     * Replaces the emoji's unicode occurrences by one of their alias (between 2 ':'). Example: "😄" gives ":smile:".
-     *
-     * @param content the string to parse
-     * @return the string with the emojis replaced by their alias.
-     */
-    public static String toAliases(final String content) {
-        return EmojiParser.parseToAliases(content, EmojiParser.FitzpatrickAction.IGNORE);
-    }
 
     /**
      * Converts the specified content with emotions.

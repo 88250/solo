@@ -48,7 +48,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.1, Apr 19, 2019
+ * @version 1.4.0.2, May 15, 2019
  * @since 0.3.5
  */
 @Service
@@ -210,8 +210,6 @@ public class CommentMgmtService {
             }
 
             ret.put(Keys.STATUS_CODE, true);
-
-            commentContent = Emotions.toAliases(commentContent);
             requestJSONObject.put(Comment.COMMENT_CONTENT, commentContent);
 
             return ret;
