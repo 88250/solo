@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.2, Apr 19, 2019
+ * @version 1.3.1.3, May 17, 2019
  * @since 0.3.5
  */
 @Service
@@ -278,10 +278,11 @@ public class ArticleMgmtService {
                 page.put(Page.PAGE_TITLE, "我的开源");
                 page.put(Page.PAGE_OPEN_TARGET, "_self");
                 page.put(Page.PAGE_PERMALINK, permalink);
-                page.put(Page.PAGE_ICON, "images/github-icon.png");
+                page.put(Page.PAGE_ICON, "/images/github-icon.png");
                 pageRepository.add(page);
             } else {
                 page.put(Page.PAGE_OPEN_TARGET, "_self");
+                page.put(Page.PAGE_ICON, "/images/github-icon.png");
                 pageRepository.update(page.optString(Keys.OBJECT_ID), page);
             }
             transaction.commit();
