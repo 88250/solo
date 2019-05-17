@@ -39,12 +39,12 @@
 * [liumapp 的个人博客](http://www.liumapp.com)
 * [水星的随笔](https://note.abeffect.com)
 * [1992 社区](https://1992.cool)
-* [何遇](http://littleq.cn)
-* [Relyn](http://relyn.cn)
 * [思干豆](http://sigandou.com)
 * [DevHyxo](https://blog.devhyxo.top)
 * [EchoCow](https://echocow.cn)
 * [贼拉正经的技术博客](http://blog.stackoverflow.wiki)
+* [记录改变生活](https://www.tuhaoxin.cn)
+* [程序员小吴](https://cxyxiaowu.com)
 
 ## 功能
 
