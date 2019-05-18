@@ -51,7 +51,7 @@ import java.util.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.13, Apr 24, 2019
+ * @version 1.3.2.14, May 18, 2019
  * @since 0.3.5
  */
 @Service
@@ -252,9 +252,9 @@ public class ArticleQueryService {
      * @param articleId the given article id
      * @param user      the specified user
      * @return {@code true} if the current user can access the article, {@code false} otherwise
-     * @throws Exception exception
+     * @throws ServiceException service exception
      */
-    public boolean canAccessArticle(final String articleId, final JSONObject user) throws Exception {
+    public boolean canAccessArticle(final String articleId, final JSONObject user) throws ServiceException {
         if (StringUtils.isBlank(articleId)) {
             return false;
         }
@@ -267,10 +267,14 @@ public class ArticleQueryService {
             return true;
         }
 
-        final JSONObject article = articleRepository.get(articleId);
-        final String currentUserId = user.getString(Keys.OBJECT_ID);
+        try {
+            final JSONObject article = articleRepository.get(articleId);
+            final String currentUserId = user.getString(Keys.OBJECT_ID);
 
-        return article.getString(Article.ARTICLE_AUTHOR_ID).equals(currentUserId);
+            return article.getString(Article.ARTICLE_AUTHOR_ID).equals(currentUserId);
+        } catch (final Exception e) {
+            throw new ServiceException(e);
+        }
     }
 
     /**

@@ -49,7 +49,7 @@ import java.util.stream.Collectors;
  * Article console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Mar 29, 2019
+ * @version 1.2.0.2, May 18, 2019
  * @since 0.4.0
  */
 @Singleton
@@ -498,12 +498,10 @@ public class ArticleConsole {
 
             ret.put(Keys.MSG, langPropsService.get("updateSuccLabel"));
             ret.put(Keys.STATUS_CODE, true);
-        } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, e.getMessage(), e);
-
+        } catch (final ServiceException e) {
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
+            jsonObject.put(Keys.MSG, e.getMessage());
         }
     }
 
@@ -560,11 +558,9 @@ public class ArticleConsole {
 
             renderer.setJSONObject(ret);
         } catch (final ServiceException e) {
-            LOGGER.log(Level.ERROR, e.getMessage());
-
             final JSONObject jsonObject = new JSONObject().put(Keys.STATUS_CODE, false);
             renderer.setJSONObject(jsonObject);
-            jsonObject.put(Keys.MSG, langPropsService.get("updateFailLabel"));
+            jsonObject.put(Keys.MSG, e.getMessage());
         }
     }
 }
