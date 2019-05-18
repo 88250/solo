@@ -29,8 +29,10 @@ import org.b3log.latke.servlet.HttpMethod;
 import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.servlet.handler.Handler;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.service.InitService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.PermalinkQueryService;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -41,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
  * Article permalink  handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Apr 18, 2019
+ * @version 1.0.0.2, May 18, 2019
  * @since 3.2.0
  */
 public class PermalinkHandler implements Handler {
@@ -58,9 +60,10 @@ public class PermalinkHandler implements Handler {
 
     @Override
     public void handle(final RequestContext context) {
+        final BeanManager beanManager = BeanManager.getInstance();
+
         JSONObject article;
         try {
-            final BeanManager beanManager = BeanManager.getInstance();
             final InitService initService = beanManager.getReference(InitService.class);
             if (!initService.isInited()) {
                 context.handle();
@@ -104,6 +107,15 @@ public class PermalinkHandler implements Handler {
 
                 return;
             }
+        }
+
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+        final JSONObject preference = optionQueryService.getPreference();
+        final boolean allowVisitDraftViaPermalink = preference.getBoolean(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
+        if (Article.ARTICLE_STATUS_C_PUBLISHED != article.optInt(Article.ARTICLE_STATUS) && !allowVisitDraftViaPermalink) {
+            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+
+            return;
         }
 
         dispatchToArticleProcessor(context, article);

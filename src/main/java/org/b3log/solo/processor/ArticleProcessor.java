@@ -60,7 +60,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.5.6, Apr 18, 2019
+ * @version 1.4.5.7, May 18, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -713,14 +713,6 @@ public class ArticleProcessor {
         final AbstractFreeMarkerRenderer renderer = new SkinRenderer(context, "article.ftl");
 
         try {
-            final JSONObject preference = optionQueryService.getPreference();
-            final boolean allowVisitDraftViaPermalink = preference.getBoolean(Option.ID_C_ALLOW_VISIT_DRAFT_VIA_PERMALINK);
-            if (Article.ARTICLE_STATUS_C_PUBLISHED != article.optInt(Article.ARTICLE_STATUS) && !allowVisitDraftViaPermalink) {
-                context.sendError(HttpServletResponse.SC_NOT_FOUND);
-
-                return;
-            }
-
             LOGGER.log(Level.TRACE, "Article [title={0}]", article.getString(Article.ARTICLE_TITLE));
             articleQueryService.markdown(article);
 
@@ -729,6 +721,7 @@ public class ArticleProcessor {
             // For <meta name="description" content="${article.articleAbstract}"/>
             final String metaDescription = Jsoup.parse(article.optString(Article.ARTICLE_ABSTRACT)).text();
             article.put(Article.ARTICLE_ABSTRACT, metaDescription);
+            final JSONObject preference = optionQueryService.getPreference();
             if (preference.getBoolean(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT)) {
                 article.put(Common.HAS_UPDATED, articleQueryService.hasUpdated(article));
             } else {
