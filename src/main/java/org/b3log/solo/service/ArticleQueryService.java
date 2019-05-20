@@ -51,7 +51,7 @@ import java.util.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.14, May 18, 2019
+ * @version 1.3.2.15, May 20, 2019
  * @since 0.3.5
  */
 @Service
@@ -174,8 +174,7 @@ public class ArticleQueryService {
      * @return result
      * @throws ServiceException service exception
      */
-    public JSONObject getCategoryArticles(final String categoryId,
-                                          final int currentPageNum, final int pageSize) throws ServiceException {
+    public JSONObject getCategoryArticles(final String categoryId, final int currentPageNum, final int pageSize) throws ServiceException {
         final JSONObject ret = new JSONObject();
         ret.put(Keys.RESULTS, (Object) Collections.emptyList());
 
@@ -204,23 +203,20 @@ public class ArticleQueryService {
                 return ret;
             }
 
-            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
-
-            final JSONObject preference = optionQueryService.getPreference();
-            final int windowSize = preference.optInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
-
-            final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
-            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
-            pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
-
             final Set<String> articleIds = new HashSet<>();
             for (int i = 0; i < tagArticles.length(); i++) {
                 articleIds.add(tagArticles.optJSONObject(i).optString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
             }
 
+            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+            final JSONObject preference = optionQueryService.getPreference();
+            final int windowSize = preference.optInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+            final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
+            pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
+            pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
+
             query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-
             final List<JSONObject> articles = new ArrayList<>();
             final JSONArray articleArray = articleRepository.get(query).optJSONArray(Keys.RESULTS);
             for (int i = 0; i < articleArray.length(); i++) {
@@ -233,7 +229,6 @@ public class ArticleQueryService {
                 article.put(Article.ARTICLE_CREATE_TIME, article.optLong(Article.ARTICLE_CREATED));
                 article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.optLong(Article.ARTICLE_CREATED)));
                 article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(Article.ARTICLE_UPDATED)));
-
                 articles.add(article);
             }
             ret.put(Keys.RESULTS, (Object) articles);
@@ -343,9 +338,7 @@ public class ArticleQueryService {
      */
     public JSONObject getSign(final String signId, final JSONObject preference) throws JSONException {
         final JSONArray signs = new JSONArray(preference.getString(Option.ID_C_SIGNS));
-
         JSONObject defaultSign = null;
-
         for (int i = 0; i < signs.length(); i++) {
             final JSONObject ret = signs.getJSONObject(i);
 
@@ -427,9 +420,7 @@ public class ArticleQueryService {
     public JSONObject getArticle(final String articleId) throws ServiceException {
         try {
             final JSONObject ret = new JSONObject();
-
             final JSONObject article = articleRepository.get(articleId);
-
             if (null == article) {
                 return null;
             }
@@ -439,7 +430,6 @@ public class ArticleQueryService {
             // Tags
             final JSONArray tags = new JSONArray();
             final List<JSONObject> tagArticleRelations = tagArticleRepository.getByArticleId(articleId);
-
             for (final JSONObject tagArticleRelation : tagArticleRelations) {
                 final String tagId = tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
@@ -450,9 +440,7 @@ public class ArticleQueryService {
 
             // Signs
             final JSONObject preference = optionQueryService.getPreference();
-
             article.put(Sign.SIGNS, new JSONArray(preference.getString(Option.ID_C_SIGNS)));
-
             // Remove unused properties
             article.remove(Article.ARTICLE_AUTHOR_ID);
             article.remove(Article.ARTICLE_COMMENT_COUNT);
@@ -523,7 +511,6 @@ public class ArticleQueryService {
             } else {
                 query.addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING);
             }
-
             final String keyword = requestJSONObject.optString(Common.KEYWORD);
             if (StringUtils.isBlank(keyword)) {
                 query.setFilter(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus));
@@ -538,7 +525,6 @@ public class ArticleQueryService {
             }
 
             final JSONObject result = articleRepository.get(query);
-
             final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
             final JSONObject pagination = new JSONObject();
             ret.put(Pagination.PAGINATION, pagination);
@@ -583,8 +569,7 @@ public class ArticleQueryService {
      * @return result, returns {@code null} if not found
      * @throws ServiceException service exception
      */
-    public JSONObject getArticlesByTag(final String tagId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public JSONObject getArticlesByTag(final String tagId, final int currentPageNum, final int pageSize) throws ServiceException {
         try {
             JSONObject result = tagArticleRepository.getByTagId(tagId, currentPageNum, pageSize);
             if (null == result) {
@@ -637,8 +622,7 @@ public class ArticleQueryService {
      * @return a list of articles, returns an empty list if not found
      * @throws ServiceException service exception
      */
-    public List<JSONObject> getArticlesByArchiveDate(final String archiveDateId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public List<JSONObject> getArticlesByArchiveDate(final String archiveDateId, final int currentPageNum, final int pageSize) throws ServiceException {
         try {
             JSONObject result = archiveDateArticleRepository.getByArchiveDateId(archiveDateId, currentPageNum, pageSize);
             final JSONArray relations = result.getJSONArray(Keys.RESULTS);
@@ -655,7 +639,6 @@ public class ArticleQueryService {
             }
 
             final List<JSONObject> ret = new ArrayList<>();
-
             final Query query = new Query().setFilter(CompositeFilterOperator.and(
                     new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds),
                     new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
@@ -689,7 +672,6 @@ public class ArticleQueryService {
     public List<JSONObject> getArticlesRandomly(final int fetchSize) throws ServiceException {
         try {
             final List<JSONObject> ret = articleRepository.getRandomly(fetchSize);
-
             removeUnusedProperties(ret);
 
             return ret;
@@ -763,7 +745,6 @@ public class ArticleQueryService {
 
             final List<Integer> randomIntegers = CollectionUtils.getRandomIntegers(0, articles.size() - 1, displayCnt);
             final List<JSONObject> ret = new ArrayList<>();
-
             for (final int index : randomIntegers) {
                 ret.add(articles.get(index));
             }
@@ -854,8 +835,7 @@ public class ArticleQueryService {
      * @return result
      * @throws ServiceException service exception
      */
-    public JSONObject getArticlesByAuthorId(final String authorId, final int currentPageNum, final int pageSize)
-            throws ServiceException {
+    public JSONObject getArticlesByAuthorId(final String authorId, final int currentPageNum, final int pageSize) throws ServiceException {
         try {
             final JSONObject ret = articleRepository.getByAuthorId(authorId, currentPageNum, pageSize);
             final JSONArray articles = ret.getJSONArray(Keys.RESULTS);
