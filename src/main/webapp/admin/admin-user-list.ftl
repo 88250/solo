@@ -24,7 +24,7 @@
 <div class="fn__clear"></div>
 <div class="form form__no-table">
 <div id="userUpdate" class="fn__none form form__no-table">
-    <label for="userNameUpdate">${userName1Label}</label>
+    <label for="userNameUpdate">${userName1Label}<span style="color: #991a1a">${changeUserNameTipLabel}</span></label>
     <input id="userNameUpdate" type="text"/>
     <label for="userURLUpdate">${userURL1Label}</label>
     <input id="userURLUpdate" type="text"/>
