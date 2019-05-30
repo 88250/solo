@@ -44,7 +44,7 @@
                 <li><a target="_blank" href="https://hacpai.com/article/1537690756242">Solo 从设计到实现</a></li>
                 <li><a target="_blank" href="https://hacpai.com/article/1493814851007">皮肤开发指南</a></li>
             </ul>
-            <button class="fn__right" onclick="window.open('https://b3log.org/donate.html')">${sponsorLabel}</button>
+            <button class="fn__right" onclick="window.open('https://hacpai.com/sponsor')">${sponsorLabel}</button>
         </div>
         <span class="fn__clear" /> <br/>
     </div>
