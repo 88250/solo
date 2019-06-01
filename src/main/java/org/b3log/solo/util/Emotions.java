@@ -20,7 +20,9 @@ package org.b3log.solo.util;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
+import org.b3log.solo.SoloServletListener;
 
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -28,10 +30,15 @@ import java.util.regex.Pattern;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.1.1.0, June 1, 2019
+ * @version 1.1.1.0, Jun 1, 2019
  * @since 1.4.0
  */
 public final class Emotions {
+
+    /**
+     * Emoji picture paths.
+     */
+    private static final Set<String> EMOJI_PIC_PATHS = SoloServletListener.getServletContext().getResourcePaths("/images/emoji/");
 
     /**
      * Converts the specified content with emotions.
@@ -46,9 +53,14 @@ public final class Emotions {
         }
 
         ret = toUnicode(ret);
-        String repl = "<img align=\"absmiddle\" alt=\":huaji:\" class=\"emoji\" src=\""
-                + Latkes.getStaticServePath() + "/images/emoji/huaji.gif" + "\" title=\":huaji:\" width=\"20px\" height=\"20px\"></img>";
-        ret = StringUtils.replace(ret, ":huaji:", repl);
+
+        for (final String emojiPic : EMOJI_PIC_PATHS) {
+            final String emojiPicName = StringUtils.substringAfter(emojiPic, "/emoji/");
+            final String emoji = StringUtils.substringBefore(emojiPicName, ".");
+            String repl = "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
+                    + Latkes.getStaticServePath() + "/images/emoji/" + emojiPicName + "\" title=\"" + emoji + "\" width=\"20px\" height=\"20px\"></img>";
+            ret = StringUtils.replace(ret, ":" + emoji + ":", repl);
+        }
 
         return ret;
     }
