@@ -186,7 +186,6 @@ public class CommentQueryService {
                 comment.put(Common.COMMENT_TITLE, title);
 
                 String commentContent = comment.optString(Comment.COMMENT_CONTENT);
-                commentContent = Emotions.convert(commentContent);
                 commentContent = Markdowns.toHTML(commentContent);
                 commentContent = Markdowns.clean(commentContent);
                 comment.put(Comment.COMMENT_CONTENT, commentContent);
@@ -246,7 +245,6 @@ public class CommentQueryService {
                 }
 
                 String commentContent = comment.optString(Comment.COMMENT_CONTENT);
-                commentContent = Emotions.convert(commentContent);
                 commentContent = Markdowns.toHTML(commentContent);
                 commentContent = Markdowns.clean(commentContent);
                 comment.put(Comment.COMMENT_CONTENT, commentContent);

@@ -284,8 +284,7 @@ public class CommentMgmtService {
             ret.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));
             ret.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
             ret.put(Comment.COMMENT_NAME, commentName);
-            String cmtContent = Emotions.convert(commentContent);
-            cmtContent = Markdowns.toHTML(cmtContent);
+            String cmtContent = Markdowns.toHTML(commentContent);
             cmtContent = Markdowns.clean(cmtContent);
             ret.put(Comment.COMMENT_CONTENT, cmtContent);
             ret.put(Comment.COMMENT_URL, commentURL);
