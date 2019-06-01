@@ -19,7 +19,7 @@
  * @fileoverview editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.2.1.0, Apr 13, 2019
+ * @version 1.3.0.0, Jun 1, 2019
  */
 
 admin.editors = {}
@@ -45,7 +45,7 @@ $.extend(SoloEditor.prototype, {
       cache: true,
       tab: '\t',
       hint: {
-        emojiPath: Label.staticServePath + '/js/lib/emojify.js-1.1.0/images/basic'
+        emojiPath: Label.staticServePath + '/images/emoji'
       },
       preview: {
         delay: 500,

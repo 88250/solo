@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.2.0.3, Apr 18, 2019
+ * @version 2.3.0.0, June 1, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -108,8 +108,7 @@ $.extend(Page.prototype, {
         height: 180,
         tab: '\t',
         hint: {
-          emojiPath: Label.staticServePath +
-          '/js/lib/emojify.js-1.1.0/images/basic',
+          emojiPath: Label.staticServePath + '/images/emoji',
         },
         esc: function () {
           $('#soloEditorCancel').click()

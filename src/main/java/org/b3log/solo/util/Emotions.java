@@ -27,7 +27,8 @@ import java.util.regex.Pattern;
  * Emotions utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Jun 1, 2019
+ * @author <a href="http://vanessa.b3log.org">Vanessa</a>
+ * @version 1.1.1.0, June 1, 2019
  * @since 1.4.0
  */
 public final class Emotions {
@@ -46,7 +47,7 @@ public final class Emotions {
 
         ret = toUnicode(ret);
         String repl = "<img align=\"absmiddle\" alt=\":huaji:\" class=\"emoji\" src=\""
-                + Latkes.getStaticServePath() + "/js/lib/emojify.js-1.1.0/images/basic/huaji.gif" + "\" title=\":huaji:\" width=\"20px\" height=\"20px\"></img>";
+                + Latkes.getStaticServePath() + "/images/emoji/huaji.gif" + "\" title=\":huaji:\" width=\"20px\" height=\"20px\"></img>";
         ret = StringUtils.replace(ret, ":huaji:", repl);
 
         return ret;
