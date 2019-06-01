@@ -226,27 +226,6 @@ var Util = {
     }
   },
   /**
-   * @description 替换[emXX] 为图片
-   * @param {String} str 替换字符串
-   * @returns {String} 替换后的字符
-   */
-  replaceEmString: function (str) {
-    var commentSplited = str.split('[em')
-    if (commentSplited.length === 1) {
-      return str
-    }
-
-    str = commentSplited[0]
-    for (var j = 1; j < commentSplited.length; j++) {
-      var key = commentSplited[j].substr(0, 2)
-      str += '<img width=\'20\' src=\'' + Label.staticServePath +
-        '/images/emotions/em' + key + '.png\' alt=\'' +
-        Label['em' + key + 'Label'] + '\' title=\'' +
-        Label['em' + key + 'Label'] + '\'/> ' + commentSplited[j].substr(3)
-    }
-    return str
-  },
-  /**
    * @description 切换到手机版
    * @param {String} skin 切换前的皮肤名称
    */
@@ -325,7 +304,7 @@ var Util = {
   replaceSideEm: function (comments) {
     for (var i = 0; i < comments.length; i++) {
       var $comment = $(comments[i])
-      $comment.html(Util.replaceEmString($comment.html()))
+      $comment.html($comment.html())
     }
   },
   /**

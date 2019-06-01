@@ -47,8 +47,6 @@
     });
     $(document).ready(function () {
         page.load();
-        // emotions
-        page.replaceCommentsEm("#comments .vditor-reset");
         <#nested>
     });
 </script>

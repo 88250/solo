@@ -82,7 +82,7 @@ admin.commentList = {
           var type = 'Article'
           commentsData[i] = {}
           commentsData[i].content = '<div class="vditor-reset">' +
-            Util.replaceEmString(comments[i].commentContent) +
+            comments[i].commentContent +
             '</div><span class=\'table-tag\'> on &nbsp;&nbsp;</span><a href=\'' +
             Label.servePath + comments[i].commentSharpURL +
             '\' target=\'_blank\'>' + comments[i].commentTitle +

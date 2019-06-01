@@ -77,17 +77,6 @@ $.extend(Page.prototype, {
     })
   },
   /*
-   * @description 把评论中的标识替换为图片
-   * @param {Dom} selector
-   */
-  replaceCommentsEm: function (selector) {
-    var $commentContents = $(selector)
-    for (var i = 0; i < $commentContents.length; i++) {
-      var str = $commentContents[i].innerHTML
-      $commentContents[i].innerHTML = Util.replaceEmString(str)
-    }
-  },
-  /*
    * @description 文章加载
    */
   load: function () {
@@ -349,7 +338,7 @@ $.extend(Page.prototype, {
           }
           that.toggleEditor()
           vditor.setValue('')
-          that.addCommentAjax(Util.replaceEmString(result.cmtTpl))
+          that.addCommentAjax(result.cmtTpl)
         },
       })
     } else {

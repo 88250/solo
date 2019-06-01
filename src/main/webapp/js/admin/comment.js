@@ -67,7 +67,7 @@ admin.comment = {
           var hrefHTML = '<a target=\'_blank\' href=\'' + comments[i].commentURL +
             '\'>',
             content = comments[i].commentContent,
-            contentHTML = Util.replaceEmString(content)
+            contentHTML = content
 
           if (comments[i].commentURL === 'http://') {
             hrefHTML = '<a target=\'_blank\'>'
