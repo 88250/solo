@@ -24,10 +24,8 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
-import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
 import org.b3log.solo.model.Option;
-import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.util.Emotions;
@@ -62,7 +60,6 @@ public final class V361_362 {
 
         final BeanManager beanManager = BeanManager.getInstance();
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
-        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
         final CommentRepository commentRepository = beanManager.getReference(CommentRepository.class);
 
         try {
@@ -73,19 +70,6 @@ public final class V361_362 {
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
 
             // 迁移历史表情图片 https://github.com/b3log/solo/issues/12787
-            final List<JSONObject> articles = articleRepository.getList(new Query());
-            for (final JSONObject article : articles) {
-                final String oldContent = article.optString(Article.ARTICLE_CONTENT);
-                String articleContent = oldContent;
-                articleContent = Emotions.convert(articleContent);
-                articleContent = convertEm00(articleContent);
-                if (!StringUtils.equalsIgnoreCase(oldContent, articleContent)) {
-                    article.put(Article.ARTICLE_CONTENT, articleContent);
-                    final String articleId = article.optString(Keys.OBJECT_ID);
-                    articleRepository.update(articleId, article);
-                    LOGGER.log(Level.INFO, "Migrated article [id=" + articleId + "]'s content emoji");
-                }
-            }
             final List<JSONObject> comments = commentRepository.getList(new Query());
             for (final JSONObject comment : comments) {
                 final String oldContent = comment.optString(Comment.COMMENT_CONTENT);
