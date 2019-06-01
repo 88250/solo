@@ -75,19 +75,30 @@ public final class V361_362 {
             // 迁移历史表情图片 https://github.com/b3log/solo/issues/12787
             final List<JSONObject> articles = articleRepository.getList(new Query());
             for (final JSONObject article : articles) {
-                String articleContent = article.optString(Article.ARTICLE_CONTENT);
+                final String oldContent = article.optString(Article.ARTICLE_CONTENT);
+                String articleContent = oldContent;
                 articleContent = Emotions.convert(articleContent);
                 articleContent = convertEm00(articleContent);
-                article.put(Article.ARTICLE_CONTENT, articleContent);
-                articleRepository.update(article.optString(Keys.OBJECT_ID), article);
+                if (!StringUtils.equalsIgnoreCase(oldContent, articleContent)) {
+                    article.put(Article.ARTICLE_CONTENT, articleContent);
+                    final String articleId = article.optString(Keys.OBJECT_ID);
+                    articleRepository.update(articleId, article);
+                    LOGGER.log(Level.INFO, "Migrated article [id=" + articleId + "]'s content emoji");
+                }
             }
             final List<JSONObject> comments = commentRepository.getList(new Query());
             for (final JSONObject comment : comments) {
-                String commentContent = comment.optString(Comment.COMMENT_CONTENT);
+                final String oldContent = comment.optString(Comment.COMMENT_CONTENT);
+                String commentContent = oldContent;
                 commentContent = Emotions.convert(commentContent);
                 commentContent = convertEm00(commentContent);
-                comment.put(Comment.COMMENT_CONTENT, commentContent);
-                commentRepository.update(comment.optString(Keys.OBJECT_ID), comment);
+                if (!StringUtils.equalsIgnoreCase(oldContent, commentContent)) {
+                    comment.put(Comment.COMMENT_CONTENT, commentContent);
+                    final String commentId = comment.optString(Keys.OBJECT_ID);
+                    comment.put(Comment.COMMENT_CONTENT, commentContent);
+                    commentRepository.update(commentId, comment);
+                    LOGGER.log(Level.INFO, "Migrated comment [id=" + commentId + "]'s content emoji");
+                }
             }
 
             transaction.commit();
