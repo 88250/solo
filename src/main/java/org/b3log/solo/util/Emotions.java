@@ -17,6 +17,8 @@
  */
 package org.b3log.solo.util;
 
+import com.vdurmont.emoji.EmojiParser;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 
 import java.util.regex.Pattern;
@@ -25,46 +27,49 @@ import java.util.regex.Pattern;
  * Emotions utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Mar 15, 2019
+ * @version 1.1.0.1, Jun 1, 2019
  * @since 1.4.0
  */
 public final class Emotions {
 
     /**
-     * Emoji pattern.
-     */
-    public static final Pattern EMOJI_PATTERN = Pattern.compile(":.+:");
-
-    /**
      * Converts the specified content with emotions.
-     * <p>
-     * <ol>
-     * <li>Emoji: http://www.emoji-cheat-sheet.com</li>
-     * </ol>
      *
      * @param content the specified content
      * @return converted content
      */
     public static String convert(final String content) {
-        final String staticServePath = Latkes.getStaticServePath();
-
         String ret = content;
-
         if (!EMOJI_PATTERN.matcher(ret).find()) {
             return ret;
         }
 
-        for (final String emojiCode : EMOJIS) {
-            final String emoji = ":" + emojiCode + ":";
-            String repl = "<img align=\"absmiddle\" alt=\"" + emoji + "\" class=\"emoji\" src=\""
-                    + staticServePath + "/js/lib/emojify.js-1.1.0/images/basic/" + emojiCode;
-            final String suffix = "huaji".equals(emojiCode) ? ".gif" : ".png";
-            repl += suffix + "\" title=\"" + emoji + "\" width=\"20px\" height=\"20px\"></img>";
-            ret = ret.replace(emoji, repl);
-        }
+        ret = toUnicode(ret);
+        String repl = "<img align=\"absmiddle\" alt=\":huaji:\" class=\"emoji\" src=\""
+                + Latkes.getStaticServePath() + "/js/lib/emojify.js-1.1.0/images/basic/huaji.gif" + "\" title=\":huaji:\" width=\"20px\" height=\"20px\"></img>";
+        ret = StringUtils.replace(ret, ":huaji:", repl);
 
         return ret;
     }
+
+    /**
+     * Replaces the emoji's alias by its unicode. Example: ":smile:" gives "😄".
+     *
+     * @param content the specified string to parse
+     * @return the string with the mojis replaces by their unicode
+     */
+    private static String toUnicode(final String content) {
+        String ret = EmojiParser.parseToUnicode(content);
+        ret = ret.replace("❤", "❤️");
+        ret = ret.replace("♥", "❤️");
+
+        return ret;
+    }
+
+    /**
+     * Emoji pattern.
+     */
+    private static final Pattern EMOJI_PATTERN = Pattern.compile(":.+:");
 
     /**
      * Emoji list.
