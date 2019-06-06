@@ -48,7 +48,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 1.1.0.18, Mar 27, 2019
+ * @version 1.1.0.19, Jun 6, 2019
  * @since 0.4.0
  */
 @Service
@@ -235,7 +235,7 @@ public class UserMgmtService {
                 oldUser.put(User.USER_ROLE, Role.VISITOR_ROLE);
             }
 
-            userRepository.update(userId, oldUser);
+            userRepository.update(userId, oldUser, User.USER_ROLE);
 
             transaction.commit();
         } catch (final RepositoryException e) {
