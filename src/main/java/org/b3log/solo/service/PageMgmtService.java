@@ -37,7 +37,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.1.0.18, Apr 19, 2019
+ * @version 1.1.0.19, Jun 6, 2019
  * @since 0.4.0
  */
 @Service
@@ -254,8 +254,8 @@ public class PageMgmtService {
             // Swaps
             srcPage.put(Page.PAGE_ORDER, targetPage.getInt(Page.PAGE_ORDER));
             targetPage.put(Page.PAGE_ORDER, srcPageOrder);
-            pageRepository.update(srcPage.getString(Keys.OBJECT_ID), srcPage);
-            pageRepository.update(targetPage.getString(Keys.OBJECT_ID), targetPage);
+            pageRepository.update(srcPage.getString(Keys.OBJECT_ID), srcPage, Page.PAGE_ORDER);
+            pageRepository.update(targetPage.getString(Keys.OBJECT_ID), targetPage, Page.PAGE_ORDER);
             transaction.commit();
         } catch (final Exception e) {
             if (transaction.isActive()) {
