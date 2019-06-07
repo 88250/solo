@@ -37,7 +37,6 @@ import org.b3log.solo.model.*;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.CommentRepository;
 import org.b3log.solo.repository.UserRepository;
-import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,7 +47,7 @@ import java.util.Date;
  * Comment management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.2, May 15, 2019
+ * @version 1.4.0.3, Jun 6, 2019
  * @since 0.3.5
  */
 @Service
@@ -284,8 +283,7 @@ public class CommentMgmtService {
             ret.put(Common.COMMENTABLE, preference.getBoolean(Option.ID_C_COMMENTABLE) && article.getBoolean(Article.ARTICLE_COMMENTABLE));
             ret.put(Common.PERMALINK, article.getString(Article.ARTICLE_PERMALINK));
             ret.put(Comment.COMMENT_NAME, commentName);
-            String cmtContent = Emotions.convert(commentContent);
-            cmtContent = Markdowns.toHTML(cmtContent);
+            String cmtContent = Markdowns.toHTML(commentContent);
             cmtContent = Markdowns.clean(cmtContent);
             ret.put(Comment.COMMENT_CONTENT, cmtContent);
             ret.put(Comment.COMMENT_URL, commentURL);
@@ -374,7 +372,7 @@ public class CommentMgmtService {
         final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt - 1);
-        articleRepository.update(articleId, newArticle);
+        articleRepository.update(articleId, newArticle, Article.ARTICLE_COMMENT_COUNT);
     }
 
     /**

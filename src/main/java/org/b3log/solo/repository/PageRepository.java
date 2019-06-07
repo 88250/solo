@@ -32,7 +32,7 @@ import java.util.List;
  * Page repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Jan 15, 2019
+ * @version 1.0.0.9, Jun 6, 2019
  * @since 0.3.1
  */
 @Repository
@@ -76,8 +76,8 @@ public class PageRepository extends AbstractRepository {
     }
 
     @Override
-    public void update(final String id, final JSONObject page) throws RepositoryException {
-        super.update(id, page);
+    public void update(final String id, final JSONObject page, final String... propertyNames) throws RepositoryException {
+        super.update(id, page, propertyNames);
 
         page.put(Keys.OBJECT_ID, id);
         pageCache.putPage(page);

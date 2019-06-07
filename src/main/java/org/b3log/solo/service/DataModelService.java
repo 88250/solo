@@ -516,7 +516,6 @@ public class DataModelService {
             final List<JSONObject> recentComments = commentRepository.getRecentComments(recentCommentDisplayCnt);
             for (final JSONObject comment : recentComments) {
                 String commentContent = comment.optString(Comment.COMMENT_CONTENT);
-                commentContent = Emotions.convert(commentContent);
                 commentContent = Markdowns.toHTML(commentContent);
                 commentContent = Jsoup.clean(commentContent, Whitelist.relaxed());
                 comment.put(Comment.COMMENT_CONTENT, commentContent);

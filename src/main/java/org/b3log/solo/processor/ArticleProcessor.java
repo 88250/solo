@@ -43,7 +43,6 @@ import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.*;
 import org.b3log.solo.processor.console.ConsoleRenderer;
 import org.b3log.solo.service.*;
-import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
@@ -170,8 +169,7 @@ public class ArticleProcessor {
         }
 
         try {
-            String html = Emotions.convert(markdownText);
-            html = Markdowns.toHTML(html);
+            final String html = Markdowns.toHTML(markdownText);
             result.put(Common.DATA, html);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, e.getMessage(), e);

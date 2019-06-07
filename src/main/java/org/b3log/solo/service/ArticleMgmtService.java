@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.3, May 17, 2019
+ * @version 1.3.1.4, Jun 6, 2019
  * @since 0.3.5
  */
 @Service
@@ -324,7 +324,7 @@ public class ArticleMgmtService {
         final JSONObject newArticle = new JSONObject(article, JSONObject.getNames(article));
         final int commentCnt = article.getInt(Article.ARTICLE_COMMENT_COUNT);
         newArticle.put(Article.ARTICLE_COMMENT_COUNT, commentCnt + 1);
-        articleRepository.update(articleId, newArticle);
+        articleRepository.update(articleId, newArticle, ARTICLE_COMMENT_COUNT);
     }
 
     /**
@@ -339,7 +339,7 @@ public class ArticleMgmtService {
         try {
             final JSONObject article = articleRepository.get(articleId);
             article.put(ARTICLE_STATUS, ARTICLE_STATUS_C_DRAFT);
-            articleRepository.update(articleId, article);
+            articleRepository.update(articleId, article, ARTICLE_STATUS);
 
             transaction.commit();
         } catch (final Exception e) {
@@ -367,7 +367,7 @@ public class ArticleMgmtService {
         try {
             final JSONObject topArticle = articleRepository.get(articleId);
             topArticle.put(ARTICLE_PUT_TOP, top);
-            articleRepository.update(articleId, topArticle);
+            articleRepository.update(articleId, topArticle, ARTICLE_PUT_TOP);
 
             transaction.commit();
         } catch (final Exception e) {
@@ -610,7 +610,7 @@ public class ArticleMgmtService {
             for (final JSONObject article : randomArticles) {
                 article.put(Article.ARTICLE_RANDOM_DOUBLE, Math.random());
 
-                articleRepository.update(article.getString(Keys.OBJECT_ID), article);
+                articleRepository.update(article.getString(Keys.OBJECT_ID), article, ARTICLE_RANDOM_DOUBLE);
             }
 
             transaction.commit();
@@ -650,7 +650,7 @@ public class ArticleMgmtService {
 
         try {
             article.put(Article.ARTICLE_VIEW_COUNT, article.getInt(Article.ARTICLE_VIEW_COUNT) + 1);
-            articleRepository.update(articleId, article);
+            articleRepository.update(articleId, article, ARTICLE_VIEW_COUNT);
 
             transaction.commit();
         } catch (final Exception e) {

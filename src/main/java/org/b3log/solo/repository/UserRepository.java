@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * User repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.2, Mar 2, 2019
+ * @version 1.1.0.3, Jun 6, 2019
  * @since 0.3.1
  */
 @Repository
@@ -74,8 +74,8 @@ public class UserRepository extends AbstractRepository {
     }
 
     @Override
-    public void update(final String id, final JSONObject user) throws RepositoryException {
-        super.update(id, user);
+    public void update(final String id, final JSONObject user, final String... propertyNames) throws RepositoryException {
+        super.update(id, user, propertyNames);
 
         user.put(Keys.OBJECT_ID, id);
         userCache.putUser(user);

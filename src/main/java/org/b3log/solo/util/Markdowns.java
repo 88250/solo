@@ -34,12 +34,18 @@ import org.b3log.latke.util.Stopwatchs;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.parser.Parser;
 import org.jsoup.safety.Whitelist;
+import org.jsoup.select.NodeVisitor;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.*;
@@ -52,7 +58,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.6, Mar 22, 2019
+ * @version 2.3.1.7, Jun 1, 2019
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -201,6 +207,47 @@ public final class Markdowns {
                 }
                 a.removeAttr("id");
             });
+
+
+            final List<Node> toRemove = new ArrayList<>();
+            doc.traverse(new NodeVisitor() {
+                @Override
+                public void head(final org.jsoup.nodes.Node node, int depth) {
+                    if (node instanceof org.jsoup.nodes.TextNode) {
+                        final org.jsoup.nodes.TextNode textNode = (org.jsoup.nodes.TextNode) node;
+                        final org.jsoup.nodes.Node parent = textNode.parent();
+
+                        if (parent instanceof Element) {
+                            final Element parentElem = (Element) parent;
+                            if (parentElem.tagName().equals("code") || parentElem.tagName().equals("pre")) {
+                                return;
+                            }
+
+                            if (parentElem.tagName().equals("span") && StringUtils.startsWithIgnoreCase(parentElem.attr("class"), "hljs")) {
+                                return;
+                            }
+
+                            String text = textNode.getWholeText();
+                            text = Emotions.convert(text);
+                            if (text.contains("@<a href=") || text.contains("<img")) {
+                                final List<org.jsoup.nodes.Node> nodes = Parser.parseFragment(text, parentElem, "");
+                                final int index = textNode.siblingIndex();
+                                parentElem.insertChildren(index, nodes);
+                                toRemove.add(node);
+                            } else {
+                                textNode.text(text);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void tail(org.jsoup.nodes.Node node, int depth) {
+                }
+            });
+
+            toRemove.forEach(Node::remove);
+
             doc.outputSettings().prettyPrint(false);
 
             String ret = doc.select("body").html();

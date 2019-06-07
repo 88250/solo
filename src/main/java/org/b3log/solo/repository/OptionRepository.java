@@ -31,7 +31,7 @@ import java.util.List;
  * Option repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.1, Sep 30, 2018
+ * @version 1.1.0.2, Jun 6, 2019
  * @since 0.6.0
  */
 @Repository
@@ -82,8 +82,8 @@ public class OptionRepository extends AbstractRepository {
     }
 
     @Override
-    public void update(final String id, final JSONObject option) throws RepositoryException {
-        super.update(id, option);
+    public void update(final String id, final JSONObject option, final String... propertyNames) throws RepositoryException {
+        super.update(id, option, propertyNames);
 
         option.put(Keys.OBJECT_ID, id);
         optionCache.putOption(option);
