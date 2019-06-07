@@ -147,7 +147,7 @@ var Util = {
     if ($('.vditor-reset pre > code').length === 0) {
       return
     }
-    Util.addStyle('https://cdn.jsdelivr.net/npm/vditor@1.3.5/dist/js/highlight.js@9.15.6/styles/' +
+    Util.addStyle('https://cdn.jsdelivr.net/npm/vditor@1.5.2/dist/js/highlight.js@9.15.8/styles/' +
       Label.hljsStyle + '.css', 'vditorHljsStyle')
 
     var initHljs = function () {
@@ -158,7 +158,7 @@ var Util = {
     if (!Label.markedAvailable) {
       if (typeof hljs === 'undefined') {
         $.ajax({
-          url: 'https://cdn.jsdelivr.net/npm/vditor@1.3.5/dist/js/highlight.js@9.15.6/highlight.pack.js',
+          url: 'https://cdn.jsdelivr.net/npm/vditor@1.5.2/dist/js/highlight.js@9.15.8/highlight.pack.js',
           dataType: 'script',
           cache: true,
           success: function () {
@@ -182,7 +182,7 @@ var Util = {
       return
     }
 
-    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.3.5/dist/index.min.js',
+    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.5.2/dist/index.min.js',
       'vditorScript')
 
     Vditor.mermaidRender(document.body)
