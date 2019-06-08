@@ -188,8 +188,7 @@ docker pull b3log/solo
 * [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
 * [用户指南](https://hacpai.com/article/1492881378588)
 * [Solo 从设计到实现](https://hacpai.com/article/1537690756242)
-* [贡献指南](https://github.com/b3log/solo/blob/master/CONTRIBUTING.md)
-* [皮肤开发](https://hacpai.com/article/1493814851007)
+* [皮肤开发指南](https://hacpai.com/article/1493814851007)
 * [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
 
 ## 社区
