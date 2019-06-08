@@ -57,11 +57,13 @@ public class UpgradeService {
                 return;
             }
 
-            final String currentVer = preference.getString(Option.ID_C_VERSION);
+            final String currentVer = preference.getString(Option.ID_C_VERSION); // 数据库中的版本
             if (SoloServletListener.VERSION.equals(currentVer)) {
+                // 如果数据库中的版本和运行时版本一致则说明已经是最新版
                 return;
             }
 
+            // 如果版本较老，则调用对应的升级程序进行升级，并贯穿升级下去直到最新版
             switch (currentVer) {
                 case "2.9.9":
                     V299_300.perform();
