@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.processor.console;
 
-import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -41,7 +40,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.2.0.24, Mar 29, 2019
+ * @version 1.2.0.25, Jun 13, 2019
  * @since 0.4.0
  */
 @RequestProcessor
@@ -182,12 +181,6 @@ public class PreferenceConsole {
                 renderer.setJSONObject(new JSONObject().put(Keys.STATUS_CODE, false));
 
                 return;
-            }
-
-            String hljsTheme = preference.optString(Option.ID_C_HLJS_THEME);
-            if (StringUtils.isBlank(hljsTheme)) {  // TODO: 在 v3.5.0 发布后可移除判空
-                hljsTheme = Option.DefaultPreference.DEFAULT_HLJS_THEME;
-                preference.put(Option.ID_C_HLJS_THEME, hljsTheme);
             }
 
             String footerContent = "";

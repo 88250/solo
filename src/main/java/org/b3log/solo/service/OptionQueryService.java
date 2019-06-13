@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * Option query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.3, Dec 3, 2018
+ * @version 1.0.0.4, Jun 13, 2019
  * @since 0.6.0
  */
 @Service
@@ -54,15 +54,7 @@ public class OptionQueryService {
      */
     public JSONObject getSkin() {
         try {
-            JSONObject ret = getOptions(Option.CATEGORY_C_SKIN);
-            if (null == ret) {
-                // TODO: 在 v3.5.0 发布后可移除判空
-                ret = new JSONObject().
-                        put(Option.ID_C_SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME).
-                        put(Option.ID_C_MOBILE_SKIN_DIR_NAME, Option.DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME);
-            }
-
-            return ret;
+            return getOptions(Option.CATEGORY_C_SKIN);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets skin failed", e);
 

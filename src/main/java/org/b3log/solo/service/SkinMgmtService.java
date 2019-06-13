@@ -17,7 +17,6 @@
  */
 package org.b3log.solo.service;
 
-import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -36,7 +35,7 @@ import java.util.Set;
  * Skin management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 29, 2019
+ * @version 1.0.0.1, Jun 13, 2019
  * @since 3.5.0
  */
 @Service
@@ -97,29 +96,12 @@ public class SkinMgmtService {
     public void updateSkin(final JSONObject skin) throws ServiceException {
         final Transaction transaction = optionRepository.beginTransaction();
         try {
-            JSONObject skinDirNameOpt = optionRepository.get(Option.ID_C_SKIN_DIR_NAME);
-            if (null == skinDirNameOpt) {
-                skinDirNameOpt = new JSONObject();
-                skinDirNameOpt.put(Keys.OBJECT_ID, Option.ID_C_SKIN_DIR_NAME);
-                skinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);
-                skinDirNameOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-                optionRepository.add(skinDirNameOpt);
-            }
+            final JSONObject skinDirNameOpt = optionRepository.get(Option.ID_C_SKIN_DIR_NAME);
             skinDirNameOpt.put(Option.OPTION_VALUE, skin.optString(Option.ID_C_SKIN_DIR_NAME));
-            skinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);  // TODO: 在 v3.5.0 发布后可移除
             optionRepository.update(Option.ID_C_SKIN_DIR_NAME, skinDirNameOpt);
 
-            JSONObject mobileSkinDirNameOpt = optionRepository.get(Option.ID_C_MOBILE_SKIN_DIR_NAME);
-            // TODO: 在 v3.5.0 发布后可移除判空
-            if (null == mobileSkinDirNameOpt) {
-                mobileSkinDirNameOpt = new JSONObject();
-                mobileSkinDirNameOpt.put(Keys.OBJECT_ID, Option.ID_C_MOBILE_SKIN_DIR_NAME);
-                mobileSkinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN);
-                mobileSkinDirNameOpt.put(Option.OPTION_VALUE, Option.DefaultPreference.DEFAULT_MOBILE_SKIN_DIR_NAME);
-                optionRepository.add(mobileSkinDirNameOpt);
-            }
+            final JSONObject mobileSkinDirNameOpt = optionRepository.get(Option.ID_C_MOBILE_SKIN_DIR_NAME);
             mobileSkinDirNameOpt.put(Option.OPTION_VALUE, skin.optString(Option.ID_C_MOBILE_SKIN_DIR_NAME));
-            mobileSkinDirNameOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_SKIN); // TODO: 在 v3.5.0 发布后可移除
             optionRepository.update(Option.ID_C_MOBILE_SKIN_DIR_NAME, mobileSkinDirNameOpt);
 
             transaction.commit();
