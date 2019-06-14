@@ -148,7 +148,7 @@ docker pull b3log/solo
       --env JDBC_PASSWORD="123456" \
       --env JDBC_DRIVER="com.mysql.cj.jdbc.Driver" \
       --env JDBC_URL="jdbc:mysql://127.0.0.1:3306/solo?useUnicode=yes&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC" \
-      b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost 
+      b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost --server_port= 
   ```
   为了简单，使用了主机网络模式来连接主机上的 MySQL。
   
@@ -161,14 +161,15 @@ docker pull b3log/solo
       --env JDBC_PASSWORD="123456" \
       --env JDBC_DRIVER="org.h2.Driver" \
       --env JDBC_URL="jdbc:h2:/opt/solo/h2/db;MODE=MYSQL" \
-      b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost 
+      b3log/solo --listen_port=8080 --server_scheme=http --server_host=localhost --server_port= 
   ```
 
 启动参数说明：
 
 * `--listen_port`：进程监听端口
 * `--server_scheme`：最终访问协议，如果反代服务启用了 HTTPS 这里也需要改为 `https`
-* `--server_host`：最终访问域名或公网 IP，不要带端口号
+* `--server_host`：最终访问域名或公网 IP，不要带端口
+* `--server_port`：最终访问端口，使用浏览器默认的 80 或者 443 的话值留空即可
 
 完整启动参数的说明可以使用 `-h` 来查看。
 
