@@ -54,7 +54,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 ## 功能
 
 * Markdown / Emoji
-* [聚合分类](https://github.com/b3log/solo/issues/12256) / 标签
+* [标签聚合分类](https://hacpai.com/article/1558320086126)
 * 自定义导航链接
 * 随机文章 / 相关文章 / 置顶 / 更新提醒
 * 自定义文章永久链接 / 签名档
@@ -69,7 +69,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 * Atom / RSS / Sitemap
 * CDN 静态资源分离
 * [自动同步 GitHub 仓库](https://hacpai.com/article/1557238327458)
-* [内置 HTTPS+CDN 文件存储](https://github.com/b3log/solo/issues/12556)
+* [内置 HTTPS+CDN 文件存储](https://hacpai.com/article/1559928188793)
 
 ## 界面
 
