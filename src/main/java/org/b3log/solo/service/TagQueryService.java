@@ -36,7 +36,7 @@ import java.util.List;
  * Tag query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, Jan 31, 2019
+ * @version 1.1.0.7, Jun 20, 2019
  * @since 0.4.0
  */
 @Service
@@ -134,7 +134,7 @@ public class TagQueryService {
             final List<JSONObject> ret = tagRepository.getList(query);
             for (final JSONObject tag : ret) {
                 final String tagId = tag.optString(Keys.OBJECT_ID);
-                final int articleCount = tagArticleRepository.getArticleCount(tagId);
+                final int articleCount = tagArticleRepository.getPublishedArticleCount(tagId);
                 tag.put(Tag.TAG_T_PUBLISHED_REFERENCE_COUNT, articleCount);
             }
 

@@ -17,7 +17,9 @@
  */
 package org.b3log.solo.repository;
 
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -34,7 +36,7 @@ import java.util.List;
  * Tag-Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.6, Jan 28, 2019
+ * @version 1.1.0.0, Jun 20, 2019
  * @since 0.3.1
  */
 @Repository
@@ -75,7 +77,7 @@ public class TagArticleRepository extends AbstractRepository {
             final String tagId = record.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
             final JSONObject tag = tagRepository.get(tagId);
             if (null != tag) {
-                final int articleCount = getArticleCount(tagId);
+                final int articleCount = getPublishedArticleCount(tagId);
                 tag.put(Tag.TAG_T_PUBLISHED_REFERENCE_COUNT, articleCount);
             }
             ret.add(tag);
@@ -96,6 +98,34 @@ public class TagArticleRepository extends AbstractRepository {
             return (int) count(query);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets tag [" + tagId + "]'s article count failed", e);
+
+            return -1;
+        }
+    }
+
+    /**
+     * Gets published article count of a tag specified by the given tag id.
+     *
+     * @param tagId the given tag id
+     * @return published article count, returns {@code -1} if occurred an exception
+     */
+    public int getPublishedArticleCount(final String tagId) {
+        try {
+            final String tableNamePrefix = StringUtils.isNotBlank(Latkes.getLocalProperty("jdbc.tablePrefix"))
+                    ? Latkes.getLocalProperty("jdbc.tablePrefix") + "_"
+                    : "";
+            final List<JSONObject> result = select("SELECT\n" +
+                    "\tcount(*) AS c\n" +
+                    "FROM\n" +
+                    "\t" + tableNamePrefix + "tag_article AS t,\n" +
+                    "\t" + tableNamePrefix + "article AS a\n" +
+                    "WHERE\n" +
+                    "\tt.article_oId = a.oId\n" +
+                    "AND a.articleStatus = ?\n" +
+                    "AND t.tag_oId = ?", Article.ARTICLE_STATUS_C_PUBLISHED, tagId);
+            return result.get(0).optInt("c");
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Gets tag [" + tagId + "]'s published article count failed", e);
 
             return -1;
         }

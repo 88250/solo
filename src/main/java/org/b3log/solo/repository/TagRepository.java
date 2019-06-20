@@ -31,7 +31,7 @@ import java.util.List;
  * Tag repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jan 28, 2019
+ * @version 1.0.0.5, Jun 20, 2019
  * @since 0.3.1
  */
 @Repository
@@ -88,7 +88,7 @@ public class TagRepository extends AbstractRepository {
         }
 
         final String tagId = ret.optString(Keys.OBJECT_ID);
-        final int articleCount = tagArticleRepository.getArticleCount(tagId);
+        final int articleCount = tagArticleRepository.getPublishedArticleCount(tagId);
         ret.put(Tag.TAG_T_PUBLISHED_REFERENCE_COUNT, articleCount);
 
         return ret;
