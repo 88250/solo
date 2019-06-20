@@ -53,7 +53,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.6, May 7, 2019
+ * @version 1.1.0.7, Jun 20, 2019
  * @since 2.5.0
  */
 @Service
@@ -153,6 +153,7 @@ public class ExportService {
      */
     public void exportGitHubRepo() {
         try {
+            LOGGER.log(Level.INFO, "Github repo syncing....");
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 return;
