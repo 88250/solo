@@ -44,7 +44,6 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 * [liumapp 的个人博客](http://www.liumapp.com)
 * [水星的随笔](https://note.abeffect.com)
 * [1992 社区](https://1992.cool)
-* [思干豆](http://sigandou.com)
 * [DevHyxo](https://blog.devhyxo.top)
 * [EchoCow](https://echocow.cn)
 * [贼拉正经的技术博客](http://blog.stackoverflow.wiki)
