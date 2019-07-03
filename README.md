@@ -202,7 +202,6 @@ docker pull b3log/solo
      * [发布评论](https://hacpai.com/article/1543642913006)
      * [Markdown 渲染](https://hacpai.com/article/1544880962218)
      * [导入 Markdown 文章](https://hacpai.com/article/1547643961141)
-     * [~~邮件推送评论提醒~~](https://hacpai.com/article/1547783770709)
      * 皮肤切换
      * [自动同步 GitHub 仓库](https://hacpai.com/article/1557238327458)
      * [内置 HTTPS + CDN 文件存储](https://hacpai.com/article/1559928188793)
