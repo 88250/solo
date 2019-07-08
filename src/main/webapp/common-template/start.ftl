@@ -42,7 +42,7 @@
         </ul>
     </div>
     <label class="github__check">
-        <input type="checkbox" id="isAgreenCheck">
+        <input type="checkbox" id="isAgreenCheck" checked>
         <span>
             是否愿意在 GitHub 上收藏该<a href="https://github.com/b3log/solo" target="_blank">项目</a>、关注<a href="https://github.com/88250" target="_blank">开发者</a>并加入 <a href="https://github.com/b3log" target="_blank">B3log 开源组织</a>
         </span>
