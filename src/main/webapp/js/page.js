@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.0.0, Jun 1, 2019
+ * @version 2.4.0.0, Jul 11, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -102,7 +102,53 @@ $.extend(Page.prototype, {
 
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
-      Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.5.12/dist/index.min.js', 'vditorScript')
+      Util.addScript(
+        'https://cdn.jsdelivr.net/npm/vditor@1.5.12/dist/index.min.js',
+        'vditorScript')
+      var toolbar = [
+        'emoji',
+        'headings',
+        'bold',
+        'italic',
+        'strike',
+        '|',
+        'line',
+        'quote',
+        '|',
+        'list',
+        'ordered-list',
+        'check',
+        '|',
+        'code',
+        'inline-code',
+        '|',
+        'undo',
+        'redo',
+        '|',
+        'link',
+        'table',
+        '|',
+        'preview',
+        'fullscreen',
+        'info',
+        'help',
+      ], resizeEnable = true
+      if ($(window).width() < 768) {
+        toolbar = [
+          'emoji',
+          'line',
+          'quote',
+          'list',
+          'ordered-list',
+          'check',
+          'link',
+          'preview',
+          'info',
+          'help',
+        ]
+        resizeEnable = false
+      }
+
       window.vditor = new Vditor('soloEditorComment', {
         placeholder: that.tips.commentContentCannotEmptyLabel,
         height: 180,
@@ -133,57 +179,30 @@ $.extend(Page.prototype, {
         },
         counter: 500,
         resize: {
-          enable: true,
+          enable: resizeEnable,
           position: 'top',
-          after: function () {
-            $('body').css('padding-bottom', $('#soloEditor').outerHeight())
-          },
         },
         lang: Label.langLabel,
-        toolbar: [
-          'emoji',
-          'headings',
-          'bold',
-          'italic',
-          'strike',
-          '|',
-          'line',
-          'quote',
-          '|',
-          'list',
-          'ordered-list',
-          'check',
-          '|',
-          'code',
-          'inline-code',
-          '|',
-          'undo',
-          'redo',
-          '|',
-          'link',
-          'table',
-          '|',
-          'preview',
-          'fullscreen',
-          'info',
-          'help',
-        ],
+        toolbar: toolbar,
       })
       vditor.focus()
     }
 
-    if ($('body').css('padding-bottom') === '0px' || commentId) {
+    if ($editor.css('bottom') === '-300px' || commentId) {
       $('#soloEditorError').text('')
-      $editor.css({'bottom': '0', 'opacity': 1})
-      $('body').css('padding-bottom', '238px')
+      if ($(window).width() < 768) {
+        $editor.css({'top': '0', 'bottom': 'auto', 'opacity': 1})
+      } else {
+        $editor.css({'bottom': '0', top: 'auto', 'opacity': 1})
+      }
+
       this.currentCommentId = commentId
       $('#soloEditorReplyTarget').text(name ? '@' + name : '')
       if (typeof vditor !== 'undefined') {
         vditor.focus()
       }
     } else {
-      $editor.css({'bottom': '-300px', 'opacity': 0})
-      $('body').css('padding-bottom', 0)
+      $editor.css({'bottom': '-300px', top: 'auto', 'opacity': 0})
     }
   },
   /*
@@ -267,8 +286,8 @@ $.extend(Page.prototype, {
     try {
       $.ajax({
         url: 'https://rhythm.b3log.org/get-articles-by-tags.do?tags=' + tags
-        + '&blogHost=' + tips.blogHost + '&paginationPageSize=' +
-        tips.externalRelevantArticlesDisplayCount,
+          + '&blogHost=' + tips.blogHost + '&paginationPageSize=' +
+          tips.externalRelevantArticlesDisplayCount,
         type: 'GET',
         cache: true,
         dataType: 'jsonp',
