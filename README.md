@@ -172,6 +172,22 @@ docker pull b3log/solo
 
 完整启动参数的说明可以使用 `-h` 来查看。
 
+日志配置：
+
+默认通过 log4j 将日志打印到标准输出流，可以通过 `docker logs solo` 进行查看。如果需要覆盖 log4j 配置，可通过挂载文件实现：
+
+```shell
+--volume log4j.properties:/opt/solo/WEB-INF/classes/log4j.properties
+```
+
+皮肤配置：
+
+如果要使用其他皮肤，可挂载目录：
+ 
+```shell
+--volume skins/:/opt/solo/skins/
+``` 
+
 ### Docker 升级
 
 1. 拉取最新镜像
