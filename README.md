@@ -182,7 +182,7 @@ docker pull b3log/solo
 
 皮肤配置：
 
-如果要使用其他皮肤，可挂载目录：
+如果要使用其他皮肤，可挂载目录 skins（里面需要包含所需使用的所有皮肤，官方所有皮肤可从[这里](https://github.com/b3log/solo-skins)下载）：
  
 ```shell
 --volume skins/:/opt/solo/skins/
