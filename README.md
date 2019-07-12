@@ -128,7 +128,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 **请注意**：我们不建议通过 war 发布包或者源码构建部署，因为这样的部署方式在将来有新版本发布时升级会比较麻烦。
 这两种方式请仅用于本地试用，线上生产环境建议通过 Docker 部署。
 
-### Docker 部署
+### Docker 部署（推荐方案）
 
 #### 获取最新镜像
 
@@ -190,7 +190,7 @@ docker pull b3log/solo
 --volume skins/:/opt/solo/skins/
 ``` 
 
-#### 升级方案
+#### 版本升级
 
 1. 拉取最新镜像
 2. 重启容器
@@ -270,7 +270,7 @@ Solo 使用 [GNU Affero General Public License, Version 3](https://www.gnu.org/l
 
 ---
 
-## 开源项目推荐
+## 👍 开源项目推荐
 
 * 如果你需要搭建一个多用户博客平台，可以考虑使用 [Pipe](https://github.com/b3log/pipe)
 * 如果你需要搭建一个社区平台，可以考虑使用 [Sym](https://github.com/b3log/symphony)
