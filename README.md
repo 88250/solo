@@ -130,11 +130,13 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 
 ### Docker 部署
 
-获取最新镜像：
+#### 获取最新镜像
 
 ```shell
 docker pull b3log/solo
 ```
+
+#### 启动容器
 
 * 使用 MySQL
 
@@ -172,7 +174,7 @@ docker pull b3log/solo
 
 完整启动参数的说明可以使用 `-h` 来查看。
 
-日志配置：
+#### 日志配置
 
 默认通过 log4j 将日志打印到标准输出流，可以通过 `docker logs solo` 进行查看。如果需要覆盖 log4j 配置，可通过挂载文件实现：
 
@@ -180,7 +182,7 @@ docker pull b3log/solo
 --volume log4j.properties:/opt/solo/WEB-INF/classes/log4j.properties
 ```
 
-皮肤配置：
+#### 皮肤配置
 
 如果要使用其他皮肤，可挂载目录 skins（里面需要包含所需使用的所有皮肤，官方所有皮肤可从[这里](https://github.com/b3log/solo-skins)下载）：
  
@@ -188,14 +190,14 @@ docker pull b3log/solo
 --volume skins/:/opt/solo/skins/
 ``` 
 
-### Docker 升级
+#### 升级方案
 
 1. 拉取最新镜像
 2. 重启容器
 
 可参考[这里](https://github.com/b3log/solo/blob/master/scripts/docker-restart.sh)编写一个重启脚本，并通过 crontab 每日凌晨运行来实现自动更新。
 
-### Docker Compose
+#### Docker Compose
 
 请参考[这里](https://github.com/liumapp/solo-in-docker)，感谢 [@liumapp](https://github.com/liumapp) 提供 :heart:
 
