@@ -25,7 +25,7 @@
 <a title="Author GitHub Followers" target="_blank" href="https://github.com/88250"><img src="https://img.shields.io/github/followers/88250.svg?label=Followers&style=social"></a>
 </p>
 
-## 简介
+## 💡 简介
 
 [Solo](https://github.com/b3log/solo) 是一款小而美的开源博客系统，专为程序员设计。
 
@@ -34,7 +34,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 > 这是一种全新的网络社区体验，让热爱记录和分享的你不再感到孤单！\
 > 具体细节请浏览 [B3log 构思](https://hacpai.com/article/1546941897596)
 
-## 案例
+## 🗃 案例
 
 * [D 的个人博客](https://88250.b3log.org)
 * [Jiahao.Zhang's Blog](https://blog.hduzplus.xyz)
@@ -50,7 +50,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 * [记录改变生活](https://www.tuhaoxin.cn)
 * [程序员小吴](https://cxyxiaowu.com)
 
-## 功能
+## ✨  功能
 
 * Markdown / Emoji
 * [标签聚合分类](https://hacpai.com/article/1558320086126)
@@ -70,7 +70,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 * [自动同步 GitHub 仓库](https://hacpai.com/article/1557238327458)
 * [内置 HTTPS+CDN 文件存储](https://hacpai.com/article/1559928188793)
 
-## 界面
+## 🎨 界面
 
 ### 开始使用
 
@@ -92,7 +92,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 
 ![pinghsu](https://user-images.githubusercontent.com/970828/56885233-875e6c00-6a9e-11e9-88de-4551d955e8b6.png)
 
-## 皮肤
+## 🍱 皮肤
 
 * [9IPHP](https://88250.b3log.org/?skin=9IPHP)
 * [Andrea](https://88250.b3log.org/?skin=Andrea)
@@ -114,7 +114,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 * [tree-house](https://88250.b3log.org/?skin=tree-house)
 * [yilia](https://88250.b3log.org/?skin=yilia)
 
-## 安装
+## 🛠️ 安装
 
 ### 本地试用
 
@@ -201,7 +201,7 @@ docker pull b3log/solo
 
 请参考[这里](https://github.com/liumapp/solo-in-docker)，感谢 [@liumapp](https://github.com/liumapp) 提供 :heart:
 
-## 文档
+## 📜 文档
 
 * [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
 * [用户指南](https://hacpai.com/article/1492881378588)
@@ -248,16 +248,16 @@ docker pull b3log/solo
 * [皮肤开发指南](https://hacpai.com/article/1493814851007)
 * [插件开发](https://docs.google.com/document/pub?id=15H7Q3EBo-44v61Xp_epiYY7vK_gPJLkQaT7T1gkE64w&pli=1)
 
-## 社区
+## 🏘️ 社区
 
 * [讨论区](https://hacpai.com/tag/solo)
 * [报告问题](https://github.com/b3log/solo/issues/new/choose)
 
-## 授权
+## 📄 授权
 
 Solo 使用 [GNU Affero General Public License, Version 3](https://www.gnu.org/licenses/agpl-3.0.txt) 开源协议。
 
-## 鸣谢
+## 🙏 鸣谢
 
 * [jQuery](https://github.com/jquery/jquery)：前端 JavaScript 工具库
 * [Vditor](https://github.com/b3log/vditor)： 浏览器端的 Markdown 编辑器
