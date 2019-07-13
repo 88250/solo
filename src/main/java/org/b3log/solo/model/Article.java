@@ -186,12 +186,12 @@ public final class Article {
     /**
      * Width of article first image.
      */
-    public static final int ARTICLE_THUMB_IMG_WIDTH = 768;
+    public static final int ARTICLE_THUMB_IMG_WIDTH = 1280;
 
     /**
      * Height of article first image.
      */
-    public static final int ARTICLE_THUMB_IMG_HEIGHT = 432;
+    public static final int ARTICLE_THUMB_IMG_HEIGHT = 720;
 
     /**
      * Private constructor.
