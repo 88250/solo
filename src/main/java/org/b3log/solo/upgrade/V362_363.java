@@ -17,13 +17,21 @@
  */
 package org.b3log.solo.upgrade;
 
+import org.apache.commons.lang.StringUtils;
+import org.b3log.latke.Keys;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.Transaction;
+import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.repository.OptionRepository;
+import org.b3log.solo.util.Images;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Upgrade script from v3.6.2 to v3.6.3.
@@ -52,6 +60,7 @@ public final class V362_363 {
 
         final BeanManager beanManager = BeanManager.getInstance();
         final OptionRepository optionRepository = beanManager.getReference(OptionRepository.class);
+        final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
 
         try {
             final Transaction transaction = optionRepository.beginTransaction();
@@ -59,6 +68,20 @@ public final class V362_363 {
             final JSONObject versionOpt = optionRepository.get(Option.ID_C_VERSION);
             versionOpt.put(Option.OPTION_VALUE, toVer);
             optionRepository.update(Option.ID_C_VERSION, versionOpt);
+
+            // 提升文章首图精度
+            final List<JSONObject> articles = articleRepository.getList(new Query());
+            for (final JSONObject article : articles) {
+                String imgURL = article.optString(Article.ARTICLE_IMG1_URL);
+                if (StringUtils.isBlank(imgURL)) {
+                    imgURL = Images.imageSize(Images.randImage(), Article.ARTICLE_THUMB_IMG_WIDTH, Article.ARTICLE_THUMB_IMG_HEIGHT);
+                } else {
+                    imgURL = StringUtils.replace(imgURL, "/w/768", "/w/" + Article.ARTICLE_THUMB_IMG_WIDTH);
+                    imgURL = StringUtils.replace(imgURL, "/h/432", "/h/" + Article.ARTICLE_THUMB_IMG_HEIGHT);
+                }
+                article.put(Article.ARTICLE_IMG1_URL, imgURL);
+                articleRepository.update(article.optString(Keys.OBJECT_ID), article);
+            }
 
             transaction.commit();
 
