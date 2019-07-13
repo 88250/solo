@@ -43,7 +43,7 @@ import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -54,7 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.8, Mar 27, 2019
+ * @version 1.0.1.0, Jul 13, 2019
  * @since 2.9.5
  */
 @RequestProcessor
@@ -68,7 +68,7 @@ public class OAuthProcessor {
     /**
      * OAuth parameters - state.
      */
-    private static final Map<String, String> STATES = new ConcurrentHashMap<>();
+    private static final Set<String> STATES = ConcurrentHashMap.newKeySet();
 
     /**
      * Option query service.
@@ -138,11 +138,10 @@ public class OAuthProcessor {
             referer = Latkes.getServePath();
         }
         final String cb = Latkes.getServePath() + "/oauth/github";
-        final String state = referer + ":::" + RandomStringUtils.randomAlphanumeric(16) + ":::cb=" + cb + ":::";
-        STATES.put(state, URLs.encode(state));
+        String state = referer + ":::" + RandomStringUtils.randomAlphanumeric(16) + ":::cb=" + cb + ":::";
+        STATES.add(state);
 
-        final String path = loginAuthURL + "?client_id=" + clientId + "&state=" + state
-                + "&scope=public_repo,read:user,user:follow";
+        final String path = loginAuthURL + "?client_id=" + clientId + "&state=" + URLs.encode(state) + "&scope=public_repo,read:user,user:follow";
 
         context.sendRedirect(path);
     }
@@ -154,15 +153,14 @@ public class OAuthProcessor {
      */
     @RequestProcessing(value = "/oauth/github", method = HttpMethod.GET)
     public synchronized void authCallback(final RequestContext context) {
-        final String state = context.param("state");
-        String referer = STATES.get(state);
-        if (StringUtils.isBlank(referer)) {
+        String state = context.param("state");
+        if (!STATES.contains(state)) {
             context.sendError(HttpServletResponse.SC_BAD_REQUEST);
 
             return;
         }
         STATES.remove(state);
-        referer = URLs.decode(referer);
+        final String referer = URLs.decode(state);
         final String accessToken = context.param("ak");
         final JSONObject userInfo = GitHubs.getGitHubUserInfo(accessToken);
         if (null == userInfo) {
