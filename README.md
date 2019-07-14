@@ -104,26 +104,30 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 
 ## 🍱 皮肤
 
-* Bubble [下载](https://github.com/b3log/solo-skins/tree/master/Bubble) [预览](https://88250.b3log.org/?skin=Bubble)
-* Casper [下载](https://github.com/b3log/solo-skins/tree/master/Casper) [预览](https://88250.b3log.org/?skin=Casper)
-* Pinghsu [下载](https://github.com/b3log/solo-skins/tree/master/Pinghsu) [预览](https://88250.b3log.org/?skin=Pinghsu)
-* Jane [下载](https://github.com/b3log/solo-skins/tree/master/Jane) [预览](https://88250.b3log.org/?skin=Jane)
-* nijigen [下载](https://github.com/b3log/solo-skins/tree/master/nijigen) [预览](https://88250.b3log.org/?skin=nijigen)
-* Medium [下载](https://github.com/b3log/solo-skins/tree/master/Medium) [预览](https://88250.b3log.org/?skin=Medium)
-* 9IPHP [下载](https://github.com/b3log/solo-skins/tree/master/9IPHP) [预览](https://88250.b3log.org/?skin=9IPHP)
-* Andrea [下载](https://github.com/b3log/solo-skins/tree/master/Andrea) [预览](https://88250.b3log.org/?skin=Andrea)
-* Bruce [下载](https://github.com/b3log/solo-skins/tree/master/Bruce) [预览](https://88250.b3log.org/?skin=Bruce)
-* Community [下载](https://github.com/b3log/solo-skins/tree/master/Community) [预览](https://88250.b3log.org/?skin=Community)
-* favourite [下载](https://github.com/b3log/solo-skins/tree/master/favourite) [预览](https://88250.b3log.org/?skin=favourite)
-* Finding [下载](https://github.com/b3log/solo-skins/tree/master/Finding) [预览](https://88250.b3log.org/?skin=Finding)
-* i-nove [下载](https://github.com/b3log/solo-skins/tree/master/i-nove) [预览](https://88250.b3log.org/?skin=i-nove)
-* metro-hot [下载](https://github.com/b3log/solo-skins/tree/master/metro-hot) [预览](https://88250.b3log.org/?skin=metro-hot)
-* NeoEase [下载](https://github.com/b3log/solo-skins/tree/master/NeoEase) [预览](https://88250.b3log.org/?skin=NeoEase)
-* next [下载](https://github.com/b3log/solo-skins/tree/master/next) [预览](https://88250.b3log.org/?skin=next)
-* owmx-3.0 [下载](https://github.com/b3log/solo-skins/tree/master/owmx-3.0) [预览](https://88250.b3log.org/?skin=owmx-3.0)
-* timeline [下载](https://github.com/b3log/solo-skins/tree/master/timeline) [预览](https://88250.b3log.org/?skin=timeline)
-* tree-house [下载](https://github.com/b3log/solo-skins/tree/master/tree-house) [预览](https://88250.b3log.org/?skin=tree-house)
-* yilia [下载](https://github.com/b3log/solo-skins/tree/master/yilia) [预览](https://88250.b3log.org/?skin=yilia)
+目前内置的皮肤如下，可点击进行预览：
+
+* [Bubble](https://88250.b3log.org/?skin=Bubble)
+* [Casper](https://88250.b3log.org/?skin=Casper)
+* [Pinghsu](https://88250.b3log.org/?skin=Pinghsu)
+* [Jane](https://88250.b3log.org/?skin=Jane)
+* [nijigen](https://88250.b3log.org/?skin=nijigen)
+* [Medium](https://88250.b3log.org/?skin=Medium)
+* [9IPHP](https://88250.b3log.org/?skin=9IPHP)
+* [Andrea](https://88250.b3log.org/?skin=Andrea)
+* [Bruce](https://88250.b3log.org/?skin=Bruce)
+* [Community](https://88250.b3log.org/?skin=Community)
+* [favourite](https://88250.b3log.org/?skin=favourite)
+* [Finding](https://88250.b3log.org/?skin=Finding)
+* [i-nove](https://88250.b3log.org/?skin=i-nove)
+* [metro-hot](https://88250.b3log.org/?skin=metro-hot)
+* [NeoEase](https://88250.b3log.org/?skin=NeoEase)
+* [next](https://88250.b3log.org/?skin=next)
+* [owmx-3.0](https://88250.b3log.org/?skin=owmx-3.0)
+* [timeline](https://88250.b3log.org/?skin=timeline)
+* [tree-house](https://88250.b3log.org/?skin=tree-house)
+* [yilia](https://88250.b3log.org/?skin=yilia)
+
+欢迎在[该 issue 下](https://github.com/b3log/solo/issues/12449)推荐好看的皮肤，我们会尽量进行制作。
 
 ## 🛠️ 安装
 
