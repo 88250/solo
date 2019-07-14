@@ -90,7 +90,17 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 
 ### 前台界面
 
-![pinghsu](https://user-images.githubusercontent.com/970828/56885233-875e6c00-6a9e-11e9-88de-4551d955e8b6.png)
+![Bubble](https://user-images.githubusercontent.com/970828/61182950-2ee64600-a66d-11e9-80d6-676ead6933d9.png)
+
+![Casper](https://user-images.githubusercontent.com/970828/61182781-d6ae4480-a66a-11e9-84b3-8db55039caa0.png)
+
+![pinghsu](https://user-images.githubusercontent.com/970828/61182902-86d07d00-a66c-11e9-980a-e75fc6624f98.png)
+
+![Jane](https://user-images.githubusercontent.com/970828/61182948-25f57480-a66d-11e9-9e33-ded3b7ca87f2.png)
+
+![nijigen](https://user-images.githubusercontent.com/970828/61182986-e67b5800-a66d-11e9-8dae-7cd94cc16e83.png)
+
+![timeline](https://user-images.githubusercontent.com/970828/61183026-699cae00-a66e-11e9-9bba-ffff2a264a5d.png)
 
 ## 🍱 皮肤
 
