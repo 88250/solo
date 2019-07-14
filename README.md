@@ -74,7 +74,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 
 ### 开始使用
 
-![start](https://user-images.githubusercontent.com/970828/56885783-df49a280-6a9f-11e9-8f52-bc37fcb03bc5.png)
+![start](https://user-images.githubusercontent.com/970828/61179568-96819e80-a637-11e9-8f73-5188d99ba454.png)
 
 ### 后台首页
 
@@ -86,7 +86,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 
 ### 选择皮肤
 
-![skins](https://user-images.githubusercontent.com/970828/56886476-ad394000-6aa1-11e9-8a27-abaa22b9996b.png)
+![skins](https://user-images.githubusercontent.com/970828/61179517-afd61b00-a636-11e9-87d5-ddea6d6a0fc9.png)
 
 ### 前台界面
 
