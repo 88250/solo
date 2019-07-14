@@ -127,7 +127,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 * [tree-house](https://88250.b3log.org/?skin=tree-house)
 * [yilia](https://88250.b3log.org/?skin=yilia)
 
-欢迎在[该 issue 下](https://github.com/b3log/solo/issues/12449)推荐好看的皮肤，我们会尽量进行制作。
+欢迎在[该 issue](https://github.com/b3log/solo/issues/12449) 下推荐好看的皮肤，我们会尽量进行制作。
 
 ## 🛠️ 安装
 
