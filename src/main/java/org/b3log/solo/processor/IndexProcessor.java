@@ -33,6 +33,7 @@ import org.b3log.latke.servlet.annotation.RequestProcessor;
 import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.latke.util.Paginator;
+import org.b3log.latke.util.URLs;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -56,7 +57,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @author <a href="https://vanessa.b3log.org">Vanessa</a>
- * @version 1.2.4.16, Mar 19, 2019
+ * @version 1.2.4.17, Jul 17, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -183,7 +184,7 @@ public class IndexProcessor {
         dataModel.put(Common.VERSION, SoloServletListener.VERSION);
         dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
         dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
-        dataModel.put(Common.REFERER, referer);
+        dataModel.put(Common.REFERER, URLs.encode(referer));
         Keys.fillRuntime(dataModel);
         dataModelService.fillMinified(dataModel);
         dataModelService.fillFaviconURL(dataModel, optionQueryService.getPreference());
