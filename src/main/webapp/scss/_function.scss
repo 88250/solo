@@ -19,19 +19,22 @@
  * Function and font text style
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</ta>
- * @version 0.2.0.1, Mar 20, 2019
+ * @version 0.3.0.0, Jul 17, 2019
  */
 
 .fn {
   &__flex {
     display: flex;
+
     &-center {
       align-self: center;
     }
+
     &-inline {
       display: inline-flex;
       align-items: center;
     }
+
     &-1 {
       flex: 1;
       min-width: 1px;
@@ -83,6 +86,11 @@
 }
 
 .ft {
+
+  &__green {
+    color: #569e3d;
+  }
+
   &__13 {
     font-size: 13px;
   }
