@@ -68,6 +68,7 @@ button,
   height: auto;
   outline: none;
   line-height: 18px;
+
   &.small {
     padding: 3px 6px;
     font-size: 12px;
@@ -579,6 +580,7 @@ button#submitArticle:hover {
   line-height: 24px;
   margin: 10px;
   text-align: center;
+
   button:first-child {
     margin-left: 10px;
   }
@@ -636,8 +638,14 @@ button#submitArticle:hover {
   text-decoration: underline;
 }
 
-.ft__fade {
-  color: rgba(0,0,0,.38)
+.ft {
+  &__fade {
+    color: rgba(0, 0, 0, .38)
+  }
+
+  &__green {
+    color: #569e3d;
+  }
 }
 
 /* end about */
