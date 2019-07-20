@@ -194,7 +194,7 @@ docker pull b3log/solo
 默认通过 log4j 将日志打印到标准输出流，可以通过 `docker logs solo` 进行查看。如果需要覆盖 log4j 配置，可通过挂载文件实现：
 
 ```shell
---volume log4j.properties:/opt/solo/WEB-INF/classes/log4j.properties
+--volume ~/log4j.properties:/opt/solo/WEB-INF/classes/log4j.properties
 ```
 
 #### 皮肤配置
