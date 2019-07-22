@@ -51,7 +51,7 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.4, Mar 29, 2019
+ * @version 1.1.3.5, Jul 22, 2019
  * @since 2.0.0
  */
 @RequestProcessor
@@ -254,7 +254,7 @@ public class CategoryConsole {
         try {
             final JSONObject requestJSON = context.requestJSON();
             String tagsStr = requestJSON.optString(Category.CATEGORY_T_TAGS);
-            tagsStr = Tag.formatTags(tagsStr);
+            tagsStr = Tag.formatTags(tagsStr, 64);
             if (StringUtils.isBlank(tagsStr)) {
                 throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
             }
@@ -386,7 +386,7 @@ public class CategoryConsole {
         try {
             final JSONObject requestJSONObject = context.requestJSON();
             String tagsStr = requestJSONObject.optString(Category.CATEGORY_T_TAGS);
-            tagsStr = Tag.formatTags(tagsStr);
+            tagsStr = Tag.formatTags(tagsStr, 64);
             if (StringUtils.isBlank(tagsStr)) {
                 throw new ServiceException(langPropsService.get("tagsEmptyLabel"));
             }

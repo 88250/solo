@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
  * This class defines all tag model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.3, Jun 26, 2019
+ * @version 1.1.0.4, Jul 22, 2019
  */
 public final class Tag {
 
@@ -64,11 +64,6 @@ public final class Tag {
     public static final Pattern TAG_TITLE_PATTERN = Pattern.compile(TAG_TITLE_PATTERN_STR);
 
     /**
-     * Max tag count.
-     */
-    public static final int MAX_TAG_COUNT = 4;
-
-    /**
      * Max length of a tag.
      */
     public static final int MAX_LENGTH = 16;
@@ -80,10 +75,11 @@ public final class Tag {
      * <li>Deduplication</li>
      * </ul>
      *
-     * @param tagStr the specified tags
+     * @param tagStr      the specified tags
+     * @param maxTagCount the specified max tag count
      * @return formatted tags string
      */
-    public static String formatTags(final String tagStr) {
+    public static String formatTags(final String tagStr, final int maxTagCount) {
         final String tagStr1 = tagStr.replaceAll("\\s+", "").replaceAll("，", ",").replaceAll("、", ",").
                 replaceAll("；", ",").replaceAll(";", ",");
         String[] tagTitles = tagStr1.split(",");
@@ -119,7 +115,7 @@ public final class Tag {
             tagsBuilder.append(title).append(",");
             count++;
 
-            if (count >= MAX_TAG_COUNT) {
+            if (maxTagCount <= count) {
                 break;
             }
         }
