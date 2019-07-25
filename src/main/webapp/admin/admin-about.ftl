@@ -64,7 +64,7 @@
         <a href="https://github.com/b3log/vditor">Vditor</a>、
         <a href="https://github.com/b3log/gulu">Gulu</a>&nbsp;等一系列开源项目。随着项目规模的增长，我们需要有相应的资金支持才能持续项目的维护和开发。
         <br/> <br/>
-        如果你觉得 Sol 还算好用，可通过支付宝对我们进行赞助，谢谢 🙏
+        如果你觉得 Solo 还算好用，可通过支付宝对我们进行赞助，谢谢 🙏
         <br/> <br/>
         <div class="ft__center">
             <button class="fn__flex-inline" onclick="window.open('https://hacpai.com/sponsor')">
