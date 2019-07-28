@@ -31,9 +31,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
-import org.b3log.latke.repository.Query;
-import org.b3log.latke.repository.Repository;
-import org.b3log.latke.repository.SortDirection;
+import org.b3log.latke.repository.*;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.SoloServletListener;
@@ -53,7 +51,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.7, Jun 20, 2019
+ * @version 1.1.1.0, Jul 29, 2019
  * @since 2.5.0
  */
 @Service
@@ -198,9 +196,10 @@ public class ExportService {
             final String clientSubtitle = preference.optString(Option.ID_C_BLOG_SUBTITLE);
 
             final Set<String> articleIds = new HashSet<>();
+            final Filter published = new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED);
 
             final StringBuilder bodyBuilder = new StringBuilder("### 最新\n");
-            final List<JSONObject> recentArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).setPage(1, 20));
+            final List<JSONObject> recentArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_CREATED, SortDirection.DESCENDING).setPage(1, 20));
             for (final JSONObject article : recentArticles) {
                 final String title = article.optString(Article.ARTICLE_TITLE);
                 final String link = Latkes.getServePath() + article.optString(Article.ARTICLE_PERMALINK);
@@ -210,7 +209,7 @@ public class ExportService {
             bodyBuilder.append("\n\n");
 
             final StringBuilder mostViewBuilder = new StringBuilder();
-            final List<JSONObject> mostViewArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).setPage(1, 40));
+            final List<JSONObject> mostViewArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_VIEW_COUNT, SortDirection.DESCENDING).setPage(1, 40));
             int count = 0;
             for (final JSONObject article : mostViewArticles) {
                 final String articleId = article.optString(Keys.OBJECT_ID);
@@ -230,7 +229,7 @@ public class ExportService {
             }
 
             final StringBuilder mostCmtBuilder = new StringBuilder();
-            final List<JSONObject> mostCmtArticles = articleRepository.getList(new Query().select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).setPage(1, 60));
+            final List<JSONObject> mostCmtArticles = articleRepository.getList(new Query().setFilter(published).select(Keys.OBJECT_ID, Article.ARTICLE_TITLE, Article.ARTICLE_PERMALINK).addSort(Article.ARTICLE_COMMENT_COUNT, SortDirection.DESCENDING).setPage(1, 60));
             count = 0;
             for (final JSONObject article : mostCmtArticles) {
                 final String articleId = article.optString(Keys.OBJECT_ID);
