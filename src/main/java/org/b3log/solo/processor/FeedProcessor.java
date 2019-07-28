@@ -44,6 +44,7 @@ import org.b3log.solo.model.rss.Item;
 import org.b3log.solo.repository.ArticleRepository;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.OptionQueryService;
+import org.b3log.solo.util.Markdowns;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +60,7 @@ import java.util.List;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/feroozkhanchintu">feroozkhanchintu</a>
  * @author <a href="https://github.com/nanolikeyou">nanolikeyou</a>
- * @version 2.0.0.2, May 15, 2019
+ * @version 2.0.0.3, Jul 29, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -189,27 +190,22 @@ public class FeedProcessor {
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/rss.xml");
-            channel.setGenerator("Solo, ver " + SoloServletListener.VERSION);
+            channel.setGenerator("Solo, v" + SoloServletListener.VERSION + ", https://solo.b3log.org");
             final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
             final String country = Locales.getCountry(localeString).toLowerCase();
             final String language = Locales.getLanguage(localeString).toLowerCase();
-
             channel.setLanguage(language + '-' + country);
             channel.setDescription(blogSubtitle);
 
             final List<Filter> filters = new ArrayList<>();
-
             filters.add(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED));
             filters.add(new PropertyFilter(Article.ARTICLE_VIEW_PWD, FilterOperator.EQUAL, ""));
             final Query query = new Query().setPageCount(1).setPage(1, outputCnt).
                     setFilter(new CompositeFilter(CompositeFilterOperator.AND, filters)).
                     addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING);
-
             final JSONObject articleResult = articleRepository.get(query);
             final JSONArray articles = articleResult.getJSONArray(Keys.RESULTS);
-
             final boolean isFullContent = "fullContent".equals(preference.getString(Option.ID_C_FEED_OUTPUT_MODE));
-
             for (int i = 0; i < articles.length(); i++) {
                 final Item item = getItem(articles, isFullContent, i);
                 channel.addItem(item);
@@ -223,8 +219,7 @@ public class FeedProcessor {
         }
     }
 
-    private Item getItem(final JSONArray articles, final boolean isFullContent, int i)
-            throws JSONException, ServiceException {
+    private Item getItem(final JSONArray articles, final boolean isFullContent, int i) throws JSONException, ServiceException {
         final JSONObject article = articles.getJSONObject(i);
         final Item ret = new Item();
         String title = article.getString(Article.ARTICLE_TITLE);
@@ -234,6 +229,7 @@ public class FeedProcessor {
                 ? article.getString(Article.ARTICLE_CONTENT)
                 : article.optString(Article.ARTICLE_ABSTRACT);
         description = EmojiParser.parseToAliases(description);
+        description = Markdowns.toHTML(description);
         ret.setDescription(description);
         final long pubDate = article.getLong(Article.ARTICLE_UPDATED);
         ret.setPubDate(new Date(pubDate));

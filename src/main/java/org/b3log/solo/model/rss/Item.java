@@ -29,7 +29,7 @@ import java.util.Set;
  * Item.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.0, Jul 5, 2018
+ * @version 1.1.3.1, Jul 29, 2019
  * @since 0.3.1
  */
 public final class Item {
@@ -259,7 +259,7 @@ public final class Item {
         stringBuilder.append(END_LINK_ELEMENT);
 
         stringBuilder.append(START_DESCRIPTION_ELEMENT);
-        stringBuilder.append(StringEscapeUtils.escapeXml(description));
+        stringBuilder.append("<![CDATA[" + description + "]]>");
         stringBuilder.append(END_DESCRIPTION_ELEMENT);
 
         stringBuilder.append(START_AUTHOR_ELEMENT);
