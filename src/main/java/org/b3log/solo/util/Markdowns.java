@@ -81,7 +81,6 @@ public final class Markdowns {
     /**
      * Built-in MD engine options.
      */
-
     private static final DataHolder OPTIONS = new MutableDataSet().
             set(com.vladsch.flexmark.parser.Parser.EXTENSIONS, Arrays.asList(
                     TablesExtension.create(),
