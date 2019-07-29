@@ -15,11 +15,13 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-package org.b3log.solo.plugin.list;
+package org.b3log.solo.plugin;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
+import org.b3log.latke.plugin.NotInteractivePlugin;
+import org.b3log.latke.servlet.RequestContext;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
@@ -31,17 +33,43 @@ import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
- * List (table of contents of an article) handler.
+ * ToC event handler.
+ *
+ * @author <a href="http://88250.b3log.org">Liang Ding</a>
+ * @version 2.0.0.0, Jul 29, 2019
+ * @since 0.6.7
+ */
+public class ToCPlugin extends NotInteractivePlugin {
+
+    /**
+     * Public constructor.
+     */
+    public ToCPlugin() {
+        addEventListener(new ToCEventHandler());
+    }
+
+    @Override
+    public void prePlug(RequestContext context) {
+    }
+
+    @Override
+    public void postPlug(Map<String, Object> dataModel, RequestContext context) {
+    }
+}
+
+/**
+ * ToC event handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://www.annpeter.cn">Ann Peter</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.0.2.2, Mar 19, 2019
+ * @version 2.0.0.0, Jul 29, 2019
  * @since 0.6.7
  */
-public class ListHandler extends AbstractEventListener<JSONObject> {
+class ToCEventHandler extends AbstractEventListener<JSONObject> {
 
     @Override
     public String getEventType() {
