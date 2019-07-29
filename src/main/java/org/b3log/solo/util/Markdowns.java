@@ -17,10 +17,13 @@
  */
 package org.b3log.solo.util;
 
+import com.vladsch.flexmark.ext.autolink.AutolinkExtension;
+import com.vladsch.flexmark.ext.gfm.strikethrough.StrikethroughExtension;
+import com.vladsch.flexmark.ext.gfm.tasklist.TaskListExtension;
+import com.vladsch.flexmark.ext.tables.TablesExtension;
 import com.vladsch.flexmark.html.HtmlRenderer;
-import com.vladsch.flexmark.profiles.pegdown.Extensions;
-import com.vladsch.flexmark.profiles.pegdown.PegdownOptionsAdapter;
-import com.vladsch.flexmark.util.options.DataHolder;
+import com.vladsch.flexmark.util.data.DataHolder;
+import com.vladsch.flexmark.util.data.MutableDataSet;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -44,10 +47,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.*;
 
 /**
@@ -58,7 +58,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.7, Jun 1, 2019
+ * @version 2.3.1.8, Jul 29, 2019
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -82,9 +82,13 @@ public final class Markdowns {
      * Built-in MD engine options.
      */
 
-    private static final DataHolder OPTIONS = PegdownOptionsAdapter.flexmarkOptions(
-            Extensions.ALL_OPTIONALS | Extensions.ALL_WITH_OPTIONALS
-    );
+    private static final DataHolder OPTIONS = new MutableDataSet().
+            set(com.vladsch.flexmark.parser.Parser.EXTENSIONS, Arrays.asList(
+                    TablesExtension.create(),
+                    TaskListExtension.create(),
+                    StrikethroughExtension.create(),
+                    AutolinkExtension.create())).
+            set(HtmlRenderer.SOFT_BREAK, "<br />\n");
 
     /**
      * Built-in MD engine parser.
