@@ -294,7 +294,7 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.3.0.0, Mar 29, 2019
+     * @version 2.3.0.1, Jul 30, 2019
      * @since 0.3.1
      */
     public static final class DefaultPreference {
@@ -307,7 +307,7 @@ public final class Option {
         /**
          * Default enable sync GitHub.
          */
-        public static final String DEFAULT_SYNC_GITHUB = "false";
+        public static final String DEFAULT_SYNC_GITHUB = "true";
 
         /**
          * Default favicon URL.
