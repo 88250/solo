@@ -58,7 +58,7 @@ public final class Option {
     public static final String ID_C_HLJS_THEME = "hljsTheme";
 
     /**
-     * Key of enable syn GitHub. 博文定时同步 GitHub 仓库 https://github.com/b3log/solo/issues/12676
+     * Key of enable syn GitHub. 博文定时同步 GitHub 仓库 https://hacpai.com/article/1557238327458
      */
     public static final String ID_C_SYNC_GITHUB = "syncGitHub";
 

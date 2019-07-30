@@ -147,7 +147,7 @@ public class ExportService {
     private OptionQueryService optionQueryService;
 
     /**
-     * Exports public articles to admin's GitHub repos. 博文定时同步 GitHub 仓库 https://github.com/b3log/solo/issues/12676
+     * Exports public articles to admin's GitHub repos. 博文定时同步 GitHub 仓库 https://hacpai.com/article/1557238327458
      */
     public void exportGitHubRepo() {
         try {
