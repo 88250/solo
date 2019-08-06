@@ -19,7 +19,7 @@
  * @fileoverview editor
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.0.0, Jun 1, 2019
+ * @version 1.3.0.1, Aug 6, 2019
  */
 
 admin.editors = {}
@@ -49,7 +49,7 @@ $.extend(SoloEditor.prototype, {
       },
       preview: {
         delay: 500,
-        show: this.conf.previewShow,
+        mode: this.conf.previewMode,
         url: Label.servePath + '/console/markdown/2html',
         parse: function(element) {
           if (element.style.display === 'none') {

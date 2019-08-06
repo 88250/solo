@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.4, Mar 4, 2019
+ * @version 1.6.0.5, Aug 6, 2019
  */
 admin.article = {
   // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -417,14 +417,14 @@ admin.article = {
       id: 'articleContent',
       height: 500,
       fun: fun,
-      previewShow: true,
+      previewMode: 'both',
       resize: false,
     })
 
     admin.editors.abstractEditor = new SoloEditor({
       id: 'abstract',
       height: 200,
-      previewShow: false,
+      previewMode: 'editor',
       resize: true,
     })
 

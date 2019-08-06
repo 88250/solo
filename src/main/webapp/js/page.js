@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.0.0, Jul 11, 2019
+ * @version 2.4.0.1, Aug 6, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -128,6 +128,7 @@ $.extend(Page.prototype, {
         'link',
         'table',
         '|',
+        'both',
         'preview',
         'fullscreen',
         'info',
@@ -164,7 +165,7 @@ $.extend(Page.prototype, {
         },
         preview: {
           delay: 500,
-          show: false,
+          mode: 'editor',
           url: Label.servePath + '/console/markdown/2html',
           hljs: {
             enable: true,
