@@ -165,7 +165,7 @@
             </div>
         </div>
         <script src="${staticServePath}/js/lib/compress/admin-lib.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vditor@latest/dist/index.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vditor@1.7.2/dist/index.min.js"></script>
         <script src="${staticServePath}/js/common${miniPostfix}.js"></script>
         <#if "" == miniPostfix>
         <script src="${staticServePath}/js/admin/admin.js"></script>
