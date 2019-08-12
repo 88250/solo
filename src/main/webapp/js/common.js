@@ -182,7 +182,7 @@ var Util = {
       return
     }
 
-    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.7.3/dist/index.min.js',
+    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.7.4/dist/index.min.js',
       'vditorScript')
 
     Vditor.mermaidRender(document.body)
