@@ -58,7 +58,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 * 随机文章 / 相关文章 / 置顶 / 更新提醒
 * 自定义文章永久链接 / 签名档
 * 配置站点 SEO 参数 / 公告 / 页脚
-* 代码高亮 / 数学公式 / 流程图
+* 代码高亮 / 数学公式 / 流程图 / 五线谱
 * [多皮肤，多端适配](https://github.com/b3log/solo-skins) / [社区皮肤](https://github.com/b3log/solo-third-skins)
 * 多语言 / 国际化
 * 友情链接管理
