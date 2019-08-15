@@ -150,10 +150,6 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 ```shell
 docker pull b3log/solo
 ```
-**ARM、树莓派请使用此镜像**
-```shell
-docker pull clinan/solo
-```
 
 #### 启动容器
 
@@ -218,12 +214,20 @@ docker pull clinan/solo
 
 #### Docker Compose
 
-请参考[这里](https://github.com/liumapp/solo-in-docker)，感谢 [@liumapp](https://github.com/liumapp) 提供 :heart:
+请参考[这里](https://github.com/liumapp/solo-in-docker)，感谢 [@liumapp](https://github.com/liumapp) 提供。
+
+#### ARM/树莓派镜像
+
+```shell
+docker pull clinan/solo
+```
+
+感谢 [@Clinan](https://github.com/Clinan) 提供。
 
 ## 📜 文档
 
 * [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
-* [从零开始安装 Solo 博客](https://hacpai.com/article/1565021959471)（感谢 [@JInjianh](https://www.jinjianh.com) 分享 :heart:）
+* [从零开始安装 Solo 博客](https://hacpai.com/article/1565021959471)（感谢 [@JInjianh](https://www.jinjianh.com) 分享）
 * [用户指南](https://hacpai.com/article/1492881378588)
 * [Solo 从设计到实现](https://hacpai.com/article/1537690756242)
   * [项目简介](https://hacpai.com/article/1537691255769)
