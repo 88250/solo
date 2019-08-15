@@ -220,6 +220,10 @@ docker pull clinan/solo
 
 请参考[这里](https://github.com/liumapp/solo-in-docker)，感谢 [@liumapp](https://github.com/liumapp) 提供 :heart:
 
+#### 从零开始安装 solo 博客
+
+更详细安装教程参考[这里](https://hacpai.com/article/1565021959471),感谢 [@JInjianh](https://www.jinjianh.com) 提供 :heart:
+
 ## 📜 文档
 
 * [《提问的智慧》精读注解版](https://hacpai.com/article/1536377163156)
