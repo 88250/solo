@@ -150,6 +150,10 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 ```shell
 docker pull b3log/solo
 ```
+**ARM、树莓派请使用此镜像**
+```shell
+docker pull clinan/solo
+```
 
 #### 启动容器
 
