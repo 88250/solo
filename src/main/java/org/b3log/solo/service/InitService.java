@@ -52,7 +52,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.33, Apr 2, 2019
+ * @version 1.5.2.34, Aug 18, 2019
  * @since 0.4.0
  */
 @Service
@@ -481,6 +481,12 @@ public class InitService {
         syncGitHubOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
         syncGitHubOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_SYNC_GITHUB);
         optionRepository.add(syncGitHubOpt);
+
+        final JSONObject pullGitHubOpt = new JSONObject();
+        pullGitHubOpt.put(Keys.OBJECT_ID, Option.ID_C_PULL_GITHUB);
+        pullGitHubOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
+        pullGitHubOpt.put(Option.OPTION_VALUE, DefaultPreference.DEFAULT_PULL_GITHUB);
+        optionRepository.add(pullGitHubOpt);
 
         final JSONObject faviconURLOpt = new JSONObject();
         faviconURLOpt.put(Keys.OBJECT_ID, Option.ID_C_FAVICON_URL);

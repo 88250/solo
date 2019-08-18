@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.5, Jul 22, 2019
+ * @version 1.3.1.6, Aug 18, 2019
  * @since 0.3.5
  */
 @Service
@@ -176,6 +176,15 @@ public class ArticleMgmtService {
      */
     public void refreshGitHub() {
         if (!initService.isInited()) {
+            return;
+        }
+
+        final JSONObject preference = optionQueryService.getPreference();
+        if (null == preference) {
+            return;
+        }
+
+        if (!preference.optBoolean(Option.ID_C_PULL_GITHUB)) {
             return;
         }
 

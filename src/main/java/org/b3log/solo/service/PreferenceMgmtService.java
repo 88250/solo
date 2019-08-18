@@ -37,7 +37,7 @@ import java.util.Locale;
  * Preference management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.1, Jun 13, 2019
+ * @version 1.4.0.2, Aug 18, 2019
  * @since 0.4.0
  */
 @Service
@@ -209,6 +209,10 @@ public class PreferenceMgmtService {
             final JSONObject syncGitHubOpt = optionRepository.get(Option.ID_C_SYNC_GITHUB);
             syncGitHubOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_SYNC_GITHUB));
             optionRepository.update(Option.ID_C_SYNC_GITHUB, syncGitHubOpt);
+
+            final JSONObject pullGitHubOpt = optionRepository.get(Option.ID_C_PULL_GITHUB);
+            pullGitHubOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_PULL_GITHUB));
+            optionRepository.update(Option.ID_C_PULL_GITHUB, pullGitHubOpt);
 
             final JSONObject hljsThemeOpt = optionRepository.get(Option.ID_C_HLJS_THEME);
             hljsThemeOpt.put(Option.OPTION_VALUE, preference.optString(Option.ID_C_HLJS_THEME));

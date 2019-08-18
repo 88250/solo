@@ -26,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://github.com/hzchendou">hzchendou</a>
- * @version 1.6.0.1, Apr 16, 2019
+ * @version 1.6.0.2, Aug 18, 2019
  * @since 0.6.0
  */
 public final class Option {
@@ -58,9 +58,15 @@ public final class Option {
     public static final String ID_C_HLJS_THEME = "hljsTheme";
 
     /**
-     * Key of enable syn GitHub. 博文定时同步 GitHub 仓库 https://hacpai.com/article/1557238327458
+     * Key of enable sync (push) GitHub. 导出文章到仓库 https://hacpai.com/article/1557238327458
      */
     public static final String ID_C_SYNC_GITHUB = "syncGitHub";
+
+    /**
+     * Key of enable sync (pull) GitHub. 拉取并展示仓库 https://hacpai.com/article/1557238327458
+     * https://github.com/b3log/solo/issues/12825
+     */
+    public static final String ID_C_PULL_GITHUB = "pullGitHub";
 
     /**
      * Key of favicon URL.
@@ -294,7 +300,7 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.3.0.1, Jul 30, 2019
+     * @version 2.3.0.2, Aug 18, 2019
      * @since 0.3.1
      */
     public static final class DefaultPreference {
@@ -305,9 +311,14 @@ public final class Option {
         public static final String DEFAULT_HLJS_THEME = "atom-one-light";
 
         /**
-         * Default enable sync GitHub.
+         * Default enable sync push GitHub.
          */
         public static final String DEFAULT_SYNC_GITHUB = "true";
+
+        /**
+         * Default enable sync pull GitHub.
+         */
+        public static final String DEFAULT_PULL_GITHUB = "true";
 
         /**
          * Default favicon URL.
