@@ -163,6 +163,7 @@ public class PreferenceConsole {
      *         "feedOutputCnt": int,
      *         "faviconURL": "",
      *         "syncGitHub": boolean,
+     *         "pullGitHub": boolean,
      *         "customVars" "", // 支持配置自定义参数 https://github.com/b3log/solo/issues/12535
      *     }
      * }
@@ -240,6 +241,7 @@ public class PreferenceConsole {
      *         "feedOutputCnt": int,
      *         "faviconURL": "",
      *         "syncGitHub": boolean,
+     *         "pullGitHub": boolean,
      *         "customVars" "", // 支持配置自定义参数 https://github.com/b3log/solo/issues/12535
      *     }
      * }

@@ -229,6 +229,12 @@
                 <input id="syncGitHub" type="checkbox" class="normalInput"/>
             </div>
         </label>
+        <label>
+            <div class="fn__flex-inline">
+                ${pullGitHubLabel}
+                <input id="pullGitHub" type="checkbox" class="normalInput"/>
+            </div>
+        </label>
         <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="fn__clear"></div>
     </div>
