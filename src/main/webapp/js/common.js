@@ -182,11 +182,12 @@ var Util = {
       return
     }
 
-    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.7.9/dist/index.min.js',
+    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.7.10/dist/index.min.js',
       'vditorScript')
 
     Vditor.mermaidRender(document.body)
     Vditor.chartRender()
+    Vditor.abcRender()
     Vditor.mathRender(document.body)
     Vditor.codeRender(document.body, Label.langLabel)
   },
