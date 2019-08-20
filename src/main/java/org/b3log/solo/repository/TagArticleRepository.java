@@ -36,7 +36,7 @@ import java.util.List;
  * Tag-Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jun 20, 2019
+ * @version 1.1.1.0, Aug 20, 2019
  * @since 0.3.1
  */
 @Repository
@@ -115,7 +115,7 @@ public class TagArticleRepository extends AbstractRepository {
                     ? Latkes.getLocalProperty("jdbc.tablePrefix") + "_"
                     : "";
             final List<JSONObject> result = select("SELECT\n" +
-                    "\tcount(*) AS c\n" +
+                    "\tcount(*) AS `C`\n" +
                     "FROM\n" +
                     "\t" + tableNamePrefix + "tag_article AS t,\n" +
                     "\t" + tableNamePrefix + "article AS a\n" +
@@ -123,7 +123,7 @@ public class TagArticleRepository extends AbstractRepository {
                     "\tt.article_oId = a.oId\n" +
                     "AND a.articleStatus = ?\n" +
                     "AND t.tag_oId = ?", Article.ARTICLE_STATUS_C_PUBLISHED, tagId);
-            return result.get(0).optInt("c");
+            return result.get(0).optInt("C");
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Gets tag [" + tagId + "]'s published article count failed", e);
 
