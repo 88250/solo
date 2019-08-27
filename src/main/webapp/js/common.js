@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.0.4, Jun 7, 2019
+ * @version 1.8.1.0, Aug 27, 2019
  */
 
 /**
@@ -69,7 +69,10 @@ var Util = {
         cache: false,
         storage: true,
         titleSuffix: '',
-        filter: function (href) {
+        filter: function (href, element) {
+          if (element.getAttribute('target') === '_blank') {
+            return true
+          }
           if (href === Label.servePath + '/rss.xml' ||
             href.indexOf(Label.servePath + '/admin-index.do') > -1) {
             return true
@@ -182,7 +185,7 @@ var Util = {
       return
     }
 
-    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.7.15/dist/index.min.js',
+    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.7.20/dist/index.min.js',
       'vditorScript')
 
     Vditor.mermaidRender(document.body)
