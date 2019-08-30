@@ -154,6 +154,7 @@ public class CategoryConsole {
      * @param context the specified request context
      * @throws Exception exception
      */
+    @SuppressWarnings("unchecked")
     public void getCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -169,6 +170,9 @@ public class CategoryConsole {
             final StringBuilder tagBuilder = new StringBuilder();
             final List<JSONObject> tags = (List<JSONObject>) result.opt(Category.CATEGORY_T_TAGS);
             for (final JSONObject tag : tags) {
+                if (tag == null || !tag.has(Tag.TAG_TITLE)){
+                    continue;
+                }
                 tagBuilder.append(tag.optString(Tag.TAG_TITLE)).append(",");
             }
             tagBuilder.deleteCharAt(tagBuilder.length() - 1);
