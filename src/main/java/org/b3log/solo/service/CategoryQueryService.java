@@ -115,7 +115,9 @@ public class CategoryQueryService {
             for (final JSONObject relation : relations) {
                 final String tagId = relation.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
-
+                if (tag == null){
+                    continue;
+                }
                 ret.add(tag);
             }
         } catch (final RepositoryException e) {
