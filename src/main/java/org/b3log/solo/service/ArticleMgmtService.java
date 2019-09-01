@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.6, Aug 18, 2019
+ * @version 1.3.2.0, Sep 1, 2019
  * @since 0.3.5
  */
 @Service
@@ -116,6 +116,12 @@ public class ArticleMgmtService {
      */
     @Inject
     private CommentRepository commentRepository;
+
+    /**
+     * Category-tag repository.
+     */
+    @Inject
+    private CategoryTagRepository categoryTagRepository;
 
     /**
      * Permalink query service.
@@ -810,19 +816,16 @@ public class ArticleMgmtService {
      * @throws JSONException       json exception
      * @throws RepositoryException repository exception
      */
-    private void removeTagArticleRelations(final String articleId, final String... tagIds)
-            throws JSONException, RepositoryException {
+    private void removeTagArticleRelations(final String articleId, final String... tagIds) throws JSONException, RepositoryException {
         final List<String> tagIdList = Arrays.asList(tagIds);
         final List<JSONObject> tagArticleRelations = tagArticleRepository.getByArticleId(articleId);
 
         for (int i = 0; i < tagArticleRelations.size(); i++) {
             final JSONObject tagArticleRelation = tagArticleRelations.get(i);
             String relationId;
-
             if (tagIdList.isEmpty()) { // Removes all if un-specified
                 relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
                 tagArticleRepository.remove(relationId);
-
             } else {
                 if (tagIdList.contains(tagArticleRelation.getString(Tag.TAG + "_" + Keys.OBJECT_ID))) {
                     relationId = tagArticleRelation.getString(Keys.OBJECT_ID);
@@ -833,6 +836,7 @@ public class ArticleMgmtService {
             final String tagId = tagArticleRelation.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
             final int articleCount = tagArticleRepository.getArticleCount(tagId);
             if (1 > articleCount) {
+                categoryTagRepository.removeByTagId(tagId);
                 tagRepository.remove(tagId);
             }
         }
