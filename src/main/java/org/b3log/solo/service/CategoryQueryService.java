@@ -43,7 +43,8 @@ import java.util.List;
  * Category query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.3, Jan 15, 2019
+ * @author <a href="https://hacpai.com/member/lzh984294471">lzh984294471</a>
+ * @version 1.0.1.4, Sep 1, 2019
  * @since 2.0.0
  */
 @Service
@@ -115,7 +116,9 @@ public class CategoryQueryService {
             for (final JSONObject relation : relations) {
                 final String tagId = relation.optString(Tag.TAG + "_" + Keys.OBJECT_ID);
                 final JSONObject tag = tagRepository.get(tagId);
-
+                if (null == tag) { // 修复修改分类时空指针错误 https://github.com/b3log/solo/pull/12876
+                    continue;
+                }
                 ret.add(tag);
             }
         } catch (final RepositoryException e) {

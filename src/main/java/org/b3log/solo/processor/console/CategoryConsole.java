@@ -51,7 +51,8 @@ import java.util.Set;
  * Category console request processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.3.5, Jul 22, 2019
+ * @author <a href="https://hacpai.com/member/lzh984294471">lzh984294471</a>
+ * @version 1.1.3.6, Sep 1, 2019
  * @since 2.0.0
  */
 @RequestProcessor
@@ -154,6 +155,7 @@ public class CategoryConsole {
      * @param context the specified request context
      * @throws Exception exception
      */
+    @SuppressWarnings("unchecked")
     public void getCategory(final RequestContext context) {
         final JsonRenderer renderer = new JsonRenderer();
         context.setRenderer(renderer);
@@ -169,6 +171,9 @@ public class CategoryConsole {
             final StringBuilder tagBuilder = new StringBuilder();
             final List<JSONObject> tags = (List<JSONObject>) result.opt(Category.CATEGORY_T_TAGS);
             for (final JSONObject tag : tags) {
+                if (null == tag || !tag.has(Tag.TAG_TITLE)) { // 修复修改分类时空指针错误 https://github.com/b3log/solo/pull/12876
+                    continue;
+                }
                 tagBuilder.append(tag.optString(Tag.TAG_TITLE)).append(",");
             }
             tagBuilder.deleteCharAt(tagBuilder.length() - 1);
