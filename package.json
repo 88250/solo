@@ -28,8 +28,8 @@
     }
   ],
   "devDependencies": {
-    "del": "^4.1.1",
-    "gulp": "^4.0.1",
+    "del": "^5.1.0",
+    "gulp": "^4.0.2",
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
