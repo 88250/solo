@@ -49,6 +49,7 @@ Solo 有着非常活跃的[社区](https://hacpai.com)，可将文章作为帖�
 * [贼拉正经的技术博客](http://blog.stackoverflow.wiki)
 * [记录改变生活](https://www.tuhaoxin.cn)
 * [程序员小吴](https://cxyxiaowu.com)
+* [潘少的 BLOG](https://taohuawu.club)
 
 ## ✨  功能
 
