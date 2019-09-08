@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.8.1.0, Aug 27, 2019
+ * @version 1.9.1.0, Sep 9, 2019
  */
 
 /**
@@ -150,31 +150,10 @@ var Util = {
     if ($('.vditor-reset pre > code').length === 0) {
       return
     }
-    Util.addStyle('https://cdn.jsdelivr.net/npm/vditor/dist/js/highlight.js/styles/' +
-      Label.hljsStyle + '.css', 'vditorHljsStyle')
-
-    var initHljs = function () {
-      hljs.initHighlighting.called = false
-      hljs.initHighlighting()
-    }
-
-    if (!Label.markedAvailable) {
-      if (typeof hljs === 'undefined') {
-        $.ajax({
-          url: 'https://cdn.jsdelivr.net/npm/vditor/dist/js/highlight.js/highlight.pack.js',
-          dataType: 'script',
-          cache: true,
-          success: function () {
-            initHljs()
-          },
-        })
-      } else {
-        initHljs()
-      }
-    }
+    Vditor.highlightRender(Label.hljsStyle, !Label.markedAvailable, document)
   },
   /**
-   * 按需加载数学公式、代码复制、图标
+   * 按需加载数学公式、流程图、代码复制、五线谱、多媒体、图表
    * @returns {undefined}
    */
   parseMarkdown: function () {
@@ -185,14 +164,15 @@ var Util = {
       return
     }
 
-    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.7.25/dist/index.min.js',
-      'vditorScript')
+    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.8.5/dist/method.min.js',
+      'vditorPreviewScript')
 
-    Vditor.mermaidRender(document.body)
-    Vditor.chartRender()
-    Vditor.abcRender()
-    Vditor.mathRender(document.body, Label.langLabel)
     Vditor.codeRender(document.body, Label.langLabel)
+    Vditor.mathRender(document.body, Label.langLabel)
+    Vditor.abcRender()
+    Vditor.chartRender()
+    Vditor.mediaRender(document.body)
+    Vditor.mermaidRender(document.body)
   },
   /**
    * @description IE6/7，跳转到 kill-browser 页面

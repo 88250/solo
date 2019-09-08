@@ -44,9 +44,6 @@ $.extend(SoloEditor.prototype, {
     this.editor = new Vditor(this.conf.id, {
       cache: true,
       tab: '\t',
-      hint: {
-        emojiPath: Label.staticServePath + '/images/emoji'
-      },
       preview: {
         delay: 500,
         mode: this.conf.previewMode,

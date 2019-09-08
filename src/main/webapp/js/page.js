@@ -103,7 +103,7 @@ $.extend(Page.prototype, {
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
       Util.addScript(
-        'https://cdn.jsdelivr.net/npm/vditor@1.7.25/dist/index.min.js',
+        'https://cdn.jsdelivr.net/npm/vditor@1.8.5/dist/index.min.js',
         'vditorScript')
       var toolbar = [
         'emoji',
@@ -130,6 +130,7 @@ $.extend(Page.prototype, {
         '|',
         'both',
         'preview',
+        'format',
         'fullscreen',
         'info',
         'help',
@@ -144,6 +145,7 @@ $.extend(Page.prototype, {
           'check',
           'link',
           'preview',
+          'format',
           'info',
           'help',
         ]
@@ -154,9 +156,6 @@ $.extend(Page.prototype, {
         placeholder: that.tips.commentContentCannotEmptyLabel,
         height: 180,
         tab: '\t',
-        hint: {
-          emojiPath: Label.staticServePath + '/images/emoji',
-        },
         esc: function () {
           $('#soloEditorCancel').click()
         },
