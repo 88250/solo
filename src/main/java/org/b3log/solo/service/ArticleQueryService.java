@@ -193,7 +193,7 @@ public class ArticleQueryService {
                 tagIds.add(categoryTags.optJSONObject(i).optString(Tag.TAG + "_" + Keys.OBJECT_ID));
             }
 
-            final StringBuilder queryCount = new StringBuilder("SELECT count(0) as c FROM ");
+            final StringBuilder queryCount = new StringBuilder("SELECT count(0) as C FROM ");
             final StringBuilder queryList = new StringBuilder("SELECT " + "b3_solo_article.oId ").append(" FROM ");
             final StringBuilder queryStr = new StringBuilder(articleRepository.getName() + " b3_solo_article,").
                     append(tagArticleRepository.getName() + " b3_solo_tag_article").
@@ -217,7 +217,7 @@ public class ArticleQueryService {
                 return ret;
             }
 
-            final int tagArticlesCount = tagArticlesCountResult == null ? 0 : tagArticlesCountResult.get(0).optInt("c");
+            final int tagArticlesCount = tagArticlesCountResult == null ? 0 : tagArticlesCountResult.get(0).optInt("C");
             final int pageCount = (int) Math.ceil(tagArticlesCount / (double) pageSize);
             final JSONObject preference = optionQueryService.getPreference();
             final int windowSize = preference.optInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
