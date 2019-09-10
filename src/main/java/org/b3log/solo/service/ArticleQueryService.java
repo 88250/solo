@@ -50,7 +50,7 @@ import java.util.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.2.15, May 20, 2019
+ * @version 1.3.3.0, Sep 11, 2019
  * @since 0.3.5
  */
 @Service
@@ -193,38 +193,49 @@ public class ArticleQueryService {
                 tagIds.add(categoryTags.optJSONObject(i).optString(Tag.TAG + "_" + Keys.OBJECT_ID));
             }
 
-            Query query = new Query().setFilter(new PropertyFilter(Tag.TAG + "_" + Keys.OBJECT_ID, FilterOperator.IN, tagIds)).
-                    setPage(currentPageNum, pageSize).
-                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-            JSONObject result = tagArticleRepository.get(query);
-            final JSONArray tagArticles = result.optJSONArray(Keys.RESULTS);
-            if (tagArticles.length() <= 0) {
+            final StringBuilder queryCount = new StringBuilder("SELECT count(0) as c FROM ");
+            final StringBuilder queryList = new StringBuilder("SELECT " + "b3_solo_article.oId ").append(" FROM ");
+            final StringBuilder queryStr = new StringBuilder(articleRepository.getName() + " b3_solo_article,").
+                    append(tagArticleRepository.getName() + " b3_solo_tag_article").
+                    append(" WHERE b3_solo_article.oId=b3_solo_tag_article.article_oId ").
+                    append(" AND b3_solo_article.").append(Article.ARTICLE_STATUS).append("=?").
+                    append(" AND ").append("b3_solo_tag_article.tag_oId").append(" IN (");
+            for (int i = 0; i < tagIds.size(); i++) {
+                queryStr.append(" ").append(tagIds.get(i));
+                if (i < (tagIds.size() - 1)) {
+                    queryStr.append(",");
+                }
+            }
+            queryStr.append(") ORDER BY ").append("b3_solo_tag_article.oId DESC");
+
+            final List<JSONObject> tagArticlesCountResult = articleRepository.
+                    select(queryCount.append(queryStr.toString()).toString(), Article.ARTICLE_STATUS_C_PUBLISHED);
+            queryStr.append(" LIMIT ").append((currentPageNum - 1) * pageSize).append(",").append(pageSize);
+            final List<JSONObject> tagArticles = articleRepository.
+                    select(queryList.append(queryStr.toString()).toString(), Article.ARTICLE_STATUS_C_PUBLISHED);
+            if (tagArticles.size() <= 0) {
                 return ret;
             }
 
-            final Set<String> articleIds = new HashSet<>();
-            for (int i = 0; i < tagArticles.length(); i++) {
-                articleIds.add(tagArticles.optJSONObject(i).optString(Article.ARTICLE + "_" + Keys.OBJECT_ID));
-            }
-
-            final int pageCount = result.optJSONObject(Pagination.PAGINATION).optInt(Pagination.PAGINATION_PAGE_COUNT);
+            final int tagArticlesCount = tagArticlesCountResult == null ? 0 : tagArticlesCountResult.get(0).optInt("c");
+            final int pageCount = (int) Math.ceil(tagArticlesCount / (double) pageSize);
             final JSONObject preference = optionQueryService.getPreference();
             final int windowSize = preference.optInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
             final List<Integer> pageNums = Paginator.paginate(currentPageNum, pageSize, pageCount, windowSize);
             pagination.put(Pagination.PAGINATION_PAGE_COUNT, pageCount);
             pagination.put(Pagination.PAGINATION_PAGE_NUMS, (Object) pageNums);
+            pagination.put(Pagination.PAGINATION_RECORD_COUNT, tagArticlesCount);
 
-            query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
+            final Set<String> articleIds = new HashSet<>();
+            for (int i = 0; i < tagArticles.size(); i++) {
+                articleIds.add(tagArticles.get(i).optString(Keys.OBJECT_ID));
+            }
+            final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
             final List<JSONObject> articles = new ArrayList<>();
             final JSONArray articleArray = articleRepository.get(query).optJSONArray(Keys.RESULTS);
             for (int i = 0; i < articleArray.length(); i++) {
                 final JSONObject article = articleArray.optJSONObject(i);
-                if (Article.ARTICLE_STATUS_C_PUBLISHED != article.optInt(Article.ARTICLE_STATUS)) {
-                    // Skips the unpublished article
-                    continue;
-                }
-
                 article.put(Article.ARTICLE_CREATE_TIME, article.optLong(Article.ARTICLE_CREATED));
                 article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.optLong(Article.ARTICLE_CREATED)));
                 article.put(Article.ARTICLE_T_UPDATE_DATE, new Date(article.optLong(Article.ARTICLE_UPDATED)));
