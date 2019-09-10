@@ -65,9 +65,9 @@ public final class V330_340 {
             final Connection connection = Connections.getConnection();
             final Statement statement = connection.createStatement();
             // 修复升级程序问题 https://github.com/b3log/solo/issues/12717
-            final ResultSet resultSet = statement.executeQuery("SELECT count(*) AS c FROM information_schema.COLUMNS WHERE table_name = '" + tablePrefix + "user" + "' AND column_name = 'userPassword'");
+            final ResultSet resultSet = statement.executeQuery("SELECT count(*) AS C FROM information_schema.COLUMNS WHERE table_name = '" + tablePrefix + "user" + "' AND column_name = 'userPassword'");
             while (resultSet.next()) {
-                final int c = resultSet.getInt("c");
+                final int c = resultSet.getInt("C");
                 if (0 < c) {
                     final Statement drop = connection.createStatement();
                     drop.executeUpdate("ALTER TABLE `" + tablePrefix + "user` DROP COLUMN `userPassword`");
