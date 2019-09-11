@@ -187,7 +187,7 @@ public class CategoryRepository extends AbstractRepository {
             final StringBuilder queryStr = new StringBuilder(articleRepository.getName() + " AS b3_solo_article,").
                     append(tagArticleRepository.getName() + " AS b3_solo_tag_article").
                     append(" WHERE b3_solo_article.oId=b3_solo_tag_article.article_oId ").
-                    append(" AND b3_solo_article.").append(Article.ARTICLE_STATUS).append("=").append(Article.ARTICLE_STATUS_C_PUBLISHED).
+                    append(" AND b3_solo_article.articleStatus=").append(Article.ARTICLE_STATUS_C_PUBLISHED).
                     append(" AND ").append("b3_solo_tag_article.tag_oId").append(" IN (").
                     append("SELECT tag_oId FROM ").append(categoryTagRepository.getName() + " AS b3_solo_category_tag WHERE b3_solo_category_tag.category_oId = ").
                     append(categoryId).append(")");
