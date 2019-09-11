@@ -35,7 +35,7 @@ import java.util.List;
  * Archive date query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Jan 28, 2019
+ * @version 1.1.0.1, Sep 11, 2019
  * @since 0.4.0
  */
 @Service
@@ -59,13 +59,13 @@ public class ArchiveDateQueryService {
     private ArchiveDateArticleRepository archiveDateArticleRepository;
 
     /**
-     * Gets article count of an archive date specified by the given archive date id.
+     * Gets published article count of an archive date specified by the given archive date id.
      *
      * @param archiveDateId the given archive date id
-     * @return article count, returns {@code -1} if occurred an exception
+     * @return published article count, returns {@code -1} if occurred an exception
      */
-    public int getArchiveDateArticleCount(final String archiveDateId) {
-        return archiveDateArticleRepository.getArticleCount(archiveDateId);
+    public int getArchiveDatePublishedArticleCount(final String archiveDateId) {
+        return archiveDateArticleRepository.getPublishedArticleCount(archiveDateId);
     }
 
     /**
@@ -108,7 +108,7 @@ public class ArchiveDateQueryService {
                 return null;
             }
 
-            final int articleCount = archiveDateArticleRepository.getArticleCount(archiveDate.optString(Keys.OBJECT_ID));
+            final int articleCount = archiveDateArticleRepository.getPublishedArticleCount(archiveDate.optString(Keys.OBJECT_ID));
             archiveDate.put(ArchiveDate.ARCHIVE_DATE_T_PUBLISHED_ARTICLE_COUNT, articleCount);
             ret.put(ArchiveDate.ARCHIVE_DATE, archiveDate);
 

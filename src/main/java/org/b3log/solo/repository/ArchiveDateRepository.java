@@ -35,7 +35,7 @@ import java.util.List;
  * Archive date repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jan 28, 2019
+ * @version 1.0.0.5, Sep 11, 2019
  * @since 0.3.1
  */
 @Repository
@@ -102,10 +102,9 @@ public class ArchiveDateRepository extends AbstractRepository {
     }
 
     /**
-     * Gets archive dates.
+     * Get archive dates.
      *
-     * @return a list of archive date, returns an empty list if
-     * not found
+     * @return a list of archive date, returns an empty list if not found
      * @throws RepositoryException repository exception
      */
     public List<JSONObject> getArchiveDates() throws RepositoryException {
@@ -114,8 +113,8 @@ public class ArchiveDateRepository extends AbstractRepository {
         final List<JSONObject> ret = getList(query);
         for (final JSONObject archiveDate : ret) {
             final String archiveDateId = archiveDate.optString(Keys.OBJECT_ID);
-            final int articleCount = archiveDateArticleRepository.getArticleCount(archiveDateId);
-            archiveDate.put(ArchiveDate.ARCHIVE_DATE_T_PUBLISHED_ARTICLE_COUNT, articleCount);
+            final int publishedArticleCount = archiveDateArticleRepository.getPublishedArticleCount(archiveDateId);
+            archiveDate.put(ArchiveDate.ARCHIVE_DATE_T_PUBLISHED_ARTICLE_COUNT, publishedArticleCount);
         }
 
         return ret;

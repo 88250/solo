@@ -18,6 +18,7 @@
 package org.b3log.solo.repository;
 
 import org.b3log.latke.Keys;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.repository.*;
@@ -27,11 +28,13 @@ import org.b3log.solo.model.Article;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.List;
+
 /**
  * Archive date-Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.4, Jan 15, 2019
+ * @version 1.1.0.0, Sep 11, 2019
  * @since 0.3.1
  */
 @Repository
@@ -50,18 +53,27 @@ public class ArchiveDateArticleRepository extends AbstractRepository {
     }
 
     /**
-     * Gets article count of an archive date specified by the given archive date id.
+     * Gets published article count of an archive date specified by the given archive data id.
      *
      * @param archiveDateId the given archive date id
-     * @return article count, returns {@code -1} if occurred an exception
+     * @return published article count, returns {@code -1} if occurred an exception
      */
-    public int getArticleCount(final String archiveDateId) {
-        final Query query = new Query().setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, archiveDateId));
-
+    public int getPublishedArticleCount(final String archiveDateId) {
         try {
-            return (int) count(query);
+            final BeanManager beanManager = BeanManager.getInstance();
+            final ArticleRepository articleRepository = beanManager.getReference(ArticleRepository.class);
+            final ArchiveDateArticleRepository archiveDateArticleRepository = beanManager.getReference(ArchiveDateArticleRepository.class);
+
+            final StringBuilder queryCount = new StringBuilder("SELECT count(DISTINCT(article.oId)) as C FROM ");
+            final StringBuilder queryStr = new StringBuilder(articleRepository.getName() + " AS article,").
+                    append(archiveDateArticleRepository.getName() + " AS archive_article").
+                    append(" WHERE article.oId=archive_article.article_oId ").
+                    append(" AND article.articleStatus=").append(Article.ARTICLE_STATUS_C_PUBLISHED).
+                    append(" AND ").append("archive_article.archiveDate_oId=").append(archiveDateId);
+            final List<JSONObject> articlesCountResult = select(queryCount.append(queryStr.toString()).toString());
+            return articlesCountResult == null ? 0 : articlesCountResult.get(0).optInt("C");
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets archivedate [" + archiveDateId + "]'s article count failed", e);
+            LOGGER.log(Level.ERROR, "Gets archivedate [" + archiveDateId + "]'s published article count failed", e);
 
             return -1;
         }

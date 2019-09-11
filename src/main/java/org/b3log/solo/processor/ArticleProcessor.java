@@ -59,7 +59,7 @@ import java.util.*;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
- * @version 1.4.5.7, May 18, 2019
+ * @version 1.4.5.8, Sep 11, 2019
  * @since 0.3.1
  */
 @RequestProcessor
@@ -500,7 +500,7 @@ public class ArticleProcessor {
             final JSONObject archiveDate = archiveQueryResult.getJSONObject(ArchiveDate.ARCHIVE_DATE);
             final String archiveDateId = archiveDate.getString(Keys.OBJECT_ID);
 
-            final int articleCount = archiveDateQueryService.getArchiveDateArticleCount(archiveDateId);
+            final int articleCount = archiveDateQueryService.getArchiveDatePublishedArticleCount(archiveDateId);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);
@@ -663,7 +663,7 @@ public class ArticleProcessor {
             final JSONObject preference = optionQueryService.getPreference();
             final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
 
-            final int articleCount = archiveDateQueryService.getArchiveDateArticleCount(archiveDateId);
+            final int articleCount = archiveDateQueryService.getArchiveDatePublishedArticleCount(archiveDateId);
             final int pageCount = (int) Math.ceil((double) articleCount / (double) pageSize);
 
             final List<JSONObject> articles = articleQueryService.getArticlesByArchiveDate(archiveDateId, currentPageNum, pageSize);

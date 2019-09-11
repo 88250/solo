@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.0, Sep 1, 2019
+ * @version 1.3.2.1, Sep 11, 2019
  * @since 0.3.5
  */
 @Service
@@ -435,6 +435,8 @@ public class ArticleMgmtService {
 
             processTagsForArticleUpdate(oldArticle, article);
 
+            archiveDate(article);
+
             if (!oldArticle.getString(Article.ARTICLE_PERMALINK).equals(permalink)) { // The permalink has been updated
                 // Updates related comments' links
                 processCommentsForArticleUpdate(article);
@@ -689,8 +691,8 @@ public class ArticleMgmtService {
         try {
             final JSONObject archiveDateArticleRelation = archiveDateArticleRepository.getByArticleId(articleId);
             final String archiveDateId = archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
-            final int articleCount = archiveDateArticleRepository.getArticleCount(archiveDateId);
-            if (1 > articleCount) {
+            final int publishedArticleCount = archiveDateArticleRepository.getPublishedArticleCount(archiveDateId);
+            if (1 > publishedArticleCount) {
                 archiveDateRepository.remove(archiveDateId);
             }
 
@@ -905,15 +907,17 @@ public class ArticleMgmtService {
      *
      * @param article the specified article, for example,
      *                {
-     *                ....,
      *                "oId": "",
-     *                "articleCreateDate": java.util.Date,
      *                ....
      *                }
      * @throws RepositoryException repository exception
      */
     private void archiveDate(final JSONObject article) throws RepositoryException {
-        final long created = article.optLong(Article.ARTICLE_CREATED);
+        if (Article.ARTICLE_STATUS_C_PUBLISHED != article.optInt(ARTICLE_STATUS)) {
+            return;
+        }
+
+        final long created = article.optLong(Keys.OBJECT_ID);
         final String createDateString = DateFormatUtils.format(created, "yyyy/MM");
         JSONObject archiveDate = archiveDateRepository.getByArchiveDate(createDateString);
         if (null == archiveDate) {
