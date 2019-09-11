@@ -28,7 +28,7 @@ import org.jsoup.safety.Whitelist;
  * This class defines all article model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.0.1, Mar 19, 2019
+ * @version 1.5.0.2, Sep 12, 2019
  * @since 0.3.1
  */
 public final class Article {
@@ -256,6 +256,10 @@ public final class Article {
     public static String getAbstractText(final JSONObject article) {
         String content = article.optString(Article.ARTICLE_ABSTRACT);
         if (StringUtils.isBlank(content)) {
+            if (StringUtils.isNotBlank(article.optString(Article.ARTICLE_VIEW_PWD))) {
+                return "";
+            }
+
             content = article.optString(Article.ARTICLE_CONTENT);
         }
 

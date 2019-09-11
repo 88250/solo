@@ -24,6 +24,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -41,7 +42,6 @@ import org.b3log.latke.util.*;
 import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
-import org.b3log.solo.util.Emotions;
 import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Skins;
 import org.b3log.solo.util.Solos;
@@ -1034,9 +1034,16 @@ public class DataModelService {
      * @param article    the specified article
      */
     private void processArticleAbstract(final JSONObject preference, final JSONObject article) {
-        final String articleAbstract = article.optString(Article.ARTICLE_ABSTRACT, null);
-        if (null == articleAbstract) {
+        final String articleAbstract = article.optString(Article.ARTICLE_ABSTRACT);
+        if (StringUtils.isBlank(articleAbstract)) {
             article.put(Article.ARTICLE_ABSTRACT, "");
+        }
+        final String articleAbstractText = article.optString(Article.ARTICLE_ABSTRACT_TEXT);
+        if (StringUtils.isBlank(articleAbstractText)) {
+            // 发布文章时会自动提取摘要文本，其中如果文章加密且没有写摘要，则自动提取文本会返回空字符串 Article#getAbstractText()
+            // 所以当且仅当文章加密且没有摘要的情况下 articleAbstractText 会为空
+            final LangPropsService langPropsService = BeanManager.getInstance().getReference(LangPropsService.class);
+            article.put(Article.ARTICLE_ABSTRACT_TEXT, langPropsService.get("articleContentPwd"));
         }
 
         final String articleListStyle = preference.optString(Option.ID_C_ARTICLE_LIST_STYLE);
