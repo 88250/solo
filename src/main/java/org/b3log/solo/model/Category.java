@@ -21,7 +21,7 @@ package org.b3log.solo.model;
  * This class defines all category model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Mar 30, 2017
+ * @version 1.2.0.0, Sep 11, 2019
  * @since 2.0.0
  */
 public final class Category {
@@ -66,6 +66,11 @@ public final class Category {
      * Key of category tags.
      */
     public static final String CATEGORY_T_TAGS = "categoryTags";
+
+    /**
+     * Key of category published article count.
+     */
+    public static final String CATEGORY_T_PUBLISHED_ARTICLE_COUNT = "categoryPublishedArticleCount";
 
     /**
      * Private constructor.
