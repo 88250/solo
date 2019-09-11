@@ -194,7 +194,7 @@ public class ArticleQueryService {
             }
 
             final StringBuilder queryCount = new StringBuilder("SELECT count(DISTINCT(b3_solo_article.oId)) as C FROM ");
-            final StringBuilder queryList = new StringBuilder("SELECT DISTINCT(b3_solo_article.oId) ").append(" FROM ");
+            final StringBuilder queryList = new StringBuilder("SELECT b3_solo_article.oId ").append(" FROM ");
             final StringBuilder queryStr = new StringBuilder(articleRepository.getName() + " AS b3_solo_article,").
                     append(tagArticleRepository.getName() + " AS b3_solo_tag_article").
                     append(" WHERE b3_solo_article.oId=b3_solo_tag_article.article_oId ").
