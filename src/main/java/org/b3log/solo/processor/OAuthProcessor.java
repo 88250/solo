@@ -54,7 +54,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.0, Jul 13, 2019
+ * @version 1.0.1.1, Sep 12, 2019
  * @since 2.9.5
  */
 @RequestProcessor
@@ -197,7 +197,7 @@ public class OAuthProcessor {
                     try {
                         userMgmtService.addUser(addUserReq);
                     } catch (final Exception e) {
-                        LOGGER.log(Level.ERROR, "Register via oauth failed", e);
+                        LOGGER.log(Level.ERROR, "Registers via oauth failed", e);
                         context.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
                         return;
@@ -207,12 +207,24 @@ public class OAuthProcessor {
                     try {
                         userMgmtService.updateUser(user);
                     } catch (final Exception e) {
-                        LOGGER.log(Level.ERROR, "Update user GitHub id failed", e);
+                        LOGGER.log(Level.ERROR, "Updates user GitHub id failed", e);
                         context.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
                         return;
                     }
                 }
+            }
+        } else {
+            // 更改账号后无法登录 https://github.com/b3log/solo/issues/12879
+            // 使用 GitHub 登录名覆盖本地用户名，解决 GitHub 改名后引起的登录问题
+            user.put(User.USER_NAME, userName);
+            try {
+                userMgmtService.updateUser(user);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Updates user name failed", e);
+                context.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+
+                return;
             }
         }
 
