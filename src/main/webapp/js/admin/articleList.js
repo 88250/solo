@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Feb 6, 2019
+ * @version 1.3.0.0, Sep 14, 2019
  */
 
 /* article-list 相关操作 */
@@ -66,6 +66,11 @@ admin.articleList = {
     $('#articleListBtn').click(function () {
       that.getList(page)
     })
+    $('#articleListInput').keypress(function(event) {
+      if (event.keyCode === 13) {
+        that.getList(page)
+      }
+    })
   },
 
   /**
@@ -92,8 +97,8 @@ admin.articleList = {
     $('#loadMsg').text(Label.loadingLabel)
     $.ajax({
       url: Label.servePath + '/console/articles/status/published/' +
-      pageNum + '/' + Label.PAGE_SIZE + '/' + Label.WINDOW_SIZE + '?k=' +
-      $('#articleListInput').val(),
+        pageNum + '/' + Label.PAGE_SIZE + '/' + Label.WINDOW_SIZE + '?k=' +
+        $('#articleListInput').val(),
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
@@ -181,7 +186,7 @@ admin.articleList = {
 }
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register['article-list'] = {
   'obj': admin.articleList,
