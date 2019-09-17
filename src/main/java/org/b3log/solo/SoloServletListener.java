@@ -59,7 +59,7 @@ import javax.servlet.http.HttpSessionEvent;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.0.22, Aug 18, 2019
+ * @version 1.11.0.23, Sep 17, 2019
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {

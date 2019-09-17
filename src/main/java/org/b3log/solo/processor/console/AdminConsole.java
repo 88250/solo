@@ -66,7 +66,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.15, Jul 13, 2019
+ * @version 1.7.0.16, Sep 17, 2019
  * @since 0.4.1
  */
 @Singleton
