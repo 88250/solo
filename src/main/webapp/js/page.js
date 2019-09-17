@@ -103,7 +103,7 @@ $.extend(Page.prototype, {
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
       Util.addScript(
-        'https://cdn.jsdelivr.net/npm/vditor@1.8.5/dist/index.min.js',
+        'https://cdn.jsdelivr.net/npm/vditor@1.8.6/dist/index.min.js',
         'vditorScript')
       var toolbar = [
         'emoji',
@@ -131,6 +131,8 @@ $.extend(Page.prototype, {
         'both',
         'preview',
         'format',
+        '|',
+        'devtools',
         'fullscreen',
         'info',
         'help',

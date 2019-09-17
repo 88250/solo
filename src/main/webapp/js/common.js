@@ -157,18 +157,20 @@ var Util = {
    * @returns {undefined}
    */
   parseMarkdown: function () {
-    var text = $('.vditor-reset').text()
-    if ($('.vditor-reset pre > code').length === 0 &&
-      !(text.split('$').length > 2 ||
-        (text.split('\\(').length > 1 && text.split('\\)').length > 1))) {
-      return
+
+    if(!Vditor) {
+      Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.8.6/dist/method.min.js',
+        'vditorPreviewScript')
     }
 
-    Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.8.5/dist/method.min.js',
-      'vditorPreviewScript')
-
     Vditor.codeRender(document.body, Label.langLabel)
-    Vditor.mathRender(document.body, Label.langLabel)
+    if (Label.markedAvailable) {
+      // TODO: 渲染引擎修改为 lute 后需修改为  Vditor.mathRenderByLute(document.body)
+      Vditor.mathRender(document.body)
+    } else {
+      Vditor.mathRender(document.body)
+    }
+
     Vditor.abcRender()
     Vditor.chartRender()
     Vditor.mediaRender(document.body)
