@@ -66,7 +66,7 @@ import java.util.*;
  * Admin console render processing.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.15, Jul 13, 2019
+ * @version 1.7.0.16, Sep 17, 2019
  * @since 0.4.1
  */
 @Singleton
@@ -147,8 +147,7 @@ public class AdminConsole {
             dataModel.put(Option.CATEGORY_C_SKIN, skin.optString(Option.ID_C_SKIN_DIR_NAME));
             Keys.fillRuntime(dataModel);
             dataModelService.fillMinified(dataModel);
-            // 使用 Marked 时代码高亮问题 https://github.com/b3log/solo/issues/12614
-            dataModel.put(Common.MARKED_AVAILABLE, Markdowns.MARKDOWN_HTTP_AVAILABLE);
+            dataModel.put(Common.LUTE_AVAILABLE, Markdowns.LUTE_AVAILABLE);
             // 内置 HTTPS+CDN 文件存储 https://github.com/b3log/solo/issues/12556
             dataModel.put(Common.UPLOAD_TOKEN, "");
             dataModel.put(Common.UPLOAD_URL, "");

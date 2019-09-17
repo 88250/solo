@@ -150,7 +150,7 @@ var Util = {
     if ($('.vditor-reset pre > code').length === 0) {
       return
     }
-    Vditor.highlightRender(Label.hljsStyle, !Label.markedAvailable, document)
+    Vditor.highlightRender(Label.hljsStyle, !Label.luteAvailable, document)
   },
   /**
    * 按需加载数学公式、流程图、代码复制、五线谱、多媒体、图表

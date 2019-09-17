@@ -59,7 +59,7 @@ import javax.servlet.http.HttpSessionEvent;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Vanessa</a>
- * @version 1.11.0.22, Aug 18, 2019
+ * @version 1.11.0.23, Sep 17, 2019
  * @since 0.3.1
  */
 public final class SoloServletListener extends AbstractServletListener {
@@ -94,10 +94,10 @@ public final class SoloServletListener extends AbstractServletListener {
         final Latkes.RuntimeMode runtimeMode = Latkes.getRuntimeMode();
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
         final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
-        final boolean markdownHttpAvailable = Markdowns.MARKDOWN_HTTP_AVAILABLE;
+        final boolean luteAvailable = Markdowns.LUTE_AVAILABLE;
 
         LOGGER.log(Level.INFO, "Solo is booting [ver=" + VERSION + ", servletContainer=" + Latkes.getServletInfo(servletContextEvent.getServletContext())
-                + ", os=" + Latkes.getOperatingSystemName() + ", isDocker=" + Latkes.isDocker() + ", markdownHttpAvailable=" + markdownHttpAvailable + ", pid=" + Latkes.currentPID()
+                + ", os=" + Latkes.getOperatingSystemName() + ", isDocker=" + Latkes.isDocker() + ", luteAvailable=" + luteAvailable + ", pid=" + Latkes.currentPID()
                 + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode + ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
         validateSkin();
