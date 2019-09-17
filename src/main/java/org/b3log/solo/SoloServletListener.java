@@ -94,10 +94,10 @@ public final class SoloServletListener extends AbstractServletListener {
         final Latkes.RuntimeMode runtimeMode = Latkes.getRuntimeMode();
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
         final String jdbcURL = Latkes.getLocalProperty("jdbc.URL");
-        final boolean markdownHttpAvailable = Markdowns.MARKDOWN_HTTP_AVAILABLE;
+        final boolean luteAvailable = Markdowns.LUTE_AVAILABLE;
 
         LOGGER.log(Level.INFO, "Solo is booting [ver=" + VERSION + ", servletContainer=" + Latkes.getServletInfo(servletContextEvent.getServletContext())
-                + ", os=" + Latkes.getOperatingSystemName() + ", isDocker=" + Latkes.isDocker() + ", markdownHttpAvailable=" + markdownHttpAvailable + ", pid=" + Latkes.currentPID()
+                + ", os=" + Latkes.getOperatingSystemName() + ", isDocker=" + Latkes.isDocker() + ", luteAvailable=" + luteAvailable + ", pid=" + Latkes.currentPID()
                 + ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + runtimeMode + ", jdbc.username=" + jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
         validateSkin();

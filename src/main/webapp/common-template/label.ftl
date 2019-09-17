@@ -21,7 +21,7 @@
     var Label = {
         servePath: "${servePath}",
         staticServePath: "${staticServePath}",
-        markedAvailable: ${markedAvailable?c},
+        luteAvailable: ${luteAvailable?c},
         hljsStyle: '${hljsTheme}',
         langLabel: "${langLabel}",
         version: "${version}",

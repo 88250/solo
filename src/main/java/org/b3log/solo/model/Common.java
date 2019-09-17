@@ -22,7 +22,7 @@ package org.b3log.solo.model;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/e">Dongxu Wang</a>
- * @version 1.7.0.5, Mar 29, 2019
+ * @version 1.7.0.6, Sep 17, 2019
  * @since 0.3.1
  */
 public final class Common {
@@ -68,9 +68,9 @@ public final class Common {
     public static final String UPLOAD_TOKEN = "uploadToken";
 
     /**
-     * Key of marked engine available.
+     * Key of Lute engine available.
      */
-    public static final String MARKED_AVAILABLE = "markedAvailable";
+    public static final String LUTE_AVAILABLE = "luteAvailable";
 
     /**
      * Key of keyword.

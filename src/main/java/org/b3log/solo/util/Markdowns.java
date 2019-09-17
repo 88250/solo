@@ -58,7 +58,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.8, Jul 29, 2019
+ * @version 2.3.1.9, Sep 17, 2019
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -101,42 +101,24 @@ public final class Markdowns {
     private static final HtmlRenderer RENDERER = HtmlRenderer.builder(OPTIONS).build();
 
     /**
-     * Markdown engine serve path.
+     * Lute engine serve path. https://github.com/b3log/lute
      */
-    private static final String MARKDOWN_ENGINE_URL = "http://localhost:8250";
+    private static final String LUTE_ENGINE_URL = "http://localhost:8249";
 
     /**
-     * Whether markdown-http is available.
+     * Whether Lute is available.
      */
-    public static boolean MARKDOWN_HTTP_AVAILABLE;
+    public static boolean LUTE_AVAILABLE;
 
     static {
         try {
-            final URL url = new URL(MARKDOWN_ENGINE_URL);
-            final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setDoOutput(true);
-
-            try (final OutputStream outputStream = conn.getOutputStream()) {
-                IOUtils.write("昔日舞曲", outputStream, "UTF-8");
-            }
-
-            String html;
-            try (final InputStream inputStream = conn.getInputStream()) {
-                html = IOUtils.toString(inputStream, "UTF-8");
-            }
-
-            conn.disconnect();
-
-            MARKDOWN_HTTP_AVAILABLE = StringUtils.contains(html, "<p>昔日舞曲</p>");
-
-            if (MARKDOWN_HTTP_AVAILABLE) {
-                LOGGER.log(Level.INFO, "[markdown-http] is available, uses it for markdown processing");
-            } else {
-                LOGGER.log(Level.INFO, "[markdown-http] is not available, uses built-in [flexmark] for markdown processing");
+            final String html = toHtmlByLute("旧日的足迹");
+            LUTE_AVAILABLE = StringUtils.contains(html, "<p>旧日的足迹</p>");
+            if (LUTE_AVAILABLE) {
+                LOGGER.log(Level.INFO, "[Lute] is available");
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.INFO, "[markdown-http] is not available, uses built-in [flexmark] for markdown processing. " +
-                    "Please read FAQ section in user guide (https://hacpai.com/article/1492881378588) for more details.");
+            // ignored
         }
     }
 
@@ -177,29 +159,21 @@ public final class Markdowns {
         final Callable<String> call = () -> {
             threadId[0] = Thread.currentThread().getId();
 
-            String html = langPropsService.get("contentRenderFailedLabel");
-
-            if (MARKDOWN_HTTP_AVAILABLE) {
+            String html = null;
+            if (LUTE_AVAILABLE) {
                 try {
-                    html = toHtmlByMarkdownHTTP(markdownText);
-                    if (!StringUtils.startsWith(html, "<p>")) {
-                        html = "<p>" + html + "</p>";
-                    }
+                    html = toHtmlByLute(markdownText);
                 } catch (final Exception e) {
-                    LOGGER.log(Level.WARN, "Failed to use [markdown-http] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
+                    LOGGER.log(Level.WARN, "Failed to use [Lute] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
+                }
+            }
 
-                    com.vladsch.flexmark.util.ast.Node document = PARSER.parse(markdownText);
-                    html = RENDERER.render(document);
-                    if (!StringUtils.startsWith(html, "<p>")) {
-                        html = "<p>" + html + "</p>";
-                    }
-                }
-            } else {
-                com.vladsch.flexmark.util.ast.Node document = PARSER.parse(markdownText);
-                html = RENDERER.render(document);
-                if (!StringUtils.startsWith(html, "<p>")) {
-                    html = "<p>" + html + "</p>";
-                }
+            if (StringUtils.isBlank(html)) {
+                html = toHtmlByFlexmark(markdownText);
+            }
+
+            if (!StringUtils.startsWith(html, "<p>")) {
+                html = "<p>" + html + "</p>";
             }
 
             final Document doc = Jsoup.parse(html);
@@ -291,9 +265,11 @@ public final class Markdowns {
         return langPropsService.get("contentRenderFailedLabel");
     }
 
-    private static String toHtmlByMarkdownHTTP(final String markdownText) throws Exception {
-        final URL url = new URL(MARKDOWN_ENGINE_URL);
+    private static String toHtmlByLute(final String markdownText) throws Exception {
+        final URL url = new URL(LUTE_ENGINE_URL);
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setConnectTimeout(1000);
+        conn.setReadTimeout(7000);
         conn.setDoOutput(true);
 
         try (final OutputStream outputStream = conn.getOutputStream()) {
@@ -305,9 +281,15 @@ public final class Markdowns {
             ret = IOUtils.toString(inputStream, "UTF-8");
         }
 
-        //conn.disconnect();
+        conn.disconnect();
 
         return ret;
+    }
+
+    private static String toHtmlByFlexmark(final String markdownText) {
+        com.vladsch.flexmark.util.ast.Node document = PARSER.parse(markdownText);
+
+        return RENDERER.render(document);
     }
 
     /**
