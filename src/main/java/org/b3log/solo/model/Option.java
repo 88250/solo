@@ -300,7 +300,7 @@ public final class Option {
      * Default preference.
      *
      * @author <a href="http://88250.b3log.org">Liang Ding</a>
-     * @version 2.3.0.2, Aug 18, 2019
+     * @version 2.3.0.3, Sep 18, 2019
      * @since 0.3.1
      */
     public static final class DefaultPreference {
@@ -308,7 +308,7 @@ public final class Option {
         /**
          * Default hljs theme.
          */
-        public static final String DEFAULT_HLJS_THEME = "atom-one-light";
+        public static final String DEFAULT_HLJS_THEME = "github";
 
         /**
          * Default enable sync push GitHub.
