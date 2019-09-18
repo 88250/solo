@@ -103,7 +103,7 @@ $.extend(Page.prototype, {
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
       Util.addScript(
-        'https://cdn.jsdelivr.net/npm/vditor@1.8.6/dist/index.min.js',
+        'https://cdn.jsdelivr.net/npm/vditor@1.8.8/dist/index.min.js',
         'vditorScript')
       var toolbar = [
         'emoji',
@@ -169,7 +169,7 @@ $.extend(Page.prototype, {
           mode: 'editor',
           url: Label.servePath + '/console/markdown/2html',
           hljs: {
-            enable: true,
+            enable: !Label.luteAvailable,
             style: Label.hljsStyle,
           },
           parse: function (element) {

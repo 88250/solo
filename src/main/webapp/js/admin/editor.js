@@ -48,6 +48,10 @@ $.extend(SoloEditor.prototype, {
         delay: 500,
         mode: this.conf.previewMode,
         url: Label.servePath + '/console/markdown/2html',
+        hljs: {
+          enable: !Label.luteAvailable,
+          style: Label.hljsStyle,
+        },
         parse: function(element) {
           if (element.style.display === 'none') {
             return

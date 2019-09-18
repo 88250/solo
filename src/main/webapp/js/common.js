@@ -147,9 +147,6 @@ var Util = {
   * @description 解析语法高亮
   */
   parseLanguage: function () {
-    if ($('.vditor-reset pre > code').length === 0) {
-      return
-    }
     Vditor.highlightRender(Label.hljsStyle, !Label.luteAvailable, document)
   },
   /**
@@ -158,15 +155,15 @@ var Util = {
    */
   parseMarkdown: function () {
 
-    if(!Vditor) {
-      Util.addScript('https://cdn.jsdelivr.net/npm/vditor@1.8.6/dist/method.min.js',
+    if (typeof Vditor === 'undefined') {
+      Util.addScript(
+        'https://cdn.jsdelivr.net/npm/vditor@1.8.8/dist/method.min.js',
         'vditorPreviewScript')
     }
 
     Vditor.codeRender(document.body, Label.langLabel)
-    if (Label.markedAvailable) {
-      // TODO: 渲染引擎修改为 lute 后需修改为  Vditor.mathRenderByLute(document.body)
-      Vditor.mathRender(document.body)
+    if (Label.luteAvailable) {
+      Vditor.mathRenderByLute(document.body)
     } else {
       Vditor.mathRender(document.body)
     }
