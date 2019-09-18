@@ -129,9 +129,13 @@ public final class Markdowns {
      * @return html
      */
     public static String clean(final String html) {
-        String ret = Jsoup.clean(html, Whitelist.relaxed().addAttributes("code", "class") /* 允许代码块语言高亮信息 */);
-
-        return ret;
+        final Whitelist whitelist = Whitelist.relaxed();
+        // 允许代码块语言高亮信息
+        whitelist.addAttributes("pre", "class").
+                addAttributes("div", "class").
+                addAttributes("span", "class").
+                addAttributes("code", "class");
+        return Jsoup.clean(html, whitelist);
     }
 
     /**
