@@ -51,7 +51,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Jul 29, 2019
+ * @version 1.1.1.1, Sep 18, 2019
  * @since 2.5.0
  */
 @Service
@@ -150,8 +150,8 @@ public class ExportService {
      * Exports public articles to admin's GitHub repos. 博文定时同步 GitHub 仓库 https://hacpai.com/article/1557238327458
      */
     public void exportGitHubRepo() {
+        LOGGER.log(Level.INFO, "Github repo syncing....");
         try {
-            LOGGER.log(Level.INFO, "Github repo syncing....");
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
                 return;
@@ -265,6 +265,8 @@ public class ExportService {
             LOGGER.info("Github repo sync completed: " + response.bodyText());
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Exports articles to github repo failed", e);
+        } finally {
+            LOGGER.log(Level.INFO, "Github repo synced");
         }
     }
 
