@@ -50,7 +50,7 @@ import java.util.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.3.0, Sep 11, 2019
+ * @version 1.3.4.0, Sep 18, 2019
  * @since 0.3.5
  */
 @Service
@@ -193,20 +193,20 @@ public class ArticleQueryService {
                 tagIds.add(categoryTags.optJSONObject(i).optString(Tag.TAG + "_" + Keys.OBJECT_ID));
             }
 
-            final StringBuilder queryCount = new StringBuilder("SELECT count(DISTINCT(b3_solo_article.oId)) as C FROM ");
-            final StringBuilder queryList = new StringBuilder("SELECT DISTINCT(b3_solo_article.oId) ").append(" FROM ");
-            final StringBuilder queryStr = new StringBuilder(articleRepository.getName() + " AS b3_solo_article,").
-                    append(tagArticleRepository.getName() + " AS b3_solo_tag_article").
-                    append(" WHERE b3_solo_article.oId=b3_solo_tag_article.article_oId ").
-                    append(" AND b3_solo_article.").append(Article.ARTICLE_STATUS).append("=?").
-                    append(" AND ").append("b3_solo_tag_article.tag_oId").append(" IN (");
+            final StringBuilder queryCount = new StringBuilder("SELECT count(DISTINCT(article.oId)) as `C` FROM ");
+            final StringBuilder queryList = new StringBuilder("SELECT DISTINCT(article.oId) as `C` FROM ");
+            final StringBuilder queryStr = new StringBuilder(articleRepository.getName() + " AS article,").
+                    append(tagArticleRepository.getName() + " AS tag_article").
+                    append(" WHERE article.oId=tag_article.article_oId ").
+                    append(" AND article.").append(Article.ARTICLE_STATUS).append("=?").
+                    append(" AND ").append("tag_article.tag_oId").append(" IN (");
             for (int i = 0; i < tagIds.size(); i++) {
                 queryStr.append(" ").append(tagIds.get(i));
                 if (i < (tagIds.size() - 1)) {
                     queryStr.append(",");
                 }
             }
-            queryStr.append(") ORDER BY ").append("b3_solo_tag_article.oId DESC");
+            queryStr.append(") ORDER BY `C` DESC");
 
             final List<JSONObject> tagArticlesCountResult = articleRepository.
                     select(queryCount.append(queryStr.toString()).toString(), Article.ARTICLE_STATUS_C_PUBLISHED);
@@ -228,7 +228,7 @@ public class ArticleQueryService {
 
             final Set<String> articleIds = new HashSet<>();
             for (int i = 0; i < tagArticles.size(); i++) {
-                articleIds.add(tagArticles.get(i).optString(Keys.OBJECT_ID));
+                articleIds.add(tagArticles.get(i).optString("C"));
             }
             final Query query = new Query().setFilter(new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds)).
                     setPageCount(1).addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
