@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.1.0, Sep 9, 2019
+ * @version 1.9.2.0, Sep 19, 2019
  */
 
 /**
@@ -77,7 +77,7 @@ var Util = {
             href.indexOf(Label.servePath + '/admin-index.do') > -1) {
             return true
           }
-          if (href.indexOf(Label.servePath) > -1) {
+          if (element.href.indexOf(Label.servePath) > -1) {
             return false
           }
           return true
