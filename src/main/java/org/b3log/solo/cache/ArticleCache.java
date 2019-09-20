@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Article cache.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.0.1, Sep 25, 2018
+ * @version 1.2.1.0, Sep 20, 2019
  * @since 2.3.0
  */
 @Singleton
@@ -92,7 +92,13 @@ public class ArticleCache {
      * @param id the specified article id
      */
     public void removeArticle(final String id) {
+        final JSONObject article = idCache.get(id);
+        if (null == article) {
+            return;
+        }
+        final String permalink = article.optString(Article.ARTICLE_PERMALINK);
         idCache.remove(id);
+        permalinkCache.remove(permalink);
     }
 
     /**
