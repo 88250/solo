@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.2.0, Sep 19, 2019
+ * @version 1.9.3.0, Sep 20, 2019
  */
 
 /**
@@ -77,6 +77,11 @@ var Util = {
             href.indexOf(Label.servePath + '/admin-index.do') > -1) {
             return true
           }
+          // 目录
+          if (href.indexOf('#') === 0) {
+            return true
+          }
+          // 自定义导航
           if (element.href.indexOf(Label.servePath) > -1) {
             return false
           }
