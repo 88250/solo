@@ -50,7 +50,7 @@ import java.util.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.4.0, Sep 18, 2019
+ * @version 1.3.4.1, Sep 20, 2019
  * @since 0.3.5
  */
 @Service
@@ -143,6 +143,7 @@ public class ArticleQueryService {
                     CompositeFilterOperator.and(new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED),
                             CompositeFilterOperator.or(
                                     new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
+                                    new PropertyFilter(Article.ARTICLE_TAGS_REF, FilterOperator.LIKE, "%" + keyword + "%"),
                                     new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%")))).
                     addSort(Article.ARTICLE_UPDATED, SortDirection.DESCENDING).setPage(currentPageNum, pageSize);
 
@@ -529,8 +530,8 @@ public class ArticleQueryService {
                         new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, articleStatus),
                         CompositeFilterOperator.or(
                                 new PropertyFilter(Article.ARTICLE_TITLE, FilterOperator.LIKE, "%" + keyword + "%"),
-                                new PropertyFilter(Article.ARTICLE_TAGS_REF, FilterOperator.LIKE, "%" + keyword + "%")
-                        )
+                                new PropertyFilter(Article.ARTICLE_TAGS_REF, FilterOperator.LIKE, "%" + keyword + "%"),
+                                new PropertyFilter(Article.ARTICLE_CONTENT, FilterOperator.LIKE, "%" + keyword + "%"))
                 ));
             }
 
