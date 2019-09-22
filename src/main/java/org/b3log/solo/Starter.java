@@ -22,6 +22,7 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Strings;
+import org.b3log.solo.util.Markdowns;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.log.Log;
 import org.eclipse.jetty.util.log.Slf4jLog;
@@ -37,7 +38,7 @@ import java.io.File;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.0, Mar 29, 2019
+ * @version 1.1.1.1, Sep 22, 2019
  * @since 1.2.0
  */
 public final class Starter {
@@ -92,9 +93,14 @@ public final class Starter {
                 hasArg().desc("runtime mode (DEVELOPMENT/PRODUCTION), default is DEVELOPMENT").build();
         options.addOption(runtimeModeOpt);
 
+        final Option luteHttpOpt = Option.builder("lute").longOpt("lute_http").argName("LUTE_HTTP").
+                hasArg().desc("lute http URL, default is http://localhost:8249, see https://github.com/b3log/lute-http for more details").build();
+        options.addOption(luteHttpOpt);
+
         options.addOption("h", "help", false, "print help for the command");
 
         final HelpFormatter helpFormatter = new HelpFormatter();
+        helpFormatter.setWidth(120);
         final CommandLineParser commandLineParser = new DefaultParser();
         CommandLine commandLine;
 
@@ -157,6 +163,10 @@ public final class Starter {
         String runtimeMode = commandLine.getOptionValue("runtime_mode");
         if (null != runtimeMode) {
             Latkes.setRuntimeMode(Latkes.RuntimeMode.valueOf(runtimeMode));
+        }
+        String luteHttp = commandLine.getOptionValue("lute");
+        if (null != luteHttp) {
+            Markdowns.LUTE_ENGINE_URL = luteHttp;
         }
 
         String webappDirLocation = "src/main/webapp/"; // POM structure in dev env

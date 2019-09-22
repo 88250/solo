@@ -101,9 +101,9 @@ public final class Markdowns {
     private static final HtmlRenderer RENDERER = HtmlRenderer.builder(OPTIONS).build();
 
     /**
-     * Lute engine serve path. https://github.com/b3log/lute
+     * Lute engine serve path. https://github.com/b3log/lute-http
      */
-    private static final String LUTE_ENGINE_URL = "http://localhost:8249";
+    public static String LUTE_ENGINE_URL = "http://localhost:8249";
 
     /**
      * Whether Lute is available.
@@ -273,7 +273,7 @@ public final class Markdowns {
         final URL url = new URL(LUTE_ENGINE_URL);
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(1000);
-        conn.setReadTimeout(7000);
+        conn.setReadTimeout(2000);
         conn.setDoOutput(true);
 
         try (final OutputStream outputStream = conn.getOutputStream()) {
