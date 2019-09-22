@@ -272,8 +272,8 @@ public final class Markdowns {
     private static String toHtmlByLute(final String markdownText) throws Exception {
         final URL url = new URL(LUTE_ENGINE_URL);
         final HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setConnectTimeout(1000);
-        conn.setReadTimeout(2000);
+        conn.setConnectTimeout(100);
+        conn.setReadTimeout(1000);
         conn.setDoOutput(true);
 
         try (final OutputStream outputStream = conn.getOutputStream()) {

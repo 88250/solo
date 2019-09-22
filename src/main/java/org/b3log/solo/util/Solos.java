@@ -104,7 +104,7 @@ public final class Solos {
         FAVICON_API = solo.getString("faviconAPI");
 
         try {
-            Markdowns.LUTE_ENGINE_URL = solo.getString("luteHttp")
+            Markdowns.LUTE_ENGINE_URL = solo.getString("luteHttp");
         } catch (final Exception e) {
             // ignored
         }
