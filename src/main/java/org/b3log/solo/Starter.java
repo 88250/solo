@@ -38,7 +38,7 @@ import java.io.File;
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.1, Sep 22, 2019
+ * @version 1.1.1.2, Sep 23, 2019
  * @since 1.2.0
  */
 public final class Starter {
@@ -167,6 +167,7 @@ public final class Starter {
         String luteHttp = commandLine.getOptionValue("lute");
         if (null != luteHttp) {
             Markdowns.LUTE_ENGINE_URL = luteHttp;
+            Markdowns.LUTE_AVAILABLE = true;
         }
 
         String webappDirLocation = "src/main/webapp/"; // POM structure in dev env

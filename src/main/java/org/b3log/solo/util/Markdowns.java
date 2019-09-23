@@ -58,7 +58,7 @@ import java.util.concurrent.*;
  * </p>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.3.1.9, Sep 17, 2019
+ * @version 2.3.1.10, Sep 23, 2019
  * @since 0.4.5
  */
 public final class Markdowns {
@@ -109,18 +109,6 @@ public final class Markdowns {
      * Whether Lute is available.
      */
     public static boolean LUTE_AVAILABLE;
-
-    static {
-        try {
-            final String html = toHtmlByLute("旧日的足迹");
-            LUTE_AVAILABLE = StringUtils.contains(html, "<p>旧日的足迹</p>");
-            if (LUTE_AVAILABLE) {
-                LOGGER.log(Level.INFO, "[Lute] is available");
-            }
-        } catch (final Exception e) {
-            // ignored
-        }
-    }
 
     /**
      * Cleans the specified HTML.
