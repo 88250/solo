@@ -70,6 +70,9 @@ var Util = {
         storage: true,
         titleSuffix: '',
         filter: function (href, element) {
+          if (!href) {
+            return true
+          }
           if (element.getAttribute('target') === '_blank') {
             return true
           }
@@ -175,7 +178,11 @@ var Util = {
 
     Vditor.abcRender()
     Vditor.chartRender()
-    Vditor.mediaRender(document.body)
+    // TODO vditor@1.8.12 后移除判断
+    var vditorResetElement = document.querySelector('.vditor-reset')
+    if (vditorResetElement) {
+      Vditor.mediaRender(vditorResetElement)
+    }
     Vditor.mermaidRender(document.body)
   },
   /**
