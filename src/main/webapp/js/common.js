@@ -165,7 +165,7 @@ var Util = {
 
     if (typeof Vditor === 'undefined') {
       Util.addScript(
-        'https://cdn.jsdelivr.net/npm/vditor@1.8.11/dist/method.min.js',
+        'https://cdn.jsdelivr.net/npm/vditor@1.8.13/dist/method.min.js',
         'vditorPreviewScript')
     }
 
@@ -178,11 +178,7 @@ var Util = {
 
     Vditor.abcRender()
     Vditor.chartRender()
-    // TODO vditor@1.8.12 后移除判断
-    var vditorResetElement = document.querySelector('.vditor-reset')
-    if (vditorResetElement) {
-      Vditor.mediaRender(vditorResetElement)
-    }
+    Vditor.mediaRender(document.body)
     Vditor.mermaidRender(document.body)
   },
   /**
