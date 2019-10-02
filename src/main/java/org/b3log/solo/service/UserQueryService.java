@@ -43,7 +43,7 @@ import java.util.List;
  * User query service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Feb 3, 2019
+ * @version 1.1.0.1, Oct 2, 2019
  * @since 0.4.0
  */
 @Service
@@ -86,14 +86,13 @@ public class UserQueryService {
      * Gets the administrator.
      *
      * @return administrator, returns {@code null} if not found
-     * @throws ServiceException service exception
      */
-    public JSONObject getAdmin() throws ServiceException {
+    public JSONObject getAdmin() {
         try {
             return userRepository.getAdmin();
         } catch (final RepositoryException e) {
             LOGGER.log(Level.ERROR, "Gets admin failed", e);
-            throw new ServiceException(e);
+            return null;
         }
     }
 

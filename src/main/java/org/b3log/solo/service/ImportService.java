@@ -77,13 +77,7 @@ public class ImportService {
             final String markdownsPath = servletContext.getRealPath("markdowns");
             LOGGER.debug("Import directory [" + markdownsPath + "]");
 
-            JSONObject admin;
-            try {
-                admin = userQueryService.getAdmin();
-            } catch (final Exception e) {
-                return;
-            }
-
+            final JSONObject admin = userQueryService.getAdmin();
             if (null == admin) { // Not init yet
                 return;
             }

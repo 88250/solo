@@ -25,7 +25,6 @@ import org.b3log.latke.ioc.Discoverer;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.repository.jdbc.util.JdbcRepositories;
-import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.util.Crypts;
 import org.b3log.solo.cache.*;
 import org.b3log.solo.model.Option;
@@ -134,9 +133,8 @@ public abstract class AbstractTestCase {
      * Mocks admin login for console testing.
      *
      * @param request the specified request
-     * @throws ServiceException service exception
      */
-    public void mockAdminLogin(final MockHttpServletRequest request) throws ServiceException {
+    public void mockAdminLogin(final MockHttpServletRequest request) {
         final JSONObject adminUser = getUserQueryService().getAdmin();
         final String userId = adminUser.optString(Keys.OBJECT_ID);
         final JSONObject cookieJSONObject = new JSONObject();
