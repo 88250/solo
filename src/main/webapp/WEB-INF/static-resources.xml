@@ -20,7 +20,7 @@
 -->
 <!--
     Description: Static resources definition.
-    Version: 2.8.0.61, Mar 17, 2019
+    Version: 2.8.0.62, Oct 2, 2019
     Author: Liang Ding
     Author: Liyuan Li
 -->
@@ -29,7 +29,6 @@
 
     <include path="/robots.txt"/>
     <include path="/sw.js"/>
-    <include path="/manifest.json"/>
 
     <include path="/js/**.js"/>
     <include path="/js/**/*.js"/>

@@ -17,10 +17,13 @@
  */
 package org.b3log.solo.processor;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.User;
 import org.b3log.latke.servlet.HttpMethod;
@@ -35,15 +38,22 @@ import org.b3log.solo.service.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+
 /**
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.1.8, Feb 7, 2019
+ * @version 1.4.0.0, Oct 2, 2019
  * @since 0.4.6
  */
 @RequestProcessor
 public class BlogProcessor {
+
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger.getLogger(BlogProcessor.class);
 
     /**
      * Article query service.
@@ -74,6 +84,44 @@ public class BlogProcessor {
      */
     @Inject
     private OptionQueryService optionQueryService;
+
+    /**
+     * PWA manifest JSON template.
+     */
+    private static String PWA_MANIFESTO_JSON;
+
+    static {
+        try (final InputStream tplStream = BlogProcessor.class.getResourceAsStream("/manifest.json.tpl")) {
+            PWA_MANIFESTO_JSON = IOUtils.toString(tplStream, "UTF-8");
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Loads PWA manifest.json template failed", e);
+        }
+    }
+
+    /**
+     * Gets PWA manifest.json.
+     *
+     * @param context the specified context
+     */
+    @RequestProcessing(value = "/manifest.json", method = HttpMethod.GET)
+    public void getPWAManifestJSON(final RequestContext context) {
+        final JsonRenderer renderer = new JsonRenderer();
+        renderer.setPretty(true);
+        context.setRenderer(renderer);
+        final JSONObject preference = optionQueryService.getPreference();
+        if (null == preference) {
+            return;
+        }
+        final String name = preference.optString(Option.ID_C_BLOG_TITLE);
+        PWA_MANIFESTO_JSON = StringUtils.replace(PWA_MANIFESTO_JSON, "${name}", name);
+        final String description = preference.optString(Option.ID_C_BLOG_SUBTITLE);
+        PWA_MANIFESTO_JSON = StringUtils.replace(PWA_MANIFESTO_JSON, "${description}", description);
+        final JSONObject jsonObject = new JSONObject(PWA_MANIFESTO_JSON);
+        final JSONObject admin = userQueryService.getAdmin();
+        final String adminName = admin.optString(User.USER_NAME);
+        PWA_MANIFESTO_JSON = StringUtils.replace(PWA_MANIFESTO_JSON, "${shortName}", adminName);
+        renderer.setJSONObject(jsonObject);
+    }
 
     /**
      * Gets blog information.
@@ -111,12 +159,7 @@ public class BlogProcessor {
         jsonObject.put("runtimeMode", Latkes.getRuntimeMode());
         jsonObject.put("runtimeDatabase", Latkes.getRuntimeDatabase());
         jsonObject.put("locale", Latkes.getLocale());
-        String userName = "";
-        try {
-            userName = userQueryService.getAdmin().optString(User.USER_NAME);
-        } catch (final Exception e) {
-            // ignored
-        }
+        final String userName = userQueryService.getAdmin().optString(User.USER_NAME);
         jsonObject.put("userName", userName);
     }
 

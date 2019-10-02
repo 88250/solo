@@ -1,12 +1,12 @@
 {
-  "name": "Solo - 博客",
-  "short_name": "Solo",
+  "name": "${name}",
+  "short_name": "${shortName}",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#f1f2f7",
   "orientation": "portrait",
   "theme_color": "#1fb5ad",
-  "description": "一个用 Java 实现的博客系统，为你或你的团队创建个博客吧！",
+  "description": "${description}",
   "icons": [
     {
       "src": "images/logo/logo@48.png",
