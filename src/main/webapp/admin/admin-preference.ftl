@@ -39,7 +39,8 @@
 <div id="tabPreferencePanel" class="sub-tabs-main">
     <div id="tabPreferencePanel_config" class="form">
         <div class="fn__clear">
-            <a style="line-height: 32px" href="https://hacpai.com/settings" target="_blank">前往配置 GitHub，Twitter 等站点链接</a>
+            <a style="line-height: 32px" href="https://hacpai.com/settings" target="_blank">前往配置 GitHub，Twitter
+                等站点链接</a>
             <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
         </div>
         <div class="fn__clear"></div>
@@ -60,128 +61,169 @@
         <label for="footerContent">${footerContent1Label}</label>
         <textarea rows="2" id="footerContent"></textarea><br><br>
         <div class="fn__clear">
-            <a style="line-height: 32px" href="https://hacpai.com/settings" target="_blank">前往配置 GitHub，Twitter 等站点链接</a>
+            <a style="line-height: 32px" href="https://hacpai.com/settings" target="_blank">前往配置 GitHub，Twitter
+                等站点链接</a>
             <button onclick="admin.preference.update()" class="fn__right">${updateLabel}</button>
         </div>
     </div>
     <div id="tabPreferencePanel_setting" class="fn__none form">
         <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="fn__clear"></div>
-        <label for="localeString">${localeString1Label}</label>
-        <select id="localeString">
-            <option value="zh_CN">简体中文</option>
-            <option value="en_US">Englisth(US)</option>
-        </select>
-        <label for="timeZoneId">${timeZoneId1Label}</label>
-        <select id="timeZoneId">
-        ${timeZoneIdOptions}
-        </select>
-        <label for="articleListDisplay">${articleListDisplay1Label}</label>
-        <select id="articleListDisplay">
-            <option value="titleOnly">${titleOnlyLabel}</option>
-            <option value="titleAndAbstract">${titleAndAbstractLabel}</option>
-            <option value="titleAndContent">${titleAndContentLabel}</option>
-        </select>
-        <label for="hljsTheme">
-            <a href="https://xyproto.github.io/splash/docs/longer/all.html" target="_blank">${previewLabel}</a>${hljsThemeLabel}
-        </label>
-        <select id="hljsTheme">
-            <option value="abap">abap</option>
-            <option value="algol">algol</option>
-            <option value="algol_nu">algol_nu</option>
-            <option value="arduino">arduino</option>
-            <option value="autumn">autumn</option>
-            <option value="borland">borland</option>
-            <option value="bw">bw</option>
-            <option value="colorful">colorful</option>
-            <option value="dracula">dracula</option>
-            <option value="emacs">emacs</option>
-            <option value="friendly">friendly</option>
-            <option value="fruity">fruity</option>
-            <option value="github">github</option>
-            <option value="igor">igor</option>
-            <option value="lovelace">lovelace</option>
-            <option value="manni">manni</option>
-            <option value="monokai">monokai</option>
-            <option value="monokailight">monokailight</option>
-            <option value="murphy">murphy</option>
-            <option value="native">native</option>
-            <option value="paraiso-dark">paraiso-dark</option>
-            <option value="paraiso-light">paraiso-light</option>
-            <option value="pastie">pastie</option>
-            <option value="perldoc">perldoc</option>
-            <option value="pygments">pygments</option>
-            <option value="rainbow_dash">rainbow_dash</option>
-            <option value="rrt">rrt</option>
-            <option value="solarized-dark">solarized-dark</option>
-            <option value="solarized-dark256">solarized-dark256</option>
-            <option value="solarized-light">solarized-light</option>
-            <option value="swapoff">swapoff</option>
-            <option value="tango">tango</option>
-            <option value="trac">trac</option>
-            <option value="vim">vim</option>
-            <option value="vs">vs</option>
-            <option value="xcode">xcode</option>
-        </select>
-        <label for="mostUsedTagDisplayCount">${indexTagDisplayCnt1Label}</label>
-        <input id="mostUsedTagDisplayCount" class="normalInput" type="text"/>
-        <label for="recentCommentDisplayCount">${indexRecentCommentDisplayCnt1Label}</label>
-        <input id="recentCommentDisplayCount" class="normalInput" type="text"/>
-        <label for="mostCommentArticleDisplayCount">${indexMostCommentArticleDisplayCnt1Label}</label>
-        <input id="mostCommentArticleDisplayCount" class="normalInput" type="text"/>
-        <label for="mostViewArticleDisplayCount">${indexMostViewArticleDisplayCnt1Label}</label>
-        <input id="mostViewArticleDisplayCount" class="normalInput" type="text"/>
-        <label for="articleListDisplayCount">${pageSize1Label}</label>
-        <input id="articleListDisplayCount" class="normalInput" type="text"/>
-        <label for="articleListPaginationWindowSize">${windowSize1Label}</label>
-        <input id="articleListPaginationWindowSize" class="normalInput" type="text"/>
-        <label for="randomArticlesDisplayCount">${randomArticlesDisplayCnt1Label}</label>
-        <input id="randomArticlesDisplayCount" class="normalInput" type="text"/>
-        <label for="relevantArticlesDisplayCount">${relevantArticlesDisplayCnt1Label}</label>
-        <input id="relevantArticlesDisplayCount" class="normalInput" type="text"/>
-        <label for="externalRelevantArticlesDisplayCount">${externalRelevantArticlesDisplayCnt1Label}</label>
-        <input id="externalRelevantArticlesDisplayCount" class="normalInput" type="text"/>
-        <label for="feedOutputMode">${feedOutputModel1Label}</label>
-        <select id="feedOutputMode">
-            <option value="abstract">${abstractLabel}</option>
-            <option value="fullContent">${fullContentLabel}</option>
-        </select>
-        <label for="feedOutputCnt">${feedOutputCnt1Label}</label>
-        <input id="feedOutputCnt" class="normalInput" type="text"/>
-        <label for="faviconURL">Favicon</label>
-        <input id="faviconURL" class="normalInput" type="text"/>
-        <label for="customVars">${customVars1Label}</label>
-        <input id="customVars" class="normalInput" type="text"/>
-        <label>
-            <div class="fn__flex-inline">
-                ${enableArticleUpdateHint1Label}
-                <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
+        <div class="fn__flex">
+            <div class="fn__flex-1">
+                <label>
+                    ${localeString1Label}
+                    <select id="localeString">
+                        <option value="zh_CN">简体中文</option>
+                        <option value="en_US">Englisth(US)</option>
+                    </select>
+                </label>
+                <label>
+                    ${timeZoneId1Label}
+                    <select id="timeZoneId">
+                        ${timeZoneIdOptions}
+                    </select>
+                </label>
+                <label>
+                    ${articleListDisplay1Label}
+                    <select id="articleListDisplay">
+                        <option value="titleOnly">${titleOnlyLabel}</option>
+                        <option value="titleAndAbstract">${titleAndAbstractLabel}</option>
+                        <option value="titleAndContent">${titleAndContentLabel}</option>
+                    </select>
+                </label>
+                <label>
+                    <a href="https://xyproto.github.io/splash/docs/longer/all.html"
+                       target="_blank">${previewLabel}</a>${hljsThemeLabel}
+                    <select id="hljsTheme">
+                        <option value="abap">abap</option>
+                        <option value="algol">algol</option>
+                        <option value="algol_nu">algol_nu</option>
+                        <option value="arduino">arduino</option>
+                        <option value="autumn">autumn</option>
+                        <option value="borland">borland</option>
+                        <option value="bw">bw</option>
+                        <option value="colorful">colorful</option>
+                        <option value="dracula">dracula</option>
+                        <option value="emacs">emacs</option>
+                        <option value="friendly">friendly</option>
+                        <option value="fruity">fruity</option>
+                        <option value="github">github</option>
+                        <option value="igor">igor</option>
+                        <option value="lovelace">lovelace</option>
+                        <option value="manni">manni</option>
+                        <option value="monokai">monokai</option>
+                        <option value="monokailight">monokailight</option>
+                        <option value="murphy">murphy</option>
+                        <option value="native">native</option>
+                        <option value="paraiso-dark">paraiso-dark</option>
+                        <option value="paraiso-light">paraiso-light</option>
+                        <option value="pastie">pastie</option>
+                        <option value="perldoc">perldoc</option>
+                        <option value="pygments">pygments</option>
+                        <option value="rainbow_dash">rainbow_dash</option>
+                        <option value="rrt">rrt</option>
+                        <option value="solarized-dark">solarized-dark</option>
+                        <option value="solarized-dark256">solarized-dark256</option>
+                        <option value="solarized-light">solarized-light</option>
+                        <option value="swapoff">swapoff</option>
+                        <option value="tango">tango</option>
+                        <option value="trac">trac</option>
+                        <option value="vim">vim</option>
+                        <option value="vs">vs</option>
+                        <option value="xcode">xcode</option>
+                    </select>
+                </label>
+                <label>
+                    ${feedOutputModel1Label}
+                    <select id="feedOutputMode">
+                        <option value="abstract">${abstractLabel}</option>
+                        <option value="fullContent">${fullContentLabel}</option>
+                    </select>
+                </label>
+                <label>
+                    Favicon
+                    <input id="faviconURL" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    ${customVars1Label}
+                    <input id="customVars" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        ${enableArticleUpdateHint1Label}
+                        <input id="enableArticleUpdateHint" type="checkbox" class="normalInput"/>
+                    </div>
+                </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        ${allowVisitDraftViaPermalink1Label}
+                        <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
+                    </div>
+                </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        ${allowComment1Label}
+                        <input id="commentable" type="checkbox" class="normalInput"/>
+                    </div>
+                </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        ${syncGitHubLabel}
+                        <input id="syncGitHub" type="checkbox" class="normalInput"/>
+                    </div>
+                </label>
+                <label>
+                    <div class="fn__flex-inline">
+                        ${pullGitHubLabel}
+                        <input id="pullGitHub" type="checkbox" class="normalInput"/>
+                    </div>
+                </label>
             </div>
-        </label>
-        <label>
-            <div class="fn__flex-inline">
-                ${allowVisitDraftViaPermalink1Label}
-                <input id="allowVisitDraftViaPermalink" type="checkbox" class="normalInput"/>
+            <div class="fn__margin12"></div>
+            <div class="fn__flex-1">
+                <label>
+                    ${indexTagDisplayCnt1Label}
+                    <input id="mostUsedTagDisplayCount" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    ${indexRecentCommentDisplayCnt1Label}
+                    <input id="recentCommentDisplayCount" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    ${indexMostCommentArticleDisplayCnt1Label}
+                    <input id="mostCommentArticleDisplayCount" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    ${indexMostViewArticleDisplayCnt1Label}
+                    <input id="mostViewArticleDisplayCount" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    ${randomArticlesDisplayCnt1Label}
+                    <input id="randomArticlesDisplayCount" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    ${relevantArticlesDisplayCnt1Label}
+                    <input id="relevantArticlesDisplayCount" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    ${externalRelevantArticlesDisplayCnt1Label}
+                    <input id="externalRelevantArticlesDisplayCount" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    ${pageSize1Label}
+                    <input id="articleListDisplayCount" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    ${windowSize1Label}
+                    <input id="articleListPaginationWindowSize" class="normalInput" type="text"/>
+                </label>
+                <label>
+                    ${feedOutputCnt1Label}
+                    <input id="feedOutputCnt" class="normalInput" type="text"/>
+                </label>
             </div>
-        </label>
-        <label>
-            <div class="fn__flex-inline">
-                ${allowComment1Label}
-                <input id="commentable" type="checkbox" class="normalInput"/>
-            </div>
-        </label>
-        <label>
-            <div class="fn__flex-inline">
-                ${syncGitHubLabel}
-                <input id="syncGitHub" type="checkbox" class="normalInput"/>
-            </div>
-        </label>
-        <label>
-            <div class="fn__flex-inline">
-                ${pullGitHubLabel}
-                <input id="pullGitHub" type="checkbox" class="normalInput"/>
-            </div>
-        </label>
+        </div>
         <button class="fn__right" onclick="admin.preference.update()">${updateLabel}</button>
         <div class="fn__clear"></div>
     </div>
