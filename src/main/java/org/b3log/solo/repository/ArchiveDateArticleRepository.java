@@ -34,7 +34,7 @@ import java.util.List;
  * Archive date-Article repository.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.0.0, Sep 11, 2019
+ * @version 1.1.0.1, Oct 14, 2019
  * @since 0.3.1
  */
 @Repository
@@ -77,35 +77,6 @@ public class ArchiveDateArticleRepository extends AbstractRepository {
 
             return -1;
         }
-    }
-
-    /**
-     * Gets archive date-article relations by the specified archive date id.
-     *
-     * @param archiveDateId  the specified archive date id
-     * @param currentPageNum the specified current page number, MUST greater then {@code 0}
-     * @param pageSize       the specified page size(count of a page contains objects), MUST greater then {@code 0}
-     * @return for example
-     * <pre>
-     * {
-     *     "pagination": {
-     *       "paginationPageCount": 88250
-     *     },
-     *     "rslts": [{
-     *         "oId": "",
-     *         "archiveDate_oId": "",
-     *         "article_oId": ""
-     *     }, ....]
-     * }
-     * </pre>
-     * @throws RepositoryException repository exception
-     */
-    public JSONObject getByArchiveDateId(final String archiveDateId, final int currentPageNum, final int pageSize) throws RepositoryException {
-        final Query query = new Query().setFilter(new PropertyFilter(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, archiveDateId)).
-                addSort(Article.ARTICLE + "_" + Keys.OBJECT_ID, SortDirection.DESCENDING).
-                setPage(currentPageNum, pageSize).setPageCount(1);
-
-        return get(query);
     }
 
     /**

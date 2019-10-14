@@ -50,7 +50,7 @@ import java.util.*;
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
  * @author <a href="http://zephyr.b3log.org">Zephyr</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.3.4.1, Sep 20, 2019
+ * @version 1.3.5.0, Oct 14, 2019
  * @since 0.3.5
  */
 @Service
@@ -635,27 +635,23 @@ public class ArticleQueryService {
      */
     public List<JSONObject> getArticlesByArchiveDate(final String archiveDateId, final int currentPageNum, final int pageSize) throws ServiceException {
         try {
-            JSONObject result = archiveDateArticleRepository.getByArchiveDateId(archiveDateId, currentPageNum, pageSize);
-            final JSONArray relations = result.getJSONArray(Keys.RESULTS);
-            if (0 == relations.length()) {
-                return Collections.emptyList();
-            }
-
-            final Set<String> articleIds = new HashSet<>();
-            for (int i = 0; i < relations.length(); i++) {
-                final JSONObject relation = relations.getJSONObject(i);
-                final String articleId = relation.getString(Article.ARTICLE + "_" + Keys.OBJECT_ID);
-
-                articleIds.add(articleId);
-            }
-
             final List<JSONObject> ret = new ArrayList<>();
-            final Query query = new Query().setFilter(CompositeFilterOperator.and(
-                    new PropertyFilter(Keys.OBJECT_ID, FilterOperator.IN, articleIds),
-                    new PropertyFilter(Article.ARTICLE_STATUS, FilterOperator.EQUAL, Article.ARTICLE_STATUS_C_PUBLISHED))).
-                    setPageCount(1).
-                    addSort(Keys.OBJECT_ID, SortDirection.DESCENDING);
-            final List<JSONObject> articles = articleRepository.getList(query);
+            final String query = "SELECT\n" +
+                    "\t*\n" +
+                    "FROM\n" +
+                    "\tb3_solo_article AS a,\n" +
+                    "\tb3_solo_archivedate_article aa\n" +
+                    "WHERE\n" +
+                    "\taa.archiveDate_oId = ?\n" +
+                    "AND a.oId = aa.article_oId\n" +
+                    "AND a.articleStatus = 0\n" +
+                    "GROUP BY\n" +
+                    "\ta.oId\n" +
+                    "ORDER BY\n" +
+                    "\ta.oId DESC\n" +
+                    "LIMIT ?,\n" +
+                    " ?";
+            final List<JSONObject> articles = articleRepository.select(query, archiveDateId, (currentPageNum - 1) * pageSize, pageSize);
             for (final JSONObject article : articles) {
                 article.put(Article.ARTICLE_CREATE_TIME, article.getLong(Article.ARTICLE_CREATED));
                 article.put(Article.ARTICLE_T_CREATE_DATE, new Date(article.getLong(Article.ARTICLE_CREATED)));
@@ -665,7 +661,7 @@ public class ArticleQueryService {
 
             return ret;
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Gets articles by archive date[id=" + archiveDateId + "] failed", e);
+            LOGGER.log(Level.ERROR, "Gets articles by archive date [id=" + archiveDateId + "] failed", e);
             throw new ServiceException(e);
         }
     }
