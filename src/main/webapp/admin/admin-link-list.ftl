@@ -29,7 +29,9 @@ ${addLinkLabel}
     <label>${url1Label}</label>
     <input id="linkAddress" type="text"/>
     <label>${linkDescription1Label}</label>
-    <input id="linkDescription" type="text"/> <br><br>
+    <input id="linkDescription" type="text"/>
+    <label>${linkIcon1Label}</label>
+    <input id="linkIcon" type="text"/><br><br>
     <button onclick="admin.linkList.add();" class="fn__right">${saveLabel}</button>
     <div class="fn__clear"></div>
 </div>
@@ -39,7 +41,9 @@ ${addLinkLabel}
     <label>${url1Label}</label>
     <input id="linkAddressUpdate" type="text"/>
     <label>${linkDescription1Label}</label>
-    <input id="linkDescriptionUpdate" type="text"/><br><br>
+    <input id="linkDescriptionUpdate" type="text"/>
+    <label>${linkIcon1Label}</label>
+    <input id="linkIconUpdate" type="text"/><br><br>
     <button onclick="admin.linkList.update();" class="fn__right">${updateLabel}</button>
     <div class="fn__clear"></div>
 </div>

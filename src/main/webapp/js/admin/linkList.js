@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.1, Oct 24, 2018
+ * @version 1.1.2.2, Oct 23, 2019
  */
 
 /* link-list 相关操作 */
@@ -123,6 +123,7 @@ admin.linkList = {
                     linkData[i].linkAddress = "<a target='_blank' class='no-underline' href='" + links[i].linkAddress + "'>"
                     + links[i].linkAddress + "</a>";
                     linkData[i].linkDescription = links[i].linkDescription;
+                    linkData[i].linkIcon = links[i].linkIcon;
                     linkData[i].expendRow = "<span><a href='" + links[i].linkAddress + "' target='_blank'>" + Label.viewLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.get('" + links[i].oId + "')\">" + Label.updateLabel + "</a>\
                                 <a href='javascript:void(0)' onclick=\"admin.linkList.del('" + links[i].oId + "', '" + encodeURIComponent(links[i].linkTitle) + "')\">" + Label.removeLabel + "</a></span>";
@@ -146,7 +147,8 @@ admin.linkList = {
                 "link": {
                     "linkTitle": $("#linkTitle").val(),
                     "linkAddress": $("#linkAddress").val(),
-                    "linkDescription": $("#linkDescription").val()
+                    "linkDescription": $("#linkDescription").val(),
+                    "linkIcon": $("#linkIcon").val(),
                 }
             };
             
@@ -165,6 +167,7 @@ admin.linkList = {
                     $("#linkTitle").val("");
                     $("#linkAddress").val("");
                     $("#linkDescription").val("");
+                    $("#linkIcon").val("");
                     if (admin.linkList.pageInfo.currentCount === Label.PAGE_SIZE &&
                         admin.linkList.pageInfo.currentPage === admin.linkList.pageInfo.pageCount) {
                         admin.linkList.pageInfo.pageCount++;
@@ -206,6 +209,7 @@ admin.linkList = {
                 $("#linkTitleUpdate").val(result.link.linkTitle);
                 $("#linkAddressUpdate").val(result.link.linkAddress);
                 $("#linkDescriptionUpdate").val(result.link.linkDescription);
+                $("#linkIconUpdate").val(result.link.linkIcon);
                 
                 $("#loadMsg").text("");
             }
@@ -224,7 +228,8 @@ admin.linkList = {
                     "linkTitle": $("#linkTitleUpdate").val(),
                     "oId": this.id,
                     "linkAddress": $("#linkAddressUpdate").val(),
-                    "linkDescription": $("#linkDescriptionUpdate").val()
+                    "linkDescription": $("#linkDescriptionUpdate").val(),
+                    "linkIcon": $("#linkIconUpdate").val(),
                 }
             };
             
