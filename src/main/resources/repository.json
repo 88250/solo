@@ -1,6 +1,6 @@
 {
   "description": "Description of repository structures, for generation of the relational database table and persistence validation.",
-  "version": "3.2.1.7, Apr 19, 2019",
+  "version": "3.2.1.8, Oct 23, 2019",
   "authors": [
     "Liang Ding"
   ],
@@ -208,6 +208,12 @@
         {
           "name": "linkTitle",
           "description": "链接标题",
+          "type": "String",
+          "length": 255
+        },
+        {
+          "name": "linkIcon",
+          "description": "链接图标链接地址",
           "type": "String",
           "length": 255
         }

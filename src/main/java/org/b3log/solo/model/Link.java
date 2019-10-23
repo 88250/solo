@@ -21,7 +21,7 @@ package org.b3log.solo.model;
  * This class defines all link model relevant keys.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Oct 31, 2011
+ * @version 1.1.0.0, Oct 23, 2019
  * @since 0.3.1
  */
 public final class Link {
@@ -50,6 +50,11 @@ public final class Link {
      * Key of description.
      */
     public static final String LINK_DESCRIPTION = "linkDescription";
+
+    /**
+     * Key of icon URL.
+     */
+    public static final String LINK_ICON = "linkIcon";
 
     /**
      * Key of order.
