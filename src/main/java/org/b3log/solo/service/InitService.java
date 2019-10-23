@@ -52,7 +52,7 @@ import java.util.List;
  * Solo initialization service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.5.2.34, Aug 18, 2019
+ * @version 1.5.2.35, Oct 23, 2019
  * @since 0.4.0
  */
 @Service
@@ -437,6 +437,7 @@ public class InitService {
         link.put(Link.LINK_TITLE, "黑客派");
         link.put(Link.LINK_ADDRESS, "https://hacpai.com");
         link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
+        link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
         final int maxOrder = linkRepository.getMaxOrder();
         link.put(Link.LINK_ORDER, maxOrder + 1);
         linkRepository.add(link);
