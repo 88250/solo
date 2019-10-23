@@ -32,7 +32,7 @@ import org.json.JSONObject;
  * Link management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Nov 2, 2011
+ * @version 1.0.0.2, Oct 23, 2019
  * @since 0.4.0
  */
 @Service
@@ -55,8 +55,7 @@ public class LinkMgmtService {
      * @param linkId the given link id
      * @throws ServiceException service exception
      */
-    public void removeLink(final String linkId)
-            throws ServiceException {
+    public void removeLink(final String linkId) throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {
@@ -80,13 +79,14 @@ public class LinkMgmtService {
      *                          "link": {
      *                          "oId": "",
      *                          "linkTitle": "",
-     *                          "linkAddress": ""
+     *                          "linkAddress": "",
+     *                          "linkDescription": "",
+     *                          "linkIcon": ""
      *                          }
      *                          see {@link Link} for more details
      * @throws ServiceException service exception
      */
-    public void updateLink(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public void updateLink(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {
@@ -118,8 +118,7 @@ public class LinkMgmtService {
      * @param direction the specified direction, "up"/"down"
      * @throws ServiceException service exception
      */
-    public void changeOrder(final String linkId, final String direction)
-            throws ServiceException {
+    public void changeOrder(final String linkId, final String direction) throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {
@@ -170,14 +169,14 @@ public class LinkMgmtService {
      *                          "link": {
      *                          "linkTitle": "",
      *                          "linkAddress": "",
-     *                          "linkDescription": "" // optional
+     *                          "linkDescription": "",
+     *                          "linkIcon": ""
      *                          }
      *                          }, see {@link Link} for more details
      * @return generated link id
      * @throws ServiceException service exception
      */
-    public String addLink(final JSONObject requestJSONObject)
-            throws ServiceException {
+    public String addLink(final JSONObject requestJSONObject) throws ServiceException {
         final Transaction transaction = linkRepository.beginTransaction();
 
         try {
