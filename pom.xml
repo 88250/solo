@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.73, Oct 15, 2019
+    Version: 3.18.3.74, Oct 23, 2019
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -16,7 +16,7 @@
     <artifactId>solo</artifactId>
     <packaging>war</packaging>
     <name>Solo</name>
-    <version>3.6.5</version>
+    <version>3.6.6</version>
     <description>
         一款小而美的博客系统，专为程序员设计。
     </description>
