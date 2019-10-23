@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.2.1, Sep 11, 2019
+ * @version 1.3.3.0, Oct 23, 2019
  * @since 0.3.5
  */
 @Service
@@ -690,6 +690,11 @@ public class ArticleMgmtService {
     private void unArchiveDate(final String articleId) throws ServiceException {
         try {
             final JSONObject archiveDateArticleRelation = archiveDateArticleRepository.getByArticleId(articleId);
+            if (null == archiveDateArticleRelation) {
+                // 草稿不生成存档，所以需要判空
+                return;
+            }
+
             final String archiveDateId = archiveDateArticleRelation.getString(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID);
             final int publishedArticleCount = archiveDateArticleRepository.getPublishedArticleCount(archiveDateId);
             if (1 > publishedArticleCount) {
@@ -914,6 +919,7 @@ public class ArticleMgmtService {
      */
     private void archiveDate(final JSONObject article) throws RepositoryException {
         if (Article.ARTICLE_STATUS_C_PUBLISHED != article.optInt(ARTICLE_STATUS)) {
+            // 草稿不生成存档
             return;
         }
 
