@@ -36,7 +36,7 @@ import java.io.StringReader;
  * {@link LinkConsole} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Dec 11, 2018
+ * @version 1.0.0.1, Oct 23, 2019
  * @since 2.9.8
  */
 @Test(suiteName = "processor")
@@ -68,6 +68,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
         link.put(Link.LINK_TITLE, "黑客派");
         link.put(Link.LINK_ADDRESS, "https://hacpai.com");
         link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
+        link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
 
@@ -100,6 +101,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
         link.put(Link.LINK_TITLE, "黑客派");
         link.put(Link.LINK_ADDRESS, "https://hacpai.com");
         link.put(Link.LINK_DESCRIPTION, "B3log 开源社区线上论坛");
+        link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
         final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
         request.setReader(reader);
 

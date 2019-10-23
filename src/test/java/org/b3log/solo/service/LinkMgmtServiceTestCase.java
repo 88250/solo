@@ -27,7 +27,7 @@ import org.testng.annotations.Test;
  * {@link LinkMgmtService} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Sep 11, 2012
+ * @version 1.0.0.2, Oct 23, 2019
  */
 @Test(suiteName = "service")
 public class LinkMgmtServiceTestCase extends AbstractTestCase {
@@ -58,6 +58,7 @@ public class LinkMgmtServiceTestCase extends AbstractTestCase {
         link.put(Link.LINK_TITLE, "link1 title");
         link.put(Link.LINK_ADDRESS, "link1 address");
         link.put(Link.LINK_DESCRIPTION, "link1 description");
+        link.put(Link.LINK_ICON, "link1 icon");
 
         final String linkId = linkMgmtService.addLink(requestJSONObject);
         Assert.assertNotNull(linkId);
@@ -79,6 +80,7 @@ public class LinkMgmtServiceTestCase extends AbstractTestCase {
         link.put(Link.LINK_TITLE, "link2 title");
         link.put(Link.LINK_ADDRESS, "link2 address");
         link.put(Link.LINK_DESCRIPTION, "link2 description");
+        link.put(Link.LINK_ICON, "link2 icon");
 
         final String linkId = linkMgmtService.addLink(requestJSONObject);
         Assert.assertNotNull(linkId);
@@ -112,6 +114,7 @@ public class LinkMgmtServiceTestCase extends AbstractTestCase {
         link.put(Link.LINK_TITLE, "link3 title");
         link.put(Link.LINK_ADDRESS, "link3 address");
         link.put(Link.LINK_DESCRIPTION, "link3 description");
+        link.put(Link.LINK_ICON, "link3 icon");
 
         final String linkId = linkMgmtService.addLink(requestJSONObject);
         Assert.assertNotNull(linkId);
@@ -148,6 +151,7 @@ public class LinkMgmtServiceTestCase extends AbstractTestCase {
         link.put(Link.LINK_TITLE, "link4 title");
         link.put(Link.LINK_ADDRESS, "link4 address");
         link.put(Link.LINK_DESCRIPTION, "link4 description");
+        link.put(Link.LINK_ICON, "link4 icon");
 
         final String linkId = linkMgmtService.addLink(requestJSONObject);
         Assert.assertNotNull(linkId);
