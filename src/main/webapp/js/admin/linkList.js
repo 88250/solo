@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.2, Oct 23, 2019
+ * @version 1.1.2.3, Oct 24, 2019
  */
 
 /* link-list 相关操作 */
@@ -148,7 +148,7 @@ admin.linkList = {
                     "linkTitle": $("#linkTitle").val(),
                     "linkAddress": $("#linkAddress").val(),
                     "linkDescription": $("#linkDescription").val(),
-                    "linkIcon": $("#linkIcon").val(),
+                    "linkIcon": $("#linkIcon").val()
                 }
             };
             
@@ -229,7 +229,7 @@ admin.linkList = {
                     "oId": this.id,
                     "linkAddress": $("#linkAddressUpdate").val(),
                     "linkDescription": $("#linkDescriptionUpdate").val(),
-                    "linkIcon": $("#linkIconUpdate").val(),
+                    "linkIcon": $("#linkIconUpdate").val()
                 }
             };
             
