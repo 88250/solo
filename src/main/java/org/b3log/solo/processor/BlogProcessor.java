@@ -44,7 +44,7 @@ import java.io.InputStream;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.0, Oct 2, 2019
+ * @version 1.4.0.1, Oct 29, 2019
  * @since 0.4.6
  */
 @RequestProcessor
@@ -117,9 +117,7 @@ public class BlogProcessor {
         final String description = preference.optString(Option.ID_C_BLOG_SUBTITLE);
         PWA_MANIFESTO_JSON = StringUtils.replace(PWA_MANIFESTO_JSON, "${description}", description);
         final JSONObject jsonObject = new JSONObject(PWA_MANIFESTO_JSON);
-        final JSONObject admin = userQueryService.getAdmin();
-        final String adminName = admin.optString(User.USER_NAME);
-        PWA_MANIFESTO_JSON = StringUtils.replace(PWA_MANIFESTO_JSON, "${shortName}", adminName);
+        PWA_MANIFESTO_JSON = StringUtils.replace(PWA_MANIFESTO_JSON, "${shortName}", name);
         renderer.setJSONObject(jsonObject);
     }
 
