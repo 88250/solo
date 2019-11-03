@@ -19,8 +19,8 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.MockHttpServletRequest;
-import org.b3log.solo.MockHttpServletResponse;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -49,12 +49,12 @@ public class BlogProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getBlogInfo() {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/blog/info");
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.startsWith(content, "{\"staticServePath\":\"http://localhost:8080\""));
     }
 
@@ -63,13 +63,13 @@ public class BlogProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getArticlesTags() {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/blog/articles-tags");
-        request.putParameter("pwd", "pass");
-        final MockHttpServletResponse response = mockResponse();
+        request.setParameter("pwd", "pass");
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.startsWith(content, "{\"data\":"));
     }
 }

@@ -17,9 +17,12 @@
  */
 package org.b3log.solo;
 
+import io.netty.handler.codec.http.*;
 import org.apache.commons.lang.RandomStringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.Response;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Discoverer;
 import org.b3log.latke.model.User;
@@ -39,10 +42,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.Collection;
@@ -134,7 +133,7 @@ public abstract class AbstractTestCase {
      *
      * @param request the specified request
      */
-    public void mockAdminLogin(final MockHttpServletRequest request) {
+    public void mockAdminLogin(final MockRequest request) {
         final JSONObject adminUser = getUserQueryService().getAdmin();
         final String userId = adminUser.optString(Keys.OBJECT_ID);
         final JSONObject cookieJSONObject = new JSONObject();
@@ -142,8 +141,7 @@ public abstract class AbstractTestCase {
         final String random = RandomStringUtils.randomAlphanumeric(16);
         cookieJSONObject.put(Keys.TOKEN, "pass:" + random);
         final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), Solos.COOKIE_SECRET);
-        final Cookie cookie = new Cookie(Solos.COOKIE_NAME, cookieValue);
-        request.setCookies(new Cookie[]{cookie});
+        request.addCookie(Solos.COOKIE_NAME, cookieValue);
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
     }
 
@@ -154,10 +152,10 @@ public abstract class AbstractTestCase {
      * @param response the specified response
      * @return mock dispatcher servlet
      */
-    public MockDispatcherServlet mockDispatcherServletService(final HttpServletRequest request, final MockHttpServletResponse response) {
+    public MockDispatcherServlet mockDispatcherServletService(final Request request, final Response response) {
         final MockDispatcherServlet ret = new MockDispatcherServlet();
         ret.init();
-        SoloServletListener.routeConsoleProcessors();
+        Server.routeConsoleProcessors();
         ret.service(request, response);
 
         return ret;
@@ -168,10 +166,9 @@ public abstract class AbstractTestCase {
      *
      * @return mock request
      */
-    public MockHttpServletRequest mockRequest() {
-        final MockHttpServletRequest ret = new MockHttpServletRequest();
-
-        return ret;
+    public MockRequest mockRequest() {
+        final HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/a");
+        return new MockRequest(req);
     }
 
     /**
@@ -179,12 +176,9 @@ public abstract class AbstractTestCase {
      *
      * @return mock response
      */
-    public MockHttpServletResponse mockResponse() {
-        final StringWriter stringWriter = new StringWriter();
-        final PrintWriter printWriter = new PrintWriter(stringWriter);
-        final MockHttpServletResponse response = new MockHttpServletResponse();
-        response.setWriter(printWriter);
-        response.setBodyWriter(stringWriter);
+    public MockResponse mockResponse() {
+        final HttpResponse res = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
+        final MockResponse response = new MockResponse(res);
 
         return response;
     }

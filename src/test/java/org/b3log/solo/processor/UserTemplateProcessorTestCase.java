@@ -20,8 +20,6 @@ package org.b3log.solo.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.MockHttpServletRequest;
-import org.b3log.solo.MockHttpServletResponse;
 import org.b3log.solo.model.Option;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -51,13 +49,13 @@ public class UserTemplateProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void showCategoryArticles() {
-        MockHttpServletRequest request = mockRequest();
+        MockRequest request = mockRequest();
         request.setRequestURI("/links.html");
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        MockHttpServletResponse response = mockResponse();
+        MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<title>友情链接 - Solo 的个人博客</title>"));
     }
 }

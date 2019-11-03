@@ -24,6 +24,7 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
@@ -37,9 +38,7 @@ import org.b3log.latke.repository.*;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.*;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.util.Markdowns;
@@ -181,7 +180,7 @@ public class DataModelService {
     /**
      * Fills articles in index.ftl.
      *
-     * @param context        the specified HTTP servlet request context
+     * @param context        the specified HTTP request context
      * @param dataModel      data model
      * @param currentPageNum current page number
      * @param preference     the specified preference
@@ -571,7 +570,7 @@ public class DataModelService {
     /**
      * Fills common parts (header, side and footer).
      *
-     * @param context    the specified HTTP servlet request context
+     * @param context    the specified HTTP request context
      * @param dataModel  the specified data model
      * @param preference the specified preference
      * @throws ServiceException service exception
@@ -608,7 +607,7 @@ public class DataModelService {
     /**
      * Fills footer.ftl.
      *
-     * @param context    the specified HTTP servlet request context
+     * @param context    the specified HTTP request context
      * @param dataModel  data model
      * @param preference the specified preference
      * @throws ServiceException service exception
@@ -621,7 +620,7 @@ public class DataModelService {
             final String blogTitle = preference.getString(Option.ID_C_BLOG_TITLE);
             dataModel.put(Option.ID_C_BLOG_TITLE, blogTitle);
             dataModel.put("blogHost", Latkes.getServePath());
-            dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+            dataModel.put(Common.VERSION, Server.VERSION);
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             String footerContent = "";
@@ -662,7 +661,7 @@ public class DataModelService {
     /**
      * Fills header.ftl.
      *
-     * @param context    the specified HTTP servlet request context
+     * @param context    the specified HTTP request context
      * @param dataModel  data model
      * @param preference the specified preference
      * @throws ServiceException service exception
@@ -745,7 +744,7 @@ public class DataModelService {
     /**
      * Fills side.ftl.
      *
-     * @param context    the specified HTTP servlet request context
+     * @param context    the specified HTTP request context
      * @param dataModel  data model
      * @param preference the specified preference
      * @throws ServiceException service exception
@@ -797,7 +796,7 @@ public class DataModelService {
     /**
      * Fills the specified template.
      *
-     * @param context    the specified HTTP servlet request context
+     * @param context    the specified HTTP request context
      * @param template   the specified template
      * @param dataModel  data model
      * @param preference the specified preference
@@ -900,7 +899,7 @@ public class DataModelService {
      * </pre>
      * </p>
      *
-     * @param context    the specified HTTP servlet request context
+     * @param context    the specified HTTP request context
      * @param article    the specified article
      * @param preference the specified preference
      * @throws ServiceException service exception
@@ -1008,7 +1007,7 @@ public class DataModelService {
      * </pre>
      * </p>
      *
-     * @param context    the specified HTTP servlet request context
+     * @param context    the specified HTTP request context
      * @param articles   the specified articles
      * @param preference the specified preference
      * @throws ServiceException service exception

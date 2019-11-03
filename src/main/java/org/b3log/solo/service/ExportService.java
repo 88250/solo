@@ -34,7 +34,6 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.util.Solos;
@@ -253,7 +252,7 @@ public class ExportService {
                     form("userName", userName,
                             "userB3Key", userB3Key,
                             "clientName", "Solo",
-                            "clientVersion", SoloServletListener.VERSION,
+                            "clientVersion", Server.VERSION,
                             "clientHost", Latkes.getServePath(),
                             "clientFavicon", preference.optString(Option.ID_C_FAVICON_URL),
                             "clientTitle", clientTitle,

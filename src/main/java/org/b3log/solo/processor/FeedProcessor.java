@@ -20,20 +20,20 @@ package org.b3log.solo.processor;
 import com.vdurmont.emoji.EmojiParser;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AtomRenderer;
+import org.b3log.latke.http.renderer.RssRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AtomRenderer;
-import org.b3log.latke.servlet.renderer.RssRenderer;
 import org.b3log.latke.util.Locales;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.Server;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.atom.Category;
@@ -49,7 +49,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -130,7 +129,7 @@ public class FeedProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article feed error", e);
 
-            context.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            context.sendError(500);
         }
     }
 
@@ -177,7 +176,7 @@ public class FeedProcessor {
         try {
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
-                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(404);
 
                 return;
             }
@@ -190,7 +189,7 @@ public class FeedProcessor {
             channel.setLastBuildDate(new Date());
             channel.setLink(Latkes.getServePath());
             channel.setAtomLink(Latkes.getServePath() + "/rss.xml");
-            channel.setGenerator("Solo, v" + SoloServletListener.VERSION + ", https://solo.b3log.org");
+            channel.setGenerator("Solo, v" + Server.VERSION + ", https://solo.b3log.org");
             final String localeString = preference.getString(Option.ID_C_LOCALE_STRING);
             final String country = Locales.getCountry(localeString).toLowerCase();
             final String language = Locales.getLanguage(localeString).toLowerCase();
@@ -215,7 +214,7 @@ public class FeedProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Get blog article rss error", e);
 
-            context.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            context.sendError(500);
         }
     }
 

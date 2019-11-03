@@ -21,8 +21,6 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Query;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.MockHttpServletRequest;
-import org.b3log.solo.MockHttpServletResponse;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -58,14 +56,14 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getArticleThumbs() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/thumbs");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
     }
 
@@ -76,7 +74,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void markdown2HTML() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/markdown/2html");
         request.setMethod("POST");
         final JSONObject requestJSON = new JSONObject();
@@ -85,11 +83,11 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         request.setReader(reader);
 
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<p><strong>Solo<\\/strong><\\/p>"));
     }
 
@@ -103,14 +101,14 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
         final String articleId = article.optString(Keys.OBJECT_ID);
 
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/article/" + articleId);
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
     }
 
@@ -121,14 +119,14 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getArticles() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/articles/status/published/1/10/20");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
     }
 
@@ -142,15 +140,15 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
         final String articleId = article.optString(Keys.OBJECT_ID);
 
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/article/" + articleId);
         request.setMethod("DELETE");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
     }
 
@@ -164,15 +162,15 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
         final String articleId = article.optString(Keys.OBJECT_ID);
 
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/article/unpublish/" + articleId);
         request.setMethod("PUT");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
     }
 
@@ -186,15 +184,15 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
         final String articleId = article.optString(Keys.OBJECT_ID);
 
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/article/canceltop/" + articleId);
         request.setMethod("PUT");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
     }
 
@@ -208,15 +206,15 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
         final String articleId = article.optString(Keys.OBJECT_ID);
 
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/article/puttop/" + articleId);
         request.setMethod("PUT");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
     }
 
@@ -229,7 +227,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
     public void updateArticle() throws Exception {
         final JSONObject article = getArticleRepository().get(new Query()).optJSONArray(Keys.RESULTS).optJSONObject(0);
 
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/article/");
         request.setMethod("PUT");
         final JSONObject requestJSON = new JSONObject();
@@ -238,11 +236,11 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         request.setReader(reader);
 
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
     }
 
@@ -257,7 +255,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         article.put(Keys.OBJECT_ID, "");
         article.put(Article.ARTICLE_PERMALINK, "");
 
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/article/");
         request.setMethod("POST");
         final JSONObject requestJSON = new JSONObject();
@@ -266,11 +264,11 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         request.setReader(reader);
 
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "\"sc\":true"));
     }
 }

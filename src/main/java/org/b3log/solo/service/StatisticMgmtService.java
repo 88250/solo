@@ -17,6 +17,10 @@
  */
 package org.b3log.solo.service;
 
+import org.b3log.latke.http.Cookie;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -25,7 +29,6 @@ import org.b3log.latke.repository.Transaction;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.cache.StatisticCache;
@@ -36,10 +39,8 @@ import org.b3log.solo.util.Solos;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -137,22 +138,19 @@ public class StatisticMgmtService {
      * @param response the specified response
      * @return {@code true} if the specified request has been served, returns {@code false} otherwise
      */
-    public static boolean hasBeenServed(final RequestContext context, final HttpServletResponse response) {
-        final HttpServletRequest request = context.getRequest();
-        final Cookie[] cookies = request.getCookies();
-        if (null == cookies || 0 == cookies.length) {
+    public static boolean hasBeenServed(final RequestContext context, final Response response) {
+        final Request request = context.getRequest();
+        final List<Cookie> cookies = request.getCookies();
+        if (cookies.isEmpty()) {
             return false;
         }
 
-        Cookie cookie;
         boolean needToCreate = true;
         boolean needToAppend = true;
         JSONArray cookieJSONArray = null;
 
         try {
-            for (int i = 0; i < cookies.length; i++) {
-                cookie = cookies[i];
-
+            for (final Cookie cookie : cookies) {
                 if (!"visited".equals(cookie.getName())) {
                     continue;
                 }
@@ -215,7 +213,7 @@ public class StatisticMgmtService {
      * @param response the specified response
      * @throws ServiceException service exception
      */
-    public void incBlogViewCount(final RequestContext context, final HttpServletResponse response) throws ServiceException {
+    public void incBlogViewCount(final RequestContext context, final Response response) throws ServiceException {
         if (Solos.isBot(context.getRequest())) {
             return;
         }
@@ -257,7 +255,7 @@ public class StatisticMgmtService {
      *
      * @param request the specified request
      */
-    public void onlineVisitorCount(final HttpServletRequest request) {
+    public void onlineVisitorCount(final Request request) {
         if (Solos.isBot(request)) {
             return;
         }

@@ -19,8 +19,6 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.MockHttpServletRequest;
-import org.b3log.solo.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -50,12 +48,12 @@ public class FeedProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void blogArticlesAtom() {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/atom.xml");
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));
     }
 
@@ -64,12 +62,12 @@ public class FeedProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void blogArticlesRSS() {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/rss.xml");
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));
     }
 }

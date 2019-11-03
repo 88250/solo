@@ -19,8 +19,6 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.MockHttpServletRequest;
-import org.b3log.solo.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -49,12 +47,12 @@ public class SearchProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void showOpensearchXML() {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/opensearch.xml");
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"));
     }
 
@@ -63,14 +61,14 @@ public class SearchProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void search() {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/search");
 
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "Solo 的个人博客搜索"));
     }
 }

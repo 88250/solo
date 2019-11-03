@@ -29,10 +29,10 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.UserExt;
@@ -118,7 +118,7 @@ public class OAuthProcessor {
         if (HttpServletResponse.SC_OK != res.statusCode()) {
             LOGGER.log(Level.ERROR, "Gets oauth client id failed: " + res.toString());
 
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }
@@ -170,8 +170,8 @@ public class OAuthProcessor {
             return;
         }
 
-        final HttpServletResponse response = context.getResponse();
-        final HttpServletRequest request = context.getRequest();
+        final Response  response = context.getResponse();
+        final Request request = context.getRequest();
         final String openId = userInfo.optString("openId");
         final String userName = userInfo.optString(User.USER_NAME);
         final String userAvatar = userInfo.optString(UserExt.USER_AVATAR);
@@ -231,7 +231,7 @@ public class OAuthProcessor {
         user = userQueryService.getUserByName(userName);
         if (null == user) {
             LOGGER.log(Level.WARN, "Can't get user by name [" + userName + "]");
-            context.sendError(HttpServletResponse.SC_NOT_FOUND);
+            context.sendError(404);
 
             return;
         }

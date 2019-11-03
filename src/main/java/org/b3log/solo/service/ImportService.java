@@ -26,12 +26,10 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
 import org.yaml.snakeyaml.Yaml;
 
-import javax.servlet.ServletContext;
 import java.io.File;
 import java.util.*;
 
@@ -73,8 +71,7 @@ public class ImportService {
      */
     public void importMarkdowns() {
         new Thread(() -> {
-            final ServletContext servletContext = SoloServletListener.getServletContext();
-            final String markdownsPath = servletContext.getRealPath("markdowns");
+            final String markdownsPath = ImportService.class.getResource("markdowns").getPath();
             LOGGER.debug("Import directory [" + markdownsPath + "]");
 
             final JSONObject admin = userQueryService.getAdmin();

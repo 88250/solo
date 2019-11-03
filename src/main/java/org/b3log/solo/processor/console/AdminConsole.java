@@ -25,6 +25,10 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.event.EventManager;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
@@ -34,12 +38,9 @@ import org.b3log.latke.model.User;
 import org.b3log.latke.plugin.ViewLoadEventData;
 import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.Server;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
@@ -51,8 +52,6 @@ import org.b3log.solo.util.Markdowns;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -138,7 +137,7 @@ public class AdminConsole {
             dataModel.put(Option.ID_C_LOCALE_STRING, preference.getString(Option.ID_C_LOCALE_STRING));
             dataModel.put(Option.ID_C_BLOG_TITLE, preference.getString(Option.ID_C_BLOG_TITLE));
             dataModel.put(Option.ID_C_BLOG_SUBTITLE, preference.getString(Option.ID_C_BLOG_SUBTITLE));
-            dataModel.put(Common.VERSION, SoloServletListener.VERSION);
+            dataModel.put(Common.VERSION, Server.VERSION);
             dataModel.put(Common.STATIC_RESOURCE_VERSION, Latkes.getStaticResourceVersion());
             dataModel.put(Common.YEAR, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
             dataModel.put(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT, preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT));
@@ -232,10 +231,10 @@ public class AdminConsole {
      * @param context the specified request context
      */
     public void exportSQL(final RequestContext context) {
-        final HttpServletResponse response = context.getResponse();
+        final Response response = context.getResponse();
 
         if (!Solos.isAdminLoggedIn(context)) {
-            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            context.sendError(401);
 
             return;
         }
@@ -326,11 +325,7 @@ public class AdminConsole {
             response.setContentType("application/zip");
             final String fileName = "solo-sql-" + date + ".zip";
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-
-            final ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(zipData);
-            outputStream.flush();
-            outputStream.close();
+            response.sendContent(zipData);
 
             // 导出 SQL 包后清理临时文件 https://github.com/b3log/solo/issues/12770
             localFile.delete();
@@ -349,9 +344,9 @@ public class AdminConsole {
      * @param context the specified request context
      */
     public void exportJSON(final RequestContext context) {
-        final HttpServletResponse response = context.getResponse();
+        final Response response = context.getResponse();
         if (!Solos.isAdminLoggedIn(context)) {
-            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            context.sendError(401);
 
             return;
         }
@@ -376,14 +371,12 @@ public class AdminConsole {
                 IOUtils.write(data, output);
             }
 
-            try (final FileInputStream inputStream = new FileInputStream(ZipUtil.zip(localFile));
-                 final ServletOutputStream outputStream = response.getOutputStream()) {
+            try (final FileInputStream inputStream = new FileInputStream(ZipUtil.zip(localFile))) {
                 final byte[] zipData = IOUtils.toByteArray(inputStream);
                 response.setContentType("application/zip");
                 final String fileName = "solo-json-" + date + ".zip";
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-                outputStream.write(zipData);
-                outputStream.flush();
+                response.sendContent(zipData);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
@@ -399,9 +392,9 @@ public class AdminConsole {
      * @param context the specified request context
      */
     public void exportHexo(final RequestContext context) {
-        final HttpServletResponse response = context.getResponse();
+        final Response response = context.getResponse();
         if (!Solos.isAdminLoggedIn(context)) {
-            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            context.sendError(401);
 
             return;
         }
@@ -450,10 +443,7 @@ public class AdminConsole {
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
             }
 
-            try (final ServletOutputStream outputStream = response.getOutputStream()) {
-                outputStream.write(zipData);
-                outputStream.flush();
-            }
+            response.sendContent(zipData);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
             context.renderJSON().renderMsg("Export failed, please check log");

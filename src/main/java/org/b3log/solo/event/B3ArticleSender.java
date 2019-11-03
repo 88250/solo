@@ -30,7 +30,7 @@ import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.Server;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -117,7 +117,7 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
                     put("title", preference.getString(Option.ID_C_BLOG_TITLE)).
                     put("host", Latkes.getServePath()).
                     put("name", "Solo").
-                    put("ver", SoloServletListener.VERSION).
+                    put("ver", Server.VERSION).
                     put("userName", author.optString(User.USER_NAME)).
                     put("userB3Key", author.optString(UserExt.USER_B3_KEY));
             final JSONObject requestJSONObject = new JSONObject().

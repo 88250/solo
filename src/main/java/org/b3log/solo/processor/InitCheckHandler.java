@@ -20,20 +20,18 @@ package org.b3log.solo.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.handler.Handler;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.handler.Handler;
 import org.b3log.solo.service.InitService;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Checks initialization handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Mar 1, 2019
+ * @version 1.0.0.1, Nov 3, 2019
  * @since 3.2.0
  */
 public class InitCheckHandler implements Handler {
@@ -56,7 +54,7 @@ public class InitCheckHandler implements Handler {
 
         // 禁止直接获取 robots.txt https://github.com/b3log/solo/issues/12543
         if (requestURI.startsWith("/robots.txt") && !isSpiderBot) {
-            context.sendError(HttpServletResponse.SC_FORBIDDEN);
+            context.sendError(403);
 
             return;
         }

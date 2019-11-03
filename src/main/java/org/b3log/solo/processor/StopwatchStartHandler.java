@@ -17,36 +17,24 @@
  */
 package org.b3log.solo.processor;
 
-import org.b3log.latke.http.Dispatcher;
-import org.b3log.latke.http.Request;
-import org.b3log.latke.http.Response;
-import org.b3log.latke.http.handler.*;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.handler.Handler;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.util.Stopwatchs;
 
 /**
- * Mock dispatcher servlet for unit tests.
+ * Stopwatch start handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.2, Dec 5, 2018
- * @since 1.7.0
+ * @version 1.0.0.0, Nov 3, 2019
+ * @since 3.6.7
  */
-public class MockDispatcherServlet {
+public class StopwatchStartHandler implements Handler {
 
-    /**
-     * Handlers
-     */
-    private static final List<Handler> HANDLERS = new ArrayList<>();
+    @Override
+    public void handle(final RequestContext context) {
+        Stopwatchs.start("Request Initialized [requestURI=" + context.requestURI() + "]");
 
-    public void init() {
-        HANDLERS.add(new RouteHandler());
-        HANDLERS.add(new BeforeHandleHandler());
-        HANDLERS.add(new ContextHandleHandler());
-        HANDLERS.add(new AfterHandleHandler());
-    }
-
-    public void service(final Request req, final Response resp) {
-        Dispatcher.handle(req, resp);
+        context.handle();
     }
 }

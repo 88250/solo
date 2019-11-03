@@ -18,11 +18,7 @@
 package org.b3log.solo.util;
 
 import com.vdurmont.emoji.EmojiParser;
-import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Latkes;
-import org.b3log.solo.SoloServletListener;
 
-import java.util.Set;
 import java.util.regex.Pattern;
 
 /**

@@ -19,8 +19,6 @@ package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.MockHttpServletRequest;
-import org.b3log.solo.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -51,15 +49,15 @@ public class TagConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getTags() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/tags");
 
         mockAdminLogin(request);
 
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
@@ -70,15 +68,15 @@ public class TagConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "getTags")
     public void getUnusedTags() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/tag/unused");
 
         mockAdminLogin(request);
 
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
@@ -89,16 +87,16 @@ public class TagConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "getUnusedTags")
     public void removeUnusedTags() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/tag/unused");
         request.setMethod("DELETE");
 
         mockAdminLogin(request);
 
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 }

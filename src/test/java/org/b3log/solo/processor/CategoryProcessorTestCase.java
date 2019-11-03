@@ -20,8 +20,8 @@ package org.b3log.solo.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.MockHttpServletRequest;
-import org.b3log.solo.MockHttpServletResponse;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Option;
 import org.json.JSONObject;
@@ -53,12 +53,10 @@ public class CategoryProcessorTestCase extends AbstractTestCase {
 
     /**
      * showCategoryArticles.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void showCategoryArticles() throws Exception {
-        MockHttpServletRequest request = mockRequest();
+    public void showCategoryArticles() {
+        MockRequest request = mockRequest();
         request.setRequestURI("/console/category/");
         request.setMethod("POST");
         final JSONObject requestJSON = new JSONObject();
@@ -66,12 +64,11 @@ public class CategoryProcessorTestCase extends AbstractTestCase {
         requestJSON.put(Category.CATEGORY_TITLE, "分类1");
         requestJSON.put(Category.CATEGORY_URI, "cate1");
 
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 
-        MockHttpServletResponse response = mockResponse();
+        MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
         request = mockRequest();
@@ -81,7 +78,7 @@ public class CategoryProcessorTestCase extends AbstractTestCase {
         response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<title>分类1 - Solo 的个人博客</title>"));
     }
 }

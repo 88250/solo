@@ -19,18 +19,16 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.math.RandomUtils;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JsonRenderer;
-import org.b3log.solo.SoloServletListener;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.ServletContext;
 import java.io.InputStream;
 
 /**
@@ -60,18 +58,17 @@ public class KanBanNiangProcessor {
         try {
             final String assets = "/plugins/kanbanniang/assets";
             String model;
-            final ServletContext servletContext = SoloServletListener.getServletContext();
-            try (final InputStream inputStream = servletContext.getResourceAsStream(assets + "/model-list.json")) {
+            try (final InputStream inputStream = KanBanNiangProcessor.class.getResourceAsStream(assets + "/model-list.json")) {
                 final JSONArray models = new JSONArray(IOUtils.toString(inputStream, "UTF-8"));
                 final int i = RandomUtils.nextInt(models.length());
                 model = models.getString(i);
             }
 
-            try (final InputStream modelResource = servletContext.getResourceAsStream(assets + "/model/" + model + "/index.json")) {
+            try (final InputStream modelResource = KanBanNiangProcessor.class.getResourceAsStream(assets + "/model/" + model + "/index.json")) {
                 final JSONObject index = new JSONObject(IOUtils.toString(modelResource, "UTF-8"));
                 final JSONArray textures = index.optJSONArray("textures");
                 if (textures.isEmpty()) {
-                    try (final InputStream texturesRes = servletContext.getResourceAsStream(assets + "/model/" + model + "/textures.json")) {
+                    try (final InputStream texturesRes = KanBanNiangProcessor.class.getResourceAsStream(assets + "/model/" + model + "/textures.json")) {
                         final JSONArray texturesArray = new JSONArray(IOUtils.toString(texturesRes, "UTF-8"));
                         final Object element = texturesArray.opt(RandomUtils.nextInt(texturesArray.length()));
                         if (element instanceof JSONArray) {

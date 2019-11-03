@@ -21,7 +21,6 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.upgrade.*;
 import org.json.JSONObject;
@@ -58,7 +57,7 @@ public class UpgradeService {
             }
 
             final String currentVer = preference.getString(Option.ID_C_VERSION); // 数据库中的版本
-            if (SoloServletListener.VERSION.equals(currentVer)) {
+            if (Server.VERSION.equals(currentVer)) {
                 // 如果数据库中的版本和运行时版本一致则说明已经是最新版
                 return;
             }

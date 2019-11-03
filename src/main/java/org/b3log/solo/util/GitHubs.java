@@ -29,8 +29,6 @@ import org.b3log.solo.model.UserExt;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * GitHub utilities.
  *
@@ -55,7 +53,7 @@ public final class GitHubs {
         try {
             final HttpResponse res = HttpRequest.get("https://hacpai.com/github/repos?id=" + githubUserId).trustAllCerts(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
-            if (HttpServletResponse.SC_OK != res.statusCode()) {
+            if (200 != res.statusCode()) {
                 return null;
             }
             res.charset("UTF-8");
@@ -90,7 +88,7 @@ public final class GitHubs {
         try {
             final HttpResponse res = HttpRequest.get("https://hacpai.com/github/user?ak=" + accessToken).trustAllCerts(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
-            if (HttpServletResponse.SC_OK != res.statusCode()) {
+            if (200 != res.statusCode()) {
                 return null;
             }
             res.charset("UTF-8");

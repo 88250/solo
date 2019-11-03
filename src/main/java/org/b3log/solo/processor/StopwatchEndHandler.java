@@ -17,42 +17,34 @@
  */
 package org.b3log.solo.processor;
 
-import org.apache.commons.lang.StringUtils;
-import org.b3log.solo.AbstractTestCase;
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.handler.Handler;
+import org.b3log.latke.logging.Level;
+import org.b3log.latke.logging.Logger;
+import org.b3log.latke.util.Stopwatchs;
+import org.b3log.latke.util.Strings;
 
 /**
- * {@link SitemapProcessor} test case.
+ * Stopwatch end handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Nov 5, 2016
- * @since 1.7.0
+ * @version 1.0.0.0, Nov 3, 2019
+ * @since 3.6.7
  */
-@Test(suiteName = "processor")
-public class SitemapProcessorTestCase extends AbstractTestCase {
+public class StopwatchEndHandler implements Handler {
 
     /**
-     * Init.
-     *
-     * @throws Exception exception
+     * Logger.
      */
-    @Test
-    public void init() throws Exception {
-        super.init();
-    }
+    private static final Logger LOGGER = Logger.getLogger(StopwatchEndHandler.class);
 
-    /**
-     * sitemap.
-     */
-    @Test(dependsOnMethods = "init")
-    public void sitemap() {
-        final MockRequest request = mockRequest();
-        request.setRequestURI("/sitemap.xml");
-        final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+    @Override
+    public void handle(final RequestContext context) {
+        Stopwatchs.end();
 
-        final String content = response.getContentStr();
-        Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));
+        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+        Stopwatchs.release();
+
+        context.handle();
     }
 }

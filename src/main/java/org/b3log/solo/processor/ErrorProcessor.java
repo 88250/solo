@@ -23,11 +23,11 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.servlet.HttpMethod;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.RequestProcessing;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.AbstractFreeMarkerRenderer;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.AbstractFreeMarkerRenderer;
 import org.b3log.latke.util.Locales;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.service.DataModelService;
@@ -87,7 +87,7 @@ public class ErrorProcessor {
      */
     @RequestProcessing(value = "/error/{statusCode}", method = {HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE})
     public void showErrorPage(final RequestContext context) {
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         final String statusCode = context.pathVar("statusCode");
         if (StringUtils.equals("GET", context.method())) {
             final String requestURI = context.requestURI();
@@ -109,7 +109,7 @@ public class ErrorProcessor {
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Shows error page failed", e);
 
-                context.sendError(HttpServletResponse.SC_NOT_FOUND);
+                context.sendError(404);
             }
 
             Solos.addGoogleNoIndex(context);

@@ -40,8 +40,6 @@ import org.b3log.solo.repository.UserRepository;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * User management service.
  *
@@ -117,7 +115,7 @@ public class UserMgmtService {
             final HttpResponse res = HttpRequest.post("https://hacpai.com/user/usite").trustAllCerts(true).
                     connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).
                     body(requestJSON.toString()).send();
-            if (HttpServletResponse.SC_OK != res.statusCode()) {
+            if (200 != res.statusCode()) {
                 return;
             }
             res.charset("UTF-8");

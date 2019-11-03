@@ -20,8 +20,6 @@ package org.b3log.solo.processor.console;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.MockHttpServletRequest;
-import org.b3log.solo.MockHttpServletResponse;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -55,15 +53,15 @@ public class CommentConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void getComments() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/comments/1/10/20");
 
         mockAdminLogin(request);
 
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
@@ -78,15 +76,15 @@ public class CommentConsoleTestCase extends AbstractTestCase {
         final JSONObject article = recentArticles.get(0);
         final String articleId = article.optString(Keys.OBJECT_ID);
 
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/comments/article/" + articleId);
 
         mockAdminLogin(request);
 
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
@@ -101,16 +99,16 @@ public class CommentConsoleTestCase extends AbstractTestCase {
         final JSONObject comment = recentComments.get(0);
         final String commentId = comment.optString(Keys.OBJECT_ID);
 
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/article/comment/" + commentId);
         request.setMethod("DELETE");
 
         mockAdminLogin(request);
 
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 }

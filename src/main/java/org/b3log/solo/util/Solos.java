@@ -23,29 +23,27 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.Cookie;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Pagination;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
-import org.b3log.latke.servlet.RequestContext;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.latke.util.Crypts;
 import org.b3log.latke.util.Strings;
-import org.b3log.solo.SoloServletListener;
+import org.b3log.solo.Server;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONObject;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -71,7 +69,7 @@ public final class Solos {
     /**
      * Solo User-Agent.
      */
-    public static final String USER_AGENT = "Solo/" + SoloServletListener.VERSION + "; +https://github.com/b3log/solo";
+    public static final String USER_AGENT = "Solo/" + Server.VERSION + "; +https://github.com/b3log/solo";
 
     /**
      * Cookie expiry in 30 days.
@@ -188,7 +186,7 @@ public final class Solos {
             final HttpResponse res = HttpRequest.post("https://hacpai.com/apis/upload/token").trustAllCerts(true).
                     body(requestJSON.toString()).connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
             uploadTokenCheckTime = now;
-            if (HttpServletResponse.SC_OK != res.statusCode()) {
+            if (200 != res.statusCode()) {
                 return null;
             }
             res.charset("UTF-8");
@@ -249,17 +247,16 @@ public final class Solos {
      * @param response the specified response
      * @return the current logged-in user, returns {@code null} if not found
      */
-    public static JSONObject getCurrentUser(final HttpServletRequest request, final HttpServletResponse response) {
-        final Cookie[] cookies = request.getCookies();
-        if (null == cookies || 0 == cookies.length) {
+    public static JSONObject getCurrentUser(final Request request, final Response response) {
+        final List<Cookie> cookies = request.getCookies();
+        if (cookies.isEmpty()) {
             return null;
         }
 
         final BeanManager beanManager = BeanManager.getInstance();
         final UserRepository userRepository = beanManager.getReference(UserRepository.class);
         try {
-            for (int i = 0; i < cookies.length; i++) {
-                final Cookie cookie = cookies[i];
+            for (final Cookie cookie : cookies) {
                 if (!COOKIE_NAME.equals(cookie.getName())) {
                     continue;
                 }
@@ -304,7 +301,7 @@ public final class Solos {
      * @param response the specified response
      * @param user     the specified user
      */
-    public static void login(final JSONObject user, final HttpServletResponse response) {
+    public static void login(final JSONObject user, final Response response) {
         try {
             final String userId = user.optString(Keys.OBJECT_ID);
             final JSONObject cookieJSONObject = new JSONObject();
@@ -330,7 +327,7 @@ public final class Solos {
      * @param response the specified response
      * @return {@code true} if succeed, otherwise returns {@code false}
      */
-    public static void logout(final HttpServletRequest request, final HttpServletResponse response) {
+    public static void logout(final Request request, final Response response) {
         if (null != response) {
             final Cookie cookie = new Cookie(COOKIE_NAME, null);
             cookie.setMaxAge(0);
@@ -386,24 +383,25 @@ public final class Solos {
             return false;
         }
 
-        final HttpServletRequest request = context.getRequest();
+        final Request request = context.getRequest();
         if (null == request) {
             return true;
         }
 
-        final HttpSession session = request.getSession();
-        if (null != session) {
-            Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
-            if (null == viewPwds) {
-                viewPwds = new HashMap<>();
-            }
+        // TODO: session
+//        final HttpSession session = request.getSession();
+//        if (null != session) {
+//            Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
+//            if (null == viewPwds) {
+//                viewPwds = new HashMap<>();
+//            }
+//
+//            if (articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
+//                return false;
+//            }
+//        }
 
-            if (articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
-                return false;
-            }
-        }
-
-        final HttpServletResponse response = context.getResponse();
+        final Response response = context.getResponse();
         final JSONObject currentUser = getCurrentUser(request, response);
 
         return !(null != currentUser && !Role.VISITOR_ROLE.equals(currentUser.optString(User.USER_ROLE)));
@@ -415,7 +413,7 @@ public final class Solos {
      * @param request the specified request
      * @return {@code true} if it is, returns {@code false} otherwise
      */
-    public static boolean isMobile(final HttpServletRequest request) {
+    public static boolean isMobile(final Request request) {
         final Object val = request.getAttribute(Keys.HttpRequest.IS_MOBILE_BOT);
         if (!(val instanceof Boolean)) {
             return false;
@@ -430,7 +428,7 @@ public final class Solos {
      * @param request the specified request
      * @return {@code true} if it is, returns {@code false} otherwise
      */
-    public static boolean isBot(final HttpServletRequest request) {
+    public static boolean isBot(final Request request) {
         final Object val = request.getAttribute(Keys.HttpRequest.IS_SEARCH_ENGINE_BOT);
         if (!(val instanceof Boolean)) {
             return false;

@@ -19,8 +19,8 @@ package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
-import org.b3log.solo.MockHttpServletRequest;
-import org.b3log.solo.MockHttpServletResponse;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -51,14 +51,14 @@ public class AdminConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void showAdminIndex() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/admin-index.do");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "后台管理 - Solo 的个人博客"));
     }
 
@@ -69,14 +69,14 @@ public class AdminConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void showAdminFunctions() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/admin-article.do");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<div class=\"form\">"));
     }
 
@@ -87,14 +87,14 @@ public class AdminConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void showAdminPreferenceFunction() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/admin-preference.do");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final String content = response.body();
+        final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "信息配置"));
     }
 
@@ -105,14 +105,14 @@ public class AdminConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void exportSQL() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/export/sql");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final long outputBytes = response.outputBytes();
+        final long outputBytes = response.getContent().length;
         Assert.assertTrue(0 < outputBytes);
     }
 
@@ -123,14 +123,14 @@ public class AdminConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void exportJSON() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/export/json");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final long outputBytes = response.outputBytes();
+        final long outputBytes = response.getContent().length;
         Assert.assertTrue(0 < outputBytes);
     }
 
@@ -141,14 +141,14 @@ public class AdminConsoleTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void exportHexo() throws Exception {
-        final MockHttpServletRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/console/export/hexo");
         mockAdminLogin(request);
-        final MockHttpServletResponse response = mockResponse();
+        final MockResponse response = mockResponse();
 
         mockDispatcherServletService(request, response);
 
-        final long outputBytes = response.outputBytes();
+        final long outputBytes = response.getContent().length;
         Assert.assertTrue(0 < outputBytes);
     }
 }

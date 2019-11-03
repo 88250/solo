@@ -21,7 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.event.AbstractEventListener;
 import org.b3log.latke.event.Event;
 import org.b3log.latke.plugin.NotInteractivePlugin;
-import org.b3log.latke.servlet.RequestContext;
+import org.b3log.latke.http.RequestContext;
 import org.b3log.solo.event.EventTypes;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;

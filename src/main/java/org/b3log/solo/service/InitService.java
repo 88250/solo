@@ -35,7 +35,6 @@ import org.b3log.latke.repository.jdbc.util.JdbcRepositories.CreateTableResult;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Ids;
-import org.b3log.solo.SoloServletListener;
 import org.b3log.solo.model.*;
 import org.b3log.solo.model.Option.DefaultPreference;
 import org.b3log.solo.repository.*;
@@ -636,7 +635,7 @@ public class InitService {
         final JSONObject versionOpt = new JSONObject();
         versionOpt.put(Keys.OBJECT_ID, Option.ID_C_VERSION);
         versionOpt.put(Option.OPTION_CATEGORY, Option.CATEGORY_C_PREFERENCE);
-        versionOpt.put(Option.OPTION_VALUE, SoloServletListener.VERSION);
+        versionOpt.put(Option.OPTION_VALUE, Server.VERSION);
         optionRepository.add(versionOpt);
 
         final JSONObject articleListStyleOpt = new JSONObject();

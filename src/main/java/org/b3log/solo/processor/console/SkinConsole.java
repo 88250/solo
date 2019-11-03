@@ -19,15 +19,17 @@ package org.b3log.solo.processor.console;
 
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.Cookie;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
+import org.b3log.latke.http.annotation.Before;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.JsonRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.LangPropsService;
 import org.b3log.latke.service.ServiceException;
-import org.b3log.latke.servlet.RequestContext;
-import org.b3log.latke.servlet.annotation.Before;
-import org.b3log.latke.servlet.annotation.RequestProcessor;
-import org.b3log.latke.servlet.renderer.JsonRenderer;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.service.OptionQueryService;
@@ -36,8 +38,6 @@ import org.b3log.solo.util.Skins;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 
 /**
@@ -163,7 +163,7 @@ public class SkinConsole {
 
             skinMgmtService.updateSkin(skin);
 
-            final HttpServletResponse response = context.getResponse();
+            final Response response = context.getResponse();
             final Cookie skinDirNameCookie = new Cookie(Common.COOKIE_NAME_SKIN, skin.getString(Option.ID_C_SKIN_DIR_NAME));
             skinDirNameCookie.setMaxAge(60 * 60); // 1 hour
             skinDirNameCookie.setPath("/");
