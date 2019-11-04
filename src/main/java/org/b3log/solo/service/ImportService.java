@@ -21,6 +21,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.b3log.latke.Keys;
+import org.b3log.latke.Latkes;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -71,8 +72,8 @@ public class ImportService {
      */
     public void importMarkdowns() {
         new Thread(() -> {
-            final String markdownsPath = ImportService.class.getResource("/markdowns").getPath();
-            LOGGER.debug("Import directory [" + markdownsPath + "]");
+            final File markdownsPath = Latkes.getFile("/markdowns");
+            LOGGER.debug("Import directory [" + markdownsPath.getPath() + "]");
 
             final JSONObject admin = userQueryService.getAdmin();
             if (null == admin) { // Not init yet
@@ -83,7 +84,7 @@ public class ImportService {
 
             int succCnt = 0, failCnt = 0;
             final Set<String> failSet = new TreeSet<>();
-            final Collection<File> mds = FileUtils.listFiles(new File(markdownsPath), new String[]{"md"}, true);
+            final Collection<File> mds = FileUtils.listFiles(markdownsPath, new String[]{"md"}, true);
             if (null == mds || mds.isEmpty()) {
                 return;
             }

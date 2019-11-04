@@ -195,7 +195,7 @@ public final class Skins {
             final URI uri = Skins.class.getResource("/skins").toURI();
             Path resourcePath;
             if (uri.getScheme().equals("jar")) {
-                FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.<String, Object>emptyMap());
+                final FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
                 resourcePath = fileSystem.getPath("/skins");
             } else {
                 resourcePath = Paths.get(uri);
