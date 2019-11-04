@@ -36,21 +36,17 @@ public class AdminConsoleTestCase extends AbstractTestCase {
 
     /**
      * Init.
-     *
-     * @throws Exception exception
      */
     @Test
-    public void init() throws Exception {
+    public void init() {
         super.init();
     }
 
     /**
      * showAdminIndex.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void showAdminIndex() throws Exception {
+    public void showAdminIndex() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/admin-index.do");
         mockAdminLogin(request);

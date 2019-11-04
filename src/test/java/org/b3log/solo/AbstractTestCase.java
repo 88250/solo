@@ -45,7 +45,6 @@ import org.testng.annotations.BeforeMethod;
 import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.util.Collection;
-import java.util.Locale;
 
 /**
  * Abstract test case.
@@ -73,7 +72,6 @@ public abstract class AbstractTestCase {
     @BeforeClass
     public void beforeClass() throws Exception {
         Latkes.init();
-        Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
 
         final Collection<Class<?>> classes = Discoverer.discover("org.b3log.solo");
         BeanManager.start(classes);
@@ -115,10 +113,8 @@ public abstract class AbstractTestCase {
 
     /**
      * Init solo in test.
-     *
-     * @throws Exception exception
      */
-    public void init() throws Exception {
+    public void init() {
         final InitService initService = getInitService();
         final JSONObject requestJSONObject = new JSONObject();
         requestJSONObject.put(User.USER_NAME, "Solo");

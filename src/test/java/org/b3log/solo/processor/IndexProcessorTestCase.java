@@ -54,11 +54,9 @@ public class IndexProcessorTestCase extends AbstractTestCase {
 
     /**
      * Init.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "showStart")
-    public void init() throws Exception {
+    public void init() {
         super.init();
     }
 

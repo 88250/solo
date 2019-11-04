@@ -36,17 +36,14 @@ public class FeedProcessorTestCase extends AbstractTestCase {
 
     /**
      * Init.
-     *
-     * @throws Exception exception
      */
     @Test
-    public void init() throws Exception {
+    public void init() {
         super.init();
     }
 
     /**
      * blogArticlesAtom.
-     *
      */
     @Test(dependsOnMethods = "init")
     public void blogArticlesAtom() {

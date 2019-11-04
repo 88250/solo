@@ -22,8 +22,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.Locale;
-
 /**
  * {@link org.b3log.solo.util.Markdowns} test case.
  *
@@ -36,7 +34,6 @@ public final class MarkdownsTestCase {
     @BeforeClass
     public void beforeClass() {
         Latkes.init();
-        Latkes.setLocale(Locale.SIMPLIFIED_CHINESE);
     }
 
     /**
