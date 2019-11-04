@@ -65,7 +65,7 @@ public final class Skins {
     static {
         TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_28);
         TEMPLATE_CFG.setDefaultEncoding("UTF-8");
-        TEMPLATE_CFG.setClassForTemplateLoading(Skins.class, "");
+        TEMPLATE_CFG.setClassForTemplateLoading(Skins.class, "/");
         TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         TEMPLATE_CFG.setLogTemplateExceptions(false);
     }
