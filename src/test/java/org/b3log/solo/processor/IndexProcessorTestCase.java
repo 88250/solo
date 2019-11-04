@@ -102,6 +102,6 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         Assert.assertEquals(cookies.size(), 1);
         final Cookie first = cookies.iterator().next();
         Assert.assertEquals(first.getName(), Solos.COOKIE_NAME);
-        Assert.assertNull(first.getValue());
+        Assert.assertEquals(first.getValue(), "");
     }
 }
