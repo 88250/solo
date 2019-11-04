@@ -56,7 +56,7 @@ public class AdminConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
         final MockResponse response = mockResponse();
 
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "后台管理 - Solo 的个人博客"));
@@ -74,7 +74,7 @@ public class AdminConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
         final MockResponse response = mockResponse();
 
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<div class=\"form\">"));
@@ -92,7 +92,7 @@ public class AdminConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
         final MockResponse response = mockResponse();
 
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "信息配置"));
@@ -110,7 +110,7 @@ public class AdminConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
         final MockResponse response = mockResponse();
 
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final long outputBytes = response.getContent().length;
         Assert.assertTrue(0 < outputBytes);
@@ -128,7 +128,7 @@ public class AdminConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
         final MockResponse response = mockResponse();
 
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final long outputBytes = response.getContent().length;
         Assert.assertTrue(0 < outputBytes);
@@ -146,7 +146,7 @@ public class AdminConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
         final MockResponse response = mockResponse();
 
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final long outputBytes = response.getContent().length;
         Assert.assertTrue(0 < outputBytes);

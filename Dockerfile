@@ -3,7 +3,7 @@ FROM maven:3-jdk-8-alpine as MVN_BUILD
 WORKDIR /opt/solo/
 ADD . /tmp
 RUN cd /tmp && mvn package -DskipTests -Pci && mv target/solo/* /opt/solo/ \
-    && cp -f /tmp/src/main/resources/docker/* /opt/solo/WEB-INF/classes/
+    && cp -f /tmp/src/main/resources/docker/* /opt/solo/
 
 FROM openjdk:8-alpine
 LABEL maintainer="Liang Ding<d@b3log.org>"
@@ -15,4 +15,4 @@ RUN apk add --no-cache ca-certificates tzdata
 ENV TZ=Asia/Shanghai
 EXPOSE 8080
 
-ENTRYPOINT [ "java", "-cp", "WEB-INF/lib/*:WEB-INF/classes", "org.b3log.solo.Server" ]
+ENTRYPOINT [ "java", "-jar", "solo.jar" ]

@@ -195,9 +195,9 @@ public class IndexProcessor {
      */
     @RequestProcessing(value = "/logout", method = HttpMethod.GET)
     public void logout(final RequestContext context) {
-        final Request httpServletRequest = context.getRequest();
+        final Request request = context.getRequest();
 
-        Solos.logout(httpServletRequest, context.getResponse());
+        Solos.logout(request, context.getResponse());
 
         Solos.addGoogleNoIndex(context);
         context.sendRedirect(Latkes.getServePath());

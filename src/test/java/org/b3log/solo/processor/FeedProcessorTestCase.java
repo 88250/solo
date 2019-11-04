@@ -53,7 +53,7 @@ public class FeedProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/atom.xml");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));
@@ -67,7 +67,7 @@ public class FeedProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/rss.xml");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));

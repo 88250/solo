@@ -52,7 +52,7 @@ public class SitemapProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/sitemap.xml");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.startsWith(content, "<?xml version=\"1.0\""));

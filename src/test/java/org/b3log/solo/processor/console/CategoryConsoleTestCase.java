@@ -28,9 +28,6 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
-
 /**
  * {@link CategoryConsole} test case.
  *
@@ -69,7 +66,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
 
         mockAdminLogin(request);
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
@@ -91,7 +88,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
@@ -117,7 +114,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
@@ -144,7 +141,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
@@ -170,7 +167,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
@@ -192,7 +189,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));

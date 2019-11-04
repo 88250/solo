@@ -46,7 +46,7 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/start");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用! - Solo</title>"));
@@ -70,7 +70,7 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<title>Solo 的个人博客</title>"));
@@ -84,7 +84,7 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/kill-browser");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<title>Kill IE! - Solo 的个人博客</title>"));
@@ -98,7 +98,7 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/logout");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final List<Cookie> cookies = response.getCookies();
         Assert.assertEquals(cookies.size(), 1);

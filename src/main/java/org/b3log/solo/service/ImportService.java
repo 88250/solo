@@ -71,7 +71,7 @@ public class ImportService {
      */
     public void importMarkdowns() {
         new Thread(() -> {
-            final String markdownsPath = ImportService.class.getResource("markdowns").getPath();
+            final String markdownsPath = ImportService.class.getResource("/markdowns").getPath();
             LOGGER.debug("Import directory [" + markdownsPath + "]");
 
             final JSONObject admin = userQueryService.getAdmin();

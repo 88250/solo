@@ -55,7 +55,7 @@ public class TagProcessorTestCase extends AbstractTestCase {
         request.setRequestURI("/tags/Solo");
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<title>Solo 标签 - Solo 的个人博客</title>"));

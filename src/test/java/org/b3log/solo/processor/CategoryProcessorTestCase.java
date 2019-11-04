@@ -28,9 +28,6 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
-
 /**
  * {@link CategoryProcessor} test case.
  *
@@ -69,14 +66,14 @@ public class CategoryProcessorTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         request = mockRequest();
         request.setRequestURI("/category/cate1");
         request.setMethod("GET");
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<title>分类1 - Solo 的个人博客</title>"));

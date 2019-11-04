@@ -32,7 +32,7 @@ import org.b3log.solo.util.Skins;
 public final class ConsoleRenderer extends AbstractFreeMarkerRenderer {
 
     /**
-     * HTTP servlet request context.
+     * HTTP request context.
      */
     private final RequestContext context;
 

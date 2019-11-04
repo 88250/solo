@@ -71,7 +71,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
@@ -96,7 +96,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
@@ -123,7 +123,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
@@ -145,7 +145,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
@@ -164,7 +164,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
@@ -187,7 +187,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
         mockAdminLogin(request);
 
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));

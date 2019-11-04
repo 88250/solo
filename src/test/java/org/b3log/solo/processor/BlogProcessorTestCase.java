@@ -52,7 +52,7 @@ public class BlogProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/blog/info");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.startsWith(content, "{\"staticServePath\":\"http://localhost:8080\""));
@@ -67,7 +67,7 @@ public class BlogProcessorTestCase extends AbstractTestCase {
         request.setRequestURI("/blog/articles-tags");
         request.setParameter("pwd", "pass");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.startsWith(content, "{\"data\":"));

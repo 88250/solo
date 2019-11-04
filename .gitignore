@@ -1,5 +1,5 @@
-src/main/webapp/markdowns/*
-!src/main/webapp/markdowns/README.md
+src/main/resources/markdowns/*
+!src/main/resources/markdowns/README.md
 
 solo_h2_test/
 target/

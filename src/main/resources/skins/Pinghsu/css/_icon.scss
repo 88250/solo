@@ -1,0 +1,68 @@
+/*
+ * Solo - A small and beautiful blogging system written in Java.
+ * Copyright (c) 2010-present, b3log.org
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+/*
+ * icon font
+ *
+ * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
+ * @version 0.1.0.0, Feb 27, 2019
+*/
+
+.ico {
+  background-image: url("../images/ico.png");
+  float: right;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #eaeaea;
+  border-radius: 50%;
+  background-size: 42px auto;
+  &--0 {
+    background-position: 0 -42px;
+  }
+  &--1 {
+    background-position: 0 -84px;
+  }
+  &--2 {
+    background-position: 0 -126px;
+  }
+  &--3 {
+    background-position: 0 -168px;
+  }
+  &--4 {
+    background-position: 0 -210px;
+  }
+  &--5 {
+    background-position: 0 -252px;
+  }
+  &--6 {
+    background-position: 0 -294px;
+  }
+  &--7 {
+    background-position: 0 -336px;
+  }
+  &--8 {
+    background-position: 0 -378px;
+  }
+  &--9 {
+    background-position: 0 -420px;
+  }
+}
+
+svg {
+  height: 20px;
+  width: 20px;
+}

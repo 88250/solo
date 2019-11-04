@@ -39,7 +39,7 @@ import java.util.Map;
 public final class SkinRenderer extends AbstractFreeMarkerRenderer {
 
     /**
-     * HTTP servlet request context.
+     * HTTP request context.
      */
     private final RequestContext context;
 

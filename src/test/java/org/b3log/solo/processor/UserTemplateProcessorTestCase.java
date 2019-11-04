@@ -55,7 +55,7 @@ public class UserTemplateProcessorTestCase extends AbstractTestCase {
         request.setRequestURI("/links.html");
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<title>友情链接 - Solo 的个人博客</title>"));

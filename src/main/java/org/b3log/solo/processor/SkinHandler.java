@@ -65,7 +65,7 @@ public class SkinHandler implements Handler {
     }
 
     /**
-     * Resolve skin (template) for the specified HTTP servlet request.
+     * Resolve skin (template) for the specified HTTP request.
      * 前台皮肤切换 https://github.com/b3log/solo/issues/12060
      *
      * @param request the specified HTTP request

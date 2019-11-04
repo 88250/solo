@@ -32,7 +32,7 @@ import org.b3log.latke.util.Crypts;
 import org.b3log.solo.cache.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
-import org.b3log.solo.processor.MockDispatcherServlet;
+import org.b3log.solo.processor.MockDispatcher;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.service.*;
 import org.b3log.solo.util.Solos;
@@ -146,17 +146,17 @@ public abstract class AbstractTestCase {
     }
 
     /**
-     * Gets a mock dispatcher servlet and run service.
+     * Gets a mock dispatcher and run service.
      *
      * @param request  the specified request
      * @param response the specified response
-     * @return mock dispatcher servlet
+     * @return mock dispatcher
      */
-    public MockDispatcherServlet mockDispatcherServletService(final Request request, final Response response) {
-        final MockDispatcherServlet ret = new MockDispatcherServlet();
+    public MockDispatcher mockDispatcher(final Request request, final Response response) {
+        final MockDispatcher ret = new MockDispatcher();
         ret.init();
         Server.routeConsoleProcessors();
-        ret.service(request, response);
+        ret.handle(request, response);
 
         return ret;
     }

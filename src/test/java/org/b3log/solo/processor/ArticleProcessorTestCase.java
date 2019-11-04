@@ -59,7 +59,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         request.setRequestURI("/articles/archives/" + DateFormatUtils.format(System.currentTimeMillis(), "yyyy/MM"));
         request.setParameter("p", "1");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
@@ -79,7 +79,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         request.setRequestURI("/get-article-content");
         request.setParameter("id", articleId);
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "Solo 博客系统已经初始化完毕"));
@@ -94,7 +94,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         request.setRequestURI("/articles");
         request.setParameter("p", "1");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
@@ -114,7 +114,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         request.setRequestURI("/articles/authors/" + userId);
         request.setParameter("p", "1");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
@@ -129,7 +129,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         request.setRequestURI("/articles/random");
         request.setMethod("POST");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "{\"randomArticles"));
@@ -148,7 +148,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/article/id/" + articleId + "/relevant/articles");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "{\"relevantArticles\""));
@@ -163,7 +163,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         request.setRequestURI("/articles/tags/Solo");
         request.setParameter("p", "1");
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
@@ -179,7 +179,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         request.setParameter("p", "1");
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "Solo 的个人博客</title>"));
@@ -199,7 +199,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         request.setAttribute(Article.ARTICLE, article);
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "Solo 的个人博客</title>"));
@@ -220,41 +220,9 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         request.setParameter("articleId", articleId);
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
         final MockResponse response = mockResponse();
-        mockDispatcherServletService(request, response);
+        mockDispatcher(request, response);
 
         final String content = response.getContentStr();
         Assert.assertTrue(StringUtils.contains(content, "<title>访问密码 - Solo 的个人博客</title>"));
     }
-
-    /**
-     * showAuthorArticles.
-     *
-     * @throws Exception exception
-     */
-//    @Test(dependsOnMethods = "init")
-//    public void showAuthorArticles() throws Exception {
-//        final JSONObject admin = getUserRepository().getAdmin();
-//        final String userId = admin.optString(Keys.OBJECT_ID);
-//
-//        final HttpServletRequest request = mock(HttpServletRequest.class);
-//        when(request.getServletContext()).thenReturn(mock(ServletContext.class));
-//        when(request.getRequestURI()).thenReturn("/authors/" + userId + "/1");
-//        when(request.getMethod()).thenReturn("GET");
-//        when(request.getAttribute(Keys.TEMAPLTE_DIR_NAME)).thenReturn(Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-//        when(request.getAttribute(Keys.HttpRequest.START_TIME_MILLIS)).thenReturn(System.currentTimeMillis());
-//
-//        final MockDispatcherServlet dispatcherServlet = new MockDispatcherServlet();
-//        dispatcherServlet.init();
-//
-//        final StringWriter stringWriter = new StringWriter();
-//        final PrintWriter printWriter = new PrintWriter(stringWriter);
-//
-//        final HttpServletResponse response = mock(HttpServletResponse.class);
-//        when(response.getWriter()).thenReturn(printWriter);
-//
-//        dispatcherServlet.service(request, response);
-//
-//        final String content = stringWriter.toString();
-//        Assert.assertTrue(StringUtils.contains(content, "Solo 示例") || StringUtils.isBlank(content));
-//    }
 }
