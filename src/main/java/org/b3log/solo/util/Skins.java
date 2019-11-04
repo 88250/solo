@@ -36,6 +36,7 @@ import org.b3log.latke.util.Stopwatchs;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -63,7 +64,7 @@ public final class Skins {
     public static final Configuration TEMPLATE_CFG;
 
     static {
-        TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_28);
+        TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_29);
         TEMPLATE_CFG.setDefaultEncoding("UTF-8");
         TEMPLATE_CFG.setClassForTemplateLoading(Skins.class, "/");
         TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
