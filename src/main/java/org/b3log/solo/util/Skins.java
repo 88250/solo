@@ -249,7 +249,7 @@ public final class Skins {
         final Set<String> skinDirNames = Skins.getSkinDirNames();
         boolean isMobile = Solos.isMobile(request);
         String skin = null, mobileSkin = null;
-        final List<Cookie> cookies = request.getCookies();
+        final Set<Cookie> cookies = request.getCookies();
         if (!cookies.isEmpty()) {
             for (final Cookie cookie : cookies) {
                 if (Common.COOKIE_NAME_SKIN.equals(cookie.getName()) && !isMobile) {

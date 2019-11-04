@@ -117,7 +117,6 @@ public class OAuthProcessor {
                 connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
         if (200 != res.statusCode()) {
             LOGGER.log(Level.ERROR, "Gets oauth client id failed: " + res.toString());
-
             context.sendError(404);
 
             return;

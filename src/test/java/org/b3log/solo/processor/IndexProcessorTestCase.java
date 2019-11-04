@@ -26,7 +26,7 @@ import org.b3log.solo.util.Solos;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * {@link IndexProcessor} test case.
@@ -100,9 +100,10 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final List<Cookie> cookies = response.getCookies();
+        final Set<Cookie> cookies = response.getCookies();
         Assert.assertEquals(cookies.size(), 1);
-        Assert.assertEquals(cookies.get(0).getName(), Solos.COOKIE_NAME);
-        Assert.assertNull(cookies.get(0).getValue());
+        final Cookie first = cookies.iterator().next();
+        Assert.assertEquals(first.getName(), Solos.COOKIE_NAME);
+        Assert.assertNull(first.getValue());
     }
 }

@@ -42,6 +42,7 @@ import org.json.JSONObject;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -140,7 +141,7 @@ public class StatisticMgmtService {
      */
     public static boolean hasBeenServed(final RequestContext context, final Response response) {
         final Request request = context.getRequest();
-        final List<Cookie> cookies = request.getCookies();
+        final Set<Cookie> cookies = request.getCookies();
         if (cookies.isEmpty()) {
             return false;
         }

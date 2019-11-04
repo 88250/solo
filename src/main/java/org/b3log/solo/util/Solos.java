@@ -23,10 +23,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
-import org.b3log.latke.http.Cookie;
-import org.b3log.latke.http.Request;
-import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.Response;
+import org.b3log.latke.http.*;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -43,9 +40,7 @@ import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONObject;
 
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Solo utilities.
@@ -248,7 +243,7 @@ public final class Solos {
      * @return the current logged-in user, returns {@code null} if not found
      */
     public static JSONObject getCurrentUser(final Request request, final Response response) {
-        final List<Cookie> cookies = request.getCookies();
+        final Set<Cookie> cookies = request.getCookies();
         if (cookies.isEmpty()) {
             return null;
         }
@@ -388,18 +383,17 @@ public final class Solos {
             return true;
         }
 
-        // TODO: session
-//        final HttpSession session = request.getSession();
-//        if (null != session) {
-//            Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
-//            if (null == viewPwds) {
-//                viewPwds = new HashMap<>();
-//            }
-//
-//            if (articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
-//                return false;
-//            }
-//        }
+        final Session session = request.getSession();
+        if (null != session) {
+            Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
+            if (null == viewPwds) {
+                viewPwds = new HashMap<>();
+            }
+
+            if (articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
+                return false;
+            }
+        }
 
         final Response response = context.getResponse();
         final JSONObject currentUser = getCurrentUser(request, response);
