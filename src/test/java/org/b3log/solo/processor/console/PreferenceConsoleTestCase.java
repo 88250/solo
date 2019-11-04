@@ -19,13 +19,12 @@ package org.b3log.solo.processor.console;
 
 import org.apache.commons.lang.StringUtils;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.b3log.solo.model.Option;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.io.BufferedReader;
-import java.io.StringReader;
 
 /**
  * {@link PreferenceConsole} test case.
@@ -49,11 +48,9 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
 
     /**
      * getSigns.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void getSigns() throws Exception {
+    public void getSigns() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/signs/");
 
@@ -87,11 +84,9 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
 
     /**
      * updatePreference.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "init")
-    public void updatePreference() throws Exception {
+    public void updatePreference() {
         final JSONObject p = getOptionQueryService().getPreference();
 
         final MockRequest request = mockRequest();
@@ -99,8 +94,7 @@ public class PreferenceConsoleTestCase extends AbstractTestCase {
         request.setMethod("PUT");
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(Option.CATEGORY_C_PREFERENCE, p);
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 

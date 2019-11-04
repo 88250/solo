@@ -23,16 +23,18 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.Request;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.Response;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Role;
 import org.b3log.latke.model.User;
 import org.b3log.latke.service.LangPropsService;
-import org.b3log.latke.http.HttpMethod;
-import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
 import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.UserExt;
@@ -41,8 +43,6 @@ import org.b3log.solo.util.GitHubs;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -115,7 +115,7 @@ public class OAuthProcessor {
     public void redirectAuth(final RequestContext context) {
         final HttpResponse res = HttpRequest.get("https://hacpai.com/oauth/solo/client2").trustAllCerts(true).
                 connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
-        if (HttpServletResponse.SC_OK != res.statusCode()) {
+        if (200 != res.statusCode()) {
             LOGGER.log(Level.ERROR, "Gets oauth client id failed: " + res.toString());
 
             context.sendError(404);
@@ -155,7 +155,7 @@ public class OAuthProcessor {
     public synchronized void authCallback(final RequestContext context) {
         String state = context.param("state");
         if (!STATES.contains(state)) {
-            context.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            context.sendError(400);
 
             return;
         }
@@ -165,12 +165,12 @@ public class OAuthProcessor {
         final JSONObject userInfo = GitHubs.getGitHubUserInfo(accessToken);
         if (null == userInfo) {
             LOGGER.log(Level.WARN, "Can't get user info with token [" + accessToken + "]");
-            context.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+            context.sendError(401);
 
             return;
         }
 
-        final Response  response = context.getResponse();
+        final Response response = context.getResponse();
         final Request request = context.getRequest();
         final String openId = userInfo.optString("openId");
         final String userName = userInfo.optString(User.USER_NAME);
@@ -198,7 +198,7 @@ public class OAuthProcessor {
                         userMgmtService.addUser(addUserReq);
                     } catch (final Exception e) {
                         LOGGER.log(Level.ERROR, "Registers via oauth failed", e);
-                        context.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                        context.sendError(500);
 
                         return;
                     }
@@ -208,7 +208,7 @@ public class OAuthProcessor {
                         userMgmtService.updateUser(user);
                     } catch (final Exception e) {
                         LOGGER.log(Level.ERROR, "Updates user GitHub id failed", e);
-                        context.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                        context.sendError(500);
 
                         return;
                     }
@@ -222,7 +222,7 @@ public class OAuthProcessor {
                 userMgmtService.updateUser(user);
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Updates user name failed", e);
-                context.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                context.sendError(500);
 
                 return;
             }

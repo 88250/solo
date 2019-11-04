@@ -21,13 +21,12 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Query;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.b3log.solo.model.Article;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.io.BufferedReader;
-import java.io.StringReader;
 
 /**
  * {@link ArticleConsole} test case.
@@ -79,8 +78,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         request.setMethod("POST");
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put("markdownText", "**Solo**");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
         final MockResponse response = mockResponse();
@@ -232,8 +230,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         request.setMethod("PUT");
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(Article.ARTICLE, article);
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
         final MockResponse response = mockResponse();
@@ -260,8 +257,7 @@ public class ArticleConsoleTestCase extends AbstractTestCase {
         request.setMethod("POST");
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(Article.ARTICLE, article);
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
         final MockResponse response = mockResponse();

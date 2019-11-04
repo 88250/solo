@@ -20,6 +20,8 @@ package org.b3log.solo.processor;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.b3log.solo.model.Option;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -49,10 +51,10 @@ public class UserTemplateProcessorTestCase extends AbstractTestCase {
      */
     @Test(dependsOnMethods = "init")
     public void showCategoryArticles() {
-        MockRequest request = mockRequest();
+        final MockRequest request = mockRequest();
         request.setRequestURI("/links.html");
         request.setAttribute(Keys.TEMAPLTE_DIR_NAME, Option.DefaultPreference.DEFAULT_SKIN_DIR_NAME);
-        MockResponse response = mockResponse();
+        final MockResponse response = mockResponse();
         mockDispatcherServletService(request, response);
 
         final String content = response.getContentStr();

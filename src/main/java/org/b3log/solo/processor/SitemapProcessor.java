@@ -21,6 +21,11 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.HttpMethod;
+import org.b3log.latke.http.RequestContext;
+import org.b3log.latke.http.annotation.RequestProcessing;
+import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.http.renderer.TextXmlRenderer;
 import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -28,11 +33,6 @@ import org.b3log.latke.repository.FilterOperator;
 import org.b3log.latke.repository.PropertyFilter;
 import org.b3log.latke.repository.Query;
 import org.b3log.latke.repository.SortDirection;
-import org.b3log.latke.http.HttpMethod;
-import org.b3log.latke.http.RequestContext;
-import org.b3log.latke.http.annotation.RequestProcessing;
-import org.b3log.latke.http.annotation.RequestProcessor;
-import org.b3log.latke.http.renderer.TextXmlRenderer;
 import org.b3log.latke.util.URLs;
 import org.b3log.latke.util.XMLs;
 import org.b3log.solo.model.ArchiveDate;
@@ -47,8 +47,6 @@ import org.b3log.solo.repository.PageRepository;
 import org.b3log.solo.repository.TagRepository;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Sitemap processor.
@@ -113,7 +111,7 @@ public class SitemapProcessor {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates sitemap failed", e);
 
-            context.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+            context.sendError(500);
         }
     }
 

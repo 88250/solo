@@ -22,6 +22,8 @@ import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.service.ServiceException;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Option;
@@ -73,9 +75,7 @@ public class CommentProcessorTestCase extends AbstractTestCase {
         requestJSON.put("commentEmail", "d@hacpai.com");
         requestJSON.put("commentURL", "https://hacpai.com");
         requestJSON.put("commentContent", "测试评论");
-
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 

@@ -21,6 +21,7 @@ import org.b3log.latke.ioc.Inject;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.solo.Server;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.upgrade.*;
 import org.json.JSONObject;

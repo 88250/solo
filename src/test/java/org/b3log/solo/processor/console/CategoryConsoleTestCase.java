@@ -20,6 +20,8 @@ package org.b3log.solo.processor.console;
 import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.b3log.solo.model.Category;
 import org.b3log.solo.model.Common;
 import org.json.JSONObject;
@@ -63,9 +65,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         requestJSON.put(Category.CATEGORY_T_TAGS, "Solo");
         requestJSON.put(Category.CATEGORY_TITLE, "分类1");
         requestJSON.put(Category.CATEGORY_URI, "cate1");
-
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
         final MockResponse response = mockResponse();
@@ -112,8 +112,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         JSONObject category = getCategoryQueryService().getByTitle("分类1");
         requestJSON.put(Keys.OBJECT_ID, category.optString(Keys.OBJECT_ID));
         requestJSON.put(Category.CATEGORY_TITLE, "新的分类1");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 
@@ -166,8 +165,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(Keys.OBJECT_ID, category.optString(Keys.OBJECT_ID));
         requestJSON.put(Common.DIRECTION, "up");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 

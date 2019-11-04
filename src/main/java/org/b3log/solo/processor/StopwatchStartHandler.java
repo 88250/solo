@@ -19,7 +19,6 @@ package org.b3log.solo.processor;
 
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.handler.Handler;
-import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.Stopwatchs;
 
 /**

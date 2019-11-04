@@ -21,14 +21,13 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Query;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Link;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.io.BufferedReader;
-import java.io.StringReader;
 
 /**
  * {@link LinkConsole} test case.
@@ -67,8 +66,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
         link.put(Link.LINK_ADDRESS, "https://hacpai.com");
         link.put(Link.LINK_DESCRIPTION, "黑客与画家的社区");
         link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 
@@ -100,8 +98,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
         link.put(Link.LINK_ADDRESS, "https://hacpai.com");
         link.put(Link.LINK_DESCRIPTION, "B3log 开源社区线上论坛");
         link.put(Link.LINK_ICON, "https://static.hacpai.com/images/favicon.png");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 
@@ -128,8 +125,7 @@ public class LinkConsoleTestCase extends AbstractTestCase {
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(Keys.OBJECT_ID, linkId);
         requestJSON.put(Common.DIRECTION, "up");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 

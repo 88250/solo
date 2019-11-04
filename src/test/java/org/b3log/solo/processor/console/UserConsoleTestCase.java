@@ -21,12 +21,11 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Query;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.io.BufferedReader;
-import java.io.StringReader;
 
 /**
  * {@link UserConsole} test case.
@@ -60,8 +59,7 @@ public class UserConsoleTestCase extends AbstractTestCase {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/user/");
         request.setMethod("PUT");
-        final BufferedReader reader = new BufferedReader(new StringReader(u.toString()));
-        request.setReader(reader);
+        request.setJSON(u);
 
         mockAdminLogin(request);
 

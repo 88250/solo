@@ -21,14 +21,13 @@ import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.repository.Query;
 import org.b3log.solo.AbstractTestCase;
+import org.b3log.solo.MockRequest;
+import org.b3log.solo.MockResponse;
 import org.b3log.solo.model.Common;
 import org.b3log.solo.model.Page;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import java.io.BufferedReader;
-import java.io.StringReader;
 
 /**
  * {@link PageConsole} test case.
@@ -67,8 +66,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
         page.put(Page.PAGE_PERMALINK, "https://hacpai.com");
         page.put(Page.PAGE_OPEN_TARGET, "");
         page.put(Page.PAGE_ICON, "");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 
@@ -93,8 +91,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
         request.setMethod("PUT");
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(Page.PAGE, p);
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 
@@ -121,8 +118,7 @@ public class PageConsoleTestCase extends AbstractTestCase {
         final JSONObject requestJSON = new JSONObject();
         requestJSON.put(Keys.OBJECT_ID, pageId);
         requestJSON.put(Common.DIRECTION, "up");
-        final BufferedReader reader = new BufferedReader(new StringReader(requestJSON.toString()));
-        request.setReader(reader);
+        request.setJSON(requestJSON);
 
         mockAdminLogin(request);
 
