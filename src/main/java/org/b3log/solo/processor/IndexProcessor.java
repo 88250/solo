@@ -127,6 +127,7 @@ public class IndexProcessor {
                 cookie = new Cookie(Common.COOKIE_NAME_MOBILE_SKIN, specifiedSkin);
             }
             cookie.setMaxAge(60 * 60); // 1 hour
+            cookie.setPath("/");
             response.addCookie(cookie);
 
             Skins.fillLangs(preference.optString(Option.ID_C_LOCALE_STRING), (String) context.attr(Keys.TEMAPLTE_DIR_NAME), dataModel);

@@ -166,9 +166,11 @@ public class SkinConsole {
             final Response response = context.getResponse();
             final Cookie skinDirNameCookie = new Cookie(Common.COOKIE_NAME_SKIN, skin.getString(Option.ID_C_SKIN_DIR_NAME));
             skinDirNameCookie.setMaxAge(60 * 60); // 1 hour
+            skinDirNameCookie.setPath("/");
             response.addCookie(skinDirNameCookie);
             final Cookie mobileSkinDirNameCookie = new Cookie(Common.COOKIE_NAME_MOBILE_SKIN, skin.getString(Option.ID_C_MOBILE_SKIN_DIR_NAME));
             mobileSkinDirNameCookie.setMaxAge(60 * 60); // 1 hour
+            mobileSkinDirNameCookie.setPath("/");
             response.addCookie(mobileSkinDirNameCookie);
 
             ret.put(Keys.STATUS_CODE, true);

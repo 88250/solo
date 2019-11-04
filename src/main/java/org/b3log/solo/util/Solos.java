@@ -266,6 +266,7 @@ public final class Solos {
                 final String tokenVal = cookieJSONObject.optString(Keys.TOKEN);
                 final String token = StringUtils.substringBeforeLast(tokenVal, ":");
                 if (StringUtils.equals(b3Key, token)) {
+                    login(user, response);
                     return user;
                 }
             }
@@ -273,6 +274,8 @@ public final class Solos {
             LOGGER.log(Level.TRACE, "Parses cookie failed, clears the cookie [name=" + COOKIE_NAME + "]");
             final Cookie cookie = new Cookie(COOKIE_NAME, "");
             cookie.setMaxAge(0);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
             response.addCookie(cookie);
         }
 
@@ -296,6 +299,8 @@ public final class Solos {
             final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), COOKIE_SECRET);
             final Cookie cookie = new Cookie(COOKIE_NAME, cookieValue);
             cookie.setMaxAge(COOKIE_EXPIRY);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
             response.addCookie(cookie);
         } catch (final Exception e) {
             LOGGER.log(Level.WARN, "Can not write cookie", e);
@@ -313,6 +318,8 @@ public final class Solos {
         if (null != response) {
             final Cookie cookie = new Cookie(COOKIE_NAME, "");
             cookie.setMaxAge(0);
+            cookie.setPath("/");
+            cookie.setHttpOnly(true);
             response.addCookie(cookie);
         }
     }

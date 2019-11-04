@@ -178,12 +178,14 @@ public class StatisticMgmtService {
                 final StringBuilder builder = new StringBuilder("[").append("\"").append(request.getRequestURI()).append("\"]");
                 final Cookie c = new Cookie("visited", URLs.encode(builder.toString()));
                 c.setMaxAge(COOKIE_EXPIRY);
+                c.setPath("/");
                 response.addCookie(c);
             } else if (needToAppend) {
                 cookieJSONArray.put(request.getRequestURI());
 
                 final Cookie c = new Cookie("visited", URLs.encode(cookieJSONArray.toString()));
                 c.setMaxAge(COOKIE_EXPIRY);
+                c.setPath("/");
                 response.addCookie(c);
             }
         } catch (final Exception e) {
@@ -191,6 +193,7 @@ public class StatisticMgmtService {
 
             final Cookie c = new Cookie("visited", "");
             c.setMaxAge(0);
+            c.setPath("/");
             response.addCookie(c);
         }
 
