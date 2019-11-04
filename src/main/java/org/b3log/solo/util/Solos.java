@@ -46,7 +46,7 @@ import java.util.*;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.2, Sep 22, 2019
+ * @version 1.9.0.3, Nov 4, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -81,11 +81,6 @@ public final class Solos {
      */
     public static final String COOKIE_SECRET;
 
-    /**
-     * Cookie HTTP only.
-     */
-    public static final boolean COOKIE_HTTP_ONLY;
-
     static {
         ResourceBundle solo;
         try {
@@ -115,8 +110,6 @@ public final class Solos {
             cookieSecret = RandomStringUtils.randomAlphanumeric(8);
         }
         COOKIE_SECRET = cookieSecret;
-
-        COOKIE_HTTP_ONLY = Boolean.valueOf(Latkes.getLocalProperty("cookieHttpOnly"));
     }
 
     /**
@@ -273,17 +266,13 @@ public final class Solos {
                 final String tokenVal = cookieJSONObject.optString(Keys.TOKEN);
                 final String token = StringUtils.substringBeforeLast(tokenVal, ":");
                 if (StringUtils.equals(b3Key, token)) {
-                    login(user, response);
-
                     return user;
                 }
             }
         } catch (final Exception e) {
             LOGGER.log(Level.TRACE, "Parses cookie failed, clears the cookie [name=" + COOKIE_NAME + "]");
-
-            final Cookie cookie = new Cookie(COOKIE_NAME, null);
+            final Cookie cookie = new Cookie(COOKIE_NAME, "");
             cookie.setMaxAge(0);
-            cookie.setPath("/");
             response.addCookie(cookie);
         }
 
@@ -306,9 +295,7 @@ public final class Solos {
             cookieJSONObject.put(Keys.TOKEN, b3Key + ":" + random);
             final String cookieValue = Crypts.encryptByAES(cookieJSONObject.toString(), COOKIE_SECRET);
             final Cookie cookie = new Cookie(COOKIE_NAME, cookieValue);
-            cookie.setPath("/");
             cookie.setMaxAge(COOKIE_EXPIRY);
-            cookie.setHttpOnly(COOKIE_HTTP_ONLY);
             response.addCookie(cookie);
         } catch (final Exception e) {
             LOGGER.log(Level.WARN, "Can not write cookie", e);
@@ -324,9 +311,8 @@ public final class Solos {
      */
     public static void logout(final Request request, final Response response) {
         if (null != response) {
-            final Cookie cookie = new Cookie(COOKIE_NAME, null);
+            final Cookie cookie = new Cookie(COOKIE_NAME, "");
             cookie.setMaxAge(0);
-            cookie.setPath("/");
             response.addCookie(cookie);
         }
     }
