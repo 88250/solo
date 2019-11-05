@@ -67,8 +67,6 @@ public final class Server extends BaseServer {
      * @param args the specified arguments
      */
     public static void main(final String[] args) {
-        final Logger logger = Logger.getLogger(Server.class);
-
         final Options options = new Options();
         final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT").
                 hasArg().desc("listen port, default is 8080").build();
@@ -113,7 +111,9 @@ public final class Server extends BaseServer {
         final CommandLineParser commandLineParser = new DefaultParser();
         CommandLine commandLine;
 
-        final String cmdSyntax = "java -jar solo.jar";
+        final boolean isWindows = System.getProperty("os.name").toLowerCase().contains("windows");
+        final String cmdSyntax = isWindows ? "java -cp \"lib/*;.\" org.b3log.solo.Server"
+                : "java -cp \"lib/*:.\" org.b3log.solo.Server";
         final String header = "\nSolo 是一款小而美的博客系统，专为程序员设计。\n\n";
         final String footer = "\n提需求或报告缺陷请到项目网站: https://github.com/b3log/solo\n\n";
         try {
@@ -139,7 +139,7 @@ public final class Server extends BaseServer {
             Latkes.setScanPath("org.b3log.solo");
             Latkes.init();
         } catch (final Exception e) {
-            logger.log(Level.ERROR, "Latke init failed, please configure latke.props or run with args, visit https://hacpai.com/article/1492881378588 for more details");
+            LOGGER.log(Level.ERROR, "Latke init failed, please configure latke.props or run with args, visit https://hacpai.com/article/1492881378588 for more details");
 
             System.exit(-1);
         }
