@@ -48,7 +48,7 @@ import java.util.stream.Stream;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.6, Mar 29, 2019
+ * @version 1.1.6.7, Nov 5, 2019
  * @since 0.3.1
  */
 public final class Skins {
@@ -66,7 +66,19 @@ public final class Skins {
     static {
         TEMPLATE_CFG = new Configuration(Configuration.VERSION_2_3_29);
         TEMPLATE_CFG.setDefaultEncoding("UTF-8");
-        TEMPLATE_CFG.setClassForTemplateLoading(Skins.class, "/");
+        try {
+            String path = Skins.class.getResource("/").getPath();
+            if (StringUtils.contains(path, "/target/classes/") || StringUtils.contains(path, "/target/test-classes/")) {
+                // 开发时使用源码目录
+                path = StringUtils.replace(path, "/target/classes/", "/src/main/resources/");
+                path = StringUtils.replace(path, "/target/test-classes/", "/src/main/resources/");
+            }
+            TEMPLATE_CFG.setDirectoryForTemplateLoading(new File(path));
+            LOGGER.log(Level.INFO, "Loaded template from directory [" + path + "]");
+        } catch (final Exception e) {
+            TEMPLATE_CFG.setClassForTemplateLoading(Skins.class, "/");
+            LOGGER.log(Level.INFO, "Loaded template from classpath");
+        }
         TEMPLATE_CFG.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         TEMPLATE_CFG.setLogTemplateExceptions(false);
     }
