@@ -199,6 +199,10 @@ public final class Server extends BaseServer {
         validateSkin();
 
         final BeanManager beanManager = BeanManager.getInstance();
+
+        final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
+        Dispatcher.error("/error/{statusCode}", errorProcessor::showErrorPage);
+
         final InitService initService = beanManager.getReference(InitService.class);
         initService.initTables();
 
@@ -427,9 +431,6 @@ public final class Server extends BaseServer {
         Dispatcher.get("/console/changeRole/{id}", userConsole::changeUserRole);
 
         Dispatcher.mapping();
-
-        final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
-        Dispatcher.error("/error/{statusCode}", errorProcessor::showErrorPage);
     }
 
     /**
