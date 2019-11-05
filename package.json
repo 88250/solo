@@ -30,11 +30,11 @@
   "devDependencies": {
     "del": "^5.1.0",
     "gulp": "^4.0.2",
+    "gulp-autoprefixer": "^7.0.1",
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^1.4.0",
     "gulp-sass": "^4.0.2",
-    "gulp-uglify": "^3.0.2",
-    "gulp-autoprefixer": "^7.0.1"
+    "gulp-terser": "^1.2.0"
   },
   "dependencies": {
     "vditor": "^1.9.1"

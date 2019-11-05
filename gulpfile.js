@@ -27,20 +27,20 @@
 'use strict'
 const gulp = require('gulp')
 const concat = require('gulp-concat')
-const uglify = require('gulp-uglify')
+const terser = require('gulp-terser')
 const sass = require('gulp-sass')
 const rename = require('gulp-rename')
-const autoprefixer = require('gulp-autoprefixer');
+const autoprefixer = require('gulp-autoprefixer')
 const del = require('del')
 
 function sassSkinProcess () {
   return gulp.src('./src/main/resources/skins/*/css/*.scss').
     pipe(sass({
       outputStyle: 'compressed',
-      includePaths: ['node_modules']
+      includePaths: ['node_modules'],
     }).on('error', sass.logError)).
     pipe(autoprefixer({
-      cascade: false
+      cascade: false,
     })).
     pipe(gulp.dest('./src/main/resources/skins/'))
 }
@@ -54,10 +54,10 @@ function sassCommonProcess () {
   return gulp.src('./src/main/resources/scss/*.scss').
     pipe(sass({
       outputStyle: 'compressed',
-      includePaths: ['node_modules']
+      includePaths: ['node_modules'],
     }).on('error', sass.logError)).
     pipe(autoprefixer({
-      cascade: false
+      cascade: false,
     })).
     pipe(gulp.dest('./src/main/resources/scss/'))
 }
@@ -68,7 +68,11 @@ function minJS () {
   // minify js
   return gulp.src('./src/main/resources/js/*.js').
     pipe(rename({suffix: '.min'})).
-    pipe(uglify()).
+    pipe(terser({
+      output: {
+        ascii_only: true,
+      },
+    })).
     pipe(gulp.dest('./src/main/resources/js/'))
 }
 
@@ -95,7 +99,11 @@ function miniAdmin () {
     './src/main/resources/js/admin/main.js',
     './src/main/resources/js/admin/about.js']
   return gulp.src(jsJqueryUpload).
-    pipe(uglify({output: {ascii_only: true}})).
+    pipe(terser({
+      output: {
+        ascii_only: true,
+      },
+    })).
     pipe(concat('admin.min.js')).
     pipe(gulp.dest('./src/main/resources/js/admin'))
 
@@ -105,9 +113,13 @@ function miniAdminLibs () {
   // concat js
   const jsJqueryUpload = [
     './src/main/resources/js/lib/jquery/jquery.min.js',
-    './src/main/resources/js/lib/jquery/jquery.bowknot.min.js',]
+    './src/main/resources/js/lib/jquery/jquery.bowknot.min.js']
   return gulp.src(jsJqueryUpload).
-    pipe(uglify({output: {ascii_only: true}})).
+    pipe(terser({
+      output: {
+        ascii_only: true,
+      },
+    })).
     // https://github.com/b3log/solo/issues/12522
     pipe(concat('admin-lib.min.js')).
     pipe(gulp.dest('./src/main/resources/js/lib/compress/'))
@@ -121,7 +133,11 @@ function miniPjax () {
     './src/main/resources/js/lib/jquery/jquery.pjax.js',
     './src/main/resources/js/lib/nprogress/nprogress.js']
   return gulp.src(jsPjax).
-    pipe(uglify()).
+    pipe(terser({
+      output: {
+        ascii_only: true,
+      },
+    })).
     pipe(concat('pjax.min.js')).
     pipe(gulp.dest('./src/main/resources/js/lib/compress/'))
 }
@@ -130,7 +146,11 @@ function minSkinJS () {
   // minify js
   return gulp.src('./src/main/resources/skins/*/js/*.js').
     pipe(rename({suffix: '.min'})).
-    pipe(uglify()).
+    pipe(terser({
+      output: {
+        ascii_only: true,
+      },
+    })).
     pipe(gulp.dest('./src/main/resources/skins/'))
 }
 
@@ -141,5 +161,6 @@ function cleanProcess () {
 }
 
 gulp.task('default',
-  gulp.series(cleanProcess, sassSkinProcess, sassCommonProcess, gulp.parallel(minSkinJS, minJS),
+  gulp.series(cleanProcess, sassSkinProcess, sassCommonProcess,
+    gulp.parallel(minSkinJS, minJS),
     gulp.parallel(miniPjax, miniAdmin, miniAdminLibs)))
