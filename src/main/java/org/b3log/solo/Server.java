@@ -189,7 +189,7 @@ public final class Server extends BaseServer {
         Dispatcher.HANDLERS.add(1, new SkinHandler());
         Dispatcher.HANDLERS.add(2, new InitCheckHandler());
         Dispatcher.HANDLERS.add(3, new PermalinkHandler());
-        Dispatcher.HANDLERS.add(4, new StopwatchEndHandler());
+        Dispatcher.HANDLERS.add(new StopwatchEndHandler());
 
         routeConsoleProcessors();
 
