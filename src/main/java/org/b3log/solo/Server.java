@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.0, Nov 3, 2019
+ * @version 2.0.0.1, Nov 5, 2019
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -183,8 +183,6 @@ public final class Server extends BaseServer {
         Dispatcher.HANDLERS.add(2, new InitCheckHandler());
         Dispatcher.HANDLERS.add(3, new PermalinkHandler());
         Dispatcher.HANDLERS.add(4, new StopwatchEndHandler());
-
-        final BeanManager beanManager = BeanManager.getInstance();
         routeConsoleProcessors();
         Stopwatchs.start("Context Initialized");
 
@@ -200,6 +198,7 @@ public final class Server extends BaseServer {
 
         validateSkin();
 
+        final BeanManager beanManager = BeanManager.getInstance();
         final InitService initService = beanManager.getReference(InitService.class);
         initService.initTables();
 
@@ -428,6 +427,9 @@ public final class Server extends BaseServer {
         Dispatcher.get("/console/changeRole/{id}", userConsole::changeUserRole);
 
         Dispatcher.mapping();
+
+        final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
+        Dispatcher.error("/error/{statusCode}", errorProcessor::showErrorPage);
     }
 
     /**
