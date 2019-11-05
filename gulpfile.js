@@ -21,7 +21,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.7.0.2, Mar 29, 2019
+ * @version 1.8.0.0, Nov 5, 2019
  */
 
 'use strict'
@@ -30,6 +30,7 @@ const concat = require('gulp-concat')
 const uglify = require('gulp-uglify')
 const sass = require('gulp-sass')
 const rename = require('gulp-rename')
+const autoprefixer = require('gulp-autoprefixer');
 const del = require('del')
 
 function sassSkinProcess () {
@@ -38,6 +39,9 @@ function sassSkinProcess () {
       outputStyle: 'compressed',
       includePaths: ['node_modules']
     }).on('error', sass.logError)).
+    pipe(autoprefixer({
+      cascade: false
+    })).
     pipe(gulp.dest('./src/main/resources/skins/'))
 }
 
@@ -52,6 +56,9 @@ function sassCommonProcess () {
       outputStyle: 'compressed',
       includePaths: ['node_modules']
     }).on('error', sass.logError)).
+    pipe(autoprefixer({
+      cascade: false
+    })).
     pipe(gulp.dest('./src/main/resources/scss/'))
 }
 
