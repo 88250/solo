@@ -190,6 +190,7 @@ public final class Server extends BaseServer {
         Dispatcher.HANDLERS.add(2, new InitCheckHandler());
         Dispatcher.HANDLERS.add(3, new PermalinkHandler());
         Dispatcher.HANDLERS.add(4, new StopwatchEndHandler());
+
         routeConsoleProcessors();
 
         final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
