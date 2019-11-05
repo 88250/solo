@@ -419,6 +419,7 @@ admin.article = {
       fun: fun,
       previewMode: 'both',
       resize: false,
+      typewriterMode: true
     })
 
     admin.editors.abstractEditor = new SoloEditor({
@@ -426,6 +427,7 @@ admin.article = {
       height: 200,
       previewMode: 'editor',
       resize: true,
+      typewriterMode: false,
     })
 
     // thumbnail

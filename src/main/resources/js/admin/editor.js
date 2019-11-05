@@ -42,6 +42,7 @@ $.extend(SoloEditor.prototype, {
    */
   init: function () {
     this.editor = new Vditor(this.conf.id, {
+      typewriterMode: this.conf.typewriterMode,
       cache: true,
       tab: '\t',
       preview: {
