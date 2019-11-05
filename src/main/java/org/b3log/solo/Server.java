@@ -23,6 +23,8 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.BaseServer;
 import org.b3log.latke.http.Dispatcher;
+import org.b3log.latke.http.handler.StopwatchEndHandler;
+import org.b3log.latke.http.handler.StopwatchStartHandler;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -35,7 +37,10 @@ import org.b3log.solo.event.B3ArticleSender;
 import org.b3log.solo.event.B3ArticleUpdater;
 import org.b3log.solo.event.B3CommentSender;
 import org.b3log.solo.event.PluginRefresher;
-import org.b3log.solo.processor.*;
+import org.b3log.solo.processor.ErrorProcessor;
+import org.b3log.solo.processor.InitCheckHandler;
+import org.b3log.solo.processor.PermalinkHandler;
+import org.b3log.solo.processor.SkinHandler;
 import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
@@ -67,6 +72,8 @@ public final class Server extends BaseServer {
      * @param args the specified arguments
      */
     public static void main(final String[] args) {
+        Stopwatchs.start("Booting");
+
         final Options options = new Options();
         final Option listenPortOpt = Option.builder("lp").longOpt("listen_port").argName("LISTEN_PORT").
                 hasArg().desc("listen port, default is 8080").build();
@@ -184,7 +191,6 @@ public final class Server extends BaseServer {
         Dispatcher.HANDLERS.add(3, new PermalinkHandler());
         Dispatcher.HANDLERS.add(4, new StopwatchEndHandler());
         routeConsoleProcessors();
-        Stopwatchs.start("Context Initialized");
 
         final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
         final String jdbcUsername = Latkes.getLocalProperty("jdbc.username");
@@ -239,10 +245,6 @@ public final class Server extends BaseServer {
             LOGGER.info("Solo is running");
         }
 
-        Stopwatchs.end();
-        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
-        Stopwatchs.release();
-
         final CronMgmtService cronMgmtService = beanManager.getReference(CronMgmtService.class);
         cronMgmtService.start();
 
@@ -252,6 +254,11 @@ public final class Server extends BaseServer {
             server.shutdown();
             Latkes.shutdown();
         }));
+
+        Stopwatchs.end();
+        LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
+        Stopwatchs.release();
+
         server.start(Integer.valueOf(portArg));
     }
 
