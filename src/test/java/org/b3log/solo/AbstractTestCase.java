@@ -21,6 +21,7 @@ import io.netty.handler.codec.http.*;
 import org.apache.commons.lang.RandomStringUtils;
 import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
+import org.b3log.latke.http.Dispatcher;
 import org.b3log.latke.http.Request;
 import org.b3log.latke.http.Response;
 import org.b3log.latke.ioc.BeanManager;
@@ -32,6 +33,7 @@ import org.b3log.latke.util.Crypts;
 import org.b3log.solo.cache.*;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.UserExt;
+import org.b3log.solo.processor.ErrorProcessor;
 import org.b3log.solo.processor.MockDispatcher;
 import org.b3log.solo.repository.*;
 import org.b3log.solo.service.*;
@@ -50,7 +52,7 @@ import java.util.Collection;
  * Abstract test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 3.0.0.2, Mar 29, 2019
+ * @version 3.0.0.3, Nov 6, 2019
  * @since 2.9.7
  */
 public abstract class AbstractTestCase {
@@ -120,6 +122,8 @@ public abstract class AbstractTestCase {
         requestJSONObject.put(User.USER_NAME, "Solo");
         requestJSONObject.put(UserExt.USER_B3_KEY, "pass");
         initService.init(requestJSONObject);
+        final ErrorProcessor errorProcessor = beanManager.getReference(ErrorProcessor.class);
+        Dispatcher.get("/error/{statusCode}", errorProcessor::showErrorPage);
         final UserQueryService userQueryService = getUserQueryService();
         Assert.assertNotNull(userQueryService.getUserByName("Solo"));
     }
