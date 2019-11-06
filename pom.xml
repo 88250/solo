@@ -73,7 +73,7 @@
     </scm>
 
     <properties>
-        <org.b3log.latke.version>3.0.1-SNAPSHOT</org.b3log.latke.version>
+        <org.b3log.latke.version>3.0.1</org.b3log.latke.version>
 
         <slf4j.version>1.7.28</slf4j.version>
         <jsoup.version>1.12.1</jsoup.version>
