@@ -235,17 +235,19 @@ public class ArticleProcessor {
             final String pwdTyped = context.param("pwdTyped");
 
             final JSONObject article = articleQueryService.getArticleById(articleId);
-
             if (article.getString(Article.ARTICLE_VIEW_PWD).equals(pwdTyped)) {
                 final Session session = request.getSession();
                 if (null != session) {
-                    Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
-                    if (null == viewPwds) {
-                        viewPwds = new HashMap<>();
+                    JSONObject viewPwds;
+                    final String viewPwdsStr = session.getAttribute(Common.ARTICLES_VIEW_PWD);
+                    if (null == viewPwdsStr) {
+                        viewPwds = new JSONObject();
+                    } else {
+                        viewPwds = new JSONObject(viewPwdsStr);
                     }
 
                     viewPwds.put(articleId, pwdTyped);
-                    session.setAttribute(Common.ARTICLES_VIEW_PWD, viewPwds);
+                    session.setAttribute(Common.ARTICLES_VIEW_PWD, viewPwds.toString());
                 }
 
                 context.sendRedirect(Latkes.getServePath() + article.getString(Article.ARTICLE_PERMALINK));

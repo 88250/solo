@@ -378,9 +378,12 @@ public final class Solos {
 
         final Session session = request.getSession();
         if (null != session) {
-            Map<String, String> viewPwds = (Map<String, String>) session.getAttribute(Common.ARTICLES_VIEW_PWD);
-            if (null == viewPwds) {
-                viewPwds = new HashMap<>();
+            JSONObject viewPwds;
+            final String viewPwdsStr = session.getAttribute(Common.ARTICLES_VIEW_PWD);
+            if (null == viewPwdsStr) {
+                viewPwds = new JSONObject();
+            } else {
+                viewPwds = new JSONObject(viewPwdsStr);
             }
 
             if (articleViewPwd.equals(viewPwds.get(article.optString(Keys.OBJECT_ID)))) {
