@@ -103,6 +103,12 @@
             <groupId>org.b3log</groupId>
             <artifactId>latke-core</artifactId>
             <version>${org.b3log.latke.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>redis.clients</groupId>
+                    <artifactId>jedis</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
