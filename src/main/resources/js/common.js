@@ -168,7 +168,7 @@ var Util = {
 
     if (typeof Vditor === 'undefined') {
       Util.addScript(
-        'https://cdn.jsdelivr.net/npm/vditor@1.9.1/dist/method.min.js',
+        'https://cdn.jsdelivr.net/npm/vditor@1.9.3/dist/method.min.js',
         'vditorPreviewScript')
     }
 
@@ -183,6 +183,9 @@ var Util = {
     Vditor.chartRender()
     Vditor.mediaRender(document.body)
     Vditor.mermaidRender(document.body)
+    document.querySelectorAll('.vditor-reset').forEach((e) => {
+      Vditor.speechRender(e, Label.langLabel)
+    })
   },
   /**
    * @description IE6/7，跳转到 kill-browser 页面
