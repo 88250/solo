@@ -645,8 +645,6 @@ public class ArticleQueryService {
                     "\taa.archiveDate_oId = ?\n" +
                     "AND a.oId = aa.article_oId\n" +
                     "AND a.articleStatus = 0\n" +
-                    "GROUP BY\n" +
-                    "\ta.oId\n" +
                     "ORDER BY\n" +
                     "\ta.oId DESC\n" +
                     "LIMIT ?,\n" +
