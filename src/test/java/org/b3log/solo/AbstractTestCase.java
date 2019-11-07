@@ -167,7 +167,7 @@ public abstract class AbstractTestCase {
      * @return mock request
      */
     public MockRequest mockRequest() {
-        final HttpRequest req = new DefaultHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/a");
+        final FullHttpRequest req = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, "/a");
         return new MockRequest(req);
     }
 
