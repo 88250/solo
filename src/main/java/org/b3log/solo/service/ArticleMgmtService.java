@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.3.0, Oct 23, 2019
+ * @version 1.3.4.0, Nov 7, 2019
  * @since 0.3.5
  */
 @Service
@@ -937,10 +937,13 @@ public class ArticleMgmtService {
             }
         }
 
-        final JSONObject archiveDateArticleRelation = new JSONObject();
-        archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, archiveDate.optString(Keys.OBJECT_ID));
-        archiveDateArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, article.optString(Keys.OBJECT_ID));
-        archiveDateArticleRepository.add(archiveDateArticleRelation);
+        final String articleId = article.optString(Keys.OBJECT_ID);
+        if (null == archiveDateArticleRepository.getByArticleId(articleId)) {
+            final JSONObject archiveDateArticleRelation = new JSONObject();
+            archiveDateArticleRelation.put(ArchiveDate.ARCHIVE_DATE + "_" + Keys.OBJECT_ID, archiveDate.optString(Keys.OBJECT_ID));
+            archiveDateArticleRelation.put(Article.ARTICLE + "_" + Keys.OBJECT_ID, articleId);
+            archiveDateArticleRepository.add(archiveDateArticleRelation);
+        }
     }
 
     /**
