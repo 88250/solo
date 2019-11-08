@@ -4,4 +4,3 @@ Disallow: /start
 Disallow: /logout
 Disallow: /authors/*
 Disallow: /console/*
-Disallow: /error/*

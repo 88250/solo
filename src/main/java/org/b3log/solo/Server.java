@@ -23,8 +23,6 @@ import org.b3log.latke.Latkes;
 import org.b3log.latke.event.EventManager;
 import org.b3log.latke.http.BaseServer;
 import org.b3log.latke.http.Dispatcher;
-import org.b3log.latke.http.handler.StopwatchEndHandler;
-import org.b3log.latke.http.handler.StopwatchStartHandler;
 import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
@@ -37,10 +35,7 @@ import org.b3log.solo.event.B3ArticleSender;
 import org.b3log.solo.event.B3ArticleUpdater;
 import org.b3log.solo.event.B3CommentSender;
 import org.b3log.solo.event.PluginRefresher;
-import org.b3log.solo.processor.ErrorProcessor;
-import org.b3log.solo.processor.InitCheckHandler;
-import org.b3log.solo.processor.PermalinkHandler;
-import org.b3log.solo.processor.SkinHandler;
+import org.b3log.solo.processor.*;
 import org.b3log.solo.processor.console.*;
 import org.b3log.solo.repository.OptionRepository;
 import org.b3log.solo.service.*;
@@ -185,11 +180,11 @@ public final class Server extends BaseServer {
             Markdowns.LUTE_AVAILABLE = true;
         }
 
-        Dispatcher.HANDLERS.add(0, new StopwatchStartHandler());
+        Dispatcher.startRequestHandler = new BeforeRequestHandler();
         Dispatcher.HANDLERS.add(1, new SkinHandler());
         Dispatcher.HANDLERS.add(2, new InitCheckHandler());
         Dispatcher.HANDLERS.add(3, new PermalinkHandler());
-        Dispatcher.HANDLERS.add(new StopwatchEndHandler());
+        Dispatcher.endRequestHandler = new AfterRequestHandler();
 
         routeConsoleProcessors();
 
