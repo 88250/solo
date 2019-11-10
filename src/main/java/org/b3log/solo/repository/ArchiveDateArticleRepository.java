@@ -93,8 +93,7 @@ public class ArchiveDateArticleRepository extends AbstractRepository {
      * @throws RepositoryException repository exception
      */
     public JSONObject getByArticleId(final String articleId) throws RepositoryException {
-        final Query query = new Query().
-                setFilter(new PropertyFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
+        final Query query = new Query().setFilter(new PropertyFilter(Article.ARTICLE + "_" + Keys.OBJECT_ID, FilterOperator.EQUAL, articleId));
         final JSONObject result = get(query);
         final JSONArray array = result.optJSONArray(Keys.RESULTS);
         if (0 == array.length()) {

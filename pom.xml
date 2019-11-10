@@ -16,7 +16,7 @@
     <artifactId>solo</artifactId>
     <packaging>jar</packaging>
     <name>Solo</name>
-    <version>3.6.6</version>
+    <version>3.6.7</version>
     <description>
         一款小而美的博客系统，专为程序员设计。
     </description>
