@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.2, Nov 11, 2019
+ * @version 2.0.0.3, Nov 11, 2019
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -437,6 +437,7 @@ public final class Server extends BaseServer {
 
         final RepairConsole repairConsole = beanManager.getReference(RepairConsole.class);
         Dispatcher.get("/fix/restore-signs", repairConsole::restoreSigns);
+        Dispatcher.get("/fix/archivedate-articles", repairConsole::cleanArchiveDateArticles);
 
         final TagConsole tagConsole = beanManager.getReference(TagConsole.class);
         Dispatcher.get("/console/tags", tagConsole::getTags);
