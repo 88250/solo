@@ -180,6 +180,34 @@ public final class Server extends BaseServer {
             Markdowns.LUTE_AVAILABLE = true;
         }
 
+        if (Latkes.isDocker()) {
+            // Docker 环境需要填充默认值
+
+            final String jdbcMinConns = System.getenv("JDBC_MIN_CONNS");
+            if (StringUtils.isBlank(jdbcMinConns)) {
+                Latkes.setLocalProperty("jdbc.minConnCnt", "5");
+                LOGGER.log(Level.INFO, "Default JDBC min conns");
+            } else {
+                LOGGER.log(Level.INFO, "env [JDBC_MIN_CONNS=" + jdbcMinConns + "]");
+            }
+
+            final String jdbcMaxConns = System.getenv("JDBC_MAX_CONNS");
+            if (StringUtils.isBlank(jdbcMaxConns)) {
+                Latkes.setLocalProperty("jdbc.maxConnCnt", "10");
+                LOGGER.log(Level.INFO, "Default JDBC max conns");
+            } else {
+                LOGGER.log(Level.INFO, "env [JDBC_MAX_CONNS=" + jdbcMaxConns + "]");
+            }
+
+            final String jdbcTablePrefix = System.getenv("JDBC_TABLE_PREFIX");
+            if (StringUtils.isBlank(jdbcTablePrefix)) {
+                Latkes.setLocalProperty("jdbc.tablePrefix", "b3_solo");
+                LOGGER.log(Level.INFO, "Default JDBC table prefix ");
+            } else {
+                LOGGER.log(Level.INFO, "env [JDBC_TABLE_PREFIX=" + jdbcTablePrefix + "]");
+            }
+        }
+
         Dispatcher.startRequestHandler = new BeforeRequestHandler();
         Dispatcher.HANDLERS.add(1, new SkinHandler());
         Dispatcher.HANDLERS.add(2, new InitCheckHandler());
