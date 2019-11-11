@@ -73,7 +73,7 @@ public class CategoryProcessorTestCase extends AbstractTestCase {
         response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "<title>分类1 - Solo 的个人博客</title>"));
     }
 }

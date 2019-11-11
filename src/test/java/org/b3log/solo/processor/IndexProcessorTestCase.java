@@ -48,7 +48,7 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "<title>欢迎使用! - Solo</title>"));
     }
 
@@ -70,7 +70,7 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "<title>Solo 的个人博客</title>"));
     }
 
@@ -84,7 +84,7 @@ public class IndexProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "<title>Kill IE! - Solo 的个人博客</title>"));
     }
 

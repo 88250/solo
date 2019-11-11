@@ -59,7 +59,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
     }
 
@@ -79,7 +79,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "Solo 博客系统已经初始化完毕"));
     }
 
@@ -94,7 +94,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
     }
 
@@ -114,7 +114,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
     }
 
@@ -129,7 +129,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "{\"randomArticles"));
     }
 
@@ -148,7 +148,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "{\"relevantArticles\""));
     }
 
@@ -163,7 +163,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "{\"sc\":true"));
     }
 
@@ -179,7 +179,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "Solo 的个人博客</title>"));
     }
 
@@ -199,7 +199,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "Solo 的个人博客</title>"));
     }
 
@@ -220,7 +220,7 @@ public class ArticleProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "<title>访问密码 - Solo 的个人博客</title>"));
     }
 }

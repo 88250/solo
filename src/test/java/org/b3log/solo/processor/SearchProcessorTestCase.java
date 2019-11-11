@@ -52,7 +52,7 @@ public class SearchProcessorTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"));
     }
 
@@ -68,7 +68,7 @@ public class SearchProcessorTestCase extends AbstractTestCase {
 
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "Solo 的个人博客搜索"));
     }
 }

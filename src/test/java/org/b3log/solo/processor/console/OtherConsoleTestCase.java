@@ -58,7 +58,7 @@ public class OtherConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 }

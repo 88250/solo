@@ -57,7 +57,7 @@ public class TagConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
@@ -76,17 +76,15 @@ public class TagConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
     /**
      * removeUnusedTags.
-     *
-     * @throws Exception exception
      */
     @Test(dependsOnMethods = "getUnusedTags")
-    public void removeUnusedTags() throws Exception {
+    public void removeUnusedTags() {
         final MockRequest request = mockRequest();
         request.setRequestURI("/console/tag/unused");
         request.setMethod("DELETE");
@@ -96,7 +94,7 @@ public class TagConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 }

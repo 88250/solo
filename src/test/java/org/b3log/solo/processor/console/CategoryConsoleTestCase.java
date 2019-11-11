@@ -66,7 +66,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
@@ -88,7 +88,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
@@ -114,7 +114,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
 
         category = getCategoryQueryService().getByTitle("分类1");
@@ -141,7 +141,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
@@ -167,7 +167,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 
@@ -189,7 +189,7 @@ public class CategoryConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "sc\":true"));
     }
 }

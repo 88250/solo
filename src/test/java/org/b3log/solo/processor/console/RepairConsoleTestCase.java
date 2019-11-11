@@ -57,7 +57,7 @@ public class RepairConsoleTestCase extends AbstractTestCase {
         final MockResponse response = mockResponse();
         mockDispatcher(request, response);
 
-        final String content = response.getContentStr();
+        final String content = response.getString();
         Assert.assertTrue(StringUtils.contains(content, "Restore signs succeeded."));
     }
 }

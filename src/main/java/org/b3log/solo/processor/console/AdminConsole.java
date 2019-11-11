@@ -325,7 +325,7 @@ public class AdminConsole {
             response.setContentType("application/zip");
             final String fileName = "solo-sql-" + date + ".zip";
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-            response.sendContent(zipData);
+            response.sendBytes(zipData);
 
             // 导出 SQL 包后清理临时文件 https://github.com/b3log/solo/issues/12770
             localFile.delete();
@@ -376,7 +376,7 @@ public class AdminConsole {
                 response.setContentType("application/zip");
                 final String fileName = "solo-json-" + date + ".zip";
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-                response.sendContent(zipData);
+                response.sendBytes(zipData);
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
@@ -443,7 +443,7 @@ public class AdminConsole {
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
             }
 
-            response.sendContent(zipData);
+            response.sendBytes(zipData);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Export failed", e);
             context.renderJSON().renderMsg("Export failed, please check log");
