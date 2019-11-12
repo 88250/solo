@@ -20,7 +20,7 @@
 *
 * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
 * @author <a href="http://88250.b3log.org">Liang Ding</a>
-* @version 3.2.0.0, Jul 17, 2019
+* @version 3.3.0.0, Nov 12, 2019
 */
 @import "reset";
 @import "function";
@@ -87,13 +87,14 @@ button:hover {
 /* start ico */
 @font-face {
   font-family: 'icomoon';
-  src: url('fonts/icomoon.eot?pmeuih');
-  src: url('fonts/icomoon.eot?pmeuih#iefix') format('embedded-opentype'),
-  url('fonts/icomoon.ttf?pmeuih') format('truetype'),
-  url('fonts/icomoon.woff?pmeuih') format('woff'),
-  url('fonts/icomoon.svg?pmeuih#icomoon') format('svg');
+  src: url('fonts/icomoon.eot?2e0ylc');
+  src: url('fonts/icomoon.eot?2e0ylc#iefix') format('embedded-opentype'),
+  url('fonts/icomoon.ttf?2e0ylc') format('truetype'),
+  url('fonts/icomoon.woff?2e0ylc') format('woff'),
+  url('fonts/icomoon.svg?2e0ylc#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
+  font-display: block;
 }
 
 [class^="icon-"], [class*=" icon-"] {
@@ -109,6 +110,14 @@ button:hover {
   /* Better Font Rendering =========== */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-github:before {
+  content: "\e900";
+}
+
+.icon-hacpai:before {
+  content: "\e901";
 }
 
 .icon-close:before {
@@ -854,6 +863,14 @@ button#submitArticle:hover {
 
 .table-lineHover .table-hasExpend td {
   border-bottom: 0px;
+}
+
+.table-hasExpend a {
+  color: #3b3e43;
+  &:hover {
+    text-decoration: none;
+    color: #1fb5ad;
+  }
 }
 
 .table-heiglight td, .table-lineHover td {

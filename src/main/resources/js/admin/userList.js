@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.2.6, Mar 3, 2019
+ * @version 1.2.0.0, Nov 12, 2019
  */
 
 /* user-list 相关操作 */
@@ -97,7 +97,9 @@ admin.userList = {
 
         for (var i = 0; i < users.length; i++) {
           userData[i] = {}
-          userData[i].userName = users[i].userName
+          userData[i].userName = `${users[i].userName} 
+&nbsp; <a target="_blank" href="https://hacpai.com/member/${users[i].userName}"><span class="icon-hacpai"></span></a>
+&nbsp; <a target="_blank" href="https://github.com/${users[i].userName}"><span class="icon-github"></span></a>`
 
           if ('adminRole' === users[i].userRole) {
             userData[i].isAdmin = '&nbsp;' + Label.administratorLabel
@@ -296,7 +298,7 @@ admin.userList = {
 }
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register['user-list'] = {
   'obj': admin.userList,
