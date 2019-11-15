@@ -44,7 +44,7 @@ import java.io.InputStream;
  * Blog processor.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.4.0.1, Oct 29, 2019
+ * @version 1.4.0.2, Nov 15, 2019
  * @since 0.4.6
  */
 @RequestProcessor
@@ -135,6 +135,8 @@ public class BlogProcessor {
      * <li>Runtime database</li>
      * <li>Locale</li>
      * <li>Admin username</li>
+     * <li>Skin</li>
+     * <li>Mobile skin</li>
      * </ul>
      *
      * @param context the specified context
@@ -159,6 +161,8 @@ public class BlogProcessor {
         jsonObject.put("locale", Latkes.getLocale());
         final String userName = userQueryService.getAdmin().optString(User.USER_NAME);
         jsonObject.put("userName", userName);
+        jsonObject.put("skin", optionQueryService.getOptionById(Option.ID_C_SKIN_DIR_NAME).optString(Option.OPTION_VALUE));
+        jsonObject.put("mobileSkin", optionQueryService.getOptionById(Option.ID_C_MOBILE_SKIN_DIR_NAME).optString(Option.OPTION_VALUE));
     }
 
     /**
