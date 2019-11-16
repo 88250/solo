@@ -157,8 +157,6 @@ public final class Server extends BaseServer {
         String serverPort = commandLine.getOptionValue("server_port");
         if (null != serverPort) {
             Latkes.setLatkeProperty("serverPort", serverPort);
-        } else {
-            Latkes.setLatkeProperty("serverPort", "");
         }
         String staticServerScheme = commandLine.getOptionValue("static_server_scheme");
         if (null != staticServerScheme) {
