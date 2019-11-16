@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.3, Nov 11, 2019
+ * @version 2.0.0.4, Nov 16, 2019
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -157,6 +157,8 @@ public final class Server extends BaseServer {
         String serverPort = commandLine.getOptionValue("server_port");
         if (null != serverPort) {
             Latkes.setLatkeProperty("serverPort", serverPort);
+        } else {
+            Latkes.setLatkeProperty("serverPort", "");
         }
         String staticServerScheme = commandLine.getOptionValue("static_server_scheme");
         if (null != staticServerScheme) {
