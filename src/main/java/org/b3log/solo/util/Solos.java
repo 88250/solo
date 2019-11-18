@@ -46,7 +46,7 @@ import java.util.*;
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.3, Nov 4, 2019
+ * @version 1.9.0.4, Nov 18, 2019
  * @since 2.8.0
  */
 public final class Solos {
@@ -90,12 +90,6 @@ public final class Solos {
         }
 
         FAVICON_API = solo.getString("faviconAPI");
-
-        try {
-            Markdowns.LUTE_ENGINE_URL = solo.getString("luteHttp");
-        } catch (final Exception e) {
-            // ignored
-        }
     }
 
     static {

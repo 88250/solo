@@ -46,7 +46,7 @@ import org.json.JSONObject;
  * Server.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.0.4, Nov 16, 2019
+ * @version 2.0.0.5, Nov 18, 2019
  * @since 1.2.0
  */
 public final class Server extends BaseServer {
@@ -174,7 +174,7 @@ public final class Server extends BaseServer {
         if (null != runtimeMode) {
             Latkes.setRuntimeMode(Latkes.RuntimeMode.valueOf(runtimeMode));
         }
-        String luteHttp = commandLine.getOptionValue("lute");
+        String luteHttp = commandLine.getOptionValue("lute_http");
         if (null != luteHttp) {
             Markdowns.LUTE_ENGINE_URL = luteHttp;
             Markdowns.LUTE_AVAILABLE = true;
