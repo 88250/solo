@@ -156,7 +156,7 @@ public final class Markdowns {
                 try {
                     html = toHtmlByLute(markdownText);
                 } catch (final Exception e) {
-                    LOGGER.log(Level.WARN, "Failed to use [Lute] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
+                    LOGGER.log(Level.WARN, "Failed to use Lute [" + LUTE_ENGINE_URL + "] for markdown [md=" + StringUtils.substring(markdownText, 0, 256) + "]: " + e.getMessage());
                 }
             }
 
