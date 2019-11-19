@@ -48,7 +48,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Statistic management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.3, Jan 28, 2019
+ * @version 2.0.1.4, Nov 19, 2019
  * @since 0.5.0
  */
 @Service
@@ -157,7 +157,7 @@ public class StatisticMgmtService {
 
                 final String value = URLs.decode(cookie.getValue());
                 cookieJSONArray = new JSONArray(value);
-                if (null == cookieJSONArray || 0 == cookieJSONArray.length()) {
+                if (0 == cookieJSONArray.length()) {
                     return false;
                 }
 
@@ -165,9 +165,7 @@ public class StatisticMgmtService {
 
                 for (int j = 0; j < cookieJSONArray.length(); j++) {
                     final String visitedURL = cookieJSONArray.optString(j);
-
                     if (request.getRequestURI().equals(visitedURL)) {
-                        needToAppend = false;
                         return true;
                     }
                 }
