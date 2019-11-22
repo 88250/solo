@@ -213,7 +213,7 @@ public final class Server extends BaseServer {
         final boolean luteAvailable = Markdowns.LUTE_AVAILABLE;
 
         LOGGER.log(Level.INFO, "Solo is booting [ver=" + VERSION + ", os=" + Latkes.getOperatingSystemName() +
-                ", isDocker=" + Latkes.isDocker() + ", luteAvailable=" + luteAvailable + ", pid=" + Latkes.currentPID() +
+                ", isDocker=" + Latkes.isDocker() + ", inJar=" + Latkes.isInJar() + ", luteAvailable=" + luteAvailable + ", pid=" + Latkes.currentPID() +
                 ", runtimeDatabase=" + runtimeDatabase + ", runtimeMode=" + Latkes.getRuntimeMode() + ", jdbc.username=" +
                 jdbcUsername + ", jdbc.URL=" + jdbcURL + "]");
 
