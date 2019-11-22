@@ -28,17 +28,19 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.service.annotation.Service;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.model.Article;
+import org.b3log.solo.util.Skins;
 import org.json.JSONObject;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.net.URI;
 import java.util.*;
 
 /**
  * Import service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.5, Mar 20, 2019
+ * @version 1.0.1.6, Nov 22, 2019
  * @since 2.2.0
  */
 @Service
@@ -72,6 +74,16 @@ public class ImportService {
      */
     public void importMarkdowns() {
         new Thread(() -> {
+            try {
+                final URI uri = Skins.class.getResource("/markdowns").toURI();
+                if ("jar".equals(uri.getScheme())) {
+                    LOGGER.info("Ignored import markdowns when running in jar");
+                    return;
+                }
+            } catch (final Exception e) {
+                return;
+            }
+
             final File markdownsPath = Latkes.getFile("/markdowns");
             LOGGER.debug("Import directory [" + markdownsPath.getPath() + "]");
 

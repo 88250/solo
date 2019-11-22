@@ -48,7 +48,7 @@ import java.util.stream.Stream;
  * Skin utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.6.8, Nov 19, 2019
+ * @version 1.1.6.9, Nov 22, 2019
  * @since 0.3.1
  */
 public final class Skins {
@@ -207,7 +207,12 @@ public final class Skins {
             final URI uri = Skins.class.getResource("/skins").toURI();
             Path resourcePath;
             if (uri.getScheme().equals("jar")) {
-                final FileSystem fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+                FileSystem fileSystem;
+                try {
+                    fileSystem = FileSystems.getFileSystem(uri);
+                } catch (final FileSystemNotFoundException e) {
+                    fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+                }
                 resourcePath = fileSystem.getPath("/skins");
             } else {
                 resourcePath = Paths.get(uri);
