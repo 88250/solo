@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
     Description: Solo POM.
-    Version: 3.18.3.75, Nov 3, 2019
+    Version: 3.18.3.76, Nov 22, 2019
     Author: <a href="http://88250.b3log.org">Liang Ding</a>
     Author: <a href="http://www.annpeter.cn">Ann Peter</a>
     Author: <a href="http://vanessa.b3log.org">Vanessa</a>
@@ -73,7 +73,7 @@
     </scm>
 
     <properties>
-        <org.b3log.latke.version>3.0.14</org.b3log.latke.version>
+        <org.b3log.latke.version>3.0.16</org.b3log.latke.version>
 
         <slf4j.version>1.7.28</slf4j.version>
         <jsoup.version>1.12.1</jsoup.version>
@@ -352,6 +352,32 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <!-- 需要打 jar 部署的话注释掉上面的配置，启用下面这段配置
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.b3log.solo.Server</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
 
         </plugins>
 
