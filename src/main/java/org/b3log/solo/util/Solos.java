@@ -64,7 +64,7 @@ public final class Solos {
     /**
      * Solo User-Agent.
      */
-    public static final String USER_AGENT = "Solo/" + Server.VERSION + "; +https://github.com/b3log/solo";
+    public static final String USER_AGENT = "Solo/" + Server.VERSION + "; +https://github.com/88250/solo";
 
     /**
      * Cookie expiry in 30 days.

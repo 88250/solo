@@ -101,7 +101,7 @@ public class UpgradeService {
             }
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Upgrade failed, please contact the Solo developers or reports this "
-                    + "issue: https://github.com/b3log/solo/issues/new", e);
+                    + "issue: https://github.com/88250/solo/issues/new", e);
             System.exit(-1);
         }
     }

@@ -140,7 +140,7 @@ public class OAuthProcessor {
         String state = referer + ":::" + RandomStringUtils.randomAlphanumeric(16) + ":::cb=" + cb + ":::";
         STATES.add(state);
 
-        final String path = loginAuthURL + "?client_id=" + clientId + "&state=" + URLs.encode(state);
+        final String path = loginAuthURL + "?client_id=" + clientId + "&state=" + URLs.encode(state) + "&scope=public_repo,read:user";
 
         context.sendRedirect(path);
     }

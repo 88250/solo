@@ -65,11 +65,11 @@
 
     <issueManagement>
         <system>GitHub Issues</system>
-        <url>https://github.com/b3log/solo/issues</url>
+        <url>https://github.com/88250/solo/issues</url>
     </issueManagement>
 
     <scm>
-        <url>https://github.com/b3log/solo</url>
+        <url>https://github.com/88250/solo</url>
     </scm>
 
     <properties>
@@ -236,7 +236,7 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>${coveralls-maven-plugin.version}</version>
                 <configuration>
-                    <repoToken>PmmgdTzVuYQAsiOHNZ67bNDuqwDRSKvlm</repoToken>
+                    <repoToken>QZ1zzxOqOt1mtjyqmvzFJU5YW0kdIuExV</repoToken>
                 </configuration>
             </plugin>
 

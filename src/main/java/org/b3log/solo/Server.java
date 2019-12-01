@@ -117,7 +117,7 @@ public final class Server extends BaseServer {
         final String cmdSyntax = isWindows ? "java -cp \"lib/*;.\" org.b3log.solo.Server"
                 : "java -cp \"lib/*:.\" org.b3log.solo.Server";
         final String header = "\nSolo 是一款小而美的博客系统，专为程序员设计。\n\n";
-        final String footer = "\n提需求或报告缺陷请到项目网站: https://github.com/b3log/solo\n\n";
+        final String footer = "\n提需求或报告缺陷请到项目网站: https://github.com/88250/solo\n\n";
         try {
             commandLine = commandLineParser.parse(options, args);
         } catch (final ParseException e) {
