@@ -23,7 +23,7 @@
     <br>
     &copy; ${year} <a href="${servePath}">${blogTitle}</a> ${footerContent} Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>
     <div>
-        Theme <a rel="friend" href="https://github.com/b3log/solo-skins" target="_blank">${skinDirName}</a>
+        Theme ${skinDirName}
         by
         <a rel="friend" href="http://88250.b3log.org" target="_blank">88250</a>
     </div>

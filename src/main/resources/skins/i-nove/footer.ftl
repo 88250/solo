@@ -20,8 +20,7 @@
 <div class="left copyright">
     <span style="color: gray;">&copy; ${year}</span> <a href="${servePath}">${blogTitle}</a> ${footerContent}<br/>
     Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>&nbsp;&nbsp;
-    Theme <a rel="friend" href="https://github.com/b3log/solo-skins" target="_blank">${skinDirName}</a>
-    by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
+    Theme ${skinDirName} by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 </div>
 <div class="right goTop">
     <span onclick="Util.goTop();">${goTopLabel}</span>
@@ -33,7 +32,7 @@
     $(document).ready(function () {
         Util.setTopBar()
         Util.replaceSideEm($(".side-navi .navi-comments li .side-comment"));
-    
+
         // set selected navi
         $("#header-navi li").each(function (i) {
             if (i < $("#header-navi li").length - 1) {

@@ -53,7 +53,7 @@ import java.util.concurrent.*;
 /**
  * <a href="http://en.wikipedia.org/wiki/Markdown">Markdown</a> utilities.
  * <p>
- * Uses the <a href="https://github.com/b3log/markdown-http">markdown-http</a> as the processor, if not found this command, try
+ * Uses the <a href="https://github.com/88250/markdown-http">markdown-http</a> as the processor, if not found this command, try
  * built-in <a href="https://github.com/vsch/flexmark-java">flexmark</a> instead.
  * </p>
  *
@@ -101,7 +101,7 @@ public final class Markdowns {
     private static final HtmlRenderer RENDERER = HtmlRenderer.builder(OPTIONS).build();
 
     /**
-     * Lute engine serve path. https://github.com/b3log/lute-http
+     * Lute engine serve path. https://github.com/88250/lute-http
      */
     public static String LUTE_ENGINE_URL = "http://localhost:8249";
 

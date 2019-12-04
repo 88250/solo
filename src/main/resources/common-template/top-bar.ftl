@@ -77,12 +77,12 @@
 
     #top #hideTop:hover {
         background-image: url("${staticServePath}/images/arrow-left.gif");
-        border-radius: 0;    
+        border-radius: 0;
     }
 </style>
 <div id="showTop"></div>
 <div id="top">
-    <a href="https://github.com/b3log/solo" target="_blank" class="hover">
+    <a href="https://github.com/88250/solo" target="_blank" class="hover">
         Solo
     </a>
     <span class="left">&nbsp;${onlineVisitor1Label}${onlineVisitorCnt}</span>

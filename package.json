@@ -2,13 +2,13 @@
   "name": "Solo",
   "version": "3.6.7",
   "description": " 一款小而美的博客系统，专为程序员设计。",
-  "homepage": "https://github.com/b3log/solo",
+  "homepage": "https://github.com/88250/solo",
   "repository": {
     "type": "git",
-    "url": "git://github.com/b3log/solo.git"
+    "url": "git://github.com/88250/solo.git"
   },
   "bugs": {
-    "url": "https://github.com/b3log/solo/issues"
+    "url": "https://github.com/88250/solo/issues"
   },
   "license": "AGPLv3",
   "private": true,

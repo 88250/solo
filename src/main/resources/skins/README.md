@@ -2,7 +2,7 @@
 
 ## 简介
 
-这里是 [Solo](https://github.com/b3log/solo) 开源博客系统的官方皮肤仓库。
+这里是 [Solo](https://github.com/88250/solo) 开源博客系统的官方皮肤仓库。
 
 Solo 官方皮肤中有很大一部分是其他博客系统皮肤的仿款，为充分尊重原作者的劳动成果：
 

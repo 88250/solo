@@ -20,7 +20,7 @@
 <footer class="footer">
     <div class="fn-clear">
         <div class="fn-left">
-            Theme <a rel="friend" href="https://github.com/b3log/solo-skins" target="_blank">${skinDirName}</a>
+            Theme ${skinDirName}
             by
             <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
         </div>
@@ -28,9 +28,9 @@
             ${viewCount1Label}${statistic.statisticBlogViewCount}
             &nbsp;
             ${articleCount1Label}${statistic.statisticPublishedBlogArticleCount}
-            &nbsp; 
+            &nbsp;
             ${commentCount1Label}${statistic.statisticPublishedBlogCommentCount}
-            &nbsp; 
+            &nbsp;
             ${onlineVisitor1Label}${onlineVisitorCnt}
         </span>
     </div>

@@ -36,8 +36,7 @@
         ${onlineVisitorCnt} ${onlineVisitorLabel}
             <div class="fn-right">
                 Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a> •
-                Theme <a rel="friend" href="https://github.com/b3log/solo-skins" target="_blank">${skinDirName}</a>
-                by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
+                Theme ${skinDirName} by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
             </div>
         </div>
     </footer>

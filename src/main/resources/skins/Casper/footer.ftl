@@ -25,7 +25,7 @@
             ${footerContent} &nbsp;•&nbsp;
             Powered by <a href="https://solo.b3log.org" target="_blank">Solo</a>
             <br>
-            Theme <a rel="friend" href="https://github.com/b3log/solo-skins" target="_blank">${skinDirName}</a>
+            Theme ${skinDirName}
             <sup>[<a href="https://github.com/TryGhost/Casper" target="_blank">ref</a>]</sup>
             by <a href="http://vanessa.b3log.org" target="_blank">Vanessa</a>
         </div>

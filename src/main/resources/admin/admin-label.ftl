@@ -31,7 +31,7 @@
     Label.WINDOW_SIZE = "${articleListPaginationWindowSize}"
     Label.localeString = "${localeString}"
     Label.version = "${version}"
-    Label.reportIssueLabel = 'please report this issue on https://github.com/b3log/solo/issues/new'
+    Label.reportIssueLabel = 'please report this issue on https://github.com/88250/solo/issues/new'
     Label.noDataLabel = "${noDataLabel}"
     Label.linkDescriptionLabel = "${linkDescriptionLabel}"
     Label.addressInvalidLabel = "${addressInvalidLabel}"

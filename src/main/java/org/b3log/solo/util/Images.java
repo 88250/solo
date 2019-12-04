@@ -84,7 +84,7 @@ public final class Images {
     }
 
     /**
-     * Gets an image URL randomly. Sees https://github.com/b3log/bing for more details.
+     * Gets an image URL randomly. Sees https://github.com/88250/bing for more details.
      *
      * @return an image URL
      */
