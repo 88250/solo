@@ -69,7 +69,7 @@ public final class Solos {
     /**
      * Cookie expiry in 30 days.
      */
-    private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 30;
+    private static final int COOKIE_EXPIRY = 60 * 60 * 24 * 7;
 
     /**
      * Cookie name.
