@@ -17,11 +17,8 @@
  */
 package org.b3log.solo.processor;
 
-import jodd.http.HttpRequest;
-import jodd.http.HttpResponse;
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.commons.lang.StringUtils;
-import org.b3log.latke.Keys;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.HttpMethod;
 import org.b3log.latke.http.Request;
@@ -39,7 +36,6 @@ import org.b3log.latke.util.Requests;
 import org.b3log.latke.util.URLs;
 import org.b3log.solo.model.UserExt;
 import org.b3log.solo.service.*;
-import org.b3log.solo.util.GitHubs;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
 
@@ -49,12 +45,12 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * OAuth processor.
  * <ul>
- * <li>Redirects to auth page (/oauth/github/redirect), GET</li>
- * <li>OAuth callback (/oauth/github), GET</li>
+ * <li>Redirects to HacPai auth page (/login/redirect), GET</li>
+ * <li>OAuth callback (/login/callback), GET</li>
  * </ul>
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.1, Sep 12, 2019
+ * @version 1.0.1.2, Dec 14, 2019
  * @since 2.9.5
  */
 @RequestProcessor
@@ -107,41 +103,22 @@ public class OAuthProcessor {
     private LangPropsService langPropsService;
 
     /**
-     * Redirects to auth page.
+     * Redirects to HacPai auth page.
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/oauth/github/redirect", method = HttpMethod.GET)
+    @RequestProcessing(value = "/login/redirect", method = HttpMethod.GET)
     public void redirectAuth(final RequestContext context) {
-        final HttpResponse res = HttpRequest.get("https://hacpai.com/oauth/solo/client2").trustAllCerts(true).
-                connectionTimeout(3000).timeout(7000).header("User-Agent", Solos.USER_AGENT).send();
-        if (200 != res.statusCode()) {
-            LOGGER.log(Level.ERROR, "Gets oauth client id failed: " + res.toString());
-            context.sendError(404);
-
-            return;
-        }
-        res.charset("UTF-8");
-        final JSONObject result = new JSONObject(res.bodyText());
-        if (0 != result.optInt(Keys.CODE)) {
-            LOGGER.log(Level.ERROR, "Gets oauth client id failed: " + result.optString(Keys.MSG));
-
-            return;
-        }
-        final JSONObject data = result.optJSONObject(Keys.DATA);
-        final String clientId = data.optString("clientId");
-        final String loginAuthURL = data.optString("loginAuthURL");
-
         String referer = context.param("referer");
         if (StringUtils.isBlank(referer)) {
             referer = Latkes.getServePath();
         }
-        final String cb = Latkes.getServePath() + "/oauth/github";
-        String state = referer + ":::" + RandomStringUtils.randomAlphanumeric(16) + ":::cb=" + cb + ":::";
+
+        String state = RandomStringUtils.randomAlphanumeric(16) + referer;
         STATES.add(state);
 
-        final String path = loginAuthURL + "?client_id=" + clientId + "&state=" + URLs.encode(state) + "&scope=public_repo,read:user";
-
+        final String loginAuthURL = "https://hacpai.com/login?goto=" + Latkes.getServePath() + "/login/callback";
+        final String path = loginAuthURL + "?state=" + URLs.encode(state);
         context.sendRedirect(path);
     }
 
@@ -150,7 +127,7 @@ public class OAuthProcessor {
      *
      * @param context the specified context
      */
-    @RequestProcessing(value = "/oauth/github", method = HttpMethod.GET)
+    @RequestProcessing(value = "/login/callback", method = HttpMethod.GET)
     public synchronized void authCallback(final RequestContext context) {
         String state = context.param("state");
         if (!STATES.contains(state)) {
@@ -159,21 +136,14 @@ public class OAuthProcessor {
             return;
         }
         STATES.remove(state);
-        final String referer = URLs.decode(state);
-        final String accessToken = context.param("ak");
-        final JSONObject userInfo = GitHubs.getGitHubUserInfo(accessToken);
-        if (null == userInfo) {
-            LOGGER.log(Level.WARN, "Can't get user info with token [" + accessToken + "]");
-            context.sendError(401);
-
-            return;
-        }
+        String referer = URLs.decode(state);
+        referer = StringUtils.substring(referer, 16);
 
         final Response response = context.getResponse();
         final Request request = context.getRequest();
-        final String openId = userInfo.optString("openId");
-        final String userName = userInfo.optString(User.USER_NAME);
-        final String userAvatar = userInfo.optString(UserExt.USER_AVATAR);
+        final String openId = context.param("userId");
+        final String userName = context.param(User.USER_NAME);
+        final String userAvatar = context.param("avatar");
 
         JSONObject user = userQueryService.getUserByGitHubId(openId);
         if (null == user) {
@@ -214,8 +184,6 @@ public class OAuthProcessor {
                 }
             }
         } else {
-            // 更改账号后无法登录 https://github.com/b3log/solo/issues/12879
-            // 使用 GitHub 登录名覆盖本地用户名，解决 GitHub 改名后引起的登录问题
             user.put(User.USER_NAME, userName);
             try {
                 userMgmtService.updateUser(user);
@@ -235,9 +203,8 @@ public class OAuthProcessor {
             return;
         }
 
-        final String redirect = StringUtils.substringBeforeLast(referer, "__");
         Solos.login(user, response);
-        context.sendRedirect(redirect);
+        context.sendRedirect(referer);
         LOGGER.log(Level.INFO, "Logged in [name={0}, remoteAddr={1}] with oauth", userName, Requests.getRemoteAddr(request));
     }
 }

@@ -29,7 +29,7 @@
 
 <div id="github">
     <div class="github__icon startAction">
-        <img src="${staticServePath}/images/github.png"/>
+        <img src="${staticServePath}/images/hacpai.png"/>
     </div>
     <br>
     <button class="startAction">${useGitHubAccountLoginLabel}</button><br>
@@ -47,8 +47,7 @@
     (function () {
         try {
             $('.startAction').click(function () {
-                var isAgreen = $('#isAgreenCheck').prop('checked') ? '0' : '1'
-                window.location.href = '${servePath}/oauth/github/redirect?referer=${referer}__' + isAgreen
+                window.location.href = '${servePath}/login/redirect?referer=${referer}'
                 $('#github').addClass('github--loading')
             })
         } catch (e) {
