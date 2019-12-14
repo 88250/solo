@@ -173,6 +173,8 @@ public class OAuthProcessor {
                     }
                 } else {
                     user.put(UserExt.USER_GITHUB_ID, openId);
+                    user.put(User.USER_NAME, userName);
+                    user.put(UserExt.USER_AVATAR, userAvatar);
                     try {
                         userMgmtService.updateUser(user);
                     } catch (final Exception e) {
@@ -185,6 +187,7 @@ public class OAuthProcessor {
             }
         } else {
             user.put(User.USER_NAME, userName);
+            user.put(UserExt.USER_AVATAR, userAvatar);
             try {
                 userMgmtService.updateUser(user);
             } catch (final Exception e) {
