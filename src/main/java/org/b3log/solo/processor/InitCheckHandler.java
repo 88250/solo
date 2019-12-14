@@ -31,7 +31,7 @@ import org.b3log.solo.service.InitService;
  * Checks initialization handler.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.1, Nov 3, 2019
+ * @version 1.0.0.2, Dec 14, 2019
  * @since 3.2.0
  */
 public class InitCheckHandler implements Handler {
@@ -67,7 +67,7 @@ public class InitCheckHandler implements Handler {
             return;
         }
 
-        if (StringUtils.startsWith(requestURI, Latkes.getContextPath() + "/oauth/github")) {
+        if (StringUtils.startsWith(requestURI, Latkes.getContextPath() + "/login/")) {
             // Do initialization
             context.handle();
 
