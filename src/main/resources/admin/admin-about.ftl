@@ -32,7 +32,7 @@
                 ${checkingVersionLabel}
             </div>
 
-            <iframe src="https://ghbtns.com/github-btn.html?user=b3log&repo=solo&type=star&count=true&size=large"
+            <iframe src="https://ghbtns.com/github-btn.html?user=88250&repo=solo&type=star&count=true&size=large"
                     frameborder="0" scrolling="0" width="160px" height="30px" class="about__iframe"
                     style="margin: 21px 0 0 20px;border: 0"
                     class="fn__left"></iframe>
