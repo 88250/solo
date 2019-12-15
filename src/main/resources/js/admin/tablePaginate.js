@@ -43,9 +43,7 @@ $.extend(TablePaginate.prototype, {
             }
         }
         $("#" + this.id + "Table").table(tableData);
-    
     },
-    
     /*
      * 初始化分页
      */
@@ -84,7 +82,7 @@ $.extend(TablePaginate.prototype, {
             }
         });
     },
-    
+
     /*
      * 更新 table & paginateion
      */
@@ -101,11 +99,11 @@ $.extend(TablePaginate.prototype, {
                 groupData: data
             }]
         });
-                    
+
         if (pageInfo.paginationPageCount === 0) {
             pageInfo.paginationPageCount = 1;
         }
-        
+
         $("#" + this.id + "Pagination").paginate("update", {
             pageCount: pageInfo.paginationPageCount,
             currentPage: currentPage,
