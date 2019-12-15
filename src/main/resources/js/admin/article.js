@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.6.0.5, Aug 6, 2019
+ * @version 1.6.1.0, Dec 15, 2019
  */
 admin.article = {
   // 当发文章，取消发布，更新文章时设置为 false。不需在离开编辑器时进行提示。
@@ -48,7 +48,7 @@ admin.article = {
     $('#tipMsg').text('')
     $.ajax({
       url: Label.servePath + '/console/article/' +
-      admin.article.status.id,
+        admin.article.status.id,
       type: 'GET',
       cache: false,
       success: function (result, textStatus) {
@@ -121,7 +121,15 @@ admin.article = {
             return
           }
 
-          admin[fromId + 'List'].getList(1)
+          if (document.querySelectorAll('tr').length === 2) {
+            const refreshPage = Math.max(
+              (admin[fromId + 'List'].tablePagination.currentPage - 1), 1)
+            admin[fromId + 'List'].getList(refreshPage)
+            admin.setHashByPage(refreshPage)
+          } else {
+            admin[fromId + 'List'].getList(
+              admin[fromId + 'List'].tablePagination.currentPage)
+          }
         },
       })
     }
@@ -419,7 +427,7 @@ admin.article = {
       fun: fun,
       previewMode: 'both',
       resize: false,
-      typewriterMode: true
+      typewriterMode: true,
     })
 
     admin.editors.abstractEditor = new SoloEditor({
@@ -473,7 +481,7 @@ admin.article = {
     that._addDisabled()
     $.ajax({
       url: Label.servePath + '/console/article/unpublish/' +
-      admin.article.status.id,
+        admin.article.status.id,
       type: 'PUT',
       cache: false,
       success: function (result, textStatus) {
