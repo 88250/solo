@@ -58,7 +58,7 @@ public final class Option {
     public static final String ID_C_HLJS_THEME = "hljsTheme";
 
     /**
-     * Key of enable sync (push) GitHub. 导出文章到仓库 https://hacpai.com/article/1557238327458
+     * Key of enable backup public articles to HacPai. 备份公开文章到社区 https://hacpai.com/article/1557238327458
      */
     public static final String ID_C_SYNC_GITHUB = "syncGitHub";
 

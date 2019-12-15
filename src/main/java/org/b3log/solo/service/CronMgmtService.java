@@ -108,7 +108,7 @@ public class CronMgmtService {
 
         SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
             try {
-                exportService.exportGitHubRepo();
+                exportService.exportHacPai();
             } catch (final Exception e) {
                 LOGGER.log(Level.ERROR, "Executes cron failed", e);
             } finally {

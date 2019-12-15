@@ -259,10 +259,10 @@ public class ExportService {
     }
 
     /**
-     * Exports public articles to admin's GitHub repos. 博文定时同步 GitHub 仓库 https://hacpai.com/article/1557238327458
+     * Exports public articles to admin's HacPai account.
      */
-    public void exportGitHubRepo() {
-        LOGGER.log(Level.INFO, "Github repo syncing....");
+    public void exportHacPai() {
+        LOGGER.log(Level.INFO, "Backup public articles to HacPai....");
         try {
             final JSONObject preference = optionQueryService.getPreference();
             if (null == preference) {
@@ -384,11 +384,9 @@ public class ExportService {
                             "file", zipData).send();
             response.close();
             response.charset("UTF-8");
-            LOGGER.info("Github repo sync completed: " + response.bodyText());
+            LOGGER.info("Backup public articles to HacPai completed: " + response.bodyText());
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Exports articles to github repo failed", e);
-        } finally {
-            LOGGER.log(Level.INFO, "Github repo synced");
+            LOGGER.log(Level.ERROR, "Exports articles to github repo failed:" + e.getMessage());
         }
     }
 
