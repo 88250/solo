@@ -32,7 +32,9 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.Plugin;
 import org.b3log.latke.model.User;
 import org.b3log.latke.repository.*;
+import org.b3log.latke.repository.jdbc.util.Connections;
 import org.b3log.latke.service.annotation.Service;
+import org.b3log.latke.util.Execs;
 import org.b3log.latke.util.Strings;
 import org.b3log.solo.Server;
 import org.b3log.solo.model.*;
@@ -44,6 +46,11 @@ import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,7 +58,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.3, Nov 15, 2019
+ * @version 1.1.1.4, Dec 15, 2019
  * @since 2.5.0
  */
 @Service
@@ -163,6 +170,93 @@ public class ExportService {
      */
     @Inject
     private TagQueryService tagQueryService;
+
+    /**
+     * Exports SQL in zip bytes.
+     *
+     * @return data bytes, returns {@code null} if occurs exception
+     */
+    public byte[] exportSQL() {
+        final Latkes.RuntimeDatabase runtimeDatabase = Latkes.getRuntimeDatabase();
+        if (Latkes.RuntimeDatabase.H2 != runtimeDatabase && Latkes.RuntimeDatabase.MYSQL != runtimeDatabase) {
+            LOGGER.log(Level.ERROR, "Just support MySQL/H2 export now");
+
+            return null;
+        }
+
+        final String dbUser = Latkes.getLocalProperty("jdbc.username");
+        final String dbPwd = Latkes.getLocalProperty("jdbc.password");
+        final String dbURL = Latkes.getLocalProperty("jdbc.URL");
+        String sql = ""; // exported SQL script
+
+        if (Latkes.RuntimeDatabase.MYSQL == runtimeDatabase) {
+            String db = StringUtils.substringAfterLast(dbURL, "/");
+            db = StringUtils.substringBefore(db, "?");
+
+            try {
+                if (StringUtils.isNotBlank(dbPwd)) {
+                    sql = Execs.exec("mysqldump -u" + dbUser + " -p" + dbPwd + " --databases " + db, 60 * 1000 * 5);
+                } else {
+                    sql = Execs.exec("mysqldump -u" + dbUser + " --databases " + db, 60 * 1000 * 5);
+                }
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Export failed", e);
+
+                return null;
+            }
+        } else if (Latkes.RuntimeDatabase.H2 == runtimeDatabase) {
+            try (final Connection connection = Connections.getConnection();
+                 final Statement statement = connection.createStatement()) {
+                final StringBuilder sqlBuilder = new StringBuilder();
+                final ResultSet resultSet = statement.executeQuery("SCRIPT");
+                while (resultSet.next()) {
+                    final String stmt = resultSet.getString(1);
+                    sqlBuilder.append(stmt).append(Strings.LINE_SEPARATOR);
+                }
+                resultSet.close();
+
+                sql = sqlBuilder.toString();
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Export failed", e);
+
+                return null;
+            }
+        }
+
+        if (StringUtils.isBlank(sql)) {
+            LOGGER.log(Level.ERROR, "Export failed, executing export script returns empty");
+
+            return null;
+        }
+
+        final String tmpDir = System.getProperty("java.io.tmpdir");
+        final String date = DateFormatUtils.format(new Date(), "yyyyMMddHHmmss");
+        String localFilePath = tmpDir + File.separator + "solo-" + date + ".sql";
+        final File localFile = new File(localFilePath);
+
+        try {
+            final byte[] data = sql.getBytes("UTF-8");
+            try (final OutputStream output = new FileOutputStream(localFile)) {
+                IOUtils.write(data, output);
+            }
+
+            final File zipFile = ZipUtil.zip(localFile);
+            byte[] ret;
+            try (final FileInputStream inputStream = new FileInputStream(zipFile)) {
+                ret = IOUtils.toByteArray(inputStream);
+            }
+
+            // 导出 SQL 包后清理临时文件 https://github.com/b3log/solo/issues/12770
+            localFile.delete();
+            zipFile.delete();
+
+            return ret;
+        } catch (final Exception e) {
+            LOGGER.log(Level.ERROR, "Export failed", e);
+
+            return null;
+        }
+    }
 
     /**
      * Exports public articles to admin's GitHub repos. 博文定时同步 GitHub 仓库 https://hacpai.com/article/1557238327458
