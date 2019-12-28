@@ -26,7 +26,7 @@ import java.util.List;
  * {@link org.b3log.solo.util.Images} test case.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.0.0, Feb 14, 2018
+ * @version 1.0.0.1, Dec 28, 2019
  * @since 2.7.0
  */
 public final class ImagesTestCase {
@@ -37,7 +37,7 @@ public final class ImagesTestCase {
     @Test
     public void randImage() {
         final String url = Images.randImage();
-        Assert.assertEquals(url.length(), "https://img.hacpai.com/bing/20171104.jpg".length());
+        Assert.assertEquals(url.length(), Images.COMMUNITY_FILE_URL + "/bing/20171104.jpg".length());
     }
 
     /**
