@@ -41,7 +41,7 @@ $.extend(SoloEditor.prototype, {
    * @description 初始化编辑器
    */
   init: function () {
-    this.editor = new Vditor(this.conf.id, {
+    const options = {
       typewriterMode: this.conf.typewriterMode,
       cache: true,
       tab: '\t',
@@ -76,7 +76,26 @@ $.extend(SoloEditor.prototype, {
         enable: this.conf.resize,
       },
       lang: Label.localeString,
-    })
+    }
+
+    if ($(window).width() < 768) {
+      options.toolbar = [
+        'emoji',
+        'bold',
+        'italic',
+        'link',
+        'list',
+        'check',
+        'upload',
+        'wysiwyg',
+        'preview',
+        'fullscreen',
+        'help',
+      ]
+      options.resize.enable = false
+    }
+
+    this.editor = new Vditor(this.conf.id, options)
 
     if (typeof this.conf.fun === 'function') {
       this.conf.fun()
