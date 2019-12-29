@@ -20,7 +20,7 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.4.0.1, Aug 6, 2019
+ * @version 2.4.0.2, Dec 29, 2019
  */
 var Page = function (tips) {
   this.currentCommentId = ''
@@ -103,7 +103,7 @@ $.extend(Page.prototype, {
     if (!$('#soloEditorComment').hasClass('vditor')) {
       var that = this
       Util.addScript(
-        'https://cdn.jsdelivr.net/npm/vditor@1.10.0/dist/index.min.js',
+        'https://cdn.jsdelivr.net/npm/vditor@2.0.3/dist/index.min.js',
         'vditorScript')
       var toolbar = [
         'emoji',
@@ -111,44 +111,42 @@ $.extend(Page.prototype, {
         'bold',
         'italic',
         'strike',
-        '|',
-        'line',
-        'quote',
+        'link',
         '|',
         'list',
         'ordered-list',
         'check',
         '|',
+        'quote',
+        'line',
         'code',
         'inline-code',
+        'table',
         '|',
         'undo',
         'redo',
         '|',
-        'link',
-        'table',
-        '|',
+        'wysiwyg',
         'both',
         'preview',
         'format',
         '|',
-        'devtools',
         'fullscreen',
+        'devtools',
         'info',
         'help',
       ], resizeEnable = true
       if ($(window).width() < 768) {
         toolbar = [
           'emoji',
-          'line',
-          'quote',
-          'list',
-          'ordered-list',
-          'check',
+          'bold',
+          'italic',
           'link',
+          'list',
+          'check',
+          'wysiwyg',
           'preview',
-          'format',
-          'info',
+          'fullscreen',
           'help',
         ]
         resizeEnable = false

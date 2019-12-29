@@ -37,6 +37,6 @@
     "gulp-terser": "^1.2.0"
   },
   "dependencies": {
-    "vditor": "^1.10.0"
+    "vditor": "^2.0.3"
   }
 }
