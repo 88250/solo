@@ -48,7 +48,7 @@ import org.json.JSONObject;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/armstrong">ArmstrongCN</a>
- * @version 1.0.2.21, Dec 24, 2019
+ * @version 1.0.2.22, Dec 31, 2019
  * @since 0.3.1
  */
 @Singleton
@@ -90,13 +90,14 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
             }
 
             if (!originalArticle.optBoolean(Common.POST_TO_COMMUNITY)) {
-                LOGGER.log(Level.INFO, "Article [title={0}] push flag [postToCommunity] is false, ignored push to Rhy", title);
+                LOGGER.log(Level.INFO, "Article [title={0}] push flag [postToCommunity] is [false], ignored push to Rhy", title);
 
                 return;
             }
 
-            if (StringUtils.containsIgnoreCase(Latkes.getServePath(), ("localhost")) || Strings.isIPv4(Latkes.getServerHost()) || StringUtils.isNotBlank(Latkes.getServerPort())) {
-                LOGGER.log(Level.INFO, "Solo is running on a local server [" + Latkes.getServePath() + "], ignored push article [title=" + title + "] to Rhy");
+            if (StringUtils.containsIgnoreCase(Latkes.getServePath(), "localhost") || Strings.isIPv4(Latkes.getServerHost()) || StringUtils.isNotBlank(Latkes.getServerPort())) {
+                LOGGER.log(Level.INFO, "Solo is running on a local server [servePath=" + Latkes.getServePath() +
+                        ", serverHost=" + Latkes.getServerHost() + ", serverPort=" + Latkes.getServerPort() + "], ignored push article [title=" + title + "] to Rhy");
 
                 return;
             }
