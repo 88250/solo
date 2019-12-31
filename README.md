@@ -4,6 +4,10 @@
 * [Solo 从设计到实现](https://hacpai.com/article/1537690756242)
 * [Solo 皮肤开发指南](https://hacpai.com/article/1493814851007)
 
+欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
+
+![image-d3c00d78](https://user-images.githubusercontent.com/873584/71566370-0d312c00-2af2-11ea-8ea1-0d45d6f0db20.png)
+
 ![start](https://user-images.githubusercontent.com/970828/71305898-1e54ab80-2415-11ea-9d92-9896c5f94391.png)
 
 ![console](https://user-images.githubusercontent.com/970828/56886176-f210a700-6aa0-11e9-894f-75eda5cf3317.png)
