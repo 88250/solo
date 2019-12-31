@@ -184,8 +184,10 @@ $.extend(Page.prototype, {
         },
         lang: Label.langLabel,
         toolbar: toolbar,
+        after: () => {
+          vditor.focus()
+        }
       })
-      vditor.focus()
     }
 
     if ($editor.css('bottom') === '-300px' || commentId) {
@@ -198,7 +200,7 @@ $.extend(Page.prototype, {
 
       this.currentCommentId = commentId
       $('#soloEditorReplyTarget').text(name ? '@' + name : '')
-      if (typeof vditor !== 'undefined') {
+      if (typeof vditor !== 'undefined' && vditor.vditor.wysiwyg) {
         vditor.focus()
       }
     } else {
