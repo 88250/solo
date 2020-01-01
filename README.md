@@ -1,8 +1,8 @@
-* [Awesome Solo](https://github.com/88250/awesome-solo)
-* [从零开始安装 Solo 博客](https://hacpai.com/article/1565021959471)
+* [B3log 构思](https://hacpai.com/article/1546941897596)
 * [Solo 用户指南](https://hacpai.com/article/1492881378588)
 * [Solo 从设计到实现](https://hacpai.com/article/1537690756242)
 * [Solo 皮肤开发指南](https://hacpai.com/article/1493814851007)
+* [从零开始安装 Solo 博客](https://hacpai.com/article/1565021959471)
 
 欢迎关注 B3log 开源社区微信公众号 `B3log开源`：
 
