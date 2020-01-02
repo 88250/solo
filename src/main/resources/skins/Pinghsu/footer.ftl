@@ -62,8 +62,9 @@
             ${statistic.statisticPublishedBlogArticleCount}
             ${articleLabel}
             </a> &nbsp; &nbsp;
+            <#if commentable>
             ${statistic.statisticPublishedBlogCommentCount}
-            ${commentLabel} <br>
+            ${commentLabel}</#if> <br>
             ${statistic.statisticBlogViewCount} <span class="ft-gray">${viewLabel}</span> &nbsp; &nbsp;
             ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span> <br>
             &copy; ${year}

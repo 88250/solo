@@ -18,6 +18,7 @@
 
 -->
 <#macro comments commentList article>
+<#if commentable>
 <div class="comment__title">
     Responses
 </div>
@@ -30,4 +31,5 @@
         <#include 'common-comment.ftl'/>
     </#list>
 </ul>
+</#if>
 </#macro>

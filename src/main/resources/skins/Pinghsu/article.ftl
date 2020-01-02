@@ -63,8 +63,10 @@
                 in <a href="${servePath}/category/${article.category.categoryURI}">${article.category.categoryTitle}</a>
             </#if>
             with ${article.articleViewCount} views
+            <#if commentable>
             <#if article.articleCommentCount != 0>
                 and <a href="#comments">${article.articleCommentCount} comments</a>
+            </#if>
             </#if>
         </div>
         <div class="item__tags">
