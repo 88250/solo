@@ -60,11 +60,13 @@
                                     ${article.articleUpdateDate?string("yyyy-MM-dd")}
                                 </time>
                             </span>
+                        <#if commentable>
                         <span class="post-comments-count">
                                 &nbsp; | &nbsp;
                                 <a href="${servePath}${article.articlePermalink}#comments">
                                     ${article.articleCommentCount} ${cmtLabel}</a>
-                            </span>
+                        </span>
+                        </#if>
                         &nbsp; | &nbsp; ${viewsLabel}
                         ${article.articleViewCount}°C
                     </div>
