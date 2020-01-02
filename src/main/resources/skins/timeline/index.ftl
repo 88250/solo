@@ -91,6 +91,7 @@
                         <span class="ico-author ico" title="${authorLabel}">
                             <a rel="author" href="${servePath}/authors/${article.authorId}">${article.authorName}</a>
                         </span>
+                        <#if commentable>
                         <span class="ico-comment ico" title="${commentLabel}">
                             <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
                                 <#if article.articleCommentCount == 0>
@@ -100,6 +101,7 @@
                                 </#if>
                             </a>
                         </span>
+                        </#if>
                         <span class="ico-view ico" title="${viewLabel}">
                             <a rel="nofollow" href="${servePath}${article.articlePermalink}">
                                 ${article.articleViewCount}

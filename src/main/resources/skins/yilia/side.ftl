@@ -45,8 +45,10 @@
                 </li>
                 </#list>
                 <li>
+                    <#if commentable>
                     <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
                     &nbsp; &nbsp;
+                    </#if>
                     <a href="${servePath}/tags.html">${allTagsLabel}</a>
                     &nbsp; &nbsp;
                     <a href="${servePath}/archives.html">${archiveLabel}</a>
