@@ -128,10 +128,12 @@
                 ${statistic.statisticPublishedBlogArticleCount}
                 ${articleLabel}
                 </a>
+                <#if commentable>
                 <a href="${servePath}/dynamic.html" class="fn__flex-1 ft__center">
                 ${statistic.statisticPublishedBlogCommentCount}
                 ${commentLabel}
                 </a>
+                </#if>
             </div>
             <br/>
             <div class="fn__flex">

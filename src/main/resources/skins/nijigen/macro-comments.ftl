@@ -18,6 +18,7 @@
 
 -->
 <#macro comments commentList article>
+<#if commentable>
 <div class="comments__item">
     <div class="comments__meta comments__meta--only">${commentLabel}</div>
 </div>
@@ -39,5 +40,6 @@
         </div>
     </div>
 </div>
+</#if>
 </#if>
 </#macro>
