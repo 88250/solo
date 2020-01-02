@@ -18,6 +18,7 @@
 
 -->
 <#macro comments commentList article>
+<#if commentable>
 <div id="comments">
     <#list commentList as comment>
     <#include "common-comment.ftl"/>
@@ -30,5 +31,6 @@
 <div class="comment">
     <textarea rows="3" placeholder="${commentContentLabel}" id="comment"></textarea>
 </div>
+</#if>
 </#if>
 </#macro>

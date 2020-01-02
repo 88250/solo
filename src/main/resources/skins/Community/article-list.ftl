@@ -41,11 +41,13 @@
                         ${viewLabel} (${article.articleViewCount})
                     </a>
                 </li>
+                <#if commentable>
                 <li>
                     <a rel="nofollow" title="${commentLabel}" href="${servePath}${article.articlePermalink}#comments">
                         ${commentLabel} (${article.articleCommentCount})
                     </a>
                 </li>
+                </#if>
             </ul>
         </div>
         <div class="article-main">

@@ -21,7 +21,7 @@
     <div class="content">
 
         <h4>
-            ${noticeBoardLabel}
+            ${siteLinkLabel}
         </h4>
         <div class="arrow-right"></div>
         <div class="notice">
