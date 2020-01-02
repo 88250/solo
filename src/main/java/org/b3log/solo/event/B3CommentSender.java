@@ -27,7 +27,6 @@ import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.Server;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Comment;
@@ -43,7 +42,7 @@ import org.json.JSONObject;
  * This listener is responsible for sending comment to B3log Rhythm. Sees <a href="https://hacpai.com/b3log">B3log 构思</a> for more details.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.0.1.6, Mar 27, 2019
+ * @version 1.0.1.7, Jan 1, 2020
  * @since 0.5.5
  */
 @Singleton
@@ -88,9 +87,7 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
-            if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServerHost())) {
-                LOGGER.log(Level.TRACE, "Solo runs on local server, so should not send this comment[id={0}] to Symphony",
-                        originalComment.getString(Keys.OBJECT_ID));
+            if (B3ArticleSender.isLocalServer()) {
                 return;
             }
 
