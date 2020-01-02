@@ -27,9 +27,11 @@
                     ${article.articleUpdateDate?string("yy-MM-dd HH:mm")}
                 </div>
                 <div class="fn-right">
+                    <#if commentable>
                     <a rel="nofollow" data-ico="&#xe14e;" href="${servePath}${article.articlePermalink}#comments">
                         ${article.articleCommentCount}
                     </a>
+                    </#if>
                     <a rel="nofollow" data-ico="&#xe185;" href="${servePath}${article.articlePermalink}">
                         ${article.articleViewCount}
                     </a>

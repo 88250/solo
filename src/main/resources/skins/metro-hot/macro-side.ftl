@@ -41,8 +41,10 @@
                     ${statistic.statisticBlogViewCount}<br/>
                     ${articleCount1Label}
                     ${statistic.statisticPublishedBlogArticleCount}<br/>
+                    <#if commentable>
                     ${commentCount1Label}
                     ${statistic.statisticPublishedBlogCommentCount}<br/>
+                    </#if>
                 </div>
             </div>
         </#if>

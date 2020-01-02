@@ -59,9 +59,11 @@
                         </#list>
                     </div>
                     <div class="article-info">
+                        <#if commentable>
                         <a rel="nofollow" data-ico="&#xe14e;" href="${servePath}${article.articlePermalink}#comments">
                             ${article.articleCommentCount}
                         </a>
+                        </#if>
                         <a rel="nofollow" data-ico="&#xe185;" href="${servePath}${article.articlePermalink}">
                             ${article.articleViewCount}
                         </a>
