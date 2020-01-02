@@ -54,7 +54,9 @@
 
                 <div class="side__meta">
                     ${statistic.statisticPublishedBlogArticleCount} ${articleLabel} <br>
+                    <#if commentable>
                     ${statistic.statisticPublishedBlogCommentCount} ${commentLabel} <br>
+                    </#if>
                     ${statistic.statisticBlogViewCount} ${viewLabel} <br>
                     ${onlineVisitorCnt} ${onlineVisitorLabel}
                 </div>

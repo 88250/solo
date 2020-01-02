@@ -54,7 +54,7 @@
                         ${articleTag}
                     </a> &nbsp;
                 </#list>
-                <#if article.articleCommentCount != 0>
+                <#if article.articleCommentCount != 0 && commentable>
                     &nbsp;·&nbsp;
                     <a class="item__tag" href="${servePath}${article.articlePermalink}#comments">
                         ${article.articleCommentCount} ${commentLabel}

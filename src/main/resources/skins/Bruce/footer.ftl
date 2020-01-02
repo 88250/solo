@@ -25,7 +25,7 @@
     <div>
         Theme ${skinDirName}
         by
-        <a rel="friend" href="http://88250.b3log.org" target="_blank">88250</a>
+        <a rel="friend" href="https://88250.b3log.org" target="_blank">88250</a>
     </div>
     <div><em>All rights reserved.</em></div>
 </div>
