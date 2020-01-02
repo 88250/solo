@@ -68,7 +68,7 @@
                    class="vditor-tooltipped vditor-tooltipped__n item__avatar">
                     <img src="${article.authorThumbnailURL}" />
                 </a>
-                <#if article.articleCommentCount != 0>
+                <#if article.articleCommentCount != 0 && commentable>
                 <a class="item__meta" href="${servePath}${article.articlePermalink}#comments">
                     ${article.articleCommentCount} ${commentLabel}
                 </a>
