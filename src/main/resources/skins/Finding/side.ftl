@@ -73,10 +73,12 @@
         ${articleCount1Label}
         ${statistic.statisticPublishedBlogArticleCount}
     </span><br/>
+    <#if commentable>
     <span>
         ${commentCount1Label}
         ${statistic.statisticPublishedBlogCommentCount}
     </span> &nbsp; &nbsp;
+    </#if>
     <span>
         ${onlineVisitor1Label}
         ${onlineVisitorCnt}
