@@ -87,7 +87,7 @@ public class B3CommentSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
-            if (B3ArticleSender.isLocalServer()) {
+            if (Solos.isLocalServer()) {
                 return;
             }
 

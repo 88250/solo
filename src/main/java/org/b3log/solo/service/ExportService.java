@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
  * Export service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.1.1.4, Dec 15, 2019
+ * @version 1.1.1.5, Jan 2, 2020
  * @since 2.5.0
  */
 @Service
@@ -273,11 +273,14 @@ public class ExportService {
                 return;
             }
 
-            if (Latkes.getServePath().contains("localhost") || Strings.isIPv4(Latkes.getServerHost())) {
+            if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode()) {
                 return;
             }
 
-            if (Latkes.RuntimeMode.PRODUCTION != Latkes.getRuntimeMode()) {
+            if (Solos.isLocalServer()) {
+                LOGGER.log(Level.INFO, "Solo is running on the local server [servePath=" + Latkes.getServePath() +
+                        ", serverHost=" + Latkes.getServerHost() + ", serverPort=" + Latkes.getServerPort() + "], ignored backup articles to HacPai");
+
                 return;
             }
 

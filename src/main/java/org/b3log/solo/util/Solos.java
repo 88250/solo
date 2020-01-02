@@ -40,13 +40,15 @@ import org.b3log.solo.model.UserExt;
 import org.b3log.solo.repository.UserRepository;
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * Solo utilities.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.0.4, Nov 18, 2019
+ * @version 1.9.0.5, Jan 2, 2020
  * @since 2.8.0
  */
 public final class Solos {
@@ -113,6 +115,16 @@ public final class Solos {
      */
     public static JSONObject newSucc() {
         return new JSONObject().put(Keys.CODE, 0).put(Keys.MSG, "");
+    }
+
+    /**
+     * Checks whether Solo is running on the local server.
+     *
+     * @return {@code true} if it is, returns {@code false} otherwise
+     */
+    public static boolean isLocalServer() {
+        return StringUtils.containsIgnoreCase(Latkes.getServePath(), "localhost") || Strings.isIPv4(Latkes.getServerHost()) ||
+                (StringUtils.isNotBlank(Latkes.getServerPort())) && !"80".equals(Latkes.getServerPort()) && !"443".equals(Latkes.getServerPort());
     }
 
     /**

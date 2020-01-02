@@ -29,7 +29,6 @@ import org.b3log.latke.ioc.Singleton;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.model.User;
-import org.b3log.latke.util.Strings;
 import org.b3log.solo.Server;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Common;
@@ -95,8 +94,8 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
                 return;
             }
 
-            if (isLocalServer()) {
-                LOGGER.log(Level.INFO, "Solo is running on a local server [servePath=" + Latkes.getServePath() +
+            if (Solos.isLocalServer()) {
+                LOGGER.log(Level.INFO, "Solo is running on the local server [servePath=" + Latkes.getServePath() +
                         ", serverHost=" + Latkes.getServerHost() + ", serverPort=" + Latkes.getServerPort() + "], ignored push article [title=" + title + "] to Rhy");
 
                 return;
@@ -132,11 +131,6 @@ public class B3ArticleSender extends AbstractEventListener<JSONObject> {
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Pushes an article to Rhy failed: " + e.getMessage());
         }
-    }
-
-    static boolean isLocalServer() {
-        return StringUtils.containsIgnoreCase(Latkes.getServePath(), "localhost") || Strings.isIPv4(Latkes.getServerHost()) ||
-                (StringUtils.isNotBlank(Latkes.getServerPort())) && !"80".equals(Latkes.getServerPort()) && !"443".equals(Latkes.getServerPort());
     }
 
     /**
