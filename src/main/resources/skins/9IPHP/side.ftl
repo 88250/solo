@@ -81,7 +81,7 @@
             </main>
         </div>
 
-        <#if 0 != mostCommentArticles?size && commentable>
+        <#if 0 != mostCommentArticles?size>
         <div class="module">
             <header><h2>${mostCommentArticlesLabel}</h2></header>
             <main class="list">

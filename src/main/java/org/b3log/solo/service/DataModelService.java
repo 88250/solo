@@ -462,6 +462,12 @@ public class DataModelService {
      * @throws ServiceException service exception
      */
     public void fillMostCommentArticles(final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
+        if (!preference.optBoolean(Option.ID_C_COMMENTABLE)) {
+            dataModel.put(Common.MOST_COMMENT_ARTICLES, Collections.emptyList());
+
+            return;
+        }
+
         Stopwatchs.start("Fill Most CMMTs Articles");
 
         try {
@@ -509,6 +515,12 @@ public class DataModelService {
      * @throws ServiceException service exception
      */
     public void fillRecentComments(final Map<String, Object> dataModel, final JSONObject preference) throws ServiceException {
+        if (!preference.optBoolean(Option.ID_C_COMMENTABLE)) {
+            dataModel.put(Common.RECENT_COMMENTS, Collections.emptyList());
+
+            return;
+        }
+
         Stopwatchs.start("Fill Recent Comments");
         try {
             LOGGER.debug("Filling recent comments....");

@@ -37,12 +37,14 @@
                     ${statistic.statisticPublishedBlogArticleCount}
                     </span>
                 </li>
+                <#if commentable>
                 <li>
                 ${commentCount1Label}
                     <span class='error-msg'>
                     ${statistic.statisticPublishedBlogCommentCount}
                     </span>
                 </li>
+                </#if>
             </ul>
         </dd>
     </dl>

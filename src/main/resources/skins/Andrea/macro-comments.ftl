@@ -18,6 +18,7 @@
 
 -->
 <#macro comments commentList article>
+<#if commentable>
 <h2 class="comment-label">${commentLabel}</h2>
 <div id="comments">
     <#list commentList as comment>
@@ -28,5 +29,6 @@
 <div class="comment-form">
     <textarea rows="3" style="width: 100%" placeholder="${postCommentsLabel}" id="comment"></textarea>
 </div>
+</#if>
 </#if>
 </#macro>
