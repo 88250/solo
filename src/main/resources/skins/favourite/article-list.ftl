@@ -67,10 +67,12 @@
             </span>
             </#list>
         </div>
+        <#if commentable>
         <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments" class="left">
             <span class="left articles-commentIcon" title="${commentLabel}"></span>
             <span class="count">${article.articleCommentCount}</span>
         </a>
+        </#if>
         <div class="right more">
             <a href="${servePath}${article.articlePermalink}" class="right">
                 ${readmoreLabel}
