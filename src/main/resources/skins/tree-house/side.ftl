@@ -31,12 +31,14 @@
                 ${statistic.statisticPublishedBlogArticleCount}
             </span>
         </div>
+        <#if commentable>
         <div>
             ${commentCount1Label}
             <span class='error-msg'>
                 ${statistic.statisticPublishedBlogCommentCount}
             </span>
         </div>
+        </#if>
     </div>
     <#if "" != noticeBoard>
     <div class="block notice">

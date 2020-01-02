@@ -28,8 +28,10 @@
             ${viewCount1Label}${statistic.statisticBlogViewCount}
             &nbsp;
             ${articleCount1Label}${statistic.statisticPublishedBlogArticleCount}
+            <#if commentable>
             &nbsp;
             ${commentCount1Label}${statistic.statisticPublishedBlogCommentCount}
+            </#if>
             &nbsp;
             ${onlineVisitor1Label}${onlineVisitorCnt}
         </span>

@@ -89,9 +89,11 @@
                                         <span class="article-create-date left">
                                             ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}&nbsp;&nbsp;
                                         </span>
+                                        <#if commentable>
                                         <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments" class="left">
                                             &nbsp;${article.articleCommentCount} ${commentLabel}&nbsp;&nbsp;
                                         </a>
+                                        </#if>
                                         <a rel="nofollow" href="${servePath}${article.articlePermalink}" class="left">
                                             &nbsp;&nbsp;${article.articleViewCount} ${viewLabel}&nbsp;&nbsp;
                                         </a>
