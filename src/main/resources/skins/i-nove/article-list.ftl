@@ -47,12 +47,14 @@
                 ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm:ss")}
             </span>
         </div>
+        <#if commentable>
         <div class="right">
             <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments" class="left">
                 <span class="left articles-commentIcon" title="${commentLabel}"></span>
                 ${article.articleCommentCount}
             </a>
         </div>
+        </#if>
         <div class="clear"></div>
     </div>
     <div class="article-abstract vditor-reset">
