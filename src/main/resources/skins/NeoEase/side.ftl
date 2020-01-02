@@ -34,7 +34,7 @@
      </div>
 
      <#else>
-         <#if 0 != recentComments?size>
+         <#if 0 != recentComments?size && commentable>
     <div>
         <h4>${recentCommentsLabel}</h4>
         <ul class="recent-comments">
@@ -67,7 +67,7 @@
         </ul>
     </div>
          </#if>
-         <#if 0 != mostCommentArticles?size>
+         <#if 0 != mostCommentArticles?size && commentable>
     <div>
         <h4>${mostCommentArticlesLabel}</h4>
         <ul class="side-li">

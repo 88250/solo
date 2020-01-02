@@ -64,11 +64,13 @@
                 <span class="tip">
                     ${statistic.statisticPublishedBlogArticleCount}
                 </span>
+                <#if commentable>
                 &nbsp;&nbsp;
                 ${commentCount1Label}
                 <span class="tip">
                     ${statistic.statisticPublishedBlogCommentCount}
                 </span>
+                </#if>
             </div>
         </div>
         <div class="clear"></div>

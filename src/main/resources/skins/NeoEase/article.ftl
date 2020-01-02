@@ -60,9 +60,11 @@
                             </span>
                         </div>
                         <div class="right article-element">
+                            <#if commentable>
                             <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
                                 ${article.articleCommentCount}&nbsp;&nbsp;${commentLabel}
                             </a>&nbsp;&nbsp;
+                            </#if>
                             <a rel="nofollow" href="${servePath}${article.articlePermalink}">
                                 ${article.articleViewCount}&nbsp;&nbsp;${viewLabel}
                             </a>

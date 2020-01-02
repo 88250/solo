@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.11, Sep 17, 2019
+ * @version 1.7.0.12, Jan 2, 2020
  * @since 0.3.1
  */
 @Service
@@ -603,6 +603,8 @@ public class DataModelService {
             hljsTheme = Option.DefaultPreference.DEFAULT_HLJS_THEME;
         }
         dataModel.put(Option.ID_C_HLJS_THEME, hljsTheme);
+
+        dataModel.put(Common.COMMENTABLE, preference.optBoolean(Option.ID_C_COMMENTABLE));
     }
 
     /**

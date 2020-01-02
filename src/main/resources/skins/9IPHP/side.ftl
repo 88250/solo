@@ -70,16 +70,18 @@
                     <a href="${servePath}/archives.html">
                         ${statistic.statisticPublishedBlogArticleCount}
                         <span class="ft-gray">${articleLabel}</span></a><br/>
+                    <#if commentable>
                     <a href="${servePath}/dynamic.html">
                         ${statistic.statisticPublishedBlogCommentCount}
                         <span class="ft-gray">${commentLabel}</span></a><br/>
+                    </#if>
                     ${statistic.statisticBlogViewCount} <span class="ft-gray">${viewLabel}</span><br/>
                     ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span>
                 </div>
             </main>
         </div>
 
-        <#if 0 != mostCommentArticles?size>
+        <#if 0 != mostCommentArticles?size && commentable>
         <div class="module">
             <header><h2>${mostCommentArticlesLabel}</h2></header>
             <main class="list">

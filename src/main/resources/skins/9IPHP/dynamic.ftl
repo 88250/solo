@@ -30,7 +30,7 @@
         <div class="wrapper">
             <div class="main-wrap">
                 <main class="post">
-                    <#if 0 < recentComments?size>
+                    <#if 0 < recentComments?size && commentable>
                         <ul class="comments" id="comments">
                             <#list recentComments as comment>
                                 <li id="${comment.oId}">
