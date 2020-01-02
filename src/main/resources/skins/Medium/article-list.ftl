@@ -55,9 +55,11 @@
                 <time>
                 ${article.articleUpdateDate?string("yyyy-MM-dd")}
                 </time> &nbsp;•&nbsp;
+                <#if commentable>
                 <a href="${servePath}${article.articlePermalink}#comments" class="ft-gray">
                     ${article.articleCommentCount} ${commentLabel}
                 </a> &nbsp;•&nbsp;
+                </#if>
                 <a href="${servePath}${article.articlePermalink}" class="ft-gray">
                 ${article.articleViewCount} ${viewLabel}
                 </a>

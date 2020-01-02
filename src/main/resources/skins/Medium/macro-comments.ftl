@@ -18,6 +18,7 @@
 
 -->
 <#macro comments commentList article>
+<#if commentable>
 <div class="article__comment">
     <div class="comment__title">${commentLabel}</div>
     <div id="comments">
@@ -30,4 +31,5 @@
                   class="comment__textarea"  id="comment"></textarea>
     </#if>
 </div>
+</#if>
 </#macro>

@@ -31,7 +31,7 @@
         </div>
         <div class="fn-clear">
         ${statistic.statisticPublishedBlogArticleCount} ${articleLabel} &nbsp;
-        ${statistic.statisticPublishedBlogCommentCount} ${commentLabel} &nbsp;
+        <#if commentable>${statistic.statisticPublishedBlogCommentCount} ${commentLabel} &nbsp;</#if>
         ${statistic.statisticBlogViewCount} ${viewLabel} &nbsp;
         ${onlineVisitorCnt} ${onlineVisitorLabel}
             <div class="fn-right">
