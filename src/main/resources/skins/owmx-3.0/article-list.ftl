@@ -46,11 +46,12 @@
         </#if> ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm")} | ${viewCount1Label} <a rel="nofollow" href="${servePath}${article.articlePermalink}">
             <span class="left article-browserIcon" title="${viewLabel}"></span>
             ${article.articleViewCount}
-        </a> | ${commentCount1Label}
+        </a><#if commentable> | ${commentCount1Label}
         <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
             <span class="left articles-commentIcon" title="${commentLabel}"></span>
 	        ${article.articleCommentCount}
         </a>
+        </#if>
     </p>
     <p>
         ${tags1Label}
