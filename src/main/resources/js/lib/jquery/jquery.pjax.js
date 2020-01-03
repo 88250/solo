@@ -269,6 +269,7 @@
 				title += pjax.options.titleSuffix;
 			}
 		}
+		var activeTitle = document.title
 		document.title = title;
 		pjax.state = {
 			container : pjax.options.container,
@@ -286,8 +287,9 @@
 		if (pjax.options.push) {
 			if (!pjax.active) {
 				history.replaceState($.extend({}, pjax.state, {
-					url : null
-				}), document.title);
+					url : null,
+					title : activeTitle,
+				}), activeTitle);
 				pjax.active = true;
 			}
 			history.pushState(pjax.state, document.title, pjax.options.oldUrl);
@@ -310,6 +312,7 @@
 		if(options.hasOwnProperty('data')){
 			pjax.defaultOptions.data=options.data;
 		}
+		pjax.defaultOptions.title = ''
 		options = $.extend(true, pjax.defaultOptions, options);
 		var cache, container = $(options.container);
 		options.oldUrl = options.url;
