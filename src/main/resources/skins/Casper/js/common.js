@@ -30,13 +30,7 @@ var Skin = {
   init: function () {
     Util.initPjax()
   },
-  initArticle: function () {
-    page.share()
-
-    var $articleTocs = $('.vditor-reset [id^=b3_solo_h]')
-    var $articleToc = $('.article__toc')
-    var $articleProgress = $('.article__progress')
-
+  _positionToc: function ($articleToc) {
     if ($articleToc.length === 1) {
       if ($(window).width() > 876) {
         $('.post__toc').
@@ -48,6 +42,15 @@ var Skin = {
         })
       }
     }
+  },
+  initArticle: function () {
+    page.share()
+
+    var $articleTocs = $('.vditor-reset [id^=b3_solo_h]')
+    var $articleToc = $('.article__toc')
+    var $articleProgress = $('.article__progress')
+
+    Skin._positionToc($articleToc)
 
     $articleToc.find('a').click(function (event) {
       var id = $(this).attr('href')
@@ -114,6 +117,10 @@ var Skin = {
     })
 
     $(window).scroll()
+
+    $(window).resize(function () {
+      Skin._positionToc($articleToc)
+    })
   },
 }
 Skin.init()
