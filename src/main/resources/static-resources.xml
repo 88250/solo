@@ -20,7 +20,7 @@
 -->
 <!--
     Description: Static resources definition.
-    Version: 2.8.0.62, Oct 2, 2019
+    Version: 2.8.0.63, Jan 3, 2020
     Author: Liang Ding
     Author: Liyuan Li
 -->
@@ -102,8 +102,5 @@
     <include path="/plugins/**/*.moc"/>
     <include path="/plugins/**/*.mtn"/>
     <include path="/plugins/**/*.ogg"/>
-
-    <include path="/CHANGE_LOGS.html"/>
-    <include path="/LICENSE.txt"/>
 
 </static-files>
