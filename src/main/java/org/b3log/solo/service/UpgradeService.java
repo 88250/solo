@@ -30,7 +30,7 @@ import org.json.JSONObject;
  * Upgrade service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.2.1.13, Nov 11, 2019
+ * @version 1.2.1.14, Jan 3, 2020
  * @since 1.2.0
  */
 @Service
@@ -93,6 +93,8 @@ public class UpgradeService {
                     V365_366.perform();
                 case "3.6.6":
                     V366_367.perform();
+                case "3.6.7":
+                    V367_368.perform();
 
                     break;
                 default:
@@ -100,8 +102,7 @@ public class UpgradeService {
                     System.exit(-1);
             }
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Upgrade failed, please contact the Solo developers or reports this "
-                    + "issue: https://github.com/88250/solo/issues/new", e);
+            LOGGER.log(Level.ERROR, "Upgrade failed, please contact the Solo developers or reports this issue: https://github.com/88250/solo/issues/new", e);
             System.exit(-1);
         }
     }

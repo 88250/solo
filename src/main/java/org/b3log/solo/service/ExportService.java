@@ -389,7 +389,7 @@ public class ExportService {
             response.charset("UTF-8");
             LOGGER.info("Backup public articles to HacPai completed: " + response.bodyText());
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Exports articles to github repo failed:" + e.getMessage());
+            LOGGER.log(Level.ERROR, "Exports articles to HacPai failed:" + e.getMessage());
         }
     }
 
