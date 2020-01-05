@@ -28,7 +28,7 @@
                 <li>
                 ${viewCount1Label}
                     <span class='error-msg'>
-                    ${statistic.statisticBlogViewCount}
+                    <span data-uvstaturl="${servePath}">0</span>
                     </span>
                 </li>
                 <li>

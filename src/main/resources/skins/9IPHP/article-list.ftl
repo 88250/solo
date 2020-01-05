@@ -58,7 +58,7 @@
                 &nbsp; | &nbsp;
                 <span class="vditor-tooltipped vditor-tooltipped__n" aria-label="${viewCountLabel}">
                     <i class="icon-views"></i>
-                    ${article.articleViewCount} ${viewLabel}
+                    <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
                 </span>
             </div>
         </header>

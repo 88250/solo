@@ -69,7 +69,7 @@
     </div>
     <span>
         ${viewCount1Label}
-        ${statistic.statisticBlogViewCount}
+        <span data-uvstaturl="${servePath}">0</span>
     </span> &nbsp; &nbsp;
     <span>
         ${articleCount1Label}
