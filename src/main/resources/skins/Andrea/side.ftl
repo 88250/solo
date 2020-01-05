@@ -112,7 +112,7 @@
                         <li>
                             <a rel="nofollow" title="${article.articleTitle}"
                                href="${servePath}${article.articlePermalink}">
-                                <sup>[${article.articleViewCount}]</sup>
+                                <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>]</sup>
                                 ${article.articleTitle}
                             </a>
                         </li>
