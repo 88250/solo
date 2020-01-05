@@ -20,15 +20,27 @@
  *
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.9.4.0, Sep 23, 2019
+ * @version 2.0.0.0, Jan 5, 2020
  */
 
-// import Uvstat from 'uvstat'
 /**
  * @description Util
  * @static
  */
 var Util = {
+  /**
+   * 初始化浏览数
+   */
+  initViewCnt: function () {
+    const uvstat = new Uvstat()
+    uvstat.setStat()
+    uvstat.renderStat()
+  },
+  /**
+   * 是否为文章页面
+   * @param href url 地址
+   * @returns {boolean}
+   */
   isArticlePage: function (href) {
     var isArticle = true
     if (href.indexOf(Label.servePath + '/tags/') > -1) {
@@ -265,6 +277,7 @@ var Util = {
     Util.initSW()
     Util.previewImg()
     Util.initDebugInfo()
+    Util.initViewCnt()
   },
   /**
    * 调试区域文案

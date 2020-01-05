@@ -43,8 +43,10 @@
         ${updateDateLabel}:
         <#else>
         ${createDateLabel}:
-        </#if> ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm")} | ${viewCount1Label} <a rel="nofollow" href="${servePath}${article.articlePermalink}">
-            <span class="left article-browserIcon" title="${viewLabel}"></span>
+        </#if> ${article.articleUpdateDate?string("yyyy-MM-dd HH:mm")} |
+        ${viewCount1Label}
+        <a rel="nofollow" href="${servePath}${article.articlePermalink}"
+           data-uvstaturl="${servePath}${article.articlePermalink}">
             ${article.articleViewCount}
         </a><#if commentable> | ${commentCount1Label}
         <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">
