@@ -29,7 +29,6 @@ by <a rel="friend" href="http://vanessa.b3log.org" target="_blank">Vanessa</a>.
 <script type="text/javascript">
     $(document).ready(function () {
         Util.setTopBar()
-        Util.replaceSideEm($("#recentComments li a"));
     });
 </script>
 ${plugins}

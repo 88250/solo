@@ -29,7 +29,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         Util.setTopBar()
-        Util.replaceSideEm($(".side-comment").parent());
     });
 </script>
 ${plugins}

@@ -31,7 +31,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         Util.setTopBar()
-        Util.replaceSideEm($(".side-navi .navi-comments li .side-comment"));
 
         // set selected navi
         $("#header-navi li").each(function (i) {

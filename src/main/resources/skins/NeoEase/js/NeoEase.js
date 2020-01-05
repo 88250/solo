@@ -163,7 +163,6 @@ $(document).ready(function () {
   })
 
   Util.setTopBar()
-  Util.replaceSideEm($('.recent-comments-content'))
   Util.buildTags('tagsSide')
 
   // recent comments

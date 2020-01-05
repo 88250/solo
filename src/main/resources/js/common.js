@@ -23,6 +23,7 @@
  * @version 1.9.4.0, Sep 23, 2019
  */
 
+// import Uvstat from 'uvstat'
 /**
  * @description Util
  * @static
@@ -192,24 +193,21 @@ var Util = {
    */
   killIE: function (ieVersion) {
     var addKillPanel = function () {
-      if (Cookie.readCookie('showKill') === '') {
-        try {
-          var left = ($(window).width() - 781) / 2,
-            top1 = ($(window).height() - 680) / 2
-          var killIEHTML = '<div style=\'display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110\'></div>'
-            + '<iframe style=\'left:' + left + 'px;z-index:120;top: ' + top1 +
-            'px; position: fixed; border: 0px none; width: 781px; height: 680px;\' src=\'' +
-            Label.servePath + '/kill-browser\'></iframe>'
-          $('body').append(killIEHTML)
-        } catch (e) {
-          var left = 10,
-            top1 = 0
-          var killIEHTML = '<div style=\'display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110\'></div>'
-            + '<iframe style=\'left:' + left + 'px;z-index:120;top: ' + top1 +
-            'px; position: fixed; border: 0px none; width: 781px; height: 680px;\' src=\'' +
-            Label.servePath + '/kill-browser\'></iframe>'
-          document.body.innerHTML = document.body.innerHTML + killIEHTML
-        }
+      try {
+        var left = ($(window).width() - 781) / 2,
+          top1 = ($(window).height() - 680) / 2
+        var killIEHTML = '<div class="killIEIframe" style=\'display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110\'></div>'
+          + '<iframe class="killIEIframe" style=\'left:' + left + 'px;z-index:120;top: ' + top1 +
+          'px; position: fixed; border: 0px none; width: 781px; height: 680px;\' src=\'' +
+          Label.servePath + '/kill-browser\'></iframe>'
+        $('body').append(killIEHTML)
+      } catch (e) {
+        var left = 10, top1 = 0
+        var killIEHTML = '<div class="killIEIframe" style=\'display: block; height: 100%; width: 100%; position: fixed; background-color: rgb(0, 0, 0); opacity: 0.6;filter: alpha(opacity=60); top: 0px;z-index:110\'></div>'
+          + '<iframe class="killIEIframe" style=\'left:' + left + 'px;z-index:120;top: ' + top1 +
+          'px; position: fixed; border: 0px none; width: 781px; height: 680px;\' src=\'' +
+          Label.servePath + '/kill-browser\'></iframe>'
+        document.body.innerHTML = document.body.innerHTML + killIEHTML
       }
     }
 
@@ -222,16 +220,6 @@ var Util = {
         addKillPanel()
       }
     }
-  },
-  /**
-   * @description 切换到手机版
-   * @param {String} skin 切换前的皮肤名称
-   */
-  switchMobile: function (skin) {
-    Cookie.createCookie('btouch_switch_toggle', skin, 365)
-    setTimeout(function () {
-      location.reload()
-    }, 1250)
   },
   /**
    * @description topbar 相关事件
@@ -296,16 +284,6 @@ var Util = {
     }
   },
   /**
-   * @description 替换侧边栏表情为图片
-   * @param {Dom} comments 评论内容元素
-   */
-  replaceSideEm: function (comments) {
-    for (var i = 0; i < comments.length; i++) {
-      var $comment = $(comments[i])
-      $comment.html($comment.html())
-    }
-  },
-  /**
    * @description 根据 tags，穿件云效果
    * @param {String} [id] tags 根元素 id，默认为 tags
    */
@@ -335,84 +313,4 @@ var Util = {
       return valA.localeCompare(valB)
     }))
   },
-  /**
-   * @description 时间戳转化为时间格式
-   * @param {String} time 时间
-   * @param {String} format 格式化后日期格式
-   * @returns {String} 格式化后的时间
-   */
-  toDate: function (time, format) {
-    var dateTime = new Date(time)
-    var o = {
-      'M+': dateTime.getMonth() + 1, //month
-      'd+': dateTime.getDate(), //day
-      'H+': dateTime.getHours(), //hour
-      'm+': dateTime.getMinutes(), //minute
-      's+': dateTime.getSeconds(), //second
-      'q+': Math.floor((dateTime.getMonth() + 3) / 3), //quarter
-      'S': dateTime.getMilliseconds(), //millisecond
-    }
-
-    if (/(y+)/.test(format)) {
-      format = format.replace(RegExp.$1,
-        (dateTime.getFullYear() + '').substr(4 - RegExp.$1.length))
-    }
-
-    for (var k in o) {
-      if (new RegExp('(' + k + ')').test(format)) {
-        format = format.replace(RegExp.$1,
-          RegExp.$1.length == 1 ? o[k] : ('00' + o[k]).substr(
-            ('' + o[k]).length))
-      }
-    }
-    return format
-  },
-}
-if (!Cookie) {
-  /**
-   * @description Cookie 相关操作
-   * @static
-   */
-  var Cookie = {
-    /**
-     * @description 读取 cookie
-     * @param {String} name cookie key
-     * @returns {String} 对应 key 的值，如 key 不存在则返回 ""
-     */
-    readCookie: function (name) {
-      var nameEQ = name + '='
-      var ca = document.cookie.split(';')
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i]
-        while (c.charAt(0) == ' ')
-          c = c.substring(1, c.length)
-        if (c.indexOf(nameEQ) == 0)
-          return decodeURIComponent(c.substring(nameEQ.length, c.length))
-      }
-      return ''
-    },
-    /**
-     * @description 清除 Cookie
-     * @param {String} name 清除 key 为 name 的该条 Cookie
-     */
-    eraseCookie: function (name) {
-      this.createCookie(name, '', -1)
-    },
-    /**
-     * @description 创建 Cookie
-     * @param {String} name 每条 Cookie 唯一的 key
-     * @param {String} value 每条 Cookie 对应的值，将被 UTF-8 编码
-     * @param {Int} days Cookie 保存时间
-     */
-    createCookie: function (name, value, days) {
-      var expires = ''
-      if (days) {
-        var date = new Date()
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000))
-        expires = '; expires=' + date.toGMTString()
-      }
-      document.cookie = name + '=' + encodeURIComponent(value) + expires +
-        '; path=/'
-    },
-  }
 }

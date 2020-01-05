@@ -24,6 +24,38 @@
 var timeline = {
     _COLHA: 0,
     _COLHB: 20,
+    /**
+     * @description 时间戳转化为时间格式
+     * @param {String} time 时间
+     * @param {String} format 格式化后日期格式
+     * @returns {String} 格式化后的时间
+     */
+    toDate: function (time, format) {
+        var dateTime = new Date(time)
+        var o = {
+            'M+': dateTime.getMonth() + 1, //month
+            'd+': dateTime.getDate(), //day
+            'H+': dateTime.getHours(), //hour
+            'm+': dateTime.getMinutes(), //minute
+            's+': dateTime.getSeconds(), //second
+            'q+': Math.floor((dateTime.getMonth() + 3) / 3), //quarter
+            'S': dateTime.getMilliseconds(), //millisecond
+        }
+
+        if (/(y+)/.test(format)) {
+            format = format.replace(RegExp.$1,
+              (dateTime.getFullYear() + '').substr(4 - RegExp.$1.length))
+        }
+
+        for (var k in o) {
+            if (new RegExp('(' + k + ')').test(format)) {
+                format = format.replace(RegExp.$1,
+                  RegExp.$1.length == 1 ? o[k] : ('00' + o[k]).substr(
+                    ('' + o[k]).length))
+            }
+        }
+        return format
+    },
     _initArticleList: function() {
         var $articles = $(".articles");
         if ($articles.length === 0 || $(".articles > .fn-clear").length > 0) {
@@ -87,7 +119,7 @@ var timeline = {
             }
         });
 
-        // 首次加载时，当没有下一页时，使用 js 隐藏"更多"按钮 
+        // 首次加载时，当没有下一页时，使用 js 隐藏"更多"按钮
         if ($(".article-more").parent().data("count") <= $(".article-more").parent().find("article").length) {
             $(".article-more").remove();
         }
@@ -167,17 +199,17 @@ var timeline = {
         timeline._initArticleList();
         timeline._setNavCurrent();
 
-        // init header list 
-        $(".ico-list").click(function() {              
+        // init header list
+        $(".ico-list").click(function() {
             if ($(".header > .container > form").css("height") === "0px") {
                 $(".header > .container > ul, .header > .container > form").css({
                   "height": "auto"
                 });
             } else {
                 $(".header > .container > ul, .header > .container > form").animate({
-                  "height": "0px"  
+                  "height": "0px"
                 });
-            } 
+            }
         });
     },
     translate: function() {
@@ -244,7 +276,7 @@ var timeline = {
 
                     articlesHTML += '<article><div class="module"><div class="dot"></div>'
                             + '<div class="arrow"></div><time class="article-time"><span>'
-                            + Util.toDate(article.articleCreateTime, 'yy-MM-dd HH:mm')
+                            + timeline.toDate(article.articleCreateTime, 'yy-MM-dd HH:mm')
                             + '</span></time><h3 class="article-title"><a rel="bookmark" href="'
                             + Label.servePath + article.articlePermalink + '">'
                             + article.articleTitle + '</a>';
@@ -453,7 +485,6 @@ var timeline = {
 
 (function() {
     Util.setTopBar()
-    Util.replaceSideEm($(".comments .vditor-reset"));
     Util.buildTags("tagsSide");
 
     timeline.init();

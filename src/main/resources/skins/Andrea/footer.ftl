@@ -35,7 +35,6 @@
     // init
     $(document).ready(function () {
         Util.setTopBar()
-        Util.replaceSideEm($("#naviComments li .side-comment"));
 
         // brush
         buildBrush();

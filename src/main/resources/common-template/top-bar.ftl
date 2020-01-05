@@ -20,10 +20,10 @@
 <style type="text/css">
     #top {
         background-color: #FFF;
-        background-image: linear-gradient(#FFFFFF,#E5E5E5);
-        background-image: -ms-linear-gradient(#FFFFFF,#E5E5E5);
-        background-image: -o-linear-gradient(#FFFFFF,#E5E5E5);
-        background-image: -webkit-linear-gradient(#FFFFFF,#E5E5E5);
+        background-image: linear-gradient(#FFFFFF, #E5E5E5);
+        background-image: -ms-linear-gradient(#FFFFFF, #E5E5E5);
+        background-image: -o-linear-gradient(#FFFFFF, #E5E5E5);
+        background-image: -webkit-linear-gradient(#FFFFFF, #E5E5E5);
         filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#FFFFFF', endColorstr='#E5E5E5');
         border-bottom: 1px solid #E5E5E5;
         line-height: 26px;
@@ -93,13 +93,10 @@
             <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
                 ${adminLabel}
             </a>
-            </#if>
+        </#if>
             <a href="${logoutURL}" title="${logoutLabel}">${logoutLabel}</a>
         <#else>
             <a href="${servePath}/start" title="${startToUseLabel}">${startToUseLabel}</a>
-            </#if>
-            <#if isMobileRequest>
-            <a href="javascript:void(0)" onclick="Util.switchMobile('mobile');" title="${mobileLabel}">${mobileLabel}</a>
         </#if>
         <a href="javascript:void(0)" id="hideTop"></a>
     </span>

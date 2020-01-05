@@ -37,6 +37,7 @@
     "gulp-terser": "^1.2.0"
   },
   "dependencies": {
+    "uvstat": "^1.0.0",
     "vditor": "^2.0.11"
   }
 }

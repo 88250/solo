@@ -33,7 +33,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         Util.setTopBar()
-        Util.replaceSideEm($(".side-navi .navi-comments .side-comment"));
     });
 </script>
 ${plugins}
