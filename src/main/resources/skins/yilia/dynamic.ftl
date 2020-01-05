@@ -95,7 +95,7 @@
                             ${article.articleTitle}
                         </a>
                         <span data-ico="&#xe185;">
-                            ${article.articleViewCount}
+                            <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
                         </span>
                     </li>
                     </#list>

@@ -58,10 +58,8 @@ ${topBarReplacement}
                         ${createDateLabel}:
                     </#if>${article.articleUpdateDate?string("yyyy-MM-dd HH:mm")} |
                     ${viewCount1Label}
-                    <a rel="nofollow"
-                       data-uvstaturl="${servePath}${article.articlePermalink}"
-                       href="${servePath}${article.articlePermalink}">
-                        ${article.articleViewCount}
+                    <a rel="nofollow" href="${servePath}${article.articlePermalink}">
+                        <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
                     </a>
                     <#if commentable> | ${commentCount1Label}
                         <a rel="nofollow" href="${servePath}${article.articlePermalink}#comments">

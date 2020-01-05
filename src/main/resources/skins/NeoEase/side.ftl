@@ -88,7 +88,7 @@
         <ul class="side-li">
             <#list mostViewCountArticles as article>
                 <li>
-                    <sup>[${article.articleViewCount}]</sup>
+                    <sup>[<span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>]</sup>
                     <a title="${article.articleTitle}" href="${servePath}${article.articlePermalink}">
                         ${article.articleTitle}
                     </a>

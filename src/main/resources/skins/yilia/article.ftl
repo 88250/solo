@@ -71,14 +71,12 @@
                 </a>
             </#if>
             </#if>
-            <#if article.articleViewCount != 0>
-                <a class="vditor-tooltipped__n vditor-tooltipped link fn__flex-center"
-                   href="${servePath}${article.articlePermalink}"
-                   aria-label="${viewLabel}">
-                    ${article.articleViewCount}
-                    <span class="icon-views"></span>
-                </a>
-            </#if>
+            <a class="vditor-tooltipped__n vditor-tooltipped link fn__flex-center"
+               href="${servePath}${article.articlePermalink}"
+               aria-label="${viewLabel}">
+                <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
+                <span class="icon-views"></span>
+            </a>
             <a rel="nofollow" href="${servePath}/authors/${article.authorId}" class="fn__flex-center">
                 <img class="avatar" title="${article.authorName}" alt="${article.authorName}"
                      src="${article.authorThumbnailURL}"/>

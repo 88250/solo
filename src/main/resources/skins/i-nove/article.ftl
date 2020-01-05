@@ -81,7 +81,7 @@
                                 <div class="margin5">
                                     <a rel="nofollow" class="left" href="${servePath}${article.articlePermalink}">
                                         <span title="${viewLabel}" class="left article-browserIcon"></span>
-                                        ${article.articleViewCount}
+                                        <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
                                     </a>
                                     <div class="left">
                                         <span title="${tagLabel}" class="tagsIcon"></span>

@@ -65,7 +65,7 @@
                         </a>
                         </#if>
                         <a rel="nofollow" data-ico="&#xe185;" href="${servePath}${article.articlePermalink}">
-                            ${article.articleViewCount}
+                            <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
                         </a>
                         <a rel="nofollow" data-ico="&#x0060;" href="${servePath}/authors/${article.authorId}">
                             ${article.authorName}

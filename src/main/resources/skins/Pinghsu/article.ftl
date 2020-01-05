@@ -62,7 +62,7 @@
             <#if article.category??>
                 in <a href="${servePath}/category/${article.category.categoryURI}">${article.category.categoryTitle}</a>
             </#if>
-            with ${article.articleViewCount} views
+            with <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> views
             <#if commentable>
             <#if article.articleCommentCount != 0>
                 and <a href="#comments">${article.articleCommentCount} comments</a>

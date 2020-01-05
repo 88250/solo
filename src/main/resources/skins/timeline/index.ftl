@@ -104,7 +104,7 @@
                         </#if>
                         <span class="ico-view ico" title="${viewLabel}">
                             <a rel="nofollow" href="${servePath}${article.articlePermalink}">
-                                ${article.articleViewCount}
+                                <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>
                             </a>
                         </span>
                     </div>

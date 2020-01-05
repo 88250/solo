@@ -63,7 +63,7 @@
             </#if>
             <span class="tag">
                 <i class="icon__views"></i>
-                ${article.articleViewCount} ${viewLabel}
+                <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
             </span>
         </div>
 

@@ -57,7 +57,7 @@
                         ${article.articleCommentCount} ${cmtLabel}</a>
                 </span>
                 </#if>
-                    &nbsp; | &nbsp;${viewsLabel} ${article.articleViewCount}°C
+                    &nbsp; | &nbsp;${viewsLabel} <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span>°C
                 </div>
             </header>
             <div class="vditor-reset">
