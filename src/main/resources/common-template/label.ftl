@@ -17,7 +17,7 @@
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -->
-<script src="https://cdn.jsdelivr.net/npm/uvstat@v1.0.1/dist/index.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/uvstat@v1.0.2/dist/index.min.js"></script>
 <script>
     var Label = {
         servePath: "${servePath}",

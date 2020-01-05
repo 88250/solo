@@ -142,6 +142,8 @@ admin.articleList = {
         that.tablePagination.updateTablePagination(articleData, pageNum,
           result.pagination)
 
+        Util.uvstat.renderStat()
+
         $('#loadMsg').text('')
       },
     })

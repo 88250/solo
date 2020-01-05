@@ -28,13 +28,14 @@
  * @static
  */
 var Util = {
+  uvstat: undefined,
   /**
    * 初始化浏览数
    */
   initViewCnt: function () {
-    const uvstat = new Uvstat({loading:'<span>0</span>'})
-    uvstat.setStat()
-    uvstat.renderStat()
+    Util.uvstat = new Uvstat({loading:'<span>0</span>'})
+    Util.uvstat.setStat()
+    Util.uvstat.renderStat()
   },
   /**
    * 是否为文章页面
@@ -106,6 +107,7 @@ var Util = {
         callback: function () {
           Util.parseMarkdown()
           Util.parseLanguage()
+          Util.uvstat.renderStat()
           cb && cb()
         },
       })

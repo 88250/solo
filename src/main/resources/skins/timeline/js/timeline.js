@@ -325,6 +325,8 @@ var timeline = {
                 $(".module img").imagesLoaded(function() {
                     $(window).resize();
                 });
+
+                Util.uvstat.renderStat()
             }
         });
     },

@@ -26,9 +26,9 @@
 /* draft-list 相关操作 */
 admin.draftList = {
     tablePagination:  new TablePaginate("draft"),
-    
-    /* 
-     * 初始化 table, pagination, comments dialog 
+
+    /*
+     * 初始化 table, pagination, comments dialog
      */
     init: function (page) {
         this.tablePagination.buildTable([{
@@ -62,14 +62,14 @@ admin.draftList = {
         this.getList(page);
     },
 
-    /* 
+    /*
      * 根据当前页码获取列表
      * @pagNum 当前页码
      */
     getList: function (pageNum) {
         $("#loadMsg").text(Label.loadingLabel);
         var that = this;
-        
+
         $.ajax({
             url: Label.servePath + "/console/articles/status/unpublished/" + pageNum + "/" + Label.PAGE_SIZE + "/" +  Label.WINDOW_SIZE,
             type: "GET",
@@ -80,7 +80,7 @@ admin.draftList = {
                     $("#loadMsg").text("");
                     return;
                 }
-                
+
                 var articles = result.articles,
                 articleData = [];
                 for (var i = 0; i < articles.length; i++) {
@@ -91,15 +91,15 @@ admin.draftList = {
                     articleData[i].articleViewCount = '<span data-uvstaturl="' + Label.servePath + articles[i].articlePermalink + '">0</span>';
                     articleData[i].author = articles[i].authorName;
                     articleData[i].title = "<a class='no-underline' href='" + Label.servePath +
-                    articles[i].articlePermalink + "' target='_blank'>" + 
+                    articles[i].articlePermalink + "' target='_blank'>" +
                     articles[i].articleTitle + "</a><span class='table-tag'>" + articles[i].articleTags + "</span>";
                     articleData[i].expendRow = "<a href='javascript:void(0)' onclick=\"admin.article.get('" + articles[i].oId + "', false);\">" + Label.updateLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.article.del('" + articles[i].oId + "', 'draft', '" + encodeURIComponent(articles[i].articleTitle) + "')\">" + Label.removeLabel + "</a>  \
                                 <a href='javascript:void(0)' onclick=\"admin.comment.open('" + articles[i].oId + "', 'draft')\">" + Label.commentLabel + "</a>";
                 }
-                    
+
                 that.tablePagination.updateTablePagination(articleData, pageNum, result.pagination);
-                
+                Util.uvstat.renderStat()
                 $("#loadMsg").text("");
             }
         });
@@ -107,7 +107,7 @@ admin.draftList = {
 };
 
 /*
- * 注册到 admin 进行管理 
+ * 注册到 admin 进行管理
  */
 admin.register["draft-list"] =  {
     "obj": admin.draftList,
