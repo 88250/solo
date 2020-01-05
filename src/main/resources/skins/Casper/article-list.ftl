@@ -74,7 +74,7 @@
                 </a>
                 <#else>
                     <a class="item__meta" href="${servePath}${article.articlePermalink}">
-                        ${article.articleViewCount} ${viewLabel}
+                        <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
                     </a>
                 </#if>
             </div>

@@ -60,12 +60,10 @@
                         ${article.articleCommentCount} ${commentLabel}
                     </a>
                 </#if>
-                <#if article.articleViewCount != 0>
-                    &nbsp;·&nbsp;
-                    <a class="item__tag" href="${servePath}${article.articlePermalink}">
-                        ${article.articleViewCount} ${viewLabel}
-                    </a>
-                </#if>
+                &nbsp;·&nbsp;
+                <a class="item__tag" href="${servePath}${article.articlePermalink}">
+                    <span data-uvstaturl="${servePath}${article.articlePermalink}">0</span> ${viewLabel}
+                </a>
             </div>
         </article>
     </#list>
