@@ -274,7 +274,7 @@ public final class Server extends BaseServer {
         LOGGER.log(Level.DEBUG, "Stopwatch: {0}{1}", Strings.LINE_SEPARATOR, Stopwatchs.getTimingStat());
         Stopwatchs.release();
 
-        server.start(Integer.valueOf(portArg));
+        server.start(Integer.parseInt(portArg));
     }
 
     /**
