@@ -88,7 +88,7 @@ admin.draftList = {
                     articleData[i].tags = articles[i].articleTags;
                     articleData[i].date = $.bowknot.getDate(articles[i].articleCreateTime);
                     articleData[i].comments = articles[i].articleCommentCount;
-                    articleData[i].articleViewCount = articles[i].articleViewCount;
+                    articleData[i].articleViewCount = '<span data-uvstaturl="' + Label.servePath + articles[i].articlePermalink + '">0</span>';
                     articleData[i].author = articles[i].authorName;
                     articleData[i].title = "<a class='no-underline' href='" + Label.servePath +
                     articles[i].articlePermalink + "' target='_blank'>" + 
