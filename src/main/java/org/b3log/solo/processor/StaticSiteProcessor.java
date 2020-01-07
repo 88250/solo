@@ -32,7 +32,6 @@ import org.b3log.solo.util.Mocks;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -57,15 +56,25 @@ public class StaticSiteProcessor {
     private static final String STATIC_SITE = "static-site";
 
     /**
+     * Path of generate directory.
+     */
+    private static final String staticSitePath = StaticSiteProcessor.class.getResource("/" + STATIC_SITE).getPath();
+
+    /**
+     * Source directory path.
+     */
+    private static final String sourcePath = StaticSiteProcessor.class.getResource("/").getPath();
+
+    /**
      * Generates static site.
      *
      * @param context the specified context
      */
     @RequestProcessing(value = "/static-site")
     public void genStaticSite(final RequestContext context) {
-
-
         try {
+            FileUtils.forceMkdir(new File(staticSitePath + "/skins/"));
+
             Latkes.setServerScheme("https");
             // TODO: 前端传入生成站点域名
             Latkes.setServerHost("88250.github.io");
@@ -86,6 +95,8 @@ public class StaticSiteProcessor {
             copyFile("robots.txt");
             copyFile("CHANGE_LOGS.md");
 
+            LOGGER.log(Level.INFO, "Static site generated [dir=" + staticSitePath + "]");
+
             context.renderJSON(0);
         } catch (final Exception e) {
             LOGGER.log(Level.ERROR, "Generates static site failed", e);
@@ -94,7 +105,6 @@ public class StaticSiteProcessor {
     }
 
     private static void requestFile(final String uri) throws Exception {
-        final String staticSitePath = StaticSiteProcessor.class.getResource("/" + STATIC_SITE).toURI().getPath();
         FileUtils.forceMkdirParent(new File(staticSitePath + uri));
         final OutputStream outputStream = new FileOutputStream(staticSitePath + uri);
         String html = Mocks.mockRequest(uri);
@@ -103,35 +113,25 @@ public class StaticSiteProcessor {
     }
 
     private static void copySkin() throws Exception {
-        final URI skins = StaticSiteProcessor.class.getResource("/skins").toURI();
-
-        FileUtils.forceMkdir(new File(StaticSiteProcessor.class.getResource("/" + STATIC_SITE).getPath() + "/skins/"));
-        final URI siteSkins = StaticSiteProcessor.class.getResource("/" + STATIC_SITE + "/skins").toURI();
-        FileUtils.deleteDirectory(new File(siteSkins));
-        FileUtils.copyDirectory(new File(skins), new File(siteSkins));
+        FileUtils.deleteDirectory(new File(staticSitePath + "/skins"));
+        FileUtils.forceMkdir(new File(staticSitePath + "/skins"));
+        FileUtils.copyDirectory(new File(StaticSiteProcessor.class.getResource("/skins").toURI()), new File(staticSitePath + "/skins"));
     }
 
     private static void copyJS() throws Exception {
-        final URI js = StaticSiteProcessor.class.getResource("/js").toURI();
-
-        FileUtils.forceMkdir(new File(StaticSiteProcessor.class.getResource("/" + STATIC_SITE).getPath() + "/js/"));
-        final URI siteJS = StaticSiteProcessor.class.getResource("/" + STATIC_SITE + "/js").toURI();
-        FileUtils.deleteDirectory(new File(siteJS));
-        FileUtils.copyDirectory(new File(js), new File(siteJS));
+        FileUtils.deleteDirectory(new File(staticSitePath + "/js"));
+        FileUtils.forceMkdir(new File(staticSitePath + "/js"));
+        FileUtils.copyDirectory(new File(StaticSiteProcessor.class.getResource("/js").toURI()), new File(staticSitePath + "/js"));
     }
 
     private static void copyImages() throws Exception {
-        final URI images = StaticSiteProcessor.class.getResource("/images").toURI();
-
-        FileUtils.forceMkdir(new File(StaticSiteProcessor.class.getResource("/" + STATIC_SITE).getPath() + "/images/"));
-        final URI siteImages = StaticSiteProcessor.class.getResource("/" + STATIC_SITE + "/images").toURI();
-        FileUtils.deleteDirectory(new File(siteImages));
-        FileUtils.copyDirectory(new File(images), new File(siteImages));
+        FileUtils.deleteDirectory(new File(staticSitePath + "/images"));
+        FileUtils.forceMkdir(new File(staticSitePath + "/images"));
+        FileUtils.copyDirectory(new File(StaticSiteProcessor.class.getResource("/images").toURI()), new File(staticSitePath + "/images"));
     }
 
     private static void copyFile(final String file) throws Exception {
-        final String sourcePath = StaticSiteProcessor.class.getResource("/").toURI().getPath();
-        FileUtils.forceMkdirParent(new File(sourcePath + "/" + file));
+        FileUtils.forceMkdirParent(new File(staticSitePath + "/" + file));
         final String staticSitePath = StaticSiteProcessor.class.getResource("/" + STATIC_SITE).toURI().getPath();
         FileUtils.copyFile(new File(sourcePath + "/" + file), new File(staticSitePath + "/" + file));
     }
