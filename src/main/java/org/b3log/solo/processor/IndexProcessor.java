@@ -53,7 +53,7 @@ import java.util.Map;
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="https://hacpai.com/member/DASHU">DASHU</a>
  * @author <a href="https://vanessa.b3log.org">Vanessa</a>
- * @version 1.2.4.17, Jul 17, 2019
+ * @version 1.2.4.18, Jan 7, 2020
  * @since 0.3.1
  */
 @RequestProcessor
@@ -100,7 +100,7 @@ public class IndexProcessor {
      * @param context the specified context
      * @throws Exception exception
      */
-    @RequestProcessing(value = {"", "/"}, method = HttpMethod.GET)
+    @RequestProcessing(value = {"", "/", "/index.html"}, method = HttpMethod.GET)
     public void showIndex(final RequestContext context) {
         final Request request = context.getRequest();
         final Response response = context.getResponse();
