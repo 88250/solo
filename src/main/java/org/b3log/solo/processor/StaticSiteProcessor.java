@@ -83,10 +83,12 @@ public class StaticSiteProcessor {
             copyJS();
             copyImages();
             copyFile("sw.js");
+            copyFile("robots.txt");
+            copyFile("CHANGE_LOGS.md");
 
             context.renderJSON(0);
         } catch (final Exception e) {
-            LOGGER.log(Level.ERROR, "Generates static site fialed", e);
+            LOGGER.log(Level.ERROR, "Generates static site failed", e);
             context.renderJSON(-1);
         }
     }
