@@ -20,6 +20,7 @@ package org.b3log.solo.processor;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.annotation.Before;
@@ -29,10 +30,12 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.model.ArchiveDate;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
 import org.b3log.solo.model.Tag;
 import org.b3log.solo.processor.console.ConsoleAuthAdvice;
+import org.b3log.solo.service.ArchiveDateQueryService;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.service.TagQueryService;
@@ -101,6 +104,7 @@ public class StaticSiteProcessor {
             genURI("/blog/info");
             genURI("/manifest.json");
 
+            genArchives();
             genArticles();
             genTags();
             genSkins();
@@ -122,6 +126,22 @@ public class StaticSiteProcessor {
             LOGGER.log(Level.ERROR, "Generates static site failed", e);
             context.renderJSON(-1);
         }
+    }
+
+    private static void genArchives() throws Exception {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final ArchiveDateQueryService archiveDateQueryService = beanManager.getReference(ArchiveDateQueryService.class);
+        final List<JSONObject> archiveDates = archiveDateQueryService.getArchiveDates();
+
+        archiveDates.parallelStream().forEach(archiveDate -> {
+            final long time = archiveDate.getLong(ArchiveDate.ARCHIVE_TIME);
+            final String dateString = DateFormatUtils.format(time, "yyyy/MM");
+            try {
+                genPage("/archives/" + dateString);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Generates an archive [date=" + archiveDate + "] failed", e);
+            }
+        });
     }
 
     private static void genTags() throws Exception {
