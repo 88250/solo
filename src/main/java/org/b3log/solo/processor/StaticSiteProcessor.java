@@ -104,9 +104,9 @@ public class StaticSiteProcessor {
             genURI("/blog/info");
             genURI("/manifest.json");
 
-            genArchives();
             genArticles();
             genTags();
+            genArchives();
             genSkins();
             genJS();
             genImages();
