@@ -19,32 +19,34 @@
 -->
 <aside class="side">
     <#if article?? && article.articleToC?? && article.articleToC?size &gt; 0>
-    <div class="module">
-        <div class="module__list">
-        <#include "../../common-template/toc.ftl"/>
+        <div class="module">
+            <div class="module__list">
+                <#include "../../common-template/toc.ftl"/>
+            </div>
         </div>
-    </div>
     </#if>
     <#if noticeBoard??>
-    <section class="vditor-reset module">
-        <main class="module__content">
-            ${noticeBoard}
-        </main>
-    </section>
+        <section class="vditor-reset module">
+            <main class="module__content">
+                ${noticeBoard}
+            </main>
+        </section>
     </#if>
 
-    <section class="module">
-        <header class="module__header">
-            <form class="form" action="${servePath}/search">
-                <input placeholder="${searchLabel}" class="form__input" type="text" name="keyword"/>
-                <button class="side__btn" type="submit"><i class="icon__search"></i></button>
-            </form>
-        </header>
-    </section>
+    <#if !staticSite>
+        <section class="module">
+            <header class="module__header">
+                <form class="form" action="${servePath}/search">
+                    <input placeholder="${searchLabel}" class="form__input" type="text" name="keyword"/>
+                    <button class="side__btn" type="submit"><i class="icon__search"></i></button>
+                </form>
+            </header>
+        </section>
+    </#if>
 
     <div class="module item">
         <header class="module__header ft__center">
-        ${adminUser.userName}
+            ${adminUser.userName}
         </header>
         <main class="module__content ft__center">
             <img class="side__avatar" src="${adminUser.userAvatar}" alt="${adminUser.userName}"/>
@@ -125,23 +127,23 @@
         <div class="module__header">
             <div class="fn__flex">
                 <a href="${servePath}/archives.html" class="fn__flex-1 ft__center">
-                ${statistic.statisticPublishedBlogArticleCount}
-                ${articleLabel}
+                    ${statistic.statisticPublishedBlogArticleCount}
+                    ${articleLabel}
                 </a>
                 <#if commentable>
-                <a href="${servePath}/dynamic.html" class="fn__flex-1 ft__center">
-                ${statistic.statisticPublishedBlogCommentCount}
-                ${commentLabel}
-                </a>
+                    <a href="${servePath}/dynamic.html" class="fn__flex-1 ft__center">
+                        ${statistic.statisticPublishedBlogCommentCount}
+                        ${commentLabel}
+                    </a>
                 </#if>
             </div>
             <br/>
             <div class="fn__flex">
                 <div class="fn__flex-1 ft__center">
-                <span data-uvstaturl="${servePath}">0</span> <span class="ft-gray">${viewLabel}</span>
+                    <span data-uvstaturl="${servePath}">0</span> <span class="ft-gray">${viewLabel}</span>
                 </div>
                 <div class="fn__flex-1 ft__center">
-                ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span>
+                    ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span>
                 </div>
             </div>
         </div>

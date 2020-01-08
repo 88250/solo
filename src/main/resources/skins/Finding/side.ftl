@@ -60,9 +60,11 @@
         <li>
             <a rel="alternate" href="${servePath}/rss.xml">${subscribeLabel}</a>
         </li>
-        <Li>
-            <a href="${servePath}/search?keyword=">Search</a>
-        </Li>
+        <#if !staticSite>
+            <li>
+                <a href="${servePath}/search?keyword=">Search</a>
+            </li>
+        </#if>
     </ul>
 </#if>
 <div class="count">

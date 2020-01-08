@@ -40,25 +40,29 @@
         </div>
         <ul class="left">
             <#list pageNavigations as page>
-            <li>
-                <a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a>
-            </li>
+                <li>
+                    <a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img
+                            class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a>
+                </li>
             </#list>
             <#if commentable>
-            <li>
-                <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
-            </li>
+                <li>
+                    <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
+                </li>
             </#if>
             <li>
-                <a href="${servePath}/tags.html">${allTagsLabel}</a>  
+                <a href="${servePath}/tags.html">${allTagsLabel}</a>
             </li>
             <li>
-                <a rel="alternate" href="${servePath}/rss.xml">RSS <img src="${staticServePath}/images/feed.png" alt="RSS"/></a>
+                <a rel="alternate" href="${servePath}/rss.xml">RSS <img src="${staticServePath}/images/feed.png"
+                                                                        alt="RSS"/></a>
             </li>
         </ul>
-        <form class="right"  action="${servePath}/search">
-            <input placeholder="${searchLabel}" id="search" type="text" name="keyword" />
-            <input type="submit" value="" class="none" />
-        </form>
+        <#if !staticSite>
+            <form class="right" action="${servePath}/search">
+                <input placeholder="${searchLabel}" id="search" type="text" name="keyword"/>
+                <input type="submit" value="" class="none"/>
+            </form>
+        </#if>
     </div>
 </div>

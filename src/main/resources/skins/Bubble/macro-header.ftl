@@ -96,9 +96,11 @@
                 <li>
                     <a rel="alternate" href="${servePath}/rss.xml">RSS</a>
                 </li>
-                <li>
-                    <a href="${servePath}/search?keyword=">Search</a>
-                </li>
+                <#if !staticSite>
+                    <li>
+                        <a href="${servePath}/search?keyword=">Search</a>
+                    </li>
+                </#if>
                 <#if !staticSite>
                     <#if isLoggedIn>
                         <li>

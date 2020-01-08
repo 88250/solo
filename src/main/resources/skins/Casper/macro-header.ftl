@@ -41,9 +41,11 @@
                 </a>
             </#list>
 
-            <a href="${servePath}/search">
-                ${searchLabel}
-            </a>
+            <#if !staticSite>
+                <a href="${servePath}/search">
+                    ${searchLabel}
+                </a>
+            </#if>
 
             <div class="fn__right">
                 <#include "../../common-template/macro-user_site.ftl">

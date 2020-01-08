@@ -28,9 +28,11 @@
     </div>
     <div class="right">
         <ul>
-            <li>
-                <a rel="nofollow" class="home" href="${servePath}/search?keyword=">Search</a>
-            </li>
+            <#if !staticSite>
+                <li>
+                    <a rel="nofollow" class="home" href="${servePath}/search?keyword=">Search</a>
+                </li>
+            </#if>
             <li>
                 <a href="${servePath}/tags.html">Tags</a>
             </li>

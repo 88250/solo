@@ -28,7 +28,8 @@
             </a>
         </div>
 
-        <div class="site-nav-toggle fn-right" onclick="$('.header-line').toggle();$('nav').children('.menu').slideToggle();">
+        <div class="site-nav-toggle fn-right"
+             onclick="$('.header-line').toggle();$('nav').children('.menu').slideToggle();">
             <span class="btn-bar"></span>
             <span class="btn-bar"></span>
             <span class="btn-bar"></span>
@@ -37,20 +38,22 @@
         <nav>
             <ul class="menu">
                 <#list pageNavigations as page>
-                <li class="menu-item">
-                    <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
-                        ${page.pageTitle}
-                    </a>
-                </li>
+                    <li class="menu-item">
+                        <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
+                            ${page.pageTitle}
+                        </a>
+                    </li>
                 </#list>
             </ul>
 
-            <div class="site-search">
-                <form action="${servePath}/search">
-                    <input placeholder="${searchLabel}" id="search" type="text" name="keyword"/>
-                    <input type="submit" value="" class="fn-none" />
-                </form>
-            </div>
+            <#if !staticSite>
+                <div class="site-search">
+                    <form action="${servePath}/search">
+                        <input placeholder="${searchLabel}" id="search" type="text" name="keyword"/>
+                        <input type="submit" value="" class="fn-none"/>
+                    </form>
+                </div>
+            </#if>
         </nav>
     </div>
 </header>

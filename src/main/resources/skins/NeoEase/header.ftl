@@ -27,10 +27,12 @@
             </h1>
             <span class="sub-title">${blogSubtitle}</span>
         </div>
-        <form class="right" action="${servePath}/search">
-            <input id="search" type="text" name="keyword" />
-            <input type="submit" value="" class="none" />
-        </form>
+        <#if !staticSite>
+            <form class="right" action="${servePath}/search">
+                <input id="search" type="text" name="keyword"/>
+                <input type="submit" value="" class="none"/>
+            </form>
+        </#if>
         <div class="clear"></div>
     </div>
 </div>
@@ -41,15 +43,17 @@
                 <a rel="nofollow" href="${servePath}/">${indexLabel}</a>
             </li>
             <#list pageNavigations as page>
+                <li>
+                    <a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img
+                            class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a>
+                </li>
+            </#list>
             <li>
-                <a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a>
+                <a href="${servePath}/tags.html">${allTagsLabel}</a>
             </li>
-            </#list>  
             <li>
-                <a href="${servePath}/tags.html">${allTagsLabel}</a>  
-            </li>
-            <li>
-                <a rel="alternate" href="${servePath}/rss.xml">RSS<img src="${staticServePath}/images/feed.png" alt="RSS"/></a>
+                <a rel="alternate" href="${servePath}/rss.xml">RSS<img src="${staticServePath}/images/feed.png"
+                                                                       alt="RSS"/></a>
             </li>
         </ul>
         <div class="right">
@@ -65,9 +69,9 @@
                     ${statistic.statisticPublishedBlogArticleCount}
                 </span>
                 <#if commentable>
-                &nbsp;&nbsp;
-                ${commentCount1Label}
-                <span class="tip">
+                    &nbsp;&nbsp;
+                    ${commentCount1Label}
+                    <span class="tip">
                     ${statistic.statisticPublishedBlogCommentCount}
                 </span>
                 </#if>

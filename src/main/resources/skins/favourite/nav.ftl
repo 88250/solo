@@ -22,10 +22,13 @@
         <a rel="nofollow" href="${servePath}" class="home">${homeLabel}</a>
         <a href="${servePath}/tags.html" class="about">${allTagsLabel}</a>
         <#list pageNavigations as page>
-        <a href="${page.pagePermalink}" class="Guestbook" target="${page.pageOpenTarget}" class="${page.pageTitle}">${page.pageTitle}</a>
+            <a href="${page.pagePermalink}" class="Guestbook" target="${page.pageOpenTarget}"
+               class="${page.pageTitle}">${page.pageTitle}</a>
         </#list>
         <a rel="alternate" href="${servePath}/rss.xml" class="classifiche">RSS</a>
-        <a href="${servePath}/search?keyword=">Search</a>
+        <#if !staticSite>
+            <a href="${servePath}/search?keyword=">Search</a>
+        </#if>
     </div>
     <div class="thinks"></div>
 </div>

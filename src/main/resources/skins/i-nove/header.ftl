@@ -19,7 +19,7 @@
 -->
 <div class="header">
     <h1 class="title">
-        <a href="${servePath}" id="logoTitle" >
+        <a href="${servePath}" id="logoTitle">
             ${blogTitle}
         </a>
     </h1>
@@ -32,11 +32,11 @@
                 <a rel="nofollow" class="home" href="${servePath}"></a>
             </li>
             <#list pageNavigations as page>
-            <li>
-                <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">
-                    <#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}
-                </a>
-            </li>
+                <li>
+                    <a href="${page.pagePermalink}" target="${page.pageOpenTarget}">
+                        <#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}
+                    </a>
+                </li>
             </#list>
             <li>
                 <a href="${servePath}/tags.html">${allTagsLabel}</a>
@@ -47,11 +47,13 @@
                     <img src="${staticServePath}/images/feed.png" alt="RSS"/>
                 </a>
             </li>
-            <li>
-                <a href="${servePath}/search?keyword=">
-                    Search
-                </a>
-            </li>
+            <#if !staticSite>
+                <li>
+                    <a href="${servePath}/search?keyword=">
+                        Search
+                    </a>
+                </li>
+            </#if>
             <li>
                 <a class="lastNavi" href="javascript:void(0);"></a>
             </li>
@@ -73,7 +75,7 @@
             &nbsp;&nbsp;
         </span>
         <#if commentable>
-        <span>
+            <span>
             ${commentCount1Label}
             <span class='error-msg'>
                 ${statistic.statisticPublishedBlogCommentCount}

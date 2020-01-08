@@ -48,9 +48,11 @@
            class="vditor-tooltipped vditor-tooltipped__w">
             <i class="icon__link"></i>
         </a>
-        <a href="${servePath}/search" class="vditor-tooltipped__w vditor-tooltipped" aria-label="${searchLabel}">
-            <i class="icon__search"></i>
-        </a>
+        <#if !staticSite>
+            <a href="${servePath}/search" class="vditor-tooltipped__w vditor-tooltipped" aria-label="${searchLabel}">
+                <i class="icon__search"></i>
+            </a>
+        </#if>
         <a rel="alternate" href="${servePath}/rss.xml" rel="section" aria-label="RSS"
            class="vditor-tooltipped vditor-tooltipped__w">
             <i class="icon__rss"></i>

@@ -18,17 +18,17 @@
 
 -->
 <#if 1 != users?size>
-<div class="header-user">
-    <div class="content">
-        <div class="moon-current-icon"></div>
-        <#list users as user>
-        <a class="star-icon" href="${servePath}/authors/${user.oId}">
-            ${user.userName}
-        </a>
-        </#list>
-        <div class="clear"></div>
+    <div class="header-user">
+        <div class="content">
+            <div class="moon-current-icon"></div>
+            <#list users as user>
+                <a class="star-icon" href="${servePath}/authors/${user.oId}">
+                    ${user.userName}
+                </a>
+            </#list>
+            <div class="clear"></div>
+        </div>
     </div>
-</div>
 </#if>
 <div class="header-navi">
     <div class="header-navi-main content">
@@ -47,22 +47,25 @@
                     <a href="${servePath}/tags.html">${allTagsLabel}</a>
                 </li>
                 <#if 0 != pageNavigations?size>
-                <li class="tab" id="header-pages">
-                    <a href="${servePath}">
+                    <li class="tab" id="header-pages">
+                        <a href="${servePath}">
                         <span class="left">
                             ${pageLabel}
                         </span>
-                        <span class="arrow-dowm-icon"></span>
-                        <span class="clear"></span>
-                    </a>
-                    <ul class="sub-tabs none">
-                        <#list pageNavigations as page>
-                        <li class="sub-tab">
-                            <a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a>
-                        </li>
-                        </#list>
-                    </ul>
-                </li>
+                            <span class="arrow-dowm-icon"></span>
+                            <span class="clear"></span>
+                        </a>
+                        <ul class="sub-tabs none">
+                            <#list pageNavigations as page>
+                                <li class="sub-tab">
+                                    <a href="${page.pagePermalink}"
+                                       target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img class="page-icon"
+                                                                                                     src="${page.pageIcon}"></#if>${page.pageTitle}
+                                    </a>
+                                </li>
+                            </#list>
+                        </ul>
+                    </li>
                 </#if>
                 <li class="tab">
                     <a rel="alternate" href="${servePath}/rss.xml">
@@ -71,9 +74,11 @@
                         <span class="clear"></span>
                     </a>
                 </li>
-                <li class="tab">
-                    <a href="${servePath}/search?keyword=">Search</a>
-                </li>
+                <#if !staticSite>
+                    <li class="tab">
+                        <a href="${servePath}/search?keyword=">Search</a>
+                    </li>
+                </#if>
             </ul>
         </div>
         <div class="clear"></div>

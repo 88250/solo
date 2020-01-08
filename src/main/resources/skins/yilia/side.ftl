@@ -54,13 +54,15 @@
                     &nbsp; &nbsp;
                     <a href="${servePath}/archives.html">${archiveLabel}</a>
                 </li>
-                <li>
-                    <a href="${servePath}/links.html">${linkLabel}</a>
-                    &nbsp; &nbsp;
-                    <a href="${servePath}/search?keyword=">
-                        Search
-                    </a>
-                </li>
+                <#if !staticSite>
+                    <li>
+                        <a href="${servePath}/links.html">${linkLabel}</a>
+                        &nbsp; &nbsp;
+                        <a href="${servePath}/search?keyword=">
+                            Search
+                        </a>
+                    </li>
+                </#if>
             </ul>
         </nav>
     </header>

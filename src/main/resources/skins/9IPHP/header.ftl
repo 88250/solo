@@ -75,12 +75,14 @@
                     <i class="icon-rss"></i> RSS
                 </a>
             </nav>
+            <#if !staticSite>
             <div class="fn-right">
                 <form class="form" action="${servePath}/search">
                     <input placeholder="${searchLabel}" id="search" type="text" name="keyword"/>
                     <button type="submit"><i class="icon-search"></i></button>
                 </form>
             </div>
+            </#if>
         </div>
     </div>
 </header>
