@@ -80,7 +80,7 @@ public class StaticSiteProcessor {
      * @param context the specified context
      */
     @RequestProcessing(value = "/static-site")
-    public void genStaticSite(final RequestContext context) {
+    public synchronized void genStaticSite(final RequestContext context) {
         try {
             FileUtils.forceMkdir(new File(staticSitePath + "/skins/"));
 
