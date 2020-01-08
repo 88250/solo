@@ -26,20 +26,22 @@
                 </a>
             </h1>
             <small> &nbsp; ${blogSubtitle}</small>
-            <div class="fn-right">
-                <#if isLoggedIn>
-                    <a class="fn__flex-inline" href="${servePath}/admin-index.do#main" title="${adminLabel}">
-                        <i class="icon-setting"></i>&nbsp;${adminLabel}
-                    </a>
-                    <a class="fn__flex-inline" href="${logoutURL}">
-                        <i class="icon-logout"></i>&nbsp;${logoutLabel}
-                    </a>
+            <#if !staticSite>
+                <div class="fn-right">
+                    <#if isLoggedIn>
+                        <a class="fn__flex-inline" href="${servePath}/admin-index.do#main" title="${adminLabel}">
+                            <i class="icon-setting"></i>&nbsp;${adminLabel}
+                        </a>
+                        <a class="fn__flex-inline" href="${logoutURL}">
+                            <i class="icon-logout"></i>&nbsp;${logoutLabel}
+                        </a>
                     <#else>
-                    <a class="fn__flex-inline" href="${servePath}/start">
-                        <i class="icon-login"></i>&nbsp;${startToUseLabel}
-                    </a>
-                </#if>
-            </div>
+                        <a class="fn__flex-inline" href="${servePath}/start">
+                            <i class="icon-login"></i>&nbsp;${startToUseLabel}
+                        </a>
+                    </#if>
+                </div>
+            </#if>
         </div>
     </div>
 
@@ -56,9 +58,9 @@
                     </a>
                 </#list>
                 <#if commentable>
-                <a href="${servePath}/dynamic.html" rel="section">
-                    <i class="icon-refresh"></i> ${dynamicLabel}
-                </a>
+                    <a href="${servePath}/dynamic.html" rel="section">
+                        <i class="icon-refresh"></i> ${dynamicLabel}
+                    </a>
                 </#if>
                 <a href="${servePath}/tags.html" rel="section">
                     <i class="icon-tags"></i> ${allTagsLabel}
@@ -85,23 +87,25 @@
 <div class="responsive fn-none">
     <i class="icon-list"></i>
     <ul class="list">
-        <#if isLoggedIn>
-            <li>
-                <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
-                    <i class="icon-setting"></i> ${adminLabel}
-                </a>
-            </li>
-            <li>
-                <a href="${logoutURL}">
-                    <i class="icon-logout"></i> ${logoutLabel}
-                </a>
-            </li>
+        <#if !staticSite>
+            <#if isLoggedIn>
+                <li>
+                    <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
+                        <i class="icon-setting"></i> ${adminLabel}
+                    </a>
+                </li>
+                <li>
+                    <a href="${logoutURL}">
+                        <i class="icon-logout"></i> ${logoutLabel}
+                    </a>
+                </li>
             <#else>
                 <li>
                     <a href="${servePath}/start">
                         <i class="icon-login"></i> ${startToUseLabel}
                     </a>
                 </li>
+            </#if>
         </#if>
         <li>
             <a href="${servePath}">
@@ -117,11 +121,11 @@
             </li>
         </#list>
         <#if commentable>
-        <li>
-            <a href="${servePath}/dynamic.html" rel="section">
-                <i class="icon-refresh"></i> ${dynamicLabel}
-            </a>
-        </li>
+            <li>
+                <a href="${servePath}/dynamic.html" rel="section">
+                    <i class="icon-refresh"></i> ${dynamicLabel}
+                </a>
+            </li>
         </#if>
         <li>
             <a href="${servePath}/tags.html" rel="section">

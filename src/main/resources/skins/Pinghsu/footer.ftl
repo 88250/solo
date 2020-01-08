@@ -29,17 +29,20 @@
             </a>
         </#list>
         <a class="ft__link" rel="alternate" href="${servePath}/rss.xml" rel="section">RSS</a>
-        <#if isLoggedIn>
-        <a class="ft__link" href="${servePath}/admin-index.do#main" title="${adminLabel}">${adminLabel}</a>
-        <a class="ft__link" href="${logoutURL}">${logoutLabel}</a>
-        <#else>
-        <a class="ft__link" href="${servePath}/start">${startToUseLabel}</a>
+        <#if !staticSite>
+            <#if isLoggedIn>
+                <a class="ft__link" href="${servePath}/admin-index.do#main" title="${adminLabel}">${adminLabel}</a>
+                <a class="ft__link" href="${logoutURL}">${logoutLabel}</a>
+            <#else>
+                <a class="ft__link" href="${servePath}/start">${startToUseLabel}</a>
+            </#if>
         </#if>
     </nav>
     <div class="footer__border mobile__none"></div>
     <div class="wrapper fn__flex">
         <div class="fn__flex-1 mobile__none">
-            <div class="ft__fade">${adminUser.userName} - ${blogSubtitle}</div><br>
+            <div class="ft__fade">${adminUser.userName} - ${blogSubtitle}</div>
+            <br>
             <#if noticeBoard??>
                 ${noticeBoard}
             </#if>
@@ -47,7 +50,8 @@
 
         <#if 0 != mostUsedCategories?size>
             <div class="footer__mid fn__flex-1 mobile__none">
-                <div class="ft__fade">${categoryLabel}</div> <br>
+                <div class="ft__fade">${categoryLabel}</div>
+                <br>
                 <#list mostUsedCategories as category>
                     <a href="${servePath}/category/${category.categoryURI}"
                        aria-label="${category.categoryTagCnt} ${cntLabel}${tagsLabel}"
@@ -59,12 +63,12 @@
 
         <div class="fn__flex-1 footer__copyright">
             <a class="ft__link" href="${servePath}/archives.html">
-            ${statistic.statisticPublishedBlogArticleCount}
-            ${articleLabel}
+                ${statistic.statisticPublishedBlogArticleCount}
+                ${articleLabel}
             </a> &nbsp; &nbsp;
             <#if commentable>
-            ${statistic.statisticPublishedBlogCommentCount}
-            ${commentLabel}</#if> <br>
+                ${statistic.statisticPublishedBlogCommentCount}
+                ${commentLabel}</#if> <br>
             <span data-uvstaturl="${servePath}">0</span> <span class="ft-gray">${viewLabel}</span> &nbsp; &nbsp;
             ${onlineVisitorCnt} <span class="ft-gray">${onlineVisitorLabel}</span> <br>
             &copy; ${year}

@@ -23,7 +23,7 @@
             <svg>
                 <use xlink:href="#icon-home"></use>
             </svg>
-        ${indexLabel}
+            ${indexLabel}
         </a>
         <a href="${servePath}/tags.html" rel="section">
             <svg>
@@ -36,11 +36,11 @@
             </svg> ${archiveLabel}
         </a>
 
-    <#list pageNavigations as page>
-        <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
-            <#if page.pageIcon != ''><img src="${page.pageIcon}"></#if> ${page.pageTitle}
-        </a>
-    </#list>
+        <#list pageNavigations as page>
+            <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
+                <#if page.pageIcon != ''><img src="${page.pageIcon}"></#if> ${page.pageTitle}
+            </a>
+        </#list>
 
         <a rel="archive" href="${servePath}/links.html">
             <svg>
@@ -54,25 +54,27 @@
             </svg>
             RSS
         </a>
-    <#if isLoggedIn>
-        <a href="${servePath}/admin-index.do#main">
-            <svg>
-                <use xlink:href="#icon-setting"></use>
-            </svg> ${adminLabel}
-        </a>
-        <a href="${logoutURL}">
-            <svg>
-                <use xlink:href="#icon-out"></use>
-            </svg>
-            ${logoutLabel}
-        </a>
-    <#else>
-        <a rel="alternate" href="${servePath}/start" rel="section">
-            <svg>
-                <use xlink:href="#icon-enter"></use>
-            </svg>
-            ${startToUseLabel}
-        </a>
-    </#if>
+        <#if !staticSite>
+            <#if isLoggedIn>
+                <a href="${servePath}/admin-index.do#main">
+                    <svg>
+                        <use xlink:href="#icon-setting"></use>
+                    </svg> ${adminLabel}
+                </a>
+                <a href="${logoutURL}">
+                    <svg>
+                        <use xlink:href="#icon-out"></use>
+                    </svg>
+                    ${logoutLabel}
+                </a>
+            <#else>
+                <a rel="alternate" href="${servePath}/start" rel="section">
+                    <svg>
+                        <use xlink:href="#icon-enter"></use>
+                    </svg>
+                    ${startToUseLabel}
+                </a>
+            </#if>
+        </#if>
     </div>
 </nav>

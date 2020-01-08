@@ -29,14 +29,15 @@
             <a rel="nofollow" href="${servePath}/">${indexLabel}</a>
         </li>
         <#list pageNavigations as page>
-        <li>
-            <a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a>
-        </li>
+            <li>
+                <a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img
+                        class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a>
+            </li>
         </#list>
         <#if commentable>
-        <li>
-            <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
-        </li>
+            <li>
+                <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
+            </li>
         </#if>
         <li>
             <a href="${servePath}/categories.html">${categoryLabel}</a>
@@ -51,13 +52,15 @@
             <a href="${servePath}/links.html">${linkLabel}</a>
         </li>
     </ul>
-    <div class="fn-right top-info">
-        <#if isLoggedIn>
-            <a href="${servePath}/admin-index.do#main" title="${adminLabel}" data-ico="&#x0070;"></a>
-            <hr>
-            <a href="${logoutURL}" title="${logoutLabel}" data-ico="&#xe040;"></a>
-        <#else>
-          <a href="${servePath}/start" title="${startToUseLabel}" data-ico="&#xe03f;"></a>
-        </#if>
-    </div>
+    <#if !staticSite>
+        <div class="fn-right top-info">
+            <#if isLoggedIn>
+                <a href="${servePath}/admin-index.do#main" title="${adminLabel}" data-ico="&#x0070;"></a>
+                <hr>
+                <a href="${logoutURL}" title="${logoutLabel}" data-ico="&#xe040;"></a>
+            <#else>
+                <a href="${servePath}/start" title="${startToUseLabel}" data-ico="&#xe03f;"></a>
+            </#if>
+        </div>
+    </#if>
 </div>

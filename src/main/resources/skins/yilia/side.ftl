@@ -40,14 +40,15 @@
         <nav>
             <ul>
                 <#list pageNavigations as page>
-                <li>
-                    <a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a>
-                </li>
+                    <li>
+                        <a href="${page.pagePermalink}" target="${page.pageOpenTarget}"><#if page.pageIcon != ''><img
+                                class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}</a>
+                    </li>
                 </#list>
                 <li>
                     <#if commentable>
-                    <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
-                    &nbsp; &nbsp;
+                        <a href="${servePath}/dynamic.html">${dynamicLabel}</a>
+                        &nbsp; &nbsp;
                     </#if>
                     <a href="${servePath}/tags.html">${allTagsLabel}</a>
                     &nbsp; &nbsp;
@@ -65,21 +66,23 @@
     </header>
     <footer>
         <#if noticeBoard??>
-        <div class="vditor-reset">${noticeBoard}</div>
+            <div class="vditor-reset">${noticeBoard}</div>
         </#if>
-        <#if isLoggedIn>
-        <a href="${servePath}/admin-index.do#main" title="${adminLabel}" class="icon-setting"></a>
-        &nbsp; &nbsp; 
-        <a title="${logoutLabel}" class="icon-logout" href="${logoutURL}"></a>
-        <#else>
-        <a href="${servePath}/start" title="${startToUseLabel}" class="icon-login"></a>
-        </#if> &nbsp; &nbsp; 
+        <#if !staticSite>
+            <#if isLoggedIn>
+                <a href="${servePath}/admin-index.do#main" title="${adminLabel}" class="icon-setting"></a>
+                &nbsp; &nbsp;
+                <a title="${logoutLabel}" class="icon-logout" href="${logoutURL}"></a>
+            <#else>
+                <a href="${servePath}/start" title="${startToUseLabel}" class="icon-login"></a>
+            </#if> &nbsp; &nbsp;
+        </#if>
         <a rel="alternate" href="${servePath}/rss.xml" title="${subscribeLabel}" class="icon-rss"></a>
     </footer>
     <#if article?? && article.articleToC?? && article.articleToC?size &gt; 0>
-    <div class="toc">
-        <a onclick="$('.side .toc').hide();" href="javascript:void(0)" class="close">X</a>
-        <#include "../../common-template/toc.ftl"/>
-    </div>
+        <div class="toc">
+            <a onclick="$('.side .toc').hide();" href="javascript:void(0)" class="close">X</a>
+            <#include "../../common-template/toc.ftl"/>
+        </div>
     </#if>
 </div>

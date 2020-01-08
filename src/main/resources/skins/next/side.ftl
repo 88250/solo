@@ -73,27 +73,29 @@
                 </a>
             </div>
 
-            <div class="links-of-author">
-                <#if isLoggedIn>
-                    <span class="links-of-author-item">
+            <#if !staticSite>
+                <div class="links-of-author">
+                    <#if isLoggedIn>
+                        <span class="links-of-author-item">
                 <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
                     <i class="icon-setting"></i> ${adminLabel}
                 </a>
             </span>
 
-                    <span class="links-of-author-item">
+                        <span class="links-of-author-item">
                 <a href="${logoutURL}">
                     <i class="icon-logout"></i> ${logoutLabel}
                 </a>
             </span>
-                <#else>
-                    <span class="links-of-author-item">
+                    <#else>
+                        <span class="links-of-author-item">
                 <a href="${servePath}/start">
                     ${startToUseLabel}
                 </a>
             </span>
-                </#if>
-            </div>
+                    </#if>
+                </div>
+            </#if>
 
             <#if noticeBoard??>
                 <div class="links-of-author">

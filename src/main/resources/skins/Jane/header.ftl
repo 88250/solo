@@ -32,45 +32,52 @@
             </a>
         </#list>
 
-        <a href="${servePath}/categories.html" rel="section" aria-label="${categoryLabel}" class="vditor-tooltipped vditor-tooltipped__w">
+        <a href="${servePath}/categories.html" rel="section" aria-label="${categoryLabel}"
+           class="vditor-tooltipped vditor-tooltipped__w">
             <i class="icon__category"></i>
         </a>
-        <a href="${servePath}/tags.html" rel="section" aria-label="${allTagsLabel}" class="vditor-tooltipped vditor-tooltipped__w">
+        <a href="${servePath}/tags.html" rel="section" aria-label="${allTagsLabel}"
+           class="vditor-tooltipped vditor-tooltipped__w">
             <i class="icon__tags"></i>
         </a>
-        <a href="${servePath}/archives.html"  aria-label="${archiveLabel}" class="vditor-tooltipped vditor-tooltipped__w">
+        <a href="${servePath}/archives.html" aria-label="${archiveLabel}"
+           class="vditor-tooltipped vditor-tooltipped__w">
             <i class="icon__inbox"></i>
         </a>
-        <a rel="archive" href="${servePath}/links.html"  aria-label="${linkLabel}" class="vditor-tooltipped vditor-tooltipped__w">
+        <a rel="archive" href="${servePath}/links.html" aria-label="${linkLabel}"
+           class="vditor-tooltipped vditor-tooltipped__w">
             <i class="icon__link"></i>
         </a>
         <a href="${servePath}/search" class="vditor-tooltipped__w vditor-tooltipped" aria-label="${searchLabel}">
             <i class="icon__search"></i>
         </a>
-        <a rel="alternate" href="${servePath}/rss.xml" rel="section" aria-label="RSS" class="vditor-tooltipped vditor-tooltipped__w">
+        <a rel="alternate" href="${servePath}/rss.xml" rel="section" aria-label="RSS"
+           class="vditor-tooltipped vditor-tooltipped__w">
             <i class="icon__rss"></i>
         </a>
     </div>
 
-    <div>
-         <#if isLoggedIn>
-         <a href="${servePath}/admin-index.do#main"
-            aria-label="${adminLabel}" class="vditor-tooltipped vditor-tooltipped__w">
-             <i class="icon__setting"></i>
-         </a>
-         <a href="${logoutURL}"
-            aria-label="${logoutLabel}" class="vditor-tooltipped vditor-tooltipped__w">
-             <i class="icon__logout"></i>
-         </a>
-        <#else>
-        <a href="${servePath}/start"
-           aria-label="${startToUseLabel}" class="vditor-tooltipped vditor-tooltipped__w">
-            <i class="icon__login"></i>
-        </a>
-        </#if>
-        <span onclick="Util.goTop()"
-              aria-label="${putTopLabel}" class="vditor-tooltipped vditor-tooltipped__w">
+    <#if !staticSite>
+        <div>
+            <#if isLoggedIn>
+                <a href="${servePath}/admin-index.do#main"
+                   aria-label="${adminLabel}" class="vditor-tooltipped vditor-tooltipped__w">
+                    <i class="icon__setting"></i>
+                </a>
+                <a href="${logoutURL}"
+                   aria-label="${logoutLabel}" class="vditor-tooltipped vditor-tooltipped__w">
+                    <i class="icon__logout"></i>
+                </a>
+            <#else>
+                <a href="${servePath}/start"
+                   aria-label="${startToUseLabel}" class="vditor-tooltipped vditor-tooltipped__w">
+                    <i class="icon__login"></i>
+                </a>
+            </#if>
+            <span onclick="Util.goTop()"
+                  aria-label="${putTopLabel}" class="vditor-tooltipped vditor-tooltipped__w">
             <i class="icon__up"></i>
         </span>
-    </div>
+        </div>
+    </#if>
 </header>

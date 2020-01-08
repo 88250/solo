@@ -59,7 +59,7 @@ import static org.b3log.solo.model.Article.ARTICLE_CONTENT;
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
  * @author <a href="http://vanessa.b3log.org">Liyuan Li</a>
- * @version 1.7.0.12, Jan 2, 2020
+ * @version 1.7.0.13, Jan 9, 2020
  * @since 0.3.1
  */
 @Service
@@ -1081,6 +1081,10 @@ public class DataModelService {
      * @throws ServiceException service exception
      */
     public String getTopBarHTML(final RequestContext context) throws ServiceException {
+        if (Solos.GEN_STATIC_SITE) {
+            return "";
+        }
+
         Stopwatchs.start("Gens Top Bar HTML");
 
         try {

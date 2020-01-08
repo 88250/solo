@@ -18,53 +18,55 @@
 
 -->
 <#macro header type>
-<header class="header header--${type}">
-    <div class="wrapper header__title">
-        <h1 class="header__h1 fn__flex-inline">
-            <img src="${faviconURL}">
-            <a href="${servePath}" rel="start" class="header__title">${blogTitle}</a>
-        </h1>
-        <h2 class="header__h2">${blogSubtitle}</h2>
-    </div>
-    <nav class="wrapper header__nav fn__clear">
-        <a href="${servePath}" rel="start">
-            <#if type == 'article'>
-                ${blogTitle}
-            <#else>
-                ${indexLabel}
-            </#if>
-        </a>
-
-        <#list pageNavigations as page>
-            <a class="fn__flex-inline" href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
-                <#if page.pageIcon != ''><img src="${page.pageIcon}"></#if> ${page.pageTitle}
-            </a>
-        </#list>
-
-        <a href="${servePath}/search">
-            ${searchLabel}
-        </a>
-
-        <div class="fn__right">
-            <#include "../../common-template/macro-user_site.ftl">
-            <@userSite dir=""></@userSite>
-            <a rel="alternate" href="${servePath}/rss.xml">
-                RSS
-            </a>
-
-            <#if isLoggedIn>
-            <a href="${servePath}/admin-index.do#main">
-                ${adminLabel}
-            </a>
-            <a href="${logoutURL}">
-                ${logoutLabel}
-            </a>
-            <#else>
-            <a rel="alternate" href="${servePath}/start">
-                ${startToUseLabel}
-            </a>
-            </#if>
+    <header class="header header--${type}">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <img src="${faviconURL}">
+                <a href="${servePath}" rel="start" class="header__title">${blogTitle}</a>
+            </h1>
+            <h2 class="header__h2">${blogSubtitle}</h2>
         </div>
-    </nav>
-</header>
+        <nav class="wrapper header__nav fn__clear">
+            <a href="${servePath}" rel="start">
+                <#if type == 'article'>
+                    ${blogTitle}
+                <#else>
+                    ${indexLabel}
+                </#if>
+            </a>
+
+            <#list pageNavigations as page>
+                <a class="fn__flex-inline" href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
+                    <#if page.pageIcon != ''><img src="${page.pageIcon}"></#if> ${page.pageTitle}
+                </a>
+            </#list>
+
+            <a href="${servePath}/search">
+                ${searchLabel}
+            </a>
+
+            <div class="fn__right">
+                <#include "../../common-template/macro-user_site.ftl">
+                <@userSite dir=""></@userSite>
+                <a rel="alternate" href="${servePath}/rss.xml">
+                    RSS
+                </a>
+
+                <#if !staticSite>
+                    <#if isLoggedIn>
+                        <a href="${servePath}/admin-index.do#main">
+                            ${adminLabel}
+                        </a>
+                        <a href="${logoutURL}">
+                            ${logoutLabel}
+                        </a>
+                    <#else>
+                        <a rel="alternate" href="${servePath}/start">
+                            ${startToUseLabel}
+                        </a>
+                    </#if>
+                </#if>
+            </div>
+        </nav>
+    </header>
 </#macro>

@@ -55,7 +55,7 @@
                 <div class="side__meta">
                     ${statistic.statisticPublishedBlogArticleCount} ${articleLabel} <br>
                     <#if commentable>
-                    ${statistic.statisticPublishedBlogCommentCount} ${commentLabel} <br>
+                        ${statistic.statisticPublishedBlogCommentCount} ${commentLabel} <br>
                     </#if>
                     <span data-uvstaturl="${servePath}">0</span> ${viewLabel} <br>
                     ${onlineVisitorCnt} ${onlineVisitorLabel}
@@ -99,23 +99,25 @@
                 <li>
                     <a href="${servePath}/search?keyword=">Search</a>
                 </li>
-                <#if isLoggedIn>
-                    <li>
-                        <a href="${servePath}/admin-index.do#main">
-                            ${adminLabel}
-                        </a>
-                    </li>
-                    <li>
-                        <a href="${logoutURL}">
-                            ${logoutLabel}
-                        </a>
-                    </li>
-                <#else>
-                    <li>
-                        <a rel="alternate" href="${servePath}/start">
-                            ${startToUseLabel}
-                        </a>
-                    </li>
+                <#if !staticSite>
+                    <#if isLoggedIn>
+                        <li>
+                            <a href="${servePath}/admin-index.do#main">
+                                ${adminLabel}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="${logoutURL}">
+                                ${logoutLabel}
+                            </a>
+                        </li>
+                    <#else>
+                        <li>
+                            <a rel="alternate" href="${servePath}/start">
+                                ${startToUseLabel}
+                            </a>
+                        </li>
+                    </#if>
                 </#if>
             </ul>
         </div>

@@ -26,7 +26,7 @@
 <header class="header">
     <div class="header__wrap">
         <a href="${servePath}" rel="start" class="header__logo">
-            <i class="icon__home"></i>   ${blogTitle}
+            <i class="icon__home"></i> ${blogTitle}
         </a>
 
         <nav class="mobile__hidden header__nav">
@@ -36,9 +36,9 @@
                 </a>
             </#list>
             <#if commentable>
-            <a href="${servePath}/dynamic.html" rel="section">
-                <i class="icon__refresh"></i> ${dynamicLabel}
-            </a>
+                <a href="${servePath}/dynamic.html" rel="section">
+                    <i class="icon__refresh"></i> ${dynamicLabel}
+                </a>
             </#if>
             <a href="${servePath}/tags.html" rel="section">
                 <i class="icon__tags"></i> ${allTagsLabel}
@@ -54,20 +54,22 @@
             </a>
         </nav>
 
-        <div class="header__login">
-             <#if isLoggedIn>
-                 <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
-                     <i class="icon__setting"></i> ${adminLabel}
-                 </a>
-                 <a href="${logoutURL}">
-                     <i class="icon__logout"></i> ${logoutLabel}
-                 </a>
-             <#else>
+        <#if !staticSite>
+            <div class="header__login">
+                <#if isLoggedIn>
+                    <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
+                        <i class="icon__setting"></i> ${adminLabel}
+                    </a>
+                    <a href="${logoutURL}">
+                        <i class="icon__logout"></i> ${logoutLabel}
+                    </a>
+                <#else>
                     <a href="${servePath}/start">
                         <i class="icon__login"></i> ${startToUseLabel}
                     </a>
-             </#if>
-        </div>
+                </#if>
+            </div>
+        </#if>
     </div>
 </header>
 <div class="header__m fn__none">
@@ -76,37 +78,39 @@
     <i class="icon__more" onclick="$(this).next().slideToggle()"></i>
     <main class="module__list">
         <ul>
-        <#if isLoggedIn>
-            <li>
-                <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
-                    <i class="icon__setting"></i> ${adminLabel}
-                </a>
-            </li>
-            <li>
-                <a href="${logoutURL}">
-                    <i class="icon__logout"></i> ${logoutLabel}
-                </a>
-            </li>
-        <#else>
+            <#if !staticSite>
+                <#if isLoggedIn>
+                    <li>
+                        <a href="${servePath}/admin-index.do#main" title="${adminLabel}">
+                            <i class="icon__setting"></i> ${adminLabel}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="${logoutURL}">
+                            <i class="icon__logout"></i> ${logoutLabel}
+                        </a>
+                    </li>
+                <#else>
+                    <li>
+                        <a href="${servePath}/start">
+                            <i class="icon__login"></i> ${startToUseLabel}
+                        </a>
+                    </li>
+                </#if>
+            </#if>
+            <#list pageNavigations as page>
                 <li>
-                    <a href="${servePath}/start">
-                        <i class="icon__login"></i> ${startToUseLabel}
+                    <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
+                        <#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}
                     </a>
                 </li>
-        </#if>
-        <#list pageNavigations as page>
-            <li>
-                <a href="${page.pagePermalink}" target="${page.pageOpenTarget}" rel="section">
-                    <#if page.pageIcon != ''><img class="page-icon" src="${page.pageIcon}"></#if>${page.pageTitle}
-                </a>
-            </li>
-        </#list>
+            </#list>
             <#if commentable>
-            <li>
-                <a href="${servePath}/dynamic.html" rel="section">
-                    <i class="icon__refresh"></i> ${dynamicLabel}
-                </a>
-            </li>
+                <li>
+                    <a href="${servePath}/dynamic.html" rel="section">
+                        <i class="icon__refresh"></i> ${dynamicLabel}
+                    </a>
+                </li>
             </#if>
             <li>
                 <a href="${servePath}/tags.html" rel="section">
