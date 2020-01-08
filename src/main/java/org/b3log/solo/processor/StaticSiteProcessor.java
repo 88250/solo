@@ -31,9 +31,11 @@ import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.CollectionUtils;
 import org.b3log.solo.model.Article;
 import org.b3log.solo.model.Option;
+import org.b3log.solo.model.Tag;
 import org.b3log.solo.processor.console.ConsoleAuthAdvice;
 import org.b3log.solo.service.ArticleQueryService;
 import org.b3log.solo.service.OptionQueryService;
+import org.b3log.solo.service.TagQueryService;
 import org.b3log.solo.util.Mocks;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -100,6 +102,7 @@ public class StaticSiteProcessor {
             genURI("/manifest.json");
 
             genArticles();
+            genTags();
             genSkins();
             genJS();
             genImages();
@@ -119,6 +122,21 @@ public class StaticSiteProcessor {
             LOGGER.log(Level.ERROR, "Generates static site failed", e);
             context.renderJSON(-1);
         }
+    }
+
+    private static void genTags() throws Exception {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final TagQueryService tagQueryService = beanManager.getReference(TagQueryService.class);
+        final List<JSONObject> tags = tagQueryService.getTags();
+
+        tags.parallelStream().forEach(tag -> {
+            final String tagTitle = tag.optString(Tag.TAG_TITLE);
+            try {
+                genPage("/tags/" + tagTitle);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Generates a tag [title=" + tagTitle + "] failed", e);
+            }
+        });
     }
 
     private static void genArticles() throws Exception {
