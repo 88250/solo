@@ -138,10 +138,14 @@ public class StaticSiteProcessor {
 
             genPage("?p=" + currentPageNum);
 
-            for (final JSONObject article : articles) {
+            articles.parallelStream().forEach(article -> {
                 final String permalink = article.optString(Article.ARTICLE_PERMALINK);
-                genURI(permalink);
-            }
+                try {
+                    genURI(permalink);
+                } catch (final Exception e) {
+                    LOGGER.log(Level.ERROR, "Generates an article [uri=" + permalink + "] failed", e);
+                }
+            });
 
             currentPageNum++;
         }
