@@ -19,6 +19,7 @@ package org.b3log.solo.processor;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.b3log.latke.Latkes;
 import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.annotation.Before;
@@ -89,11 +90,11 @@ public class StaticSiteProcessor {
             Latkes.setServerHost("88250.github.io");
             Latkes.setServerPort("");
 
-            requestFile("/index.html");
-            requestFile("/blog/info");
-            requestFile("/manifest.json");
+            genURI("/index.html");
+            genURI("/blog/info");
+            genURI("/manifest.json");
 
-            requestArticles();
+            genArticles();
 
             Latkes.setServerScheme("http");
             Latkes.setServerHost("localhost");
@@ -115,7 +116,7 @@ public class StaticSiteProcessor {
         }
     }
 
-    private static void requestArticles() throws Exception {
+    private static void genArticles() throws Exception {
         final BeanManager beanManager = BeanManager.getInstance();
         final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
         final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
@@ -134,16 +135,31 @@ public class StaticSiteProcessor {
             if (articles.isEmpty()) {
                 break;
             }
+
+            genPage("?p=" + currentPageNum);
+
             for (final JSONObject article : articles) {
                 final String permalink = article.optString(Article.ARTICLE_PERMALINK);
-                requestFile(permalink);
+                genURI(permalink);
             }
 
             currentPageNum++;
         }
     }
 
-    private static void requestFile(final String uri) throws Exception {
+    private static void genPage(final String uri) throws Exception {
+        String filePath = uri;
+        filePath = StringUtils.replace(filePath, "?", "/");
+        filePath = StringUtils.replace(filePath, "=", "/");
+        FileUtils.forceMkdirParent(new File(staticSitePath + filePath));
+        final OutputStream outputStream = new FileOutputStream(staticSitePath + filePath);
+        String html = Mocks.mockRequest(uri);
+        IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
+        outputStream.close();
+        LOGGER.log(Level.INFO, "Generated a page [" + uri + "]");
+    }
+
+    private static void genURI(final String uri) throws Exception {
         FileUtils.forceMkdirParent(new File(staticSitePath + uri));
         final OutputStream outputStream = new FileOutputStream(staticSitePath + uri);
         String html = Mocks.mockRequest(uri);
