@@ -155,6 +155,7 @@ public class StaticSiteProcessor {
         String filePath = uri;
         filePath = StringUtils.replace(filePath, "?", "/");
         filePath = StringUtils.replace(filePath, "=", "/");
+        filePath += ".html";
         FileUtils.forceMkdirParent(new File(staticSitePath + filePath));
         final OutputStream outputStream = new FileOutputStream(staticSitePath + filePath);
         String html = Mocks.mockRequest(uri);
