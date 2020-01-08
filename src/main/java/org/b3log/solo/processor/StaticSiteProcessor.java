@@ -87,7 +87,8 @@ public class StaticSiteProcessor {
 
             Latkes.setServerScheme("https");
             // TODO: 前端传入生成站点域名
-            Latkes.setServerHost("88250.github.io");
+//            Latkes.setServerHost("88250.github.io");
+            Latkes.setServerHost("dl88250.gitee.io");
             Latkes.setServerPort("");
 
             genURI("/index.html");
