@@ -30,15 +30,9 @@ import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
 import org.b3log.latke.util.CollectionUtils;
-import org.b3log.solo.model.ArchiveDate;
-import org.b3log.solo.model.Article;
-import org.b3log.solo.model.Option;
-import org.b3log.solo.model.Tag;
+import org.b3log.solo.model.*;
 import org.b3log.solo.processor.console.ConsoleAuthAdvice;
-import org.b3log.solo.service.ArchiveDateQueryService;
-import org.b3log.solo.service.ArticleQueryService;
-import org.b3log.solo.service.OptionQueryService;
-import org.b3log.solo.service.TagQueryService;
+import org.b3log.solo.service.*;
 import org.b3log.solo.util.Mocks;
 import org.b3log.solo.util.Solos;
 import org.json.JSONObject;
@@ -109,6 +103,7 @@ public class StaticSiteProcessor {
             genArticles();
             genTags();
             genArchives();
+            genCategories();
             genSkins();
             genJS();
             genImages();
@@ -128,6 +123,21 @@ public class StaticSiteProcessor {
             LOGGER.log(Level.ERROR, "Generates static site failed", e);
             context.renderJSON(-1);
         }
+    }
+
+    private static void genCategories() throws Exception {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final CategoryQueryService categoryQueryService = beanManager.getReference(CategoryQueryService.class);
+        final List<JSONObject> categories = categoryQueryService.getMostTagCategory(Integer.MAX_VALUE);
+
+        categories.parallelStream().forEach(category -> {
+            final String categoryURI = category.optString(Category.CATEGORY_URI);
+            try {
+                genPage("/category/" + categoryURI);
+            } catch (final Exception e) {
+                LOGGER.log(Level.ERROR, "Generates a category [uri=" + categoryURI + "] failed", e);
+            }
+        });
     }
 
     private static void genArchives() throws Exception {
