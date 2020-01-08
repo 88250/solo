@@ -48,8 +48,6 @@
         <input id="blogTitle" type="text"/>
         <label for="blogSubtitle">${blogSubtitle1Label}</label>
         <input id="blogSubtitle" type="text"/>
-        <label for="blogHost">${blogHost1Label}</label>
-        <input id="blogHost" type="text" value="${serverHost}" readonly="true"/>
         <label for="metaKeywords">${metaKeywords1Label}</label>
         <input id="metaKeywords" type="text"/>
         <label for="metaDescription">${metaDescription1Label}</label>

@@ -52,7 +52,7 @@ import static org.b3log.solo.model.Article.*;
  * Article management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 1.3.4.0, Nov 7, 2019
+ * @version 1.3.4.1, Jan 8, 2020
  * @since 0.3.5
  */
 @Service
@@ -649,36 +649,35 @@ public class ArticleMgmtService {
      * @throws ServiceException service exception
      */
     public void incViewCount(final String articleId) throws ServiceException {
-        JSONObject article;
-
-        try {
-            article = articleRepository.get(articleId);
-
-            if (null == article) {
-                return;
-            }
-        } catch (final RepositoryException e) {
-            LOGGER.log(Level.ERROR, "Gets article [id=" + articleId + "] failed", e);
-
-            return;
-        }
-
-        final Transaction transaction = articleRepository.beginTransaction();
-
-        try {
-            article.put(Article.ARTICLE_VIEW_COUNT, article.getInt(Article.ARTICLE_VIEW_COUNT) + 1);
-            articleRepository.update(articleId, article, ARTICLE_VIEW_COUNT);
-
-            transaction.commit();
-        } catch (final Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.WARN, "Updates article view count failed");
-
-            throw new ServiceException(e);
-        }
+//        JSONObject article;
+//
+//        try {
+//            article = articleRepository.get(articleId);
+//
+//            if (null == article) {
+//                return;
+//            }
+//        } catch (final RepositoryException e) {
+//            LOGGER.log(Level.ERROR, "Gets article [id=" + articleId + "] failed", e);
+//
+//            return;
+//        }
+//
+//        final Transaction transaction = articleRepository.beginTransaction();
+//        try {
+//            article.put(Article.ARTICLE_VIEW_COUNT, article.getInt(Article.ARTICLE_VIEW_COUNT) + 1);
+//            articleRepository.update(articleId, article, ARTICLE_VIEW_COUNT);
+//
+//            transaction.commit();
+//        } catch (final Exception e) {
+//            if (transaction.isActive()) {
+//                transaction.rollback();
+//            }
+//
+//            LOGGER.log(Level.WARN, "Updates article view count failed");
+//
+//            throw new ServiceException(e);
+//        }
     }
 
     /**

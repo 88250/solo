@@ -617,6 +617,13 @@ public class DataModelService {
         dataModel.put(Option.ID_C_HLJS_THEME, hljsTheme);
 
         dataModel.put(Common.COMMENTABLE, preference.optBoolean(Option.ID_C_COMMENTABLE));
+
+        dataModel.put("staticSite", Solos.GEN_STATIC_SITE);
+        if (!Solos.GEN_STATIC_SITE) {
+            dataModel.put("pagingSep", "?p=");
+        } else {
+            dataModel.put("pagingSep", "/p/");
+        }
     }
 
     /**

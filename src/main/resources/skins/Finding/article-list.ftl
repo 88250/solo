@@ -20,11 +20,11 @@
 <#if !isIndex && paginationCurrentPageNum != 1>
 <nav class="pagination fn-clear fn-wrap" role="navigation">
     <#if paginationCurrentPageNum != 1>
-    <a class="fn-left" href="${servePath}${path}?p=${paginationPreviousPageNum}">← ${previousPageLabel}</a>
+    <a class="fn-left" href="${servePath}${path}${pagingSep}${paginationPreviousPageNum}">← ${previousPageLabel}</a>
     </#if>
     <span>${pageLabel} ${paginationCurrentPageNum} of ${paginationPageCount}</span>
     <#if paginationPageCount != paginationCurrentPageNum>
-    <a class="fn-right" href="${servePath}${path}?p=${paginationNextPageNum}">${nextPagePabel} →</a>
+    <a class="fn-right" href="${servePath}${path}${pagingSep}${paginationNextPageNum}">${nextPagePabel} →</a>
     </#if>
 </nav>
 </#if>
@@ -71,11 +71,11 @@
 <#if 0 != paginationPageCount>
 <nav class="pagination fn-clear fn-wrap" role="navigation">
     <#if paginationCurrentPageNum != 1>
-    <a class="fn-left" href="${servePath}${path}?p=${paginationPreviousPageNum}">← ${previousPageLabel}</a>
+    <a class="fn-left" href="${servePath}${path}${pagingSep}${paginationPreviousPageNum}">← ${previousPageLabel}</a>
     </#if>
     <span>${pageLabel} ${paginationCurrentPageNum} of ${paginationPageCount}</span>
     <#if paginationPageCount != paginationCurrentPageNum>
-    <a class="fn-right" href="${servePath}${path}?p=${paginationNextPageNum}">${nextPagePabel} →</a>
+    <a class="fn-right" href="${servePath}${path}${pagingSep}${paginationNextPageNum}">${nextPagePabel} →</a>
     </#if>
 </nav>
 </#if>

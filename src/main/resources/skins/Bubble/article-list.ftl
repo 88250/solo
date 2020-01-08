@@ -71,7 +71,7 @@
     <#if 0 != paginationPageCount>
         <nav class="pagination">
             <#if 1 != paginationPageNums?first>
-                <a href="${servePath}${path}?p=${paginationPreviousPageNum}"
+                <a href="${servePath}${path}${pagingSep}${paginationPreviousPageNum}"
                    aria-label="${previousPageLabel}"
                    class="pagination__item vditor-tooltipped__n vditor-tooltipped">&laquo;</a>
                 <a class="pagination__item" href="${servePath}${path}">1</a>
@@ -81,13 +81,13 @@
                 <#if paginationPageNum == paginationCurrentPageNum>
                     <span class="pagination__item pagination__item--active">${paginationPageNum}</span>
                 <#else>
-                    <a class="pagination__item" href="${servePath}${path}?p=${paginationPageNum}">${paginationPageNum}</a>
+                    <a class="pagination__item" href="${servePath}${path}${pagingSep}${paginationPageNum}">${paginationPageNum}</a>
                 </#if>
             </#list>
             <#if paginationPageNums?last != paginationPageCount>
                 <span class="pagination__item pagination__item--omit">...</span>
-                <a href="${servePath}${path}?p=${paginationPageCount}" class="pagination__item">${paginationPageCount}</a>
-                <a href="${servePath}${path}?p=${paginationNextPageNum}" aria-label="${nextPagePabel}"
+                <a href="${servePath}${path}${pagingSep}${paginationPageCount}" class="pagination__item">${paginationPageCount}</a>
+                <a href="${servePath}${path}${pagingSep}${paginationNextPageNum}" aria-label="${nextPagePabel}"
                    class="pagination__item vditor-tooltipped__n vditor-tooltipped">&raquo;</a>
             </#if>
         </nav>

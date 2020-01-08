@@ -75,19 +75,19 @@
 <#if 0 != paginationPageCount>
     <nav class="pagination">
         <#if 1 != paginationPageNums?first>
-            <a href="${servePath}${path}?p=${paginationPreviousPageNum}" class="extend next"><<</a>
+            <a href="${servePath}${path}${pagingSep}${paginationPreviousPageNum}" class="extend next"><<</a>
             <a class="page-number" href="${servePath}${path}">1</a> ...
         </#if>
         <#list paginationPageNums as paginationPageNum>
             <#if paginationPageNum == paginationCurrentPageNum>
                 <span class="page-number current">${paginationPageNum}</span>
             <#else>
-                <a class="page-number" href="${servePath}${path}?p=${paginationPageNum}">${paginationPageNum}</a>
+                <a class="page-number" href="${servePath}${path}${pagingSep}${paginationPageNum}">${paginationPageNum}</a>
             </#if>
         </#list>
         <#if paginationPageNums?last != paginationPageCount> ...
-            <a href="${servePath}${path}?p=${paginationPageCount}" class="page-number">${paginationPageCount}</a>
-            <a href="${servePath}${path}?p=${paginationNextPageNum}" class="extend next">>></a>
+            <a href="${servePath}${path}${pagingSep}${paginationPageCount}" class="page-number">${paginationPageCount}</a>
+            <a href="${servePath}${path}${pagingSep}${paginationNextPageNum}" class="extend next">>></a>
         </#if>
     </nav>
 </#if>
