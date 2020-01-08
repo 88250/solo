@@ -100,6 +100,8 @@ public class StaticSiteProcessor {
 
             genURI("/tags.html");
             genURI("/archives.html");
+            genURI("/links.html");
+            genURI("/categories.html");
             genURI("/index.html");
             genURI("/blog/info");
             genURI("/manifest.json");

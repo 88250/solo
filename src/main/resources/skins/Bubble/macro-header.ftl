@@ -82,7 +82,7 @@
                     </li>
                 </#list>
                 <li>
-                    <a href="${servePath}/category.html">${categoryLabel}</a>
+                    <a href="${servePath}/categories.html">${categoryLabel}</a>
                 </li>
                 <li>
                     <a href="${servePath}/tags.html">${allTagsLabel}</a>
