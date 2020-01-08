@@ -93,6 +93,8 @@ public class StaticSiteProcessor {
             Latkes.setServerPort("");
             Solos.GEN_STATIC_SITE = true;
 
+            genURI("/tags.html");
+            genURI("/archives.html");
             genURI("/index.html");
             genURI("/blog/info");
             genURI("/manifest.json");
