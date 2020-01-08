@@ -99,6 +99,7 @@ public class StaticSiteProcessor {
             genURI("/index.html");
             genURI("/blog/info");
             genURI("/manifest.json");
+            genURI("/rss.xml");
 
             genArticles();
             genTags();
