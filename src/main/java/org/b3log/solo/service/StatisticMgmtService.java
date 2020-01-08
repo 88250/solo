@@ -48,7 +48,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Statistic management service.
  *
  * @author <a href="http://88250.b3log.org">Liang Ding</a>
- * @version 2.0.1.4, Nov 19, 2019
+ * @version 2.0.1.5, Jan 8, 2020
  * @since 0.5.0
  */
 @Service
@@ -211,40 +211,40 @@ public class StatisticMgmtService {
      * @throws ServiceException service exception
      */
     public void incBlogViewCount(final RequestContext context, final Response response) throws ServiceException {
-        if (Solos.isBot(context.getRequest())) {
-            return;
-        }
-
-        if (hasBeenServed(context, response)) {
-            return;
-        }
-
-        final Transaction transaction = optionRepository.beginTransaction();
-        JSONObject statistic;
-        try {
-            statistic = optionRepository.get(Option.ID_C_STATISTIC_BLOG_VIEW_COUNT);
-            if (null == statistic) {
-                return;
-            }
-
-            LOGGER.log(Level.TRACE, "Before inc blog view count is [{0}]", statistic);
-
-            statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
-
-            updateStatistic(Option.ID_C_STATISTIC_BLOG_VIEW_COUNT, statistic);
-
-            transaction.commit();
-        } catch (final RepositoryException e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-
-            LOGGER.log(Level.ERROR, "Updates blog view count failed", e);
-
-            return;
-        }
-
-        LOGGER.log(Level.TRACE, "Inced blog view count[statistic={0}]", statistic);
+//        if (Solos.isBot(context.getRequest())) {
+//            return;
+//        }
+//
+//        if (hasBeenServed(context, response)) {
+//            return;
+//        }
+//
+//        final Transaction transaction = optionRepository.beginTransaction();
+//        JSONObject statistic;
+//        try {
+//            statistic = optionRepository.get(Option.ID_C_STATISTIC_BLOG_VIEW_COUNT);
+//            if (null == statistic) {
+//                return;
+//            }
+//
+//            LOGGER.log(Level.TRACE, "Before inc blog view count is [{0}]", statistic);
+//
+//            statistic.put(Option.OPTION_VALUE, statistic.optInt(Option.OPTION_VALUE) + 1);
+//
+//            updateStatistic(Option.ID_C_STATISTIC_BLOG_VIEW_COUNT, statistic);
+//
+//            transaction.commit();
+//        } catch (final RepositoryException e) {
+//            if (transaction.isActive()) {
+//                transaction.rollback();
+//            }
+//
+//            LOGGER.log(Level.ERROR, "Updates blog view count failed", e);
+//
+//            return;
+//        }
+//
+//        LOGGER.log(Level.TRACE, "Inced blog view count[statistic={0}]", statistic);
     }
 
     /**
