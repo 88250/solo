@@ -24,15 +24,24 @@ import org.b3log.latke.http.RequestContext;
 import org.b3log.latke.http.annotation.Before;
 import org.b3log.latke.http.annotation.RequestProcessing;
 import org.b3log.latke.http.annotation.RequestProcessor;
+import org.b3log.latke.ioc.BeanManager;
 import org.b3log.latke.logging.Level;
 import org.b3log.latke.logging.Logger;
+import org.b3log.latke.util.CollectionUtils;
+import org.b3log.solo.model.Article;
+import org.b3log.solo.model.Option;
 import org.b3log.solo.processor.console.ConsoleAuthAdvice;
+import org.b3log.solo.service.ArticleQueryService;
+import org.b3log.solo.service.OptionQueryService;
 import org.b3log.solo.util.Mocks;
+import org.b3log.solo.util.Solos;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * Static site processor. HTML 静态站点生成 https://github.com/88250/solo/issues/19
@@ -84,16 +93,18 @@ public class StaticSiteProcessor {
             requestFile("/blog/info");
             requestFile("/manifest.json");
 
+            requestArticles();
+
             Latkes.setServerScheme("http");
             Latkes.setServerHost("localhost");
             Latkes.setServerPort("8080");
 
-            copySkin();
-            copyJS();
-            copyImages();
-            copyFile("sw.js");
-            copyFile("robots.txt");
-            copyFile("CHANGE_LOGS.md");
+            genSkins();
+            genJS();
+            genImages();
+            genFile("sw.js");
+            genFile("robots.txt");
+            genFile("CHANGE_LOGS.md");
 
             LOGGER.log(Level.INFO, "Static site generated [dir=" + staticSitePath + "]");
 
@@ -104,35 +115,66 @@ public class StaticSiteProcessor {
         }
     }
 
+    private static void requestArticles() throws Exception {
+        final BeanManager beanManager = BeanManager.getInstance();
+        final ArticleQueryService articleQueryService = beanManager.getReference(ArticleQueryService.class);
+        final OptionQueryService optionQueryService = beanManager.getReference(OptionQueryService.class);
+        final JSONObject preference = optionQueryService.getPreference();
+        final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
+        final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
+        int currentPageNum = 1;
+        while (true) {
+            final JSONObject requestJSONObject = Solos.buildPaginationRequest(String.valueOf(currentPageNum) + '/' + pageSize + '/' + windowSize);
+            requestJSONObject.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
+            requestJSONObject.put(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, false);
+            final JSONObject result = articleQueryService.getArticles(requestJSONObject);
+            final List<JSONObject> articles = CollectionUtils.jsonArrayToList(result.getJSONArray(Article.ARTICLES));
+            if (articles.isEmpty()) {
+                break;
+            }
+            for (final JSONObject article : articles) {
+                final String permalink = article.optString(Article.ARTICLE_PERMALINK);
+                requestFile(permalink);
+            }
+
+            currentPageNum++;
+        }
+    }
+
     private static void requestFile(final String uri) throws Exception {
         FileUtils.forceMkdirParent(new File(staticSitePath + uri));
         final OutputStream outputStream = new FileOutputStream(staticSitePath + uri);
         String html = Mocks.mockRequest(uri);
         IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
         outputStream.close();
+        LOGGER.log(Level.INFO, "Generated a file [" + uri + "]");
     }
 
-    private static void copySkin() throws Exception {
+    private static void genSkins() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/skins"));
         FileUtils.forceMkdir(new File(staticSitePath + "/skins"));
         FileUtils.copyDirectory(new File(StaticSiteProcessor.class.getResource("/skins").toURI()), new File(staticSitePath + "/skins"));
+        LOGGER.log(Level.INFO, "Generated skins");
     }
 
-    private static void copyJS() throws Exception {
+    private static void genJS() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/js"));
         FileUtils.forceMkdir(new File(staticSitePath + "/js"));
         FileUtils.copyDirectory(new File(StaticSiteProcessor.class.getResource("/js").toURI()), new File(staticSitePath + "/js"));
+        LOGGER.log(Level.INFO, "Generated js");
     }
 
-    private static void copyImages() throws Exception {
+    private static void genImages() throws Exception {
         FileUtils.deleteDirectory(new File(staticSitePath + "/images"));
         FileUtils.forceMkdir(new File(staticSitePath + "/images"));
         FileUtils.copyDirectory(new File(StaticSiteProcessor.class.getResource("/images").toURI()), new File(staticSitePath + "/images"));
+        LOGGER.log(Level.INFO, "Generated images");
     }
 
-    private static void copyFile(final String file) throws Exception {
+    private static void genFile(final String file) throws Exception {
         FileUtils.forceMkdirParent(new File(staticSitePath + "/" + file));
         final String staticSitePath = StaticSiteProcessor.class.getResource("/" + STATIC_SITE).toURI().getPath();
         FileUtils.copyFile(new File(sourcePath + "/" + file), new File(staticSitePath + "/" + file));
+        LOGGER.log(Level.INFO, "Generated a file [" + file + "]");
     }
 }
