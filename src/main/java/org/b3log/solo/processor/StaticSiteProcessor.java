@@ -141,7 +141,7 @@ public class StaticSiteProcessor {
             articles.parallelStream().forEach(article -> {
                 final String permalink = article.optString(Article.ARTICLE_PERMALINK);
                 try {
-                    genURI(permalink);
+                    genArticle(permalink);
                 } catch (final Exception e) {
                     LOGGER.log(Level.ERROR, "Generates an article [uri=" + permalink + "] failed", e);
                 }
@@ -171,6 +171,23 @@ public class StaticSiteProcessor {
         IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
         outputStream.close();
         LOGGER.log(Level.INFO, "Generated a file [" + uri + "]");
+    }
+
+    private static void genArticle(final String permalink) throws Exception {
+        if (!StringUtils.endsWithIgnoreCase(permalink, ".html") && !StringUtils.endsWithIgnoreCase(permalink, ".htm")) {
+            FileUtils.forceMkdir(new File(staticSitePath + permalink));
+            final String html = Mocks.mockRequest(permalink);
+            final OutputStream outputStream = new FileOutputStream(staticSitePath + permalink + "/index.html");
+            IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
+            outputStream.close();
+        } else {
+            FileUtils.forceMkdirParent(new File(staticSitePath + permalink));
+            final String html = Mocks.mockRequest(permalink);
+            final OutputStream outputStream = new FileOutputStream(staticSitePath + permalink);
+            IOUtils.write(html, outputStream, StandardCharsets.UTF_8);
+            outputStream.close();
+        }
+        LOGGER.log(Level.INFO, "Generated an article [" + permalink + "]");
     }
 
     private static void genSkins() throws Exception {
