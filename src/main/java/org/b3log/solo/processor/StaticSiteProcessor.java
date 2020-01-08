@@ -82,7 +82,8 @@ public class StaticSiteProcessor {
     @RequestProcessing(value = "/static-site")
     public synchronized void genStaticSite(final RequestContext context) {
         try {
-            FileUtils.forceMkdir(new File(staticSitePath + "/skins/"));
+            FileUtils.deleteDirectory(new File(staticSitePath));
+            FileUtils.forceMkdir(new File(staticSitePath));
 
             // 切换至静态站点生成模式
             Latkes.setServerScheme("https");
