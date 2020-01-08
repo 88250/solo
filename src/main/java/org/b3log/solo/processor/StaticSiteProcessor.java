@@ -123,7 +123,9 @@ public class StaticSiteProcessor {
         final int pageSize = preference.getInt(Option.ID_C_ARTICLE_LIST_DISPLAY_COUNT);
         final int windowSize = preference.getInt(Option.ID_C_ARTICLE_LIST_PAGINATION_WINDOW_SIZE);
         int currentPageNum = 1;
-        while (true) {
+        int count = 0;
+        final int maxPage = 10240;
+        while (count++ < maxPage) {
             final JSONObject requestJSONObject = Solos.buildPaginationRequest(String.valueOf(currentPageNum) + '/' + pageSize + '/' + windowSize);
             requestJSONObject.put(Article.ARTICLE_STATUS, Article.ARTICLE_STATUS_C_PUBLISHED);
             requestJSONObject.put(Option.ID_C_ENABLE_ARTICLE_UPDATE_HINT, false);
